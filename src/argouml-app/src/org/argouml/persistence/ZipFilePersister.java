@@ -47,11 +47,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
@@ -71,7 +72,7 @@ class ZipFilePersister extends XmiFilePersister {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ZipFilePersister.class);
+        Logger.getLogger(ZipFilePersister.class.getName());
 
     /**
      * The constructor.
@@ -92,7 +93,7 @@ class ZipFilePersister extends XmiFilePersister {
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.zip");
     }
-    
+
     /*
      * @see org.argouml.persistence.XmiFilePersister#isSaveEnabled()
      */
@@ -115,12 +116,12 @@ class ZipFilePersister extends XmiFilePersister {
      */
     public void doSave(Project project, File file) throws SaveException {
 
-        LOG.info("Receiving file '" + file.getName() + "'");
-        
-        /* Retain the previous project file even when the save operation 
+        LOG.log(Level.INFO, "Receiving file {0}", file.getName());
+
+        /* Retain the previous project file even when the save operation
          * crashes in the middle. Also create a backup file after saving. */
         boolean doSafeSaves = useSafeSaves();
-        
+
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -153,18 +154,17 @@ class ZipFilePersister extends XmiFilePersister {
                 ProjectMember projectMember =
                     project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + (project.getMembers()
-                                    .get(i)).getType());
-                    }
+                    LOG.log(Level.FINE,
+                            "Saving member of type: {0}",
+                            projectMember.getType());
+
                     MemberFilePersister persister
                         = new ModelMemberFilePersister();
                     persister.save(projectMember, bufferedStream);
                 }
             }
             stream.close();
-            
+
             if (doSafeSaves) {
                 // if save did not raise an exception
                 // and name+"#" exists move name+"#" to name+"~"
@@ -180,7 +180,7 @@ class ZipFilePersister extends XmiFilePersister {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Exception occured during save attempt", e);
+            LOG.log(Level.SEVERE, "Exception occured during save attempt", e);
             try {
                 bufferedStream.close();
             } catch (IOException ex) {
@@ -201,7 +201,7 @@ class ZipFilePersister extends XmiFilePersister {
         try {
             bufferedStream.close();
         } catch (IOException ex) {
-            LOG.error("Failed to close save output writer", ex);
+            LOG.log(Level.SEVERE, "Failed to close save output writer", ex);
         }
     }
 
@@ -211,7 +211,7 @@ class ZipFilePersister extends XmiFilePersister {
     public Project doLoad(File file)
         throws OpenException {
 
-        LOG.info("Receiving file '" + file.getName() + "'");
+        LOG.log(Level.INFO, "Receiving file {0}", file.getName());
 
         try {
             Project p = ProjectFactory.getInstance().createProject();
@@ -232,7 +232,7 @@ class ZipFilePersister extends XmiFilePersister {
 
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
-            
+
             modelPersister.readModels(is);
             // TODO Handle multiple top level packages
             Object model = modelPersister.getCurModel();
@@ -275,7 +275,7 @@ class ZipFilePersister extends XmiFilePersister {
 
     /**
      * Returns false. Only Argo specific files have an icon.
-     * 
+     *
      * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
      */
     @Override

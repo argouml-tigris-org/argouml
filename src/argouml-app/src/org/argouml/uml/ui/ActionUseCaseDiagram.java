@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -50,7 +52,7 @@ import org.argouml.uml.diagram.DiagramSettings;
 public class ActionUseCaseDiagram extends ActionAddDiagram {
 
     private static final Logger LOG =
-        Logger.getLogger(ActionUseCaseDiagram.class);
+        Logger.getLogger(ActionUseCaseDiagram.class.getName());
 
     /**
      * Constructor.
@@ -59,7 +61,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
         super("action.usecase-diagram");
     }
 
-    
+
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
@@ -68,8 +70,8 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     @Override
     public ArgoDiagram createDiagram(Object namespace) {
         if (!Model.getFacade().isANamespace(namespace)) {
-            LOG.error("No namespace as argument");
-            LOG.error(namespace);
+            LOG.log(Level.SEVERE, "No namespace as argument {0}",namespace);
+            
             throw new IllegalArgumentException(
                 "The argument " + namespace + "is not a namespace.");
         }
@@ -78,17 +80,17 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
                 namespace,
                 null);
     }
-    
-    
+
+
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     @Override
-    public ArgoDiagram createDiagram(Object namespace, 
+    public ArgoDiagram createDiagram(Object namespace,
             DiagramSettings settings) {
         if (!Model.getFacade().isANamespace(namespace)) {
-            LOG.error("No namespace as argument");
-            LOG.error(namespace);
+            LOG.log(Level.SEVERE, "No namespace as argument {0}",namespace);
+            
             throw new IllegalArgumentException(
                 "The argument " + namespace + "is not a namespace.");
         }

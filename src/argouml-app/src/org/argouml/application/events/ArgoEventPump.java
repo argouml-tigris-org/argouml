@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.application.events;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 
 /**
@@ -58,7 +59,8 @@ public final class ArgoEventPump {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ArgoEventPump.class);
+    private static final Logger LOG =
+        Logger.getLogger(ArgoEventPump.class.getName());
 
     /**
      * <code>listeners</code> contains the list of register listeners.
@@ -176,9 +178,9 @@ public final class ArgoEventPump {
     private void handleFireNotationEvent(
         final ArgoNotationEvent event,
         final ArgoNotationEventListener listener) {
-       
+
         // Notation events are likely to cause GEF/Swing operations, so we
-        // dispatch them on the Swing event thread as a convenience so that 
+        // dispatch them on the Swing event thread as a convenience so that
         // the receiving notationChanged() methods don't need to deal with it
         if (SwingUtilities.isEventDispatchThread()) {
             fireNotationEventInternal(event, listener);
@@ -194,31 +196,31 @@ public final class ArgoEventPump {
     private void fireNotationEventInternal(ArgoNotationEvent event,
             ArgoNotationEventListener listener) {
         switch (event.getEventType()) {
-	case ArgoEventTypes.NOTATION_CHANGED :
-	    listener.notationChanged(event);
-	    /* Remark: The code in 
-	     * ProjectSettings.init() currently presumes
-	     * that nobody is using this event. */
-	    break;
+        case ArgoEventTypes.NOTATION_CHANGED :
+            listener.notationChanged(event);
+            /* Remark: The code in
+             * ProjectSettings.init() currently presumes
+             * that nobody is using this event. */
+            break;
 
-	case ArgoEventTypes.NOTATION_ADDED :
-	    listener.notationAdded(event);
-	    break;
+        case ArgoEventTypes.NOTATION_ADDED :
+            listener.notationAdded(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_REMOVED :
-	    listener.notationRemoved(event);
-	    break;
+        case ArgoEventTypes.NOTATION_REMOVED :
+            listener.notationRemoved(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_PROVIDER_ADDED :
-	    listener.notationProviderAdded(event);
-	    break;
+        case ArgoEventTypes.NOTATION_PROVIDER_ADDED :
+            listener.notationProviderAdded(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_PROVIDER_REMOVED :
-	    listener.notationProviderRemoved(event);
-	    break;
+        case ArgoEventTypes.NOTATION_PROVIDER_REMOVED :
+            listener.notationProviderRemoved(event);
+            break;
 
 	default :
-	    LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
 	    break;
         }
     }
@@ -227,7 +229,7 @@ public final class ArgoEventPump {
      * Handle firing a diagram appearance event.
      * <p>
      * TODO: This needs to be managed on a per-diagram or per-project basis.
-     * 
+     *
      * @param event The event to be fired.
      * @param listener The listener.
      */
@@ -242,7 +244,7 @@ public final class ArgoEventPump {
                     fireDiagramAppearanceEventInternal(event, listener);
                 }
             });
-        }        
+        }
     }
 
     private void fireDiagramAppearanceEventInternal(
@@ -253,7 +255,7 @@ public final class ArgoEventPump {
             listener.diagramFontChanged(event);
             break;
         default :
-            LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
             break;
         }
     }
@@ -277,7 +279,7 @@ public final class ArgoEventPump {
             break;
 
         default :
-            LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
             break;
         }
     }
@@ -312,9 +314,9 @@ public final class ArgoEventPump {
         case ArgoEventTypes.STATUS_PROJECT_MODIFIED :
             listener.projectModified(event);
             break;
-            
+
         default :
-            LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
             break;
         }
     }
@@ -338,7 +340,7 @@ public final class ArgoEventPump {
             break;
 
         default:
-            LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
             break;
         }
     }
@@ -366,7 +368,7 @@ public final class ArgoEventPump {
             break;
 
         default:
-            LOG.error("Invalid event:" + event.getEventType());
+            LOG.log(Level.SEVERE, "Invalid event:" + event.getEventType());
             break;
         }
     }

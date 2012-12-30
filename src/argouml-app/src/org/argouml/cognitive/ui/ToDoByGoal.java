@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.cognitive.ui;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
@@ -52,7 +54,7 @@ import org.argouml.cognitive.ToDoListListener;
 public class ToDoByGoal extends ToDoPerspective
     implements ToDoListListener {
     private static final Logger LOG =
-        Logger.getLogger(ToDoByGoal.class);
+        Logger.getLogger(ToDoByGoal.class.getName());
 
 
     /**
@@ -71,7 +73,7 @@ public class ToDoByGoal extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
-	LOG.debug("toDoItemsChanged");
+        LOG.log(Level.FINE, "toDoItemsChanged");
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
@@ -106,7 +108,7 @@ public class ToDoByGoal extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
-	LOG.debug("toDoItemAdded");
+        LOG.log(Level.FINE, "toDoItemAdded");
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
@@ -142,12 +144,12 @@ public class ToDoByGoal extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-	LOG.debug("toDoItemAdded");
+        LOG.log(Level.FINE, "toDoItemAdded");
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
         for (Goal g : Designer.theDesigner().getGoalList()) {
-	    LOG.debug("toDoItemRemoved updating decision node!");
+            LOG.log(Level.FINE, "toDoItemRemoved updating decision node!");
 	    boolean anyInGoal = false;
             for (ToDoItem item : tde.getToDoItemList()) {
 		if (item.supports(g)) {
@@ -170,5 +172,3 @@ public class ToDoByGoal extends ToDoPerspective
 
 
 }
-
-

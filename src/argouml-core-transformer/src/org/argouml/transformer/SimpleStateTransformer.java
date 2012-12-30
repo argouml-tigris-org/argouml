@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
@@ -40,7 +41,7 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * This class transforms a SimpleState into a CompositeState. <p>
- * 
+ *
  * This involves copying the following:
  * from State:
  *      entry : Action
@@ -61,9 +62,9 @@ import org.tigris.gef.presentation.FigNode;
  */
 class SimpleStateTransformer implements Transformer {
 
-    private static final Logger LOG = 
-        Logger.getLogger(SimpleStateTransformer.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(SimpleStateTransformer.class.getName());
+
     public List<Action> actions(Project p, Object sourceModelElement) {
         assert Model.getFacade().isASimpleState(sourceModelElement);
         List<Action> result = new ArrayList<Action>();
@@ -74,16 +75,17 @@ class SimpleStateTransformer implements Transformer {
     public boolean canTransform(Object sourceModelElement) {
         return Model.getFacade().isASimpleState(sourceModelElement);
     }
-    
+
     class SimpleStateToCompositeState extends TransformerAction {
 
         SimpleStateToCompositeState(Project project, Object sourceModelElement) {
-            super(Translator.localize("transform.button.new-compositestate"), 
+            super(Translator.localize("transform.button.new-compositestate"),
                     project, sourceModelElement);
         }
-        
+
         public void actionPerformed(ActionEvent e) {
-            LOG.debug("Transforming a SimpleState into a CompositeState");
+            LOG.log(Level.FINE,
+                    "Transforming a SimpleState into a CompositeState");
 //            Editor editor = Globals.curEditor();
 //            GraphModel gm = editor.getGraphModel();
 //            LayerDiagram lay =
@@ -101,13 +103,20 @@ class SimpleStateTransformer implements Transformer {
             Object container = Model.getFacade().getContainer(getSource());
             Collection outgoings = new ArrayList(Model.getFacade().getOutgoings(getSource()));
             Collection incomings = new ArrayList(Model.getFacade().getIncomings(getSource()));
-            
+
             outgoings.removeAll(intTrans);
             incomings.removeAll(intTrans);
-            LOG.debug("Transformer found " + intTrans.size() + " internal transitions.");
-            LOG.debug("Transformer found " + incomings.size() + " incoming transitions.");
-            LOG.debug("Transformer found " + outgoings.size() + " outgoing transitions.");
-            
+
+            LOG.log(Level.FINE,
+                    "Transformer found {0} internal transitions.",
+                    intTrans.size());
+            LOG.log(Level.FINE,
+                    "Transformer found {0} incoming transitions.",
+                    incomings.size());
+            LOG.log(Level.FINE,
+                    "Transformer found {0} outgoing transitions.",
+                    outgoings.size());
+
             String name = Model.getFacade().getName(getSource());
             Object cs = Model.getStateMachinesFactory().buildCompositeState(container);
             Model.getStateMachinesHelper().setEntry(getSource(), null);
@@ -134,28 +143,34 @@ class SimpleStateTransformer implements Transformer {
             Model.getCoreHelper().setName(cs, name);
 
 
-            
+
             // This is not necessarily the current diagram!
             Collection<Fig> figs = getProject().findAllPresentationsFor(getSource());
-            LOG.debug("Transformer found " + figs.size() + " representations (Figs).");
+
+            LOG.log(Level.FINE,
+                    "Transformer found {0} representations (Figs).",
+                    figs.size());
+
             for (Fig ssFig : figs) {
-                LOG.debug("Transformer found a Fig: " + ssFig);
+
+                LOG.log(Level.FINE, "Transformer found a Fig: {0}", ssFig);
+
                 assert ssFig.getOwner() == getSource();
                 assert ssFig instanceof FigSimpleState;
                 Rectangle bounds = ssFig.getBounds();
                 DiagramSettings settings = ((FigNodeModelElement) ssFig).getSettings();
                 Layer lay = ssFig.getLayer();
-                /* Remove the old fig from the diagram, so we can draw the 
+                /* Remove the old fig from the diagram, so we can draw the
                  * new one in its place: */
                 ssFig.removeFromDiagram();
 
-                FigCompositeState fcs = 
+                FigCompositeState fcs =
                     new FigCompositeState(cs, bounds, settings);
                 lay.add(fcs);
                 fcs.setBounds(bounds);
                 ((LayerPerspective) lay).putInPosition(fcs);
                 fcs.renderingChanged();
-                
+
                 for (Object to : outgoings) {
                     makeTransition(settings, lay, to);
                 }
@@ -163,7 +178,7 @@ class SimpleStateTransformer implements Transformer {
                     makeTransition(settings, lay, ti);
                 }
             }
-            
+
             Model.getUmlFactory().delete(getSource());
 //            p.moveToTrash(source);
         }
@@ -176,10 +191,10 @@ class SimpleStateTransformer implements Transformer {
             transFig.computeRoute();
             transFig.renderingChanged();
         }
-        
+
         /**
          * TODO: Copied from UmlDiagramRenderer.
-         * 
+         *
          * Find the Figs in the given layer that should be the source and
          * destination and attach these to either end of the FigEdge
          * @param layer the layer to look for the FigNodes
@@ -216,10 +231,10 @@ class SimpleStateTransformer implements Transformer {
             edge.setDestPortFig(dest);
             edge.setDestFigNode(dest);
         }
-        
+
         /**
          * TODO: Copied from UmlDiagramRenderer.
-         * 
+         *
          * Get the FigNode from the given layer that represents the given
          * model element.
          * The FigNode portion of an association class is returned in preference
@@ -233,7 +248,7 @@ class SimpleStateTransformer implements Transformer {
         private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
             assert modelElement != null : "A modelElement must be supplied";
             for (Object fig : lay.getContentsNoEdges()) {
-     
+
                 if (fig instanceof FigNode
                         && modelElement.equals(((FigNode) fig).getOwner())) {
                     return ((FigNode) fig);
@@ -251,3 +266,4 @@ class SimpleStateTransformer implements Transformer {
     }
 
 }
+

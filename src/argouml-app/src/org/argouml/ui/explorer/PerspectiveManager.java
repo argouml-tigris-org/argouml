@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,8 +43,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.model.Model;
@@ -145,7 +146,7 @@ public final class PerspectiveManager {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(PerspectiveManager.class);
+        Logger.getLogger(PerspectiveManager.class.getName());
 
     private static PerspectiveManager instance;
 
@@ -289,22 +290,22 @@ public final class PerspectiveManager {
 
                             userDefinedPerspective.addRule(rule);
                         } catch (ClassNotFoundException e) {
-                            LOG.error(
-                                    "could not create rule " + ruleName 
+                            LOG.log(Level.SEVERE,
+                                    "could not create rule " + ruleName
                                     + " you can try to "
                                     + "refresh the perspectives to the "
                                     + "default settings.",
                                     e);
                         } catch (InstantiationException e) {
-                            LOG.error(
-                                    "could not create rule " + ruleName 
+                            LOG.log(Level.SEVERE,
+                                    "could not create rule " + ruleName
                                     + " you can try to "
                                     + "refresh the perspectives to the "
                                     + "default settings.",
                                     e);
                         } catch (IllegalAccessException e) {
-                            LOG.error(
-                                    "could not create rule " + ruleName 
+                            LOG.log(Level.SEVERE,
+                                    "could not create rule " + ruleName
                                     + " you can try to "
                                     + "refresh the perspectives to the "
                                     + "default settings.",
@@ -510,7 +511,7 @@ public final class PerspectiveManager {
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
 
-        Collection<ExplorerPerspective> c = 
+        Collection<ExplorerPerspective> c =
             new ArrayList<ExplorerPerspective>();
         c.add(packagePerspective);
         c.add(classPerspective);
@@ -570,15 +571,15 @@ public final class PerspectiveManager {
             new GoPackageToClass(),
             new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
-            new GoProjectToModel(), new GoProjectToStateMachine(), 
-            new GoProjectToProfileConfiguration(), 
+            new GoProjectToModel(), new GoProjectToStateMachine(),
+            new GoProjectToProfileConfiguration(),
             new GoProfileConfigurationToProfile(),
             new GoProfileToModel(),
             new GoProfileToCritics(),
             new GoCriticsToCritic(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
-            new GoStatemachineToDiagram(), 
+            new GoStatemachineToDiagram(),
             new GoStateMachineToTransition(), new GoStateToDoActivity(),
             new GoStateToDownstream(), new GoStateToEntry(),
             new GoStateToExit(), new GoStateToIncomingTrans(),
@@ -595,7 +596,7 @@ public final class PerspectiveManager {
             new GoSubmachineStateToStateMachine(),
             new GoStateToInternalTrans()
         };
-        
+
         // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
         PerspectiveRule[] ruleNamesArray14 = {
             new GoCompositeStateToSubvertex(),
@@ -612,10 +613,10 @@ public final class PerspectiveManager {
         } else {
             ruleNamesArray = appendArrays(ruleNamesArray, ruleNamesArray2);
         }
-        
+
         rules = Arrays.asList(ruleNamesArray);
     }
-    
+
     private <T> T[] appendArrays(T[] first, T[] second) {
         if (first.length == 0) {
             return second;
@@ -626,7 +627,7 @@ public final class PerspectiveManager {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
-    }    
+    }
 
     /**
      * Add a rule to the list of rules.
@@ -682,7 +683,7 @@ public final class PerspectiveManager {
             p.deleteCharAt(p.length() - 1);
             p.append(";");
         }
-        
+
         p.deleteCharAt(p.length() - 1);
         return p.toString();
     }

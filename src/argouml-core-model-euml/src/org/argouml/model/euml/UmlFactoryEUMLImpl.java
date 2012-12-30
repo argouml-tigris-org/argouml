@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2007-2011 Tom Morris and other contributors
+ * Copyright (c) 2007-2012 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.Defaults;
 import org.argouml.model.IllegalModelElementConnectionException;
@@ -90,14 +91,14 @@ import org.eclipse.uml2.uml.UseCase;
  */
 class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
-    private static final Logger LOG = 
-        Logger.getLogger(UmlFactoryEUMLImpl.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(UmlFactoryEUMLImpl.class.getName());
+
     /**
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
-    
+
     /**
      * The meta types factory.
      */
@@ -107,16 +108,16 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
      * A map of valid connections keyed by the connection type. The constructor
      * builds this from the data in the VALID_CONNECTIONS array
      */
-    private Map<Class<? extends Element>, List> validConnectionMap = 
+    private Map<Class<? extends Element>, List> validConnectionMap =
         new HashMap<Class<? extends Element>, List>();
-    
+
     /**
-     * A map of the valid model elements that are valid to be contained 
+     * A map of the valid model elements that are valid to be contained
      * by other model elements.
      */
-    private HashMap<Class<? extends Element>, Class<?>[]> validContainmentMap = 
+    private HashMap<Class<? extends Element>, Class<?>[]> validContainmentMap =
         new HashMap<Class<? extends Element>, Class<?>[]>();
-    
+
     /**
      * An array of valid connections, the combination of connecting class and
      * node classes must exist as a row in this list to be considered valid.
@@ -161,14 +162,14 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 //        {Abstraction.class, org.eclipse.uml2.uml.Class.class, org.eclipse.uml2.uml.Class.class, null, },
 //        {Abstraction.class, org.eclipse.uml2.uml.Package.class,org.eclipse.uml2.uml.Package.class, null, },
 //        {Abstraction.class, Component.class, Interface.class, null, },
-        {Association.class,     Type.class, }, 
+        {Association.class,     Type.class, },
 //        {AssociationRole.class,  ClassifierRole.class, },
         {Extend.class,           UseCase.class, },
         {Include.class,          UseCase.class, },
-//        {Link.class, Instance.class, }, 
+//        {Link.class, Instance.class, },
 //        {Transition.class,       StateVertex.class, },
         {Transition.class,       State.class, },
-        {AssociationClass.class, Type.class, }, 
+        {AssociationClass.class, Type.class, },
         {Property.class, Classifier.class, Association.class, },
         {ControlFlow.class, ControlNode.class, },
         {ControlFlow.class, ExecutableNode.class, },
@@ -180,7 +181,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *            The ModelImplementation.
      */
@@ -288,7 +289,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
         return connection;
     }
-    
+
     public Object buildNode(
             final Object elementType,
             final Object container,
@@ -301,7 +302,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     public Object buildNode(Object elementType, Object container) {
         return buildNode(elementType, container, (String) null);
     }
-    
+
     public Object buildNode(Object elementType, Object container, String property, Defaults defaults) {
         Object element = buildNode(elementType, container, property);
         if (defaults != null) {
@@ -459,7 +460,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                         modelImpl, run, "Remove from the model the element #", //$NON-NLS-1$
                         elem));
     }
-    
+
     public boolean isRemoved(Object o) {
         // This triggers some warnings (in logs) because some elements are
         // created without an owner (and eResource is null)
@@ -505,32 +506,32 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
         return false;
     }
-    
+
     // TODO: Can we get this info from UML2 plugin?
     // Perhaps collect all References in the metamodel, filter for those
     // which represent containments and find the types on either end - tfm
     public boolean isContainmentValid(Object metaType, Object container) {
-        
+
         // find the passed in container in validContainmentMap
         for (Class<?> containerType : validContainmentMap.keySet()) {
-            
+
             if (containerType.isInstance(container)) {
                 // determine if metaType is a valid element for container
-                Class<?>[] validElements = 
+                Class<?>[] validElements =
                     validContainmentMap.get(containerType);
-                
+
                 for (int eIter = 0; eIter < validElements.length; ++eIter) {
-                    
+
                     if (metaType == validElements[eIter]) {
                         return true;
                     }
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Run through any well formedness rules we wish to enforce for a
      * connection.
@@ -543,11 +544,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             Class connectionType,
             Element fromElement,
             Element toElement) {
-        
+
         if (fromElement == null || toElement == null) {
             return false;
         }
-            
+
         if (connectionType == Generalization.class) {
             /*
              * UML 1.4.2 Spec section 4.5.3.20 [5]
@@ -558,7 +559,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -601,15 +602,15 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
     }
 
-    
+
     /**
-     * Initializes the validContainmentMap based on the rules for 
+     * Initializes the validContainmentMap based on the rules for
      * valid containment of elements.
-     * 
+     *
      * @author Scott Roberts
      */
     private void buildValidContainmentMap() {
-       
+
         validContainmentMap.clear();
 
         validContainmentMap.put(Element.class,
@@ -617,125 +618,125 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 });
 
         // specifies valid elements for a Region to contain
-        validContainmentMap.put(Region.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Region.class,
+            new Class<?>[] {
                 State.class, Pseudostate.class
             });
-                
+
         // specifies valid elements for a Region to contain
-        validContainmentMap.put(State.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(State.class,
+            new Class<?>[] {
                 Region.class
             });
-                
+
         // specifies valid elements for a Region to contain
-        validContainmentMap.put(StateMachine.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(StateMachine.class,
+            new Class<?>[] {
                 Region.class
             });
-                
+
         // specifies valid elements for a Package to contain
-        validContainmentMap.put(Package.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Package.class,
+            new Class<?>[] {
                 Package.class, Actor.class,
                 UseCase.class, org.eclipse.uml2.uml.Class.class,
                 Interface.class, Component.class,
                 Node.class, Enumeration.class, DataType.class,
                 Signal.class
             });
-                
-        
+
+
         // specifies valid elements for a Package to contain
-        validContainmentMap.put(Package.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Package.class,
+            new Class<?>[] {
                 Package.class, Actor.class,
                 UseCase.class, org.eclipse.uml2.uml.Class.class,
                 Interface.class, Component.class,
                 Node.class, Enumeration.class, DataType.class,
                 Signal.class
             });
-                
+
         // specifies valid elements for a Package to contain
-        validContainmentMap.put(Stereotype.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Stereotype.class,
+            new Class<?>[] {
                 Property.class
             });
-                
+
         // valid elements for a Profile to contain
-        validContainmentMap.put(Profile.class, 
+        validContainmentMap.put(Profile.class,
             new Class<?>[] {
                 Stereotype.class, ElementImport.class, PackageImport.class
             });
-                
+
         // specifies valid elements for a class to contain
-        validContainmentMap.put(org.eclipse.uml2.uml.Class.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(org.eclipse.uml2.uml.Class.class,
+            new Class<?>[] {
                 Property.class, Operation.class,
                 org.eclipse.uml2.uml.Class.class, Reception.class
             });
-        
+
         // specifies valid elements for a classifier to contain
-        validContainmentMap.put(Classifier.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Classifier.class,
+            new Class<?>[] {
                 TemplateParameter.class
             });
-        
+
         // specifies valid elements for an Interface to contain
-        validContainmentMap.put(Interface.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Interface.class,
+                new Class<?>[] {
                     Property.class, Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Signal to contain
-        validContainmentMap.put(Signal.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Signal.class,
+                new Class<?>[] {
                     Operation.class, Property.class
                 });
-        
+
         // specifies valid elements for an Actor to contain
-        validContainmentMap.put(Actor.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Actor.class,
+                new Class<?>[] {
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Use Case to contain
-        validContainmentMap.put(UseCase.class, 
-                new Class<?>[] { 
-                    ExtensionPoint.class, Property.class, 
+        validContainmentMap.put(UseCase.class,
+                new Class<?>[] {
+                    ExtensionPoint.class, Property.class,
                     Operation.class, Reception.class
                 });
-        
+
         // specifies valid elements for a Use Case to contain
-        validContainmentMap.put(Extend.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Extend.class,
+                new Class<?>[] {
                     ExtensionPoint.class
                 });
-        
+
         // specifies valid elements for a Component to contain
-        validContainmentMap.put(Component.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Component.class,
+                new Class<?>[] {
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Node to contain
-        validContainmentMap.put(Node.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Node.class,
+                new Class<?>[] {
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Enumeration to contain
-        validContainmentMap.put(Enumeration.class, 
-                new Class<?>[] { 
-                    EnumerationLiteral.class, Operation.class 
+        validContainmentMap.put(Enumeration.class,
+                new Class<?>[] {
+                    EnumerationLiteral.class, Operation.class
                 });
-        
+
         // specifies valid elements for a DataType to contain
-        validContainmentMap.put(DataType.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(DataType.class,
+                new Class<?>[] {
                     Operation.class,
                     Reception.class
                 });
@@ -758,13 +759,13 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     Pin.class
                 });
     }
-        
+
     public void deleteExtent(Object element) {
         Resource resource = ((EObject) element).eResource();
         if (resource != null) {
             modelImpl.unloadResource(resource);
         } else {
-            LOG.warn("Tried to delete null resource"); //$NON-NLS-1$
+            LOG.log(Level.WARNING, "Tried to delete null resource"); //$NON-NLS-1$
             throw new InvalidElementException(
                     element != null ? element.toString() : "Null" ); //$NON-NLS-1$
         }
@@ -779,7 +780,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 modelImpl.getReadOnlyMap().put(r, Boolean.TRUE);
                 return r.getContents();
             } catch (Exception ex) {
-                LOG.warn("failed to get resource: " + extentName); //$NON-NLS-1$
+                LOG.log(Level.WARNING, "failed to get resource: " + extentName); //$NON-NLS-1$
             }
         }
         return null;

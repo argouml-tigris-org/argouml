@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,10 +41,10 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
-
-import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.i18n.Translator;
@@ -54,15 +54,15 @@ import org.argouml.model.Model;
  * A non-modal wizard to assist the user in changing aggregation of an
  * association.
  * <p>
- * 
+ *
  * Earlier version always imposed composite aggregation. This version allows the
  * user to choose.
  * <p>
- * 
+ *
  * <em>Note</em>. This only applies to binary associations. A separate wizard
  * is needed for 3-way (or more) associations.
  * <p>
- * 
+ *
  * @see "ArgoUML User Manual: Two Aggregate ends (roles) in binary Association"
  * @author jrobbins@ics.uci.edu
  */
@@ -70,7 +70,8 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(WizAssocComposite.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizAssocComposite.class.getName());
 
     /**
      * The initial instructions on the Step 1 screen. May be set to a different
@@ -104,17 +105,17 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Tries to identify the Association that triggered the critic.
      * <p>
-     * 
+     *
      * The first time it is called, it will initialise the trigger from the
      * ToDoItem. If there, it is assumed to be the first trigger of the ToDoItem
      * and to be an association. If found, the value is stored in the private
      * field {@link #triggerAssociation}.
      * <p>
-     * 
+     *
      * On all subsequent calls, if a non-null value is found in {@link
      * #triggerAssociation} that is returned.
      * <p>
-     * 
+     *
      * @return the Association that triggered the critic, or <code>null</code>
      *         if there was none.
      */
@@ -134,17 +135,17 @@ public class WizAssocComposite extends UMLWizard {
      * Returns a list of options to be used in creating a {@link
      * WizStepChoice} that will exercise the options.
      * <p>
-     * 
+     *
      * We provide five options, shared aggregation in each direction, composite
      * aggregation in each direction and no aggregation at all.
      * <p>
-     * 
+     *
      * It is possible that a very malicious user could delete the triggering
      * association just before we get to this point. For now we don't bother to
      * trap this. It will raise an exception, and then everything will carry on
      * happily.
      * <p>
-     * 
+     *
      * @return A {@link List} of the options or <code>null</code> if the
      *         association that triggered the critic is no longer there.
      */
@@ -214,7 +215,7 @@ public class WizAssocComposite extends UMLWizard {
      * Set the initial instruction string for the choice. May be called by the
      * creator of the wizard to override the default.
      * <p>
-     * 
+     *
      * @param s
      *            The new instructions.
      */
@@ -226,14 +227,14 @@ public class WizAssocComposite extends UMLWizard {
      * Create a {@link JPanel} for the given step.
      * <p>
      * We use a {@link WizStepChoice} to handle the choice selection for the
-     * user. We only create the panel once, saving it in a private field 
+     * user. We only create the panel once, saving it in a private field
      * (<code>_step1Choice</code>) for subsequent use.
      * <p>
      * <em>Note</em>. If the association has been deleted, then we may not be
      * able to create a list of options. Under these circumstances we also
      * return null.
      * <p>
-     * 
+     *
      * @param newStep The index of the step for which a panel is needed.
      * @return The created {@link JPanel} or <code>null</code> if no options
      *         were available.
@@ -270,25 +271,25 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Take action at the completion of a step.
      * <p>
-     * 
+     *
      * The guideline for ArgoUML non-modal wizards is to act immediately, not
      * wait for the finish. This method may also be invoked when finish is
      * triggered for any steps whose panels didn't get created.
      * <p>
-     * 
+     *
      * The observation is that this seems to be trigged when there is any change
      * on the panel (e.g choosing an option), not just when "next" is pressed.
      * Coded accordingly
      * <p>
-     * 
+     *
      * We allow for the association that caused the problem having by now been
      * deleted, and hence an exception may be raised. We catch this politely.
      * <p>
-     * 
+     *
      * @param oldStep
      *            The index of the step just completed (0 for the first
      *            information panel)
-     * 
+     *
      * @see org.argouml.cognitive.critics.Wizard
      */
     public void doAction(int oldStep) {
@@ -308,7 +309,7 @@ public class WizAssocComposite extends UMLWizard {
             }
 
             if (choice == -1) {
-                LOG.warn("WizAssocComposite: nothing selected, "
+                LOG.log(Level.WARNING, "WizAssocComposite: nothing selected, "
                         + "should not get here");
                 return;
             }
@@ -383,7 +384,8 @@ public class WizAssocComposite extends UMLWizard {
 
                 // Someone took our association away.
 
-                LOG.error("WizAssocComposite: could not set " + "aggregation.",
+                LOG.log(Level.SEVERE,
+                        "WizAssocComposite: could not set " + "aggregation.",
                         pve);
             }
 
@@ -401,7 +403,7 @@ public class WizAssocComposite extends UMLWizard {
      * <p>
      * We can finish if we're on step 1 and have made a choice.
      * <p>
-     * 
+     *
      * @return <code>true</code> if we can finish, otherwise
      *         <code>false</code>.
      * @see org.argouml.cognitive.critics.Wizard

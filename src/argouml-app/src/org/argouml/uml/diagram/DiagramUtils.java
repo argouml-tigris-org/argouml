@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.diagram;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -46,22 +48,23 @@ import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.LayerPerspective;
 
 /**
- * A utility class for diagrams (ArgoDiagrams).  It provides convenience 
+ * A utility class for diagrams (ArgoDiagrams).  It provides convenience
  * methods which encapsulate and isolate access to GEF.
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public class DiagramUtils {
 
-    private static final Logger LOG = Logger.getLogger(DiagramUtils.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(DiagramUtils.class.getName());
+
     /**
      * Instantiation not allowed.  Static methods only.
      */
     private DiagramUtils() {
         // not allowed
     }
-    
+
     /**
      * @return the diagram containing the mouse (or which most recently
      *         contained the mouse).
@@ -71,10 +74,10 @@ public class DiagramUtils {
         if (layer != null) {
             return (ArgoDiagram) layer.getDiagram();
         }
-        LOG.debug("No active diagram");
+        LOG.log(Level.FINE, "No active diagram");
         return null;
     }
-    
+
     /**
      * @return the active diagram layer. If the currently active layer is not a
      *         LayerPerspective, it can't be associated with a Diagram, so

@@ -43,10 +43,11 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ClassDiagram;
 import org.argouml.model.CoreFactory;
@@ -89,12 +90,13 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * UML Class Diagram.
- * 
+ *
  * @author jrobbins@ics.uci.edy
  */
 public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
 
-    private static final Logger LOG = Logger.getLogger(UMLClassDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLClassDiagram.class.getName());
 
     ////////////////
     // actions for toolbar
@@ -149,7 +151,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
     /**
      * Construct a Class Diagram owned by the given namespace. A default unique
      * diagram name is constructed.
-     * 
+     *
      * @param m the namespace
      */
     public UMLClassDiagram(Object m) {
@@ -159,7 +161,8 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         try {
             setName(name);
         } catch (PropertyVetoException pve) {
-            LOG.warn("Generated diagram name '" + name 
+            LOG.log(Level.WARNING,
+                    "Generated diagram name '" + name
                     + "' was vetoed by setName");
         }
     }
@@ -169,8 +172,9 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
      */
     public void setNamespace(Object ns) {
         if (!Model.getFacade().isANamespace(ns)) {
-            LOG.error("Illegal argument. "
-                  + "Object " + ns + " is not a namespace");
+            LOG.log(Level.SEVERE,
+                    "Illegal argument. "
+                    + "Object " + ns + " is not a namespace");
             throw new IllegalArgumentException("Illegal argument. "
             			       + "Object " + ns
             			       + " is not a namespace");
@@ -188,7 +192,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             setLayer(lay);
         }
     }
-    
+
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
@@ -263,7 +267,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
     private Object getPackageActions() {
         // TODO: To enable models and subsystems, change this flag
         // Work started by Markus I believe where does this stand? - Bob.
-        
+
         // Status as of Nov. 2008 - Figs created, property panels exist, more
         // work required on explorer and assumptions about models not being
         // nested - tfm
@@ -409,7 +413,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         }
         return actionComposition;
     }
-    
+
     /**
      * @return Returns the actionDepend.
      */
@@ -638,7 +642,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         }
         return actionSignal;
     }
-    
+
     /**
      * @return Returns the actionStereotype.
      */
@@ -658,7 +662,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
     }
 
     public Collection getRelocationCandidates(Object root) {
-        return 
+        return
         Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
             root, Model.getMetaTypes().getNamespace());
     }
@@ -672,11 +676,11 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         return true;
     }
 
-    public void encloserChanged(FigNode enclosed, FigNode oldEncloser, 
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
             FigNode newEncloser) {
         // Do nothing.
     }
-    
+
     @Override
     public boolean doesAccept(Object objectToAccept) {
         if (objectToAccept instanceof CommentEdge) {
@@ -731,24 +735,24 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         return false;
 
     }
-    
+
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
         FigEdge figEdge = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
 
         if (Model.getFacade().isAAssociationClass(modelElement)) {
-            Object[] associationEnds = 
+            Object[] associationEnds =
                 Model.getFacade().getConnections(modelElement).toArray();
             figEdge = new FigAssociationClass(
                     new DiagramEdgeSettings(
-                            modelElement, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
+                            modelElement,
+                            associationEnds[0],
+                            associationEnds[1]),
                             settings);
             FigNode sourceFig =
                 getFigNodeForAssociationEnd(associationEnds[0]);
@@ -773,13 +777,13 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             figEdge.setDestFigNode(classifierFN);
         } else if (Model.getFacade().isAAssociation(modelElement)
                 && !Model.getFacade().isANaryAssociation(modelElement)) {
-            Object[] associationEnds = 
+            Object[] associationEnds =
                 Model.getFacade().getConnections(modelElement).toArray();
             figEdge = new FigAssociation(
                     new DiagramEdgeSettings(
-                            modelElement, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
+                            modelElement,
+                            associationEnds[0],
+                            associationEnds[1]),
                             settings);
             FigNode sourceFig =
                 getFigNodeForAssociationEnd(associationEnds[0]);
@@ -811,16 +815,16 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
                 (Model.getFacade().getSpecific(modelElement));
             Object client =
                 (Model.getFacade().getGeneral(modelElement));
-           
+
             FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
             FigNode cliFN = (FigNode) getLayer().presentationFor(client);
-            
+
             figEdge.setSourceFigNode(supFN);
             figEdge.setSourcePortFig(supFN);
             figEdge.setDestFigNode(cliFN);
             figEdge.setDestPortFig(cliFN);
         } else if (Model.getFacade().isADependency(modelElement)) {
-            
+
             if (Model.getFacade().isAPackageImport(modelElement)) {
                 figEdge = new FigPermission(modelElement, settings);
             } else if (Model.getFacade().isAUsage(modelElement)) {
@@ -828,7 +832,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             } else if (Model.getFacade().isAAbstraction(modelElement)) {
                 figEdge = new FigAbstraction(modelElement, settings);
             } else {
-    
+
                 String name = "";
                 for (Object stereotype : Model.getFacade().getStereotypes(modelElement)) {
                     name = Model.getFacade().getName(stereotype);
@@ -838,7 +842,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
                 }
                 if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
                     // TODO: This code doesn't look like it will get reached because
-                    // any abstraction/realization is going to take the 
+                    // any abstraction/realization is going to take the
                     // isAAbstraction leg of the if before it gets to this more
                     // general case. - tfm 20080508
                     figEdge = new FigAbstraction(modelElement, settings);
@@ -877,18 +881,18 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             figEdge.setDestFigNode(destFN);
             figEdge.getFig().setLayer(getLayer());
         }
-        
+
         if (figEdge != null) {
             figEdge.computeRoute();
             return (DiagramElement) figEdge;
         }
-        
+
         if (Model.getFacade().isAAssociation(modelElement)) {
             figNode =
                 createNaryAssociationNode(modelElement, bounds, settings);
         } else if (Model.getFacade().isAStereotype(modelElement)) {
             // since UML2, this must appear before the isAClass clause
-            figNode = new FigStereotypeDeclaration(modelElement, bounds, 
+            figNode = new FigStereotypeDeclaration(modelElement, bounds,
                     settings);
         } else if (Model.getFacade().isAClass(modelElement)) {
             figNode = new FigClass(modelElement, bounds, settings);
@@ -928,21 +932,22 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             figNode = new FigComponent(modelElement, bounds, settings);
         }
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }
-    
+
     protected FigNode getFigNodeForAssociationEnd(
             final Object associationEnd) {
-        Object classifier = 
+        Object classifier =
             Model.getFacade().getClassifier(associationEnd);
         return getNodePresentationFor(getLayer(), classifier);
     }
-    
+
     /**
      * Get the FigNode from the given layer that represents the given
      * model element.
@@ -957,7 +962,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
     private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
         assert modelElement != null : "A modelElement must be supplied";
         for (Object fig : lay.getContentsNoEdges()) {
- 
+
             if (fig instanceof FigNode
                     && modelElement.equals(((FigNode) fig).getOwner())) {
                 return ((FigNode) fig);
@@ -972,6 +977,6 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         }
         return null;
     }
-    
-    
+
+
 }

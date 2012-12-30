@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,11 +45,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
@@ -68,10 +69,10 @@ import org.tigris.gef.util.EnumerationEmpty;
  *
  * Currently (almost) everything is hardcoded. What can be configurable??<p>
  *
- * The ToDoList is dependent on this class, 
+ * The ToDoList is dependent on this class,
  * i.e. each designer has its ToDoList.<p>
- * 
- * Each designer has his own Agency, 
+ *
+ * Each designer has his own Agency,
  * which is the only class that knows all the critics.<p>
  *
  * This class listens to property changes from ...?<p>
@@ -80,11 +81,11 @@ import org.tigris.gef.util.EnumerationEmpty;
  * implements the Poster interface.<p>
  *
  * TODO: There is a strong dependency cycle between Agency and Designer.  They
- * either need to be merged into a single class or partitioned differently, 
+ * either need to be merged into a single class or partitioned differently,
  * perhaps using an interface to break the cycle.  The Designer singleton gets
  * passed to almost every single part of the Critic subsystem, creating strong
  * coupling throughout. - tfm 20070620
- * 
+ *
  * @author Jason Robbins
  */
 public final class Designer
@@ -94,7 +95,8 @@ public final class Designer
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Designer.class);
+    private static final Logger LOG =
+        Logger.getLogger(Designer.class.getName());
 
     /**
      * the singleton of this class.
@@ -242,7 +244,7 @@ public final class Designer
         toDoList.spawnValidityChecker(this);
 
         userWorking = false;
-        
+
         critiquingInterval = 8000;
         critiqueCPUPercent = 10;
 
@@ -309,7 +311,7 @@ public final class Designer
                         try {
                             this.wait();
                         } catch (InterruptedException ignore) {
-                            LOG.error("InterruptedException!!!", ignore);
+                            LOG.log(Level.SEVERE, "InterruptedException!!!", ignore);
                         }
                     }
                 }
@@ -374,7 +376,7 @@ public final class Designer
                                 }
                             } catch (InvalidElementException e) {
                                 // Don't let a transient error kill the thread
-                                LOG.warn("Element " + dm
+                                LOG.log(Level.WARNING, "Element " + dm
                                         + "caused an InvalidElementException.  "
                                         + "Ignoring for this pass.");
                             }
@@ -390,15 +392,15 @@ public final class Designer
                 long sleepDuration =
                     Math.min(cycleDuration - critiqueDuration, 3000);
                 sleepDuration = Math.max(sleepDuration, 1000);
-                LOG.debug("sleepDuration= " + sleepDuration);
+                LOG.log(Level.FINE, "sleepDuration= {0}", sleepDuration);
                 try {
                     Thread.sleep(sleepDuration);
                 } catch (InterruptedException ignore) {
-                    LOG.error("InterruptedException!!!", ignore);
+                    LOG.log(Level.SEVERE, "InterruptedException!!!", ignore);
                 }
             }
         } catch (Exception e) {
-            LOG.error("Critic thread killed by exception", e);
+            LOG.log(Level.SEVERE, "Critic thread killed by exception", e);
         }
     }
 
@@ -422,7 +424,7 @@ public final class Designer
         if ("remove".equals(reason)) {
             return;
         }
-        LOG.debug("critiqueASAP:" + dm);
+        LOG.log(Level.FINE, "critiqueASAP: {0}", dm);
         int addQueueIndex = addQueue.indexOf(dm);
         if (addQueueIndex == -1) {
             addQueue.add(dm);
@@ -459,7 +461,7 @@ public final class Designer
         if (pcs == null) {
             pcs = new PropertyChangeSupport(theDesigner());
         }
-        LOG.debug("addPropertyChangeListener(" + pcl + ")");
+        LOG.log(Level.FINE, "addPropertyChangeListener({0})", pcl);
         pcs.addPropertyChangeListener(pcl);
     }
 
@@ -471,7 +473,7 @@ public final class Designer
      */
     public static void removeListener(PropertyChangeListener p) {
         if (pcs != null) {
-            LOG.debug("removePropertyChangeListener()");
+            LOG.log(Level.FINE, "removePropertyChangeListener()");
             pcs.removePropertyChangeListener(p);
         }
     }
@@ -664,7 +666,7 @@ public final class Designer
     public List<Goal> getGoalList() {
         return goals.getGoalList();
     }
-    
+
     /**
      * This method returns true.<p>
      *
@@ -695,10 +697,10 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#getSupportedDecisions()
      */
-    public List<Decision> getSupportedDecisions() { 
-        return unspecifiedDecision; 
+    public List<Decision> getSupportedDecisions() {
+        return unspecifiedDecision;
     }
-    
+
     /*
      * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
      */
@@ -709,10 +711,10 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#getSupportedGoals()
      */
-    public List<Goal> getSupportedGoals() { 
-        return unspecifiedGoal; 
+    public List<Goal> getSupportedGoals() {
+        return unspecifiedGoal;
     }
-    
+
     /*
      * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
      */
@@ -831,20 +833,20 @@ public final class Designer
     /*
      * @see org.argouml.cognitive.Poster#snooze()
      */
-    public void snooze() { 
+    public void snooze() {
         /* do nothing */
     }
 
     /*
      * @see org.argouml.cognitive.Poster#unsnooze()
      */
-    public void unsnooze() { 
+    public void unsnooze() {
         /* do nothing */
     }
 
     /**
      * Reply the Agency object that is helping this Designer.
-     * 
+     *
      * @return my agency
      */
     public Agency getAgency() {

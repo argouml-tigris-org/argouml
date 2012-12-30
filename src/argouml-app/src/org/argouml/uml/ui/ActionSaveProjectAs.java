@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
@@ -55,7 +56,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ActionSaveProjectAs.class);
+        Logger.getLogger(ActionSaveProjectAs.class.getName());
 
     /**
      * The constructor.
@@ -72,7 +73,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        LOG.info("Performing saveas action");
+        LOG.log(Level.INFO, "Performing saveas action");
         ProjectBrowser.getInstance().trySave(false, true);
     }
 

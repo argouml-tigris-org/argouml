@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,10 +50,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -84,38 +85,39 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML package in a class diagram,
  * consisting of a "tab" and a "body". <p>
- * 
- * The tab of the Package Fig is build of 2 pieces: 
+ *
+ * The tab of the Package Fig is build of 2 pieces:
  * the stereotypes at the top, and the name below it. <p>
- * 
+ *
  * The name box covers the whole tab, i.e. its size
- * is always equal to the total size of the tab. 
- * It is not transparent, and has a line border. 
+ * is always equal to the total size of the tab.
+ * It is not transparent, and has a line border.
  * Its text sits at the bottom of the fig, to leave room for stereotypes. <p>
- * 
+ *
  * The stereotype fig is transparent, and sits at the top
  * inside the name fig. It is drawn on top of the name fig box. <p>
- * 
+ *
  * The tab of the Package Fig can only be resized by the user horizontally.
  * The body can be resized horizontally and vertically by the user. <p>
- * 
- * Double clicking on the body has a special consequence: 
+ *
+ * Double clicking on the body has a special consequence:
  * the user is asked if he wants to create a new class diagram
  * for this package. <p>
- * 
- * ArgoUML does not support the option of showing the name 
- * of the package in the body, 
+ *
+ * ArgoUML does not support the option of showing the name
+ * of the package in the body,
  * as described in the UML standard (chapter Notation - Package). <p>
- * 
- * Neither does ArgoUML currently support showing properties in the tab, 
+ *
+ * Neither does ArgoUML currently support showing properties in the tab,
  * see issue 1214. <p>
- * 
+ *
  * In front of the name, ArgoUML may optionally show the visibility.
  */
 public class FigPackage extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer {
 
-    private static final Logger LOG = Logger.getLogger(FigPackage.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigPackage.class.getName());
 
     /** The minimal height of the name. */
     private static final int MIN_HEIGHT = 21;
@@ -126,7 +128,7 @@ public class FigPackage extends FigNodeModelElement
     private int width = 140;
     /** The initial height of the outer box. */
     private int height = 100;
-    
+
     /** The width of the cut out area at the right top corner. */
     private int indentX = 50;
 
@@ -139,11 +141,11 @@ public class FigPackage extends FigNodeModelElement
 
     private FigPackageFigText body;
     private PackageBackground background;
-    
+
     private FigPoly figPoly;
 
     /**
-     * Flag that indicates if the user wants any stereotype to be shown. 
+     * Flag that indicates if the user wants any stereotype to be shown.
      * It corresponds to the check-mark on the Presentation tab.
      * There is no relation with the actual presence of any stereotypes.
      * This setting has Fig-scope, hence it is saved with the Fig layout data.
@@ -152,7 +154,7 @@ public class FigPackage extends FigNodeModelElement
 
     @Override
     protected Fig createBigPortFig() {
-        PackagePortFigRect ppfr = 
+        PackagePortFigRect ppfr =
             new PackagePortFigRect(0, 0, width, height, indentX, tabHeight);
         ppfr.setFilled(false);
         ppfr.setLineWidth(0);
@@ -163,11 +165,11 @@ public class FigPackage extends FigNodeModelElement
         body.setEditable(false);
 
         background = new PackageBackground(0, 0, width, height, indentX, tabHeight);
-        
+
         getNameFig().setBounds(0, 0, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
 
-        // Set properties of the stereotype box. 
+        // Set properties of the stereotype box.
         // Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
 
@@ -194,21 +196,21 @@ public class FigPackage extends FigNodeModelElement
     /**
      * Construct a package figure with the given owner, bounds, and rendering
      * settings. This constructor is used by the PGML parser.
-     * 
+     *
      * @param owner owning model element
      * @param bounds position and size or null if fig hasn't been placed
      * @param settings rendering settings
      */
-    public FigPackage(Object owner, Rectangle bounds, 
+    public FigPackage(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
 
         // Create a Body that reacts to double-clicks and jumps to a diagram.
-        body = new FigPackageFigText(getOwner(), 
+        body = new FigPackageFigText(getOwner(),
                 new Rectangle(0, textH, width, height - textH), getSettings());
-        
+
         initialize();
-        
+
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
         }
@@ -333,13 +335,13 @@ public class FigPackage extends FigNodeModelElement
         forceRepaintShadow();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
-    
+
     /**
      * Override ancestor behaviour by always calling setBounds even if the
      * size hasn't changed. Without this override the Package bounds draw
      * incorrectly. This is not the best fix but is a workaround until the
      * true cause is known. See issue 6135.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
     protected void updateBounds() {
@@ -351,7 +353,7 @@ public class FigPackage extends FigNodeModelElement
         bbox.width = Math.max(bbox.width, minSize.width);
         bbox.height = Math.max(bbox.height, minSize.height);
         setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    }    
+    }
 
     /**
      * USED BY PGML.tee.
@@ -385,19 +387,19 @@ public class FigPackage extends FigNodeModelElement
         Dimension aSize = new Dimension(getNameFig().getMinimumSize());
 
         if (figPoly != null) {
-            /* The figPoly is located at the right of the name text. 
-             * The nameFig size is increased, so that it fits its text, 
-             * and the figPoly next to the text, all within the boundaries 
+            /* The figPoly is located at the right of the name text.
+             * The nameFig size is increased, so that it fits its text,
+             * and the figPoly next to the text, all within the boundaries
              * of the nameFig. */
             Dimension symbol = figPoly.getSize();
             aSize.width += symbol.width;
             aSize.height = Math.max(aSize.height, symbol.height);
         }
-        
+
         aSize.height = Math.max(aSize.height, MIN_HEIGHT);
         aSize.width = Math.max(aSize.width, MIN_WIDTH);
 
-        // If we have any number of stereotypes displayed, then allow 
+        // If we have any number of stereotypes displayed, then allow
         // some space for that (only width, height is included in nameFig):
         if (isStereotypeVisible()) {
             Dimension st = getStereotypeFig().getMinimumSize();
@@ -406,7 +408,7 @@ public class FigPackage extends FigNodeModelElement
         }
 
         // take into account the tab is not as wide as the body:
-        aSize.width += indentX + 1; 
+        aSize.width += indentX + 1;
 
         // we want at least some of the package body to be displayed
         aSize.height += 28 + 2 * getLineWidth();
@@ -420,7 +422,7 @@ public class FigPackage extends FigNodeModelElement
      * {@link #getMinimumSize()}.<p>
      *
      * If the required height is bigger, then the additional height is
-     * not distributed among all figs (i.e. compartments), 
+     * not distributed among all figs (i.e. compartments),
      * but goes into the body. Hence, the
      * accumulated height of all visible figs equals the demanded height<p>.
      *
@@ -481,7 +483,7 @@ public class FigPackage extends FigNodeModelElement
         } else {
             getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
         }
-        
+
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
         // size of the body box, and update the Y pointer past it if it is
@@ -496,10 +498,10 @@ public class FigPackage extends FigNodeModelElement
         getBigPort().setBounds(xa, ya, newW, newH);
 
         if (figPoly != null) {
-            /* The figPoly is located at the right edge of the nameFig. 
-             * The nameFig size is such that it at least fits its text, 
-             * and the figPoly next to the text. 
-             * Making the package bigger, causes the figPoly to stick to 
+            /* The figPoly is located at the right edge of the nameFig.
+             * The nameFig size is such that it at least fits its text,
+             * and the figPoly next to the text.
+             * Making the package bigger, causes the figPoly to stick to
              * the right edge.*/
             Rectangle previousBounds = figPoly.getBounds();
             Rectangle name = getNameFig().getBounds();
@@ -513,7 +515,7 @@ public class FigPackage extends FigNodeModelElement
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.
-        
+
         background.setBounds(xa, ya, w, h);
 
         calcBounds();
@@ -628,32 +630,32 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /**
-     * A text fig for the body of a a Package 
-     * which does not contain any text, 
+     * A text fig for the body of a a Package
+     * which does not contain any text,
      * but solely exists to trigger a jump to a diagram for
      * the named package when double clicked.
      */
     class FigPackageFigText extends ArgoFigText {
-        
+
         /**
          * Construct a text fig for a Package which will jump to diagram for
          * the named package when double clicked.
-         * 
+         *
          * @param owner owning UML element
          * @param bounds position and size
          * @param settings render settings
          */
-        public FigPackageFigText(Object owner, Rectangle bounds, 
+        public FigPackageFigText(Object owner, Rectangle bounds,
                 DiagramSettings settings) {
             super(owner, bounds, settings, false);
         }
-        
+
 	/**
-	 * TODO: mvw: Would it not be better if this code 
-	 * would go in startTextEditor(), not overruling mouseClicked(). 
-	 * But we made this fig not editable, 
+	 * TODO: mvw: Would it not be better if this code
+	 * would go in startTextEditor(), not overruling mouseClicked().
+	 * But we made this fig not editable,
 	 * to stop it from reacting on key-presses.
-	 * Anyhow - this is a hack - abusing a FigText - GEF does 
+	 * Anyhow - this is a hack - abusing a FigText - GEF does
 	 * not really support double-clicking on a Fig to trigger some action.
 	 */
 	@Override
@@ -665,7 +667,7 @@ public class FigPackage extends FigNodeModelElement
 	    // containing the contents of the package that was double clicked
 	    // but it looks like it's always searching for the name "main"
 	    // instead of the package name.
-	    // TODO: But in any case, it should be delegating this work to 
+	    // TODO: But in any case, it should be delegating this work to
 	    // to something that knows about the diagrams and they contents -tfm
 	    if (me.getClickCount() >= 2) {
 		Object lPkg = FigPackage.this.getOwner();
@@ -714,7 +716,7 @@ public class FigPackage extends FigNodeModelElement
 		    try {
 		        createClassDiagram(lNS, lsDefaultName, lP);
 		    } catch (Exception ex) {
-		        LOG.error(ex);
+                        LOG.log(Level.SEVERE, "consume caused: ", ex);
 		    }
 
 		    return;
@@ -723,11 +725,11 @@ public class FigPackage extends FigNodeModelElement
 	    } /* if doubleclicks */
 	    super.mouseClicked(me);
 	}
-	
+
 	public void setFilled(boolean f) {
 	    super.setFilled(false);
 	}
-        
+
         public void setFillColor(Color c) {
             super.setFillColor(c);
         }
@@ -841,10 +843,10 @@ public class FigPackage extends FigNodeModelElement
                 anotherPt);
         return p;
     }
-    
+
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
-	
+
 	if (mee instanceof RemoveAssociationEvent
 		&& "ownedElement".equals(mee.getPropertyName())
 		&& mee.getSource() == getOwner()) {
@@ -854,12 +856,16 @@ public class FigPackage extends FigNodeModelElement
 	    // this package.
 	    // TODO: In my view the Fig representing the model element should be
 	    // removed from the diagram. Yet to be agreed. Bob.
-	    if (LOG.isInfoEnabled() && mee.getNewValue() == null) {
-		LOG.info(Model.getFacade().getName(mee.getOldValue())
+	    if ((mee.getNewValue() == null)
+                && LOG.isLoggable(Level.INFO)) {
+
+                LOG.log(Level.INFO,
+                        Model.getFacade().getName(mee.getOldValue())
                         + " has been removed from the namespace of "
                         + Model.getFacade().getName(getOwner())
                         + " by notice of " + mee.toString());
 	    }
+
 	    LayerPerspective layer = (LayerPerspective) getLayer();
 	    Fig f = layer.presentationFor(mee.getOldValue());
 	    if (f != null && f.getEnclosingFig() == this) {
@@ -998,12 +1004,12 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             7722093402948975834L;
     }
-    
+
     private class PackageBackground extends FigPoly {
-        
+
         int indentX;
         int tabHeight;
-        
+
         /**
          * The constructor.
          *
@@ -1026,7 +1032,7 @@ public class FigPackage extends FigNodeModelElement
             this.indentX = ix;
             tabHeight = 30;
         }
-        
+
         /*
          * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
          */
@@ -1049,51 +1055,51 @@ public class FigPackage extends FigNodeModelElement
                     anotherPt);
             return p;
         };
-        
+
         public void setBoundsImpl(
-                final int x, 
-                final int y, 
-                final int w, 
+                final int x,
+                final int y,
+                final int w,
                 final int h) {
-            
+
             final int labelWidth = getNameBounds().width;
             final int labelHeight = getNameBounds().height;
-            
+
             final int xs[] = new int[7];
             final int ys[] = new int[7];
             xs[0] = x;
             ys[0] = y;
-            
+
             xs[1] = x + labelWidth - 1;
             ys[1] = y;
-            
+
             xs[2] = x + labelWidth - 1;
             ys[2] = y + labelHeight - 1;
-            
+
             xs[3] = x + w - 1;
             ys[3] = y + labelHeight - 1;
-            
+
             xs[4] = x + w - 1;
             ys[4] = y + h - 1;
-            
+
             xs[5] = x;
             ys[5] = y + h - 1;
-            
+
             xs[6] = x;
             ys[6] = y;
-            
+
             Polygon p = new Polygon(xs, ys, 7);
-            
+
             super.setPolygon(p);
             setFilled(true);
             setLineWidth(0);
         }
-        
+
         public void setLineWidth(int w) {
             super.setLineWidth(0);
         }
     }
-    
+
 } /* end class FigPackage */
 
 /**
@@ -1144,11 +1150,11 @@ class PackagePortFigRect extends FigRect {
                 anotherPt);
         return p;
     }
-    
+
     public void setFilled(boolean f) {
         super.setFilled(false);
     }
-    
+
     public void setFillColor(Color c) {
         super.setFillColor(null);
     }
@@ -1158,4 +1164,3 @@ class PackagePortFigRect extends FigRect {
      */
     private static final long serialVersionUID = -7083102131363598065L;
 }
-

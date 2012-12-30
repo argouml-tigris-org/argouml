@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -66,15 +67,16 @@ class NotationNameImpl
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(NotationNameImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(NotationNameImpl.class.getName());
 
     private String name;
     private String version;
     private Icon icon;
 
-    /** The one and only list of notations available 
+    /** The one and only list of notations available
      * in the running ArgoUML application. */
-    private static ArrayList<NotationName> notations = 
+    private static ArrayList<NotationName> notations =
         new ArrayList<NotationName>();
 
     /**
@@ -216,7 +218,7 @@ class NotationNameImpl
 	}
         return nn;
     }
-    
+
     static boolean removeNotation(NotationName theNotation)  {
         return notations.remove(theNotation);
     }
@@ -247,7 +249,7 @@ class NotationNameImpl
 		}
 	    } catch (Exception e) {
 	        // TODO: Document why we catch this.
-	        LOG.error("Unexpected exception", e);
+                LOG.log(Level.SEVERE, "Unexpected exception", e);
 	    }
 	}
 	return null;

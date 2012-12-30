@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,12 +41,13 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -64,7 +65,7 @@ abstract class UMLExpressionModel
 	implements PropertyChangeListener {
 
     private static final Logger LOG =
-        Logger.getLogger(UMLExpressionModel.class);
+        Logger.getLogger(UMLExpressionModel.class.getName());
 
     private Object target;
     private String propertyName;
@@ -106,7 +107,7 @@ abstract class UMLExpressionModel
 	    Model.getPump().addModelEventListener(this, target,
 		    propertyName);
 	}
-	LOG.debug(">>Start listening for UML changes...");
+        LOG.log(Level.FINE, ">>Start listening for UML changes...");
     }
 
     protected void stopListeningForModelChanges() {
@@ -114,17 +115,19 @@ abstract class UMLExpressionModel
 	    Model.getPump().removeModelEventListener(this, target,
 	                propertyName);
 	}
-	LOG.debug(">>Stop listening for UML changes...");
+        LOG.log(Level.FINE, ">>Stop listening for UML changes...");
     }
 
     public void propertyChange(PropertyChangeEvent e) {
 	if (propertyName.equals(e.getPropertyName())) {
 	    if (rememberExpression != e.getNewValue()) {
 		fireStateChanged();
-		LOG.debug(">>UML expression changed.");
+                LOG.log(Level.FINE, ">>UML expression changed.");
 	    } else {
 		/* This should not happen. */
-		LOG.debug(">>Got an event for a modelchange that we inflicted ourselves...");
+                LOG.log(Level.FINE,
+                        ">>Got an event for a modelchange that we "
+                        + "inflicted ourselves...");
 	    }
 	}
     }
@@ -264,7 +267,7 @@ abstract class UMLExpressionModel
      */
     public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
-        LOG.debug(">>Add listener");
+        LOG.log(Level.FINE, ">>Add listener");
     }
 
     /**
@@ -275,7 +278,7 @@ abstract class UMLExpressionModel
      */
     public void removeChangeListener(ChangeListener l) {
         listenerList.remove(ChangeListener.class, l);
-        LOG.debug(">>Remove listener");
+        LOG.log(Level.FINE, ">>Remove listener");
     }
 
     /**
@@ -286,7 +289,7 @@ abstract class UMLExpressionModel
      * @see EventListenerList
      */
     protected void fireStateChanged() {
-	LOG.debug(">>Fire state changed to listeners.");
+        LOG.log(Level.FINE, ">>Fire state changed to listeners.");
         Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -=2 ) {
             if (listeners[i] == ChangeListener.class) {

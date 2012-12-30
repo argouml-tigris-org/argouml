@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,11 +38,12 @@
 
 package org.argouml.uml.ui;
 
-import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 import java.io.File;
 
+import junit.framework.TestCase;
+
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.reveng.ImportInterface;
@@ -55,35 +56,35 @@ import org.argouml.uml.reveng.ImportInterface;
  */
 public class TestSourcePathController extends TestCase {
 
-    /** the model to use during testing */
+    /** The model to use during testing. */
     private Object model;
-    
+
     /** A class model element... */
     private Object modelElem;
-    /** its source path */
+    /** The source path of the class model element. */
     private String modelElemSourcePath;
-    /** and the corresponding file */
+    /** The corresponding file for the class model element. */
     private File modelElemSourcePathFile;
-    
-    /** A class model element without a source path defined */
+
+    /** A class model element without a source path defined. */
     private Object modelElemWithoutSrcPath;
-    
+
     /** Number of model elements in the setup model with source path set. */
     private int numOfMEsWithSrcPath;
-    
+
     /** The SourcePathController instance. */
     private SourcePathController srcCtrl;
 
     /**
      * Creates a new instance of TestSourcePathController.
-     * 
+     *
      * @param arg0 name of the test case
      */
     public TestSourcePathController(String arg0) {
         super(arg0);
         InitializeModel.initializeDefault();
     }
-    
+
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -97,7 +98,7 @@ public class TestSourcePathController extends TestCase {
                 .buildTaggedValue(ImportInterface.SOURCE_PATH_TAG,
                         modelElemSourcePath);
         Model.getExtensionMechanismsHelper().addTaggedValue(model, taggedValue);
-        
+
         // create a class model element
         modelElem = Model.getCoreFactory().buildClass("AClass", model);
         taggedValue = Model.getExtensionMechanismsFactory().buildTaggedValue(
@@ -105,72 +106,72 @@ public class TestSourcePathController extends TestCase {
         Model.getExtensionMechanismsHelper().addTaggedValue(
                 modelElem, taggedValue);
         modelElemSourcePathFile = new File(modelElemSourcePath);
-        
+
         modelElemWithoutSrcPath = Model.getCoreFactory().buildClass(
                 "AClassWithoutSrcPath", model);
         srcCtrl = new SourcePathControllerImpl();
-        
-        // REMEMBER to change this if you change the number of MEs with source 
+
+        // REMEMBER to change this if you change the number of MEs with source
         // path settings
         numOfMEsWithSrcPath = 2;
     }
-    
-    /** 
+
+    /**
      * Test the SourcePathController creation.
      */
     public void testCreation() {
         SourcePathController sourcePathCtrl = new SourcePathControllerImpl();
         assertNotNull(sourcePathCtrl);
     }
-    
-    /** 
+
+    /**
      * Test retrieving the source path of a specific element.
      */
     public void testSimpleGetSourcePath() {
         File srcPath = srcCtrl.getSourcePath(modelElem);
         assertEquals(modelElemSourcePathFile, srcPath);
     }
-    
-    /** 
+
+    /**
      * Test getting the source path for a model element without it.
      */
     public void testGetSourcePath4MEWithoutSourcePath() {
         File srcPath = srcCtrl.getSourcePath(modelElemWithoutSrcPath);
         assertNull(srcPath);
     }
-    
-    /** 
+
+    /**
      * Test retrieving all source path settings in the model.
      */
     public void testGetSourcePathSettings() {
         SourcePathTableModel srcPathSets = srcCtrl.getSourcePathSettings();
         assertEquals(numOfMEsWithSrcPath, srcPathSets.getRowCount());
         for (int i = 0; i < srcPathSets.getRowCount(); i++) {
-            assertEquals(modelElemSourcePathFile.toString(), 
-                (String) srcPathSets.getValueAt(i, 
+            assertEquals(modelElemSourcePathFile.toString(),
+                (String) srcPathSets.getValueAt(i,
                     SourcePathTableModel.SOURCE_PATH_COLUMN));
         }
     }
-    
-    /** 
+
+    /**
      * Test deletion of the source path settings for a model element.
      */
     public void testDeleteSourcePathSettings() {
         srcCtrl.deleteSourcePath(modelElem);
         assertNull(srcCtrl.getSourcePath(modelElem));
     }
-    
+
     /**
      * Test setting the source path of a model element.
      */
     public void testSetSourcePath() {
-        assertEquals(modelElemSourcePathFile, 
+        assertEquals(modelElemSourcePathFile,
             srcCtrl.getSourcePath(modelElem));
         File newSrcPath = new File("../new/source/path");
         srcCtrl.setSourcePath(modelElem, newSrcPath);
         assertEquals(newSrcPath, srcCtrl.getSourcePath(modelElem));
     }
-    
+
     /**
      * Test setting the source path according to the contents of Table model.
      */
@@ -179,7 +180,7 @@ public class TestSourcePathController extends TestCase {
         assertEquals(numOfMEsWithSrcPath, srcPathSets.getRowCount());
         File newSrcPath = new File("../new/source/path");
         for (int i = 0; i < srcPathSets.getRowCount(); i++) {
-            srcPathSets.setValueAt(newSrcPath.toString(), i, 
+            srcPathSets.setValueAt(newSrcPath.toString(), i,
                 SourcePathTableModel.SOURCE_PATH_COLUMN);
         }
         srcCtrl.setSourcePath(srcPathSets);

@@ -1,3 +1,16 @@
+/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2011-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ */
+
 package org.argouml.activity2.diagram;
 
 import java.awt.Cursor;
@@ -6,8 +19,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.FigModifyingModeImpl;
@@ -21,18 +35,18 @@ import org.tigris.gef.undo.UndoManager;
 class ModePlaceDiagramElement extends FigModifyingModeImpl {
 
     private static final Logger LOG =
-        Logger.getLogger(ModePlaceDiagramElement.class);
+        Logger.getLogger(ModePlaceDiagramElement.class.getName());
     private final Object metaType;
     private final String style;
     private final String instructions;
     private final BaseDiagram diagram;
-    
+
     private Object modelElement;
     private GraphNode graphNode;
 
     private static final int WIDTH = 90;
     private static final int HEIGHT = 25;
-    
+
     public ModePlaceDiagramElement(
             final BaseDiagram diagram,
             final Object metaType,
@@ -65,7 +79,8 @@ class ModePlaceDiagramElement extends FigModifyingModeImpl {
         // want to create the model element until the user releases the mouse
         // in the place expected.
         modelElement = Model.getUmlFactory().buildNode(metaType, diagram.getOwner());
-        LOG.info("Created " + modelElement);
+        LOG.log(Level.INFO, "Created {0}", modelElement);
+
         //
         start();
         editor = Globals.curEditor();
@@ -74,7 +89,7 @@ class ModePlaceDiagramElement extends FigModifyingModeImpl {
         mouseMoved(me);
         me.consume();
     }
-    
+
     private GraphNode createDiagramElement(Layer lay, Object owner, DiagramSettings settings) {
         FigBaseNode fig = new FigBaseNode(owner, new Rectangle(0, 0, 0, 0), settings);
         DiagramElementBuilder.buildDiagramElement(fig, style, owner, settings);
@@ -116,14 +131,14 @@ class ModePlaceDiagramElement extends FigModifyingModeImpl {
             return;
         }
 
-        LOG.info("Mouse released");
+        LOG.log(Level.INFO, "Mouse released");
         MutableGraphModel mgm = (MutableGraphModel) editor.getGraphModel();
         UndoManager.getInstance().startChain();
         editor.add((Fig) graphNode);
         mgm.addNode(modelElement);
 
         editor.getSelectionManager().select((Fig) graphNode);
-        LOG.info("The diagram element " + graphNode + " was added");
+        LOG.log(Level.INFO, "The diagram element {0} was added", graphNode);
         done();
         me.consume();
     }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,10 +49,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JSeparator;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.Notation;
@@ -80,20 +81,29 @@ import org.tigris.gef.presentation.FigText;
 public class FigMessage extends FigEdgeModelElement {
 
     private static final long serialVersionUID = -2961220746360335159L;
-    
+
     private static final Logger LOG =
-        Logger.getLogger(FigEdgeModelElement.class);
-    
-    private FigTextGroup textGroup; 
+        Logger.getLogger(FigEdgeModelElement.class.getName());
+
+    private FigTextGroup textGroup;
 
     /**
      * The action owned by the message
      */
     private Object action = null;
-    
+
     private SDNotationSettings notationSettings;
-    private boolean t[] = {false,false,false,false,false,false,false,false};
-    
+    private boolean t[] = {
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    };
+
     /**
      * Construct a fig owned by the given UML element with the provided render
      * settings.
@@ -116,26 +126,26 @@ public class FigMessage extends FigEdgeModelElement {
         t[5] = Model.getFacade().isAReplyMessage(getOwner());
         t[6] = Model.getFacade().isAASynchSignalMessage(getOwner());
     }
-    
+
     private void initialize() {
         textGroup.addFig(getNameFig());
         textGroup.addFig(getStereotypeFig());
         addPathItem(textGroup, new PathItemPlacement(this, textGroup, 50, 10));
         notationSettings = new SDNotationSettings();
     }
-        
+
     @Override
     protected int getNotationProviderType() {
         /* Use a different notation as Messages on a collaboration diagram: */
         return NotationProviderFactory2.TYPE_SD_MESSAGE;
     }
-    
-    /* This next argument may be used to switch off 
-     * the generation of sequence numbers - this is 
+
+    /* This next argument may be used to switch off
+     * the generation of sequence numbers - this is
      * still to be implemented.
-     * They are less desired in sequence diagrams, 
-     * since they do not add any information. 
-     * In collaboration diagrams they are needed, 
+     * They are less desired in sequence diagrams,
+     * since they do not add any information.
+     * In collaboration diagrams they are needed,
      * and they are still optional in sequence diagrams. */
     @Override
     protected void initNotationProviders(Object own) {
@@ -153,11 +163,11 @@ public class FigMessage extends FigEdgeModelElement {
         super.textEditStarted(ft);
         notationSettings.setShowSequenceNumbers(false);
     }
-    
+
     protected SDNotationSettings getNotationSettings() {
         return notationSettings;
     }
-    
+
     boolean isSynchCallMessage() {
     	return t[1];
     }
@@ -181,7 +191,7 @@ public class FigMessage extends FigEdgeModelElement {
     boolean isASynchSignalMessage() {
         return t[6];
     }
-    
+
     /**
      * Updates the arrow head and the arrow line according
      * to the action type..
@@ -199,9 +209,9 @@ public class FigMessage extends FigEdgeModelElement {
             arrowHead = new ArrowHeadTriangle();
             getFig().setFillColor(getLineColor());
         }
-        setDestArrowHead(arrowHead);            
+        setDestArrowHead(arrowHead);
     }
-    
+
     /**
      * Gets the action attached to the message.
      * @return the action
@@ -218,7 +228,7 @@ public class FigMessage extends FigEdgeModelElement {
     @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        
+
         // Operations ...
         if (Model.getFacade().isACallAction(getAction())) {
             ArgoJMenu opMenu = buildOperationMenu();
@@ -263,15 +273,15 @@ public class FigMessage extends FigEdgeModelElement {
     public Selection makeSelection() {
         return new SelectionMessage(this);
     }
-    
+
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
-    public void setFig(Fig f) {        
+    public void setFig(Fig f) {
         super.setFig(f);
         updateArrow();
     }
-    
+
     int getFinalY() {
 	int finalY = 0;
         Point[] points = getFig().getPoints();
@@ -279,7 +289,7 @@ public class FigMessage extends FigEdgeModelElement {
             finalY = points[points.length - 1].y;
         }
         return finalY;
-    }    
+    }
 
     int getStartY() {
 	int finalY = 0;
@@ -288,12 +298,12 @@ public class FigMessage extends FigEdgeModelElement {
             finalY = points[0].y;
         }
         return finalY;
-    }    
+    }
 
-    
+
     /**
      * Checks if the message source and dest are the same.
-     * @return true if they are the same, otherwise false. 
+     * @return true if they are the same, otherwise false.
      */
     boolean isSelfMessage() {
         // If possible we determine this by checking the destination
@@ -306,9 +316,9 @@ public class FigMessage extends FigEdgeModelElement {
             return (getDestPortFig().equals(getSourcePortFig()));
         }
     }
-    
+
     /**
-     * Converts the message into a spline.  
+     * Converts the message into a spline.
      * This is needed for self-referencing messages.
      */
     public void convertToArc() {
@@ -317,7 +327,7 @@ public class FigMessage extends FigEdgeModelElement {
             spline.setDashed(isReplyMessage());
             super.setFig(spline);
             computeRoute();
-        }        
+        }
     }
 
     @Override
@@ -325,7 +335,7 @@ public class FigMessage extends FigEdgeModelElement {
 	super.computeRouteImpl();
 	updateActivations();
     }
-    
+
     public void calcBounds() {
         final FigPoly fp = (FigPoly) getFig();
         final FigNode node = getSourceFigNode();
@@ -358,8 +368,8 @@ public class FigMessage extends FigEdgeModelElement {
 	if (source != null) {
 	    source.createActivations();
 	}
-	
-	// for performance, we check if this is a selfmessage 
+
+	// for performance, we check if this is a selfmessage
 	// if it is, we have just updated the activations
 	if (!isSelfMessage()) {
 	    FigClassifierRole dest = (FigClassifierRole) getDestFigNode();
@@ -401,7 +411,7 @@ public class FigMessage extends FigEdgeModelElement {
     public void translate(int dx, int dy) {
         if (isSelfMessage()) {
             ((FigMessageSpline) getFig()).translateFig(dx, dy);
-        }        
+        }
         super.translate(dx, dy);
     }
 
@@ -416,11 +426,11 @@ public class FigMessage extends FigEdgeModelElement {
         }
         super.updateLayout(event);
     }
-    
-    /* 
+
+    /*
      * Overridden purely to keep our superclass from removing the listener
      * that we just added.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     @Override
@@ -436,7 +446,7 @@ public class FigMessage extends FigEdgeModelElement {
             updateElementListeners(listeners);
         } catch (Exception e) {
             // This call seems not very robust. Yet to determine cause.
-            LOG.error("Exception caught", e);
+            LOG.log(Level.SEVERE, "Exception caught", e);
         }
     }
 

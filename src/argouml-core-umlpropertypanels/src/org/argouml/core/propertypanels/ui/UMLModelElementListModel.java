@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -53,7 +55,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -76,19 +77,19 @@ import org.tigris.toolbar.ToolBar;
 abstract class UMLModelElementListModel
         extends DefaultListModel implements PropertyChangeListener {
 
-    private static final Logger LOG = 
-        Logger.getLogger(UMLModelElementListModel.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(UMLModelElementListModel.class.getName());
+
     private String eventName = null;
     private Object listTarget = null;
 
     private AbstractActionAddModelElement2 addAction = null;
     private AbstractActionNewModelElement newAction = null;
     private AbstractActionRemoveElement removeAction = null;
-    
+
     private static int count = 0;
     private final int instance = count++;
-    
+
     /**
      * Flag to indicate whether list events should be fired
      */
@@ -103,7 +104,7 @@ abstract class UMLModelElementListModel
      * The type of model elements this list model is designed to hold.
      */
     private Object metaType;
-    
+
     /**
      * Indicates that drops onto this list should connect in the opposite
      * way to standard.
@@ -117,12 +118,12 @@ abstract class UMLModelElementListModel
     final private boolean showIcon;
 
     /**
-     * True if the containment path should be shown 
+     * True if the containment path should be shown
      * (to help the user disambiguate elements with the same name);
      */
     final private boolean showPath;
 
-    
+
     /**
      * Constructor to be used if the subclass does not depend on the
      * MELementListener methods and setTarget method implemented in this
@@ -146,7 +147,7 @@ abstract class UMLModelElementListModel
         showIcon = true;
         showPath = true;
     }
-    
+
     UMLModelElementListModel(
             final String name,
             final boolean showIcon,
@@ -156,7 +157,7 @@ abstract class UMLModelElementListModel
         this.showIcon = showIcon;
         this.showPath = showPath;
     }
-    
+
     UMLModelElementListModel(
             final String name,
             final boolean showIcon,
@@ -168,7 +169,7 @@ abstract class UMLModelElementListModel
         this.showPath = showPath;
         this.metaType = metaType;
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -184,7 +185,7 @@ abstract class UMLModelElementListModel
         showIcon = true;
         showPath = true;
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -194,10 +195,10 @@ abstract class UMLModelElementListModel
      *                 is designed to contain.
      */
     public UMLModelElementListModel(
-            final String name, 
-            final Object theMetaType, 
-            final AbstractActionAddModelElement2 addAction, 
-            final AbstractActionNewModelElement newAction, 
+            final String name,
+            final Object theMetaType,
+            final AbstractActionAddModelElement2 addAction,
+            final AbstractActionNewModelElement newAction,
             final AbstractActionRemoveElement removeAction) {
         super();
         this.metaType = theMetaType;
@@ -208,10 +209,10 @@ abstract class UMLModelElementListModel
         this.newAction = newAction;
         this.removeAction = removeAction;
     }
-    
+
     public UMLModelElementListModel(
-            final String name, 
-            final Object theMetaType, 
+            final String name,
+            final Object theMetaType,
             final AbstractActionAddModelElement2 addAction) {
         super();
         this.metaType = theMetaType;
@@ -220,10 +221,10 @@ abstract class UMLModelElementListModel
         showPath = true;
         this.addAction = addAction;
     }
-    
+
     public UMLModelElementListModel(
-            final String name, 
-            final Object theMetaType, 
+            final String name,
+            final Object theMetaType,
             final AbstractActionNewModelElement newAction) {
         super();
         this.metaType = theMetaType;
@@ -232,11 +233,11 @@ abstract class UMLModelElementListModel
         showPath = true;
         this.newAction = newAction;
     }
-    
+
     public UMLModelElementListModel(
-            final String name, 
-            final Object theMetaType, 
-            final AbstractActionAddModelElement2 addAction, 
+            final String name,
+            final Object theMetaType,
+            final AbstractActionAddModelElement2 addAction,
             final AbstractActionRemoveElement removeAction) {
         super();
         this.metaType = theMetaType;
@@ -246,12 +247,12 @@ abstract class UMLModelElementListModel
         this.addAction = addAction;
         this.removeAction = removeAction;
     }
-    
+
     public UMLModelElementListModel(
-            final String name, 
-            final Object theMetaType, 
-            final AbstractActionAddModelElement2 addAction, 
-            final AbstractActionNewModelElement newAction) { 
+            final String name,
+            final Object theMetaType,
+            final AbstractActionAddModelElement2 addAction,
+            final AbstractActionNewModelElement newAction) {
         super();
         this.metaType = theMetaType;
         eventName = name;
@@ -260,7 +261,7 @@ abstract class UMLModelElementListModel
         this.addAction = addAction;
         this.newAction = newAction;
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -272,8 +273,8 @@ abstract class UMLModelElementListModel
      *              connection made and drop during dnd.
      */
     public UMLModelElementListModel(
-	    String name, 
-	    Object theMetaType, 
+	    String name,
+	    Object theMetaType,
 	    boolean reverseTheDropConnection) {
         super();
         this.metaType = theMetaType;
@@ -282,7 +283,7 @@ abstract class UMLModelElementListModel
         showIcon = true;
         showPath = true;
     }
-    
+
     /**
      * Get the type of objects that this list model is designed to contain.
      * @return metaType the meta type.
@@ -290,7 +291,7 @@ abstract class UMLModelElementListModel
     public Object getMetaType() {
 	return metaType;
     }
-    
+
     public boolean isReverseDropConnection() {
 	return reverseDropConnection;
     }
@@ -311,9 +312,9 @@ abstract class UMLModelElementListModel
 
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     * 
+     *
      * TODO: This should be reviewed to see if it can be improved with a view
-     * towards removing some of the overrriding methods used as workarounds for 
+     * towards removing some of the overrriding methods used as workarounds for
      * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(final PropertyChangeEvent e) {
@@ -324,11 +325,11 @@ abstract class UMLModelElementListModel
 // The original controls on property panels regularly rebuild themselves
 // from scratch rather than add and remove elements
 // For now we just try and add/remove but we can reinstate this if required.
-//                    
+//
 //                    if (e instanceof AttributeChangeEvent) {
 //                        try {
 //                            if (isValidEvent(e)) {
-//                                LOG.info("Rebuilding model");
+//                                LOG.log(Level.INFO, "Rebuilding model");
 //                                rebuildModelList();
 //                            }
 //                        } catch (InvalidElementException iee) {
@@ -339,7 +340,7 @@ abstract class UMLModelElementListModel
                         if (isValidEvent(e)) {
                             Object o = getChangedElement(e);
                             if (o instanceof Collection) {
-                                LOG.info("Elements added");
+                                LOG.log(Level.INFO, "Elements added");
                                 ArrayList tempList = new ArrayList((Collection) o);
                                 Iterator it = tempList.iterator();
                                 while (it.hasNext()) {
@@ -347,7 +348,7 @@ abstract class UMLModelElementListModel
                                     addElement(o2);
                                 }
                             } else {
-                                /* TODO: If this is an ordered list, then you have to 
+                                /* TODO: If this is an ordered list, then you have to
                                     add in the right location! */
                                 if (!contains(o)) {
                                     if (lm instanceof Ordered) {
@@ -403,23 +404,22 @@ abstract class UMLModelElementListModel
                         }
                     }
                 } catch (InvalidElementException e) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("updateLayout method accessed "
-                                + "deleted element ", e);
-                    }
+                    LOG.log(Level.FINE,
+                            "updateLayout method accessed deleted element ",
+                            e);
                 }
-            }  
+            }
         };
         SwingUtilities.invokeLater(doWorkRunnable);
-        
-        
+
+
     }
 
     /**
      * Delete and rebuild the model list from scratch.
      */
     private void rebuildModelList() {
-        LOG.info("Rebuilding");
+        LOG.log(Level.INFO, "Rebuilding");
         removeAllElements();
         buildingModel = true;
         try {
@@ -432,7 +432,7 @@ abstract class UMLModelElementListModel
              * could cause a deadlock. Instead catch the exception and
              * leave the model empty.
              */
-            LOG.debug("buildModelList threw exception for target " 
+            LOG.log(Level.FINE, "buildModelList threw exception for target "
                     + getTarget() + ": "
                     + exception);
         } finally {
@@ -526,20 +526,20 @@ abstract class UMLModelElementListModel
      * the model from the element listener list of the target. If the new target
      * is instanceof ModelElement, the model is added as element listener to the
      * new target. <p>
-     *      
-     * This function is called when the user changes the target. 
+     *
+     * This function is called when the user changes the target.
      * Hence, this shall not result in any UML model changes.
-     * Hence, we block firing list events completely by setting 
+     * Hence, we block firing list events completely by setting
      * buildingModel to true for the duration of this function. <p>
-     * 
+     *
      * This function looks a lot like the one in UMLComboBoxModel.
-     * 
+     *
      * @param theNewTarget the new target
      */
     protected void setTarget(final Object theNewTarget) {
         assert (getTarget() == null);
         assert (Model.getFacade().isAUMLElement(theNewTarget));
-        
+
         listTarget = theNewTarget;
         Model.getPump().addModelEventListener(this, listTarget, eventName);
         // Allow listening to other elements:
@@ -547,7 +547,7 @@ abstract class UMLModelElementListModel
 
         rebuildModelList();
     }
-    
+
     public void removeModelEventListener() {
         Model.getPump().removeModelEventListener(this, listTarget, eventName);
     }
@@ -555,7 +555,7 @@ abstract class UMLModelElementListModel
     /**
      * This function allows subclasses to listen to more modelelements.
      * The given target is guaranteed to be a UML modelelement.
-     * 
+     *
      * @param oldTarget the UML modelelement
      */
     protected void removeOtherModelEventListeners(Object oldTarget) {
@@ -565,7 +565,7 @@ abstract class UMLModelElementListModel
     /**
      * This function allows subclasses to listen to more modelelements.
      * The given target is guaranteed to be a UML modelelement.
-     * 
+     *
      * @param newTarget the UML modelelement
      */
     protected void addOtherModelEventListeners(Object newTarget) {
@@ -692,7 +692,7 @@ abstract class UMLModelElementListModel
     public boolean buildPopup(JPopupMenu popup, int index) {
         return false;
     }
-    
+
     public List<Action> getActions() {
         final List<Action> actions = new ArrayList<Action>();
         final JPopupMenu popup = new JPopupMenu();
@@ -705,7 +705,7 @@ abstract class UMLModelElementListModel
         }
         return actions;
     }
-    
+
     /**
      * Get a toolbar containing all the actions available on this JList.
      * @return the toolbar.
@@ -718,7 +718,7 @@ abstract class UMLModelElementListModel
         // under the label.
         return null;
     }
-    
+
     protected boolean hasPopup() {
         return false;
     }
@@ -730,19 +730,19 @@ abstract class UMLModelElementListModel
     boolean isShowPath() {
         return showPath;
     }
-    
+
     public AbstractActionAddModelElement2 getAddAction() {
         return addAction;
     }
-    
+
     public AbstractActionNewModelElement getNewAction() {
         return newAction;
     }
-    
+
     public AbstractActionRemoveElement getRemoveAction() {
         return removeAction;
     }
-    
+
     public List<Action> getNewActions() {
     	return Collections.emptyList();
     }

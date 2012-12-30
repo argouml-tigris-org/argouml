@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -56,7 +58,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ActionList;
 import org.argouml.kernel.ProfileConfiguration;
@@ -104,11 +105,11 @@ import org.tigris.gef.graph.MutableGraphModel;
  */
 public class ExplorerPopup extends JPopupMenu {
 
-    private JMenu createDiagrams = 
+    private JMenu createDiagrams =
         new JMenu(menuLocalize("menu.popup.create-diagram"));
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ExplorerPopup.class);
+        Logger.getLogger(ExplorerPopup.class.getName());
 
     /**
      * Creates a new instance of ExplorerPopup.
@@ -120,7 +121,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
-        
+
         /* Check if multiple items are selected. */
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
@@ -183,14 +184,14 @@ public class ExplorerPopup extends JPopupMenu {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
-        
+
         initMenuCreateModuleActions();
 
         if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
         }
-        
-        final boolean modelElementSelected = 
+
+        final boolean modelElementSelected =
             Model.getFacade().isAUMLElement(selectedItem);
 
         if (modelElementSelected) {
@@ -235,11 +236,11 @@ public class ExplorerPopup extends JPopupMenu {
                     ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
                     : null;
 
-            Collection projectModels = 
+            Collection projectModels =
                 ProjectManager.getManager().getCurrentProject().getModels();
             if (!multiSelect) {
                 if ((classifierSelected && !relationshipSelected)
-                        || (packageSelected 
+                        || (packageSelected
                                 // TODO: Allow adding models to a diagram - issue 4172.
                                 && !projectModels.contains(selectedItem))
                         || (stateVertexSelected
@@ -281,9 +282,9 @@ public class ExplorerPopup extends JPopupMenu {
             }
 
 
-            if (mutableModelElementsOnly 
+            if (mutableModelElementsOnly
                     // Can't delete last top level model
-                    && !(projectModels.size() == 1 
+                    && !(projectModels.size() == 1
                             && projectModels.contains(selectedItem))) {
                 // TODO: Shouldn't be creating a new instance here. We should
                 // hold the delete action in some central place.
@@ -335,8 +336,8 @@ public class ExplorerPopup extends JPopupMenu {
                 ad.setEnabled(ad.shouldBeEnabled());
                 this.add(ad);
             }
-            
-            
+
+
         } else if (selectedItem instanceof Diagram) {
             this.add(new ActionSaveDiagramToClipboard());
             // TODO: Delete should be available on any combination of model
@@ -393,7 +394,7 @@ public class ExplorerPopup extends JPopupMenu {
             if (classifierRolesOnly) {
                 menuItems.add(new OrderedMenuItem(
                         new ActionCreateAssociationRole(
-                                Model.getMetaTypes().getAssociationRole(), 
+                                Model.getMetaTypes().getAssociationRole(),
                                 targets)));
             } else if (!classifierRoleFound) {
                 boolean classifiersOnly = true;
@@ -406,7 +407,7 @@ public class ExplorerPopup extends JPopupMenu {
                 if (classifiersOnly) {
                     menuItems.add(new OrderedMenuItem(
                             new ActionCreateAssociation(
-                                    Model.getMetaTypes().getAssociation(), 
+                                    Model.getMetaTypes().getAssociation(),
                                     targets)));
                 }
             }
@@ -416,7 +417,7 @@ public class ExplorerPopup extends JPopupMenu {
                     menuItems,
                     Model.getMetaTypes().getDependency(),
                     " " + menuLocalize("menu.popup.depends-on") + " ");
-            
+
             addCreateModelElementAction(
                     menuItems,
                     Model.getMetaTypes().getGeneralization(),
@@ -442,23 +443,23 @@ public class ExplorerPopup extends JPopupMenu {
                     Model.getMetaTypes().getAbstraction(),
                     " " + menuLocalize("menu.popup.realizes") + " ");
         } else if (targets.size() == 1) {
-            
+
             Object target = targets.get(0);
 
-            // iterate through all possible model elements to determine which  
+            // iterate through all possible model elements to determine which
             // are valid to be contained by the selected target
             for (Object metaType : Model.getMetaTypes().getAllMetaTypes()) {
                 // test if this element can be contained by the target
                 if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
-                    // this element can be contained add a menu item 
+                    // this element can be contained add a menu item
                     // that allows the user to take that action
                     menuItems.add(new OrderedMenuItem(
                             new ActionCreateContainedModelElement(
                                     metaType, target)));
                 }
-            }    
+            }
         }
-        
+
         if (menuItems.size() == 1) {
             add(menuItems.iterator().next());
         } else if (menuItems.size() > 1) {
@@ -470,11 +471,13 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
     }
-    
+
     private void initMenuCreateModuleActions() {
-        final List<Action> contextActions = 
+        final List<Action> contextActions =
             ContextActionFactoryManager.getContextPopupActions();
-        LOG.info(contextActions);
+        
+        LOG.log(Level.INFO, "{0}", contextActions);
+        
         if (contextActions instanceof ActionList) {
             recursiveAdd(this, (Action) contextActions);
         } else {
@@ -483,7 +486,7 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
     }
-    
+
     private void recursiveAdd(MenuElement menu, Action a) {
         if (a instanceof List<?>) {
             JMenu m = new JMenu(a);
@@ -503,7 +506,7 @@ public class ExplorerPopup extends JPopupMenu {
             }
         }
     }
-    
+
     private void addCreateModelElementAction(
                 Set<JMenuItem> menuItems,
                 Object metaType,
@@ -522,7 +525,7 @@ public class ExplorerPopup extends JPopupMenu {
             menuItems.add(subMenu);
         }
     }
-    
+
     /**
      * Attempt to build a menu item to create the given model element type
      * as a relation betwen two existing model elements.
@@ -535,18 +538,18 @@ public class ExplorerPopup extends JPopupMenu {
      * @param menu The menu to which the menu item should be added
      */
     private void buildDirectionalCreateMenuItem(
-            Object metaType, 
-            Object source, 
-            Object dest, 
+            Object metaType,
+            Object source,
+            Object dest,
             String relationshipDescr,
             JMenu menu) {
         if (Model.getUmlFactory().isConnectionValid(
                     metaType, source, dest, true)) {
             JMenuItem menuItem = new JMenuItem(
                     new ActionCreateEdgeModelElement(
-                            metaType, 
-                            source, 
-                            dest, 
+                            metaType,
+                            source,
+                            dest,
                             relationshipDescr));
             if (menuItem != null) {
                 menu.add(menuItem);
@@ -565,7 +568,7 @@ public class ExplorerPopup extends JPopupMenu {
     private String menuLocalize(String key) {
         return Translator.localize(key);
     }
-    
+
     /**
      * Add popup menu items for adding to diagram both edge ends.
      *
@@ -619,7 +622,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private static final long serialVersionUID = -5663884871599931780L;
 
-    
+
     private class ActionAddExistingRelatedNode extends UndoableAction {
 
         /**
@@ -649,7 +652,7 @@ public class ExplorerPopup extends JPopupMenu {
             MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
             return gm.canAddNode(object);
         }
-        
+
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
             Editor ce = Globals.curEditor();
@@ -668,7 +671,7 @@ public class ExplorerPopup extends JPopupMenu {
                         });
                 Globals.showStatus(instructions);
             }
-            
+
             ArrayList<Object> elementsToAdd = new ArrayList<Object>(1);
             elementsToAdd.add(object);
             final ModeAddToDiagram placeMode =
@@ -677,14 +680,14 @@ public class ExplorerPopup extends JPopupMenu {
             Globals.mode(placeMode, false);
         }
     } /* end class ActionAddExistingRelatedNode */
-    
+
     /**
      * A JMenuItem that will order by display name
      *
      * @author Bob Tarling
      */
     private class OrderedMenuItem extends JMenuItem implements Comparable {
-        
+
         /**
          * Instantiate OrderedMenuItem
          * @param action
@@ -707,14 +710,14 @@ public class ExplorerPopup extends JPopupMenu {
             return toString().compareTo(other.toString());
         }
     }
-        
+
     /**
      * A JMenuItem that will order by display name
      *
      * @author Bob Tarling
      */
     private class OrderedMenu extends JMenu implements Comparable {
-        
+
         /**
          * Instantiate OrderedMenu
          * @param name
@@ -728,19 +731,19 @@ public class ExplorerPopup extends JPopupMenu {
             return toString().compareTo(other.toString());
         }
     }
-        
+
     /**
      * An action to create an association between 2 or more model elements.
      *
      * @author Bob Tarling
      */
     private class ActionCreateAssociation extends AbstractAction {
-        
-        private Object metaType; 
+
+        private Object metaType;
         private List classifiers;
 
         public ActionCreateAssociation(
-                Object theMetaType, 
+                Object theMetaType,
                 List classifiersList) {
             super(menuLocalize("menu.popup.create") + " "
                     + Model.getMetaTypes().getName(theMetaType));
@@ -769,12 +772,12 @@ public class ExplorerPopup extends JPopupMenu {
                             null);
                 }
             } catch (IllegalModelElementConnectionException e1) {
-                LOG.error("Exception", e1);
+                LOG.log(Level.SEVERE, "Exception", e1);
             }
         }
     }
-    
-    
+
+
     /**
      * An action to create an association between 2 or more model elements.
      *
@@ -782,11 +785,11 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private class ActionCreateAssociationRole extends AbstractAction {
 
-        private Object metaType; 
+        private Object metaType;
         private List classifierRoles;
 
         public ActionCreateAssociationRole(
-                Object theMetaType, 
+                Object theMetaType,
                 List classifierRolesList) {
             super(menuLocalize("menu.popup.create") + " "
                     + Model.getMetaTypes().getName(theMetaType));
@@ -815,7 +818,7 @@ public class ExplorerPopup extends JPopupMenu {
                             null);
                 }
             } catch (IllegalModelElementConnectionException e1) {
-                LOG.error("Exception", e1);
+                LOG.log(Level.SEVERE, "Exception", e1);
             }
         }
     }

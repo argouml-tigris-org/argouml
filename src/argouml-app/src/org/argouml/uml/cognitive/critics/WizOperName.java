@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.i18n.Translator;
@@ -81,18 +82,19 @@ public class WizOperName extends WizMEName {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(WizOperName.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizOperName.class.getName());
 
     private boolean possibleConstructor;
 
     private boolean stereotypePathChosen;
 
-    private String option0 = 
+    private String option0 =
         Translator.localize("critics.WizOperName-options1");
 
-    private String option1 = 
-        Translator.localize("critics.WizOperName-options2"); 
-        
+    private String option1 =
+        Translator.localize("critics.WizOperName-options2");
+
     private WizStepChoice step1;
 
     private WizStepCue step2;
@@ -237,9 +239,9 @@ public class WizOperName extends WizMEName {
                             Model.getFacade().getName(candidate)))) {
                         continue;
                     }
-                    Collection baseClasses = 
+                    Collection baseClasses =
                         Model.getFacade().getBaseClasses(candidate);
-                    Iterator iter2 = 
+                    Iterator iter2 =
                         baseClasses != null ? baseClasses.iterator() : null;
                     if (iter2 == null || !("BehavioralFeature".equals(
                             iter2.next()))) {
@@ -269,7 +271,7 @@ public class WizOperName extends WizMEName {
                     ProjectManager.getManager().updateRoots();
                     addedCreateStereotype = true;
                 } catch (Exception pve) {
-                    LOG.error("could not set stereotype", pve);
+                    LOG.log(Level.SEVERE, "could not set stereotype", pve);
                 }
                 return;
 
@@ -339,4 +341,4 @@ public class WizOperName extends WizMEName {
      * The UID.
      */
     private static final long serialVersionUID = -4013730212763172160L;
-} 
+}

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -58,12 +59,13 @@ class UMLTemplateParameterParameterComboBoxModel
         extends UMLComboBoxModel {
 
     /**
-     * The class uid
+     * The class uid.
      */
     private static final long serialVersionUID = -1295242702819038923L;
-    
+
     private static final Logger LOG =
-        Logger.getLogger(UMLTemplateParameterParameterComboBoxModel.class);
+        Logger.getLogger(UMLTemplateParameterParameterComboBoxModel.class
+                         .getName());
 
     /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
@@ -90,7 +92,7 @@ class UMLTemplateParameterParameterComboBoxModel
         if (p == null) {
             return;
         }
-        
+
         for (Object model : p.getUserDefinedModelList()) {
             elements.addAll(Model.getModelManagementHelper()
                     .getAllModelElementsOfKind(
@@ -102,28 +104,31 @@ class UMLTemplateParameterParameterComboBoxModel
 
         setElements(elements);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void buildMinimalModelList() {
         Collection list = new ArrayList(1);
         Object element = getSelectedModelElement();
-        LOG.info("The selected element is " + element);
+        
+        LOG.log(Level.INFO, "The selected element is {0}", element);
+        
         if (element != null) {
-            LOG.info("The selected element is "
-                    + Model.getFacade().getName(element));
+            LOG.log(Level.INFO,
+                    "The selected element is {0}",
+                    Model.getFacade().getName(element));
         }
         if (element != null) {
             list.add(element);
         }
         setElements(list);
     }
-    
+
     @Override
     protected boolean isLazy() {
         return true;
     }
-    
+
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
@@ -134,7 +139,7 @@ class UMLTemplateParameterParameterComboBoxModel
         }
         return o;
     }
-    
+
     public Action getAction() {
         return null;
     }

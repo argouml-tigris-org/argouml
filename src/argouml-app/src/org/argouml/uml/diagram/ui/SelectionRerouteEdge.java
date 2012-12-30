@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,22 +38,18 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-
 import java.awt.Rectangle;
-
 import java.awt.event.MouseEvent;
-
 import java.util.Enumeration;
 
-import org.tigris.gef.base.Globals;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.FigModifyingMode;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerManager;
-import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.base.FigModifyingMode;
-
+import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;

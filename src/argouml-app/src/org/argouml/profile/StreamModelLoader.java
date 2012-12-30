@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.profile;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -55,7 +56,8 @@ import org.xml.sax.InputSource;
  */
 public abstract class StreamModelLoader implements ProfileModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(StreamModelLoader.class);
+    private static final Logger LOG =
+        Logger.getLogger(StreamModelLoader.class.getName());
 
 
 
@@ -68,12 +70,12 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
      */
     public Collection loadModel(InputStream inputStream, URL publicReference)
         throws ProfileException {
-        
+
         if (inputStream == null) {
-            LOG.error("Profile not found");
+            LOG.log(Level.SEVERE, "Profile not found");
             throw new ProfileException("Profile not found!");
         }
-        
+
         try {
             XmiReader xmiReader = Model.getXmiReader();
             InputSource inputSource = new InputSource(inputStream);

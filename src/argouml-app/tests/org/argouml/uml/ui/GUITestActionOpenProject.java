@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,20 +41,18 @@ package org.argouml.uml.ui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-// Test classes
-import org.argouml.model.InitializeModel;
-import org.argouml.util.CheckMain;
-
-// Real classes
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.CheckMain;
 
 /**
  * Testing opening a project from the command line.

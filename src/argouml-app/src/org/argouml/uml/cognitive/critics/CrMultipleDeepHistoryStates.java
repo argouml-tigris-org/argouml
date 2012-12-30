@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
@@ -64,7 +65,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * Logger.
      */
     private static final Logger LOG =
-            Logger.getLogger(CrMultipleDeepHistoryStates.class);
+        Logger.getLogger(CrMultipleDeepHistoryStates.class.getName());
 
     /**
      * The constructor.
@@ -94,7 +95,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
         // container state / composite state
         Object cs = Model.getFacade().getContainer(dm);
         if (cs == null) {
-            LOG.debug("null parent state");
+            LOG.log(Level.FINE, "null parent state");
             return NO_PROBLEM;
         }
         Collection peers = Model.getFacade().getSubvertices(cs);
@@ -132,7 +133,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
         ListSet offs = new ListSet(ps);
         Object cs = Model.getFacade().getContainer(ps);
         if (cs == null) {
-            LOG.debug("null parent in still valid");
+            LOG.log(Level.FINE, "null parent in still valid");
             return offs;
         }
         Collection peers = Model.getFacade().getSubvertices(cs);
@@ -173,10 +174,9 @@ public class CrMultipleDeepHistoryStates extends CrUML {
         ret.add(Model.getMetaTypes().getPseudostate());
         return ret;
     }
-    
+
     /**
      * The UID.
      */
     private static final long serialVersionUID = -4893102976661022514L;
 }
-

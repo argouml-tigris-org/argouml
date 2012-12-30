@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,16 +42,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
 import org.argouml.profile.internal.ocl.InvalidOclException;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
 
 /**
- * Model Access
- * 
+ * Model Access.
+ *
  * @author maurelio1234
  */
 public class ModelAccessModelInterpreter implements ModelInterpreter {
@@ -59,11 +60,11 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ModelAccessModelInterpreter.class);
+    private static final Logger LOG =
+        Logger.getLogger(ModelAccessModelInterpreter.class.getName());
 
     private static Uml14ModelInterpreter uml14mi = new Uml14ModelInterpreter();
-    
+
     /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.Map,
      *      java.lang.Object, java.lang.String, java.lang.String,
@@ -74,33 +75,33 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             String feature, String type, Object[] parameters) {
 
         // TODO: This is an absurdly long method! Break it up.
-        
+
         if (subject == null) {
             subject = vt.get("self");
         }
-        
-        /* 4.5.2.1 Abstraction */  
+
+        /* 4.5.2.1 Abstraction */
         // TODO investigate: Abstraction.mapping is not in the Model Subsystem
 
-        /* 4.5.2.3 Association */  
-        
+        /* 4.5.2.3 Association */
+
         if (Model.getFacade().isAAssociation(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("connection")) {
                     return new ArrayList<Object>(Model.getFacade()
                             .getConnections(subject));
                 }
-                
+
                 // Additional Operation 4.5.3.1 [1]
                 if (feature.equals("allConnections")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getConnections(subject));
-                }                              
-            }                       
+                }
+            }
         }
 
-        /* 4.5.2.5 AssociationEnd */  
-        
+        /* 4.5.2.5 AssociationEnd */
+
         if (Model.getFacade().isAAssociationEnd(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("aggregation")) {
@@ -130,23 +131,23 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 if (feature.equals("specification")) {
                     return Model.getFacade().getSpecification(subject);
-                }                
+                }
                 if (feature.equals("participant")) {
                     return Model.getFacade().getClassifier(subject);
                 }
-                
+
                 // TODO investigate the "unnamed opposite end"
-                
+
                 // Additional Operation 4.5.3.3 [1]
                 if (feature.equals("upperbound")) {
                     return Model.getFacade().getUpper(subject);
                 }
-                
+
             }
         }
 
-        /* 4.5.2.6 Attribute */  
-        
+        /* 4.5.2.6 Attribute */
+
         if (Model.getFacade().isAAttribute(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("initialValue")) {
@@ -159,8 +160,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.5.2.7 BehavioralFeature */  
-        
+        /* 4.5.2.7 BehavioralFeature */
+
         if (Model.getFacade().isABehavioralFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("isQuery")) {
@@ -171,32 +172,32 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getParameters(subject));
                 }
             }
-            
+
             // TODO implement additional operations in 4.5.3.5
         }
 
-        /* 4.5.2.8 Binding */  
-        
+        /* 4.5.2.8 Binding */
+
         if (Model.getFacade().isABinding(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("argument")) {
                     return Model.getFacade().getArguments(subject);
                 }
             }
-        }        
+        }
 
-        /* 4.5.2.9 Class */  
-        
+        /* 4.5.2.9 Class */
+
         if (Model.getFacade().isAClass(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("isActive")) {
                     return Model.getFacade().isActive(subject);
                 }
             }
-        }        
+        }
 
-        /* 4.5.2.10 Classifier */  
-        
+        /* 4.5.2.10 Classifier */
+
         if (Model.getFacade().isAClassifier(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("feature")) {
@@ -210,7 +211,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("association")) {
                     return new ArrayList<Object>(Model.getFacade()
                           .getAssociationEnds(subject));
-                }                
+                }
                 if (feature.equals("powertypeRange")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getPowertypeRanges(subject));
@@ -220,7 +221,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return new ArrayList<Object>(Model.getFacade()
                             .getFeatures(subject));
                 }
-                
+
                 // Additional Operations in 4.5.3.8
                 if (feature.equals("allFeatures")) {
                     return internalOcl(subject, vt, "self.feature->union("
@@ -236,17 +237,17 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return internalOcl(subject, vt, "self.allFeatures->"
                             + "select(f | f.oclIsKindOf(Method))");
                 }
-                
+
                 if (feature.equals("allAttributes")) {
                     return internalOcl(subject, vt, "self.allFeatures->"
                             + "select(f | f.oclIsKindOf(Attribute))");
                 }
 
                 if (feature.equals("associations")) {
-                    return internalOcl(subject, vt, 
+                    return internalOcl(subject, vt,
                             "self.association.association->asSet()");
                 }
-                
+
                 if (feature.equals("allAssociations")) {
                     return internalOcl(
                             subject,
@@ -254,7 +255,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                           "self.associations->union("
                         + "self.parent.oclAsType(Classifier).allAssociations)");
                 }
-                
+
                 if (feature.equals("oppositeAssociationEnds")) {
                     return internalOcl(subject, vt,
                         "self.associations->select ( a | a.connection->select "
@@ -273,7 +274,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             vt,
                             "self.oppositeAssociationEnds->"
                           + "union(self.parent.allOppositeAssociationEnds )");
-                }                 
+                }
 
                 if (feature.equals("specification")) {
                     return internalOcl(
@@ -285,7 +286,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             + "and d.stereotype.name = \"realization\" "
                             + "and d.supplier.oclIsKindOf(Classifier))"
                             + ".supplier.oclAsType(Classifier)");
-                }                 
+                }
 
                 if (feature.equals("allContents")) {
                     return internalOcl(subject, vt,
@@ -293,7 +294,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                         + "self.parent.allContents->select(e |"
                         + "e.elementOwnership.visibility = #public or true or "
                         + " e.elementOwnership.visibility = #protected))");
-                }                 
+                }
 
                 if (feature.equals("allDiscriminators")) {
                     return internalOcl(subject, vt,
@@ -304,8 +305,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.5.2.11 Comment */  
-        
+        /* 4.5.2.11 Comment */
+
         if (Model.getFacade().isAComment(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("body")) {
@@ -317,9 +318,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             }
         }
-        
-        /* 4.5.2.12 Component */  
-        
+
+        /* 4.5.2.12 Component */
+
         if (Model.getFacade().isAComponent(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("deploymentLocation")) {
@@ -331,10 +332,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return new HashSet<Object>(Model.getFacade()
                             .getResidents(subject));
                 }
-                
+
                 // TODO implementation?
-                
-                // Additional Operation in 4.5.3.9                
+
+                // Additional Operation in 4.5.3.9
                 if (feature.equals("allResidentElements")) {
                     return internalOcl(subject, vt,
                         "self.resident->union("
@@ -346,8 +347,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.5.2.13 Constraint */  
-        
+        /* 4.5.2.13 Constraint */
+
         if (Model.getFacade().isAConstraint(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("body")) {
@@ -357,12 +358,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     // TODO check this
                     return Model.getFacade().getConstrainedElements(subject);
                 }
-                                
-            }
-        }        
 
-        /* 4.5.2.14 Dependency */  
-        
+            }
+        }
+
+        /* 4.5.2.14 Dependency */
+
         if (Model.getFacade().isADependency(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("client")) {
@@ -374,12 +375,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getSuppliers(subject));
                 }
             }
-        }        
+        }
 
         // TODO ElementOwnership is not in ModelSubsys!!
 
-        /* 4.5.2.18 ElementOwnership */          
-        
+        /* 4.5.2.18 ElementOwnership */
+
         if (Model.getFacade().isAElementResidence(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("visibility")) {
@@ -388,8 +389,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.5.2.19 Enumeration */          
-        
+        /* 4.5.2.19 Enumeration */
+
         if (Model.getFacade().isAEnumeration(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("literal")) {
@@ -398,8 +399,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.5.2.20 EnumerationLiteral */          
-        
+        /* 4.5.2.20 EnumerationLiteral */
+
         if (Model.getFacade().isAEnumerationLiteral(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("enumeration")) {
@@ -407,9 +408,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             }
         }
-        
-        /* 4.5.2.21 Feature */          
-        
+
+        /* 4.5.2.21 Feature */
+
         if (Model.getFacade().isAFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownerScope")) {
@@ -420,12 +421,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 if (feature.equals("owner")) {
                     return Model.getFacade().getOwner(subject);
-                }                
+                }
             }
-        }        
+        }
 
-        /* 4.5.2.23 Generalizable Element */          
-        
+        /* 4.5.2.23 Generalizable Element */
+
         if (Model.getFacade().isAGeneralizableElement(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("isAbstract")) {
@@ -446,22 +447,22 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getSpecializations(subject));
                 }
 
-                // Additional Operation in 4.5.3.20                
+                // Additional Operation in 4.5.3.20
                 if (feature.equals("parent")) {
                     return internalOcl(subject, vt,
                             "self.generalization.parent");
-                }                
+                }
 
                 if (feature.equals("allParents")) {
                     return internalOcl(subject, vt,
                             "self.parent->union(self.parent.allParents)");
-                }                
-                
+                }
+
             }
-        }                
-        
-        /* 4.5.2.24 Generalization */          
-        
+        }
+
+        /* 4.5.2.24 Generalization */
+
         if (Model.getFacade().isAGeneralization(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("discriminator")) {
@@ -479,12 +480,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("specialization")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getSpecializations(subject));
-                }                
+                }
             }
-        }                
-                
-        /* 4.5.2.26 Method */          
-        
+        }
+
+        /* 4.5.2.26 Method */
+
         if (Model.getFacade().isAMethod(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("body")) {
@@ -495,16 +496,16 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             }
         }
-        
-        /* 4.5.2.27 ModelElement */          
-        
+
+        /* 4.5.2.27 ModelElement */
+
         if (Model.getFacade().isAModelElement(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("name")) {
                     String name = Model.getFacade().getName(subject);
                     if (name == null) {
                         // TODO check conformancy to specification
-                        
+
                         // avoiding null names
                         name = "";
                     }
@@ -512,27 +513,27 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
 
                 // TODO asArgument??
-                
+
                 if (feature.equals("clientDependency")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getClientDependencies(subject));
-                }                
+                }
                 if (feature.equals("constraint")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getConstraints(subject));
                 }
-                
+
                 // TODO implementationLocation??
-                
+
                 if (feature.equals("namespace")) {
                     return Model.getFacade().getNamespace(subject);
-                }                
+                }
 
-                // TODO presentation??                
+                // TODO presentation??
                 if (feature.equals("supplierDependency")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getSupplierDependencies(subject));
-                }                
+                }
 
                 if (feature.equals("templateParameter")) {
                     return Model.getFacade().getTemplateParameters(subject);
@@ -546,29 +547,29 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("taggedValue")) {
                     return Model.getFacade().getTaggedValuesCollection(subject);
                 }
-                
+
                 if (feature.equals("constraint")) {
                     return Model.getFacade().getConstraints(subject);
                 }
-                
+
                 // Additional Operations in 4.5.3.25
                 if (feature.equals("supplier")) {
                     return internalOcl(subject, vt,
                             "self.clientDependency.supplier");
-                }                                
+                }
 
                 if (feature.equals("allSuppliers")) {
                     return internalOcl(subject, vt,
                             "self.supplier->union(self.supplier.allSuppliers)");
                 }
-                
+
                 if (feature.equals("model")) {
                     return internalOcl(subject, vt,
                             "self.namespace->"
                             + "union(self.namespace.allSurroundingNamespaces)->"
                             + "select( ns| ns.oclIsKindOf (Model))");
                 }
-                
+
                 if (feature.equals("isTemplate")) {
                     return !Model.getFacade().getTemplateParameters(subject)
                             .isEmpty();
@@ -584,12 +585,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             + "select(oclIsKindOf(Binding))."
                             + "oclAsType(Binding).argument");
                 }
-                
+
             }
         }
-        
-        /* 4.5.2.28 Namespace */          
-        
+
+        /* 4.5.2.28 Namespace */
+
         if (Model.getFacade().isANamespace(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownedElement")) {
@@ -600,7 +601,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("contents")) {
                         // TODO investigate typo in spec!!
                     return internalOcl(subject, vt, "self.ownedElement->"
-                            + "union(self.ownedElement->" 
+                            + "union(self.ownedElement->"
                             + "select(x|x.oclIsKindOf(Namespace)).contents)");
                 }
 
@@ -619,24 +620,24 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("allSurroundingNamespaces")) {
                     return internalOcl(subject, vt, "self.namespace->"
                             + "union(self.namespace.allSurroundingNamespaces)");
-                }                                               
-            }                        
+                }
+            }
         }
 
-        
-        /* 4.5.2.29 Node */          
-        
+
+        /* 4.5.2.29 Node */
+
         if (Model.getFacade().isANode(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("deployedComponent")) {
                     return new HashSet<Object>(Model.getFacade()
                             .getDeployedComponents(subject));
-                }                
+                }
             }
-        }        
+        }
 
-        /* 4.5.2.30 Operation */          
-        
+        /* 4.5.2.30 Operation */
+
         if (Model.getFacade().isAOperation(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("concurrency")) {
@@ -652,10 +653,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().isRoot(subject);
                 }
             }
-        }                
-        
-        /* 4.5.2.31 Parameter */          
-        
+        }
+
+        /* 4.5.2.31 Parameter */
+
         if (Model.getFacade().isAParameter(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("defaultValue")) {
@@ -665,10 +666,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getKind(subject);
                 }
             }
-        }                
+        }
 
-        /* 4.5.2.35 ProgrammingLanguageDataType */          
-        
+        /* 4.5.2.35 ProgrammingLanguageDataType */
+
         // Gone from UML 2.x, so unsupported here
 //        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
 //            if (type.equals(".")) {
@@ -676,7 +677,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 //                    return Model.getFacade().getExpression(subject);
 //                }
 //            }
-//        }                
+//        }
 
         /* 4.5.2.37 StructuralFeature */
 
@@ -699,8 +700,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getType(subject);
                 }
             }
-        }        
-        
+        }
+
         /* 4.5.2.38 TemplateArgument */
 
         if (Model.getFacade().isATemplateArgument(subject)) {
@@ -712,8 +713,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getModelElement(subject);
                 }
             }
-        }        
-        
+        }
+
         /* 4.5.2.39 TemplateParameter */
 
         if (Model.getFacade().isATemplateParameter(subject)) {
@@ -722,16 +723,16 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getDefaultElement(subject);
                 }
             }
-        }                
-        
+        }
+
         /* 4.11.3.5 UseCase */
         if (Model.getFacade().isAUseCase(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("specificationPath")) {
-                    /*  The operation specificationPath results in a set containing 
+                    /*  The operation specificationPath results in a set containing
                      * all surrounding Namespaces that are not instances of
                      *  Package.
-                     *  specificationPath : Set(Namespace) 
+                     *  specificationPath : Set(Namespace)
                      * specificationPath = self.allSurroundingNamespaces->select(n |
                      *    n.oclIsKindOf(Subsystem) or n.oclIsKindOf(Class))
                      **/
@@ -747,13 +748,13 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             }
         }
-        
+
         /* 4.5.3.2 AssociationClass */
 
         if (Model.getFacade().isAAssociationClass(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("allConnections")) {
-                    /* The operation allConnections results in the set of all 
+                    /* The operation allConnections results in the set of all
                      * AssociationEnds of the AssociationClass, including all
                      * connections defined by its parent (transitive closure).
                      */
@@ -763,12 +764,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             "self.connection->union(self.parent->select("
                           + "s | s.oclIsKindOf(Association))->collect("
                           + "a : Association | a.allConnections))->asSet()");
-                }                              
-            }            
+                }
+            }
         }
 
-        /* 4.6.2.3 Stereotype */          
-       
+        /* 4.6.2.3 Stereotype */
+
         if (Model.getFacade().isAStereotype(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("baseClass")) {
@@ -787,8 +788,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.6.2.4 TagDefinition */          
-        
+        /* 4.6.2.4 TagDefinition */
+
         if (Model.getFacade().isATagDefinition(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("multiplicity")) {
@@ -807,8 +808,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }
 
-        /* 4.6.2.5 TaggedValue */          
-        
+        /* 4.6.2.5 TaggedValue */
+
         if (Model.getFacade().isATaggedValue(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("dataValue")) {
@@ -837,14 +838,14 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             vt.put("self", oldSelf);
             return ret;
         } catch (InvalidOclException e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
             return null;
         }
     }
 
     /**
      * Add the metamodel-metaclasses as built-in symbols
-     * 
+     *
      * @param sym the symbol
      * @return the value of the symbol
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)

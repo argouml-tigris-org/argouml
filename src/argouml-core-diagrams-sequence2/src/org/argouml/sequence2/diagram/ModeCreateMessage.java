@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.sequence2.diagram;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
@@ -52,7 +53,7 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * Mode to create a link between two FigClassifierRoles. 
+ * Mode to create a link between two FigClassifierRoles.
  * TODO: Provide a ModeFactory and then this class can become package scope.
  * @author penyaskito
  */
@@ -62,11 +63,11 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ModeCreateMessage.class);
-    
+        Logger.getLogger(ModeCreateMessage.class.getName());
+
     private static final int DEFAULT_ACTIVATION_HEIGHT = 50;
     private static final int DEFAULT_MESSAGE_GAP = 20;
-    
+
     /**
      * The constructor.
      *
@@ -74,9 +75,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
      */
     public ModeCreateMessage(Editor par) {
         super(par);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("ModeCreateMessage created with editor:" + editor);
-        }
+        LOG.log(Level.FINE, "ModeCreateMessage created with editor:{0}", editor);
     }
 
     /**
@@ -84,53 +83,51 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
      */
     public ModeCreateMessage() {
         super();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("ModeCreateMessage created without editor.");
-        }
+        LOG.log(Level.FINE, "ModeCreateMessage created without editor.");
     }
-    
+
     @Override
     public void endAttached(FigEdge fe) {
         super.endAttached(fe);
         final SequenceDiagramGraphModel gm =
             (SequenceDiagramGraphModel) getEditor().getGraphModel();
-        
+
         final FigMessage figMessage = (FigMessage) fe;
 
         Object message = fe.getOwner();
         FigClassifierRole dcr = (FigClassifierRole) fe.getDestFigNode();
         FigClassifierRole scr = (FigClassifierRole) fe.getSourceFigNode();
-        
+
         ensureSpace(figMessage);
-        
+
         if (figMessage.isSynchCallMessage()) {
             // Auto-create a return message for a call message
-            
+
             // TODO: Maybe a return message already exists. Check first and
             // and if the first found has no activator then set this call
             // message as the activator and skip the code below.
-            
+
             // get the source of the return message
             final Object returnMessageSource =
                 Model.getFacade().getReceiver(message);
             // get the dest of the return message
             final Object returnMessageDest =
                 Model.getFacade().getSender(message);
-            
+
             // create the return message modelelement with the interaction
             // and the collaboration
             final Object returnMessage = gm.connectMessage(
                     returnMessageSource,
-                    returnMessageDest, 
+                    returnMessageDest,
                     Model.getMessageSort().getReply());
-            
+
             // Correct the activator value
             Model.getCollaborationsHelper().setActivator(
                     returnMessage, message);
-            
-            final LayerPerspective layer = 
+
+            final LayerPerspective layer =
                 (LayerPerspective) editor.getLayerManager().getActiveLayer();
-            
+
             FigMessage returnEdge = null;
 
             List<Fig> figs = layer.getContents();
@@ -145,7 +142,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             returnEdge.setSourceFigNode(dcr);
             returnEdge.setDestPortFig(fe.getSourcePortFig());
             returnEdge.setDestFigNode(scr);
-            
+
             final Point[] points = returnEdge.getPoints();
             for (int i = 0; i < points.length; ++i) {
                 // TODO: this shouldn't be hardcoded
@@ -154,11 +151,11 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                 points[i].y = fe.getFirstPoint().y + DEFAULT_ACTIVATION_HEIGHT;
             }
             returnEdge.setPoints(points);
-                           
+
             if (returnEdge.isSelfMessage()) {
                 returnEdge.convertToArc();
             }
-            
+
             // Mark the contain FigPoly as complete.
             // TODO: I think more work is needed in GEF to either do this
             // automatically when both ends are set or at the very least
@@ -171,7 +168,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         }
         FigPoly poly = (FigPoly) fe.getFig();
         poly.setComplete(true);
-        
+
         dcr.createActivations();
         dcr.renderingChanged();
         if (dcr != scr) {
@@ -179,7 +176,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             scr.renderingChanged();
         }
     }
-    
+
     /**
      * Called for a call message. Make sure there is enough space to fit the
      * return message that will be created below.
@@ -191,7 +188,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                 (FigClassifierRole) getSourceFigNode(),
                 figMessage,
                 false);
-        
+
         if (firstMessageAbove != null) {
             final int figMessageY = figMessage.getFirstPoint().y;
             final int firstMessageY = firstMessageAbove.getFirstPoint().y;
@@ -201,32 +198,32 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                         firstMessageY + DEFAULT_MESSAGE_GAP - figMessageY);
             }
         }
-        
+
         // Make sure there is the minimum gap below the message being drawn
-        LOG.info("Looking for minimum space below");
+        LOG.log(Level.INFO, "Looking for minimum space below");
         final FigMessage firstMessageBelow = getNearestMessage(
                 (FigClassifierRole) getSourceFigNode(),
                 figMessage,
                 true);
-        
+
         final int heightPlusGap;
         if (figMessage.isSynchCallMessage()) {
-            heightPlusGap = 
+            heightPlusGap =
                 DEFAULT_ACTIVATION_HEIGHT + DEFAULT_MESSAGE_GAP;
         } else {
-            heightPlusGap = 
+            heightPlusGap =
                 DEFAULT_MESSAGE_GAP;
         }
-        
-        if (firstMessageBelow != null 
-                && firstMessageBelow.getFirstPoint().y 
+
+        if (firstMessageBelow != null
+                && firstMessageBelow.getFirstPoint().y
                 < figMessage.getFirstPoint().y + heightPlusGap) {
-            
+
             final int dy =
                 (figMessage.getFirstPoint().y
-                + heightPlusGap) 
+                + heightPlusGap)
                 - firstMessageBelow.getFirstPoint().y;
-            
+
             for (FigMessage fig : getMessagesBelow(figMessage)) {
                 fig.translateEdge(0, dy);
                 if (fig.isCreateMessage()) {
@@ -237,7 +234,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             }
         }
     }
-    
+
     /**
      * Get a list of FigMessages below (higher Y position) than the FigMessage
      * provided.
@@ -257,7 +254,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         }
         return messagesBelow;
     }
-    
+
     /**
      * Get the first FigMessage below (higher Y position) the given
      * FigMessage.
@@ -268,9 +265,9 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             final FigClassifierRole figClassifierRole,
             final FigMessage figMessage,
             final boolean below) {
-        
+
         FigMessage nearestMessage = null;
-        
+
         for (FigEdge fe : figClassifierRole.getFigEdges()) {
             if (fe instanceof FigMessage && fe != figMessage) {
                 final FigMessage fm = (FigMessage) fe;
@@ -286,10 +283,10 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                 }
             }
         }
-        
+
         return nearestMessage;
     }
-    
+
     /**
      * Return true if a given y co-ordinate is between the two given messages
      * @param y the value to test
@@ -301,7 +298,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             final int val,
             final FigMessage message1,
             final FigMessage message2) {
-        if ((message1 == null || val >= message1.getFirstPoint().y) 
+        if ((message1 == null || val >= message1.getFirstPoint().y)
                 && (message2 == null || val <= message2.getFirstPoint().y)) {
             return true;
         }

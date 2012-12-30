@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
@@ -59,15 +60,15 @@ import org.argouml.model.Model;
  */
 public class WizBreakCircularComp extends UMLWizard {
     private static final Logger LOG =
-	Logger.getLogger(WizBreakCircularComp.class);
+        Logger.getLogger(WizBreakCircularComp.class.getName());
 
-    private String instructions1 = 
+    private String instructions1 =
         Translator.localize("critics.WizBreakCircularComp-ins1");
 
-    private String instructions2 = 
+    private String instructions2 =
         Translator.localize("critics.WizBreakCircularComp-ins2");
 
-    private String instructions3 = 
+    private String instructions3 =
         Translator.localize("critics.WizBreakCircularComp-ins3");
 
     private WizStepChoice step1 = null;
@@ -126,9 +127,9 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object toType = Model.getFacade().getType(toEnd);
 		String ascName = Model.getFacade().getName(asc);
 		String toName = Model.getFacade().getName(toType);
-		String s = ascName 
-                    + " " 
-                    + Translator.localize("critics.WizBreakCircularComp-from") 
+		String s = ascName
+                    + " "
+                    + Translator.localize("critics.WizBreakCircularComp-from")
                     + fromName
                     + " "
                     + Translator.localize("critics.WizBreakCircularComp-to")
@@ -170,7 +171,8 @@ public class WizBreakCircularComp extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-	LOG.debug("doAction " + oldStep);
+        LOG.log(Level.FINE, "doAction {0}", oldStep);
+
 	int choice = -1;
 	ToDoItem item = (ToDoItem) getToDoItem();
 	ListSet offs = item.getOffenders();
@@ -215,7 +217,7 @@ public class WizBreakCircularComp extends UMLWizard {
 		            ae1,
 		            Model.getAggregationKind().getNone());
 		} catch (Exception pve) {
-		    LOG.error("could not set aggregation", pve);
+                    LOG.log(Level.SEVERE, "could not set aggregation", pve);
 		}
 	    }
 	    break;

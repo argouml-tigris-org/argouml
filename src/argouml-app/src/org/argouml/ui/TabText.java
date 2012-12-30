@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -49,7 +51,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -77,7 +78,7 @@ public class TabText
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TabText.class);
+    private static final Logger LOG = Logger.getLogger(TabText.class.getName());
 
     /**
      * Create a text tab without a toolbar.
@@ -201,7 +202,7 @@ public class TabText
         if (s == null) {
             s = "(null)";
         }
-        LOG.debug("parsing text:" + s);
+        LOG.log(Level.FINE, "parsing text: {0}", s);
     }
 
     /*

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.ui.explorer;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoProfileEvent;
@@ -67,7 +68,7 @@ import org.argouml.notation.Notation;
  * TODO: In some cases (test cases) this object is created without setting
  * the treeModel. I (Linus) will add tests for this now. It would be better
  * if this is created only when the Explorer is created. <p>
- * 
+ *
  * TODO: The ExplorerTreeNode also listens to some events
  * (from Diagrams), so it does not follow the rule above.
  *
@@ -76,9 +77,9 @@ import org.argouml.notation.Notation;
  */
 public final class ExplorerEventAdaptor
     implements PropertyChangeListener {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ExplorerEventAdaptor.class);
+        Logger.getLogger(ExplorerEventAdaptor.class.getName());
 
     /**
      * The singleton instance.
@@ -121,9 +122,9 @@ public final class ExplorerEventAdaptor
     }
 
     /**
-     * The tree structure has changed significantly.  
+     * The tree structure has changed significantly.
      * Inform the associated tree model.
-     * 
+     *
      * TODO:  This shouldn't be public.  Components desiring to
      * inform the Explorer of changes should send events.
      * @deprecated by mvw in V0.25.4. Use events instead.
@@ -136,12 +137,12 @@ public final class ExplorerEventAdaptor
         treeModel.structureChanged();
     }
 
-    
+
     /**
      * forwards this event to the tree model.
      *
      * @param element the modelelement to be added
-     * 
+     *
      * TODO:  This shouldn't be public.  Components desiring to
      * inform the Explorer of changes should send events.
      */
@@ -156,7 +157,7 @@ public final class ExplorerEventAdaptor
      * forwards this event to the tree model.
      *
      * @param element the modelelement to be changed
-     * 
+     *
      * TODO:  This shouldn't be public.  Components desiring to
      * inform the Explorer of changes should send events.
      */
@@ -197,15 +198,12 @@ public final class ExplorerEventAdaptor
                     try {
                         modelChanged((UmlChangeEvent) pce);
                     } catch (InvalidElementException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("updateLayout method accessed "
-                                    + "deleted element", e);
-                        }
+                        LOG.log(Level.FINE, "updateLayout method accessed deleted element", e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
-            
+
         } else if (pce.getPropertyName().equals(
                 // TODO: No one should be sending the deprecated event
                 // from outside ArgoUML, but keep responding to it for now
@@ -229,7 +227,7 @@ public final class ExplorerEventAdaptor
             }
         }
     }
-    
+
     private void modelChanged(UmlChangeEvent event) {
         if (event instanceof AttributeChangeEvent) {
             // TODO: Can this be made more restrictive?
@@ -254,11 +252,11 @@ public final class ExplorerEventAdaptor
                     .getSource());
         }
     }
-    
-    
+
+
     /**
      * Listener for additions and removals of profiles.
-     * Since they generally have a major impact on the explorer tree, 
+     * Since they generally have a major impact on the explorer tree,
      * we simply update them completely.
      *
      * @author Michiel
@@ -272,6 +270,6 @@ public final class ExplorerEventAdaptor
         public void profileRemoved(ArgoProfileEvent e) {
             structureChanged();
         }
-        
+
     }
 }

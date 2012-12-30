@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,9 @@ import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
@@ -82,7 +83,8 @@ public final class ModuleLoader2 {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ModuleLoader2.class);
+    private static final Logger LOG =
+        Logger.getLogger(ModuleLoader2.class.getName());
 
     /**
      * This map contains the module loader information about the module.<p>
@@ -90,10 +92,10 @@ public final class ModuleLoader2 {
      * The keys is the list of available modules.
      */
     private Map<ModuleInterface, ModuleStatus> moduleStatus;
-    
+
     /**
      * List of locations that we've searched and/or loaded modules
-     * from.  This is for information purposes only to allow it to 
+     * from.  This is for information purposes only to allow it to
      * be displayed in the settings Environment tab.
      */
     private List<String> extensionLocations = new ArrayList<String>();
@@ -122,7 +124,7 @@ public final class ModuleLoader2 {
      * Constructor for this object.
      */
     private ModuleLoader2() {
-	moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
+        moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
         computeExtensionLocations();
     }
 
@@ -132,7 +134,7 @@ public final class ModuleLoader2 {
      * @return the instance
      */
     public static ModuleLoader2 getInstance() {
-	return INSTANCE;
+        return INSTANCE;
     }
 
     /**
@@ -160,7 +162,7 @@ public final class ModuleLoader2 {
      * @return A Collection of all available modules.
      */
     private Collection<ModuleInterface> availableModules() {
-	return Collections.unmodifiableCollection(moduleStatus.keySet());
+        return Collections.unmodifiableCollection(moduleStatus.keySet());
     }
 
     // Access methods for program infrastructure.
@@ -173,7 +175,7 @@ public final class ModuleLoader2 {
      *                       some of the modules is allowed to fail.
      */
     public static void doLoad(boolean failingAllowed) {
-	getInstance().doInternal(failingAllowed);
+        getInstance().doInternal(failingAllowed);
     }
 
     // Access methods for modules that need to query about the status of
@@ -185,7 +187,7 @@ public final class ModuleLoader2 {
      * @param name is the module name of the queried module
      */
     public static boolean isEnabled(String name) {
-	return getInstance().isEnabledInternal(name);
+        return getInstance().isEnabledInternal(name);
     }
 
     // Access methods for the GUI that the user uses to enable and disable
@@ -197,13 +199,13 @@ public final class ModuleLoader2 {
      * @return all the names.
      */
     public static Collection<String> allModules() {
-	Collection<String> coll = new HashSet<String>();
+        Collection<String> coll = new HashSet<String>();
 
-	for (ModuleInterface mf : getInstance().availableModules()) {
-	    coll.add(mf.getName());
-	}
+        for (ModuleInterface mf : getInstance().availableModules()) {
+            coll.add(mf.getName());
+        }
 
-	return coll;
+        return coll;
     }
 
     /**
@@ -213,7 +215,7 @@ public final class ModuleLoader2 {
      * @return <code>true</code> if the module is selected.
      */
     public static boolean isSelected(String name) {
-	return getInstance().isSelectedInternal(name);
+        return getInstance().isSelectedInternal(name);
     }
 
     /**
@@ -224,18 +226,18 @@ public final class ModuleLoader2 {
      * @return <code>true</code> if the module is selected.
      */
     private boolean isSelectedInternal(String name) {
-	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-	if (entry != null) {
-	    ModuleStatus status = entry.getValue();
+        if (entry != null) {
+            ModuleStatus status = entry.getValue();
 
-	    if (status == null) {
-		return false;
-	    }
+            if (status == null) {
+                return false;
+            }
 
-	    return status.isSelected();
-	}
-	return false;
+            return status.isSelected();
+        }
+        return false;
     }
 
     /**
@@ -245,7 +247,7 @@ public final class ModuleLoader2 {
      * @param value Selected or not.
      */
     public static void setSelected(String name, boolean value) {
-	getInstance().setSelectedInternal(name, value);
+        getInstance().setSelectedInternal(name, value);
     }
 
     /**
@@ -256,13 +258,13 @@ public final class ModuleLoader2 {
      * @param value Selected or not.
      */
     private void setSelectedInternal(String name, boolean value) {
-	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-	if (entry != null) {
-	    ModuleStatus status = entry.getValue();
+        if (entry != null) {
+            ModuleStatus status = entry.getValue();
 
-	    status.setSelected(value);
-	}
+            status.setSelected(value);
+        }
     }
 
     /**
@@ -285,13 +287,13 @@ public final class ModuleLoader2 {
      * @return The description.
      */
     private String getDescriptionInternal(String name) {
-	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-	if (entry == null) {
-	    throw new IllegalArgumentException("Module does not exist.");
-	}
+        if (entry == null) {
+            throw new IllegalArgumentException("Module does not exist.");
+        }
 
-	ModuleInterface module = entry.getKey();
+        ModuleInterface module = entry.getKey();
         StringBuffer sb = new StringBuffer();
         String desc = module.getInfo(ModuleInterface.DESCRIPTION);
         if (desc != null) {
@@ -320,34 +322,36 @@ public final class ModuleLoader2 {
      * turning on.
      */
     private void doInternal(boolean failingAllowed) {
-	huntForModules();
+        huntForModules();
 
-	boolean someModuleSucceeded;
-	do {
-	    someModuleSucceeded = false;
+        boolean someModuleSucceeded;
+        do {
+            someModuleSucceeded = false;
 
-	    for (ModuleInterface module : getInstance().availableModules()) {
+            for (ModuleInterface module : getInstance().availableModules()) {
 
-		ModuleStatus status = moduleStatus.get(module);
+                ModuleStatus status = moduleStatus.get(module);
 
-		if (status == null) {
-		    continue;
-		}
+                if (status == null) {
+                    continue;
+                }
 
-		if (!status.isEnabled() && status.isSelected()) {
-		    try {
-		        if (module.enable()) {
-		            someModuleSucceeded = true;
-		            status.setEnabled();
-		        }
-		    }
-		    // Catch all exceptions and errors, however severe
-		    catch (Throwable e) {                       
-		        LOG.error("Exception or error while trying to "
-                                + "enable module " + module.getName(), e);
+                if (!status.isEnabled() && status.isSelected()) {
+                    try {
+                        if (module.enable()) {
+                            someModuleSucceeded = true;
+                            status.setEnabled();
+                        }
+                    }
+                    // Catch all exceptions and errors, however severe
+		    catch (Throwable e) {
+                        LOG.log(Level.SEVERE,
+                                "Exception or error while trying to "
+                                + "enable module " + module.getName(),
+                                e);
 		    }
 		} else if (status.isEnabled() && !status.isSelected()) {
-		    try { 
+		    try {
 		        if (module.disable()) {
 		            someModuleSucceeded = true;
 		            status.setDisabled();
@@ -355,8 +359,10 @@ public final class ModuleLoader2 {
 		    }
                     // Catch all exceptions and errors, however severe
 		    catch (Throwable e) {
-		        LOG.error("Exception or error while trying to "
-                                + "disable module " + module.getName(), e);
+                        LOG.log(Level.SEVERE,
+                                "Exception or error while trying to "
+                                + "disable module " + module.getName(),
+                                e);
 		    }
 		}
 	    }
@@ -388,11 +394,13 @@ public final class ModuleLoader2 {
 		}
 
 		if (status.isSelected()) {
-		    LOG.warn("ModuleLoader was not able to enable module "
-		             + module.getName());
+                    LOG.log(Level.WARNING,
+                            "ModuleLoader was not able to enable module "
+                            + module.getName());
 		} else {
-		    LOG.warn("ModuleLoader was not able to disable module "
-		             + module.getName());
+                    LOG.log(Level.WARNING,
+                            "ModuleLoader was not able to disable module "
+                            + module.getName());
 		}
 	    }
 	}
@@ -459,19 +467,20 @@ public final class ModuleLoader2 {
                 try {
                     addClass(className);
                 } catch (ClassNotFoundException e) {
-                    LOG.error("Could not load module from class " + className);
+                    LOG.log(Level.SEVERE,
+                            "Could not load module from class " + className);
                 }
             }
         }
     }
-    
+
     /**
      * Find and enable modules from our "ext" directory and from the
      * directory specified in "argo.ext.dir".<p>
      */
     private void huntForModulesFromExtensionDir() {
         for (String location : extensionLocations) {
-            huntModulesFromNamedDirectory(location);            
+            huntModulesFromNamedDirectory(location);
         }
     }
 
@@ -499,7 +508,7 @@ public final class ModuleLoader2 {
         String argoHome = null;
 
         if (argoRoot != null) {
-            LOG.info("argoRoot is " + argoRoot);
+            LOG.log(Level.INFO, "argoRoot is {0}", argoRoot);
             if (argoRoot.startsWith(FILE_PREFIX)) {
                 argoHome =
                     new File(argoRoot.substring(FILE_PREFIX.length()))
@@ -509,15 +518,16 @@ public final class ModuleLoader2 {
             }
 
             try {
-                argoHome = java.net.URLDecoder.decode(argoHome, 
+                argoHome = java.net.URLDecoder.decode(argoHome,
                         Argo.getEncoding());
             } catch (UnsupportedEncodingException e) {
-                LOG.warn("Encoding " 
-                        + Argo.getEncoding() 
+                LOG.log(Level.WARNING,
+                        "Encoding "
+                        + Argo.getEncoding()
                         + " is unknown.");
             }
 
-            LOG.info("argoHome is " + argoHome);
+            LOG.log(Level.INFO, "argoHome is {0}", argoHome);
         }
 
         if (argoHome != null) {
@@ -536,7 +546,7 @@ public final class ModuleLoader2 {
             extensionLocations.add(extdir);
         }
     }
-    
+
     /**
      * Get the list of locations that we've loaded extension modules from.
      * @return A list of the paths we've loaded from.
@@ -569,12 +579,12 @@ public final class ModuleLoader2 {
 	                try {
 	                    processJarFile(classloader, file);
 	                } catch (ClassNotFoundException e) {
-	                    LOG.error("The class is not found.", e);
+                            LOG.log(Level.SEVERE, "The class is not found.", e);
 	                    return;
 	                }
 		    }
 		} catch (IOException ioe) {
-		    LOG.error("Cannot open Jar file " + file, ioe);
+                    LOG.log(Level.SEVERE, "Cannot open Jar file " + file, ioe);
 		}
 	    }
 	}
@@ -594,12 +604,12 @@ public final class ModuleLoader2 {
     private void processJarFile(ClassLoader classloader, File file)
         throws ClassNotFoundException {
 
-	LOG.info("Opening jar file " + file);
+        LOG.log(Level.INFO, "Opening jar file {0}", file);
         JarFile jarfile;
 	try {
 	    jarfile = new JarFile(file);
 	} catch (IOException e) {
-	    LOG.error("Unable to open " + file, e);
+            LOG.log(Level.SEVERE, "Unable to open " + file, e);
             return;
 	}
 
@@ -609,19 +619,19 @@ public final class ModuleLoader2 {
             if (manifest == null) {
                 // We expect all extensions to have a manifest even though we
                 // can operate without one if necessary.
-                LOG.warn(file + " does not have a manifest");
+                LOG.log(Level.WARNING,file + " does not have a manifest");
             }
         } catch (IOException e) {
-            LOG.error("Unable to read manifest of " + file, e);
+            LOG.log(Level.SEVERE, "Unable to read manifest of " + file, e);
             return;
         }
-        
+
         // TODO: It is a performance drain to load all classes at startup time.
         // They should be lazy loaded when needed.  Instead of scanning all
-        // classes for ones which implement our loadable module interface, we 
+        // classes for ones which implement our loadable module interface, we
         // should use a manifest entry or a special name/name pattern that we
         // look for to find the single main module class to load here.  - tfm
-	
+
         boolean loadedClass = false;
         if (manifest == null) {
             Enumeration<JarEntry> jarEntries = jarfile.entries();
@@ -644,12 +654,13 @@ public final class ModuleLoader2 {
         // Add this to search list for I18N properties
         // (Done for both modules & localized property file sets)
         Translator.addClassLoader(classloader);
-        
+
         // If it didn't have a loadable module class and it doesn't look like
         // a localized property set, warn the user that something funny is in
         // their extension directory
         if (!loadedClass && !file.getName().contains("argouml-i18n-")) {
-            LOG.error("Failed to find any loadable ArgoUML modules in jar "
+            LOG.log(Level.SEVERE,
+                    "Failed to find any loadable ArgoUML modules in jar "
                     + file);
         }
     }
@@ -657,7 +668,7 @@ public final class ModuleLoader2 {
     /**
      * Process a JAR file entry, attempting to load anything that looks like a
      * Java class.
-     * 
+     *
      * @param classloader
      *            the classloader to use when loading the class
      * @param cname
@@ -702,28 +713,33 @@ public final class ModuleLoader2 {
     private boolean addClass(ClassLoader classLoader, String classname)
         throws ClassNotFoundException {
 
-        LOG.info("Loading module " + classname);
+        LOG.log(Level.INFO, "Loading module " + classname);
         Class moduleClass;
         try {
             moduleClass = classLoader.loadClass(classname);
         } catch (UnsupportedClassVersionError e) {
-            LOG.error("Unsupported Java class version for " + classname);
+            LOG.log(Level.SEVERE,
+                    "Unsupported Java class version for " + classname);
             return false;
         } catch (NoClassDefFoundError e) {
-            LOG.error("Unable to find required class while loading "
+            LOG.log(Level.SEVERE,
+                    "Unable to find required class while loading "
                     + classname + " - may indicate an obsolete"
-                    + " extension module or an unresolved dependency", e);
+                    + " extension module or an unresolved dependency",
+                    e);
             return false;
         } catch (Throwable e) {
             if (e instanceof ClassNotFoundException) {
                 throw (ClassNotFoundException) e;
             }
-            LOG.error("Unexpected error while loading " + classname, e);
+            LOG.log(Level.SEVERE,
+                    "Unexpected error while loading " + classname,
+                    e);
             return false;
         }
-        
+
         if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {
-            LOG.debug("The class " + classname + " is not a module.");
+            LOG.log(Level.FINE, "The class {0} is not a module.", classname);
             return false;
         }
 
@@ -732,26 +748,34 @@ public final class ModuleLoader2 {
             defaultConstructor =
                     moduleClass.getDeclaredConstructor(new Class[] {});
         } catch (SecurityException e) {
-            LOG.error("The default constructor for class " + classname
-                      + " is not accessable.",
-                      e);
+            LOG.log(Level.SEVERE,
+                    "The default constructor for class " + classname
+                    + " is not accessable.",
+                    e);
             return false;
         } catch (NoSuchMethodException e) {
-            LOG.error("The default constructor for class " + classname
-                      + " is not found.", e);
+            LOG.log(Level.SEVERE,
+                    "The default constructor for class " + classname
+                    + " is not found.",
+                    e);
             return false;
         } catch (NoClassDefFoundError e) {
-            LOG.error("Unable to find required class while loading "
+            LOG.log(Level.SEVERE,
+                    "Unable to find required class while loading "
                     + classname + " - may indicate an obsolete"
-                    + " extension module or an unresolved dependency", e);
+                    + " extension module or an unresolved dependency",
+                    e);
             return false;
         } catch (Throwable e) {
-            LOG.error("Unexpected error while loading " + classname, e);
+            LOG.log(Level.SEVERE,
+                    "Unexpected error while loading " + classname,
+                    e);
             return false;
         }
 
         if (!Modifier.isPublic(defaultConstructor.getModifiers())) {
-            LOG.error("The default constructor for class " + classname
+            LOG.log(Level.SEVERE,
+                    "The default constructor for class " + classname
                     + " is not public.  Not loaded.");
             return false;
         }
@@ -759,41 +783,54 @@ public final class ModuleLoader2 {
         try {
             moduleInstance = defaultConstructor.newInstance(new Object[]{});
         } catch (IllegalArgumentException e) {
-            LOG.error("The constructor for class " + classname
-                    + " is called with incorrect argument.", e);
+            LOG.log(Level.SEVERE,
+                    "The constructor for class " + classname
+                    + " is called with incorrect argument.",
+                    e);
             return false;
         } catch (InstantiationException e) {
-            LOG.error("The constructor for class " + classname
-                    + " threw an exception.", e);
+            LOG.log(Level.SEVERE,
+                    "The constructor for class " + classname
+                    + " threw an exception.",
+                    e);
             return false;
         } catch (IllegalAccessException e) {
-            LOG.error("The constructor for class " + classname
-                    + " is not accessible.", e);
+            LOG.log(Level.SEVERE,
+                    "The constructor for class " + classname
+                    + " is not accessible.",
+                    e);
             return false;
         } catch (InvocationTargetException e) {
-            LOG.error("The constructor for class " + classname
-                    + " cannot be called.", e);
+            LOG.log(Level.SEVERE,
+                    "The constructor for class " + classname
+                    + " cannot be called.",
+                    e);
             return false;
         } catch (NoClassDefFoundError e) {
-            LOG.error("Unable to find required class while instantiating "
+            LOG.log(Level.SEVERE,
+                    "Unable to find required class while instantiating "
                     + classname + " - may indicate an obsolete"
-                    + " extension module or an unresolved dependency", e);
+                    + " extension module or an unresolved dependency",
+                    e);
             return false;
         } catch (Throwable e) {
-            LOG.error("Unexpected error while instantiating " + classname, e);
+            LOG.log(Level.SEVERE,
+                    "Unexpected error while instantiating " + classname,
+                    e);
             return false;
         }
 
         // The following check should have been satisfied before we
         // instantiated the module, but double check again
         if (!(moduleInstance instanceof ModuleInterface)) {
-            LOG.error("The class " + classname + " is not a module.");
+            LOG.log(Level.SEVERE,
+                    "The class " + classname + " is not a module.");
             return false;
         }
         ModuleInterface mf = (ModuleInterface) moduleInstance;
 
         addModule(mf);
-        LOG.info("Succesfully loaded module " + classname);
+        LOG.log(Level.INFO, "Succesfully loaded module {0}", classname);
         return true;
     }
 

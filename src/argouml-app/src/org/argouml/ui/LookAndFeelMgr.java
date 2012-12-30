@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@
 package org.argouml.ui;
 
 import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
@@ -53,7 +55,6 @@ import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 
@@ -78,7 +79,7 @@ public final class LookAndFeelMgr {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(LookAndFeelMgr.class);
+    private static final Logger LOG = Logger.getLogger(LookAndFeelMgr.class.getName());
 
     /**
      * The instance.
@@ -451,13 +452,13 @@ public final class LookAndFeelMgr {
                 UIManager.setLookAndFeel(lafClass);
             }
         } catch (UnsupportedLookAndFeelException e) {
-            LOG.error(e);
+            LOG.log(Level.SEVERE, "", e);
         } catch (ClassNotFoundException e) {
-            LOG.error(e);
+            LOG.log(Level.SEVERE, "", e);
         } catch (InstantiationException e) {
-            LOG.error(e);
+            LOG.log(Level.SEVERE, "", e);
         } catch (IllegalAccessException e) {
-            LOG.error(e);
+            LOG.log(Level.SEVERE, "", e);
         }
     }
 
@@ -479,13 +480,13 @@ public final class LookAndFeelMgr {
                 MetalLookAndFeel.setCurrentTheme(theme);
                 UIManager.setLookAndFeel(METAL_LAF_CLASS_NAME);
             } catch (UnsupportedLookAndFeelException e) {
-                LOG.error(e);
+                LOG.log(Level.SEVERE, "", e);
             } catch (ClassNotFoundException e) {
-                LOG.error(e);
+                LOG.log(Level.SEVERE, "", e);
             } catch (InstantiationException e) {
-                LOG.error(e);
+                LOG.log(Level.SEVERE, "", e);
             } catch (IllegalAccessException e) {
-                LOG.error(e);
+                LOG.log(Level.SEVERE, "", e);
             }
         }
     }

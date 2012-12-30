@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
@@ -57,7 +59,7 @@ import org.tigris.gef.presentation.FigNode;
 public class ClassdiagramModelElementFactory
 {
     private static final Logger LOG =
-	Logger.getLogger(ClassdiagramModelElementFactory.class);
+        Logger.getLogger(ClassdiagramModelElementFactory.class.getName());
 
     /**
      * The singleton.
@@ -86,8 +88,9 @@ public class ClassdiagramModelElementFactory
         } else if (f instanceof FigEdgeNote) {
             return (new ClassdiagramNoteEdge((FigEdgeNote) f));
         }
-        LOG.debug("Do not know how to deal with: " + f.getClass().getName()
-                + "\nUsing standard layout");
+        LOG.log(Level.FINE,
+                "Do not know how to deal with: {0}\nUsing standard layout",
+                f.getClass().getName());
         return null;
     }
 }

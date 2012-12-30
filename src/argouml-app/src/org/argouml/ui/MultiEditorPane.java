@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -54,7 +56,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -85,13 +86,14 @@ public class MultiEditorPane
         modeFactories.add(new ModeLabelDragFactory());
         modeFactories.add(new ModeSelectFactory());
         modeFactories.add(new ModePopupFactory());
-        modeFactories.add(new ModeDragScrollFactory()); 
+        modeFactories.add(new ModeDragScrollFactory());
         Globals.setDefaultModeFactories(modeFactories);
     }
-    
+
     /** logger */
-    private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
-        
+    private static final Logger LOG =
+        Logger.getLogger(MultiEditorPane.class.getName());
+
     /**
      * Classes for tabs to be included in the property panel.
      * (previously stored in org/argouml/argo.ini)
@@ -107,9 +109,9 @@ public class MultiEditorPane
 
     private JTabbedPane tabs = new JTabbedPane(SwingConstants.BOTTOM);
 
-    private List<JPanel> tabPanels = 
+    private List<JPanel> tabPanels =
         new ArrayList<JPanel>(Arrays.asList(tabInstances));
-    
+
     private Component lastTab;
 
     /**
@@ -120,7 +122,7 @@ public class MultiEditorPane
      * can be edited.
      */
     public MultiEditorPane() {
-        LOG.info("making MultiEditorPane");
+        LOG.log(Level.INFO, "making MultiEditorPane");
 
         setLayout(new BorderLayout());
         add(tabs, BorderLayout.CENTER);
@@ -255,8 +257,10 @@ public class MultiEditorPane
             lastTab.setVisible(false);
         }
         lastTab = tabs.getSelectedComponent();
-        LOG.debug(
-            "MultiEditorPane state changed:" + lastTab.getClass().getName());
+        LOG.log(Level.FINE,
+                "MultiEditorPane state changed: {0}",
+                lastTab.getClass().getName());
+
         lastTab.setVisible(true);
         if (lastTab instanceof TabModelTarget) {
             ((TabModelTarget) lastTab).refresh();
@@ -321,7 +325,7 @@ public class MultiEditorPane
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("single: " + tabs.getComponentAt(tab).toString());
+        LOG.log(Level.FINE, "single: {0}", tabs.getComponentAt(tab).toString());
     }
 
     /**
@@ -333,7 +337,7 @@ public class MultiEditorPane
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("double: " + tabs.getComponentAt(tab).toString());
+        LOG.log(Level.FINE, "double: {0}", tabs.getComponentAt(tab).toString());
 //        JPanel t = (JPanel) tabPanels.elementAt(tab);
         // Currently this feature is disabled for ArgoUML.
 //        if (t instanceof AbstractArgoJPanel)
@@ -374,4 +378,3 @@ public class MultiEditorPane
     }
 
 }
-

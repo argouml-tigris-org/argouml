@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -46,7 +48,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -65,9 +66,9 @@ import org.argouml.uml.diagram.ArgoDiagram;
  */
 class DiagramNameDocument implements DocumentListener, TargetListener {
 
-    private static final Logger LOG = 
-        Logger.getLogger(DiagramNameDocument.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(DiagramNameDocument.class.getName());
+
     private JTextField field;
     private boolean stopEvents = false;
 
@@ -171,14 +172,14 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
                     // Provide feedback to the user that their name was
                     // not accepted
                     try {
-                        highlightTag  = field.getHighlighter().addHighlight(0, 
-                                field.getText().length(), 
+                        highlightTag  = field.getHighlighter().addHighlight(0,
+                                field.getText().length(),
                                 DefaultHighlighter.DefaultPainter);
                     } catch (BadLocationException e1) {
-                        LOG.debug("Nested exception", e1);
+                        LOG.log(Level.FINE, "Nested exception", e1);
                     }
                 } catch (BadLocationException ble) {
-                    LOG.debug(ble);
+                    LOG.log(Level.FINE, "update caused: ",ble);
                 }
             }
         }

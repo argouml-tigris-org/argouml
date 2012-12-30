@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,22 +38,14 @@
 
 package org.argouml.notation.providers.uml;
 
-import org.apache.log4j.Logger;
 import org.argouml.notation.NotationSettings;
 
 /**
- * The UML notation for a message, as shown on a collaboration diagram. 
- * 
+ * The UML notation for a message, as shown on a collaboration diagram.
+ *
  * @author michiel
  */
 public class MessageNotationUml extends AbstractMessageNotationUml {
-
-    /**
-     * The standard error etc. logger
-     */
-    static final Logger LOG =
-        Logger.getLogger(MessageNotationUml.class);
-
     /**
      * The constructor.
      *

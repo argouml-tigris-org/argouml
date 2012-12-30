@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.sequence2.diagram;
 
 import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactoryInterface;
 import org.argouml.uml.diagram.DiagramFactoryInterface2;
@@ -52,19 +53,19 @@ import org.argouml.uml.diagram.DiagramSettings;
  * @author penyaskito
  */
 public class SequenceDiagramFactory
-        implements DiagramFactoryInterface, DiagramFactoryInterface2{
+        implements DiagramFactoryInterface, DiagramFactoryInterface2 {
 
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(SequenceDiagramFactory.class);
-    
+        Logger.getLogger(SequenceDiagramFactory.class.getName());
+
     /**
      * Factory method to create a new instance of an ArgoDiagram,
-     * including the sequence2 Sequence Diagram
-     * 
-     * @param namespace The namespace that (in)directly 
+     * including the sequence2 Sequence Diagram.
+     *
+     * @param namespace The namespace that (in)directly
      *                        owns the elements on the diagram
      * @param machine The StateMachine for the diagram
      *                         (only: statemachine - activitygraph)
@@ -73,14 +74,14 @@ public class SequenceDiagramFactory
     public ArgoDiagram createDiagram(
             final Object namespace,
             final Object machine) {
-        
+
         final ArgoDiagram diagram = new UMLSequenceDiagram(namespace);
-        return diagram;            
+        return diagram;
     }
 
     /**
      * Factory method to create a new instance of an ArgoDiagram.
-     * 
+     *
      * @param owner the owning element. This can be the owning namespace for a
      *            Class diagram or an owning Statemachine for a State Diagram or
      *            any other interpretation that the diagram type wants to apply.
@@ -95,11 +96,11 @@ public class SequenceDiagramFactory
         if (name != null) {
             try {
                 diagram.setName(name);
-            } catch (PropertyVetoException e) {            
-                LOG.error("Cannot set the name " + name + 
+            } catch (PropertyVetoException e) {
+                LOG.log(Level.SEVERE, "Cannot set the name " + name +
                         " to the diagram just created: "+ diagram.getName(), e);
             }
         }
-        return diagram;  
+        return diagram;
     }
 }

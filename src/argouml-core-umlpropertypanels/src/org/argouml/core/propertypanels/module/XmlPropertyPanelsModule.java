@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,32 +38,34 @@
 
 package org.argouml.core.propertypanels.module;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
- * Defines the XMLPropertyPanels module
+ * Defines the XMLPropertyPanels module.
  *
  * @author penyaskito
  */
 public class XmlPropertyPanelsModule implements ModuleInterface {
 
     /**
-     * The logger
+     * The logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(XmlPropertyPanelsModule.class);
-    
-    public boolean enable() { 
+        Logger.getLogger(XmlPropertyPanelsModule.class.getName());
+
+    public boolean enable() {
         try {
             PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
             PropPanelFactoryManager.addPropPanelFactory(elementFactory);
             return true;
         } catch (Exception e) {
-            LOG.error("Exception caught", e);
+            LOG.log(Level.SEVERE, "Exception caught", e);
             return false;
         }
     }
@@ -75,7 +77,7 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
             PropPanelFactoryManager.removePropPanelFactory(elementFactory);
             return true;
         } catch (Exception e) {
-            LOG.error("Exception caught", e);
+            LOG.log(Level.SEVERE, "Exception caught", e);
             return false;
         }
     }
@@ -95,7 +97,7 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
         }
     }
 
-    public String getName() {        
+    public String getName() {
         return "Xml Property Panels Module";
     }
 }

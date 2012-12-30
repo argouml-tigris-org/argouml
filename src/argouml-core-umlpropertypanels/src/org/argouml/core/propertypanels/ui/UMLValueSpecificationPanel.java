@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,21 +21,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Constructor;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
  * The panel that shows a value specification for an other UML element.
- * 
- * 
+ *
+ *
  * TODO: Do we need to implements ChangeListener If yes => ok If no => Can't be
  * use without *Optional class, or the *Optional don't need to !
- * 
+ *
  */
 class UMLValueSpecificationPanel extends JPanel {
 
@@ -44,11 +45,11 @@ class UMLValueSpecificationPanel extends JPanel {
      */
     private static final long serialVersionUID = 1494398250907085817L;
 
-    private static final Logger LOG = Logger
-	    .getLogger(UMLValueSpecificationPanel.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLValueSpecificationPanel.class.getName());
 
     /**
-     * 
+     *
      */
     private final UMLValueSpecificationModel model;
 
@@ -63,13 +64,13 @@ class UMLValueSpecificationPanel extends JPanel {
     private UMLValueSpecificationValueField valueField;
 
     /**
-     * 
+     *
      * TODO: Try to use valueField.getComponent()
      */
     private Component scrollPane;
 
     /**
-     * 
+     *
      * @param model
      * @param title
      */
@@ -78,7 +79,7 @@ class UMLValueSpecificationPanel extends JPanel {
 
 	//super(new LabelledLayout());
 	super(new GridBagLayout());
-	LOG.debug(">>New ValueSpecification panel created");
+        LOG.log(Level.FINE, ">>New ValueSpecification panel created");
 
 	TitledBorder border = new TitledBorder(title);
 	this.setBorder(border);
@@ -93,18 +94,18 @@ class UMLValueSpecificationPanel extends JPanel {
 	c.gridwidth = GridBagConstraints.RELATIVE;
 	c.weightx = 1;
 	c.weighty = 0;
-	
+
 	JComboBox combo = uiSelect();
 	add(combo, c);
 
 	this.valueField = createField((String) combo.getSelectedItem());
-	
-	
+
+
 
     }
 
     /**
-     * 
+     *
      * @param sType
      * @return
      */
@@ -121,25 +122,25 @@ class UMLValueSpecificationPanel extends JPanel {
 	    // with something more specific like this commented out code.
 	    // This would mean we need sType changed to a meta type Object
 	    // rather than a String.
-	    
+
 //	    if (Model.getFacade().isALiteralBoolean(sType)) {
 //		fieldControl = new UMLValueSpecificationValueFieldLiteralBoolean(model, true);
 //	    } else if (Model.getFacade().isALiteralString(sType)) {
 //		fieldControl = new UMLValueSpecificationValueFieldLiteralString(model, true);
 //	    } else if (Model.getFacade().isAOpaqueExpression(sType)) {
 //		fieldControl = new UMLValueSpecificationValueFieldLiteralString(model, true);
-//	    }	    
-	    
+//	    }
+
 	    Class<?> oClass= Class.forName("org.argouml.core.propertypanels.ui.UMLValueSpecificationValueField"+sType);
 	    Constructor<?> constructeur = oClass.getConstructor (new Class [] {UMLValueSpecificationModel.class,boolean.class});
 	    ret=(UMLValueSpecificationValueField) constructeur.newInstance (new Object [] {model, true});
 	} catch (Exception e) {
-	    LOG.error("Unknow type "+sType+" : "+e, e);
+            LOG.log(Level.SEVERE, "Unknow type "+sType+" : "+e, e);
 	    return null;
 	}
 
 	scrollPane = ret.getComponent();
-	
+
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.BOTH;
 	c.gridx = 0;
@@ -155,13 +156,13 @@ class UMLValueSpecificationPanel extends JPanel {
 
     /**
      * Create the combobox wich display available ValueSpecification (type)
-     * 
+     *
      * TODO LiteralNull,Expression, InstanceValue,... TODO ? Use something else
      * that a combobox. TODO ? If combobox, can we restrict list ? For instance,
      * can we create a Boolean for a Integer Value ?
-     * 
+     *
      * TODO
-     * 
+     *
      * @return
      */
     private JComboBox uiSelect() {
@@ -204,7 +205,7 @@ class UMLValueSpecificationPanel extends JPanel {
 	/**
 	 * When we change the type, we need to create a new Initial Value. And
 	 * to display the Panel
-	 * 
+	 *
 	 * TODO: if we select the same type that the current, do nothing.
 	 */
 	typeInstanceValueList.addActionListener(new ActionListener() {

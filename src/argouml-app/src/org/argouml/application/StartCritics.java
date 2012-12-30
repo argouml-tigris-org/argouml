@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.application;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
@@ -58,7 +60,8 @@ public class StartCritics implements Runnable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(StartCritics.class);
+    private static final Logger LOG =
+        Logger.getLogger(StartCritics.class.getName());
 
     /*
      * @see java.lang.Runnable#run()
@@ -78,7 +81,7 @@ public class StartCritics implements Runnable {
         for (Object model : p.getUserDefinedModelList()) {
             Model.getPump().addModelEventListener(dsgr, model);
         }
-        LOG.info("spawned critiquing thread");
+        LOG.log(Level.INFO, "spawned critiquing thread");
         dsgr.getDecisionModel().startConsidering(UMLDecision.CLASS_SELECTION);
         dsgr.getDecisionModel().startConsidering(UMLDecision.BEHAVIOR);
         dsgr.getDecisionModel().startConsidering(UMLDecision.NAMING);
@@ -100,4 +103,3 @@ public class StartCritics implements Runnable {
     }
 
 } /* end class StartCritics */
-

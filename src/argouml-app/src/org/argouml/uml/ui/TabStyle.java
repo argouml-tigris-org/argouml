@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -115,7 +116,8 @@ import org.tigris.gef.presentation.FigEdge;
 public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         PropertyChangeListener, DelayedVChangeListener {
 
-    private static final Logger LOG = Logger.getLogger(TabStyle.class);
+    private static final Logger LOG =
+        Logger.getLogger(TabStyle.class.getName());
 
     private Fig target;
 
@@ -123,7 +125,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     private JPanel blankPanel = new JPanel();
 
-    private Hashtable<Class, TabFigTarget> panels = 
+    private Hashtable<Class, TabFigTarget> panels =
         new Hashtable<Class, TabFigTarget>();
 
     private JPanel lastPanel = null;
@@ -176,7 +178,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     /**
      * Sets the target of the style tab.
-     * 
+     *
      * @param t
      *            is the new target
      */
@@ -188,9 +190,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
                 ((FigEdge) target).getFig().removePropertyChangeListener(this);
             }
             if (target instanceof FigAssociationClass) {
-                // In this case, the bounds (of the box) are determined 
+                // In this case, the bounds (of the box) are determined
                 // by the FigClassAssociationClass
-                FigClassAssociationClass ac = 
+                FigClassAssociationClass ac =
                     ((FigAssociationClass) target).getAssociationClass();
                 // A newly created AssociationClass may not have all its parts
                 // created by the time we are called
@@ -233,7 +235,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         target = (Fig) t;
         if (target != null) {
             target.addPropertyChangeListener(this);
-            // TODO: This shouldn't know about the specific type of Fig that 
+            // TODO: This shouldn't know about the specific type of Fig that
             // is being displayed.  That couples it too strongly to things it
             // shouldn't need to know about - tfm - 20070924
             if (target instanceof FigEdge) {
@@ -241,9 +243,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
                 ((FigEdge) target).getFig().addPropertyChangeListener(this);
             }
             if (target instanceof FigAssociationClass) {
-                // In this case, the bounds (of the box) are determined 
+                // In this case, the bounds (of the box) are determined
                 // by the FigClassAssociationClass
-                FigClassAssociationClass ac = 
+                FigClassAssociationClass ac =
                     ((FigAssociationClass) target).getAssociationClass();
                 // A newly created AssociationClass may not have all its parts
                 // created by the time we are called
@@ -315,16 +317,16 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
             try {
                 p = (TabFigTarget) panelClass.newInstance();
             } catch (IllegalAccessException ignore) {
-                LOG.error(ignore);
+                LOG.log(Level.SEVERE, "", ignore);
                 return null;
             } catch (InstantiationException ignore) {
-                LOG.error(ignore);
+                LOG.log(Level.SEVERE, "", ignore);
                 return null;
             }
             panels.put(targetClass, p);
         }
-        LOG.debug("found style for " + targetClass.getName() + "("
-                + p.getClass() + ")");
+        LOG.log(Level.FINE, "found style for {0}({1})",
+                new Object[]{targetClass.getName(), p.getClass()});
         return (StylePanel) p;
 
     }
@@ -350,12 +352,12 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         StringNamespaceElement targetClassElement =
         	(StringNamespaceElement) classNs.peekNamespaceElement();
 
-        LOG.debug("Attempt to find style panel for: " + classNs);
+        LOG.log(Level.FINE, "Attempt to find style panel for: {0}", classNs);
 
         classNs.popNamespaceElement();
 
         String[] bases = new String[] {
-                classNs.toString(), baseNs.toString() 
+                classNs.toString(), baseNs.toString()
         };
         for (String stylePanelName : stylePanelNames) {
             for (String baseName : bases) {
@@ -375,8 +377,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
             Class cls = Class.forName(name);
             return cls;
         } catch (ClassNotFoundException ignore) {
-            LOG.debug("ClassNotFoundException. Could not find class:"
-                    + name);
+            LOG.log(Level.FINE, "ClassNotFoundException. Could not find class: {0}", name);
         }
         return null;
     }
@@ -545,4 +546,3 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     }
 
 }
-

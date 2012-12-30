@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,8 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -52,7 +54,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.cognitive.Translator;
 
@@ -61,7 +62,8 @@ import org.argouml.cognitive.Translator;
  */
 public class HelpBox extends JFrame implements HyperlinkListener {
 
-    private static final Logger LOG = Logger.getLogger(HelpBox.class);
+    private static final Logger LOG =
+        Logger.getLogger(HelpBox.class.getName());
 
     /**
      * A tabbed pane to display several pages simultaneously.
@@ -80,14 +82,14 @@ public class HelpBox extends JFrame implements HyperlinkListener {
         {
             Translator.localize("tab.help.manual"),
             (Translator.localize("tab.help.path.manual")
-                + "manual-" + ApplicationVersion.getStableVersion() 
+                + "manual-" + ApplicationVersion.getStableVersion()
                 + "/"),
              Translator.localize("tab.help.tip.manual")
         },
         {
             Translator.localize("tab.help.support"),
             Translator.localize("tab.help.path.support"),
-            Translator.localize("tab.help.tip.support") 
+            Translator.localize("tab.help.tip.support")
         }
     };
 
@@ -116,17 +118,17 @@ public class HelpBox extends JFrame implements HyperlinkListener {
             try {
                 paneURL = new URL( pages[i][1]);
             } catch ( MalformedURLException e) {
-                LOG.warn( pages[i][0] + " URL malformed: " + pages[i][1]);
+                LOG.log(Level.WARNING, pages[i][0] + " URL malformed: " + pages[i][1]);
             }
 
             if ( paneURL != null) {
                 try {
                     panes[i].setPage( paneURL);
                 } catch ( IOException e) {
-                    LOG.warn("Attempted to read a bad URL: " + paneURL);
+                    LOG.log(Level.WARNING, "Attempted to read a bad URL: " + paneURL);
                 }
             } else {
-                LOG.warn("Couldn't find " + pages[i][0]);
+                LOG.log(Level.WARNING, "Couldn't find " + pages[i][0]);
             }
 
             // Put the current pane in a scroll pane.
@@ -147,7 +149,7 @@ public class HelpBox extends JFrame implements HyperlinkListener {
             try {
                 pane.setPage(event.getURL());
             } catch (IOException ioe) {
-                LOG.warn( "Could not fetch requested URL");
+                LOG.log(Level.WARNING, "Could not fetch requested URL");
             }
 	}
     }

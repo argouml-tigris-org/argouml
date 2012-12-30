@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ package org.argouml.model.mdr;
 
 import javax.jmi.reflect.InvalidObjectException;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ModelManagementFactory;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -62,12 +61,6 @@ import org.omg.uml.modelmanagement.UmlPackage;
  */
 final class ModelManagementFactoryMDRImpl extends
         AbstractUmlModelFactoryMDR implements ModelManagementFactory {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ModelManagementFactoryMDRImpl.class);
 
     /**
      * The model.
@@ -94,7 +87,7 @@ final class ModelManagementFactoryMDRImpl extends
         ModelManagementPackage mmp = getModelManagementPackage();
         if (mmp == null) {
             // Normally the extent should exist already, but in the case of
-            // making an empty project, we may not have an extent yet, so 
+            // making an empty project, we may not have an extent yet, so
             // create a default extent
             modelImpl.createDefaultExtent();
         }
@@ -114,7 +107,7 @@ final class ModelManagementFactoryMDRImpl extends
             return null;
         }
     }
-    
+
     @Deprecated
     public void setRootModel(Object rootModel) {
         if (rootModel != null && !(rootModel instanceof Model)) {
@@ -175,7 +168,7 @@ final class ModelManagementFactoryMDRImpl extends
         pkg.setName(name);
         return pkg;
     }
-    
+
     public Object createSubsystem() {
         Subsystem mySubsystem =
             getModelManagementPackage().getSubsystem().createSubsystem();

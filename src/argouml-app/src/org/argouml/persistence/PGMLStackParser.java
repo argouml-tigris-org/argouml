@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,8 +50,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
@@ -81,12 +82,13 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * The PGML Parser.
  * <p>
- * 
+ *
  * This replaces much of the identically named class from GEF.
  */
 class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
-    private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
+    private static final Logger LOG =
+        Logger.getLogger(PGMLStackParser.class.getName());
 
     private List<EdgeData> figEdges = new ArrayList<EdgeData>(50);
 
@@ -129,7 +131,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     /**
      * Construct a PGML parser with the given HREF/Object map and default
      * diagram settings.
-     * 
+     *
      * @param modelElementsByUuid map of HREF ids to objects used to associate
      *            Figs with their owning model elements
      * @param defaultSettings default diagram settings to use for newly created
@@ -159,7 +161,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
         if (href != null) {
             owner = findOwner(href);
             if (owner == null) {
-                LOG.warn("Found href of " + href
+                LOG.log(Level.WARNING, "Found href of " + href
                         + " with no matching element in model");
                 return null;
             }
@@ -202,7 +204,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
             if (clsNameBounds != null) {
-                StringTokenizer st = 
+                StringTokenizer st =
                     new StringTokenizer(clsNameBounds, ",;[] ");
                 // Discard class name, x y w h
                 if (st.hasMoreElements()) {
@@ -239,7 +241,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
         if (href != null && !href.equals("")) {
             Object modelElement = findOwner(href);
             if (modelElement == null) {
-                LOG.error("Can't find href of " + href);
+                LOG.log(Level.SEVERE, "Can't find href of " + href);
                 throw new SAXException("Found href of " + href
                         + " with no matching element in model");
             }
@@ -252,8 +254,9 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
                     f.setOwner(modelElement);
                 }
             } else {
-                LOG.debug("Ignoring href on " + f.getClass().getName()
-                        + " as it's already set");
+                LOG.log(Level.FINE,
+                        "Ignoring href on {0} as it's already set",
+                        f.getClass().getName());
             }
         }
     }
@@ -266,7 +269,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
      * name. The current applicable names are operationsVisible and
      * attributesVisible and are used to show or hide the compartments within
      * Class and Interface. The default values are true.
-     * 
+     *
      * @param st The StrinkTokenizer positioned at the first style identifier
      * @return a map of attributes
      */
@@ -294,10 +297,10 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     /**
      * Set the fig style attributes.
      * <p>
-     * 
+     *
      * TODO: This should move into the render factories as described in issue
      * 859.
-     * 
+     *
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
@@ -340,7 +343,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
     /**
      * Read and parse the input stream to create a new diagram and return it.
-     * 
+     *
      * @param is the input stream
      * @param closeStream true to close the stream when parsing is complete
      * @return the diagram created as a result of the parse
@@ -366,7 +369,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
     /**
      * Read and parse the input stream to create a new diagram and return it.
-     * 
+     *
      * @param is the input stream
      * @param closeStream true to close the stream when parsing is complete
      * @return the diagram created as a result of the parse
@@ -398,7 +401,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
      * diagram. This method then attaches the edges to the correct node,
      * including the nodes contained within edges allowing edge to edge
      * connections for comment edges, association classes and dependencies.
-     * 
+     *
      * @param d the Diagram
      */
     private void attachEdges(Diagram d) {
@@ -440,7 +443,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
             if (sourcePortFig == null || destPortFig == null
                     || sourceFigNode == null || destFigNode == null) {
-                LOG.error("Can't find nodes for FigEdge: " + edge.getId() + ":"
+                LOG.log(Level.SEVERE,
+                        "Can't find nodes for FigEdge: " + edge.getId() + ":"
                         + edge.toString());
                 edge.removeFromDiagram();
             } else {
@@ -466,7 +470,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     // TODO: Move to GEF
     /**
      * Store data of a FigEdge together with the id's of nodes to connect to
-     * 
+     *
      * @param figEdge The FigEdge
      * @param sourcePortFigId The id of the source port
      * @param destPortFigId The id of the destination port
@@ -483,7 +487,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     // TODO: Move to GEF
     /**
      * Get the FigNode that the fig id represents.
-     * 
+     *
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
      * @throws IllegalStateException if the figId supplied is not of a FigNode
@@ -509,7 +513,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
             if (f instanceof FigNode) {
                 return (FigNode) f;
             } else {
-                LOG.error("FigID " + figId + " is not a node, edge ignored");
+                LOG.log(Level.SEVERE,
+                        "FigID " + figId + " is not a node, edge ignored");
                 return null;
             }
         }
@@ -518,7 +523,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     // TODO: Move to GEF
     /**
      * Get the Fig from the FigNode that is the port.
-     * 
+     *
      * @param figNode the FigNode
      * @return the Fig that is the port on the given FigNode
      */
@@ -552,7 +557,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Constructor
-         * 
+         *
          * @param edge The FigEdge
          * @param sourcePortId The id of the source port
          * @param destPortId The id of the destination port
@@ -577,7 +582,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Get the id of the destination FigNode
-         * 
+         *
          * @return the id
          */
         public String getDestFigNodeId() {
@@ -586,7 +591,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Get the id of the destination port
-         * 
+         *
          * @return the id
          */
         public String getDestPortFigId() {
@@ -595,7 +600,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Get the FigEdge
-         * 
+         *
          * @return the FigEdge
          */
         public FigEdge getFigEdge() {
@@ -604,7 +609,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Get the id of the source FigNode
-         * 
+         *
          * @return the id
          */
         public String getSourceFigNodeId() {
@@ -613,7 +618,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
         /**
          * Get the id of the source port
-         * 
+         *
          * @return the id
          */
         public String getSourcePortFigId() {
@@ -631,7 +636,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
      * <p>
      * If we fail to find any of the constructors that we know about, we'll call
      * GEF's version of this method to see if it can find a constructor.
-     * 
+     *
      * @param className fully qualified name of class to instantiate
      * @param href string representing UUID of owning element
      * @param bounds position and size of figure
@@ -645,7 +650,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
             final Rectangle bounds, final Attributes attributes)
         throws SAXException {
 
-        final DiagramSettings oldSettings = 
+        final DiagramSettings oldSettings =
             ((ArgoDiagram) getDiagram()).getDiagramSettings();
 
         Fig f = null;
@@ -751,7 +756,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
                         constructor.setAccessible(true);
                         f = (Fig) constructor.newInstance(parameters);
-                        LOG.warn("Fig created by old style constructor "
+                        LOG.log(Level.WARNING,
+                                "Fig created by old style constructor "
                                 + f.getClass().getName());
                         break;
                     }
@@ -770,7 +776,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
         // Fall back to GEF's handling if we couldn't find an appropriate
         // constructor
         if (f == null) {
-            LOG.warn("No ArgoUML constructor found for " + className
+            LOG.log(Level.WARNING,
+                    "No ArgoUML constructor found for " + className
                     + " falling back to GEF's default constructors");
             f = super.constructFig(className, href, bounds, attributes);
         }
@@ -781,20 +788,22 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
     /**
      * Given the href extracted from the PGML return the model element with that
      * uuid.
-     * 
+     *
      * @param className Used only for logging should the href not be found
      * @param href The href
      * @return
      */
     private Object getOwner(String className, String id) {
         if (id == null) {
-            LOG.warn("There is no href attribute provided for a " + className
+            LOG.log(Level.WARNING,
+                    "There is no href attribute provided for a " + className
                     + " so the diagram element is ignored on load");
             return null;
         }
         final Object owner = findOwner(id);
         if (owner == null) {
-            LOG.warn("The href " + id + " is not found for a " + className
+            LOG.log(Level.WARNING,
+                    "The href " + id + " is not found for a " + className
                     + " so the diagram element is ignored on load");
             return null;
         }
@@ -818,7 +827,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
      * <li>diagram.setShowSingleMultiplicity() (?!why does GEF care about
      * multiplicity?!)
      * </ul>
-     * 
+     *
      * @param diagram the new diagram
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setDiagram(org.tigris.gef.base.Diagram)
      */

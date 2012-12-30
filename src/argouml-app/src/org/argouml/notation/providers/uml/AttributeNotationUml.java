@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
@@ -61,7 +62,7 @@ import org.argouml.util.MyTokenizer;
 
 /**
  * The notation for an attribute for UML.
- * 
+ *
  * @author Michiel
  */
 public class AttributeNotationUml extends AttributeNotation {
@@ -69,9 +70,9 @@ public class AttributeNotationUml extends AttributeNotation {
     /**
      * The standard error etc. logger
      */
-    private static final Logger LOG = 
-        Logger.getLogger(AttributeNotationUml.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(AttributeNotationUml.class.getName());
+
     /**
      * The constructor.
      * @param attribute the UML object
@@ -85,7 +86,7 @@ public class AttributeNotationUml extends AttributeNotation {
      */
     public void parse(Object modelElement, String text) {
         try {
-            parseAttributeFig(Model.getFacade().getOwner(modelElement), 
+            parseAttributeFig(Model.getFacade().getOwner(modelElement),
                     modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.attribute";
@@ -94,7 +95,7 @@ public class AttributeNotationUml extends AttributeNotation {
                 Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                    ArgoEventTypes.HELP_CHANGED, this, 
+                    ArgoEventTypes.HELP_CHANGED, this,
                     Translator.messageFormat(msg, args)));
         }
     }
@@ -118,7 +119,7 @@ public class AttributeNotationUml extends AttributeNotation {
             return;
         }
 
-        /* TODO: We should have all the information that is required in the 
+        /* TODO: We should have all the information that is required in the
          * NotationSettings object */
         Project project = ProjectManager.getManager().getCurrentProject();
 
@@ -146,14 +147,14 @@ public class AttributeNotationUml extends AttributeNotation {
             if (s.length() > 0) {
                 // yes, there are more:
                 Object attrType = project.getDefaultAttributeType();
-                
+
                 Object newAttribute = Model.getUmlFactory().buildNode(
                         Model.getMetaTypes().getAttribute());
-                
+
                 Model.getCoreHelper().setType(newAttribute, attrType);
-                
+
                 if (newAttribute != null) {
-                    /* We need to set the namespace/owner 
+                    /* We need to set the namespace/owner
                      * of the new attribute before parsing: */
                     if (i != -1) {
                         Model.getCoreHelper().addFeature(
@@ -164,7 +165,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     }
                     try {
                         parseAttribute(s, newAttribute);
-                        /* If the 1st attribute is static, 
+                        /* If the 1st attribute is static,
                          * then the new ones, too. */
                         Model.getCoreHelper().setStatic(
                                 newAttribute,
@@ -190,7 +191,7 @@ public class AttributeNotationUml extends AttributeNotation {
      * </pre>
      *
      * <ul>
-     * <li>The / for derived is optional but has to be the first non-white 
+     * <li>The / for derived is optional but has to be the first non-white
      * character.
      * <li>If only one of visibility and name is given, then it is assumed to
      * be the name and the visibility is left unchanged.
@@ -218,7 +219,7 @@ public class AttributeNotationUml extends AttributeNotation {
      * type name [= init] [;] )
      *
      * @param text    The String to parse.
-     * @param attribute The attribute to modify to comply 
+     * @param attribute The attribute to modify to comply
      *                           with the instructions in s.
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
@@ -252,15 +253,15 @@ public class AttributeNotationUml extends AttributeNotation {
         }
 
         /* Handle Visibility: */
-        if (text.length() > 0 
-                && NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0)) 
+        if (text.length() > 0
+                && NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0))
                     >= 0) {
             visibility = text.substring(0, 1);
             text = text.substring(1);
         }
 
         try {
-            st = new MyTokenizer(text, 
+            st = new MyTokenizer(text,
                     " ,\t,<<,\u00AB,\u00BB,>>,[,],:,=,{,},\\,",
                     NotationUtilityUml.attributeCustomSep);
             while (st.hasMoreTokens()) {
@@ -275,7 +276,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         value.append(token);
                     } else {
                         if (stereotype != null) {
-                            String msg = 
+                            String msg =
                                 "parsing.error.attribute.two-sets-stereotypes";
                             throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
@@ -294,7 +295,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         value.append(token);
                     } else {
                         if (multiplicity != null) {
-                            String msg = 
+                            String msg =
                                 "parsing.error.attribute.two-multiplicities";
                             throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
@@ -331,7 +332,7 @@ public class AttributeNotationUml extends AttributeNotation {
                             }
                         } else if ("=".equals(token)) {
                             if (propvalue != null) {
-                                String msg = 
+                                String msg =
                                     "parsing.error.attribute.prop-two-values";
                                 Object[] args = {propvalue};
 
@@ -354,7 +355,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     hasEq = false;
                 } else if ("=".equals(token)) {
                     if (value != null) {
-                        String msg = 
+                        String msg =
                             "parsing.error.attribute.two-default-values";
                         throw new ParseException(Translator.localize(msg), st
                                 .getTokenIndex());
@@ -424,21 +425,22 @@ public class AttributeNotationUml extends AttributeNotation {
         } catch (NoSuchElementException nsee) {
             String msg = "parsing.error.attribute.unexpected-end-attribute";
             throw new ParseException(Translator.localize(msg), text.length());
-        } 
+        }
         // catch & rethrow is not necessary if we don't do nothing (penyaskito)
         // catch (ParseException pre) {
         //      throw pre;
         // }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("ParseAttribute [name: " + name 
-                    + " visibility: " + visibility 
-                    + " type: " + type + " value: " + value 
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.log(Level.FINE, "ParseAttribute [name: " + name
+                    + " visibility: " + visibility
+                    + " type: " + type + " value: " + value
                     + " stereo: " + stereotype
                     + " mult: " + multiplicity);
             if (properties != null) {
                 for (int i = 0; i + 1 < properties.size(); i += 2) {
-                    LOG.debug("\tProperty [name: " + properties.get(i) + " = "
+                    LOG.log(Level.FINE,
+                            "\tProperty [name: " + properties.get(i) + " = "
                             + properties.get(i + 1) + "]");
                 }
             }
@@ -482,7 +484,7 @@ public class AttributeNotationUml extends AttributeNotation {
 
     private void dealWithValue(Object attribute, StringBuilder value) {
         if (value != null) {
-            Project project = 
+            Project project =
                 ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = project.getProjectSettings();
             Object initExpr = Model.getDataTypesFactory().createExpression(
@@ -500,7 +502,7 @@ public class AttributeNotationUml extends AttributeNotation {
             } else {
                 ns = Model.getFacade().getRoot(attribute);
             }
-            Model.getCoreHelper().setType(attribute, 
+            Model.getCoreHelper().setType(attribute,
                     NotationUtilityUml.getType(type.trim(), ns));
         }
     }
@@ -544,12 +546,12 @@ public class AttributeNotationUml extends AttributeNotation {
      * Depending on settings in Notation, visibility, multiplicity,
      * type-expression, initial value and properties are shown/not shown.
      */
-    private String toString(Object modelElement, boolean useGuillemets, 
+    private String toString(Object modelElement, boolean useGuillemets,
             boolean showVisibility, boolean showMultiplicity, boolean showTypes,
             boolean showInitialValues, boolean showProperties) {
         try {
             String derived = "";
-            Object tv = Model.getFacade().getTaggedValue(modelElement, 
+            Object tv = Model.getFacade().getTaggedValue(modelElement,
                     Facade.DERIVED_TAG);
             if (tv != null) {
                 String tag = Model.getFacade().getValueOfTag(tv);
@@ -557,8 +559,8 @@ public class AttributeNotationUml extends AttributeNotation {
                     derived = "/";
                 }
             }
-            
-            String stereo = NotationUtilityUml.generateStereotype(modelElement, 
+
+            String stereo = NotationUtilityUml.generateStereotype(modelElement,
                     useGuillemets);
             String name = Model.getFacade().getName(modelElement);
             String multiplicity = generateMultiplicity(
@@ -602,7 +604,7 @@ public class AttributeNotationUml extends AttributeNotation {
             if (showInitialValues) {
                 Object iv = Model.getFacade().getInitialValue(modelElement);
                 if (iv != null) {
-                    String initialValue = 
+                    String initialValue =
                         (String) Model.getFacade().getBody(iv);
                     if (initialValue != null && initialValue.length() > 0) {
                         sb.append(" = ").append(initialValue).append(" ");
@@ -635,7 +637,7 @@ public class AttributeNotationUml extends AttributeNotation {
             return "";
         }
     }
-    
+
     private static String generateMultiplicity(Object m) {
         if (m == null || "1".equals(Model.getFacade().toString(m))) {
             return "";

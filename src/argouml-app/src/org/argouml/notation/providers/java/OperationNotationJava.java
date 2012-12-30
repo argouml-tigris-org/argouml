@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
@@ -53,7 +54,7 @@ import org.argouml.notation.providers.OperationNotation;
 
 /**
  * The notation for an operation or reception.
- * 
+ *
  * @author michiel
  */
 public class OperationNotationJava extends OperationNotation {
@@ -61,12 +62,12 @@ public class OperationNotationJava extends OperationNotation {
     /**
      * Logger.
      */
-    private static final Logger LOG = 
-        Logger.getLogger(OperationNotationJava.class);
+    private static final Logger LOG =
+        Logger.getLogger(OperationNotationJava.class.getName());
 
     /**
      * The constructor.
-     * 
+     *
      * @param operation the operation we represent
      */
     public OperationNotationJava(Object operation) {
@@ -88,7 +89,7 @@ public class OperationNotationJava extends OperationNotation {
     public String getParsingHelp() {
         return "Parsing in Java not yet supported";
     }
-    
+
     @Override
     public String toString(Object modelElement, NotationSettings settings) {
         return toString(modelElement);
@@ -99,7 +100,7 @@ public class OperationNotationJava extends OperationNotation {
         String nameStr = null;
         boolean constructor = false;
 
-        Iterator its = 
+        Iterator its =
             Model.getFacade().getStereotypes(modelElement).iterator();
         String name = "";
         while (its.hasNext()) {
@@ -117,7 +118,7 @@ public class OperationNotationJava extends OperationNotation {
         } else {
             nameStr = Model.getFacade().getName(modelElement);
         }
-        
+
         boolean isReception = Model.getFacade().isAReception(modelElement);
 
         if (!isReception) {
@@ -129,7 +130,7 @@ public class OperationNotationJava extends OperationNotation {
         sb.append(NotationUtilityJava.generateVisibility(modelElement));
 
         // pick out return type
-        Collection returnParams = 
+        Collection returnParams =
             Model.getCoreHelper().getReturnParameters(modelElement);
         Object rp;
         if (returnParams.size() == 0) {
@@ -138,7 +139,8 @@ public class OperationNotationJava extends OperationNotation {
             rp = returnParams.iterator().next();
         }
         if (returnParams.size() > 1)  {
-            LOG.warn("Java generator only handles one return parameter"
+            LOG.log(Level.WARNING,
+                    "Java generator only handles one return parameter"
                     + " - Found " + returnParams.size()
                     + " for " + Model.getFacade().getName(modelElement));
         }

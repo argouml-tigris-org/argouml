@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,10 +45,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.critics.SnoozeOrder;
@@ -70,14 +71,14 @@ import org.argouml.configuration.ConfigurationKey;
  *
  * @author Jason Robbins
  */
-public class Critic 
-    extends Observable 
+public class Critic
+    extends Observable
     implements Poster, Serializable {
 
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Critic.class);
+    private static final Logger LOG = Logger.getLogger(Critic.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -174,9 +175,9 @@ public class Critic
 	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
 	String singleVersionURL =
 	    Translator.localize("tab.help.path.manualcritic")
-	    + "manual-" 
+	    + "manual-"
 	    + ApplicationVersion.getStableVersion()
-	    + "-single/argomanual.html"; 
+	    + "-single/argomanual.html";
 	return singleVersionURL + "#critics." + clsName;
     }
 
@@ -247,7 +248,7 @@ public class Critic
      * Control records used in determining if this Critic should be
      * active.
      */
-    private Hashtable<String, Object> controlRecs = 
+    private Hashtable<String, Object> controlRecs =
         new Hashtable<String, Object>();
 
     private ListSet<String> knowledgeTypes = new ListSet<String>();
@@ -282,7 +283,7 @@ public class Critic
 
 	moreInfoURL = defaultMoreInfoURL();
 	description = Translator.localize("misc.critic.no-description");
-	headline = Translator.messageFormat("misc.critic.default-headline", 
+	headline = Translator.messageFormat("misc.critic.default-headline",
 	        new Object[] {getClass().getName()});
 	priority = ToDoItem.MED_PRIORITY;
     }
@@ -380,13 +381,13 @@ public class Critic
 	// line in the whole of ArgoUML. It allocates approximately 18% of
 	// all memory allocated.
 	// Suggestions for solutions:
-	// Check if there is a LOG.debug(String, String) method that can
+  // Check if there is a LOG.log(Level.FINE,String, String) method that can
 	// be used instead.
 	// Use two calls.
 	// For now I (Linus) just comment it out.
-	// LOG.debug("applying critic: " + _headline);
+  // LOG.log(Level.FINE, "applying critic: " + _headline);
 	if (predicate(dm, dsgr)) {
-	    // LOG.debug("predicate() returned true, creating ToDoItem");
+      // LOG.log(Level.FINE, "predicate() returned true, creating ToDoItem");
 	    ToDoItem item = toDoItem(dm, dsgr);
 	    postItem(item, dm, dsgr);
 	}
@@ -447,7 +448,7 @@ public class Critic
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
-	    LOG.warn("got to stillvalid while not active");
+      LOG.log(Level.WARNING, "got to stillvalid while not active");
 	    return false;
 	}
 	if (i.getOffenders().size() != 1) {
@@ -478,7 +479,7 @@ public class Critic
     public List<Decision> getSupportedDecisions() {
         return supportedDecisions;
     }
-    
+
     /**
      * @param d the decision
      */
@@ -649,8 +650,8 @@ public class Critic
             notifyObservers(this);
 	}
     }
-    
-    
+
+
 
     /**
      * Add some attribute used by ControlMech to determine if this
@@ -689,7 +690,7 @@ public class Critic
      * @return true if enabled
      */
     public boolean isEnabled() {
-        if (this.getCriticName() != null 
+        if (this.getCriticName() != null
                 && this.getCriticName().equals("CrNoGuard")) {
             System.currentTimeMillis();
         }
@@ -727,8 +728,8 @@ public class Critic
      * Checks if the critic is currently snoozed.
      * @return true if the critic is snoozed
      */
-    public boolean isSnoozed() { 
-        return snoozeOrder().getSnoozed(); 
+    public boolean isSnoozed() {
+        return snoozeOrder().getSnoozed();
     }
 
     /**
@@ -794,9 +795,9 @@ public class Critic
                 initWizard(w);
                 return w;
             } catch (IllegalAccessException illEx) {
-                LOG.error("Could not access wizard: ", illEx);
+                LOG.log(Level.SEVERE, "Could not access wizard: ", illEx);
             } catch (InstantiationException instEx) {
-                LOG.error("Could not instantiate wizard: ", instEx);
+                LOG.log(Level.SEVERE, "Could not instantiate wizard: ", instEx);
             }
         }
         return null;
@@ -980,14 +981,14 @@ public class Critic
 
     /**
      *  Get the design materials to be criticized by this critic
-     * 
+     *
      * @return the design materials
      */
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         return ret;
     }
-        
+
     ////////////////////////////////////////////////////////////////
     // design feedback
 
@@ -1000,7 +1001,7 @@ public class Critic
      *
      * TODO: Critic's may want to add new fields to a
      * ToDoItem to make stillValid more efficent.
-     * 
+     *
      * @see Critic#critique
      *
      * @param dm the offender
@@ -1022,7 +1023,7 @@ public class Critic
      * problem can be fixed. The fixIt() method actually does the fix.
      *
      * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)
-     * Also 
+     * Also
      * @see Critic#fixIt
      */
     public boolean canFixIt(ToDoItem item) {
@@ -1035,7 +1036,7 @@ public class Critic
     public void fixIt(ToDoItem item, Object arg) {
     }
 
-    
+
     /*
      * Reply a string that describes this Critic. Identical to getCriticName()
      *

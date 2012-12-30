@@ -10,10 +10,9 @@ This is designed to work in two different environments:
   - in a peer directory of argouml, as checked out for Eclipse
     (ie argouml-core-model-mdr)
     Used only to build the MDR specific things. Other Eclipse settings
-    take care of compiling, running tests.    
+    take care of compiling, running tests.
 
-Building this requires: 
-    infra
+Building this requires:
     model
 
 -->
@@ -31,7 +30,7 @@ Building this requires:
 
     <!-- Use absolute path (ie location) for build dir so MDR generation works -->
     <property name="build.dir" location="build"/>
-    
+
     <property name="build.classes" value="${build.dir}/classes"/>
     <property name="build.javas" value="${build.dir}/java"/>
 
@@ -45,37 +44,37 @@ Building this requires:
     <property name="result.jar" value="argouml-mdr.jar"/>
     <property name="javainterfaces.jar" value="java-interfaces.jar"/>
 
-    <property name="mdrant.jar" value="tools/lib/mdrant-patched.jar" /> 
-    <property name="mof.jar" value="lib/mof.jar" /> 
-    <property name="jmi.jar" value="lib/jmi.jar" /> 
-    <property name="mdrapi.jar" value="lib/mdrapi.jar" /> 
-    <property name="nbmdr.jar" value="lib/nbmdr.jar" /> 
-    <property name="jmiutils.jar" value="lib/jmiutils.jar" /> 
-    <property name="openide-lookup.jar" value="lib/openide-util.jar" /> 
-  	
+    <property name="mdrant.jar" value="tools/lib/mdrant-patched.jar" />
+    <property name="mof.jar" value="lib/mof.jar" />
+    <property name="jmi.jar" value="lib/jmi.jar" />
+    <property name="mdrapi.jar" value="lib/mdrapi.jar" />
+    <property name="nbmdr.jar" value="lib/nbmdr.jar" />
+    <property name="jmiutils.jar" value="lib/jmiutils.jar" />
+    <property name="openide-lookup.jar" value="lib/openide-util.jar" />
+
     <!-- Do we want to read user build properties here? -->
 
     <!-- Try to figure out where our tools directory is. Done after overrides
     are loaded so user can override, but before defaults -->
     <property name="tool.test.file" value="checkstyle/java.header"/>
-    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
-    <available file="../../tools/${tool.test.file}" 
+    <available file="../../tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="../../tools"/>
-  	
+
     <!-- Read default build properties file (after we've set our props) -->
     <property file="${argo.root.dir}/argouml-build/default.properties"/>
-  	
+
     <path id="mdr.generate.classpath">
-      <pathelement location="${mdrant.jar}" /> 
-      <pathelement location="${nbmdr.jar}" /> 
-      <pathelement location="${mdrapi.jar}" /> 
-      <pathelement location="${jmiutils.jar}" /> 
-      <pathelement location="${mof.jar}" /> 
-      <pathelement location="${jmi.jar}" /> 
-      <pathelement location="${openide-lookup.jar}" /> 
+      <pathelement location="${mdrant.jar}" />
+      <pathelement location="${nbmdr.jar}" />
+      <pathelement location="${mdrapi.jar}" />
+      <pathelement location="${jmiutils.jar}" />
+      <pathelement location="${mof.jar}" />
+      <pathelement location="${jmi.jar}" />
+      <pathelement location="${openide-lookup.jar}" />
     </path>
-        
+
     <path id="mdr.compile.classpath">
       <path refid="mdr.generate.classpath"/>
       <pathelement location="${build.dir}/${javainterfaces.jar}"/>
@@ -84,11 +83,8 @@ Building this requires:
     <path id="mdr.run.classpath">
       <path refid="mdr.compile.classpath"/>
     </path>
-                
+
     <path id="compile.classpath">
-      <fileset dir="../argouml-core-infra/build/">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
@@ -112,26 +108,26 @@ Building this requires:
     </path>
 
     <property name="profile.file.dir" value="org/argouml/model/mdr/profiles"/>
-    
+
     <!-- Implementation classes for UML 1.4 are generated from this file -->
-    <!-- When changing to a different UML metamodel, be sure to use the 
+    <!-- When changing to a different UML metamodel, be sure to use the
          _Diff file which adds the Java specific tags for JMI, not the
          base OMG file
       -->
     <property name="mof.file.dir" value="org/argouml/model/mdr/mof"/>
-    <property name="xmi.file" value="src/${mof.file.dir}/01-02-15_Diff" /> 
+    <property name="xmi.file" value="src/${mof.file.dir}/01-02-15_Diff" />
 
     <taskdef name="mdr" classname="org.netbeans.mdrant.MdrTask">
       <classpath>
         <path refid="mdr.generate.classpath" />
       </classpath>
     </taskdef>
-    
+
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/ant-junit.jar"/>
       <path refid="junit.classpath"/>
     </path>
-        
+
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
       <classpath refid="ant.optional.classpath"/>
     </taskdef>
@@ -147,7 +143,7 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Generate, compile, & package the JMI interfaces                     -->
   <!-- =================================================================== -->
-  <target name="generate" depends="generate-internal" 
+  <target name="generate" depends="generate-internal"
       description="Generate the JMI interfaces for a UML metamodel."
       unless="generate.notRequired">
 
@@ -156,7 +152,7 @@ Building this requires:
            target="1.5">
       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
       <classpath>
-        <pathelement location="${jmi.jar}" /> 
+        <pathelement location="${jmi.jar}" />
       </classpath>
     </javac>
 
@@ -166,11 +162,11 @@ Building this requires:
   </target>
 
   <target name="generate-needed" depends="init">
-    <uptodate property="generate.notRequired" 
+    <uptodate property="generate.notRequired"
       srcfile="${xmi.file}.xml"
-    	
+
       targetfile="${build.dir}/UML14.dtd" >
-    	
+
     </uptodate>
 
   </target>
@@ -182,7 +178,7 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Generate Java files for JMI interface from UML model in XMI         -->
   <!-- =================================================================== -->
-  <target name="generate-internal" depends="init,generate-needed,generate-skipped" 
+  <target name="generate-internal" depends="init,generate-needed,generate-skipped"
       unless="generate.notRequired">
     <!-- create directories -->
     <delete quiet="true">
@@ -198,20 +194,20 @@ Building this requires:
     -->
     <echo message="Generating JMI interfaces from ${xmi.file} in argouml-core-model-mdr"/>
     <mdr storageFile="${build.javas}/mymdr">
-      <instantiate name="mof4models" /> 
-      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
-      <mapJava dir="${build.javas}" extent="mof4models" /> 
-      
+      <instantiate name="mof4models" />
+      <readXMI file="${xmi.file}.xml" extent="mof4models" />
+      <mapJava dir="${build.javas}" extent="mof4models" />
+
       <!-- Generate a DTD for the metamodel in case anyone wants it -->
-      <instantiate name="uml" extent="mof4models" package="UML"/> 
+      <instantiate name="uml" extent="mof4models" package="UML"/>
       <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
-	
+
       <!-- Other functions available
-      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" 
+      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml"
           extent="mof4models" xmiVersion="1.2"/>
-      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" 
+      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd"
           extent="mof4models"/>
-      <mapClass dir="${build.javas}" extent="mof4models" /> 
+      <mapClass dir="${build.javas}" extent="mof4models" />
       <printExtentNames/>
       -->
     </mdr>
@@ -226,11 +222,11 @@ Building this requires:
          </replace>
        </sequential>
      </macrodef>
-     
+
      <uncommentMdrGenerics javadir="${build.javas}"/>
-  	       	
+
   </target>
-  
+
   <target name="create-dirs" depends="init">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
@@ -249,8 +245,8 @@ Building this requires:
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           includeAntRuntime="no" 
-           bootclasspath="${bundleBootClasspath}" 
+           includeAntRuntime="no"
+           bootclasspath="${bundleBootClasspath}"
            source="1.5"
            target="1.5"
        >
@@ -315,7 +311,7 @@ Building this requires:
         <include name="testmodels/**/*.xml"/>
       </fileset>
     </copy>
-        
+
   </target>
 
   <!-- =================================================================== -->
@@ -398,12 +394,12 @@ Building this requires:
     </delete>
     <antcall target="pde-clean" />
   </target>
-        
+
 
   <!-- =================================================================== -->
   <!-- Eclipse PDE targets from here to end of file                        -->
   <!-- =================================================================== -->
-  <!-- 
+  <!--
     Required targets (called in this order) are:
       build.jars
       gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
@@ -411,11 +407,11 @@ Building this requires:
     If p2.gathering = true in build.properties:
       publish.bin.parts target replaces gather.bin.parts
   -->
-  
+
     <target name="pde-properties" if="eclipse.running">
       <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
     </target>
-  
+
     <target name="pde-init" depends="pde-properties">
 
       <property name="bundleId" value="org.argouml.core.model.mdr" />
@@ -469,7 +465,7 @@ Building this requires:
     <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
       <fileset dir="${build.result.folder}/@dot" includes="**"/>
     </copy>
-    
+
     <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
       <fileset dir="${basedir}">
         <include name="META-INF/"/>
@@ -487,7 +483,7 @@ Building this requires:
         <include name="lib/openide-util.jar"/>
       </fileset>
     </copy>
- 
+
     <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
   </target>
 
@@ -513,7 +509,7 @@ Building this requires:
     <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}"/>
     <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="false" overwrite="false">
       <fileset dir="${build.dir}">
-        <include name="compile.log"/>  
+        <include name="compile.log"/>
       </fileset>
     </copy>
   </target>

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,15 +39,16 @@
 
 package org.argouml.uml.reveng;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.net.URLClassLoader;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 
@@ -104,7 +105,8 @@ public final class ImportClassLoader extends URLClassLoader {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ImportClassLoader.class);
+    private static final Logger LOG =
+        Logger.getLogger(ImportClassLoader.class.getName());
 
     private static ImportClassLoader instance;
 
@@ -171,7 +173,7 @@ public final class ImportClassLoader extends URLClassLoader {
         try {
             url = f.toURI().toURL();
         } catch (MalformedURLException e) {
-	    LOG.warn("could not remove file ", e);
+            LOG.log(Level.WARNING, "could not remove file ", e);
             return;
 	}
 
@@ -209,7 +211,7 @@ public final class ImportClassLoader extends URLClassLoader {
             try {
 		this.addFile(new File(token));
             } catch (MalformedURLException e) {
-		LOG.warn("could not set path ", e);
+                LOG.log(Level.WARNING, "could not set path ", e);
 	    }
         }
     }
@@ -231,7 +233,7 @@ public final class ImportClassLoader extends URLClassLoader {
             try {
 		urlList.add(new File(token).toURI().toURL());
             } catch (MalformedURLException e) {
-		LOG.error(e);
+                LOG.log(Level.SEVERE, "getURLs "+path,e);
 	    }
         }
 
@@ -253,7 +255,7 @@ public final class ImportClassLoader extends URLClassLoader {
             try {
 		this.addFile(new File(paths[i].toString()));
             } catch (Exception e) {
-		LOG.warn("could not set path ", e);
+                LOG.log(Level.WARNING, "could not set path ", e);
 	    }
         }
     }
@@ -289,4 +291,3 @@ public final class ImportClassLoader extends URLClassLoader {
         return path.toString();
     }
 }
-

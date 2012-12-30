@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -60,9 +61,9 @@ import org.argouml.uml.util.PathComparator;
  * @since October 27, 2005
  */
 public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
-    
-    private static final Logger LOG = 
-        Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(UMLTagDefinitionComboBoxModel.class.getName());
 
     /**
      * Constructor for UMLTagDefinitionComboBoxModel.
@@ -77,13 +78,13 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     protected void addOtherModelEventListeners(Object target) {
         // Ask to be notified of any changes to TagDefinitions so that we
         // can track new ones, name changes, etc
-        Model.getPump().addClassModelEventListener(this, 
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getTagDefinition(), (String[]) null);
-    }    
+    }
 
     @Override
     protected void removeOtherModelEventListeners(Object target) {
-        Model.getPump().addClassModelEventListener(this, 
+        Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getTagDefinition(), (String[]) null);
     }
 
@@ -92,19 +93,20 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         // because we're listening for stereotypes being added and removed
         // but we're really interested in their owned tag definitions,
         // the default implementation won't work for us
-        
+
         if (Model.getFacade().isATagDefinition(evt.getSource())) {
-            LOG.debug("Got TagDefinition event " + evt.toString());
+            LOG.log(Level.FINE, "Got TagDefinition event {0}", evt);
+
             // Just mark for rebuild next time since we use lazy loading
             setModelInvalid();
         } else if ("stereotype".equals(evt.getPropertyName())) {
-            LOG.debug("Got stereotype event " + evt.toString());
+            LOG.log(Level.FINE, "Got stereotype event {0}", evt);
             // A stereotype got applied or removed
             // Just mark for rebuild next time since we use lazy loading
             setModelInvalid();
         } else {
-            LOG.debug("Got other event " + evt.toString());
-        }    
+            LOG.log(Level.FINE, "Got other event {0}", evt);
+        }
     }
 
 
@@ -151,7 +153,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
     Collection getApplicableTagDefinitions(Object element) {
         Set<List<String>> paths = new HashSet<List<String>>();
-        Set<Object> availableTagDefs = 
+        Set<Object> availableTagDefs =
             new TreeSet<Object>(new PathComparator());
         Collection stereotypes = Model.getFacade().getStereotypes(element);
         Project project = ProjectManager.getManager().getCurrentProject();
@@ -167,7 +169,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
             addAllUniqueModelElementsFrom(availableTagDefs, paths, project
                     .getProfileConfiguration().findByMetaType(
                             Model.getMetaTypes().getTagDefinition()));
-                            
+
             List notValids = new ArrayList();
             for (Object tagDef : availableTagDefs) {
                 Object owner = Model.getFacade().getOwner(tagDef);
@@ -195,7 +197,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      */
     private static void addAllUniqueModelElementsFrom(Set elements,
             Set<List<String>> paths, Collection sources) {
-        
+
         for (Object source : sources) {
             List<String> path = Model.getModelManagementHelper().getPathList(
                     source);

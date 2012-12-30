@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -84,7 +85,7 @@ import org.tigris.gef.presentation.FigNode;
  * @author jrobbins
  */
 public class ClassDiagramRenderer extends UmlDiagramRenderer {
-    
+
     /**
      * The UID.
      */
@@ -94,7 +95,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ClassDiagramRenderer.class);
+        Logger.getLogger(ClassDiagramRenderer.class.getName());
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
@@ -111,13 +112,13 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         }
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = (FigNodeModelElement) ((UMLDiagram) diag)
                     .drop(node, null);
         } else {
-            LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
+            LOG.log(Level.SEVERE, "TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(
                     "Node is not a recognised type. Received "
                     + node.getClass().getName());
@@ -141,26 +142,25 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
 				 Object edge, Map styleAttribute) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("making figedge for " + edge);
-        }
+        LOG.log(Level.FINE, "making figedge for {0}", edge);
+        
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
-        
+
         assert lay instanceof LayerPerspective;
-        
+
         final FigEdge newEdge;
 
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(edge)) {
             newEdge = (FigEdge) ((UMLDiagram) diag)
                     .drop(edge, null);
         } else {
-            LOG.error("TODO: ClassDiagramRenderer getFigEdgeFor " + edge);
+            LOG.log(Level.SEVERE, "TODO: ClassDiagramRenderer getFigEdgeFor " + edge);
             throw new IllegalArgumentException(
                     "Edge is not a recognised type. Received "
                     + edge.getClass().getName());

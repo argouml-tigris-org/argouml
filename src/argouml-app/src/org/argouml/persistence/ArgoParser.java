@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.persistence;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.NotationSettings;
@@ -52,21 +53,22 @@ import org.xml.sax.SAXException;
 
 
 /**
- * Parser for ArgoUML project description file (.argo)
+ * Parser for ArgoUML project description file (.argo).
  */
 class ArgoParser extends SAXParserBase {
 
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ArgoParser.class);
+    private static final Logger LOG =
+        Logger.getLogger(ArgoParser.class.getName());
 
     private Project project;
 
     private ProjectSettings ps;
-    
+
     private DiagramSettings diagramDefaults;
-    
+
     private NotationSettings notationSettings;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
@@ -128,8 +130,11 @@ class ArgoParser extends SAXParserBase {
     }
 
     private void preRead(Project theProject) {
-        LOG.info("=======================================");
-        LOG.info("== READING PROJECT " + theProject);
+        LOG.log(Level.INFO,
+                "=======================================\n"
+                + "== READING PROJECT {0}",
+                theProject);
+
         project = theProject;
         ps = project.getProjectSettings();
         diagramDefaults = ps.getDefaultDiagramSettings();
@@ -137,8 +142,8 @@ class ArgoParser extends SAXParserBase {
     }
 
     private void logError(String projectName, SAXException e) {
-        LOG.error("Exception reading project================", e);
-        LOG.error(projectName);
+        LOG.log(Level.SEVERE,
+                "Exception reading project ================"+projectName, e);
     }
 
     /**
@@ -164,7 +169,8 @@ class ArgoParser extends SAXParserBase {
      */
     public void handleStartElement(XMLElement e) throws SAXException {
         if (DBG) {
-            LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
+            LOG.log(Level.FINE,
+                    "NOTE: ArgoParser handleStartTag: {0}", e.getName());
         }
         switch (tokens.toToken(e.getName(), true)) {
         case ArgoTokenTable.TOKEN_ARGO:
@@ -178,7 +184,7 @@ class ArgoParser extends SAXParserBase {
             break;
         default:
             if (DBG) {
-                LOG.warn("WARNING: unknown tag:" + e.getName());
+                LOG.log(Level.WARNING, "WARNING: unknown tag:" + e.getName());
             }
             break;
         }
@@ -191,7 +197,8 @@ class ArgoParser extends SAXParserBase {
     @SuppressWarnings("deprecation")
     public void handleEndElement(XMLElement e) throws SAXException {
         if (DBG) {
-            LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
+            LOG.log(Level.FINE,
+                    "NOTE: ArgoParser handleEndTag: {0}", e.getName());
         }
         switch (tokens.toToken(e.getName(), false)) {
         case ArgoTokenTable.TOKEN_MEMBER:
@@ -268,7 +275,8 @@ class ArgoParser extends SAXParserBase {
             break;
         default:
             if (DBG) {
-                LOG.warn("WARNING: unknown end tag:" + e.getName());
+                LOG.log(Level.WARNING,
+                        "WARNING: unknown end tag:" + e.getName());
             }
             break;
         }
@@ -481,7 +489,8 @@ class ArgoParser extends SAXParserBase {
         try {
             diagramDefaults.setFontSize(Integer.parseInt(dsw));
         } catch (NumberFormatException e1) {
-            LOG.error("NumberFormatException while parsing Font Size", e1);
+            LOG.log(Level.SEVERE,
+                    "NumberFormatException while parsing Font Size", e1);
         }
     }
 
@@ -504,10 +513,10 @@ class ArgoParser extends SAXParserBase {
         diagramDefaults.setShowBidirectionalArrows(!
                 Boolean.parseBoolean(hideBidirectionalArrows));
     }
-    
-    
+
+
     protected void handleActiveDiagram(XMLElement e) {
-        /* At this stage during loading, the diagrams are 
+        /* At this stage during loading, the diagrams are
          * not created yet - so we have to store this name for later use. */
         project.setSavedDiagramName(e.getText().trim());
     }

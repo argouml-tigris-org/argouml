@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,13 +43,14 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -57,6 +58,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -67,12 +69,11 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigTextEditor;
-import org.argouml.ui.UndoableAction;
 
 /**
- * Action for removing objects from the model. 
+ * Action for removing objects from the model.
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
- * Figs without owner,... 
+ * Figs without owner,...
  */
 @UmlModelMutator
 public class ActionDeleteModelElements extends UndoableAction {
@@ -106,9 +107,9 @@ public class ActionDeleteModelElements extends UndoableAction {
         }
         return targetFollower;
     }
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ActionDeleteModelElements.class);
+        Logger.getLogger(ActionDeleteModelElements.class.getName());
 
     /**
      * Constructor.
@@ -117,7 +118,7 @@ public class ActionDeleteModelElements extends UndoableAction {
         super(Translator.localize("action.delete-from-model"),
                 ResourceLoaderWrapper.lookupIcon("action.delete-from-model"));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("action.delete-from-model"));
         putValue(Action.SMALL_ICON,
                 ResourceLoaderWrapper.lookupIcon("Delete"));
@@ -164,7 +165,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                     p.moveToTrash(target);
                 }
             } catch (InvalidElementException e) {
-                LOG.debug("Model element deleted twice - ignoring 2nd delete");
+                LOG.log(Level.FINE, "Model element deleted twice - ignoring 2nd delete");
             }
         }
     }
@@ -243,7 +244,7 @@ public class ActionDeleteModelElements extends UndoableAction {
             doAsk = true;
         }
 
-        /* TODO: If a namespace with sub-classdiagrams is deleted, then { 
+        /* TODO: If a namespace with sub-classdiagrams is deleted, then {
             confirmStr +=
                 Translator.localize(
                     "optionpane.remove-from-model-will-remove-subdiagram");
@@ -276,7 +277,7 @@ public class ActionDeleteModelElements extends UndoableAction {
 
         return (response == JOptionPane.YES_OPTION);
     }
-    
+
     /**
      * @return true if the tool should be enabled
      */
@@ -288,7 +289,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                 return false;
             }
         }
-        
+
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
@@ -305,7 +306,7 @@ public class ActionDeleteModelElements extends UndoableAction {
         // TODO: All of the following can be broken if we have multiple
         // targets selected
         Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof ArgoDiagram) { 
+        if (target instanceof ArgoDiagram) {
             // we cannot delete the last diagram
             return (ProjectManager.getManager().getCurrentProject()
                 .getDiagramList().size() > 1);

@@ -36,14 +36,6 @@
       <scope>compile</scope>
     </dependency>
 
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.6-6</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-
   </dependencies>
 
   <name>argouml-core-notation</name>

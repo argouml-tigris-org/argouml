@@ -19,7 +19,7 @@ and the name of the default target which will be used if none
 is specified (currently 'package').
 
 Executing build.bat/build.sh will use the version of Ant from
-the ArgoUML CVS repository.  You can use 
+the ArgoUML CVS repository.  You can use
         build -version
 to find out what the current version is.
 
@@ -31,7 +31,7 @@ which accommodates the different directory layout.
 Property Settings
 =================
 The default property settings are in "default.properties".  To override
-them, create a file called "build.properties" here or 
+them, create a file called "build.properties" here or
 "argouml.build.properties" in your home directory.  Order of precedence
 is the reverse of the order they are mentioned in above.
 
@@ -44,16 +44,16 @@ Refer to the Ant documentation and this file for other settings.
 
 Roles of the different build.xml files
 ======================================
-There is a build.xml for each subsystem i.e. in each subdirectory. 
+There is a build.xml for each subsystem i.e. in each subdirectory.
 They each have the following targets:
-    jar - to build everything and move all created and exported jars 
+    jar - to build everything and move all created and exported jars
             to subdir/build
     clean - to remove subdir/build
     tests (optional) - to run all tests. Property junit.failure is set if
             any of the test fails.
     compile, compile-tests (optional) (local to build.xml and used by
             tests, and jar)
-The jar and tests target rely on the contents of subdir/build for other 
+The jar and tests target rely on the contents of subdir/build for other
 subdirectories i.e. they depend on jars exported from other subsystems.
 Circular dependencies is not allowed. This build.xml contains an ordered
 list defining in what order they are built (using the jar target). This
@@ -70,7 +70,7 @@ order. The subdir/build.xml files are used by the Eclipse setup.
   -->
 
 <project basedir="." default="package" name="argouml">
-  
+
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
   <!-- =================================================================== -->
@@ -146,9 +146,9 @@ Property files to be searched (in argouml-build):
       <format pattern="yyyy" property="year"/>
     </tstamp>
 
-    <property name="local.build.properties" 
+    <property name="local.build.properties"
               value="build.properties"/>
-    <property name="user.build.properties" 
+    <property name="user.build.properties"
               value="${user.home}/argouml.build.properties"/>
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
@@ -159,12 +159,12 @@ Property files to be searched (in argouml-build):
     <property name="argo.root.dir" value="${basedir}" />
     <property file="${override.build.properties}"/>
 
-    <!-- Try to figure out where our tools directory is. NOTE: Unlike normal 
+    <!-- Try to figure out where our tools directory is. NOTE: Unlike normal
          property handling, <available> will override existing property defs -->
     <property name="tool.test.file" value="checkstyle/java.header"/>
-    <available file="../argouml-core-tools/${tool.test.file}" 
+    <available file="../argouml-core-tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="../argouml-core-tools"/>
-    <available file="../../tools/${tool.test.file}" 
+    <available file="../../tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="../../tools"/>
 
     <property file="default.properties"/>
@@ -238,7 +238,6 @@ Property files to be searched (in argouml-build):
           description="Prepare all jar files, both built and just delivered.">
 
     <!-- Build the subdirs in order. -->
-    <ant dir="../argouml-core-infra" inheritAll="false"           target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"           target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"       target="jar"/>
     <ant dir="../argouml-core-model-euml" inheritAll="false"      target="install"/>
@@ -256,9 +255,6 @@ Property files to be searched (in argouml-build):
     <mkdir dir="${argo.build.dir}"/>
 
     <copy todir="${argo.build.dir}">
-      <fileset dir="../argouml-core-infra/build">
-        <include name="*"/>
-      </fileset>
       <fileset dir="../argouml-core-model/build">
         <include name="*"/>
       </fileset>
@@ -340,25 +336,20 @@ Property files to be searched (in argouml-build):
 
     <!-- Build the subdirs in order. -->
 
-    <!-- argouml-core-infra doesn't have tests. -->
-
     <!-- Tests for argouml-core-model. -->
     <!-- Yes, it is unorthodox that these tests reference the mdr tests
          but that is the way they are currently built. -->
-    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"
          target="${tests-to-do}"/>
 
     <!-- Tests for argouml-core-model-mdr -->
-    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"
          target="${tests-to-do}"/>
 
     <!-- Tests for argouml-core-model-euml -->
-    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-euml" inheritAll="false"   target="jar"/>
     <!-- There are currently no tests for argouml-core-model-euml so we
@@ -368,14 +359,12 @@ Property files to be searched (in argouml-build):
     -->
 
     <!-- Tests for argouml-app -->
-    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-app" inheritAll="false"
          target="${tests-to-do}"/>
 
     <!-- Preparations for tests for things in ext -->
-    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
@@ -403,16 +392,13 @@ Property files to be searched (in argouml-build):
     <!-- Currently none. -->
 
     <antcall target="tests-reports"/>
-  </target>  
-  
+  </target>
+
   <target name="tests-reports" depends="init">
     <delete dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}"/>
 
     <junitreport todir="${tests.reports}">
-      <fileset dir="../argouml-core-infra">
-        <include name="build/tests/reports/**/TEST-*.xml"/>
-      </fileset>
       <fileset dir="../argouml-core-model">
         <include name="build/tests/reports/**/TEST-*.xml"/>
       </fileset>
@@ -505,7 +491,6 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model-euml" inheritAll="false"  target="clean"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"   target="clean"/>
     <ant dir="../argouml-core-model" inheritAll="false"       target="clean"/>
-    <ant dir="../argouml-core-infra" inheritAll="false"       target="clean"/>
 
   </target>
 
@@ -705,11 +690,11 @@ Property files to be searched (in argouml-build):
   <!-- have failed.                                                        -->
   <!-- =================================================================== -->
   <!-- TODO: This target is not yet tested with the new structure. -->
-  <target name="clitests" depends="package" 
+  <target name="clitests" depends="package"
           description="Run tests that test the command line stuff.">
 
     <!-- Don't do anything. -->
-    <java classname="org.argouml.application.Main" 
+    <java classname="org.argouml.application.Main"
           fork="yes">
       <assertions>
         <enable/>
@@ -721,7 +706,7 @@ Property files to be searched (in argouml-build):
     </java>
 
     <!-- Exit. -->
-    <java classname="org.argouml.application.Main" 
+    <java classname="org.argouml.application.Main"
           fork="yes">
       <assertions>
         <enable/>
@@ -740,10 +725,10 @@ Property files to be searched (in argouml-build):
   <!-- =================================================================== -->
   <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
   <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. 
+  <!-- TODO: This target is not yet tested with the new structure.
           depends="compile,junit-setup"
 -->
-  <target name="run-with-test-panel" 
+  <target name="run-with-test-panel"
           description="Start the TestRunner with all test cases from ../tests loaded.">
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
       <assertions>
@@ -766,16 +751,16 @@ Property files to be searched (in argouml-build):
   <!-- Section with static analysis things.                                -->
   <!-- ################################################################### -->
 
-          
-  <!-- ================================= 
-          target: checkstyle              
+
+  <!-- =================================
+          target: checkstyle
        ================================= -->
-  <target name="checkstyle" depends="init,static-check-init" 
+  <target name="checkstyle" depends="init,static-check-init"
           description="Run Checkstyle on sources">
     <mkdir dir="${argo.build.dir}"/>
     <taskdef resource="checkstyletask.properties"
                classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
-  	
+
     <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" >
       <fileset refid="java-sources"/>
       <formatter type="plain"/>
@@ -784,7 +769,7 @@ Property files to be searched (in argouml-build):
       <property key="basedir" value=".."/>
 
     </checkstyle>
-      
+
   </target>
 
   <!-- =================================================================== -->
@@ -794,14 +779,14 @@ Property files to be searched (in argouml-build):
   <target name="jdepend" depends="init, ant.optional.init"
           description="Run jdepend to report static metrics.">
     <echo>
-CC - Concrete Class Count 
-AC - Abstract Class (and Interface) Count 
-Ca - Afferent Couplings (Ca) 
-Ce - Efferent Couplings (Ce) 
-A - Abstractness (0-1) 
-I - Instability (0-1) 
-D - Distance from the Main Sequence (0-1) 
-Cyclic - If the package contains a dependency cycle 
+CC - Concrete Class Count
+AC - Abstract Class (and Interface) Count
+Ca - Afferent Couplings (Ca)
+Ce - Efferent Couplings (Ce)
+A - Abstractness (0-1)
+I - Instability (0-1)
+D - Distance from the Main Sequence (0-1)
+Cyclic - If the package contains a dependency cycle
 
 For details see http://www.clarkware.com/software/JDepend.html.
     </echo>
@@ -820,7 +805,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- TODO: This target is broken because it depends on an ANTLR definition which has been removed. -->
   <target name="javasrc" depends="init"
           description="Run javasrc on the source.">
-  	
+
     <property name="javasrc.jar.path" location="${argo.tools.dir}/lib/javasrc-2001-beta.jar" />
 
     <java classname="javasrc.app.Pass1" failonerror="true" fork="true">
@@ -848,7 +833,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   </target>
 
   <target name="static-check-init">
-    <fileset id="java-sources" dir=".." 
+    <fileset id="java-sources" dir=".."
   	includes="argouml-app/src/**/*.java argouml-core-*/src/**/*.java">
       <exclude name="**/JavaLexer.java"/>
       <exclude name="**/JavaRecognizer.java"/>
@@ -888,15 +873,15 @@ For details see http://www.clarkware.com/software/JDepend.html.
 
   <target name="cpd" depends="pmd-init">
     <property name="cpd.report.file" value="${pmd.reports.dir}/cpd-report"/>
-    
+
     <mkdir dir="${pmd.reports.dir}"/>
     <delete file="${cpd.report.file}.*"/>
-    <cpd minimumTokenCount="100" outputFile="${cpd.report.file}.xml" 
+    <cpd minimumTokenCount="100" outputFile="${cpd.report.file}.xml"
       format="xml" encoding="UTF-8">
         <fileset refid="java-sources"/>
     </cpd>
-    
-    <xslt in="${cpd.report.file}.xml" style="${pmd.xslt.path}/cpdhtml.xslt" 
+
+    <xslt in="${cpd.report.file}.xml" style="${pmd.xslt.path}/cpdhtml.xslt"
       out="${cpd.report.file}.html"/>
 
   </target>
@@ -931,7 +916,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <property name="classycle.output" value="${argo.build.dir}/classycle"/>
     <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
     <mkdir dir="${classycle.output}"/>
-    <java jar="${classycle.dir}/classycle.jar" failonerror="false" 
+    <java jar="${classycle.dir}/classycle.jar" failonerror="false"
           fork="true" maxmemory="32M">
       <arg value="-mergeInnerClasses"/>
       <arg value="-includingClasses=org.argouml.*"/>
@@ -950,4 +935,3 @@ For details see http://www.clarkware.com/software/JDepend.html.
 
 </project>
 <!-- End of file -->
-

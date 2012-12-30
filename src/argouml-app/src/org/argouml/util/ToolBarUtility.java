@@ -42,38 +42,40 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
 
 /**
- * This utility class contains additional functionality related to the 
+ * This utility class contains additional functionality related to the
  * org.tigris.toolbar project for the ArgoUML application.
  *
  * @author Michiel
  */
 public class ToolBarUtility {
-    
-    private static final Logger LOG = Logger.getLogger(ToolBarUtility.class);
-    
+
+    private static final Logger LOG =
+        Logger.getLogger(ToolBarUtility.class.getName());
+
     /**
-     * Manages the selection of the default tool 
+     * Manages the selection of the default tool
      * in a popup tool in the toolbar. <p>
-     * 
+     *
      * I.e. in a toolbar, you can have tools that can be opened,
-     * into a grid of tools. The last used tool is remembered, 
+     * into a grid of tools. The last used tool is remembered,
      * and put at the top when the popup is closed, i.e.
      * is the only tool that remains visible. This remembering is
      * persistent, hence stored in the configuration file,
      * under a certain key (i.e. name).
-     * 
+     *
      * @param actions the array of actions that make up the popup
      * @param key appendix for the key for the configuration file
      */
@@ -141,15 +143,15 @@ public class ToolBarUtility {
         }
     }
 
-    /** 
-     * TODO: Use the following function to have a dropdown set of tools: 
-     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true); 
-     * Instead, this temporary solution: 
+    /**
+     * TODO: Use the following function to have a dropdown set of tools:
+     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true);
+     * Instead, this temporary solution:
      *
      * @param buttonPanel the toolbar
      * @param actions an array of actions representing the tool layout
      */
-    public static void addItemsToToolBar(JToolBar buttonPanel, 
+    public static void addItemsToToolBar(JToolBar buttonPanel,
             Object[] actions) {
         JButton button = buildPopupToolBoxButton(actions, false);
         if (!ToolBarManager.alwaysUseStandardRollover()) {
@@ -157,29 +159,30 @@ public class ToolBarUtility {
         }
         buttonPanel.add(button);
     }
-    
-    /** 
-     * TODO: Use the following function to have a dropdown set of tools: 
-     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true); 
-     * Instead, this temporary solution: 
+
+    /**
+     * TODO: Use the following function to have a dropdown set of tools:
+     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true);
+     * Instead, this temporary solution:
      *
      * @param buttonPanel the toolbar
      * @param actions an array of actions representing the tool layout
      */
-    public static void addItemsToToolBar(JToolBar buttonPanel, 
+    public static void addItemsToToolBar(JToolBar buttonPanel,
             Collection actions) {
 	addItemsToToolBar(buttonPanel, actions.toArray());
     }
-    
+
     /**
      * TODO: Move this into the toolbar project.
      */
-    private static PopupToolBoxButton buildPopupToolBoxButton(Object[] actions, 
+    private static PopupToolBoxButton buildPopupToolBoxButton(Object[] actions,
             boolean rollover) {
         PopupToolBoxButton toolBox = null;
         for (int i = 0; i < actions.length; ++i) {
             if (actions[i] instanceof Action) {
-                LOG.info("Adding a " + actions[i] + " to the toolbar");
+                LOG.log(Level.INFO, "Adding a {0} to the toolbar", actions[i]);
+
                 Action a = (Action) actions[i];
                 if (toolBox == null) {
                     toolBox = new PopupToolBoxButton(a, 0, 1, rollover);
@@ -198,7 +201,8 @@ public class ToolBarUtility {
                     toolBox.add(a);
                 }
             } else {
-        	LOG.error("Can't add a " + actions[i] + " to the toolbar");
+                LOG.log(Level.SEVERE,
+                        "Can't add a " + actions[i] + " to the toolbar");
             }
         }
         return toolBox;

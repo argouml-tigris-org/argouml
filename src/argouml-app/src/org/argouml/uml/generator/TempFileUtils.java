@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,19 +45,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Utility class with methods to manage files in the temporary directory.
  */
 public class TempFileUtils {
 
-    private static final Logger LOG = Logger.getLogger(TempFileUtils.class);
+    private static final Logger LOG =
+        Logger.getLogger(TempFileUtils.class.getName());
 
     /**
      * Create a temporary directory.
-     * 
+     *
      * @return a newly created, empty, temporary directory
      */
     public static File createTempDir() {
@@ -70,7 +71,7 @@ public class TempFileUtils {
             }
             return tmpdir;
         } catch (IOException ioe) {
-            LOG.error("Error while creating a temporary directory", ioe);
+            LOG.log(Level.SEVERE, "Error while creating a temporary directory", ioe);
             return null;
         }
     }
@@ -78,7 +79,7 @@ public class TempFileUtils {
     private interface FileAction {
         /**
          * Execute some action on the specified file.
-         * 
+         *
          * @param file the file on which to perform the action
          * @throws IOException
          */
@@ -120,11 +121,11 @@ public class TempFileUtils {
                     // bug).
                     if (!f.isDirectory() && !f.getName().endsWith(".bak")) {
                         // TODO: This is using the default platform character
-                        // encoding.  Specifying an encoding will produce more 
+                        // encoding.  Specifying an encoding will produce more
                         // predictable results
                         FileReader fr = new FileReader(f);
                         BufferedReader bfr = new BufferedReader(fr);
-                        try { 
+                        try {
                             StringBuffer result =
                                 new StringBuffer((int) f.length());
                             String line = bfr.readLine();
@@ -147,7 +148,7 @@ public class TempFileUtils {
             });
             return ret;
         } catch (IOException ioe) {
-            LOG.error("Exception reading files", ioe);
+            LOG.log(Level.SEVERE, "Exception reading files", ioe);
         }
         return null;
     }
@@ -164,7 +165,7 @@ public class TempFileUtils {
                 }
             });
         } catch (IOException ioe) {
-            LOG.error("Exception deleting directory", ioe);
+            LOG.log(Level.SEVERE, "Exception deleting directory", ioe);
         }
     }
 
@@ -185,7 +186,7 @@ public class TempFileUtils {
                 }
             });
         } catch (IOException ioe) {
-            LOG.error("Exception reading file names", ioe);
+            LOG.log(Level.SEVERE, "Exception reading file names", ioe);
         }
         return ret;
     }

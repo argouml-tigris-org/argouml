@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009,2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -65,7 +67,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellEditor;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.model.IconIdentifiable;
 import org.argouml.core.propertypanels.model.Named;
@@ -92,9 +93,10 @@ class RowSelector extends UmlControl
         implements MouseListener, ListDataListener, ListSelectionListener, Expandable {
 
     /**
-     * The logger
+     * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(RowSelector.class);
+    private static final Logger LOG =
+        Logger.getLogger(RowSelector.class.getName());
 
     /**
      * class uid
@@ -102,17 +104,17 @@ class RowSelector extends UmlControl
     private static final long serialVersionUID = 3937183621483536749L;
 
     /**
-     * The model element that is the target of this control
+     * The model element that is the target of this control.
      */
     private final Object target;
-    
+
     /**
-     * Identifies if the model element is a readonly modelelement
+     * Identifies if the model element is a readonly modelelement.
      */
     private final boolean readonly;
-    
+
     private final List actions;
-    
+
     /**
      * The scrollpane that will contain the list
      */
@@ -142,7 +144,7 @@ class RowSelector extends UmlControl
      * The current expanded state
      */
     private boolean expanded = false;
-    
+
     /**
      * The model element that is being moved. This is used because move
      * effectively removes the selected model element and then adds it in a
@@ -157,12 +159,12 @@ class RowSelector extends UmlControl
      * The delete action that we must enable/disable
      */
     private final DeleteAction deleteAction;
-    
+
     /**
      * The remove action that we must enable/disable
      */
     private final Action removeAction;
-    
+
     /**
      * The delete action that we must enable/disable
      */
@@ -198,18 +200,18 @@ class RowSelector extends UmlControl
      * @param expandable true if the control should be expandable
      */
     public RowSelector(
-	    final DefaultListModel model,
-	    final boolean expanded,
-	    final boolean expandable) {
+            final DefaultListModel model,
+            final boolean expanded,
+            final boolean expandable) {
         super(new BorderLayout());
-        
+
         this.expandable = expandable;
         Object metaType = null;
         List metaTypes = null;
         final Action addAction;
         List<Action> newActions = null;
         List<Command> additionalNewCommands = null;
-        
+
         final String propertyName;
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -234,7 +236,7 @@ class RowSelector extends UmlControl
             target = null;
             readonly = true;
         }
-        
+
         assert (target != null);
 
         if (metaTypes == null) {
@@ -242,11 +244,11 @@ class RowSelector extends UmlControl
             metaTypes.add(metaType);
         }
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Creating list for " + target);
-            LOG.debug("model = " + model.getClass().getName());
-            LOG.debug("metatype = " + metaType);
-            LOG.debug("target = " + target);
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.log(Level.FINE, "Creating list for {0}", target);
+            LOG.log(Level.FINE, "model = {0}", model.getClass().getName());
+            LOG.log(Level.FINE, "metatype = {0}", metaType);
+            LOG.log(Level.FINE, "target = {0}", target);
         }
 
         add((JComponent) scroll);
@@ -257,14 +259,14 @@ class RowSelector extends UmlControl
 
         scroll = ScrollListFactory.create(model);
         JScrollPane jscroll = ((JScrollPane) scroll);
-        
+
         add(jscroll);
         expandedPreferredSize = jscroll.getPreferredSize();
         expandedMaximumSize = jscroll.getMaximumSize();
 
         jscroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+
         if (model instanceof SimpleListModel
                 && ((SimpleListModel) model).getAddCommand() != null) {
             removeAction =
@@ -275,7 +277,7 @@ class RowSelector extends UmlControl
             removeAction = null;
             addAction = null;
         }
-        
+
 
         actions = new ArrayList<Action>(6);
         if (!expandable && !expanded) {
@@ -288,7 +290,7 @@ class RowSelector extends UmlControl
             moveBottomAction = null;
             if (!readonly) {
                 // Create popup tool if we have a single row
-    
+
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(
                             meta, target)) {
@@ -304,37 +306,37 @@ class RowSelector extends UmlControl
                         actions.add(createAction);
                     }
                 }
-                
+
                 if (newActions != null) {
                     actions.addAll(newActions);
                 }
-                
+
                 if (additionalNewCommands != null
                         && !additionalNewCommands.isEmpty()) {
                     for (Command cmd : additionalNewCommands) {
-        		if (cmd instanceof IconIdentifiable
-        		        && cmd instanceof Named) {
+                        if (cmd instanceof IconIdentifiable
+                                && cmd instanceof Named) {
                             actions.add(new CommandAction(
-                                    cmd, 
+                                    cmd,
                                     ((Named)cmd).getName(),
                                     ((IconIdentifiable)cmd).getIcon()));
-        		} else {
+                        } else {
                             actions.add(new CommandAction(cmd));
-        		}
+                        }
                     }
                 }
-                
+
                 if (!actions.isEmpty()) {
                     final JPanel buttonPanel =
-                    	createSingleButtonPanel(actions);
-                    	
+                        createSingleButtonPanel(actions);
+
                     add(buttonPanel, BorderLayout.WEST);
                 }
             }
         } else {
             if (!readonly) {
-        	// TODO: Lets build this into a separate buildToolbar method
-        		
+                // TODO: Lets build this into a separate buildToolbar method
+
                 // Create add and remove buttons if needed first
                 if (addAction != null) {
                     actions.add(addAction);
@@ -367,20 +369,20 @@ class RowSelector extends UmlControl
                 if (additionalNewCommands != null
                         && !additionalNewCommands.isEmpty()) {
                     for (Command cmd : additionalNewCommands) {
-                	if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
+                        if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
                             createActions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
-                	} else {
+                        } else {
                             createActions.add(new CommandAction(cmd));
-                	} 
+                        }
                     }
                 }
-                
+
                 if (createActions.size() > 2) {
                     actions.add(createActions.toArray());
                 } else {
                     actions.addAll(createActions);
                 }
-                
+
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
                     moveDownAction = new MoveDownAction();
@@ -403,12 +405,12 @@ class RowSelector extends UmlControl
             this.addMouseListener(this);
 
             if (!Model.getModelManagementHelper().isReadOnly(target)) {
-            	if (deleteAction != null) {
+                if (deleteAction != null) {
                     getList().addListSelectionListener(deleteAction);
-            	}
-            	if (removeAction != null) {
+                }
+                if (removeAction != null) {
                     getList().addListSelectionListener(this);
-            	}
+                }
                 // TODO: We should really test the model instead for this
                 // but we have no API yet.
                 // Can we just check if the collection to build the JList
@@ -421,7 +423,7 @@ class RowSelector extends UmlControl
                 }
             }
             getList().addMouseListener(this);
-            
+
             getModel().addListDataListener(this);
         }
     }
@@ -447,7 +449,7 @@ class RowSelector extends UmlControl
         }
         return size;
     }
-    
+
     /**
      * @return the preferred size as the height of one row in a JList
      */
@@ -472,16 +474,16 @@ class RowSelector extends UmlControl
         if (e.isPopupTrigger()) {
             JPopupMenu popup = new JPopupMenu();
             for (Object action : actions) {
-        	if (action instanceof Action) {
-        	    popup.add((Action) action);
-        	}
+                if (action instanceof Action) {
+                    popup.add((Action) action);
+                }
             }
-	    if (moveTopAction != null) {
-		popup.add(moveTopAction);
-		popup.add(moveBottomAction);
-		popup.add(moveUpAction);
-		popup.add(moveDownAction);
-	    }
+            if (moveTopAction != null) {
+                popup.add(moveTopAction);
+                popup.add(moveBottomAction);
+                popup.add(moveUpAction);
+                popup.add(moveDownAction);
+            }
             if (popup.getComponentCount() > 0) {
                 popup.show(this, e.getX(), e.getY());
             }
@@ -493,16 +495,16 @@ class RowSelector extends UmlControl
         if (e.isPopupTrigger()) {
             JPopupMenu popup = new JPopupMenu();
             for (Object action : actions) {
-        	if (action instanceof Action) {
-        	    popup.add((Action) action);
-        	}
+                if (action instanceof Action) {
+                    popup.add((Action) action);
+                }
             }
-	    if (moveTopAction != null) {
-		popup.add(moveTopAction);
-		popup.add(moveBottomAction);
-		popup.add(moveUpAction);
-		popup.add(moveDownAction);
-	    }
+            if (moveTopAction != null) {
+                popup.add(moveTopAction);
+                popup.add(moveBottomAction);
+                popup.add(moveUpAction);
+                popup.add(moveDownAction);
+            }
             if (popup.getComponentCount() > 0) {
                 popup.show(this, e.getX(), e.getY());
             }
@@ -513,67 +515,67 @@ class RowSelector extends UmlControl
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
-    
+
     public JComponent getExpansion() {
-	
-	List<Action> flatActions = new ArrayList<Action>();
-	for (Object o : actions) {
+
+        List<Action> flatActions = new ArrayList<Action>();
+        for (Object o : actions) {
             if (o instanceof Action) {
-        	flatActions.add((Action) o);
+                flatActions.add((Action) o);
             } else {
-		Object[] oa = (Object[]) o;
-		for (int j = 0; j < oa.length; ++j) {
-		    flatActions.add((Action) oa[j]);
-		}
+                Object[] oa = (Object[]) o;
+                for (int j = 0; j < oa.length; ++j) {
+                    flatActions.add((Action) oa[j]);
+                }
             }
-	}
-	
-	
-	final ToolBox tb =
-	    new ToolBox(2, flatActions.size() / 2 + flatActions.size() % 2, true);
-	for (int i = 0; i < flatActions.size() / 2 + flatActions.size() % 2; ++i) {
+        }
+
+
+        final ToolBox tb =
+            new ToolBox(2, flatActions.size() / 2 + flatActions.size() % 2, true);
+        for (int i = 0; i < flatActions.size() / 2 + flatActions.size() % 2; ++i) {
             tb.add((Action) flatActions.get(i));
-	}
+        }
         if (moveUpAction != null) {
             tb.add(moveUpAction);
         }
         if (moveTopAction != null) {
             tb.add(moveTopAction);
         }
-	if (flatActions.size() % 2 == 1) {
-	    tb.add(new JPanel());
-	}
-	for (int i = flatActions.size() / 2 + flatActions.size() % 2; i < flatActions.size(); ++i) {
+        if (flatActions.size() % 2 == 1) {
+            tb.add(new JPanel());
+        }
+        for (int i = flatActions.size() / 2 + flatActions.size() % 2; i < flatActions.size(); ++i) {
             tb.add((Action) flatActions.get(i));
-	}
+        }
         if (moveDownAction != null) {
             tb.add(moveDownAction);
         }
         if (moveBottomAction != null) {
             tb.add(moveBottomAction);
         }
-	
-	JComponent expander = new JPanel(
-		new FlowLayout(FlowLayout.RIGHT));
-	
-	expander.add(tb);
-	
+
+        JComponent expander = new JPanel(
+                new FlowLayout(FlowLayout.RIGHT));
+
+        expander.add(tb);
+
         return expander;
     }
-    
+
     public boolean isExpanded() {
-	return expanded;
+        return expanded;
     }
-    
+
     public boolean isExpandable() {
-	return expandable;
+        return expandable;
     }
-    
+
     /**
      * Remove all the listeners that were added in the constructor
      */
     public void removeNotify() {
-    	if (!readonly) {
+        if (!readonly) {
             getList().removeListSelectionListener(this);
             getList().removeListSelectionListener(deleteAction);
             if (moveUpAction != null) {
@@ -583,7 +585,7 @@ class RowSelector extends UmlControl
                 getList().removeListSelectionListener(moveBottomAction);
                 getList().removeMouseListener(this);
             }
-    	}
+        }
         this.removeMouseListener(this);
         getModel().removeListDataListener(this);
         if (getModel() instanceof UMLModelElementListModel) {
@@ -617,7 +619,7 @@ class RowSelector extends UmlControl
     JList getList() {
         return scroll.getList();
     }
-    
+
     /**
      * Clear all selections in the list
      */
@@ -632,16 +634,16 @@ class RowSelector extends UmlControl
     private ListModel getModel() {
         return (ListModel) scroll.getList().getModel();
     }
-    
+
 
     public void contentsChanged(ListDataEvent e) {
     }
 
     public void intervalAdded(ListDataEvent e) {
         if (e.getIndex0() == e.getIndex1()
-                && getModel().getElementAt(e.getIndex0()) 
+                && getModel().getElementAt(e.getIndex0())
                 == movedModelElement.getElement()) {
-            LOG.info("Setting attribute to selected");
+            LOG.log(Level.INFO, "Setting attribute to selected");
             final Object element = movedModelElement.getElement();
             movedModelElement.setElement(null);
             getList().setSelectedValue(element, true);
@@ -658,14 +660,14 @@ class RowSelector extends UmlControl
 
     public void intervalRemoved(ListDataEvent e) {
     }
-    
+
 
     public void valueChanged(ListSelectionEvent e) {
         if (removeAction != null) {
             removeAction.setEnabled(getList().getSelectedIndex() > -1);
         }
     }
-    
+
 
     /**
      * This action deletes the model elements that are selected in the JList
@@ -763,8 +765,8 @@ class RowSelector extends UmlControl
             movedModelElement.setElement(getList().getSelectedValues()[0]);
             assert (movedModelElement != null);
             Model.getUmlHelper().move(
-                    target, 
-                    movedModelElement.getElement(), 
+                    target,
+                    movedModelElement.getElement(),
                     UmlHelper.Direction.UP);
         }
     }
@@ -809,8 +811,8 @@ class RowSelector extends UmlControl
             movedModelElement.setElement(getList().getSelectedValues()[0]);
             assert (movedModelElement != null);
             Model.getUmlHelper().move(
-                    target, 
-                    movedModelElement.getElement(), 
+                    target,
+                    movedModelElement.getElement(),
                     UmlHelper.Direction.DOWN);
         }
     }
@@ -854,8 +856,8 @@ class RowSelector extends UmlControl
             movedModelElement.setElement(getList().getSelectedValues()[0]);
             assert (movedModelElement != null);
             Model.getUmlHelper().move(
-                    target, 
-                    movedModelElement.getElement(), 
+                    target,
+                    movedModelElement.getElement(),
                     UmlHelper.Direction.TOP);
         }
     }
@@ -905,7 +907,7 @@ class RowSelector extends UmlControl
                     UmlHelper.Direction.BOTTOM);
         }
     }
-    
+
     private class MovedModelElement {
         private Object element;
 
@@ -914,70 +916,72 @@ class RowSelector extends UmlControl
         }
 
         public void setElement(Object element) {
-            LOG.info("Setting moved model element to " + element);
+            LOG.log(Level.INFO, "Setting moved model element to {0}", element);
             this.element = element;
         }
     }
-    
+
     private static class AddAction extends UndoableAction {
 
-    	private Command command;
-    	
-    	public AddAction(Command command) {
+        private Command command;
+
+        public AddAction(Command command) {
             super("", ResourceLoaderWrapper.lookupIcon("Add"));
             this.command = command;
-    	}
-    	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    command.execute();
-	}
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            command.execute();
+        }
     }
-    
+
     private static class RemoveAction extends UndoableAction {
 
-    	private final SimpleListModel simpleListModel;
-    	private final JList list;
-    	
-    	public RemoveAction(JList list, SimpleListModel model) {
-    	    super("", ResourceLoaderWrapper.lookupIcon("Remove"));
-    	    this.simpleListModel = model;
-    	    this.list = list;
-    	}
-    	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    final Object objectToRemove = list.getSelectedValue();
-	    if (objectToRemove!= null) {
-		Command command =
-		    simpleListModel.getRemoveCommand(objectToRemove);
-		command.execute();
-	    } else {
-		LOG.warn("No selected object was found in the list control - we shouldn't be able to get here");
-	    }
-	}
+        private final SimpleListModel simpleListModel;
+        private final JList list;
+
+        public RemoveAction(JList list, SimpleListModel model) {
+            super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+            this.simpleListModel = model;
+            this.list = list;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            final Object objectToRemove = list.getSelectedValue();
+            if (objectToRemove!= null) {
+                Command command =
+                    simpleListModel.getRemoveCommand(objectToRemove);
+                command.execute();
+            } else {
+                LOG.log(Level.WARNING,
+                        "No selected object was found in the list control - "
+                        + "we shouldn't be able to get here");
+            }
+        }
     }
-    
+
     private static class CommandAction extends UndoableAction {
 
-    	private final Command command;
-    	
-    	public CommandAction(Command cmd) {
-    	    super("", ResourceLoaderWrapper.lookupIcon("Remove"));
-    	    this.command = cmd;
-    	}
-    	
-    	public CommandAction(Command cmd, String name, Icon icon) {
-    	    super(name, icon);
-    	    this.command = cmd;
-    	}
-    	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    command.execute();
-	}
+        private final Command command;
+
+        public CommandAction(Command cmd) {
+            super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+            this.command = cmd;
+        }
+
+        public CommandAction(Command cmd, String name, Icon icon) {
+            super(name, icon);
+            this.command = cmd;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            command.execute();
+        }
     }
 }

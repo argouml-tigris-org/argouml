@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
@@ -52,7 +54,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -68,7 +69,7 @@ import org.tigris.swidgets.Dialog;
 public class DismissToDoItemDialog extends ArgoDialog {
 
     private static final Logger LOG =
-        Logger.getLogger(DismissToDoItemDialog.class);
+        Logger.getLogger(DismissToDoItemDialog.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -172,7 +173,8 @@ public class DismissToDoItemDialog extends ArgoDialog {
                     explain(e);
                 }
                 else {
-                    LOG.warn("DissmissToDoItemDialog: Unknown action: " + e);
+                    LOG.log(Level.WARNING,
+                            "DissmissToDoItemDialog: Unknown action: " + e);
                 }
             }
         });
@@ -249,7 +251,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
                     Designer.MODEL_TODOITEM_DISMISSED, null, null);
         }
         catch (UnresolvableException ure) {
-            LOG.error("Resolve failed (ure): ", ure);
+            LOG.log(Level.SEVERE, "Resolve failed (ure): ", ure);
             JOptionPane.showMessageDialog(
 		    this,
 		    ure.getMessage(),

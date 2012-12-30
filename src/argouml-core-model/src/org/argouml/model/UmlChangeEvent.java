@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public abstract class UmlChangeEvent extends PropertyChangeEvent {
      *
      * @param source  The bean that fired the event.
      * @param propertyName  The programmatic name of the property
-     *		that was changed.
+     *	      that was changed.
      * @param oldValue  The old value of the property.
      * @param newValue  The new value of the property.
      * @param theOriginalEvent The event that was fired internally
@@ -78,9 +78,13 @@ public abstract class UmlChangeEvent extends PropertyChangeEvent {
     protected EventObject getOriginalEvent() {
         return originalEvent;
     }
-    
+
     @Override
     public String toString() {
-        return super.toString() + ": " + originalEvent;
+        return getClass().getName() + "{"
+               +"source = " + getSource()
+               +"old = " + getOldValue()
+               +"name = " + getPropertyName()
+               + ": " + originalEvent + "}";
     }
 }

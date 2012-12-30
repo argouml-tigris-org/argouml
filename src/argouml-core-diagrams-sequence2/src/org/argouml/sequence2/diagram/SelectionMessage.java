@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ package org.argouml.sequence2.diagram;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.SelectionRerouteEdge;
 import org.tigris.gef.presentation.Fig;
@@ -60,30 +60,31 @@ class SelectionMessage extends SelectionRerouteEdge {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(SelectionMessage.class);
+        Logger.getLogger(SelectionMessage.class.getName());
 
     /**
-     * The constructor
+     * The constructor.
+     *
      * @param feme the fig.
      */
     public SelectionMessage(FigEdgeModelElement feme) {
         super(feme);
     }
-    
+
     @Override
     public void keyPressed(KeyEvent ke) {
-        if (ke.getKeyCode() == KeyEvent.VK_LEFT 
+        if (ke.getKeyCode() == KeyEvent.VK_LEFT
                 || ke.getKeyCode() == KeyEvent.VK_RIGHT) {
             // we don't let the user move the messages horizontally.
             ke.consume();
         } else {
             handleMovement();
         }
-    }       
-    
+    }
+
     @Override
     public void mousePressed(MouseEvent me) {
-	FigMessage message = (FigMessage) getContent(); 
+	FigMessage message = (FigMessage) getContent();
 	if (!message.isSelfMessage()) {
 	    super.mousePressed(me);
 	}
@@ -91,44 +92,44 @@ class SelectionMessage extends SelectionRerouteEdge {
 
     @Override
     public void dragHandle(int x, int y, int w, int h, Handle handle) {
-        FigMessage message = (FigMessage) getContent(); 
+        FigMessage message = (FigMessage) getContent();
         if (message.isSelfMessage()) {
             message.translate(0, y - message.getY());
         } else {
             super.dragHandle(x, y, w, h, handle);
             handleMovement();
         }
-        
+
     }
-    
+
     private void handleMovement() {
         FigMessage figMessage = (FigMessage) getContent();
-        FigClassifierRole source = 
+        FigClassifierRole source =
             (FigClassifierRole) figMessage.getSourceFigNode();
-        FigClassifierRole dest = 
+        FigClassifierRole dest =
             (FigClassifierRole) figMessage.getDestFigNode();
-        
+
         // if the edge is near the bottom of the classifier roles,
         // we enlarge all the FigClassifierRoles in the diagram.
-        if (figMessage.getFinalY() > 
+        if (figMessage.getFinalY() >
                 source.getY() + source.getHeight() - 10) {
             final int newHeight = source.getHeight() + 10;
             final List<Fig> figs = getContent().getLayer().getContents();
-                        
+
             for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigClassifierRole) {
                     workOnFig.setHeight(newHeight);
                 }
             }
         }
-        
+
         dest.positionHead(figMessage);
-        
-        // we recalculate all the activations        
-        source.createActivations();        
+
+        // we recalculate all the activations
+        source.createActivations();
         if (!figMessage.isSelfMessage()) {
             dest.createActivations();
         }
     }
-    
+
 }

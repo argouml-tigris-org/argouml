@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,28 +45,29 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Translator;
 
 /**
  * The Table Model from the Critics Browser dialog. <p>
- * 
+ *
  * This class used to be part of the CriticBrowserDialog.java file. <p>
- * 
- * In advanced mode, this model also handles 
+ *
+ * In advanced mode, this model also handles
  * priority, supportedDecisions, knowledgeTypes.
  */
 class TableModelCritics extends AbstractTableModel
     implements VetoableChangeListener {
 
     private static final Logger LOG =
-        Logger.getLogger(TableModelCritics.class);
+        Logger.getLogger(TableModelCritics.class.getName());
 
     private List<Critic> critics;
     private boolean advanced;
@@ -76,7 +77,7 @@ class TableModelCritics extends AbstractTableModel
      *
      * @param advancedMode true if we show advanced columns
      */
-    public TableModelCritics(boolean advancedMode) { 
+    public TableModelCritics(boolean advancedMode) {
         critics = new ArrayList<Critic>(Agency.getCriticList());
         // Set initial sorting on Critic Headline
         Collections.sort(critics, new Comparator<Critic>() {
@@ -99,8 +100,8 @@ class TableModelCritics extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
-    public int getColumnCount() { 
-        return advanced ? 6 : 3; 
+    public int getColumnCount() {
+        return advanced ? 6 : 3;
     }
 
     /*
@@ -197,7 +198,7 @@ class TableModelCritics extends AbstractTableModel
         }
         throw new IllegalArgumentException();
     }
-    
+
     private String listToString(List l) {
         StringBuffer buf = new StringBuffer();
         Iterator i = l.iterator();
@@ -217,7 +218,9 @@ class TableModelCritics extends AbstractTableModel
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-        LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
+        LOG.log(Level.FINE,
+                "setting table value {0}, {1}",
+                new Object[]{rowIndex, columnIndex});
         if (columnIndex != 0) {
             return;
         }
@@ -232,7 +235,7 @@ class TableModelCritics extends AbstractTableModel
 
     /*
      * TODO: Why is this here? Who is calling this?
-     * 
+     *
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {

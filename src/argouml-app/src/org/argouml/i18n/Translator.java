@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,8 +47,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -62,7 +63,8 @@ public final class Translator {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Translator.class);
+    private static final Logger LOG =
+        Logger.getLogger(Translator.class.getName());
 
     /**
      * Where we search for bundles.
@@ -77,7 +79,7 @@ public final class Translator {
     /**
      * Store of ClassLoaders where we could find the bundles.
      */
-    private static List<ClassLoader> classLoaders = 
+    private static List<ClassLoader> classLoaders =
         new ArrayList<ClassLoader>();
 
     /**
@@ -89,7 +91,7 @@ public final class Translator {
      * Used to keep track of the original system default locale
      */
     private static Locale systemDefaultLocale;
-    
+
     /**
      * This class should only be used in a static context so make
      * the constructor private.
@@ -102,7 +104,7 @@ public final class Translator {
      * Alternate initialization entry point for use by ArgoEclipse.
      * It leaves out telling GEF about bundles that it won't be able
      * to access. <p>
-     * 
+     *
      * NOTE: This must be called *before* any other methods are called to
      * work properly.
      *
@@ -115,7 +117,7 @@ public final class Translator {
 
     /**
      * Initialize the locale.
-     * 
+     *
      * @param locale a string with the locale
      */
     public static void init(String locale) {
@@ -204,7 +206,7 @@ public final class Translator {
      * @param name the name of the new locale
      */
     public static void setLocale(String name) {
-        /* This is needed for the JUnit tests. 
+        /* This is needed for the JUnit tests.
          * Otherwise a "assert initialized" would suffice. */
         if (!initialized) {
             init("en");
@@ -235,7 +237,7 @@ public final class Translator {
      * Returns the original value of the default locale for this instance
      * of the Java Virtual Machine (which is independent from the selected
      * configuration).
-     * 
+     *
      * @return the original system default locale
      */
     public static Locale getSystemDefaultLocale() {
@@ -265,25 +267,29 @@ public final class Translator {
         String resource = BUNDLES_PATH + "." + name;
         ResourceBundle bundle = null;
         try {
-            LOG.debug("Loading " + resource);
+            LOG.log(Level.FINE, "Loading {0}", resource);
             Locale locale = Locale.getDefault();
             bundle = ResourceBundle.getBundle(resource, locale);
         } catch (MissingResourceException e1) {
-            LOG.debug("Resource " + resource
-		      + " not found in the default class loader.");
+            LOG.log(Level.FINE,
+                    "Resource {0} not found in the default class loader.",
+                    resource);
 
 	    Iterator iter = classLoaders.iterator();
 	    while (iter.hasNext()) {
 		ClassLoader cl = (ClassLoader) iter.next();
 		try {
-		    LOG.debug("Loading " + resource + " from " + cl);
+            LOG.log(Level.FINE,
+                    "Loading {0} from {1}",
+                    new Object[]{resource, cl});
 		    bundle =
 			ResourceBundle.getBundle(resource,
 						 Locale.getDefault(),
 						 cl);
 		    break;
 		} catch (MissingResourceException e2) {
-		    LOG.debug("Resource " + resource + " not found in " + cl);
+                    LOG.log(Level.FINE,
+                            "Resource " + resource + " not found in " + cl);
 		}
 	    }
         }
@@ -335,7 +341,7 @@ public final class Translator {
      * @return The localized String.
      */
     public static String localize(String key) {
-        /* This is needed for the JUnit tests. 
+        /* This is needed for the JUnit tests.
          * Otherwise a "assert initialized" would suffice. */
         if (!initialized) {
             init("en");
@@ -354,15 +360,16 @@ public final class Translator {
 
         ResourceBundle bundle = bundles.get(name);
         if (bundle == null) {
-            LOG.debug("Bundle (" + name + ") for resource "
-                    + key + " not found.");
+            LOG.log(Level.FINE,
+                    "Bundle ({0}) for resource {1} not found.",
+                    new Object[]{name, key});
             return key;
         }
 
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
-            LOG.debug("Resource " + key + " not found.");
+            LOG.log(Level.FINE, "Resource {0} not found.", key);
             return key;
         }
     }

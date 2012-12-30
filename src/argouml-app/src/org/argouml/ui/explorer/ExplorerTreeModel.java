@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -60,7 +62,6 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InvalidElementException;
@@ -82,7 +83,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * Logger.
      */
     private static final Logger LOG =
-	Logger.getLogger(ExplorerTreeModel.class);
+        Logger.getLogger(ExplorerTreeModel.class.getName());
 
     /**
      * an array of
@@ -124,7 +125,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	/**
 	 * The set of nodes pending being updated.
 	 */
-	private LinkedList<ExplorerTreeNode> pendingUpdates = 
+	private LinkedList<ExplorerTreeNode> pendingUpdates =
 	    new LinkedList<ExplorerTreeNode>();
 
 	/**
@@ -239,7 +240,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
     }
 
     /**
-     * Traverses the children, finds those affected by the given node, 
+     * Traverses the children, finds those affected by the given node,
      * and notifies them that they are modified.
      *
      * @param start the node to start from
@@ -374,7 +375,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
                             getPathToRoot((ExplorerTreeNode) child)))) {
 			reordered.add((ExplorerTreeNode) child);
 		    } else {
-		        ExplorerTreeNode prev = 
+		        ExplorerTreeNode prev =
 		            (ExplorerTreeNode) ((ExplorerTreeNode) child)
                                 .getPreviousSibling();
 			while (prev != null
@@ -462,13 +463,12 @@ public class ExplorerTreeModel extends DefaultTreeModel
             try {
                 children = rule.getChildren(modelElement);
             } catch (InvalidElementException e) {
-                LOG.debug("InvalidElementException in ExplorerTree : " 
-                        + e.getStackTrace());
+                LOG.log(Level.FINE, "InvalidElementException in ExplorerTree : ", e );
             }
 
             for (Object child : children) {
                 if (child == null) {
-                    LOG.warn("PerspectiveRule " + rule + " wanted to "
+                    LOG.log(Level.WARNING, "PerspectiveRule " + rule + " wanted to "
                             + "add null to the explorer tree!");
                 } else if (!newChildren.contains(child)) {
                     newChildren.add(child);
@@ -480,8 +480,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
                 Set dependencies = rule.getDependencies(modelElement);
                 deps.addAll(dependencies);
             } catch (InvalidElementException e) {
-                LOG.debug("InvalidElementException in ExplorerTree : " 
-                        + e.getStackTrace());
+                LOG.log(Level.FINE, "InvalidElementException in ExplorerTree : ", e );
             }
 
         }
@@ -754,4 +753,3 @@ public class ExplorerTreeModel extends DefaultTreeModel
      */
     private static final long serialVersionUID = 3132732494386565870L;
 }
-

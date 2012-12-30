@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,31 +14,33 @@
 
 package org.argouml.transformer;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.ContextActionFactoryManager;
 
 
 public class TransformerModule implements ModuleInterface {
 
-    private static final Logger LOG = Logger
-            .getLogger(TransformerModule.class);
+    private static final Logger LOG =
+        Logger.getLogger(TransformerModule.class.getName());
 
     public boolean enable() {
-        
+
         TransformerManager.getInstance().addTransformer(
                 new EventTransformer());
         TransformerManager.getInstance().addTransformer(
                 new SimpleStateTransformer());
         ContextActionFactoryManager.addContextPopupFactory(TransformerManager.getInstance());
-        LOG.info("Transformer Module enabled.");
+        LOG.log(Level.INFO, "Transformer Module enabled.");
         return true;
     }
 
     public boolean disable() {
         ContextActionFactoryManager.removeContextPopupFactory(TransformerManager.getInstance());
 
-        LOG.info("Transformer Module disabled.");
+        LOG.log(Level.INFO, "Transformer Module disabled.");
         return true;
     }
 

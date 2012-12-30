@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -56,7 +58,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
@@ -91,7 +92,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * parent.
  * <p>
  * NOTE: This tab is unlike the others in that it acts as a bridge to forward
- * received Diagram events to the TargetManager.  (Not sure if this 
+ * received Diagram events to the TargetManager.  (Not sure if this
  * functionality is duplicated elsewhere - tfm 20070924)
  */
 public class TabDiagram
@@ -102,7 +103,8 @@ public class TabDiagram
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TabDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(TabDiagram.class.getName());
 
     /**
      * The diagram object.
@@ -145,7 +147,7 @@ public class TabDiagram
         // TODO: should update to size of diagram contents
 
         Globals.setStatusBar(new StatusBarAdapter());
-        
+
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
         p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -182,7 +184,7 @@ public class TabDiagram
     /**
      * Sets the target of the tab. The target should always be an instance of
      * UMLDiagram.
-     * 
+     *
      * @param t the target
      */
     public void setTarget(Object t) {
@@ -190,8 +192,7 @@ public class TabDiagram
         if (!(t instanceof UMLDiagram)) {
             // This is perfectly normal and happens among other things
             // within the call to setDiagram (below).
-            LOG.debug("target is null in set target or "
-		      + "not an instance of UMLDiagram");
+            LOG.log(Level.FINE, "target is null in set target or not an instance of UMLDiagram");
             return;
         }
         UMLDiagram newTarget = (UMLDiagram) t;
@@ -202,8 +203,8 @@ public class TabDiagram
         newTarget.addPropertyChangeListener("remove", this);
 
         setToolBar(newTarget.getJToolBar());
-        
-        // NOTE: This listener needs to always be active 
+
+        // NOTE: This listener needs to always be active
         // even if this tab isn't visible
         graph.removeGraphSelectionListener(this);
         graph.setDiagram(newTarget);
@@ -327,9 +328,9 @@ public class TabDiagram
      * @see org.tigris.gef.event.ModeChangeListener#modeChange(org.tigris.gef.event.ModeChangeEvent)
      */
     public void modeChange(ModeChangeEvent mce) {
-        LOG.debug("TabDiagram got mode change event");
-        if (target != null    // Target might not have been initialised yet. 
-                && !Globals.getSticky() 
+        LOG.log(Level.FINE, "TabDiagram got mode change event");
+        if (target != null    // Target might not have been initialised yet.
+                && !Globals.getSticky()
                 && Globals.mode() instanceof ModeSelect) {
 //            if (_target instanceof UMLDiagram) {
 	    target.deselectAllTools();
@@ -394,23 +395,23 @@ public class TabDiagram
     /**
      * We have no guarantee which thread our events will be delivered on,
      * so make sure the work gets done on our AWT event thread.
-     * 
-     * @param e the target change event 
+     *
+     * @param e the target change event
      */
     private void setNewTargets(final TargetEvent e) {
         if (SwingUtilities.isEventDispatchThread()) {
             setTarget(e.getNewTarget());
-            select(e.getNewTargets());            
+            select(e.getNewTargets());
         } else {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     setTarget(e.getNewTarget());
-                    select(e.getNewTargets());                
+                    select(e.getNewTargets());
                 }
             });
         }
     }
-    
+
     /**
      * If the model element targets have changed then make sure the selection
      * on the diagram changes to match.
@@ -472,11 +473,12 @@ public class TabDiagram
 
     public void propertyChange(PropertyChangeEvent arg0) {
         // Any Swing work done here needs to be queued to the AWT thread
-        // since we don't know what thread our event will arrive on 
-        
+        // since we don't know what thread our event will arrive on
+
         if ("remove".equals(arg0.getPropertyName())) {
-            LOG.debug("Got remove event for diagram = " + arg0.getSource() 
-                    + " old value = " + arg0.getOldValue());
+            LOG.log(Level.FINE, "Got remove event for diagram = {0} old value = {1}",
+                    new Object[]{arg0.getSource(), arg0.getOldValue()});
+
             // Although we register for notification of diagrams being
             // deleted, we currently depend on the TargetManager to assign
             // a new target when this happens

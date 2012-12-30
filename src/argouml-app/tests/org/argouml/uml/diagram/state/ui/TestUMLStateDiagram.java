@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,14 +38,14 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
-
 import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 
 /**
- * General test methods for UMLUseCaseDiagrams
+ * General test methods for UMLUseCaseDiagrams.
  */
 public class TestUMLStateDiagram extends TestCase {
 
@@ -55,14 +55,14 @@ public class TestUMLStateDiagram extends TestCase {
      * @param name the test name
      */
     public TestUMLStateDiagram(String name) {
-	super(name);
+        super(name);
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
     }
@@ -72,8 +72,8 @@ public class TestUMLStateDiagram extends TestCase {
      * The graph model should always be a UseCaseDiagramGraphModel
      */
     public void testUMLStateDiagram() {
-	UMLStateDiagram diagram = new UMLStateDiagram();
-	assertTrue(diagram.getGraphModel()
-		instanceof StateDiagramGraphModel);
+        UMLStateDiagram diagram = new UMLStateDiagram();
+        assertTrue(diagram.getGraphModel()
+                instanceof StateDiagramGraphModel);
     }
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -52,7 +53,6 @@ import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -87,14 +87,14 @@ import org.tigris.gef.presentation.FigNode;
  * @author abonner
  */
 public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
-    
+
     static final long serialVersionUID = 2217410137377934879L;
 
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UseCaseDiagramRenderer.class);
+        Logger.getLogger(UseCaseDiagramRenderer.class.getName());
 
 
     /**
@@ -121,14 +121,13 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         ArgoDiagram diag = DiagramUtils.getActiveDiagram();
         if (diag instanceof UMLDiagram
             && ((UMLDiagram) diag).doesAccept(node)) {
-            figNode = 
+            figNode =
                 (FigNodeModelElement) ((UMLDiagram) diag).drop(node, null);
 
         } else {
-            LOG.debug(this.getClass().toString()
-                  + ": getFigNodeFor(" + gm.toString() + ", "
-                  + lay.toString() + ", " + node.toString()
-                  + ") - cannot create this sort of node.");
+            LOG.log(Level.FINE,
+                  "{0}: getFigNodeFor({1}, {2}, {3}) - cannot create this sort of node.",
+                  new Object[]{this.getClass(), gm, lay, node});
             return null;
             // TODO: Shouldn't we throw an exception here?!?!
         }
@@ -165,9 +164,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("making figedge for " + edge);
-        }
+        LOG.log(Level.FINE, "making figedge for {0}", edge);
 
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
@@ -176,17 +173,17 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         assert lay instanceof LayerPerspective;
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
-        
+
         FigEdge newEdge = null;
 
         if (Model.getFacade().isAAssociation(edge)) {
-            final Object[] associationEnds = 
+            final Object[] associationEnds =
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociation(
                     new DiagramEdgeSettings(
-                            edge, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
+                            edge,
+                            associationEnds[0],
+                            associationEnds[1]),
                             settings);
             final FigNode sourceFig =
                 getFigNodeForAssociationEnd(diag, associationEnds[0]);

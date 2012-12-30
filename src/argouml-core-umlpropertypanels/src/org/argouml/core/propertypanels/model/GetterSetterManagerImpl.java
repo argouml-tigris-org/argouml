@@ -24,11 +24,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
@@ -46,21 +47,21 @@ import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
 
 /**
- * Property getters and setters for UML1.4
+ * Property getters and setters for UML1.4.
  * @author Bob Tarling
  */
 class GetterSetterManagerImpl extends GetterSetterManager {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(GetterSetterManagerImpl.class);
-    
+        Logger.getLogger(GetterSetterManagerImpl.class.getName());
+
     /**
      * The constructor
      */
     public GetterSetterManagerImpl(Class<?> type) {
         build(type);
     }
-    
+
     /**
      * Create all the getter/setters for this implementation
      */
@@ -116,7 +117,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
         addGetterSetter("trigger", new TriggerGetterSetter());
         addGetterSetter("visibility", new VisibilityGetterSetter());
-        
+
         if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
             // UML1.4 only
             addGetterSetter("association", new AssociationEndGetterSetter());
@@ -126,7 +127,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             addGetterSetter("association", new AssociationGetterSetter());
         }
     }
-    
+
     /**
      * Helper method for adding a new getter/setter
      * @param propertyName
@@ -135,7 +136,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     private void addGetterSetter(String propertyName, GetterSetter bgs) {
         getterSetterByPropertyName.put(propertyName, bgs);
     }
-    
+
     /**
      * Set a UML property by property name
      * @param handle the element to which a property must be set
@@ -148,54 +149,53 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             bgs.set(handle, value);
         }
     }
-    
+
     public Object get(Object handle, String propertyName, Class<?> type) {
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs != null) {
             return bgs.get(handle, type);
         }
-        
+
         return null;
     }
-    
-    
+
+
     public Collection getOptions(
             final Object umlElement,
             final String propertyName,
             final Collection<Class<?>> types) {
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof OptionGetterSetter) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("OptionGetterSetter found for "
-                	+ propertyName + " of " + bgs);
-            }
+
+            LOG.log(Level.FINE, "OptionGetterSetter found for {0} of {1}", new Object[]{propertyName, bgs});
+
             final OptionGetterSetter ogs = (OptionGetterSetter) bgs;
             return ogs.getOptions(umlElement, types);
         }
-        
+
         return null;
     }
-    
+
     public boolean isFullBuildOnly(
             final String propertyName) {
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).isFullBuildOnly();
         }
-        
+
         return false;
     }
-    
-    
+
+
     public Object create(String propertyName, String language, String body) {
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ExpressionGetterSetter) {
             return ((ExpressionGetterSetter) bgs).create(language, body);
         }
-        
+
         return null;
     }
-    
+
     public boolean isValidElement(
             final String propertyName,
             final Collection<Class<?>> types,
@@ -204,25 +204,26 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).isValidElement(element, types);
         }
-        
+
         return false;
     }
-    
+
     public Object getMetaType(String propertyName) {
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).getMetaType();
         }
-        
+
         return null;
     }
 
     @Override
     public Command getAddCommand(String propertyName, Object umlElement) {
-        LOG.info("Finding getter/setter for " + propertyName);
+        LOG.log(Level.INFO, "Finding getter/setter for {0}", propertyName);
+
         GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof Addable) {
-            LOG.info("Returning add command");
+            LOG.log(Level.INFO, "Returning add command");
             return ((Addable) bgs).getAddCommand(umlElement);
         }
         return null;
@@ -249,16 +250,16 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
 	return null;
     }
-	
+
     private interface Addable {
         Command getAddCommand(Object umlElement);
     }
-    
+
     private interface Removeable {
 	Command getRemoveCommand(Object umlElement, Object objectToRemove);
     }
-    
-    
+
+
     /**
      * The getter/setter for the Absrtact property
      * @author Bob Tarling
@@ -271,7 +272,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setAbstract(modelElement, (Boolean) value);
         }
     }
-    
+
     private class LeafGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isLeaf(modelElement);
@@ -280,7 +281,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setLeaf(modelElement, (Boolean) value);
         }
     }
-    
+
     private class RootGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isRoot(modelElement);
@@ -289,7 +290,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setRoot(modelElement, (Boolean) value);
         }
     }
-    
+
     private class ActiveGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isActive(modelElement);
@@ -298,7 +299,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setActive(modelElement, (Boolean) value);
         }
     }
-    
+
     private class OwnerScopeGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isStatic(modelElement);
@@ -309,17 +310,17 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
 
     private class TagDefinitionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return new LinkedList<String>(
                     Model.getFacade().getTagDefinitions(modelElement));
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -327,7 +328,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
                 return Model.getMetaTypes().getTagDefinition();
@@ -346,7 +347,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setStatic(modelElement, (Boolean) value);
         }
     }
-    
+
     private class QueryGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isQuery(modelElement);
@@ -355,7 +356,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setQuery(modelElement, (Boolean) value);
         }
     }
-    
+
     private class NavigableGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isNavigable(modelElement);
@@ -364,7 +365,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setNavigable(modelElement, (Boolean) value);
         }
     }
-    
+
     private class AsynchronousGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isAsynchronous(modelElement);
@@ -373,7 +374,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCommonBehaviorHelper().setAsynchronous(modelElement, (Boolean) value);
         }
     }
-    
+
     private class SynchGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isSynch(modelElement);
@@ -382,7 +383,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getActivityGraphsHelper().setSynch(modelElement, (Boolean) value);
         }
     }
-    
+
     private class OrderingGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().getOrdering(modelElement) ==
@@ -398,15 +399,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
         }
     }
-    
+
     private class DerivedGetterSetter extends GetterSetter {
-        
+
         /**
          * Derived is not a true UML property but is in fact a pseudo property
          * stored in a tag named "derived"
          */
         private static final String TagName = "derived";
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object tv = Model.getFacade().getTaggedValue(modelElement, TagName);
             if (tv != null) {
@@ -431,10 +432,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
         }
     }
-    
-    
+
+
     public class VisibilityGetterSetter extends OptionGetterSetter {
-        
+
         /**
          * Identifier for public visibility.
          */
@@ -454,11 +455,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          * Identifier for package visibility.
          */
         public static final String PACKAGE = "package";
-        
+
         public VisibilityGetterSetter() {
             setOptions(Arrays.asList((new String[] {PUBLIC, PACKAGE, PROTECTED, PRIVATE})));
         }
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getVisibility(modelElement);
             if (kind == null) {
@@ -475,7 +476,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return PUBLIC;
             }
         }
-        
+
         public void set(Object modelElement, Object value) {
             Object kind = null;
             if (value.equals(PUBLIC)) {
@@ -490,10 +491,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setVisibility(modelElement, kind);
         }
     }
-    
-    
+
+
     private class AggregationGetterSetter extends OptionGetterSetter {
-        
+
         /**
          * Identifier for aggregate aggregation kind.
          */
@@ -508,11 +509,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          * Identifier for no aggregation kind.
          */
         public static final String NONE = "none";
-        
+
         public AggregationGetterSetter() {
             setOptions(Arrays.asList(new String[] {AGGREGATE, COMPOSITE, NONE}));
         }
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getAggregation(modelElement);
             if (kind == null) {
@@ -527,10 +528,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return NONE;
             }
         }
-        
+
         public void set(Object modelElement, Object value) {
             Object kind = null;
-            
+
             if (value.equals(AGGREGATE)) {
                 kind = Model.getAggregationKind().getAggregate();
             } else if (value.equals(COMPOSITE)) {
@@ -539,12 +540,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 kind = Model.getAggregationKind().getNone();
             }
             Model.getCoreHelper().setAggregation(modelElement, kind);
-            
+
         }
     }
-    
+
     private class ParameterDirectionGetterSetter extends OptionGetterSetter {
-        
+
         /**
          * Identifier for an "in" parameter.
          */
@@ -564,7 +565,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          * Identifier for a "return" parameter.
          */
         public static final String RETURN = "return";
-        
+
         public ParameterDirectionGetterSetter() {
             setOptions(Arrays.asList(new String[] {
                     IN,
@@ -572,7 +573,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     INOUT,
                     RETURN}));
         }
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getKind(modelElement);
             if (kind == null) {
@@ -587,7 +588,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return RETURN;
             }
         }
-        
+
         public void set(Object modelElement, Object value) {
             Object kind = null;
             if (value == null) {
@@ -602,13 +603,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 kind = Model.getDirectionKind().getReturnParameter();
             }
             Model.getCoreHelper().setKind(modelElement, kind);
-            
+
         }
     }
-    
-    
+
+
     private class ConcurrencyGetterSetter extends OptionGetterSetter {
-        
+
         /**
          * Identifier for sequential concurrency.
          */
@@ -628,7 +629,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          * Identifier for no defined concurrency.
          */
         public static final String UNDEFINED = "undefined";
-        
+
         public ConcurrencyGetterSetter() {
             setOptions(Arrays.asList(new String[] {
                     SEQUENTIAL,
@@ -636,7 +637,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     CONCURRENT,
                     UNDEFINED}));
         }
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getConcurrency(modelElement);
             if (kind == null) {
@@ -651,7 +652,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return UNDEFINED;
             }
         }
-        
+
         public void set(Object modelElement, Object value) {
             Object kind = null;
             if (value.equals(SEQUENTIAL)) {
@@ -664,10 +665,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setConcurrency(modelElement, kind);
         }
     }
-    
-    
+
+
     private class ChangeabilityGetterSetter extends OptionGetterSetter {
-        
+
         /**
          * Identifier for addonly changeability.
          * TODO: Note this should not be in UML2 version
@@ -687,7 +688,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public ChangeabilityGetterSetter() {
             setOptions(Arrays.asList(new String[] {ADDONLY, CHANGEABLE, FROZEN}));
         }
-        
+
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getChangeability(modelElement);
             if (kind == null) {
@@ -702,7 +703,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return CHANGEABLE;
             }
         }
-        
+
         public void set(Object modelElement, Object value) {
             if (value.equals(CHANGEABLE)) {
                 Model.getCoreHelper().setReadOnly(modelElement, false);
@@ -716,7 +717,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
 
     private class FeatureGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the features for the model
          * @param modelElement
@@ -736,12 +737,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return Collections.EMPTY_LIST;
             }
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -751,16 +752,16 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getOperation();
         }
     }
-    
-    
+
+
 
     private class OwnedElementGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the owned elements for the namespace
          * @param modelElement
@@ -771,15 +772,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Collection getOptions(
                 final Object modelElement,
                 final Collection<Class<?>> types) {
-            
+
             return Model.getFacade().getOwnedElements(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -789,15 +790,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getOperation();
         }
     }
-    
+
 
     private class RaisedExceptionGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the owned elements for the namespace
          * @param modelElement
@@ -810,12 +811,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return Model.getFacade().getRaisedExceptions(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -825,14 +826,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getSignal();
         }
     }
-    
+
     private class MethodGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the method for the operation
          * @param modelElement
@@ -845,12 +846,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return Model.getFacade().getMethods(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -860,15 +861,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getMethod();
         }
     }
-    
-    
+
+
     private class MessageGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the method for the operation
          * @param modelElement
@@ -881,12 +882,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return Model.getFacade().getMessages(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -896,15 +897,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getMessage();
         }
     }
-    
-    
+
+
     private class ArgumentGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the method for the operation
          * @param modelElement
@@ -917,12 +918,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return Model.getFacade().getArguments(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -932,15 +933,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getArgument();
         }
     }
-    
-    
+
+
     private class ExtensionPointGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the extension points
          * @param modelElement
@@ -953,12 +954,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return Model.getFacade().getExtensionPoints(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -968,14 +969,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getExtensionPoint();
         }
     }
-    
+
     private class GuardGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the guards
          * @param modelElement
@@ -990,12 +991,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             l.add(Model.getFacade().getGuard(modelElement));
             return l;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1005,14 +1006,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getGuard();
         }
     }
-    
+
     private class EffectGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the effects
          * @param modelElement
@@ -1027,12 +1028,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             l.add(Model.getFacade().getEffect(modelElement));
             return l;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1042,14 +1043,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
         }
     }
-    
+
     private class TriggerGetterSetter extends ListGetterSetter {
-        
+
         /**
          * Get all the effects
          * @param modelElement
@@ -1064,12 +1065,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             l.add(Model.getFacade().getTrigger(modelElement));
             return l;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1079,25 +1080,25 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 final Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getEvent();
         }
     }
-    
+
     private class ParameterGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(
         	final Object modelElement,
         	final Collection<Class<?>> types) {
             return Model.getFacade().getParameters(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1105,25 +1106,25 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getParameter();
         }
     }
-    
+
     private class EntryActionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getEntry(modelElement));
             return list;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1131,25 +1132,25 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
         }
     }
-    
+
     private class ExitActionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getExit(modelElement));
             return list;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1157,25 +1158,25 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
         }
     }
-    
+
     private class DoActivityActionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getDoActivity(modelElement));
             return list;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1183,23 +1184,23 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
         }
     }
-    
+
     private class ActionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getActions(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1207,23 +1208,23 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
         }
     }
 
     private class SubvertexGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getSubvertices(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1231,11 +1232,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getState();
         }
-        
+
         /**
          * Returns additional commands that cannot be deduced from the panel
          * xml or other means. This is currently only used by
@@ -1262,7 +1263,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         	    modelElement, Model.getPseudostateKind().getJunction()));
             return commands;
         }
-        
+
         private class NewPseudoStateCommand extends NonUndoableCommand
         	implements IconIdentifiable, Named {
 
@@ -1270,7 +1271,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             private final Object kind;
             private final Icon icon;
             private final Object target;
-        	
+
             /**
              * A Command to create a new pseudostate inside some target
              * model element.
@@ -1307,42 +1308,41 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     + Model.getFacade().getName(kind).substring(1);
                 icon = ResourceLoaderWrapper.lookupIcon(name);
             }
-        	
+
 			@Override
 			public Object execute() {
                 final Object ps =
                     Model.getStateMachinesFactory().buildPseudoState(target);
                 if (kind != null) {
                     Model.getCoreHelper().setKind(ps, kind);
-                }                	
+                }
                 TargetManager.getInstance().setTarget(ps);
 				return null;
 			}
-        	
+
 			public Icon getIcon() {
 				return icon;
 			}
-        	
+
 			public String getName() {
 				return label;
 			}
         }
     }
-    
+
     private class TemplateParameterGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Getting template parameters for " + modelElement);
-            }
+            LOG.log(Level.FINE, "Getting template parameters for {0}", modelElement);
+
             return Model.getFacade().getTemplateParameters(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1350,27 +1350,27 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getTemplateParameter();
         }
     }
-    
+
     private class ElementImportGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getImportedElements(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-        
+
         public boolean isFullBuildOnly() {
         	return true;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1378,19 +1378,19 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getModelElement();
         }
-        
+
         public Command getAddCommand(Object modelElement) {
         	return new AddElementImportCommand(modelElement);
         }
-        
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
         	return new RemoveElementImportCommand(modelElement, objectToRemove);
         }
-        
+
         private class AddElementImportCommand extends AddModelElementCommand {
 
             /**
@@ -1403,8 +1403,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             protected List getChoices() {
                 List list = new ArrayList();
-                /* TODO: correctly implement next function 
-                 * in the model subsystem for 
+                /* TODO: correctly implement next function
+                 * in the model subsystem for
                  * issue 1942: */
                 list.addAll(Model.getModelManagementHelper()
                         .getAllPossibleImports(getTarget()));
@@ -1426,19 +1426,18 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             @Override
             protected void doIt(Collection selected) {
-            	if (LOG.isInfoEnabled()) {
-                	LOG.info("Setting " + selected.size() + "imported elements");
-            	}
+            	LOG.log(Level.INFO, "Setting {0} imported elements", selected.size());
+
                 Model.getModelManagementHelper().setImportedElements(getTarget(), selected);
             }
         }
-        
+
         private class RemoveElementImportCommand
     	    extends NonUndoableCommand {
-        	
+
         	private final Object target;
         	private final Object objectToRemove;
-        	
+
     	    /**
     	     * Constructor for ActionRemovePackageImport.
     	     */
@@ -1446,7 +1445,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	        this.target = target;
     	        this.objectToRemove = objectToRemove;
     	    }
-    	    
+
     	    /*
     	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
     	     */
@@ -1457,22 +1456,22 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    }
     	}
     }
-    
+
     private class DeferrableEventGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getDeferrableEvents(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-        
+
         public boolean isFullBuildOnly() {
         	return false;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1480,19 +1479,19 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getEvent();
         }
-        
+
         public Command getAddCommand(Object modelElement) {
         	return new AddCommand(modelElement);
         }
-        
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
         	return new RemoveCommand(modelElement, objectToRemove);
         }
-        
+
         private class AddCommand extends AddModelElementCommand {
 
             /**
@@ -1505,7 +1504,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             protected List getChoices() {
                 List list = new ArrayList();
-                
+
                 Object parent =
                     Model.getStateMachinesHelper()
                         .findNamespaceForEvent(getTarget(), null);
@@ -1513,7 +1512,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
                         parent,
                         Model.getMetaTypes().getEvent()));
-                
+
                 return list;
             }
 
@@ -1534,7 +1533,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             protected void doIt(Collection selected) {
                 Object state = getTarget();
                 assert (Model.getFacade().isAState(state));
-                
+
                 Collection oldOnes = new ArrayList(Model.getFacade()
                         .getDeferrableEvents(state));
                 Collection toBeRemoved = new ArrayList(oldOnes);
@@ -1550,17 +1549,17 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 }
             }
         }
-        
+
         private class RemoveCommand extends NonUndoableCommand {
-        	
+
         	private final Object target;
         	private final Object objectToRemove;
-        	
+
     	    public RemoveCommand(final Object target, final Object objectToRemove) {
     	        this.target = target;
     	        this.objectToRemove = objectToRemove;
     	    }
-    	    
+
     	    /*
     	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
     	     */
@@ -1571,20 +1570,20 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    }
     	}
     }
-    
-    
-    
+
+
+
     private class ReceptionGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getReceptions(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-        
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1592,19 +1591,19 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getReception();
         }
-        
+
         public Command getAddCommand(Object modelElement) {
         	return new AddCommand(modelElement);
         }
-        
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
         	return new RemoveCommand(modelElement, objectToRemove);
         }
-        
+
         private class AddCommand extends AddModelElementCommand {
 
             /**
@@ -1617,13 +1616,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             protected List getChoices() {
                 List list = new ArrayList();
-                /* TODO: correctly implement next function 
-                 * in the model subsystem for 
+                /* TODO: correctly implement next function
+                 * in the model subsystem for
                  * issue 1942: */
                 Object model =
                     ProjectManager.getManager().getCurrentProject().getModel();
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getReception()));
                 return list;
             }
@@ -1646,13 +1645,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
             }
         }
-        
+
         private class RemoveCommand
     	    extends NonUndoableCommand {
-        	
+
         	private final Object target;
         	private final Object objectToRemove;
-        	
+
     	    /**
     	     * Constructor for ActionRemovePackageImport.
     	     */
@@ -1660,7 +1659,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	        this.target = target;
     	        this.objectToRemove = objectToRemove;
     	    }
-    	    
+
     	    /*
     	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
     	     */
@@ -1671,20 +1670,20 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    }
     	}
     }
-    
+
     private class RegionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(
         	final Object modelElement,
         	final Collection<Class<?>> types) {
             return Model.getStateMachinesHelper().getRegions(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -1692,14 +1691,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getRegion();
         }
     }
-    
+
     private class ResidentElementGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             Iterator it = Model.getFacade().getResidentElements(modelElement).iterator();
             ArrayList list = new ArrayList();
@@ -1708,16 +1707,16 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
             return list;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-        
+
         public void set(Object element, Object x) {
             // not needed
         }
-        
+
         public boolean isFullBuildOnly() {
             return true;
         }
@@ -1725,19 +1724,19 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getElementResidence();
         }
-        
+
         public Command getAddCommand(Object modelElement) {
         	return new AddCommand(modelElement);
         }
-        
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
         	return new RemoveCommand(modelElement, objectToRemove);
         }
-        
+
         private class AddCommand extends AddModelElementCommand {
 
             /**
@@ -1750,34 +1749,34 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             protected List getChoices() {
                 List list = new ArrayList();
-                /* TODO: correctly implement next function 
-                 * in the model subsystem for 
+                /* TODO: correctly implement next function
+                 * in the model subsystem for
                  * issue 1942: */
                 Object model =
                     ProjectManager.getManager().getCurrentProject().getModel();
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getUMLClass()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getInterface()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getDataType()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getDataValue()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getAssociation()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getDependency()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getConstraint()));
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKind(model, 
+                        .getAllModelElementsOfKind(model,
                             Model.getMetaTypes().getSignal()));
                 return list;
             }
@@ -1801,12 +1800,12 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             @Override
             protected void doIt(Collection selected) {
                 Collection current = Model.getFacade().getResidentElements(getTarget());
-                
+
                 ArrayList toRemove = new ArrayList(current);
-        	
+
                 toRemove.removeAll(selected);
                 selected.removeAll(current);
-                
+
                 for (Iterator it = toRemove.iterator(); it.hasNext(); ) {
                     Object elementResidenceToDelete = it.next();
                     Model.getCoreHelper().removeElementResidence(getTarget(), elementResidenceToDelete);
@@ -1821,13 +1820,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 }
             }
         }
-        
+
         private class RemoveCommand
     	    extends NonUndoableCommand {
-        	
+
         	private final Object target;
         	private final Object objectToRemove;
-        	
+
     	    /**
     	     * Constructor for ActionRemovePackageImport.
     	     */
@@ -1835,7 +1834,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	        this.target = target;
     	        this.objectToRemove = objectToRemove;
     	    }
-    	    
+
     	    /*
     	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
     	     */
@@ -1853,9 +1852,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    }
     	}
     }
-    
-    
-    
+
+
+
     private abstract class AddModelElementCommand extends NonUndoableCommand {
 
         private Object target;
@@ -1886,7 +1885,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
             return null;
         }
-        
+
         /**
          * Returns the choices the user has in the UMLAddDialog. The choices are
          * depicted on the left side of the UMLAddDialog (sorry Arabic users) and
@@ -1896,7 +1895,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          */
         protected abstract List getChoices();
 
-        
+
         /**
          * The modelelements already selected BEFORE the dialog is shown.
          * @return List of model elements
@@ -1965,17 +1964,17 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
 
     }
-    
+
     private class MethodExpressionGetterSetter extends ExpressionGetterSetter {
-        
+
         @Override
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().getBody(modelElement);
         }
-      
+
         @Override
         public void set(Object modelElement, Object value) {
-            LOG.info("About to call setBody " + modelElement + " / " + value);
+            LOG.log(Level.INFO, "About to call setBody {0} / {1}", new Object[]{modelElement, value});
             Model.getCoreHelper().setBody(modelElement, value);
         }
 
@@ -1984,118 +1983,118 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             return Model.getDataTypesFactory().createProcedureExpression(language, body);
         }
     }
-    
+
     private class SenderGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getSentStimuli(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
 
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
-          
+
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
         }
     }
-    
+
     private class LiteralGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getEnumerationLiterals(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
 
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
-          
+
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getEnumerationLiteral();
         }
     }
-    
+
     private class ReceiverGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getReceivedStimuli(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
 
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
-          
+
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
         }
     }
     private class InternalTransitionGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getInternalTransitions(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
 
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
-          
+
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getTransition();
         }
     }
-    
+
 
     private class ClassifierGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getClassifiers(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2103,7 +2102,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getClassifier();
         }
@@ -2111,11 +2110,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Command getAddCommand(Object modelElement) {
             return new AddCommand(modelElement);
         }
-    
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
     	    return new RemoveCommand(modelElement, objectToRemove);
         }
-    
+
         private class AddCommand extends AddModelElementCommand {
 
             /**
@@ -2124,10 +2123,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             public AddCommand(Object target) {
                 super(target);
             }
-    
+
             protected List getChoices() {
                 List list = new ArrayList();
-                
+
                 // Get all classifiers in our model
                 // TODO: We need the property panels to have some reference to
                 // the project they belong to instead of using deprecated
@@ -2155,36 +2154,36 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     } catch (ProfileException e) {
                         // TODO: We need to rethrow this as some other exception
                         // type but that is too much change for the moment.
-                        LOG.error("Exception", e);
+                        LOG.log(Level.SEVERE, "Exception", e);
                     }
                 }
                 return list;
             }
-    
+
             protected List getSelected() {
                 List list = new ArrayList();
                 list.addAll(Model.getFacade().getClassifiers(getTarget()));
                 return list;
             }
-    
-    
+
+
             protected String getDialogTitle() {
                 return Translator.localize("dialog.title.add-specifications");
             }
-    
-    
+
+
             @Override
             protected void doIt(Collection selected) {
                 Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
             }
         }
-    
+
         private class RemoveCommand
 	    extends NonUndoableCommand {
-    	
+
             private final Object target;
             private final Object objectToRemove;
-    	
+
 	    /**
 	     * Constructor for ActionRemovePackageImport.
 	     */
@@ -2192,7 +2191,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	        this.target = target;
 	        this.objectToRemove = objectToRemove;
 	    }
-	    
+
 	    /*
 	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	     */
@@ -2203,21 +2202,21 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	    }
 	}
     }
-    
+
     private class BaseClassGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             LinkedList<String> list = new LinkedList<String>(
                     Model.getFacade().getBaseClasses(modelElement));
             Collections.sort(list);
             return list;
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2225,7 +2224,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Class.class;
         }
@@ -2233,15 +2232,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Command getAddCommand(Object modelElement) {
             return new AddCommand(modelElement);
         }
-    
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
     	    return new RemoveCommand(modelElement, objectToRemove);
         }
-    
+
         private class AddCommand extends AddModelElementCommand {
 
             final private List<String> metaClasses;
-            
+
             /**
              * Constructor for ActionAddPackageImport.
              */
@@ -2249,17 +2248,17 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 super(target);
                 metaClasses = initMetaClasses();
             }
-            
+
             /**
              * Initialize the meta-classes list. <p>
-             * 
-             * All this code is necessary to be independent of 
-             * model repository implementation, 
-             * i.e. to ensure that we have a 
+             *
+             * All this code is necessary to be independent of
+             * model repository implementation,
+             * i.e. to ensure that we have a
              * sorted list of strings.
              */
             private List<String> initMetaClasses() {
-                Collection<String> tmpMetaClasses = 
+                Collection<String> tmpMetaClasses =
                     Model.getCoreHelper().getAllMetatypeNames();
                 List<String> metaClasses;
                 if (tmpMetaClasses instanceof List) {
@@ -2274,27 +2273,27 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     metaClasses = new LinkedList<String>(tmpMetaClasses);
                     Collections.sort(metaClasses);
                 }
-                
+
                 return metaClasses;
             }
-            
+
             protected List getChoices() {
         	return Collections.unmodifiableList(metaClasses);
             }
-    
+
             protected List getSelected() {
                 LinkedList<String> list = new LinkedList<String>(
                         Model.getFacade().getBaseClasses(getTarget()));
                 Collections.sort(list);
                 return list;
             }
-    
-    
+
+
             protected String getDialogTitle() {
                 return Translator.localize("dialog.title.add-baseclasses");
             }
-    
-    
+
+
             @Override
             protected void doIt(Collection selected) {
                 Object stereo = getTarget();
@@ -2314,13 +2313,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 }
             }
         }
-    
+
         private class RemoveCommand
 	    extends NonUndoableCommand {
-    	
+
             private final Object target;
             private final Object objectToRemove;
-    	
+
 	    /**
 	     * Constructor for RemoveCommand.
 	     */
@@ -2328,7 +2327,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	        this.target = target;
 	        this.objectToRemove = objectToRemove;
 	    }
-	    
+
 	    /*
 	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	     */
@@ -2338,18 +2337,18 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	    }
 	}
     }
-    
+
     private class BaseGetterSetter extends ListGetterSetter implements Addable, Removeable {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getBases(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2357,7 +2356,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getClassifier();
         }
@@ -2365,11 +2364,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Command getAddCommand(Object modelElement) {
             return new AddCommand(modelElement);
         }
-    
+
         public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
     	    return new RemoveCommand(modelElement, objectToRemove);
         }
-    
+
         private class AddCommand extends AddModelElementCommand {
 
             /**
@@ -2378,39 +2377,39 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             public AddCommand(Object target) {
                 super(target);
             }
-            
+
             protected List getChoices() {
                 List vec = new ArrayList();
                 vec.addAll(Model.getCollaborationsHelper()
                         .getAllPossibleBases(getTarget()));
                 return vec;
             }
-    
+
             protected List getSelected() {
                 List list = new ArrayList();
                 list.addAll(Model.getFacade().getBases(getTarget()));
                 return list;
             }
-    
-    
+
+
             protected String getDialogTitle() {
                 return Translator.localize("dialog.title.add-bases");
             }
-    
-    
+
+
             @Override
             protected void doIt(Collection selected) {
                 Object role = getTarget();
                 Model.getCollaborationsHelper().setBases(role, selected);
             }
         }
-    
+
         private class RemoveCommand
 	    extends NonUndoableCommand {
-    	
+
             private final Object target;
             private final Object objectToRemove;
-    	
+
 	    /**
 	     * Constructor for RemoveCommand.
 	     */
@@ -2418,7 +2417,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	        this.target = target;
 	        this.objectToRemove = objectToRemove;
 	    }
-	    
+
 	    /*
 	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	     */
@@ -2428,18 +2427,18 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	    }
 	}
     }
-    
+
     private class QualifierGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getQualifiers(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2447,23 +2446,23 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
         }
     }
-    
+
     private class AssociationEndGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getAssociationEnds(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2471,23 +2470,23 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAssociationEnd();
         }
     }
-    
+
     private class AssociationGetterSetter extends ListGetterSetter {
-        
+
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getAssociations(modelElement);
         }
-      
+
         public Object get(Object modelElement, Class<?> type) {
             // not needed
             return null;
         }
-      
+
         public void set(Object element, Object x) {
             // not needed
         }
@@ -2495,7 +2494,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
         }
-        
+
         public Object getMetaType() {
             return Model.getMetaTypes().getAssociationEnd();
         }

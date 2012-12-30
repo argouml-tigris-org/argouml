@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@ package org.argouml.uml.diagram.deployment.ui;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -68,14 +69,14 @@ import org.tigris.gef.presentation.FigNode;
  *
  */
 public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
-    
+
     static final long serialVersionUID = 8002278834226522224L;
 
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(DeploymentDiagramRenderer.class);
+        Logger.getLogger(DeploymentDiagramRenderer.class.getName());
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
@@ -92,11 +93,11 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
 
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (((UMLDiagram) diag).doesAccept(node)) {
             figNode = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
-            LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
+            LOG.log(Level.FINE, "TODO: DeploymentDiagramRenderer getFigNodeFor");
             return null;
         }
         lay.add(figNode);
@@ -113,20 +114,20 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Layer lay,
             Object edge,
             Map styleAttributes) {
-        
+
         assert lay instanceof LayerPerspective;
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
-        
+
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            Object[] associationEnds = 
+            Object[] associationEnds =
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociationClass(
                     new DiagramEdgeSettings(
-                            edge, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
+                            edge,
+                            associationEnds[0],
+                            associationEnds[1]),
                             settings);
             FigNode sourceFig =
                 getFigNodeForAssociationEnd(diag, associationEnds[0]);
@@ -137,13 +138,13 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             newEdge.setDestFigNode(destFig);
             newEdge.setDestPortFig(destFig);
         } else if (Model.getFacade().isAAssociation(edge)) {
-            Object[] associationEnds = 
+            Object[] associationEnds =
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociation(
                     new DiagramEdgeSettings(
-                        edge, 
-                        associationEnds[0], 
-                        associationEnds[1]), 
+                        edge,
+                        associationEnds[0],
+                        associationEnds[1]),
                         settings);
             FigNode sourceFig =
                 getFigNodeForAssociationEnd(diag, associationEnds[0]);

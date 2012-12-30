@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2005,2011 Contributors - see below
+ * Copyright (c) 2005-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
@@ -73,7 +75,6 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
@@ -105,7 +106,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(XmiReaderImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(XmiReaderImpl.class.getName());
 
     private static String tempXMIFileURIPrefix;
 
@@ -137,7 +139,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
      * Flag indicating that we stripped at least one diagram during the import.
      */
     private int ignoredElementCount;
-    
+
     /**
      * String that we pulled from the header of the XMI file
      */
@@ -151,13 +153,13 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     XmiReaderImpl(MDRModelImplementation parentModelImplementation) {
         modelImpl = parentModelImplementation;
     }
-    
+
     public Collection parse(InputSource inputSource, boolean readOnly)
         throws UmlException {
-        
+
         System.setProperty("javax.xml.transform.TransformerFactory",
         "net.sf.saxon.TransformerFactoryImpl");
-        
+
         Collection<RefObject> newElements = Collections.emptyList();
 
         String extentBase = inputSource.getPublicId();
@@ -168,7 +170,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             extentBase = MDRModelImplementation.MODEL_EXTENT_NAME;
         }
         String extentName = extentBase;
-        UmlPackage extent = 
+        UmlPackage extent =
             (UmlPackage) modelImpl.getRepository().getExtent(extentName);
         int serial = 1;
         while (extent != null) {
@@ -180,11 +182,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
         extent = (UmlPackage) modelImpl.createExtent(extentName, readOnly);
         if (extent == null) {
-            LOG.error("Failed to create extent " + extentName);
+            LOG.log(Level.SEVERE, "Failed to create extent " + extentName);
         }
-        
+
         try {
-            LOG.info("Loading to extent '" + extentName + "' " + extent);
+            LOG.log(Level.INFO, "Loading to extent {0} {1}", new Object[]{extentName, extent});
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
@@ -194,7 +196,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             String sId = modelImpl.getPublic2SystemIds().get(pId);
             if (sId != null) {
                 if (sId.equals(inputSource.getSystemId())) {
-                    LOG.info("Attempt to reread profile - ignoring - "
+                    LOG.log(Level.INFO, "Attempt to reread profile - ignoring - "
                             + "publicId = \"" + pId + "\";  systemId = \""
                             + sId + "\".");
                     return Collections.emptySet();
@@ -207,15 +209,15 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 }
             }
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
-                    config, modelImpl.getObjectToId(), 
-                    modelImpl.getPublic2SystemIds(), modelImpl.getIdToObject(), 
-                    modelImpl.getSearchPath(), 
-                    readOnly, 
+                    config, modelImpl.getObjectToId(),
+                    modelImpl.getPublic2SystemIds(), modelImpl.getIdToObject(),
+                    modelImpl.getSearchPath(),
+                    readOnly,
                     inputSource.getPublicId(), inputSource.getSystemId(),
                     modelImpl);
             config.setReferenceResolver(resolver);
             config.setHeaderConsumer(this);
-            
+
             XMIReader xmiReader =
                     XMIReaderFactory.getDefault().createXMIReader(config);
 
@@ -224,21 +226,21 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
              * even if they're caught, which is unsightly, so we handle
              * unknown elements ourselves rather than letting MDR throw
              * an exception for us to catch.
-             * 
+             *
              * org/netbeans/lib/jmi/util/Logger.java
-             * 
-             * This can be uses to disable logging.  Default output is 
+             *
+             * This can be uses to disable logging.  Default output is
              * System.err
              * setProperty("org.netbeans.lib.jmi.Logger.fileName", "")
              *              org.netbeans.mdr.Logger
-             * 
-             * The property org.netbeans.lib.jmi.Logger controls the minimum 
+             *
+             * The property org.netbeans.lib.jmi.Logger controls the minimum
              * severity level for logging
              */
             // Turn off NetBeans logging to System.err
 //            System.setProperty("org.netbeans.lib.jmi.Logger.fileName", "");
             // Set minimum severity level for MDR
-//            System.setProperty("org.netbeans.lib.jmi.Logger", 
+//            System.setProperty("org.netbeans.lib.jmi.Logger",
 //                    Integer.toString(ErrorManager.INFORMATIONAL));
             InputConfig config2 = (InputConfig) xmiReader.getConfiguration();
             config2.setUnknownElementsListener(this);
@@ -260,11 +262,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     systemId = file.toURI().toURL().toExternalForm();
                     String publicId = inputSource.getPublicId();
                     inputSource = new InputSource(systemId);
-                    inputSource.setPublicId(publicId);                    
+                    inputSource.setPublicId(publicId);
                 }
                 MDRepository repository = modelImpl.getRepository();
-                
-                // Use a transaction to avoid the performance penalty (3x) of 
+
+                // Use a transaction to avoid the performance penalty (3x) of
                 // MDR's autocommit mode
                 repository.beginTrans(true);
 
@@ -281,7 +283,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                             systemId, extent);
 
                 }
-                
+
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
                     // Roll back transaction from first attempt & start new one
@@ -327,27 +329,27 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
 
             if (ignoredElementCount > 0) {
-                LOG.warn("Ignored one or more elements from list "
+                LOG.log(Level.WARNING, "Ignored one or more elements from list "
                         + ignoredElements);
             }
 
         } catch (MalformedXMIException e) {
             // If we can find a nested SAX exception, it will have information
             // on the line number, etc.
-            ErrorManager.Annotation[] annotations = 
+            ErrorManager.Annotation[] annotations =
                 ErrorManager.getDefault().findAnnotations(e);
             for (ErrorManager.Annotation annotation : annotations) {
                 Throwable throwable = annotation.getStackTrace();
                 if (throwable instanceof SAXParseException) {
                     SAXParseException spe = (SAXParseException) throwable;
                     throw new XmiException(spe.getMessage(), spe.getPublicId(),
-                            spe.getSystemId(), spe.getLineNumber(), 
+                            spe.getSystemId(), spe.getLineNumber(),
                             spe.getColumnNumber(), e);
                 } else if (throwable instanceof SAXException) {
                     SAXException se = (SAXException) throwable;
                     Exception e1 = se.getException();
                     if (e1 instanceof org.argouml.model.XmiReferenceRuntimeException) {
-                        String href = 
+                        String href =
                             ((org.argouml.model.XmiReferenceRuntimeException) e1)
                                 .getReference();
                         throw new org.argouml.model.XmiReferenceException(href,
@@ -375,10 +377,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             RefPackage extent, XMIReader xmiReader, InputSource input)
         throws FileNotFoundException, UmlException, IOException,
             MalformedXMIException {
-        
-        LOG.info("XMI file doesn't appear to be UML 1.4 - "
+
+        LOG.log(Level.INFO, "XMI file doesn't appear to be UML 1.4 - "
                 + "attempting UML 1.3->UML 1.4 conversion");
-        final String[] transformFiles = new String[] { 
+        final String[] transformFiles = new String[] {
             "NormalizeNSUML.xsl",
             "uml13touml14.xsl", };
 
@@ -392,17 +394,17 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     }
 
     /**
-     * 
+     *
      * @param input
      * @return InputSource : a new XML to test
      * @throws UmlException
      */
     private InputSource convertFromInvalidXMI(InputSource input)
         throws UmlException {
-        
-        LOG.info("XMI file doesn't appear to be a valid XMI");
-        
-        final String[] transformFiles = new String[] { 
+
+        LOG.log(Level.INFO, "XMI file doesn't appear to be a valid XMI");
+
+        final String[] transformFiles = new String[] {
             "umbrello.xsl",
             };
 
@@ -413,15 +415,15 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         xformedInput.setPublicId(input.getPublicId());
         return xformedInput;
     }
-    
+
     /**
      * Defines the URI prefix of the temporary XMI file that is being read.
-     * 
+     *
      * @return the URI prefix of the temporary XMI file that is being read.
      */
     static String getTempXMIFileURIPrefix() {
         if (tempXMIFileURIPrefix == null) {
-            tempXMIFileURIPrefix = 
+            tempXMIFileURIPrefix =
                 new File(System.getProperty("java.io.tmpdir")).toURI()
                 + TEMP_XMI_FILE_PREFIX;
         }
@@ -433,17 +435,17 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
      */
     public Map<String, Object> getXMIUUIDToObjectMap() {
         if (resolver != null) {
-            // Give the resolver.getIdToObjectMap() entries 
-            // priority over entries with the same UUID from 
+            // Give the resolver.getIdToObjectMap() entries
+            // priority over entries with the same UUID from
             // resolver.getIdToObjectMaps() because entries
             // in resolver.getIdToObjectMaps() are historic.
-            HashMap<String, Object> globalXmiIdToObjectMap = 
+            HashMap<String, Object> globalXmiIdToObjectMap =
                 new HashMap<String, Object>(resolver.getIdToObjectMap());
 
-            Map<String, Map<String, Object>> idToObjectMaps = 
+            Map<String, Map<String, Object>> idToObjectMaps =
                 resolver.getIdToObjectMaps();
             Set<Entry<String,Map<String,Object>>> entrySet = null;
-            // I think that the synchronized access to idToObjectMaps is 
+            // I think that the synchronized access to idToObjectMaps is
             // required in order to respect the thread safe nature of the
             // object.
             // FIXME: maybe this should be moved into XmiReferenceResolverImpl,
@@ -458,11 +460,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
             for (Entry<String, Map<String, Object>> entry : entrySet) {
                 String xmiIdPrefix =
-                    entry.getKey().startsWith(getTempXMIFileURIPrefix()) ? "" : 
+                    entry.getKey().startsWith(getTempXMIFileURIPrefix()) ? "" :
                         entry.getKey() + "#";
-                for (Entry<String, Object> innerMapEntry : 
+                for (Entry<String, Object> innerMapEntry :
                         entry.getValue().entrySet()) {
-                    
+
                     String id = xmiIdPrefix + innerMapEntry.getKey();
                     if (!globalXmiIdToObjectMap.containsKey(id)) {
                         globalXmiIdToObjectMap.put(
@@ -557,9 +559,9 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             for (int i = 0; i < styles.length; i++) {
                 // Set up source for style sheet
                 String xsltFileName = STYLE_PATH + styles[i];
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Transforming with " + xsltFileName);
-                }
+
+                LOG.log(Level.INFO, "Transforming with {0}", xsltFileName);
+
                 URL xsltUrl = getClass().getResource(xsltFileName);
                 if (xsltUrl == null) {
                     throw new UmlException("Error opening XSLT style sheet : "
@@ -580,8 +582,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 Transformer transformer = stf.newTransformer(xsltStreamSource);
                 transformer.transform(myInput, result);
 
-                LOG.info("Wrote converted XMI file - " + tmpOutFile
-                        + " converted using : " + xsltFileName);
+                LOG.log(Level.INFO, "Wrote converted XMI file - {0} converted using : {1}",
+                        new Object[]{tmpOutFile, xsltFileName});
 
                 // Set up for next iteration
                 myInput =
@@ -603,12 +605,12 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     private File copySource(InputSource input) throws IOException {
         byte[] buf = new byte[2048];
         int len;
-        
+
         // Create & set up temporary output file
         File tmpOutFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, ".xmi");
         tmpOutFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(tmpOutFile);
-        
+
         // TODO: Bob says - Coding by use of side effect here.
         // Maybe this should be done in a clearer way but it fixes
         // http://argouml.tigris.org/issues/show_bug.cgi?id=4978
@@ -621,19 +623,19 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         if (systemId != null) {
             input = new InputSource(new URL(systemId).openStream());
         }
-        
+
         InputStream in = input.getByteStream();
-        
+
         while ((len = in.read(buf)) >= 0) {
             out.write(buf, 0, len);
         }
         out.close();
 
-        LOG.debug("Wrote copied XMI file to " + tmpOutFile);
+        LOG.log(Level.FINE, "Wrote copied XMI file to {0}", tmpOutFile);
         return tmpOutFile;
     }
 
-    private static final String UML_13_ELEMENTS[] = 
+    private static final String UML_13_ELEMENTS[] =
     {
         "TaggedValue.value",
         "TaggedValue.tag",
@@ -695,7 +697,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         "Instance.stimulus3",
 
     };
-    
+
 
     public void elementFound(String name) {
         // Silently ignore anything specified by caller attempt to continue
@@ -707,7 +709,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 }
             }
         }
-        
+
         if (name.startsWith("Foundation.")) {
             uml13 = true;
             return;
@@ -724,8 +726,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         if (unknownElementName == null) {
             unknownElementName = name;
         }
-        LOG.error("Unknown XMI element named : " + name);
-        
+        LOG.log(Level.SEVERE, "Unknown XMI element named : " + name);
+
     }
 
 
@@ -773,10 +775,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             // we presume the stream is encoded using the default char encoding
             xmiHeader = new String(bytes);
         } catch (IOException e) {
-            LOG.error("Exception reading XMI file header", e);
+            LOG.log(Level.SEVERE, "Exception reading XMI file header", e);
         }
     }
-    
+
 
     public String getHeader() {
         return xmiHeader;

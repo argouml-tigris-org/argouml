@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -68,7 +70,6 @@ import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
@@ -135,8 +136,8 @@ import org.tigris.gef.presentation.FigText;
  * look like nodes and that have editable names and can be
  * resized.
  * <p>
- * NOTE: This will drop the ArgoNotationEventListener and 
- * ArgoDiagramAppearanceEventListener interfaces in the next release.  
+ * NOTE: This will drop the ArgoNotationEventListener and
+ * ArgoDiagramAppearanceEventListener interfaces in the next release.
  * The corresponding methods have been marked as deprecated.
  *
  * @author abonner
@@ -163,16 +164,16 @@ public abstract class FigNodeModelElement
 
 
     private static final Logger LOG =
-        Logger.getLogger(FigNodeModelElement.class);
+        Logger.getLogger(FigNodeModelElement.class.getName());
 
-    // TODO: There are lots and LOTS of magic numbers used in calculating 
+    // TODO: There are lots and LOTS of magic numbers used in calculating
     // positions and sizes.  Any time you see Figs being placed at 10,10 use
     // these constants instead.  If you can reliably interpret calculations,
     // you can factor them out of there as well.  Add additional constants
     // as needed to express other common factors - tfm 20081201
-    
+
     /**
-     * Default width for a node fig. 
+     * Default width for a node fig.
      * Used to be 60 (up to V0.20), later (from V0.22) it was 90.
      * Now 64 to align to grid better.
      */
@@ -186,16 +187,16 @@ public abstract class FigNodeModelElement
      * the font selected.
      */
     protected static final int NAME_FIG_HEIGHT = 21;
-    
+
     /**
      * Padding to be used above and below the name.
      */
     protected static final int NAME_V_PADDING = 2;
-    
+
     private DiElement diElement;
 
     private NotationProvider notationProviderName;
-    
+
     /**
      * True if an instance is allowed to be
      * invisible. This is currently only set true by FigEdgePort.
@@ -259,38 +260,38 @@ public abstract class FigNodeModelElement
     private FigProfileIcon stereotypeFigProfileIcon;
 
     /**
-     * Contains the figs of the floating stereotypes when viewed in 
+     * Contains the figs of the floating stereotypes when viewed in
      * <code>SmallIcon</code> mode.
      */
     private List<Fig> floatingStereotypes = new ArrayList<Fig>();
-    
+
     /**
      * The current stereotype view, defaults to "textual".
-     * 
+     *
      * @see DiagramAppearance#STEREOTYPE_VIEW_TEXTUAL
      * @see DiagramAppearance#STEREOTYPE_VIEW_SMALL_ICON
      * @see DiagramAppearance#STEREOTYPE_VIEW_BIG_ICON
      */
-    private DiagramSettings.StereotypeStyle stereotypeStyle = 
-        DiagramSettings.StereotypeStyle.TEXTUAL;   
-    
+    private DiagramSettings.StereotypeStyle stereotypeStyle =
+        DiagramSettings.StereotypeStyle.TEXTUAL;
+
     /**
      * The width of the profile icons when viewed at the small icon mode.
-     * The icon width is resized to <code>ICON_WIDTH</code> and the height is 
-     * set to a value that attempts to keep the original width/height 
-     * proportion. 
+     * The icon width is resized to <code>ICON_WIDTH</code> and the height is
+     * set to a value that attempts to keep the original width/height
+     * proportion.
      */
     private static final int ICON_WIDTH = 16;
-    
+
     /**
-     * When stereotypes are shown in <code>BigIcon</code> mode the 
-     * <code>nameFig</code> is replaced by the one provided by the 
-     * <code>FigProfileIcon</code> 
-     * 
+     * When stereotypes are shown in <code>BigIcon</code> mode the
+     * <code>nameFig</code> is replaced by the one provided by the
+     * <code>FigProfileIcon</code>
+     *
      * @see FigProfileIcon
      */
     private FigText originalNameFig;
-    
+
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
@@ -307,7 +308,7 @@ public abstract class FigNodeModelElement
 
     // TODO: Bobs says - what is the purpose of this flag? Please document.
     private boolean readyToEdit = true;
-    
+
     private boolean suppressCalcBounds;
     private static boolean showBoldName;
 
@@ -332,15 +333,15 @@ public abstract class FigNodeModelElement
      * Settings which affect rendering (color, font, line width, etc);
      */
     private DiagramSettings settings;
-    
+
     /**
      * The notation settings for this specific fig.  We manage it separately
      * from DiagramSettings because it is more likely to change.
      */
     private NotationSettings notationSettings;
-    
+
     /**
-     * Construct an unplaced Fig with no owner using the given 
+     * Construct an unplaced Fig with no owner using the given
      * rendering settings.
      */
     private void constructFigs() {
@@ -354,9 +355,9 @@ public abstract class FigNodeModelElement
         readyToEdit = false;
 
         setShadowSize(getSettings().getDefaultShadowWidth());
-        /* TODO: how to handle changes in shadowsize 
+        /* TODO: how to handle changes in shadowsize
          * from the project properties? */
-        
+
         stereotypeStyle = getSettings().getDefaultStereotypeView();
     }
 
@@ -364,24 +365,24 @@ public abstract class FigNodeModelElement
      * Construct a figure at a specific position for a given model element
      * with the given settings. This is the constructor used by the PGML
      * parser when loading a diagram from a file.<p>
-     * 
+     *
      * Beware: the width and height in the given Rectangle are currently ignored.
      * According issue 5604 this is a bug.
-     * 
+     *
      * @param element ModelElement associated with figure
      * @param bounds x & y are used to set position, width & height are ignored
      * @param renderSettings  the rendering settings to use for the Fig
      */
-    protected FigNodeModelElement(Object element, Rectangle bounds, 
+    protected FigNodeModelElement(Object element, Rectangle bounds,
             DiagramSettings renderSettings) {
         super();
         super.setOwner(element);
-        
+
         // TODO: We currently don't support per-fig settings for most stuff, so
         // we can just use the defaults that we were given.
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
-        
+
         // Be careful here since subclasses could have overridden this with
         // the assumption that it wouldn't be called before the constructors
         // finished
@@ -389,7 +390,7 @@ public abstract class FigNodeModelElement
         super.setLineColor(LINE_COLOR);
         super.setLineWidth(LINE_WIDTH);
         super.setTextColor(TEXT_COLOR); // Some subclasses will try to use this
-        
+
         /*
          * Notation settings are different since, we know that, at a minimum,
          * the isShowPath() setting can change because with implement
@@ -401,11 +402,11 @@ public abstract class FigNodeModelElement
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = createBigPortFig();
-        nameFig = new FigNameWithAbstractAndBold(element, 
+        nameFig = new FigNameWithAbstractAndBold(element,
                 new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
         stereotypeFig = createStereotypeFig();
         constructFigs();
-        
+
         // TODO: For a FigPool the element will be null.
         // When issue 5031 is resolved this constraint can be reinstated
 //        if (element == null) {
@@ -418,15 +419,15 @@ public abstract class FigNodeModelElement
         }
 
         nameFig.setText(placeString());
-        
+
         if (element != null) {
             NotationName nn = Notation.findNotation(notationSettings.getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), element, this, nn);
 
-            /* This next line presumes that the 1st fig with this owner 
-             * is the previous port - and consequently nullifies the owner 
+            /* This next line presumes that the 1st fig with this owner
+             * is the previous port - and consequently nullifies the owner
              * of this 1st fig. */
             bindPort(element, bigPort);
 
@@ -437,40 +438,40 @@ public abstract class FigNodeModelElement
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
         }
-        
-        // TODO: The following is carried over from setOwner, but probably 
+
+        // TODO: The following is carried over from setOwner, but probably
         // isn't needed
 //        renderingChanged();
         // It does the following (add as needed):
 //        updateNameText();
 //        updateStereotypeText();
-//        updateStereotypeIcon();        
+//        updateStereotypeIcon();
 //        updateBounds();
 //        damage();
-        
+
         readyToEdit = true;
     }
 
     /**
      * Overrule this if a rectangle is not usable.
-     * 
+     *
      * @return the Fig to be used as bigPort
      */
     protected Fig createBigPortFig() {
         return new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
     }
-    
+
     protected FigStereotypesGroup createStereotypeFig() {
-        return new FigStereotypesGroup(getOwner(), 
+        return new FigStereotypesGroup(getOwner(),
                 new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
     }
 
-    
-    
+
+
     /**
      * This is the final call at creation time of the Fig, i.e. here
      * it is put on a Diagram.
-     * 
+     *
      * @param lay the Layer (which has a 1..1 relation to the Diagram)
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
@@ -486,14 +487,14 @@ public abstract class FigNodeModelElement
      * which child figs of the clone represent the name, stereotype and port.
      * <p>
      * TODO: enclosedFigs, encloser and eventSenders may also need to be cloned.
-     * 
+     *
      * @see java.lang.Object#clone()
      * @return the cloned figure
      */
     @Override
     public Object clone() {
         final FigNodeModelElement clone = (FigNodeModelElement) super.clone();
-        
+
         final Iterator cloneIter = clone.getFigs().iterator();
         for (Object thisFig : getFigs()) {
             final Fig cloneFig = (Fig) cloneIter.next();
@@ -502,12 +503,12 @@ public abstract class FigNodeModelElement
             }
             if (thisFig == nameFig) {
                 clone.nameFig = (FigSingleLineText) thisFig;
-                /* TODO: MVW: I think this has to be: 
+                /* TODO: MVW: I think this has to be:
                  * clone.nameFig = (FigSingleLineText) cloneFig;
-                 * but have not the means to investigate, 
+                 * but have not the means to investigate,
                  * since this code is not yet used.
-                 * Enable the menu-items for Copy/Paste to test... 
-                 * BTW: In some other FigNodeModelElement 
+                 * Enable the menu-items for Copy/Paste to test...
+                 * BTW: In some other FigNodeModelElement
                  * classes I see the same mistake. */
             }
             if (thisFig == getStereotypeFig()) {
@@ -560,7 +561,7 @@ public abstract class FigNodeModelElement
     protected FigText getNameFig() {
         return nameFig;
     }
-    
+
     /**
      * Get the Rectangle in which the model elements name is displayed
      * @return bounding box for name
@@ -568,7 +569,7 @@ public abstract class FigNodeModelElement
     public Rectangle getNameBounds() {
         return nameFig.getBounds();
     }
-    
+
     /**
      * Set the Fig that displays the model element name.
      *
@@ -611,7 +612,7 @@ public abstract class FigNodeModelElement
 
         final List<Action> modulesActions =
             ContextActionFactoryManager.getContextPopupActions();
-        
+
         for (Action a : modulesActions) {
             if (a instanceof List) {
                 JMenu m = new JMenu(a);
@@ -623,13 +624,13 @@ public abstract class FigNodeModelElement
                 popUpActions.add(a);
             }
         }
-        
+
         // Show ...
         ArgoJMenu show = buildShowPopUp();
         if (show.getMenuComponentCount() > 0) {
             popUpActions.add(show);
         }
-        
+
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.add(new JSeparator());
         popupAddOffset = 1;
@@ -638,7 +639,7 @@ public abstract class FigNodeModelElement
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        
+
         if (!isReadOnly()) {
             popUpActions.add(new ActionDeleteModelElements());
             popupAddOffset++;
@@ -646,7 +647,7 @@ public abstract class FigNodeModelElement
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
-            
+
             // TODO: Having Critics actions here introduces an unnecessary
             // dependency on the Critics subsystem.  Have it register its
             // desired actions using an extension mechanism - tfm
@@ -701,12 +702,12 @@ public abstract class FigNodeModelElement
             }
             popUpActions.add(0, stereotypes);
         }
-            
+
         if (TargetManager.getInstance().getTargets().size() == 1) {
             // add stereotype view submenu
             ArgoJMenu stereotypesView =
                 new ArgoJMenu("menu.popup.stereotype-view");
-            
+
             // TODO: There are cyclic dependencies between ActionStereotypeView*
             // and FigNodeModelElement.  Register these actions opaquely since
             // we don't what they are. - tfm
@@ -714,7 +715,7 @@ public abstract class FigNodeModelElement
             stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
             stereotypesView.addRadioItem(
                     new ActionStereotypeViewSmallIcon(this));
-            
+
             popUpActions.add(0, stereotypesView);
         }
 
@@ -740,7 +741,7 @@ public abstract class FigNodeModelElement
         visibilityMenu.addRadioItem(new ActionVisibilityPrivate(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityProtected(getOwner()));
         visibilityMenu.addRadioItem(new ActionVisibilityPackage(getOwner()));
-        
+
         return visibilityMenu;
     }
 
@@ -786,13 +787,13 @@ public abstract class FigNodeModelElement
      * modelelement. If this fig is moved inside another
      * FigNodeModelElement the owner of that fignodemodelelement will
      * be the owning modelelement.
-     * 
+     *
      * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     @Override
     public void setEnclosingFig(Fig newEncloser) {
         Fig oldEncloser = encloser;
-        
+
         LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer != null) {
             ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
@@ -801,9 +802,9 @@ public abstract class FigNodeModelElement
                     (FigNode) oldEncloser,
                     (FigNode) newEncloser);
         }
-        
+
         super.setEnclosingFig(newEncloser);
-        
+
         if (layer != null && newEncloser != oldEncloser) {
             Diagram diagram = layer.getDiagram();
             if (diagram instanceof ArgoDiagram) {
@@ -814,7 +815,7 @@ public abstract class FigNodeModelElement
                 if (newEncloser == null) {
                     // The node's been placed on the diagram
                     umlDiagram.setModelElementNamespace(getOwner(), null);
-                } else { 
+                } else {
                     // The node's been placed within some Fig
                     namespace = newEncloser.getOwner();
                     if (Model.getFacade().isANamespace(namespace)) {
@@ -836,7 +837,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Handle the case where this fig is moved into a Component.
-     * 
+     *
      * @param newEncloser the new encloser for this Fig
      */
     protected void moveIntoComponent(Fig newEncloser) {
@@ -888,14 +889,14 @@ public abstract class FigNodeModelElement
                         owner, null, component,
                         null, null, namespace);
             } catch (IllegalModelElementConnectionException e) {
-                LOG.error("Exception", e);
+                LOG.log(Level.SEVERE, "Exception", e);
             }
         }
     }
 
     /**
      * Add a Fig that is enclosed by this figure.
-     * 
+     *
      * @param fig The fig to be added
      */
     public void addEnclosedFig(Fig fig) {
@@ -904,7 +905,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Removes the given Fig from the list of enclosed Figs.
-     * 
+     *
      * @param fig The Fig to be removed
      */
     public void removeEnclosedFig(Fig fig) {
@@ -1053,16 +1054,17 @@ public abstract class FigNodeModelElement
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
-        LOG.debug("in vetoableChange");
+        LOG.log(Level.FINE, "in vetoableChange");
+
         Object src = pce.getSource();
         if (src == getOwner()) {
             DelayedChangeNotify delayedNotify =
                 new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
         } else {
-            LOG.debug("FigNodeModelElement got vetoableChange"
-                      + " from non-owner:"
-                      + src);
+            LOG.log(Level.FINE,
+                    "FigNodeModelElement got vetoableChange from non-owner: {0}",
+                    src);
         }
     }
 
@@ -1070,7 +1072,7 @@ public abstract class FigNodeModelElement
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        LOG.debug("in delayedVetoableChange");
+        LOG.log(Level.FINE, "in delayedVetoableChange");
         // update any text, colors, fonts, etc.
         renderingChanged();
         endTrans();
@@ -1078,13 +1080,13 @@ public abstract class FigNodeModelElement
 
     /**
      * Determine new bounds. <p>
-     * 
-     * This algorithm makes the box grow 
-     * (if the calculated minimum size grows), 
-     * but then it can never shrink again 
+     *
+     * This algorithm makes the box grow
+     * (if the calculated minimum size grows),
+     * but then it can never shrink again
      * (not even if the calculated minimum size is smaller).<p>
-     * 
-     * If the user can not resize the fig, e.g. like the FigActor or FigFinalState, 
+     *
+     * If the user can not resize the fig, e.g. like the FigActor or FigFinalState,
      * then we return the original size.
      */
     protected void updateBounds() {
@@ -1116,7 +1118,7 @@ public abstract class FigNodeModelElement
             removeFromDiagram();
             return;
         }
-        
+
         // We are getting events we don't want. Filter them out.
         if (pve.getPropertyName().equals("supplierDependency")
                 && Model.getFacade().isADependency(pve.getOldValue())) {
@@ -1124,7 +1126,7 @@ public abstract class FigNodeModelElement
             // the first place? See defect 5095.
             return;
         }
-        
+
         // We handle and consume editing events
         if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
@@ -1139,7 +1141,7 @@ public abstract class FigNodeModelElement
                 setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
                 endTrans();
             } catch (PropertyVetoException ex) {
-                LOG.error("could not parse the text entered. "
+                LOG.log(Level.SEVERE, "could not parse the text entered. "
                         + "PropertyVetoException",
                         ex);
             }
@@ -1163,20 +1165,20 @@ public abstract class FigNodeModelElement
                 // TODO: Should this not be an assert?
                 return;
             }
-            
+
             try {
                 modelChanged(event);
             } catch (InvalidElementException e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("modelChanged method accessed deleted element"
+                if (LOG.isLoggable(Level.FINE)) {
+                    LOG.log(Level.FINE, "modelChanged method accessed deleted element "
                             + formatEvent(event),
                             e);
                 }
             }
-            
-            if (event.getSource() == owner 
+
+            if (event.getSource() == owner
                     && "stereotype".equals(event.getPropertyName())) {
-                stereotypeChanged(event);            
+                stereotypeChanged(event);
             }
 
             Runnable doWorkRunnable = new Runnable() {
@@ -1184,25 +1186,24 @@ public abstract class FigNodeModelElement
                     try {
                         updateLayout(event);
                     } catch (InvalidElementException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("updateLayout method accessed "
-                                    + "deleted element " 
+                        if (LOG.isLoggable(Level.FINE)) {
+                            LOG.log(Level.FINE, "updateLayout method accessed deleted element "
                                     + formatEvent(event), e);
                         }
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
-    
+
     private String formatEvent(PropertyChangeEvent event) {
-        return "\n\t event = " + event.getClass().getName() 
-                + "\n\t source = " + event.getSource() 
+        return "\n\t event = " + event.getClass().getName()
+                + "\n\t source = " + event.getSource()
                 + "\n\t old = " + event.getOldValue()
                 + "\n\t name = " + event.getPropertyName();
     }
-    
+
     /**
      * Return true if the model element that this Fig represents is read only
      * @return The model element is read only.
@@ -1234,7 +1235,7 @@ public abstract class FigNodeModelElement
     private void stereotypeChanged(final UmlChangeEvent event) {
         final Object owner = getOwner();
         assert owner != null;
-        try {          
+        try {
             if (event.getOldValue() != null) {
                 removeElementListener(event.getOldValue());
             }
@@ -1242,7 +1243,7 @@ public abstract class FigNodeModelElement
                 addElementListener(event.getNewValue(), "name");
             }
         } catch (InvalidElementException e) {
-            LOG.debug("stereotypeChanged method accessed deleted element ", e);
+            LOG.log(Level.FINE, "stereotypeChanged method accessed deleted element ", e);
         }
     }
 
@@ -1253,8 +1254,8 @@ public abstract class FigNodeModelElement
      *
      * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
-     * by using setFullyHandleStereotypes(true) in the NotationSettings 
-     * argument of the NotationProvider.toString() function, 
+     * by using setFullyHandleStereotypes(true) in the NotationSettings
+     * argument of the NotationProvider.toString() function,
      * but that seems not user-friendly. See issue 3838.
      *
      * @param ft the FigText that will be edited and contains the start-text
@@ -1262,7 +1263,7 @@ public abstract class FigNodeModelElement
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString(getOwner(), 
+            ft.setText(notationProviderName.toString(getOwner(),
                     getNotationSettings()));
         }
         if (ft instanceof CompartmentFigText) {
@@ -1280,7 +1281,7 @@ public abstract class FigNodeModelElement
      * possible to show a help-balloon.
      * <p>
      * TODO: Work this out. One matter to possibly improve: show multiple lines.
-     * 
+     *
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
@@ -1312,7 +1313,7 @@ public abstract class FigNodeModelElement
                 return;
             }
             notationProviderName.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderName.toString(getOwner(), 
+            ft.setText(notationProviderName.toString(getOwner(),
                     getNotationSettings()));
         }
         if (ft instanceof CompartmentFigText) {
@@ -1341,7 +1342,7 @@ public abstract class FigNodeModelElement
                 Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
-                LOG.debug("not ready to edit name");
+                LOG.log(Level.FINE, "not ready to edit name");
                 return;
             }
         }
@@ -1402,7 +1403,7 @@ public abstract class FigNodeModelElement
                 Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
-                LOG.debug("not ready to edit name");
+                LOG.log(Level.FINE, "not ready to edit name");
                 return;
             }
         }
@@ -1426,20 +1427,20 @@ public abstract class FigNodeModelElement
      * @param event the UmlChangeEvent that caused the change
      */
     protected void modelChanged(PropertyChangeEvent event) {
-        if (event instanceof AssociationChangeEvent 
+        if (event instanceof AssociationChangeEvent
                 || event instanceof AttributeChangeEvent) {
             // TODO: This brute force approach of updating listeners on each
             // and every event, without checking the event type or any other
             // information is going to cause lots of InvalidElementExceptions
-            // in subclasses implementations of updateListeners (and they 
+            // in subclasses implementations of updateListeners (and they
             // won't have the event information to make their own decisions)
             updateListeners(getOwner(), getOwner());
         }
-    }    
-    
+    }
+
     ////////////////////////////////////////////////////////////////
     // internal methods
-    
+
     /**
      * This is a template method called by the ArgoUML framework as the result
      * of a change to a model element. Do not call this method directly
@@ -1448,11 +1449,11 @@ public abstract class FigNodeModelElement
      * due to change of any model element that this FigNode is listening to.</p>
      * <p>This method automatically updates the stereotype rendering.</p>
      * <p>The default behavior is to update the name and stereotype text.</p>
-     * <p>For e.g. a Package, if the visibility is changed 
+     * <p>For e.g. a Package, if the visibility is changed
      * via the properties panel, then
      * the display of it on the diagram has to follow the change.
      * This is not handled here, but by the notationProviderName.</p>
-     * <p>This method is guaranteed by the framework to be running on the 
+     * <p>This method is guaranteed by the framework to be running on the
      * Swing/AWT thread.</p>
      *
      * @param event the UmlChangeEvent that caused the change
@@ -1465,7 +1466,7 @@ public abstract class FigNodeModelElement
             return;
         }
         boolean needDamage = false;
-        if (event instanceof AssociationChangeEvent 
+        if (event instanceof AssociationChangeEvent
                 || event instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
                 updateNameText();
@@ -1569,7 +1570,7 @@ public abstract class FigNodeModelElement
      * After the removal of the deprecated method setOwner(),
      * this method shall contain the following statement:
      *     assert notationProviderName != null
-     * 
+     *
      * @param own owning UML element
      */
     protected void initNotationProviders(Object own) {
@@ -1585,11 +1586,11 @@ public abstract class FigNodeModelElement
                         notation);
         }
     }
-    
+
     /**
-     * Overrule this for subclasses 
+     * Overrule this for subclasses
      * that need a different NotationProvider.
-     * 
+     *
      * @return the type of the notation provider
      */
     protected int getNotationProviderType() {
@@ -1602,7 +1603,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateStereotypeText() {
         if (getOwner() == null) {
-            LOG.warn("Null owner for [" + this.toString() + "/"
+            LOG.log(Level.WARNING, "Null owner for [" + this.toString() + "/"
                     + this.getClass());
             return;
         }
@@ -1613,7 +1614,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Updates the text of the name FigText.
-     * This includes text changes, 
+     * This includes text changes,
      * but also changes in rendering like bold.
      */
     protected void updateNameText() {
@@ -1627,7 +1628,7 @@ public abstract class FigNodeModelElement
             updateBounds();
         }
     }
-    
+
     /*
      * @see org.argouml.uml.diagram.ui.PathContainer#isPathVisible()
      */
@@ -1644,7 +1645,7 @@ public abstract class FigNodeModelElement
             return;
         }
         MutableGraphSupport.enableSaveAction();
-        // TODO: Use this event mechanism to update 
+        // TODO: Use this event mechanism to update
         // the checkmark on the Presentation Tab:
         firePropChange("pathVisible", !visible, visible);
         ns.setShowPaths(visible);
@@ -1653,27 +1654,27 @@ public abstract class FigNodeModelElement
             damage();
         }
     }
-    
+
     /**
-     * At creation time of the Fig, we determine 
+     * At creation time of the Fig, we determine
      * if the path should be visible by default. <p>
-     * 
-     * The path is a concatenation of the names of all packages by which 
-     * this modelelement is contained, 
+     *
+     * The path is a concatenation of the names of all packages by which
+     * this modelelement is contained,
      * seperated by "::" (for UML at least). <p>
-     * 
-     * If the default namespace of the diagram corresponds 
-     * to the namespace of the modelelement, 
+     *
+     * If the default namespace of the diagram corresponds
+     * to the namespace of the modelelement,
      * then we do NOT show the path. Otherwise, we do. <p>
-     * 
-     * RRose uses the same heuristic algorithm, 
-     * but shows "(from &lt;path&gt;)" below the name, 
+     *
+     * RRose uses the same heuristic algorithm,
+     * but shows "(from &lt;path&gt;)" below the name,
      * while we follow the UML syntax.
      */
     protected void determineDefaultPathVisible() {
         Object modelElement = getOwner();
         LayerPerspective layer = (LayerPerspective) getLayer();
-        if ((layer != null) 
+        if ((layer != null)
                 && Model.getFacade().isAModelElement(modelElement)) {
             ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
             Object elementNs = Model.getFacade().getNamespace(modelElement);
@@ -1705,30 +1706,30 @@ public abstract class FigNodeModelElement
     /**
      * Implementations of this method should register/unregister the fig for all
      * (model)events. For FigNodeModelElement only the fig itself is registered
-     * as listening to (all) events fired by the owner itself. 
+     * as listening to (all) events fired by the owner itself.
      * But for, for example,
      * FigClass the fig must also register for events fired by the operations
      * and attributes of the owner. <p>
-     * 
-     * An explanation of the original 
+     *
+     * An explanation of the original
      * purpose of this method is given in issue 1321.<p>
-     * 
+     *
      * This function is used by the modelChanged()
      * function.<p>
-     * 
-     * In certain cases, it is imperative that indeed ALL listeners are 
-     * updated, since they are ALL removed 
+     *
+     * In certain cases, it is imperative that indeed ALL listeners are
+     * updated, since they are ALL removed
      * by a call to removeElementListener. <p>
-     * 
-     *  IF this method is called with both the oldOwner and the 
-     *  newOwner equal and not null, 
+     *
+     *  IF this method is called with both the oldOwner and the
+     *  newOwner equal and not null,
      *  AND we listen only to the owner itself,
-     *  THEN we can safely ignore the call, but 
-     *  ELSE we need to update the listeners of the related elements, 
-     *  since the related elements may have been replaced. 
-     * 
-     * @param newOwner null, or the owner of this. 
-     *          The former means that all listeners have to be removed. 
+     *  THEN we can safely ignore the call, but
+     *  ELSE we need to update the listeners of the related elements,
+     *  since the related elements may have been replaced.
+     *
+     * @param newOwner null, or the owner of this.
+     *          The former means that all listeners have to be removed.
      * @param oldOwner null, or the previous owner
      *          The former means that all listeners have to be set.
      */
@@ -1758,7 +1759,7 @@ public abstract class FigNodeModelElement
         try {
             renderingChanged();
         } catch (Exception e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         }
     }
 
@@ -1810,16 +1811,16 @@ public abstract class FigNodeModelElement
         initNotationProviders(getOwner());
         updateNameText();
         updateStereotypeText();
-        updateStereotypeIcon();        
+        updateStereotypeIcon();
         updateBounds();
         damage();
     }
 
     protected void updateStereotypeIcon() {
         if (getOwner() == null) {
-            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+            LOG.log(Level.WARNING, "Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
-            LOG.warn("I return...");
+            LOG.log(Level.WARNING, "I return...");
             return;
         }
 
@@ -1831,12 +1832,12 @@ public abstract class FigNodeModelElement
             this.removeFig(stereotypeFigProfileIcon);
             stereotypeFigProfileIcon = null;
         }
-        
+
         if (originalNameFig != null) {
             this.setNameFig(originalNameFig);
             originalNameFig = null;
         }
-        
+
         for (Fig icon : floatingStereotypes) {
             this.removeFig(icon);
         }
@@ -1846,8 +1847,8 @@ public abstract class FigNodeModelElement
         int practicalView = getPracticalView();
         Object modelElement = getOwner();
         Collection stereos = Model.getFacade().getStereotypes(modelElement);
-         
-        boolean hiding = 
+
+        boolean hiding =
             practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
         if (getStereotypeFig() != null) {
             getStereotypeFig().setHidingStereotypesWithIcon(hiding);
@@ -1916,7 +1917,7 @@ public abstract class FigNodeModelElement
 
         // TODO: This is a redundant invocation
         updateStereotypeText();
-        
+
         damage();
         calcBounds();
         updateEdges();
@@ -1945,7 +1946,7 @@ public abstract class FigNodeModelElement
 
     /*
      * Necessary since GEF contains some errors regarding the hit subject.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
      */
     @Override
@@ -1971,7 +1972,7 @@ public abstract class FigNodeModelElement
             removeFromDiagramImpl();
         }
     }
-    
+
     /**
      * Subclasses should override this to redirect a remove request from
      * one Fig to another.
@@ -1982,11 +1983,11 @@ public abstract class FigNodeModelElement
     protected Fig getRemoveDelegate() {
         return this;
     }
-    
+
     /**
      * If you override this method, make sure to remove all listeners:
      * If you don't, objects in a deleted project will still receive events.<p>
-     * 
+     *
      * Also important for remove from diagram!
      */
     protected void removeFromDiagramImpl() {
@@ -2013,9 +2014,9 @@ public abstract class FigNodeModelElement
 
 
     /**
-     * @param bp the bigPort, which is the port where edges 
+     * @param bp the bigPort, which is the port where edges
      *          connect to this node
-     * @deprecated by MVW since V0.28.1. Use {@link #createBigPortFig} 
+     * @deprecated by MVW since V0.28.1. Use {@link #createBigPortFig}
      *          instead, to guarantee correct initialization.
      */
     protected void setBigPort(Fig bp) {
@@ -2073,21 +2074,21 @@ public abstract class FigNodeModelElement
 
     /**
      * TODO: Move this in FigGroup (in GEF).
-     * 
+     *
      * @param scb The suppressCalcBounds to set.
      */
     protected void setSuppressCalcBounds(boolean scb) {
         this.suppressCalcBounds = scb;
     }
-    
+
     /**
      * Set visibility of figure. If the field {@link #invisibleAllowed} is not
      * <code>true</code> and this method is passed a parameter of
      * <code>false</code> it will throw an IllegalArgumentException.
-     * 
+     *
      * @param visible
      *            new visibility - <code>true</code> = visible.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setVisible(boolean)
      */
     public void setVisible(boolean visible) {
@@ -2154,7 +2155,7 @@ public abstract class FigNodeModelElement
      * that node and starting to type.
      * Should a subclass of FigNodeModelElement not desire this behaviour
      * then it should call setEditable(false) in its constructor.
-     * 
+     *
      * @param canEdit new state, false = editing disabled.
      */
     protected void setEditable(boolean canEdit) {
@@ -2163,7 +2164,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Add an element listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
@@ -2172,10 +2173,10 @@ public abstract class FigNodeModelElement
         listeners.add(new Object[] {element, null});
         Model.getPump().addModelEventListener(this, element);
     }
-    
+
     /**
      * Add a listener for a given property name and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -2191,7 +2192,7 @@ public abstract class FigNodeModelElement
     /**
      * Add a listener for an array of property names and remember the
      * registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -2203,10 +2204,10 @@ public abstract class FigNodeModelElement
         listeners.add(new Object[] {element, property});
         Model.getPump().addModelEventListener(this, element, property);
     }
-    
+
     /**
      * Remove an element listener and remembered registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
@@ -2215,7 +2216,7 @@ public abstract class FigNodeModelElement
         listeners.remove(new Object[] {element, null});
         Model.getPump().removeModelEventListener(this, element);
     }
-    
+
     /**
      * Unregister all listeners registered through addElementListener
      * @see #addElementListener(Object, String)
@@ -2260,18 +2261,18 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Update the set of registered listeners to match the given set using 
-     * a minimal update strategy to remove unneeded listeners and add new 
+     * Update the set of registered listeners to match the given set using
+     * a minimal update strategy to remove unneeded listeners and add new
      * listeners.
-     * 
+     *
      * @param listenerSet a set of arrays containing a tuple of a UML element
-     * to be listened to and a set of property to be listened for.  
+     * to be listened to and a set of property to be listened for.
      */
     protected void updateElementListeners(Set<Object[]> listenerSet) {
         Set<Object[]> removes = new HashSet<Object[]>(listeners);
         removes.removeAll(listenerSet);
         removeElementListeners(removes);
-        
+
         Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
         adds.removeAll(listeners);
         addElementListeners(adds);
@@ -2279,9 +2280,9 @@ public abstract class FigNodeModelElement
 
     /**
      * This optional method is not implemented.  It will throw an
-     * {@link UnsupportedOperationException} if used.  Figs are 
+     * {@link UnsupportedOperationException} if used.  Figs are
      * added to a GraphModel which is, in turn, owned by a project.<p>
-     * 
+     *
      * @param project the project
      * @deprecated
      */
@@ -2289,11 +2290,11 @@ public abstract class FigNodeModelElement
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
-    
+
     /**
      * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
      * the information that they require in the DiagramSettings object.
-     * 
+     *
      * @return the owning project
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
@@ -2301,7 +2302,7 @@ public abstract class FigNodeModelElement
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
     }
-    
+
     /**
      * Determine if this Fig is the sole selected target in
      * the TargetManager
@@ -2312,7 +2313,7 @@ public abstract class FigNodeModelElement
                 == getOwner();
     }
 
-    
+
     /**
      * @return current stereotype view
      * @deprecated for 0.27.2 by tfmorris.  Use {@link #getStereotypeStyle()}.
@@ -2320,7 +2321,7 @@ public abstract class FigNodeModelElement
     public int getStereotypeView() {
         return stereotypeStyle.ordinal();
     }
-    
+
     /**
      * @return
      * @see org.argouml.uml.diagram.ui.StereotypeStyled#getStereotypeStyle()
@@ -2334,7 +2335,7 @@ public abstract class FigNodeModelElement
      * conditions. If the current mode is set to <code>BigIcon</code> mode and
      * the model element has zero or more than one stereotype the practical view
      * should be the textual view.
-     * 
+     *
      * @return current practical stereotype view
      */
     private int getPracticalView() {
@@ -2352,14 +2353,14 @@ public abstract class FigNodeModelElement
                     .getProfileConfiguration().getFigNodeStrategy();
                 Iterator<FigStereotype> figsIterator = getStereotypeFig()
                     .getStereotypeFigs().iterator();
-                Object owner = 
-                    figsIterator.hasNext() 
+                Object owner =
+                    figsIterator.hasNext()
                     ? figsIterator.next().getOwner() : null;
                 if (stereotypeCount != 1
                         || figNodeStrategy == null
                         || owner == null
                         ||  (stereotypeCount == 1
-                                && figNodeStrategy.getIconForStereotype(owner) 
+                                && figNodeStrategy.getIconForStereotype(owner)
                                     == null)) {
                     practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
                 }
@@ -2367,7 +2368,7 @@ public abstract class FigNodeModelElement
         }
         return practicalView;
     }
-    
+
     /**
      * Get the number of stereotypes contained in this FigNode
      * @return the number of stereotypes contained in the FigNode
@@ -2378,12 +2379,12 @@ public abstract class FigNodeModelElement
         }
         return getStereotypeFig().getStereotypeCount();
     }
-    
+
     /**
      * Sets the stereotype view.
-     * 
+     *
      * @param s the stereotype view to be set
-     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * @deprecated for 0.27.2 by tfmorris.  Use
      * {@link #setStereotypeStyle(StereotypeStyle)}.
      */
     public void setStereotypeView(int s) {
@@ -2392,21 +2393,21 @@ public abstract class FigNodeModelElement
 
     /**
      * Set the stereotype style to be used for rendering this fig.
-     * 
+     *
      * @param style the stereotype style to be set
      */
     public void setStereotypeStyle(StereotypeStyle style) {
         stereotypeStyle = style;
         renderingChanged();
     }
-    
+
     /**
-     * Sets the bounds of this node taking the stereotype view into 
+     * Sets the bounds of this node taking the stereotype view into
      * consideration.<br>
-     * 
-     * Do not override this method, override 
+     *
+     * Do not override this method, override
      * {@link #setStandardBounds(int, int, int, int)} instead.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -2444,9 +2445,9 @@ public abstract class FigNodeModelElement
     /**
      * Returns the minimum size of the Fig. This is the smallest size that the
      * user can make this Fig by dragging. <p>
-     *  
+     *
      * Do not call this function if the Fig is not resizable!
-     * In ArgoUML we decided that it is not needed to implement 
+     * In ArgoUML we decided that it is not needed to implement
      * suitable getMinimumSize() methods
      * for Figs that are not resizable.
      */
@@ -2458,7 +2459,7 @@ public abstract class FigNodeModelElement
 
     /**
      * Replaces {@link #setBoundsImpl(int, int, int, int)}.
-     * 
+     *
      * @param x Desired X coordinate of upper left corner
      * @param y Desired Y coordinate of upper left corner
      * @param w Desired width of the FigClass
@@ -2469,7 +2470,7 @@ public abstract class FigNodeModelElement
             final int w, final int h) {
 
     }
-    
+
     /**
      * Handles diagram font changing.
      * @param e the event or null
@@ -2484,11 +2485,11 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * This function should, for all FigTexts, 
+     * This function should, for all FigTexts,
      * recalculate the font-style (plain, bold, italic, bold/italic),
      * and apply it by calling FigText.setFont(). <p>
-     * 
-     * If the "deepUpdateFont" function does not 
+     *
+     * If the "deepUpdateFont" function does not
      * work for a subclass, then override this method.
      */
     protected void updateFont() {
@@ -2499,15 +2500,15 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Determines the font style based on the UML model. 
-     * Overrule this in Figs that have to show bold or italic based on the 
-     * UML model they represent. 
+     * Determines the font style based on the UML model.
+     * Overrule this in Figs that have to show bold or italic based on the
+     * UML model they represent.
      * E.g. abstract classes show their name in italic.
-     * 
+     *
      * @return the font style for the nameFig.
      */
     protected int getNameFigFontStyle() {
-        // TODO: Why do we need this when we can just change the font and 
+        // TODO: Why do we need this when we can just change the font and
         // achieve the same effect?
         showBoldName = getSettings().isShowBoldNames();
         return showBoldName ? Font.BOLD : Font.PLAIN;
@@ -2515,17 +2516,17 @@ public abstract class FigNodeModelElement
 
     /**
      * Changes the font for all Figs contained in the given FigGroup. <p>
-     * 
+     *
      *  TODO: In fact, there is a design error in this method:
      *  E.g. for a class, if the name is Italic since the class is abstract,
      *  then the classes features should be in Plain font.
-     *  This problem can be fixed by implementing 
+     *  This problem can be fixed by implementing
      *  the updateFont() method in all subclasses.
-     *  
+     *
      * @param fg the FigGroup to change the font of.
      */
     private void deepUpdateFont(FigGroup fg) {
-        // TODO: Fonts shouldn't be handled any differently than other 
+        // TODO: Fonts shouldn't be handled any differently than other
         // rendering attributes
         boolean changed = false;
         List<Fig> figs = fg.getFigs();
@@ -2542,13 +2543,13 @@ public abstract class FigNodeModelElement
             fg.calcBounds();
         }
     }
-    
+
 
     public DiagramSettings getSettings() {
         // TODO: This is a temporary crutch to use until all Figs are updated
         // to use the constructor that accepts a DiagramSettings object
         if (settings == null) {
-            LOG.debug("Falling back to project-wide settings");
+            LOG.log(Level.FINE, "Falling back to project-wide settings");
             Project p = getProject();
             if (p != null) {
                 return p.getProjectSettings().getDefaultDiagramSettings();
@@ -2556,7 +2557,7 @@ public abstract class FigNodeModelElement
         }
         return settings;
     }
-    
+
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();
@@ -2574,13 +2575,13 @@ public abstract class FigNodeModelElement
             getStereotypeFig().setLineWidth(0);
         }
     }
-    
+
     /**
      * A default "clarifier" to be used for selection if the subclass doesn't
      * override makeSelection and provide its own.
      */
     class SelectionDefaultClarifiers extends SelectionNodeClarifiers2 {
-        
+
         /** Construct a new SelectionNodeClarifiers for the given Fig
          *
          * @param f the given Fig
@@ -2614,12 +2615,12 @@ public abstract class FigNodeModelElement
             return false;
         }
     }
-    
+
 
     /**
      * Setting the owner of the Fig must be done in the constructor and not
      * changed afterwards for all ArgoUML figs.
-     * 
+     *
      * @param owner owning UML element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      * @throws UnsupportedOperationException
@@ -2634,7 +2635,7 @@ public abstract class FigNodeModelElement
                     "Owner must be set in constructor and left unchanged");
         }
     }
-    
+
     /*
      * Override FigNode implementation to keep setOwner from getting called.
      */
@@ -2644,7 +2645,7 @@ public abstract class FigNodeModelElement
             f.setOwner(port);
         }
     }
-    
+
     public void notationRenderingChanged(NotationProvider np, String rendering) {
         if (notationProviderName == np) {
             nameFig.setText(rendering);

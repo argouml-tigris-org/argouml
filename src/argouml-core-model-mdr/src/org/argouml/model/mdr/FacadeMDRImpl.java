@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2005-2011 Contributors - see below
+ * Copyright (c) 2005-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.model.MofClass;
 import javax.jmi.model.Reference;
@@ -58,7 +60,6 @@ import javax.jmi.reflect.RefFeatured;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.InvalidElementException;
@@ -204,7 +205,8 @@ class FacadeMDRImpl implements Facade {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(FacadeMDRImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(FacadeMDRImpl.class.getName());
 
     private MDRModelImplementation modelImpl;
 
@@ -221,7 +223,7 @@ class FacadeMDRImpl implements Facade {
     public FacadeMDRImpl(MDRModelImplementation impl) {
         modelImpl = impl;
     }
-    
+
     public String getUmlVersion() {
         return "1.4";
     }
@@ -287,7 +289,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isAArtifact(Object modelElement) {
         return modelElement instanceof Artifact;
     }
-    
+
     public boolean isAAssociation(Object handle) {
         return handle instanceof UmlAssociation;
     }
@@ -311,7 +313,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isAAttributeLink(Object handle) {
         return handle instanceof AttributeLink;
     }
-    
+
     public boolean isAsynchronous(Object handle) {
         if (handle instanceof Action) {
             try {
@@ -323,7 +325,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
-    
+
     public boolean isAbstract(Object handle) {
         try {
             if (handle instanceof Operation) {
@@ -363,11 +365,11 @@ class FacadeMDRImpl implements Facade {
     public boolean isABehavioralFeature(Object handle) {
         return handle instanceof BehavioralFeature;
     }
-    
+
     public boolean isABinding(Object handle) {
         return handle instanceof Binding;
     }
-    
+
     public boolean isACallAction(Object handle) {
         return handle instanceof CallAction;
     }
@@ -430,8 +432,8 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAConnectorEnd(Object handle) {
         return false;
-    }    
-    
+    }
+
     public boolean isAConstraint(Object handle) {
         return handle instanceof Constraint;
     }
@@ -540,11 +542,11 @@ class FacadeMDRImpl implements Facade {
     public boolean isAInteractionInstanceSet(Object handle) {
         return handle instanceof InteractionInstanceSet;
     }
-    
+
     public boolean isAInterface(Object handle) {
         return handle instanceof Interface;
     }
-    
+
     public boolean isALifeline(Object handle) {
         return handle instanceof ClassifierRole;
     }
@@ -560,19 +562,19 @@ class FacadeMDRImpl implements Facade {
     public boolean isALinkObject(Object handle) {
         return handle instanceof LinkObject;
     }
-    
+
     public boolean isALiteralBoolean(Object handle) {
         return false;
     }
-    
+
     public boolean isALiteralInteger(Object handle) {
         return false;
     }
-    
+
     public boolean isALiteralString(Object handle) {
         return false;
     }
-    
+
     public boolean isAMessage(Object handle) {
         return handle instanceof Message;
     }
@@ -600,7 +602,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isANamedElement(Object handle) {
         return handle instanceof ModelElement;
     }
-    
+
     public boolean isANamespace(Object handle) {
         return handle instanceof Namespace;
     }
@@ -640,7 +642,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isAPackageImport(Object handle) {
         return handle instanceof Permission;
     }
-    
+
     public boolean isAParameter(Object handle) {
         return handle instanceof Parameter;
     }
@@ -661,7 +663,7 @@ class FacadeMDRImpl implements Facade {
         if (handle instanceof Model) {
             for (Object stereo : getStereotypes(handle)) {
                 if (modelImpl.getExtensionMechanismsHelper()
-                        .isStereotypeInh(stereo, "profile", 
+                        .isStereotypeInh(stereo, "profile",
                                 "Package")) {
                     return true;
                 }
@@ -749,7 +751,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isAReception(Object handle) {
         return handle instanceof Reception;
     }
-    
+
     public boolean isARegion(Object handle) {
         return false; // Not in UML1.4
     }
@@ -829,7 +831,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isASubsystemInstance(Object handle) {
         return handle instanceof SubsystemInstance;
     }
-    
+
     public boolean isASynchState(Object handle) {
         return handle instanceof SynchState;
     }
@@ -837,15 +839,15 @@ class FacadeMDRImpl implements Facade {
     public boolean isATaggedValue(Object handle) {
         return handle instanceof TaggedValue;
     }
-    
+
     public boolean isATemplateArgument(Object handle) {
         return handle instanceof TemplateArgument;
     }
-    
+
     public boolean isATemplateParameter(Object handle) {
         return handle instanceof TemplateParameter;
     }
-    
+
     public boolean isATransition(Object handle) {
         return handle instanceof Transition;
     }
@@ -858,9 +860,9 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof TimeEvent;
     }
 
-    
+
     public boolean isAUMLElement(Object handle) {
-        return handle instanceof Element 
+        return handle instanceof Element
                 || handle instanceof ElementImport
                 || handle instanceof ElementResidence
                 || handle instanceof Expression
@@ -883,7 +885,7 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof UseCase;
     }
 
-    
+
     public boolean isAVisibilityKind(Object handle) {
         return handle instanceof VisibilityKind;
     }
@@ -932,7 +934,7 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof Method) {
                 operation = ((Method) handle).getSpecification();
                 if (operation == null) {
-                    // This is not a well formed model in a strict sense. 
+                    // This is not a well formed model in a strict sense.
                     // See the multiplicity in UML 1.3 Figure 2-5.
                     return false;
                 }
@@ -941,10 +943,10 @@ class FacadeMDRImpl implements Facade {
             } else {
                 return illegalArgumentBoolean(handle);
             }
-            
+
             for (Object stereo : getStereotypes(operation)) {
                 if (modelImpl.getExtensionMechanismsHelper()
-                        .isStereotypeInh(stereo, "create", 
+                        .isStereotypeInh(stereo, "create",
                                 "BehavioralFeature")) {
                     return true;
                 }
@@ -1003,7 +1005,7 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof Attribute) {
                 Expression init = ((Attribute) handle).getInitialValue();
-                
+
                 if (init != null && init.getBody() != null
                         && init.getBody().trim().length() > 0) {
                     return true;
@@ -1016,7 +1018,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
-    
+
     public boolean isInternal(Object handle) {
         try {
             if (handle instanceof Transition) {
@@ -1111,10 +1113,10 @@ class FacadeMDRImpl implements Facade {
     public boolean isPrimaryObject(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                for (TaggedValue tv 
+                for (TaggedValue tv
                         : ((ModelElement) handle).getTaggedValue()) {
                     TagDefinition type = tv.getType();
-                    if (type != null 
+                    if (type != null
                             && GENERATED_TAG.equals(type.getTagType())) {
                         return false;
                     }
@@ -1276,7 +1278,7 @@ class FacadeMDRImpl implements Facade {
 
     public Object getAssociationEnd(Object handle, Object assoc) {
         try {
-            if (handle instanceof Classifier 
+            if (handle instanceof Classifier
                     && assoc instanceof UmlAssociation) {
                 Classifier classifier = (Classifier) handle;
                 Iterator it = getAssociationEnds(classifier).iterator();
@@ -1499,7 +1501,7 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
     }
-    
+
 
     public Collection<GeneralizableElement> getChildren(Object handle) {
         try {
@@ -1781,7 +1783,7 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentCollection(handle);
     }
-    
+
 
     public Collection getExtenders(Object handle) {
         try {
@@ -1961,7 +1963,7 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentCollection(handle);
     }
-    
+
 
     public Collection getIncomings(Object handle) {
         try {
@@ -2103,9 +2105,9 @@ class FacadeMDRImpl implements Facade {
     public Object getMessageSort(Object handle) {
         return getAction(handle);
     }
-    
-    
-    
+
+
+
     public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {
@@ -2206,7 +2208,7 @@ class FacadeMDRImpl implements Facade {
                 }
             }
         } else {
-            LOG.warn("No default extent in getRootElements");
+            LOG.log(Level.WARNING, "No default extent in getRootElements");
         }
         return elements;
     }
@@ -2422,7 +2424,7 @@ class FacadeMDRImpl implements Facade {
             RefObject metaobject = rf.refMetaObject();
             if (!(metaobject instanceof MofClass)) {
                 throw new IllegalArgumentException(
-                        "Element doesn't appear to be a MOF element :" 
+                        "Element doesn't appear to be a MOF element :"
                         + handle);
             }
             MofClass metaclass = (MofClass) metaobject;
@@ -2454,7 +2456,7 @@ class FacadeMDRImpl implements Facade {
             Collection<RefBaseObject> returns, boolean contentsOnly) {
 
         try {
-            if (!(element instanceof javax.jmi.model.Attribute 
+            if (!(element instanceof javax.jmi.model.Attribute
                     || element instanceof Reference)) {
                 return;
             }
@@ -2660,7 +2662,7 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof State) {
                 return ((State) handle).getDoActivity();
-            }  
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -2845,7 +2847,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-    
+
     public Object getOrdering(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
@@ -2857,7 +2859,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-    
+
     public Collection getOutgoings(Object handle) {
         try {
             if (isAGuard(handle) || isAAction(handle)) {
@@ -2951,7 +2953,7 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    
+
     public boolean isStatic(Object handle) {
         try {
             if (handle instanceof Feature) {
@@ -3045,7 +3047,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-    
+
     public Object getParameter(Object handle, int n) {
         Collection collection = getParameters(handle);
         if (collection instanceof List) {
@@ -3062,10 +3064,10 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-    
+
     public Collection getParameters(Object handle) {
         try {
-            if (handle instanceof BehavioralFeature 
+            if (handle instanceof BehavioralFeature
                     || handle instanceof Event) {
                 return getParametersList(handle);
             }
@@ -3098,7 +3100,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentList(handle);
     }
 
-    
+
     public Object getGeneral(Object handle) {
         try {
             if (handle instanceof Generalization) {
@@ -3114,12 +3116,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getRaisedSignals(Object handle) {
         return getRaisedExceptions(handle);
     }
-    
+
     /**
-     * Dummy method for UML 1.x 
-     * 
+     * Dummy method for UML 1.x
+     *
      * @author Andreas Rueckert <a_rueckert@gmx.net>
-     * 
+     *
      * @see org.argouml.model.Facade#getRaisedExceptions(java.lang.Object)
      */
     public Collection getRaisedExceptions(Object handle) {
@@ -3415,7 +3417,7 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    
+
     public Collection getSentStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
@@ -3796,7 +3798,7 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentObject(handle);
     }
-    
+
 
     public List getActions(Object handle) {
         try {
@@ -3820,7 +3822,7 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentList(handle);
     }
-    
+
 
     public Object getActivator(Object handle) {
         try {
@@ -3880,7 +3882,7 @@ class FacadeMDRImpl implements Facade {
     public Object getAggregation(Object handle) {
         return getAggregation1(handle);
     }
-    
+
     public Object getAggregation1(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
@@ -4216,7 +4218,8 @@ class FacadeMDRImpl implements Facade {
                 }
                 // TODO: Implement support for multiple TaggedValues
                 if (values.size() + refValues.size() > 1) {
-                    LOG.warn("Don't know how to manage multiple values "
+                    LOG.log(Level.WARNING,
+                            "Don't know how to manage multiple values "
                             + "for a TaggedValue, returning first value");
                 }
 
@@ -4234,7 +4237,8 @@ class FacadeMDRImpl implements Facade {
                     return ((EnumerationLiteral) value).getName();
                 } else {
                     // TODO: Implement support for types other than String
-                    LOG.warn("Can't handled TaggedValue.dataValues which "
+                    LOG.log(Level.WARNING,
+                            "Can't handled TaggedValue.dataValues which "
                             + " aren't Strings.  Converting to String");
                     return value.toString();
                 }
@@ -4412,7 +4416,7 @@ class FacadeMDRImpl implements Facade {
         return null;
     }
 
-    
+
     public String toString(Object modelElement) {
         try {
             if (modelElement instanceof Multiplicity) {
@@ -4467,7 +4471,7 @@ class FacadeMDRImpl implements Facade {
 
     public String getUMLClassName(Object handle) {
         if (!isAUMLElement(handle)) {
-            return illegalArgumentString(handle);            
+            return illegalArgumentString(handle);
         }
         try {
             return modelImpl.getMetaTypes().getName(handle);
@@ -4556,7 +4560,7 @@ class FacadeMDRImpl implements Facade {
         illegalArgument(arg);
         return null;
     }
-    
+
     /**
      * Method that throws an error when a method is called with an incorrect
      * argument.<p>
@@ -4697,7 +4701,7 @@ class FacadeMDRImpl implements Facade {
         return metatypeName != null
                 && metatypeName.equals(metaObject.getName());
     }
-    
+
     MofClass getMofClass(String metatypeName) {
         Collection<MofClass> metaTypes = getMetaClasses();
         for (MofClass mofClass : metaTypes) {
@@ -4709,7 +4713,7 @@ class FacadeMDRImpl implements Facade {
         }
         return null;
     }
-    
+
     RefClass getProxy(String metatypeName, RefPackage extent) {
         Collection<MofClass> metaTypes = getMetaClasses();
         MofClass mofClass = getMofClass(metatypeName);
@@ -4718,7 +4722,7 @@ class FacadeMDRImpl implements Facade {
         // OK for UML 1.4 because of clustering
         // Get the right UML package in the extent
         RefPackage pkg = extent.refPackage(names.get(0));
-        // Return the metatype proxy 
+        // Return the metatype proxy
         return pkg.refClass(names.get(1));
     }
 

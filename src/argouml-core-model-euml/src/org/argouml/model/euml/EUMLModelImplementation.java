@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2012 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  *    Tom Morris - initial implementation
  *    Bogdan Pistol - undo support
  *    thn
- *    
- * This implementation uses ideas and code snippets from the 
+ *
+ * This implementation uses ideas and code snippets from the
  * "org.eclipse.uml2.uml.editor.presentation" package.
- * 
+ *
  * The package "org.eclipse.uml2.uml.editor.presentation" is part of the
- * Eclipse UML2 plugin and it is available under the terms of 
+ * Eclipse UML2 plugin and it is available under the terms of
  * the Eclipse Public License v1.0.
  *****************************************************************************/
 
@@ -28,8 +28,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.MessageSort;
 import org.argouml.model.ModelImplementation;
@@ -70,10 +71,10 @@ import org.eclipse.uml2.uml.resource.XMI2UMLResource;
  * was built by the sponsored student, Bogdan Ciprian Pistol, who was mentored
  * by Tom Morris.
  * <p>
- * This implementation uses ideas and code snippets from the 
+ * This implementation uses ideas and code snippets from the
  * "org.eclipse.uml2.uml.editor.presentation" package which is part of the
  * Eclipse UML2 plugin.
- * 
+ *
  * @author Bogdan Ciprian Pistol
  * @author Tom Morris <tfmorris@gmail.com>
  * @since ArgoUML 0.25.4, May 2007
@@ -81,7 +82,7 @@ import org.eclipse.uml2.uml.resource.XMI2UMLResource;
 public class EUMLModelImplementation implements ModelImplementation {
 
     private static final Logger LOG =
-        Logger.getLogger(EUMLModelImplementation.class);
+        Logger.getLogger(EUMLModelImplementation.class.getName());
 
     private ActivityGraphsFactoryEUMLlImpl theActivityGraphsFactory;
 
@@ -121,7 +122,7 @@ public class EUMLModelImplementation implements ModelImplementation {
     private FacadeEUMLImpl theFacade;
 
     private MessageSort theMessageSort;
-    
+
     private MetaTypesEUMLImpl theMetaTypes;
 
     private ModelEventPumpEUMLImpl theModelEventPump;
@@ -150,7 +151,7 @@ public class EUMLModelImplementation implements ModelImplementation {
     private UseCasesHelperEUMLImpl theUseCasesHelper;
 
     private VisibilityKindEUMLImpl theVisibilityKind;
-    
+
     private CommandStackImpl theCommandStack;
 
     /**
@@ -161,13 +162,13 @@ public class EUMLModelImplementation implements ModelImplementation {
      * manage an EditingDomain per project.
      */
     private AdapterFactoryEditingDomain editingDomain;
-    
+
     /**
      * Map of which resources are read-only.
      * <p>
      * TODO: This needs to be managed per EditingDomain.
      */
-    private Map<Resource, Boolean> readOnlyMap = 
+    private Map<Resource, Boolean> readOnlyMap =
         new HashMap<Resource, Boolean>();
 
     /**
@@ -175,13 +176,14 @@ public class EUMLModelImplementation implements ModelImplementation {
      */
     public EUMLModelImplementation() {
         initializeEditingDomain();
-        LOG.debug("EUML Init - editing domain initialized"); //$NON-NLS-1$
+        LOG.log(Level.FINE,
+                "EUML Init - editing domain initialized"); //$NON-NLS-1$
     }
 
     /**
      * This sets up the editing domain for the model editor.
-     * 
-     * TODO: We probably need an EditingDomain per Argo project so that we can 
+     *
+     * TODO: We probably need an EditingDomain per Argo project so that we can
      * keep the ResourceSets separate.
      */
     private void initializeEditingDomain() {
@@ -216,7 +218,7 @@ public class EUMLModelImplementation implements ModelImplementation {
                 adapterFactory, commandStack, readOnlyMap);
 
         ResourceSet resourceSet = editingDomain.getResourceSet();
-        Map<String, Object> extensionToFactoryMap = 
+        Map<String, Object> extensionToFactoryMap =
             resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
         Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
 
@@ -234,35 +236,35 @@ public class EUMLModelImplementation implements ModelImplementation {
             //if (Character.isLetter(path.charAt(0))) {
             //    path = '/' + path;
             //}
-            URI uri = 
+            URI uri =
                 URI.createURI(
                         "jar:file:" //$NON-NLS-1$
-                        + path 
+                        + path
                         + "!/"); //$NON-NLS-1$
-            LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
+            LOG.log(Level.FINE, "eUML.resource URI --> " + uri); //$NON-NLS-1$
 
             Registry packageRegistry = resourceSet.getPackageRegistry();
             packageRegistry.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
             packageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
             // for other xmi files with further namespaces:
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_NS_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_NS_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_NS_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_NS_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_2_NS_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_2_NS_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_NS_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_NS_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_URI, 
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_URI,
                     UMLPackage.eINSTANCE);
             // eclipse namespaces:
-            packageRegistry.put(UML212UMLResource.UML_METAMODEL_NS_URI, 
+            packageRegistry.put(UML212UMLResource.UML_METAMODEL_NS_URI,
                     UMLPackage.eINSTANCE);
-            packageRegistry.put("http://www.eclipse.org/uml2/2.0.0/UML", 
+            packageRegistry.put("http://www.eclipse.org/uml2/2.0.0/UML",
                     UMLPackage.eINSTANCE);
 
             // For the .uml files in the eclipse jar files, we need this:
@@ -294,14 +296,14 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     /**
      * Getter for {@link #editingDomain the Editing Domain}
-     * 
+     *
      * @return the editing domain of the current EUMLModelImplementation
      *         instance
      */
     public EditingDomain getEditingDomain() {
         return editingDomain;
     }
-    
+
     /**
      * @return the read only map for resources in the EditingDomain
      */
@@ -311,7 +313,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     public ActivityGraphsFactoryEUMLlImpl getActivityGraphsFactory() {
         if (theActivityGraphsFactory == null) {
-            theActivityGraphsFactory = 
+            theActivityGraphsFactory =
                 new ActivityGraphsFactoryEUMLlImpl(this);
         }
         return theActivityGraphsFactory;
@@ -564,12 +566,12 @@ public class EUMLModelImplementation implements ModelImplementation {
      * Unload all resources in the editing domain and clear the read only map.
      */
     void clearEditingDomain() {
-        for (Resource resource 
+        for (Resource resource
                 : editingDomain.getResourceSet().getResources()) {
             unloadResource(resource);
         }
     }
-    
+
     void unloadResource(Resource resource) {
         resource.unload();
         readOnlyMap.remove(resource);

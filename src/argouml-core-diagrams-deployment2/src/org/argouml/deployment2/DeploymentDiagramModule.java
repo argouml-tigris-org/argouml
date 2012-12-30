@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,27 +13,23 @@
 
 package org.argouml.deployment2;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
+
 import org.argouml.deployment2.diagram.DeploymentDiagramFactory;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.providers.uml.SDMessageNotationUml;
-import org.argouml.persistence.PersistenceManager;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.DiagramFactoryInterface2;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.argouml.uml.diagram.DiagramFactoryInterface2;
 import org.argouml.uml.ui.PropPanelFactoryManager;
 
 public class DeploymentDiagramModule implements ModuleInterface {
 
-    private static final Logger LOG = Logger
-            .getLogger(DeploymentDiagramModule.class);
+    private static final Logger LOG =
+        Logger.getLogger(DeploymentDiagramModule.class.getName());
 
     private DeploymentDiagramPropPanelFactory propPanelFactory;
-        
+
     public boolean enable() {
         if (Model.getFacade().getUmlVersion().indexOf("2") >= 0) {
             // This module will still register as enabled for UML1.4 but it won't
@@ -42,7 +38,7 @@ public class DeploymentDiagramModule implements ModuleInterface {
                 new DeploymentDiagramPropPanelFactory();
             PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
             DiagramFactory.getInstance().registerDiagramFactory(
-                    DiagramType.Deployment, 
+                    DiagramType.Deployment,
                     new DeploymentDiagramFactory());
         }
         return true;

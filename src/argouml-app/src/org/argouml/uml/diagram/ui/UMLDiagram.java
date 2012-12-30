@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,12 +42,13 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Logger;
 import org.argouml.gefext.ArgoModeCreateFigCircle;
 import org.argouml.gefext.ArgoModeCreateFigInk;
 import org.argouml.gefext.ArgoModeCreateFigLine;
@@ -73,7 +74,6 @@ import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigNode;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
@@ -111,7 +111,8 @@ public abstract class UMLDiagram
     extends ArgoDiagramImpl
     implements Relocatable {
 
-    private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLDiagram.class.getName());
 
     /**
      * Tool to add a comment node.
@@ -134,45 +135,45 @@ public abstract class UMLDiagram
         new ActionSetMode(ModeBroom.class, "button.broom");
 
     private static Action actionRectangle =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigRect.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRect.class,
                 "Rectangle", "misc.primitive.rectangle"));
 
     private static Action actionRRectangle =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigRRect.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRRect.class,
                 "RRect", "misc.primitive.rounded-rectangle"));
 
     private static Action actionCircle =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigCircle.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigCircle.class,
                 "Circle", "misc.primitive.circle"));
 
     private static Action actionLine =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigLine.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigLine.class,
                 "Line", "misc.primitive.line"));
 
     private static Action actionText =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigText.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigText.class,
                 "Text", "misc.primitive.text"));
 
     private static Action actionPoly =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigPoly.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigPoly.class,
                 "Polygon", "misc.primitive.polygon"));
 
     private static Action actionSpline =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigSpline.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigSpline.class,
                 "Spline", "misc.primitive.spline"));
 
     private static Action actionInk =
-        new RadioAction(new ActionSetMode(ArgoModeCreateFigInk.class, 
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigInk.class,
                 "Ink", "misc.primitive.ink"));
 
     private JToolBar toolBar;
 
     private Action selectedAction;
-    
+
     /**
      * Default constructor will become protected. All subclasses should have
      * their constructors invoke the 3-arg version of the constructor.
-     * 
+     *
      * @deprecated for 0.27.2 by tfmorris. Use
      *             {@link #UMLDiagram(String, Object, GraphModel)} or another
      *             explicit constructor.
@@ -194,12 +195,12 @@ public abstract class UMLDiagram
         if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
         }
-        // TODO: Should we require a GraphModel in the constructor since 
+        // TODO: Should we require a GraphModel in the constructor since
         // our implementations of setNamespace are going to try and set
         // the namespace on the graphmodel as well?
         setNamespace(ns);
     }
-   
+
     /**
      * @param name the name of the diagram
      * @param ns the UML namespace of this diagram
@@ -212,15 +213,15 @@ public abstract class UMLDiagram
         try {
             setName(name);
         } catch (PropertyVetoException pve) {
-            LOG.fatal("Name not allowed in construction of diagram");
+            LOG.log(Level.SEVERE, "Name not allowed in construction of diagram");
         }
     }
 
-   
+
     /**
      * Construct a new ArgoUML diagram.  This is the fully specified form
      * of the constructor typically used by subclasses.
-     * 
+     *
      * @param name the name of the new diagram
      * @param graphModel graph model to associate with diagram
      * @param ns the namespace which will "own" the diagram
@@ -232,13 +233,13 @@ public abstract class UMLDiagram
 
     /**
      * Construct an unnamed diagram using the given GraphModel.
-     * 
+     *
      * @param graphModel graph model to associate with diagram
      */
-    public UMLDiagram(GraphModel graphModel) {    
+    public UMLDiagram(GraphModel graphModel) {
         super("", graphModel, new LayerPerspective("", graphModel));
     }
-    
+
     /**
      * Method called by PGML parser during diagram load to initialize a diagram
      * after it's been constructed. Order of method invocations currently is:
@@ -250,7 +251,7 @@ public abstract class UMLDiagram
      * <li>setScale(double)
      * <li>setShowSingleMultiplicity(boolean)
      * <ul>
-     * 
+     *
      * @param owner UML model element representing owner/namespace/home model
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
@@ -298,9 +299,9 @@ public abstract class UMLDiagram
         ToolBarFactory factory = new ToolBarFactory(getActions());
         factory.setRollover(true);
         factory.setFloatable(false);
-        
+
         toolBar = factory.createToolBar();
-        toolBar.putClientProperty("ToolBar.toolTipSelectTool", 
+        toolBar.putClientProperty("ToolBar.toolTipSelectTool",
                 Translator.localize("action.select"));
     }
 
@@ -453,7 +454,7 @@ public abstract class UMLDiagram
 
     /**
      * Get the selected action.
-     * 
+     *
      * @return the selected action
      */
     public Action getSelectedAction() {
@@ -504,8 +505,8 @@ public abstract class UMLDiagram
      * @return The action to create a new node.
      */
     protected Action makeCreateDependencyAction(
-	    Class modeClass, 
-	    Object metaType, 
+	    Class modeClass,
+	    Object metaType,
 	    String descr) {
         return new RadioAction(
             new ActionSetMode(modeClass, "edgeClass", metaType, descr));
@@ -519,9 +520,9 @@ public abstract class UMLDiagram
     protected Action makeCreateGeneralizationAction() {
         return new RadioAction(
             new ActionSetMode(
-        	    ModeCreateGeneralization.class, 
-        	    "edgeClass", 
-        	    Model.getMetaTypes().getGeneralization(), 
+        	    ModeCreateGeneralization.class,
+        	    "edgeClass",
+        	    Model.getMetaTypes().getGeneralization(),
         	    "button.new-generalization"));
     }
 
@@ -570,7 +571,7 @@ public abstract class UMLDiagram
     /**
      * Reset the diagram serial counter to the initial value. This should e.g.
      * be done when the menuitem File->New is activated.
-     * 
+     *
      * @deprecated for 0.27.3 by tfmorris. This is a noop. Diagram name
      *             duplication is checked for and managed at the project level.
      */
@@ -609,7 +610,7 @@ public abstract class UMLDiagram
 	UMLMutableGraphSupport gm = (UMLMutableGraphSupport) getGraphModel();
 	gm.setProject(p);
     }
-    
+
     /**
      * Create a new diagram name.
      * @return String
@@ -654,21 +655,21 @@ public abstract class UMLDiagram
         }
         return de;
     }
-    
+
     /**
      * Gets the instructions to be displayed on the status bar.
      * @param droppedObject The object for which instructions will be given.
      * @return The instructions.
      */
     public String getInstructions(Object droppedObject) {
-        return Translator.localize("misc.message.click-on-diagram-to-add", 
+        return Translator.localize("misc.message.click-on-diagram-to-add",
                 new Object[] {Model.getFacade().toString(droppedObject), });
     }
-    
+
     /**
-     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that 
-     * allows the diagram to place an accepted type of object 
-     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a 
+     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that
+     * allows the diagram to place an accepted type of object
+     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a
      * diagram may receive an object that can't be placed as is, but needs some
      * transformation and 2. diagrams in modules should be independent from the
      * main app, and should use their own implementation of ModePlace if it's
@@ -680,10 +681,10 @@ public abstract class UMLDiagram
     public ModePlace getModePlace(GraphFactory gf, String instructions) {
         return new ModePlace(gf, instructions);
     }
-    
+
     /**
      * Create a nary association diamond shaped FigNode on this diagram.
-     *  
+     *
      * @param modelElement the model element this FigNode is to represent
      * @param bounds the position and size for the diamond node.
      * @param settings the diagram setting for presentation.
@@ -693,7 +694,7 @@ public abstract class UMLDiagram
             final Object modelElement,
             final Rectangle bounds,
             final DiagramSettings settings) {
-        
+
         final FigNodeAssociation diamondFig =
             new FigNodeAssociation(modelElement, bounds, settings);
         if (Model.getFacade().isAAssociationClass(modelElement)
@@ -705,7 +706,7 @@ public abstract class UMLDiagram
                 new FigEdgeAssociationClass(
                         classBoxFig, diamondFig, settings);
             classBoxFig.renderingChanged();
-            
+
             // TODO: Why isn't this calculation for location working?
             Point location = bounds.getLocation();
             location.y = (location.y - diamondFig.getHeight()) - 32;

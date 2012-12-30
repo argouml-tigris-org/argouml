@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,9 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.Facade;
@@ -74,62 +75,61 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author penyaskito
  */
-public class UMLSequenceDiagram extends UMLDiagram 
+public class UMLSequenceDiagram extends UMLDiagram
         implements org.argouml.uml.diagram.SequenceDiagram, SequenceDiagram {
-    
+
     private Object[] actions;
 
-    private static final Logger LOG = Logger
-        .getLogger(UMLSequenceDiagram.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(UMLSequenceDiagram.class.getName());
+
     /**
      * TODO: Document!
-     * 
-     * @deprecated for 0.28 by tfmorris.  Use 
+     *
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
     public UMLSequenceDiagram() {
         super();
         // Create the graph model
-        MutableGraphModel gm = new SequenceDiagramGraphModel(); 
+        MutableGraphModel gm = new SequenceDiagramGraphModel();
         setGraphModel(gm);
-        
+
         // Create the layer
         LayerPerspective lay = new
             LayerPerspectiveMutable(this.getName(), gm);
         setLayer(lay);
-        
+
         // Create the renderer
         SequenceDiagramRenderer renderer = new SequenceDiagramRenderer();
         lay.setGraphNodeRenderer(renderer);
         lay.setGraphEdgeRenderer(renderer);
-        
-        LOG.debug("Created sequence diagram");
+
+        LOG.log(Level.FINE, "Created sequence diagram");
     }
-    
+
     /**
      * Creates a new UmlSequenceDiagram with a collaboration.
      * @param collaboration The collaboration
-     * 
+     *
      */
     public UMLSequenceDiagram(Object collaboration) {
         this();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Constructing Sequence Diagram for collaboration "
-                    + collaboration);
-        }
+        LOG.log(Level.FINE,
+                "Constructing Sequence Diagram for collaboration {0}",
+                collaboration);
         try {
             this.setName(getNewDiagramName());
         } catch (PropertyVetoException e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         }
         ((SequenceDiagramGraphModel) getGraphModel()).
             setCollaboration(collaboration);
         setNamespace(collaboration);
     }
-    
-    
+
+
     /**
      * Method called by PGML parser during diagram load to initialize a diagram.
      * We are passed the owner of that diagram which is the collaboration.
@@ -144,12 +144,12 @@ public class UMLSequenceDiagram extends UMLDiagram
         gm.setCollaboration(owner);
     }
 
-    
-    
-    
+
+
+
     /**
-     * Get the Uml actions that can be performed in the diagram 
-     * @return An array with the Uml actions 
+     * Get the Uml actions that can be performed in the diagram
+     * @return An array with the Uml actions
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     @Override
@@ -168,7 +168,7 @@ public class UMLSequenceDiagram extends UMLDiagram
         }
         return actions;
     }
-    
+
     private List getMessageActions(List actions) {
         actions.add(new RadioAction(new ActionSetAddMessageMode(
                 Model.getMessageSort().getSynchCall(),
@@ -187,7 +187,7 @@ public class UMLSequenceDiagram extends UMLDiagram
                 "button.new-destroyaction")));
         return actions;
     }
-    
+
     /**
      * Get the localized label name for the diagram
      * @return The localized label name for the diagram
@@ -197,13 +197,13 @@ public class UMLSequenceDiagram extends UMLDiagram
     public String getLabelName() {
         return Translator.localize("label.sequence-diagram");
     }
-    
+
     @Override
     public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
             FigNode newEncloser) {
-    	// Do nothing.        
+    	// Do nothing.
     }
-    
+
     @Override
     public boolean isRelocationAllowed(Object base)  {
     	return Model.getFacade().isACollaboration(base);
@@ -211,7 +211,7 @@ public class UMLSequenceDiagram extends UMLDiagram
 
     @SuppressWarnings("unchecked")
     public Collection getRelocationCandidates(Object root) {
-        return 
+        return
         Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
             root, Model.getMetaTypes().getCollaboration());
     }
@@ -224,9 +224,9 @@ public class UMLSequenceDiagram extends UMLDiagram
         damage();
         return true;
     }
-    
+
     /**
-     * A sequence diagram can accept all classifiers. It will add them as a new 
+     * A sequence diagram can accept all classifiers. It will add them as a new
      * Classifier Role with that classifier as a base.
      * @param objectToAccept element to test for acceptability
      * @return true if the element is acceptable
@@ -243,7 +243,7 @@ public class UMLSequenceDiagram extends UMLDiagram
         }
         return false;
     }
-    
+
     /**
      * Creates a new Classifier Role with a specified base.
      * @param base
@@ -261,22 +261,22 @@ public class UMLSequenceDiagram extends UMLDiagram
                         collaboration);
         }
         Model.getCollaborationsHelper().addBase(node, base);
-        
+
         return node;
     }
-    
+
     /**
-     * Creates the Fig for the CR. Y position will be adjusted to match other 
+     * Creates the Fig for the CR. Y position will be adjusted to match other
      * the other CRs.
      * @param classifierRole
      * @param location The position where to put the new fig.
      * @return
      */
-    private FigClassifierRole makeNewFigCR(Object classifierRole, 
+    private FigClassifierRole makeNewFigCR(Object classifierRole,
             Point location) {
         if (classifierRole != null) {
             Rectangle bounds = new Rectangle();
-            
+
             // Y position of the new CR should match existing CRs Y position
             for (Fig fig : (List<Fig>) getLayer().getContentsNoEdges()) {
                 if (fig instanceof FigClassifierRole) {
@@ -295,42 +295,43 @@ public class UMLSequenceDiagram extends UMLDiagram
             FigClassifierRole newCR = new FigClassifierRole(classifierRole,
                     bounds, getDiagramSettings());
             getGraphModel().getNodes().add(newCR.getOwner());
-            
+
             return newCR;
         }
         return null;
     }
-    
+
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(modelElement)) {
             if (!getGraphModel().getNodes().contains(modelElement)) {
-                figNode = makeNewFigCR(modelElement, null);  
+                figNode = makeNewFigCR(modelElement, null);
             }
         } else if (Model.getFacade().isAClassifier(modelElement)) {
             figNode = makeNewFigCR(
                     makeNewCR(modelElement),
                     bounds.getLocation());
         }
-        
+
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", modelElement);
         }
         return figNode;
     }
-    
-    
+
+
     @Override
     public String getInstructions(Object droppedObject) {
     	if (Model.getFacade().isAClassifierRole(droppedObject)) {
@@ -342,7 +343,7 @@ public class UMLSequenceDiagram extends UMLDiagram
         }
         return super.getInstructions(droppedObject);
     }
-    
+
     @Override
     public ModePlace getModePlace(GraphFactory gf, String instructions) {
         return new ModePlaceClassifierRole(gf, instructions);
@@ -358,9 +359,10 @@ public class UMLSequenceDiagram extends UMLDiagram
      */
     public void postLoad() {
         super.postLoad();
-        
-        final Facade facade = Model.getFacade();                   
-        LOG.info("doing postLoad on " + getName());
+
+        final Facade facade = Model.getFacade();
+        LOG.log(Level.INFO, "doing postLoad on {0}", getName());
+
         // See issue 5811. We have collaborationroles, associationroles
         // and messages and actions saved to the incorrect interaction and
         // and collaboration. If we detect this circumstance at load then
@@ -384,12 +386,14 @@ public class UMLSequenceDiagram extends UMLDiagram
             for (final Fig f : getLayer().getContents()) {
                 if (f instanceof FigMessage) {
                     final Object message = f.getOwner();
-                    LOG.info("Checking message " + f.getOwner());
+                    LOG.log(Level.INFO, "Checking message {0}", f.getOwner());
+
                     final Object interaction = facade.getInteraction(message);
                     final Object context = facade.getContext(interaction);
                     final Object action = facade.getAction(message);
                     if (context != collaboration) {
-                        LOG.warn("namespace of interaction does not match "
+                        LOG.log(Level.WARNING,
+                                "namespace of interaction does not match "
                                 + "collaboration - moving "
                                 + message + " to " + correctInteraction);
                         collabHelper.addMessage(correctInteraction, message);
@@ -400,13 +404,14 @@ public class UMLSequenceDiagram extends UMLDiagram
                     final Object cr = f.getOwner();
                     final Object namespace = facade.getNamespace(cr);
                     if (namespace != collaboration) {
-                        LOG.warn("namespace of classifierrole does not match "
+                        LOG.log(Level.WARNING,
+                                "namespace of classifierrole does not match "
                                 + "collaboration - moving "
                                 + cr + " to " + collaboration);
-                        
+
                         Model.getCoreHelper().setNamespace(
                                 cr, collaboration);
-                        
+
                         Collection associationEndRoles =
                             facade.getAssociationEnds(cr);
                         for (Object assEndRole : associationEndRoles) {

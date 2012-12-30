@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,21 +42,21 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *  The NotationProviderFactory2 is a singleton, 
- *  since it is the accesspoint for all Figs 
- *  to access the textual representation of modelobjects, 
+ *  The NotationProviderFactory2 is a singleton,
+ *  since it is the accesspoint for all Figs
+ *  to access the textual representation of modelobjects,
  *  and since plugin modules can add extra languages.
- *  
+ *
  * @author Michiel
  */
 public final class NotationProviderFactory2 {
 
-    private static final Logger LOG = 
-        Logger.getLogger(NotationProviderFactory2.class);
+    private static final Logger LOG =
+        Logger.getLogger(NotationProviderFactory2.class.getName());
 
     /**
      * TYPE_NAME the name of the modelelement, e.g. class, package, state
@@ -102,33 +102,33 @@ public final class NotationProviderFactory2 {
      * TYPE_NODEINSTANCE the text shown on a componentInstance.
      */
     public static final int TYPE_NODEINSTANCE = 9;
-    
+
     /**
-     * TYPE_TYPE_OBJECTFLOWSTATE_TYPE the text shown on a 
+     * TYPE_TYPE_OBJECTFLOWSTATE_TYPE the text shown on a
      * objectflowstate's type, i.e. its classifier name.
      */
     public static final int TYPE_OBJECTFLOWSTATE_TYPE = 10;
 
     /**
-     * TYPE_OBJECTFLOWSTATE_STATE the text shown on a 
+     * TYPE_OBJECTFLOWSTATE_STATE the text shown on a
      * objectflowstate's state.
      */
     public static final int TYPE_OBJECTFLOWSTATE_STATE = 11;
 
     /**
-     * TYPE_CALLSTATE the text shown on a 
+     * TYPE_CALLSTATE the text shown on a
      * callstate's state.
      */
     public static final int TYPE_CALLSTATE = 12;
 
     /**
-     * TYPE_CLASSIFIERROLE the text shown on a 
+     * TYPE_CLASSIFIERROLE the text shown on a
      * classifierrole.
      */
     public static final int TYPE_CLASSIFIERROLE = 13;
-    
+
     /**
-     * TYPE_MESSAGE the text shown on a Message 
+     * TYPE_MESSAGE the text shown on a Message
      * in a Collaborations diagram.
      */
     public static final int TYPE_MESSAGE = 14;
@@ -165,7 +165,7 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_ENUMERATION_LITERAL = 20;
 
     /**
-     * TYPE_MESSAGE the text shown on a Message 
+     * TYPE_MESSAGE the text shown on a Message
      * in a Collaborations diagram.
      */
     public static final int TYPE_SD_MESSAGE = 21;
@@ -209,12 +209,12 @@ public final class NotationProviderFactory2 {
      * Get a NotationProvider for the current project.
      * <p>
      * If there is any reason for failure, null is returned - no
-     * exception is thrown. 
+     * exception is thrown.
      * The caller is supposed to deal with receiving null.
      * <p>
-     * Use this function when you do not want to monitor model 
+     * Use this function when you do not want to monitor model
      * changes which may cause the string to change.
-     * 
+     *
      * @param type the provider type
      * @param object the constructor parameter
      * @param name the name of the notation language to use
@@ -235,39 +235,39 @@ public final class NotationProviderFactory2 {
             } catch (SecurityException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             } catch (NoSuchMethodException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             } catch (IllegalArgumentException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             } catch (InstantiationException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             } catch (IllegalAccessException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             } catch (InvocationTargetException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
-                LOG.error("Exception caught", e);
+                LOG.log(Level.SEVERE, "Exception caught", e);
             }
         }
         return null;
     }
 
     /**
-     * Get a NotationProvider for the current project. 
+     * Get a NotationProvider for the current project.
      * This also initializes the listeners.
      * <p>
-     * Use this function when you want to monitor model 
+     * Use this function when you want to monitor model
      * changes which may cause the string to change.
-     * 
+     *
      * @param type the provider type
      * @param object the constructor parameter
      * @param nr the fig that refreshes after the NotationProvider has changed
@@ -275,7 +275,7 @@ public final class NotationProviderFactory2 {
      * @return the provider
      */
     public NotationProvider getNotationProvider(int type,
-            Object object, NotationRenderer nr, 
+            Object object, NotationRenderer nr,
             NotationName name) {
 
         NotationProvider p = getNotationProvider(type, object, name);

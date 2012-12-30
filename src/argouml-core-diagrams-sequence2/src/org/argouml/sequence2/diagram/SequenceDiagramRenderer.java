@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.sequence2.diagram;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -60,12 +61,12 @@ import org.tigris.gef.presentation.FigNode;
  * @author penyaskito
  */
 class SequenceDiagramRenderer extends UmlDiagramRenderer {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(SequenceDiagramRenderer.class);
+        Logger.getLogger(SequenceDiagramRenderer.class.getName());
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
@@ -77,18 +78,18 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
         FigNode result = null;
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             result = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
-            LOG.warn("SequenceDiagramRenderer getFigNodeFor unexpected node " 
+            LOG.log(Level.WARNING, "SequenceDiagramRenderer getFigNodeFor unexpected node "
                     + node);
             return null;
         }
-        LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
+        LOG.log(Level.FINE, "SequenceDiagramRenderer getFigNodeFor {0}", result);
         lay.add(result);
-        return result;       
+        return result;
     }
 
     /*
@@ -99,18 +100,18 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
                                  Map styleAttributes) {
         FigEdge figEdge = null;
-        
+
         assert lay instanceof LayerPerspective;
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
-        
+
         if (edge instanceof CommentEdge) {
             figEdge = new FigEdgeNote(edge, settings);
         } else if (Model.getFacade().isAMessage(edge)) {
             figEdge = new FigMessage(edge, settings);
         } else {
             figEdge = getFigEdgeFor(edge, styleAttributes);
-        }       
+        }
         addEdge(lay, figEdge, edge);
         return figEdge;
     }
@@ -118,12 +119,12 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
     protected FigNode getFigNodeForAssociationEnd(
             final ArgoDiagram diagram,
             final Object associationEnd) {
-        final Object element; 
+        final Object element;
         if (Model.getFacade().getUmlVersion().startsWith("1")) {
-            element = 
+            element =
                 Model.getFacade().getClassifier(associationEnd);
         } else {
-            element = 
+            element =
                 Model.getFacade().getLifeline(associationEnd);
         }
         return getNodePresentationFor(diagram.getLayer(), element);

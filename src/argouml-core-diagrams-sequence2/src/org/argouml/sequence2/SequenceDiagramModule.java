@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.sequence2;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
@@ -53,36 +55,36 @@ import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
  * The Sequence Diagram Module description.
- * 
+ *
  * @see org.argouml.moduleloader.ModuleInterface
  * @author penyaskito
  */
 public class SequenceDiagramModule implements ModuleInterface {
 
-    private static final Logger LOG = Logger
-            .getLogger(SequenceDiagramModule.class);
+    private static final Logger LOG =
+        Logger.getLogger(SequenceDiagramModule.class.getName());
 
     private SequenceDiagramPropPanelFactory propPanelFactory;
-        
+
     public boolean enable() {
-        
+
         propPanelFactory =
             new SequenceDiagramPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
         // TODO: Remove the casting to DiagramFactoryInterface2
         // as soon as DiagramFactoryInterface is removed.
         DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Sequence, 
+                DiagramType.Sequence,
                 (DiagramFactoryInterface2) new SequenceDiagramFactory());
 
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
         NotationName nn = Notation.findNotation(Notation.DEFAULT_NOTATION);
-        npf.addNotationProvider(NotationProviderFactory2.TYPE_SD_MESSAGE, 
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_SD_MESSAGE,
                 nn, SDMessageNotationUml.class);
-        
+
         PersistenceManager persistanceManager =
             PersistenceManager.getInstance();
-        
+
         // Translate any old style sequence diagrams
         persistanceManager.addTranslation(
                 "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram",
@@ -120,7 +122,7 @@ public class SequenceDiagramModule implements ModuleInterface {
         persistanceManager.addTranslation(
                 "org.argouml.uml.diagram.sequence2.ui.FigMessageSpline",
                 "org.argouml.sequence2.diagram.FigMessageSpline");
-        LOG.info("SequenceDiagram Module enabled.");
+        LOG.log(Level.INFO, "SequenceDiagram Module enabled.");
         return true;
     }
 
@@ -133,7 +135,7 @@ public class SequenceDiagramModule implements ModuleInterface {
         DiagramFactory.getInstance().registerDiagramFactory(
                 DiagramType.Sequence, (DiagramFactoryInterface2) null);
 
-        LOG.info("SequenceDiagram Module disabled.");
+        LOG.log(Level.INFO, "SequenceDiagram Module disabled.");
         return true;
     }
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,11 +37,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.core.propertypanels.ui;
+import java.util.logging.Logger;
+
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 
@@ -56,7 +57,7 @@ class UMLExpressionBodyField extends JTextArea
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLExpressionBodyField.class);
+        Logger.getLogger(UMLExpressionBodyField.class.getName());
 
     private UMLExpressionModel model;
     private boolean notifyModel;

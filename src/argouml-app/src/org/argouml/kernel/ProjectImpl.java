@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,15 +56,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Defaults;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.model.Defaults;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -85,7 +86,8 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ProjectImpl implements java.io.Serializable, Project {
 
-    private static final Logger LOG = Logger.getLogger(ProjectImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(ProjectImpl.class.getName());
 
     /**
      * Default name for a project.
@@ -135,7 +137,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * Instances of the UML model.
      */
     private final List models = new ArrayList();
-    
+
     private Object root;
     private final Collection roots = new HashSet();
 
@@ -143,7 +145,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * Instances of the UML diagrams.
      */
     private final List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
-    
+
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
     private transient VetoableChangeSupport vetoSupport;
@@ -154,14 +156,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
     private ArgoDiagram activeDiagram;
-    
+
     /** The name of the diagram to show by default after loading a project. */
     private String savedDiagramName;
 
     /**
      * Cache for the default model.
      */
-    private HashMap<String, Object> defaultModelTypeCache = 
+    private HashMap<String, Object> defaultModelTypeCache =
         new HashMap<String, Object>();
 
     private final Collection trashcan = new ArrayList();
@@ -171,7 +173,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private UndoManager undoManager = new DefaultUndoManager(this);
 
     private boolean dirty = false;
-    
+
     /**
      * Constructor.
      *
@@ -210,7 +212,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         historyFile = "";
 
-        LOG.info("making empty project with empty model");
+        LOG.log(Level.INFO, "making empty project with empty model");
         addSearchPath("PROJECT_DIR");
     }
 
@@ -226,7 +228,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public int getProjectType() {
         return projectType;
     }
-    
+
     public void setProjectType(int projectType) {
         this.projectType = projectType;
     }
@@ -244,23 +246,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * @param theUri the URI for the project
      */
     public void setUri(URI theUri) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Setting project URI from \"" + uri
-                      + "\" to \"" + theUri + "\".");
-        }
+        LOG.log(Level.FINE,
+                "Setting project URI from \"{0}\" to \"{1}\".",
+                new Object[]{uri, theUri});
+
         uri = theUri;
     }
 
     public void setFile(final File file) {
         URI theProjectUri = file.toURI();
 
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Setting project file name from \""
-                      + uri
-                      + "\" to \""
-                      + theProjectUri
-                      + "\".");
-        }
+        LOG.log(Level.FINE,
+                "Setting project file name from \"{0}\" to \"{1}\".",
+                new Object[]{uri, theProjectUri});
 
         uri = theProjectUri;
     }
@@ -279,7 +277,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public List<ProjectMember> getMembers() {
-        LOG.info("Getting the members there are " + members.size());
+        LOG.log(Level.INFO,
+                "Getting the members there are {0}", members.size());
         return members;
     }
 
@@ -293,7 +292,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             try {
                 d.setName(d.getName() + " " + serial);
             } catch (PropertyVetoException e) {
-                serial++;            
+                serial++;
             }
         }
         ProjectMember pm = new ProjectMemberDiagram(d, this);
@@ -308,7 +307,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private void addTodoMember(ProjectMemberTodoList pm) {
         // Adding a todo member removes any existing one.
         members.add(pm);
-        LOG.info("Added todo member, there are now " + members.size());
+        LOG.log(Level.INFO,
+                "Added todo member, there are now {0}", members.size());
     }
 
 
@@ -318,23 +318,23 @@ public class ProjectImpl implements java.io.Serializable, Project {
             throw new IllegalArgumentException(
                     "A model member must be supplied");
         } else if (m instanceof ArgoDiagram) {
-            LOG.info("Adding diagram member");
+            LOG.log(Level.INFO, "Adding diagram member");
             addDiagramMember((ArgoDiagram) m);
         } else if (m instanceof ProjectMemberTodoList) {
-            LOG.info("Adding todo member");
+            LOG.log(Level.INFO, "Adding todo member");
             addTodoMember((ProjectMemberTodoList) m);
         } else if (Model.getFacade().isAModel(m)) {
-            LOG.info("Adding model member");
+            LOG.log(Level.INFO, "Adding model member");
             addModelMember(m);
         } else if (Model.getFacade().isAProfile(m)) {
-            LOG.info("Adding profile model member");
+            LOG.log(Level.INFO, "Adding profile model member");
             addModelMember(m);
         } else {
             throw new IllegalArgumentException(
                     "The member must be a UML model todo member or diagram."
                     + "It is " + m.getClass().getName());
         }
-        LOG.info("There are now " + members.size() + " members");
+        LOG.log(Level.INFO, "There are now {0} members", members.size());
     }
 
     /**
@@ -359,10 +359,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
             // got past the veto, add the member
             ProjectMember pm = new ProjectMemberModel(m, this);
-            LOG.info("Adding model member to start of member list");
+            LOG.log(Level.INFO, "Adding model member to start of member list");
             members.add(pm);
         } else {
-            LOG.info("Attempted to load 2 models");
+            LOG.log(Level.INFO, "Attempted to load 2 models");
             throw new IllegalArgumentException(
                     "Attempted to load 2 models");
         }
@@ -377,7 +377,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 	}
         if (!models.contains(model)) {
             setRoot(model);
-        }        
+        }
     }
 
     private void addModelInternal(final Object model) {
@@ -386,7 +386,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         setCurrentNamespace(model);
         setSaveEnabled(true);
         if (models.size() > 1 || roots.size() > 1) {
-            LOG.debug("Multiple roots/models");
+            LOG.log(Level.FINE, "Multiple roots/models");
         }
     }
 
@@ -396,12 +396,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
-            LOG.debug("Deleting active diagram " + d);
+            LOG.log(Level.FINE, "Deleting active diagram {0}", d);
             ArgoDiagram defaultDiagram = null;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                LOG.debug("Deleting last diagram - creating new default diag");
+                LOG.log(Level.FINE,
+                        "Deleting last diagram - creating new default diag");
                 Object projectRoot = getRoot();
                 if (!Model.getUmlFactory().isRemoved(projectRoot)) {
                     defaultDiagram = DiagramFactory.getInstance()
@@ -412,15 +413,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
                 defaultDiagram = diagrams.get(0);
-                LOG.debug("Candidate default diagram is " + defaultDiagram);
+                LOG.log(Level.FINE,
+                        "Candidate default diagram is {0}", defaultDiagram);
                 if (defaultDiagram == d) {
                     defaultDiagram = diagrams.get(1);
-                    LOG.debug("Switching default diagram to " + defaultDiagram);
+                    LOG.log(Level.FINE,
+                            "Switching default diagram to {0}", defaultDiagram);
                 }
             }
             activeDiagram = defaultDiagram;
             TargetManager.getInstance().setTarget(activeDiagram);
-            LOG.debug("New active diagram is " + defaultDiagram);
+            LOG.log(Level.FINE, "New active diagram is {0}", defaultDiagram);
         }
 
         removeDiagram(d);
@@ -428,7 +431,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         d.remove();
         setSaveEnabled(true);
     }
-    
+
     /**
      * Enables the save action if this project is the current project
      * @param enable true to enable
@@ -536,7 +539,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
             try {
                 result.addAll(profile.getProfilePackages());
             } catch (org.argouml.profile.ProfileException e) {
-                LOG.error("Exception when fetching models from profile "
+                LOG.log(Level.SEVERE,
+                        "Exception when fetching models from profile "
                         + profile.getDisplayName(), e);
             }
         }
@@ -549,7 +553,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * If there isn't exactly one model, <code>null</code> is returned.
      *
      * @return the model.
-     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * @deprecated for 0.25.4 by tfmorris.  Use
      * {@link #getUserDefinedModelList()} or {@link #getModels()}.
      * @see org.argouml.kernel.Project#getModel()
      */
@@ -617,7 +621,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
         return null;
     }
-    
+
 
     public Object getDefaultReturnType() {
         if (profileConfiguration.getDefaultTypeStrategy() != null) {
@@ -645,7 +649,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         cls = findTypeInDefaultModel(s);
 
         if (cls == null && defineNew) {
-            LOG.debug("new Type defined!");
+            LOG.log(Level.FINE, "new Type defined!");
             cls =
                 Model.getCoreFactory().buildClass(getCurrentNamespace());
             Model.getCoreHelper().setName(cls, s);
@@ -806,8 +810,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public Object getInitialTarget() {
         if (savedDiagramName != null) {
-            /* Hence, a diagram name was saved in the project 
-             * that we are loading. So, we use this name 
+            /* Hence, a diagram name was saved in the project
+             * that we are loading. So, we use this name
              * to retrieve any matching diagram. */
             return getDiagram(savedDiagramName);
         }
@@ -816,7 +820,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return diagrams.get(0);
         }
         if (models.size() > 0) {
-            /* If there was no diagram at all, 
+            /* If there was no diagram at all,
              * then use the (first) UML model. */
             return models.iterator().next();
         }
@@ -842,13 +846,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
             diagram.postLoad();
         }
         long endTime = System.currentTimeMillis();
-        LOG.debug("Diagram post load took " + (endTime - startTime) + " msec.");
-        
+        LOG.log(Level.FINE,
+                "Diagram post load took {0} msec.", (endTime - startTime));
+
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
         Object model = getModel();
 
-        LOG.info("Setting root model to " + model);
+        LOG.log(Level.INFO, "Setting root model to {0}", model);
 
         setRoot(model);
 
@@ -922,15 +927,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
             ((Fig) obj).deleteFromModel();
             // If we delete a FigEdge
             // or FigNode we actually call this method with the owner not
-            // the Fig itself. However, this method 
+            // the Fig itself. However, this method
             // is called by ActionDeleteModelElements
             // for primitive Figs (without owner).
-            LOG.info("Request to delete a Fig " + obj.getClass().getName());
+            LOG.log(Level.INFO,
+                    "Request to delete a Fig {0}", obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
             // TODO: Why is this a special case? - tfm
             CommentEdge ce = (CommentEdge) obj;
-            LOG.info("Removing the link from " + ce.getAnnotatedElement()
-                    + " to " + ce.getComment());
+
+            LOG.log(Level.INFO, "Removing the link from {0} to {1}",
+                    new Object[]{ce.getAnnotatedElement(), ce.getComment()});
             ce.delete();
         }
     }
@@ -948,9 +955,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
         }
-        
+
         Object result = profileConfiguration.findType(name);
-        
+
         defaultModelTypeCache.put(name, result);
         return result;
     }
@@ -1002,7 +1009,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
         boolean modelFound = false;
         for (Object element : elements) {
             if (!Model.getFacade().isAPackage(element)) {
-                LOG.warn("Top level element other than package found - " 
+                LOG.log(Level.WARNING,
+                        "Top level element other than package found - "
                         + Model.getFacade().getName(element));
             }
             if (Model.getFacade().isAModel(element)
@@ -1050,7 +1058,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return uuidRefs;
     }
 
-    
+
     public void setSearchPath(final List<String> theSearchpath) {
         searchpath.clear();
         searchpath.addAll(theSearchpath);
@@ -1073,7 +1081,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setActiveDiagram(final ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
-    
+
     public void setSavedDiagramName(String diagramName) {
         savedDiagramName = diagramName;
     }
@@ -1088,7 +1096,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             try {
                 Model.getUmlFactory().deleteExtent(roots.iterator().next());
             } catch (InvalidElementException e) {
-                LOG.warn("Extent deleted a second time");
+                LOG.log(Level.WARNING, "Extent deleted a second time");
             }
             roots.clear();
         }
@@ -1149,7 +1157,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public UndoManager getUndoManager() {
         return undoManager;
     }
-        
+
     public ProfileConfiguration getProfileConfiguration() {
         return profileConfiguration;
     }
@@ -1166,7 +1174,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             // and there's no other way to add another one
             members.add(pc);
         }
-        
+
         ProfileFacade.applyConfiguration(pc);
     }
 
@@ -1176,7 +1184,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 //        return dirty;
         return ProjectManager.getManager().isSaveActionEnabled();
     }
-    
+
     public void setDirty(boolean isDirty) {
         // TODO: Placeholder implementation until support for tracking on
         // a per-project basis is implemented

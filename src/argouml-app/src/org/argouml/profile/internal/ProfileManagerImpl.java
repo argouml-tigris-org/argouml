@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.Critic;
 import org.argouml.configuration.Configuration;
@@ -64,14 +65,14 @@ import org.argouml.uml.cognitive.critics.ProfileCodeGeneration;
 import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
 
 /**
- * Default <code>ProfileManager</code> implementation
+ * Default <code>ProfileManager</code> implementation.
  *
  * @author Marcos Aurelio
  */
 public class ProfileManagerImpl implements ProfileManager {
-    
-    private static final Logger LOG = Logger.getLogger(
-            ProfileManagerImpl.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(ProfileManagerImpl.class.getName());
 
     private static final String DIRECTORY_SEPARATOR = "*";
 
@@ -88,10 +89,10 @@ public class ProfileManagerImpl implements ProfileManager {
             .makeKey("profiles", "directories");
 
     /**
-     * Avoids recursive configuration update when loading configuration
+     * Avoids recursive configuration update when loading configuration.
      */
     private boolean disableConfigurationUpdate = false;
-    
+
     private List<Profile> profiles = new ArrayList<Profile>();
 
     private List<Profile> defaultProfiles = new ArrayList<Profile>();
@@ -99,9 +100,9 @@ public class ProfileManagerImpl implements ProfileManager {
     private List<String> searchDirectories = new ArrayList<String>();
 
     private ProfileUML profileUML;
-    
+
     private ProfileGoodPractices profileGoodPractices;
-    
+
     private ProfileCodeGeneration profileCodeGeneration;
 
     private DependencyResolver<File> resolver;
@@ -112,16 +113,16 @@ public class ProfileManagerImpl implements ProfileManager {
     public ProfileManagerImpl() {
         try {
             disableConfigurationUpdate = true;
-            
+
             profileUML = new ProfileUML();
             profileGoodPractices = new ProfileGoodPractices();
             profileCodeGeneration = new ProfileCodeGeneration(
                     profileGoodPractices);
-            
+
             registerProfileInternal(profileUML);
-            addToDefaultProfiles(profileUML); 
+            addToDefaultProfiles(profileUML);
                 // the UML Profile is always present and default
-            
+
             // register the built-in profiles
             registerProfileInternal(profileGoodPractices);
             registerProfileInternal(profileCodeGeneration);
@@ -150,12 +151,17 @@ public class ProfileManagerImpl implements ProfileManager {
                         udp = new UserDefinedProfile(file, profileManager);
                         registerProfileInternal(udp);
                         found = true;
-                        LOG.debug("UserDefinedProfile for file "
-                            + file.getAbsolutePath() + " registered.");
+
+                        LOG.log(Level.FINE,
+                                "UserDefinedProfile for file {0} registered.",
+                                file.getAbsolutePath());
+
                     } catch (ProfileException e) {
                         // if an exception is raised file is unusable
-                        LOG.info("Failed to load user defined profile "
-                            + file.getAbsolutePath() + ".", e);
+                        LOG.log(Level.INFO,
+                                "Failed to load user defined profile "
+                                + file.getAbsolutePath() + ".",
+                                e);
                     }
                 }
                 return found;
@@ -196,16 +202,18 @@ public class ProfileManagerImpl implements ProfileManager {
                                     p = new UserDefinedProfile(file, this);
                                     registerProfileInternal(p);
                                 } catch (ProfileException e) {
-                                    LOG.error("Error loading profile: " + file,
+                                    LOG.log(Level.SEVERE,
+                                            "Error loading profile: " + file,
                                             e);
                                 }
                             }
                         } catch (URISyntaxException e1) {
-                            LOG.error("Invalid path for Profile: " + fileName,
+                            LOG.log(Level.SEVERE,
+                                    "Invalid path for Profile: " + fileName,
                                     e1);
                         } catch (Throwable e2) {
-                            LOG.error("Error loading profile: " + fileName,
-                                    e2);                            
+                            LOG.log(Level.SEVERE,
+                                    "Error loading profile: " + fileName, e2);
                         }
                     } else if (desc.charAt(0) == 'C') {
                         String profileIdentifier = desc.substring(1);
@@ -239,9 +247,9 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private void loadDirectoriesFromConfiguration() {
         disableConfigurationUpdate = true;
-        StringTokenizer tokenizer = 
+        StringTokenizer tokenizer =
             new StringTokenizer(
-                    Configuration.getString(KEY_DEFAULT_DIRECTORIES), 
+                    Configuration.getString(KEY_DEFAULT_DIRECTORIES),
                     DIRECTORY_SEPARATOR, false);
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
@@ -266,20 +274,20 @@ public class ProfileManagerImpl implements ProfileManager {
     public void registerProfile(Profile p) {
         if (registerProfileInternal(p)) {
             // this profile could have not been loaded when
-            // the default profile configuration 
+            // the default profile configuration
             // was loaded at first, so we need to do it again
             loadDefaultProfilesfromConfiguration();
         }
         resolver.resolve();
     }
-    
+
     /**
      * @param p the profile to register.
      * @return true if there should be an attempt to load the default profiles
      * from the configuration.
      */
     private boolean registerProfileInternal(Profile p) {
-        
+
         try {
             boolean loadDefaultProfilesFromConfiguration = false;
             if (p != null && !profiles.contains(p)) {
@@ -298,7 +306,8 @@ public class ProfileManagerImpl implements ProfileManager {
             return loadDefaultProfilesFromConfiguration;
         } catch (RuntimeException e) {
             // TODO: Better if we wrap in a ProfileException and throw that
-            LOG.error("Error registering profile " + p.getDisplayName());
+            LOG.log(Level.SEVERE,
+                    "Error registering profile " + p.getDisplayName());
             throw e;
         }
     }
@@ -321,22 +330,22 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private static final String OLD_PROFILE_PACKAGE = "org.argouml.uml.profile";
 
-    private static final String NEW_PROFILE_PACKAGE = 
+    private static final String NEW_PROFILE_PACKAGE =
         "org.argouml.profile.internal";
-    
+
     public Profile getProfileForClass(String profileClass) {
         Profile found = null;
-        
+
         // If we found an old-style name, update it to the new package name
-        if (profileClass != null 
+        if (profileClass != null
                 && profileClass.startsWith(OLD_PROFILE_PACKAGE)) {
             profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,
                     NEW_PROFILE_PACKAGE);
         }
-        
+
         // Make sure the names didn't change again
         assert profileUML.getClass().getName().startsWith(NEW_PROFILE_PACKAGE);
-        
+
         for (Profile p : profiles) {
             if (p.getClass().getName().equals(profileClass)) {
                 found = p;
@@ -347,7 +356,7 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
     public void addToDefaultProfiles(Profile p) {
-        if (p != null && profiles.contains(p) 
+        if (p != null && profiles.contains(p)
                 && !defaultProfiles.contains(p)) {
             defaultProfiles.add(p);
             updateDefaultProfilesConfiguration();
@@ -372,7 +381,8 @@ public class ProfileManagerImpl implements ProfileManager {
             try {
                 Model.getXmiReader().addSearchPath(path);
             } catch (UmlException e) {
-                LOG.error("Couldn't retrive XMI Reader from Model.", e);
+                LOG.log(Level.SEVERE,
+                        "Couldn't retrive XMI Reader from Model.", e);
             }
         }
     }
@@ -388,7 +398,8 @@ public class ProfileManagerImpl implements ProfileManager {
             try {
                 Model.getXmiReader().removeSearchPath(path);
             } catch (UmlException e) {
-                LOG.error("Couldn't retrive XMI Reader from Model.", e);
+                LOG.log(Level.SEVERE,
+                        "Couldn't retrive XMI Reader from Model.", e);
             }
         }
     }
@@ -460,6 +471,6 @@ public class ProfileManagerImpl implements ProfileManager {
                 c.setEnabled(true);
                 Configuration.setBoolean(c.getCriticKey(), true);
             }
-        }        
+        }
     }
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,9 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.util.IteratorEnumeration;
@@ -64,18 +65,19 @@ import org.tigris.gef.util.ChildGenerator;
  * the UML metamodel, but it is a) incomplete and b) not updated for
  * UML 1.4.  This should be done using information from the metamodel
  * rather than hardwired code. - tfm - 20070205
- * 
+ *
  * @see org.argouml.cognitive.Agency
  * @see org.argouml.cognitive.Designer
  * @author jrobbins
  */
 public class ChildGenUML implements ChildGenerator {
 
-    private static final Logger LOG = Logger.getLogger(ChildGenUML.class);
+    private static final Logger LOG =
+        Logger.getLogger(ChildGenUML.class.getName());
 
     /**
      * Reply a java.util.Enumeration of the children of the given Object
-     * 
+     *
      * @param o the object to return the children of
      * @return an enumeration of the children of the given Object
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
@@ -86,7 +88,7 @@ public class ChildGenUML implements ChildGenerator {
     public Enumeration gen(Object o) {
         return new IteratorEnumeration(gen2(o));
     }
-    
+
     /**
      * Return an Iterator of the children of the given Object
      *
@@ -96,12 +98,10 @@ public class ChildGenUML implements ChildGenerator {
      */
     public Iterator gen2(Object o) {
 
-        if (LOG.isDebugEnabled()) {
-            if (o == null) {
-                LOG.debug("Object is null");
-            } else {
-//                LOG.debug("Finding children for " + o.getClass());
-            }
+        if (o == null) {
+            LOG.log(Level.FINE, "Object is null");
+        } else {
+//                LOG.log(Level.FINE, "Finding children for " + o.getClass());
         }
 
 	if (o instanceof Project) {
@@ -118,11 +118,11 @@ public class ChildGenUML implements ChildGenerator {
 	        return figs.iterator();
 	    }
 	}
-	
+
 	// argument can be an instanceof a Fig which we ignore
 
 	if (Model.getFacade().isAPackage(o)) {
-	    Collection ownedElements = 
+	    Collection ownedElements =
                 Model.getFacade().getOwnedElements(o);
 	    if (ownedElements != null) {
 	        return ownedElements.iterator();
@@ -194,14 +194,14 @@ public class ChildGenUML implements ChildGenerator {
 	        return behavior.iterator();
 	    }
 	}
-        
+
         // TODO: We can probably use this instead of all of the above
         // legacy UML 1.3 code - tfm - 20070915
         if (Model.getFacade().isAUMLElement(o)) {
             Collection result = Model.getFacade().getModelElementContents(o);
             return result.iterator();
         }
-        
+
         return Collections.emptySet().iterator();
     }
 }

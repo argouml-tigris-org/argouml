@@ -12,7 +12,6 @@
       Used for generating code.
 
 Building this requires:
-    argouml-core-infra
     argouml-core-model
     argouml-app
 
@@ -25,14 +24,11 @@ Building this requires:
   <!-- =================================================================== -->
 
   <target name="init" depends="pde-init">
-    
+
     <property name="build.dir" location="build" />
     <property name="build.classes" value="${build.dir}/classes" />
 
     <path id="src.compile.classpath">
-      <fileset dir="../argouml-core-infra/build/">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
@@ -80,15 +76,15 @@ Building this requires:
         <include name="*.jar"/>
       </fileset>
     </path>
-    
+
     <path id="tests.all.classpath">
       <pathelement location="${build.classes}"/>
       <pathelement location="build/tests/classes"/>
       <path refid="tests.run.classpath"/>
     </path>
-      
+
   </target>
-	
+
   <!-- =================================================================== -->
   <!-- Initialization target for optional ant tasks                        -->
   <!-- =================================================================== -->
@@ -123,18 +119,18 @@ Building this requires:
 
     <echo message="Compiling the sources in argouml-core-diagrams-sequence2"/>
 
-    <javac debug="on" 
+    <javac debug="on"
     	   deprecation="on"
     	   destdir="${build.classes}"
     	   includes="org/argouml/**/*.java"
     	   optimize="on"
-           includeAntRuntime="no" 
-           bootclasspath="${bundleBootClasspath}" 
+           includeAntRuntime="no"
+           bootclasspath="${bundleBootClasspath}"
     	   srcdir="src"
     	   source="1.5"
     	   target="1.5">
       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-      <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />      
+      <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />
       <classpath>
         <path refid="src.compile.classpath"/>
       </classpath>
@@ -147,7 +143,7 @@ Building this requires:
   <target name="jar" depends="compile"
           description="Build the main jar file.">
     <jar basedir="${build.classes}"
-         excludes="*.txt,*.bat,*.xml,*.sh" 
+         excludes="*.txt,*.bat,*.xml,*.sh"
          includes="org/argouml/**"
          manifest="src/META-INF/MANIFEST.MF"
 	 jarfile="${build.dir}/argouml-diagrams-sequence.jar" />
@@ -179,9 +175,9 @@ Building this requires:
     <!-- create directories -->
     <mkdir dir="build/tests/classes"/>
 
-    <javac debug="true" 
+    <javac debug="true"
            deprecation="on"
-           optimize="false" 
+           optimize="false"
            destdir="build/tests/classes"
            srcdir="tests"
     	   source="1.5"

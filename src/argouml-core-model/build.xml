@@ -18,7 +18,7 @@
     <!-- possibility of overriding the default.                        -->
     <!-- ============================================================= -->
     <property name="local.build.properties" value="build.properties"/>
-    <property name="user.build.properties" 
+    <property name="user.build.properties"
               value="${user.home}/argouml.build.properties"/>
 
     <property file="${local.build.properties}"/>
@@ -26,9 +26,9 @@
 
     <property name="build.dir" location="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
-      
+
     <property name="name" value="argouml-model"/>
-  
+
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
@@ -41,11 +41,11 @@
     <!-- Try to figure out where our tools directory is. Done after overrides
     are loaded so user can override, but before defaults -->
     <property name="tool.test.file" value="checkstyle/java.header"/>
-    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
-    <available file="../../tools/${tool.test.file}" 
+    <available file="../../tools/${tool.test.file}"
         type="file" property="argo.tools.dir" value="../../tools"/>
-  	
+
     <path id="junit.classpath">
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
@@ -59,9 +59,6 @@
     <path id="tests.run.classpath">
       <path refid="tests.compile.classpath"/>
       <!-- The tests relies on that mdr is build before. -->
-      <fileset dir="../argouml-core-infra/build/">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="../argouml-core-model-mdr/build/">
         <include name="*.jar"/>
       </fileset>
@@ -82,13 +79,13 @@
            destdir="${build.classes}"
            includes="org/argouml/**/*.java"
            optimize="${optimize}"
-           includeAntRuntime="no" 
-           bootclasspath="${bundleBootClasspath}" 
+           includeAntRuntime="no"
+           bootclasspath="${bundleBootClasspath}"
            srcdir="src"
            source="1.5"
            target="1.5">
-       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/> 
-       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />      
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />
     </javac>
   </target>
 
@@ -190,7 +187,7 @@
   <!-- =================================================================== -->
   <!-- Eclipse PDE targets from here to end of file                        -->
   <!-- =================================================================== -->
-  <!-- 
+  <!--
     Required targets (called in this order) are:
       build.jars
       gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>

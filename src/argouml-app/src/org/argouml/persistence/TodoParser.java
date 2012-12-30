@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.persistence;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ResolvedCritic;
@@ -62,7 +63,8 @@ class TodoParser extends SAXParserBase {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TodoParser.class);
+    private static final Logger LOG =
+        Logger.getLogger(TodoParser.class.getName());
 
     private TodoTokenTable tokens = new TodoTokenTable();
 
@@ -107,16 +109,16 @@ class TodoParser extends SAXParserBase {
 
     /**
      * Read an XML todo list and enter any todo items into the current designer.
-     * 
+     *
      * @param inputSource The stream containing TodoList XML data.
      * @throws SAXException on any error
      */
     public synchronized void readTodoList(
             InputSource inputSource) throws SAXException {
-        LOG.info("Reading ToDo list");
+        LOG.log(Level.INFO, "Reading ToDo list");
         parse(inputSource);
     }
-    
+
     /**
      * Reads an XML todo list from InputStream is and enters
      * any todo items into the current designer.
@@ -127,8 +129,9 @@ class TodoParser extends SAXParserBase {
     public synchronized void readTodoList(
             Reader is) throws SAXException {
 
-        LOG.info("=======================================");
-        LOG.info("== READING TO DO LIST");
+        LOG.log(Level.INFO,
+                "=======================================\n"
+                + "== READING TO DO LIST");
         parse(is);
     }
 
@@ -173,11 +176,11 @@ class TodoParser extends SAXParserBase {
 		break;
 
 	    default:
-		LOG.warn("WARNING: unknown tag:" + e.getName());
+                LOG.log(Level.WARNING, "WARNING: unknown tag:" + e.getName());
 		break;
 	    }
 	} catch (Exception ex) {
-	    LOG.error("Exception in startelement", ex);
+            LOG.log(Level.SEVERE, "Exception in startelement", ex);
 	}
     }
 
@@ -231,8 +234,8 @@ class TodoParser extends SAXParserBase {
         	break;
 
             default:
-        	LOG.warn("WARNING: unknown end tag:"
-        		 + e.getName());
+                LOG.log(Level.WARNING,
+                        "WARNING: unknown end tag:" + e.getName());
         	break;
             }
         } catch (Exception ex) {
@@ -464,7 +467,7 @@ class TodoParser extends SAXParserBase {
      * for XML serialization is a well known task - tfm
      * I have never understood why this is being done. I think we should remove
      * any usage - bob
-     * 
+     *
      * @param	str	The String to encode.
      * @return	The encoded String.
      */
@@ -504,4 +507,3 @@ class TodoParser extends SAXParserBase {
 	return sb.toString();
     }
 }
-

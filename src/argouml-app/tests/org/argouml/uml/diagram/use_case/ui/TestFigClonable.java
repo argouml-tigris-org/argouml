@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,14 +58,14 @@ public class TestFigClonable extends TestCase {
     // Some arbitrary bounds and settings - unused in test
     private Rectangle bounds = new Rectangle(10, 10, 20, 20);
     private DiagramSettings settings = new DiagramSettings();
-    
+
     /**
      * The constructor.
      *
      * @param name the test name
      */
     public TestFigClonable(String name) {
-	super(name);
+        super(name);
     }
 
     /*
@@ -73,7 +73,7 @@ public class TestFigClonable extends TestCase {
      */
     @Override
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
         ProjectManager.getManager().makeEmptyProject();
@@ -86,11 +86,11 @@ public class TestFigClonable extends TestCase {
      */
     public void testUseCaseClonable() {
         Object uc = Model.getUseCasesFactory().createUseCase();
-	FigUseCase usecase = new FigUseCase(uc, bounds, settings);
-	FigUseCase usecaseclone;
+        FigUseCase usecase = new FigUseCase(uc, bounds, settings);
+        FigUseCase usecaseclone;
 
-	usecaseclone = (FigUseCase) usecase.clone();
-	Model.getUmlFactory().delete(uc);
+        usecaseclone = (FigUseCase) usecase.clone();
+        Model.getUmlFactory().delete(uc);
     }
 
     /**
@@ -98,10 +98,10 @@ public class TestFigClonable extends TestCase {
      */
     public void testActorClonable() {
         Object act = Model.getUseCasesFactory().createActor();
-	FigActor actor = new FigActor(act, bounds, settings);
-	FigActor actorclone;
+        FigActor actor = new FigActor(act, bounds, settings);
+        FigActor actorclone;
 
-	actorclone = (FigActor) actor.clone();
-	Model.getUmlFactory().delete(act);
+        actorclone = (FigActor) actor.clone();
+        Model.getUmlFactory().delete(act);
     }
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,25 +44,27 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.log4j.Logger;
-
 /**
- * Loads model data from a Zip file
- * 
+ * Loads model data from a Zip file.
+ *
  * @author maurelio1234
  */
 public class ZipModelLoader extends StreamModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(ZipModelLoader.class);
+    private static final Logger LOG =
+        Logger.getLogger(ZipModelLoader.class.getName());
 
-   
-    public Collection loadModel(ProfileReference reference) 
+
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
-        LOG.info("Loading profile from ZIP '" + reference.getPath() + "'");
-        
+        LOG.log(Level.INFO,
+                "Loading profile from ZIP {0}", reference.getPath());
+
         if (!reference.getPath().endsWith("zip")) {
             throw new ProfileException("Profile could not be loaded!");
         }
@@ -84,19 +86,23 @@ public class ZipModelLoader extends StreamModelLoader {
         try {
             is = openZipStreamAt(modelFile.toURI().toURL(), extension);
         } catch (MalformedURLException e) {
-            LOG.error("Exception while loading profile '"
-                    + reference.getPath() + "'", e);
+            LOG.log(Level.SEVERE,
+                    "Exception while loading profile '"
+                    + reference.getPath() + "'",
+                    e);
             throw new ProfileException(e);
         } catch (IOException e) {
-            LOG.error("Exception while loading profile '"
-                    + reference.getPath() + "'", e);
+            LOG.log(Level.SEVERE,
+                    "Exception while loading profile '"
+                    + reference.getPath() + "'",
+                    e);
             throw new ProfileException(e);
         }
-        
+
         if (is == null) {
             throw new ProfileException("Profile could not be loaded!");
         }
-        
+
         return super.loadModel(is, reference.getPublicReference());
     }
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,11 @@
 
 package org.argouml.profile.internal;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Collection;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A dependency resolver for items of type T. It implements a state-full
@@ -27,11 +27,12 @@ import org.apache.log4j.Logger;
  * @param <T> the type of items for which dependencies will be resolved.
  */
 class DependencyResolver<T> {
-    
-    private static final Logger LOG = Logger.getLogger(
-            DependencyResolver.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(DependencyResolver.class.getName());
 
     private DependencyChecker<T> checker;
+
     /**
      * WARNING: only to be used from outside classes by tests.
      * This is the state-full part of the algorithm, storing the unresolved
@@ -76,18 +77,21 @@ class DependencyResolver<T> {
         Collection<T> allUnresolvedItems = new HashSet<T>();
         allUnresolvedItems.addAll(items);
         allUnresolvedItems.addAll(unresolvedItems);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(items2Msg("Attempt to resolve the following items:",
-                allUnresolvedItems));
+        
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.log(Level.FINE,
+                    items2Msg("Attempt to resolve the following items:",
+                              allUnresolvedItems));
         }
         Collection<T> resolved = internalResolve(allUnresolvedItems);
         allUnresolvedItems.removeAll(resolved);
         unresolvedItems.clear();
         unresolvedItems.addAll(allUnresolvedItems);
         if (!unresolvedItems.isEmpty()) {
-            LOG.warn(items2Msg(
-                "The following items were left unresolved after attempt:\n",
-                unresolvedItems));
+            LOG.log(Level.WARNING,
+                    items2Msg("The following items were left unresolved after "
+                              + "attempt:\n",
+                              unresolvedItems));
         }
     }
 
@@ -104,7 +108,7 @@ class DependencyResolver<T> {
     /**
      * Recursively resolve all dependencies. Stops when an iteration through
      * all unresolved items didn't manage to resolve any.
-     * 
+     *
      * @param items items to resolve.
      * @return the items that were resolved.
      */

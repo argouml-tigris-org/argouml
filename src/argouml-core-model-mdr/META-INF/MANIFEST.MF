@@ -14,7 +14,6 @@ Export-Package: javax.jmi.corbaidltypes,
  org.argouml.model.mdr,
  org.argouml.model.mdr.conversions,
  org.argouml.model.mdr.mof,
- org.argouml.resource,
  org.netbeans.api.mdr,
  org.netbeans.api.mdr.events,
  org.netbeans.api.xmi,
@@ -55,8 +54,7 @@ Export-Package: javax.jmi.corbaidltypes,
  org.openide.util.lookup,
  org.openide.xml,
  testmodels
-Require-Bundle: org.argouml.core.model,
- org.argouml.core.infra
+Require-Bundle: org.argouml.core.model
 Bundle-ClassPath: .,
  lib/jmi.jar,
  lib/jmiutils.jar,

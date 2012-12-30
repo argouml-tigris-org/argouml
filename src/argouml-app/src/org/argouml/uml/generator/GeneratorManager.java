@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoGeneratorEvent;
@@ -60,7 +61,7 @@ public final class GeneratorManager {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(GeneratorManager.class);
+        Logger.getLogger(GeneratorManager.class.getName());
 
     /**
      * The instance.
@@ -75,7 +76,7 @@ public final class GeneratorManager {
         return INSTANCE;
     }
 
-    private Map<Language, CodeGenerator> generators = 
+    private Map<Language, CodeGenerator> generators =
         new HashMap<Language, CodeGenerator>();
 
     private Language currLanguage = null;
@@ -101,7 +102,7 @@ public final class GeneratorManager {
         generators.put(lang, gen);
         ArgoEventPump.fireEvent(
                 new ArgoGeneratorEvent(ArgoEventTypes.GENERATOR_ADDED, gen));
-        LOG.debug("Added generator " + gen + " for " + lang);
+        LOG.log(Level.FINE, "Added generator {0} for {1}", new Object[]{gen, lang});
     }
 
     /**
@@ -126,7 +127,7 @@ public final class GeneratorManager {
                     new ArgoGeneratorEvent(
                             ArgoEventTypes.GENERATOR_REMOVED, old));
         }
-        LOG.debug("Removed generator " + old + " for " + lang);
+        LOG.log(Level.FINE, "Removed generator {0} for {1}", new Object[]{old, lang});
         return old;
     }
 

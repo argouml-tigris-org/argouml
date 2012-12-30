@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
@@ -60,7 +62,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -69,11 +70,11 @@ import org.argouml.model.Model;
 import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
 import org.tigris.gef.presentation.Fig;
-import org.argouml.ui.UndoableAction;
 import org.tigris.toolbar.ToolBar;
 
 /**
@@ -81,8 +82,9 @@ import org.tigris.toolbar.ToolBar;
  */
 public class TabTaggedValues extends AbstractArgoJPanel
     implements TabModelTarget, ListSelectionListener, ComponentListener {
-    
-    private static final Logger LOG = Logger.getLogger(TabTaggedValues.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(TabTaggedValues.class.getName());
 
     /**
      * Serial version generated for rev 1.58
@@ -126,7 +128,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         b.setAction(new ActionRemoveTaggedValue(table));
         b.setText("");
         b.setFocusable(false);
-  
+
         table.setModel(new TabTaggedValuesModel());
         table.setRowSelectionAllowed(false);
         tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();
@@ -155,7 +157,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         add(topPane, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
-        
+
         addComponentListener(this);
     }
 
@@ -193,7 +195,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         // Only update our model if we're visible
         if (isVisible()) {
             setTargetInternal(target);
-        } 
+        }
     }
 
     /**
@@ -211,7 +213,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
                 // target with the event pump turned off so we didn't
                 // get notification.  Nothing we can do about it now and
                 // we are changing targets anyway, so just log it.
-                LOG.warn("failed to cancel editing - " 
+                LOG.log(Level.WARNING, "failed to cancel editing - "
                         + "model element deleted while edit in progress");
             }
         }
@@ -302,7 +304,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      */
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            DefaultListSelectionModel sel = 
+            DefaultListSelectionModel sel =
                 (DefaultListSelectionModel) e.getSource();
             Collection tvs =
                     Model.getFacade().getTaggedValuesCollection(target);
@@ -322,7 +324,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
         // Update our model with our saved target
         setTargetInternal(target);
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */
@@ -349,7 +351,7 @@ class ActionRemoveTaggedValue extends UndoableAction {
      * Serial version generated for rev 1.58
      */
     private static final long serialVersionUID = 8276763533039642549L;
-    
+
     /**
      * The table we are bound to.
      */
@@ -357,14 +359,14 @@ class ActionRemoveTaggedValue extends UndoableAction {
 
     /**
      * Construct an Action to remove a TaggedValue from the table.
-     * 
+     *
      * @param tableTv A JTable backed by a TabTaggedValuesModel
      */
     public ActionRemoveTaggedValue(JTable tableTv) {
         super(Translator.localize("button.delete"),
                 ResourceLoaderWrapper.lookupIcon("Delete"));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("button.delete"));
         table = tableTv;
     }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,15 +39,16 @@
 package org.argouml.persistence;
 
 import java.util.Hashtable;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Jim Holy
  */
 
 abstract class XMLTokenTableBase {
-    private static final Logger LOG = Logger.getLogger(XMLTokenTableBase.class);
+    private static final Logger LOG =
+        Logger.getLogger(XMLTokenTableBase.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -84,7 +85,7 @@ abstract class XMLTokenTableBase {
 	if (push) {
 	    openTags[++numOpen] = s;
 	} else if (s.equals(openTags[numOpen])) {
-	    LOG.debug("matched: " + s);
+            LOG.log(Level.FINE, "matched: {0}", s);
 	    return openTokens[numOpen--];
 	}
 	Integer i = (Integer) tokens.get(s);
@@ -117,13 +118,14 @@ abstract class XMLTokenTableBase {
         boolean error = false;
 	if (dbg) {
 	    if (tokens.contains(i) || tokens.containsKey(s)) {
-		LOG.error("ERROR: token table already contains " + s);
+                LOG.log(Level.SEVERE,
+                        "ERROR: token table already contains " + s);
 		error = true;
 	    }
 	}
 	tokens.put(s, i);
 	if (dbg && !error) {
-            LOG.debug("NOTE: added '" + s + "' to token table");
+            LOG.log(Level.FINE, "NOTE: added {0} to token table", s);
         }
     }
 

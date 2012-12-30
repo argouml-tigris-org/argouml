@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ package org.argouml.model.mdr;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.argouml.model.UmlException;
 
 /**
@@ -64,10 +63,6 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
     
     protected void init() {
         try {            
-            PropertyConfigurator.configure(
-                    getClass().getClassLoader().getResource(
-                            "org/argouml/resource/info_console.lcf")
-            );
             System.setProperty(
                     "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
                     "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");

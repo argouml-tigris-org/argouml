@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,13 +44,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -72,9 +73,9 @@ import org.tigris.gef.util.Util;
  * all diagrams will be written. Introduced thanks to issue 2126. Saves diagrams
  * only using the default format.
  * <p>
- * 
+ *
  * TODO: Add a user choice for other formats (PNG, SVG,...) <p>
- * 
+ *
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
@@ -82,8 +83,8 @@ public class ActionSaveAllGraphics extends AbstractAction
     implements CommandLineInterface {
 
     private static final Logger LOG =
-        Logger.getLogger(ActionSaveAllGraphics.class);
-    
+        Logger.getLogger(ActionSaveAllGraphics.class.getName());
+
     private boolean overwrite;
 
     /**
@@ -94,7 +95,7 @@ public class ActionSaveAllGraphics extends AbstractAction
         super(Translator.localize("action.save-all-graphics"),
                 null);
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("action.save-all-graphics"));
     }
 
@@ -109,7 +110,7 @@ public class ActionSaveAllGraphics extends AbstractAction
     public boolean trySave(boolean canOverwrite) {
         return trySave(canOverwrite, null);
     }
-    
+
     /**
      * @param canOverwrite
      *            true if we can overwrite without asking
@@ -173,10 +174,10 @@ public class ActionSaveAllGraphics extends AbstractAction
                 return result;
             }
             catch ( FileNotFoundException ignore ) {
-                LOG.error("got a FileNotFoundException", ignore);
+                LOG.log(Level.SEVERE, "got a FileNotFoundException", ignore);
             }
             catch ( IOException ignore ) {
-                LOG.error("got an IOException", ignore);
+                LOG.log(Level.SEVERE, "got an IOException", ignore);
             }
         }
         return false;
@@ -215,16 +216,16 @@ public class ActionSaveAllGraphics extends AbstractAction
      * @return continue exporting diagrams if true
      * @throws IOException
      */
-    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd) 
+    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd)
         throws IOException {
         if ( theFile.exists() && !overwrite ) {
             String message = Translator.messageFormat(
                     "optionpane.confirm-overwrite",
                     new Object[] {theFile});
             String title = Translator.localize(
-                    "optionpane.confirm-overwrite-title"); 
+                    "optionpane.confirm-overwrite-title");
             //Custom button text:
-            Object[] options = 
+            Object[] options =
             {Translator.localize(
                     "optionpane.confirm-overwrite.overwrite"), // 0
              Translator.localize(
@@ -234,7 +235,7 @@ public class ActionSaveAllGraphics extends AbstractAction
              Translator.localize(
                     "optionpane.confirm-overwrite.cancel")}; // 3
 
-            int response = 
+            int response =
 		JOptionPane.showOptionDialog(ArgoFrame.getFrame(),
                     message,
                     title,
@@ -275,14 +276,14 @@ public class ActionSaveAllGraphics extends AbstractAction
     private JFileChooser getFileChooser(Project p) {
         JFileChooser chooser = null;
         try {
-	    if ( p != null 
+	    if ( p != null
                 && p.getURI() != null
                 && p.getURI().toURL().getFile().length() > 0 ) {
 	        chooser = new JFileChooser(p.getURI().toURL().getFile());
             }
         }
         catch ( MalformedURLException ex ) {
-            LOG.error("exception in opening JFileChooser", ex);
+            LOG.log(Level.SEVERE, "exception in opening JFileChooser", ex);
         }
 
         if ( chooser == null ) {
@@ -311,7 +312,7 @@ public class ActionSaveAllGraphics extends AbstractAction
     public boolean doCommand(String argument) {
         File dir = new File(argument);
         if (!dir.exists() || !dir.isDirectory()) {
-            LOG.error("The argument must be a path to an existing directory.");
+            LOG.log(Level.SEVERE, "The argument must be a path to an existing directory.");
             return false;
         }
         boolean result = true;

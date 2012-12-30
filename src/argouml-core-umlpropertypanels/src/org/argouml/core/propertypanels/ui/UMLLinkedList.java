@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,6 +44,8 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JList;
 import javax.swing.JPopupMenu;
@@ -51,7 +53,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.UMLLinkMouseListener;
@@ -72,7 +73,7 @@ import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 class UMLLinkedList extends JList implements MouseListener {
 
     private static final Logger LOG =
-        Logger.getLogger(UMLLinkedList.class);
+        Logger.getLogger(UMLLinkedList.class.getName());
 
     /**
      * Constructor for UMLLinkedList.
@@ -114,7 +115,7 @@ class UMLLinkedList extends JList implements MouseListener {
             final boolean showIcon) {
         this(dataModel, showIcon, true);
     }
-    
+
     /**
      * Constructor for UMLList2. Used by subclasses that want to add their own
      * renderer to the list.
@@ -148,7 +149,7 @@ class UMLLinkedList extends JList implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         showPopup(e);
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
@@ -157,7 +158,7 @@ class UMLLinkedList extends JList implements MouseListener {
             setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
         }
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
@@ -166,14 +167,14 @@ class UMLLinkedList extends JList implements MouseListener {
             setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
         showPopup(e);
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
@@ -190,13 +191,13 @@ class UMLLinkedList extends JList implements MouseListener {
             ListModel lm = getModel();
             if (lm instanceof UMLModelElementListModel) {
                 if (((UMLModelElementListModel) lm).buildPopup(popup, index)) {
-                    LOG.debug("Showing popup");
+                    LOG.log(Level.FINE, "Showing popup");
                     popup.show(this, point.x, point.y);
                 }
             }
         }
     }
-    
+
     protected boolean hasPopup() {
         if (getModel() instanceof UMLModelElementListModel) {
             return ((UMLModelElementListModel) getModel()).hasPopup();

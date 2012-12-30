@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,9 +45,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -66,7 +66,7 @@ public class UseCaseDiagramGraphModel
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UseCaseDiagramGraphModel.class);
+        Logger.getLogger(UseCaseDiagramGraphModel.class.getName());
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -127,7 +127,7 @@ public class UseCaseDiagramGraphModel
      * @return      A list of objects which are the incoming edges.
      */
     public List getInEdges(Object port) {
-        if (Model.getFacade().isAActor(port) 
+        if (Model.getFacade().isAActor(port)
                 || Model.getFacade().isAUseCase(port)) {
             List result = new ArrayList();
             Collection ends = Model.getFacade().getAssociationEnds(port);
@@ -269,7 +269,7 @@ public class UseCaseDiagramGraphModel
             Collection clients   = Model.getFacade().getClients(edge);
             Collection suppliers = Model.getFacade().getSuppliers(edge);
 
-            if (clients == null || clients.isEmpty() 
+            if (clients == null || clients.isEmpty()
                     || suppliers == null || suppliers.isEmpty()) {
                 return false;
             }
@@ -285,20 +285,23 @@ public class UseCaseDiagramGraphModel
 
         // Both ends must be defined and nodes that are on the graph already.
         if (sourceModelElement == null || destModelElement == null) {
-            LOG.error("Edge rejected. Its ends are not attached to anything");
+            LOG.log(Level.SEVERE,
+                    "Edge rejected. Its ends are not attached to anything");
             return false;
         }
 
         if (!containsNode(sourceModelElement)
                 && !containsEdge(sourceModelElement)) {
-            LOG.error("Edge rejected. Its source end is attached to "
+            LOG.log(Level.SEVERE,
+                    "Edge rejected. Its source end is attached to "
                     + sourceModelElement
                     + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(destModelElement)
                 && !containsEdge(destModelElement)) {
-            LOG.error("Edge rejected. Its destination end is attached to "
+            LOG.log(Level.SEVERE,
+                    "Edge rejected. Its destination end is attached to "
                     + destModelElement
                     + " but this is not in the graph model");
             return false;
@@ -328,7 +331,7 @@ public class UseCaseDiagramGraphModel
     @Override
     public void addNode(Object node) {
 
-        LOG.debug("adding usecase node");
+        LOG.log(Level.FINE, "adding usecase node");
 
         // Give up if we are already on the graph. This is a bit inconistent
         // with canAddNode above.
@@ -378,14 +381,12 @@ public class UseCaseDiagramGraphModel
                     "The source and dest port should be provided on an edge");
         }
 
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Adding an edge of type "
-                   + edge.getClass().getName()
-                   + " to use case diagram.");
-        }
+        LOG.log(Level.INFO,
+                "Adding an edge of type to use case diagram. {0}",
+                edge.getClass().getName());
 
         if (!canAddEdge(edge)) {
-            LOG.info("Attempt to add edge rejected");
+            LOG.log(Level.INFO, "Attempt to add edge rejected");
             return;
         }
 
@@ -547,7 +548,7 @@ public class UseCaseDiagramGraphModel
 
             if (oldOwned.contains(eo)) {
 
-                LOG.debug("model removed " + me);
+                LOG.log(Level.FINE, "model removed {0}", me);
 
                 // Remove a node
 
@@ -565,7 +566,7 @@ public class UseCaseDiagramGraphModel
                 }
             } else {
                 // Something was added - nothing for us to worry about
-                LOG.debug("model added " + me);
+                LOG.log(Level.FINE, "model added {0}", me);
             }
         }
     }

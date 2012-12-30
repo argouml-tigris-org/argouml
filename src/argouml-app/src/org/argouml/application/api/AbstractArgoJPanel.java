@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ package org.argouml.application.api;
 import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -48,7 +50,6 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.util.ArgoFrame;
 import org.tigris.swidgets.Orientable;
@@ -65,7 +66,7 @@ import org.tigris.swidgets.Orientation;
  * TODO: Spawning of windows disabled in spawn()<p>
  *
  * Title: This JPanel keeps track of its own title.<p>
- * 
+ *
  * Icon: This JPanel keeps track of its own icon; i.e. an arrow pointing to
  * the panel that it gives details of.<p>
  *
@@ -83,12 +84,12 @@ public abstract class AbstractArgoJPanel extends JPanel
      * Logger.
      */
     private static final Logger LOG =
-            Logger.getLogger(AbstractArgoJPanel.class);
+        Logger.getLogger(AbstractArgoJPanel.class.getName());
 
     private static final int OVERLAPP = 30;
 
     private String title = Translator.localize("tab.untitled");
-    
+
     private Icon icon = null;
 
     /**
@@ -149,7 +150,7 @@ public abstract class AbstractArgoJPanel extends JPanel
         try {
             return this.getClass().newInstance();
         } catch (Exception ex) {
-            LOG.error("exception in clone()", ex);
+            LOG.log(Level.SEVERE, "exception in clone()", ex);
         }
         return null;
     }

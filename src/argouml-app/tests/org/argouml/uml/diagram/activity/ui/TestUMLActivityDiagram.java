@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,14 +38,14 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
-import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
-
 import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 
 /**
- * General test methods for UMLActivityDiagrams
+ * General test methods for UMLActivityDiagrams.
  */
 public class TestUMLActivityDiagram extends TestCase {
 
@@ -55,14 +55,14 @@ public class TestUMLActivityDiagram extends TestCase {
      * @param name the test name
      */
     public TestUMLActivityDiagram(String name) {
-	super(name);
+        super(name);
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
     }
@@ -72,8 +72,8 @@ public class TestUMLActivityDiagram extends TestCase {
      * The graph model should always be a ActivityDiagramGraphModel
      */
     public void testUMLActivityDiagram() {
-	UMLActivityDiagram diagram = new UMLActivityDiagram();
-	assertTrue(diagram.getGraphModel()
-		instanceof ActivityDiagramGraphModel);
+        UMLActivityDiagram diagram = new UMLActivityDiagram();
+        assertTrue(diagram.getGraphModel()
+                   instanceof ActivityDiagramGraphModel);
     }
 }

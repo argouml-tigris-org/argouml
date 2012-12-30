@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -59,13 +61,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.ListModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -101,7 +101,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(PropPanel.class);
+    private static final Logger LOG =
+        Logger.getLogger(PropPanel.class.getName());
 
     private Object target;
 
@@ -154,7 +155,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         titleLabel.setLabelFor(buttonPanel);
         add(titleLabel);
         add(buttonPanel);
-        
+
         addComponentListener(this);
     }
 
@@ -170,7 +171,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 //            LabelledLayout layout = new LabelledLayout(orientation == Vertical
 //                    .getInstance());
 //            setLayout(layout);
-//        } 
+//        }
         super.setOrientation(orientation);
     }
 
@@ -212,9 +213,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     protected void addAction(Object[] actionArray) {
         actions.add(actionArray);
     }
-    
+
     public void buildToolbar() {
-        LOG.debug("Building toolbar");
+        LOG.log(Level.FINE, "Building toolbar");
 
         ToolBarFactory factory = new ToolBarFactory(getActions());
         factory.setRollover(true);
@@ -279,7 +280,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return jlabel;
     }
 
-    /** 
+    /**
      * @param label The text of the label (the method cares about i18n)
      * @param comp The component that this label is for
      * @return a new JLabel
@@ -362,7 +363,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      *            The object to be set as a target.
      */
     public void setTarget(Object t) {
-        LOG.debug("setTarget called with " + t + " as parameter (not target!)");
+
+        LOG.log(Level.FINE, "setTarget called with {0} as parameter (not target!)", t);
+
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
 
         // If the target has changed notify the third party listener if it
@@ -415,7 +418,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * container and its children. Components do not need to register
      * themselves. They are registered implicitly if they implement the
      * TargetListener interface.
-     * 
+     *
      * @param container
      *            the container to search for targetlisteners
      * @return an EventListenerList with all TargetListeners on this container
@@ -652,16 +655,16 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     protected final JPanel createBorderPanel(String title) {
     	return new GroupPanel(Translator.localize(title));
     }
-    
+
     private class GroupPanel extends JPanel {
-        
+
         public GroupPanel(String title) {
             super(new GridLayout2());
             TitledBorder border = new TitledBorder(Translator.localize(title));
             border.setTitleFont(stdFont);
             setBorder(border);
         }
-        
+
         public void setEnabled(boolean enabled) {
             super.setEnabled(enabled);
             for (final Component component : getComponents()) {
@@ -704,7 +707,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // TODO: do we want to fire targetRemoved here or is it enough to just
         // stop updating the targets?
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
      */
@@ -714,7 +717,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         fireTargetSet(new TargetEvent(
                 this, TargetEvent.TARGET_SET, null, new Object[] {target}));
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
      */
@@ -726,6 +729,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
      */
     public void componentResized(ComponentEvent e) {
-        // ignored        
+        // ignored
     }
 }

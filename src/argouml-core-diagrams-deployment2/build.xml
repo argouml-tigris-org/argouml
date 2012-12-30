@@ -12,7 +12,6 @@
       Used for generating code.
 
 Building this requires:
-    argouml-core-infra
     argouml-core-model
     argouml-app
 
@@ -25,14 +24,11 @@ Building this requires:
   <!-- =================================================================== -->
 
   <target name="init" depends="pde-init">
-    
+
     <property name="build.dir" location="build" />
     <property name="build.classes" value="${build.dir}/classes" />
 
     <path id="src.compile.classpath">
-      <fileset dir="../argouml-core-infra/build/">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>

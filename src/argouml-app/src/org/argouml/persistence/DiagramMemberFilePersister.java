@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -64,18 +65,18 @@ import org.xml.sax.InputSource;
  * @author Bob Tarling
  */
 class DiagramMemberFilePersister extends MemberFilePersister {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(DiagramMemberFilePersister.class);
-    
+        Logger.getLogger(DiagramMemberFilePersister.class.getName());
+
     /**
      * The tee file for persistence.
      */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
-    
+
     private static final Map<String, String> CLASS_TRANSLATIONS =
         new HashMap<String, String>();
 
@@ -89,7 +90,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             throw new OpenException("I/O error on stream close", e);
         }
     }
-    
+
     @Override
     public void load(Project project, InputSource inputSource)
         throws OpenException {
@@ -101,12 +102,12 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             // keyed by their UUID. This is used to allocate
             // figs to their owner using the "href" attribute
             // in PGML.
-            DiagramSettings defaultSettings = 
+            DiagramSettings defaultSettings =
                 project.getProjectSettings().getDefaultDiagramSettings();
             // TODO: We need the project specific diagram settings here
             PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs(),
                     defaultSettings);
-            LOG.info("Adding translations registered by modules");
+            LOG.log(Level.INFO, "Adding translations registered by modules");
             for (Map.Entry<String, String> translation
                     : CLASS_TRANSLATIONS.entrySet()) {
                 parser.addTranslation(
@@ -122,9 +123,9 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
     @Override
-    public void load(Project project, URL url) throws OpenException {   
+    public void load(Project project, URL url) throws OpenException {
         load(project, new InputSource(url.toExternalForm()));
     }
 
@@ -149,12 +150,12 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         }
         OutputStreamWriter outputWriter;
         try {
-            outputWriter = 
+            outputWriter =
                 new OutputStreamWriter(outStream, Argo.getEncoding());
         } catch (UnsupportedEncodingException e1) {
             throw new SaveException("Bad encoding", e1);
         }
-        
+
         try {
             // WARNING: the OutputStream version of this doesn't work! - tfm
             expander.expand(outputWriter, diagramMember.getDiagram());
@@ -167,7 +168,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
                 throw new SaveException(e);
             }
         }
-        
+
     }
 
     /**

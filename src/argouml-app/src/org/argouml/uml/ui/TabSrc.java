@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,10 +43,11 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Predicate;
 import org.argouml.language.ui.LanguageComboBox;
 import org.argouml.model.Model;
@@ -68,7 +69,7 @@ public class TabSrc
 
     private static final long serialVersionUID = -4958164807996827484L;
 
-    private static final Logger LOG = Logger.getLogger(TabSrc.class);
+    private static final Logger LOG = Logger.getLogger(TabSrc.class.getName());
 
     private Language langName = null;
     private String fileName = null;
@@ -76,7 +77,7 @@ public class TabSrc
 
     private LanguageComboBox cbLang = new LanguageComboBox();
     private JComboBox cbFiles = new JComboBox();
-    
+
     /**
      * These predicates determine if this tab is enabled.
      */
@@ -111,13 +112,15 @@ public class TabSrc
         cbLang.removeItemListener(this);
     }
 
-    
+
     /**
      * Populate files[] and cbFiles, using the specified element.
      */
     private void generateSource(Object elem) {
-	LOG.debug("TabSrc.genText(): getting src for "
-		  + Model.getFacade().getName(elem));
+      if ( LOG.isLoggable( Level.FINE ) ) {
+          LOG.log(Level.FINE, "TabSrc.genText(): getting src for {0}",
+                  Model.getFacade().getName(elem));
+      }
 	Collection code =
 	    GeneratorHelper.generate(langName, elem, false);
 	cbFiles.removeAllItems();
@@ -148,8 +151,10 @@ public class TabSrc
 
     @Override
     protected void parseText(String s) {
-        LOG.debug("TabSrc   setting src for " 
-                + Model.getFacade().getName(getTarget()));
+        if ( LOG.isLoggable(Level.FINE) ) {
+            LOG.log(Level.FINE, "TabSrc setting src for {0}",
+                    Model.getFacade().getName(getTarget()));
+        }
         Object modelObject = getTarget();
         if (getTarget() instanceof FigNode) {
             modelObject = ((FigNode) getTarget()).getOwner();
@@ -224,12 +229,12 @@ public class TabSrc
 
     /**
      * This function allows extra predicates to be added.
-     * The predicates are conditions for cases where the 
-     * TabSrc should show source code. If a plugin module 
+     * The predicates are conditions for cases where the
+     * TabSrc should show source code. If a plugin module
      * is able to generate code for certain objects, for
      * which ArgoUML itself does not generate code, then
      * this function will allow the module to show the tab.
-     *  
+     *
      * @param predicate the predicate to be added
      */
     public static void addPredicate(Predicate predicate) {

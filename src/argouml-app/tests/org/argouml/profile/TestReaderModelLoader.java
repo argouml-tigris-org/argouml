@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,11 +45,11 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-
-import junit.framework.TestCase;
 
 /**
  * Tests for the {@link ReaderModelLoader} class.
@@ -64,10 +64,10 @@ public class TestReaderModelLoader extends TestCase {
         Reader reader = new StringReader("dummy string");
         new ReaderModelLoader(reader);
     }
-    
+
     /**
      * Test {@link ReaderModelLoader#loadModel(ProfileReference)}.
-     * 
+     *
      * @throws IOException upon IO errors.
      * @throws ProfileException upon problems with profiles.
      */
@@ -87,5 +87,4 @@ public class TestReaderModelLoader extends TestCase {
         assertTrue(models.size() >= 1);
         Model.getUmlFactory().deleteExtent(models.iterator().next());
     }
-    
 }

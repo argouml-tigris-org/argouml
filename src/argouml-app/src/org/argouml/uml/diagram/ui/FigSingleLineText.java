@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,11 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -64,7 +65,7 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
  * </ul><p>
- * 
+ *
  * Some of these have an UML object as owner, others do not.
  *
  * @author Bob Tarling
@@ -72,7 +73,7 @@ import org.tigris.gef.presentation.FigText;
 public class FigSingleLineText extends ArgoFigText  {
 
     private static final Logger LOG =
-        Logger.getLogger(FigSingleLineText.class);
+        Logger.getLogger(FigSingleLineText.class.getName());
 
     /**
      * The properties of 'owner' that this is interested in
@@ -87,7 +88,7 @@ public class FigSingleLineText extends ArgoFigText  {
         setLineWidth(0);
         setTextColor(TEXT_COLOR);
     }
-    
+
     public void setFilled(boolean filled) {
         // Do not allow fill to change. We should see through
         // the text to the color of the main FIg background.
@@ -95,7 +96,7 @@ public class FigSingleLineText extends ArgoFigText  {
 
     /**
      * Construct text fig
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
@@ -109,7 +110,7 @@ public class FigSingleLineText extends ArgoFigText  {
 
     /**
      * Construct text fig
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
@@ -123,10 +124,10 @@ public class FigSingleLineText extends ArgoFigText  {
     }
 
     /**
-     * Constructor for text fig without owner. 
-     * Using this constructor shall mean 
+     * Constructor for text fig without owner.
+     * Using this constructor shall mean
      * that this fig will never have an owner.
-     * 
+     *
      * @param bounds position and size
      * @param settings rendering settings
      * @param expandOnly true if the Fig should only expand and never contract
@@ -136,10 +137,10 @@ public class FigSingleLineText extends ArgoFigText  {
 
         this(null, bounds, settings, expandOnly);
     }
-    
+
     /**
      * Construct text fig
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
@@ -147,17 +148,17 @@ public class FigSingleLineText extends ArgoFigText  {
      * @param allProperties names of properties to listen to
      */
     public FigSingleLineText(Object owner, Rectangle bounds,
-            DiagramSettings settings, boolean expandOnly, 
+            DiagramSettings settings, boolean expandOnly,
             String[] allProperties) {
         super(owner, bounds, settings, expandOnly);
         initialize();
         this.properties = allProperties;
         addModelListener();
     }
-    
+
     /**
-     * TODO: This function attempts to optimize the more generic 
-     * code in the parent, which also works correctly in this case. 
+     * TODO: This function attempts to optimize the more generic
+     * code in the parent, which also works correctly in this case.
      * Is this a good idea?
      */
     @Override
@@ -206,21 +207,21 @@ public class FigSingleLineText extends ArgoFigText  {
             Model.getPump().addModelEventListener(this, getOwner(), properties);
         }
     }
-    
+
     @Override
     public void removeFromDiagram() {
         if (getOwner() != null && properties != null) {
             Model.getPump().removeModelEventListener(
-                    this, 
-                    getOwner(), 
+                    this,
+                    getOwner(),
                     properties);
         }
         super.removeFromDiagram();
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        if ("remove".equals(pce.getPropertyName()) 
+        if ("remove".equals(pce.getPropertyName())
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
         }
@@ -232,29 +233,22 @@ public class FigSingleLineText extends ArgoFigText  {
                     try {
                         updateLayout(event);
                     } catch (InvalidElementException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("event = "
-                                    + event.getClass().getName());
-                            LOG.debug("source = " + event.getSource());
-                            LOG.debug("old = " + event.getOldValue());
-                            LOG.debug("name = " + event.getPropertyName());
-                            LOG.debug("updateLayout method accessed "
-                                    + "deleted element ", e);
-                        }
+                        LOG.log(Level.FINE, "event = {0}", event);
+                        LOG.log(Level.FINE, "updateLayout method accessed deleted element ", e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
-    
+
     /**
      * This is a template method called by the ArgoUML framework as the result
      * of a change to a model element. Do not call this method directly
      * yourself.
      * <p>Override this in any subclasses in order to redisplay the Fig
      * due to change of any model element that this Fig is listening to.</p>
-     * <p>This method is guaranteed by the framework to be running on the 
+     * <p>This method is guaranteed by the framework to be running on the
      * Swing/AWT thread.</p>
      *
      * @param event the UmlChangeEvent that caused the change
@@ -265,18 +259,18 @@ public class FigSingleLineText extends ArgoFigText  {
                 && properties != null
                 && Arrays.asList(properties).contains(event.getPropertyName())
                 && event instanceof AttributeChangeEvent) {
-            /* TODO: Why does it fail for changing 
+            /* TODO: Why does it fail for changing
              * the name of an associationend?
              *  Why should it pass? */
             //assert Arrays.asList(properties).contains(
-            //    event.getPropertyName()) 
-            //  : event.getPropertyName(); 
+            //    event.getPropertyName())
+            //  : event.getPropertyName();
             // TODO: Do we really always need to do this or only if
             // notationProvider is null?
             setText();
         }
     }
-    
+
     /**
      * This function without parameter shall
      * determine the text of the Fig taking values from the owner,
@@ -288,8 +282,8 @@ public class FigSingleLineText extends ArgoFigText  {
 
     public void renderingChanged() {
         super.renderingChanged();
-        /* This is needed for e.g. 
-         * guillemet notation change on a class name, 
+        /* This is needed for e.g.
+         * guillemet notation change on a class name,
          * see issue 5419. */
         setText();
     }

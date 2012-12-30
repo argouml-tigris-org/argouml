@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -62,7 +63,8 @@ abstract class SAXParserBase extends DefaultHandler {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(SAXParserBase.class);
+    private static final Logger LOG =
+        Logger.getLogger(SAXParserBase.class.getName());
 
     /**
      * The constructor.
@@ -134,7 +136,7 @@ abstract class SAXParserBase extends DefaultHandler {
     public void parse(Reader reader) throws SAXException {
         parse(new InputSource(reader));
     }
-    
+
     /**
      * @param input the InputSource to read
      * @throws SAXException when parsing xml
@@ -165,8 +167,8 @@ abstract class SAXParserBase extends DefaultHandler {
         } catch (ParserConfigurationException e) {
             throw new SAXException(e);
         }
-        if (stats && LOG.isInfoEnabled()) {
-            LOG.info("Elapsed time: " + (end - start) + " ms");
+        if (stats) {
+            LOG.log(Level.INFO, "Elapsed time: {0} ms", (end - start));
         }
     }
 
@@ -205,7 +207,7 @@ abstract class SAXParserBase extends DefaultHandler {
 
             XMLElement element = createXmlElement(name, atts);
 
-            if (LOG.isDebugEnabled()) {
+            if (LOG.isLoggable(Level.FINE)) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("START: ").append(name).append(' ').append(element);
                 for (int i = 0; i < atts.getLength(); i++) {
@@ -214,7 +216,7 @@ abstract class SAXParserBase extends DefaultHandler {
                             .append(' ')
                                 .append(atts.getValue(i));
                 }
-                LOG.debug(buf.toString());
+                LOG.log(Level.FINE, "{0}", buf);
             }
 
             elements[nElements++] = element;
@@ -248,7 +250,7 @@ abstract class SAXParserBase extends DefaultHandler {
         throws SAXException {
         if (isElementOfInterest(name)) {
             XMLElement e = elements[--nElements];
-            if (LOG.isDebugEnabled()) {
+            if (LOG.isLoggable(Level.FINE)) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("END: " + e.getName() + " ["
             	       + e.getText() + "] " + e + "\n");
@@ -256,7 +258,7 @@ abstract class SAXParserBase extends DefaultHandler {
                     buf.append("   ATT: " + e.getAttributeName(i) + " "
                     	   + e.getAttributeValue(i) + "\n");
                 }
-                LOG.debug(buf);
+                LOG.log(Level.FINE, "{0}", buf);
             }
             handleEndElement(e);
         }
@@ -275,18 +277,18 @@ abstract class SAXParserBase extends DefaultHandler {
 
     // TODO: remove when code below in characters() is removed
 //    private static final String    RETURNSTRING  = "\n      ";
-    
+
     /*
      * @see org.xml.sax.ContentHandler#characters(char[], int, int)
      */
     public void characters(char[] ch, int start, int length)
         throws SAXException {
-        
+
         elements[nElements - 1].addText(ch, start, length);
-        
+
         // TODO: Remove this old implementation after 0.22 if it's
         // demonstrated that it's not needed. - tfm
-        
+
         // Why does the text get added to ALL the elements on the stack? - tfm
 //        for (int i = 0; i < nElements; i++) {
 //            XMLElement e = elements[i];
@@ -311,7 +313,8 @@ abstract class SAXParserBase extends DefaultHandler {
             InputSource s = new InputSource(testIt.openStream());
             return s;
         } catch (Exception e) {
-            LOG.info("NOTE: Could not open DTD " + systemId
+            LOG.log(Level.INFO,
+                    "NOTE: Could not open DTD " + systemId
                     + " due to exception");
 
             String dtdName = systemId.substring(systemId.lastIndexOf('/') + 1);
@@ -358,17 +361,13 @@ abstract class SAXParserBase extends DefaultHandler {
      * @param e the element
      */
     public void ignoreElement(XMLElement e) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("NOTE: ignoring tag:" + e.getName());
-        }
+        LOG.log(Level.FINE, "NOTE: ignoring tag: {0}", e.getName());
     }
 
     /**
      * @param e the element
      */
     public void notImplemented(XMLElement e) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("NOTE: element not implemented: " + e.getName());
-        }
+        LOG.log(Level.FINE, "NOTE: element not implemented: {0}", e.getName());
     }
 } /* end class SAXParserBase */

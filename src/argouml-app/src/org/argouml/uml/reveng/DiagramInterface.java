@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -73,7 +74,7 @@ public class DiagramInterface {
     private static final String DIAGRAM_NAME_SUFFIX = "classes";
 
     private static final Logger LOG =
-        Logger.getLogger(DiagramInterface.class);
+        Logger.getLogger(DiagramInterface.class.getName());
 
     private Editor currentEditor;
 
@@ -81,7 +82,7 @@ public class DiagramInterface {
      * To know what diagrams we have to layout after the import,
      * we store them in this list.
      */
-    private List<ArgoDiagram> modifiedDiagrams = 
+    private List<ArgoDiagram> modifiedDiagrams =
         new ArrayList<ArgoDiagram>();
 
     /**
@@ -100,7 +101,7 @@ public class DiagramInterface {
     private ArgoDiagram currentDiagram;
 
     private Project currentProject;
-    
+
     /**
      * Creates a new DiagramInterface.
      *
@@ -108,7 +109,7 @@ public class DiagramInterface {
      */
     public DiagramInterface(Editor editor) {
   	currentEditor = editor;
-  	LayerPerspective layer = 
+  	LayerPerspective layer =
   	    (LayerPerspective) editor.getLayerManager().getActiveLayer();
   	currentProject = ((ArgoDiagram) layer.getDiagram()).getProject();
     }
@@ -122,7 +123,7 @@ public class DiagramInterface {
     public DiagramInterface(Editor editor, Project project) {
         currentEditor = editor;
     }
-    
+
     /**
      * Get the current editor.
      *
@@ -145,7 +146,7 @@ public class DiagramInterface {
             modifiedDiagrams.add(diagram);
         }
     }
-    
+
 
     /**
      * Get the list of modified diagrams.
@@ -155,7 +156,7 @@ public class DiagramInterface {
     public List<ArgoDiagram> getModifiedDiagramList() {
         return modifiedDiagrams;
     }
-    
+
     /**
      * Reset the list of modified diagrams.
      */
@@ -255,7 +256,7 @@ public class DiagramInterface {
 
     /**
      * Add a new class diagram for a package to the project.
-     * 
+     *
      * @param ns
      *            The namespace to contain the diagram. If null, the root model
      *            will be used.
@@ -273,8 +274,8 @@ public class DiagramInterface {
 
         try {
             d.setName(getDiagramName(name));
-        } catch (PropertyVetoException pve) { 
-            LOG.error("Failed to set diagram name.", pve);
+        } catch (PropertyVetoException pve) {
+            LOG.log(Level.SEVERE, "Failed to set diagram name.", pve);
         }
         currentProject.addMember(d);
         setCurrentDiagram(d);
@@ -305,12 +306,12 @@ public class DiagramInterface {
                 (FigClassifierBox) currentDiagram.createDiagramElement(
                         classifier,
                         new Rectangle(0, 0, 0, 0));
-            
+
             /*
              * The following calls are ORDER DEPENDENT. Not sure why, but the
              * layer add must come before the model add or we'll end up with
              * duplicate figures in the diagram. - tfm
-             */            
+             */
             currentLayer.add(newFig);
             currentGM.addNode(classifier);
             currentLayer.putInPosition(newFig);
@@ -387,15 +388,11 @@ public class DiagramInterface {
         currentLayer = diagram.getLayer();
         currentDiagram = diagram;
         currentProject = diagram.getProject();
-        
+
         markDiagramAsModified(diagram);
     }
 
 }
-
-
-
-
 
 
 

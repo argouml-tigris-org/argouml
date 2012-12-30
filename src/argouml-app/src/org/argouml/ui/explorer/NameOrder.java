@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,10 @@ import java.util.Comparator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
-import org.argouml.kernel.ProfileConfiguration;
 import org.tigris.gef.base.Diagram;
 
 /**

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,12 +46,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
@@ -62,15 +63,15 @@ import org.argouml.model.Model;
 /**
  * The model for the table with the tagged values. Implementation for UML 1.4
  * and TagDefinitions.
- * 
+ *
  * TODO: This currently only supports TaggedValues with a TagDefinition which
  * has a type of String.
  */
 public class TabTaggedValuesModel extends AbstractTableModel implements
         VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
 
-    private static final Logger LOG = Logger
-            .getLogger(TabTaggedValuesModel.class);
+    private static final Logger LOG =
+        Logger.getLogger(TabTaggedValuesModel.class.getName());
 
     /**
      * The ModelElement that is the current target.
@@ -85,13 +86,12 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
 
     /**
      * Set the current target to the given model element.
-     * 
+     *
      * @param t the target modelelement
      */
     public void setTarget(Object t) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Set target to " + t);
-        }
+        LOG.log(Level.FINE, "Set target to {0} ", t);
+        
         if (t != null && !Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
@@ -291,7 +291,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
 
     /**
      * Add a tagged value to the model with the given type and value.
-     * 
+     *
      * @param values values for the columns: values[0] contains type for new
      *            TaggedValue values[1] contains value for new TaggedValue
      */
@@ -333,7 +333,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
 
     /**
      * Remove the TaggedValue at the given row from the ModelElement.
-     * 
+     *
      * @param row row containing TaggedValue to be removed.
      */
     public void removeRow(int row) {
@@ -347,11 +347,11 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
 
     /*
      * Return the ith element from a Collection.
-     * 
+     *
      * @param collection collection to get element from
-     * 
+     *
      * @param index index of the element to be returned
-     * 
+     *
      * @return the object
      */
     static Object getFromCollection(Collection collection, int index) {

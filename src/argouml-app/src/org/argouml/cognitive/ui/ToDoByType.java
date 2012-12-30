@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.cognitive.ui;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoListEvent;
@@ -53,7 +54,7 @@ import org.argouml.cognitive.ToDoListListener;
 public class ToDoByType extends ToDoPerspective
     implements ToDoListListener {
     private static final Logger LOG =
-        Logger.getLogger(ToDoByType.class);
+        Logger.getLogger(ToDoByType.class.getName());
 
     /**
      * The constructor.
@@ -72,7 +73,7 @@ public class ToDoByType extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsChanged(ToDoListEvent tde) {
-	LOG.debug("toDoItemsChanged");
+        LOG.log(Level.FINE, "toDoItemsChanged");
         List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
@@ -109,7 +110,7 @@ public class ToDoByType extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsAdded(ToDoListEvent tde) {
-	LOG.debug("toDoItemAdded");
+        LOG.log(Level.FINE, "toDoItemAdded");
         List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
@@ -146,7 +147,7 @@ public class ToDoByType extends ToDoPerspective
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-	LOG.debug("toDoItemRemoved");
+        LOG.log(Level.FINE, "toDoItemRemoved");
         List<ToDoItem> items = tde.getToDoItemList();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
@@ -162,7 +163,7 @@ public class ToDoByType extends ToDoPerspective
 	    if (!anyInKT) {
                 continue;
             }
-	    LOG.debug("toDoItemRemoved updating PriorityNode");
+            LOG.log(Level.FINE, "toDoItemRemoved updating PriorityNode");
 	    path[1] = ktn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
 	    fireTreeStructureChanged(path);
@@ -175,5 +176,3 @@ public class ToDoByType extends ToDoPerspective
     public void toDoListChanged(ToDoListEvent tde) { }
 
 }
-
-

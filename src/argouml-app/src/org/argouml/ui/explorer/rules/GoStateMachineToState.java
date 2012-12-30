@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
@@ -59,8 +60,8 @@ import org.argouml.model.Model;
 public class GoStateMachineToState extends AbstractPerspectiveRule {
 
     private static final Logger LOG =
-        Logger.getLogger(GoStateMachineToState.class);
-    
+        Logger.getLogger(GoStateMachineToState.class.getName());
+
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
@@ -104,7 +105,7 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
 	        if (Model.getFacade().getUmlVersion().startsWith("2")) {
                     // TODO: Ignore and report exception until getTop
 	            // implemented.
-                    LOG.error("Explorer caught exception ", e);
+                    LOG.log(Level.SEVERE, "Explorer caught exception ", e);
 	        } else {
                     throw e;
 	        }

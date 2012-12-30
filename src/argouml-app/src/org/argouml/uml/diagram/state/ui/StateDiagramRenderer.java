@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -84,7 +85,7 @@ import org.tigris.gef.presentation.FigNode;
 public class StateDiagramRenderer extends UmlDiagramRenderer {
 
     private static final Logger LOG =
-        Logger.getLogger(StateDiagramRenderer.class);
+        Logger.getLogger(StateDiagramRenderer.class.getName());
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
@@ -99,12 +100,13 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
         FigNode figNode = null;
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
-            LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
+            LOG.log(Level.FINE, "TODO: StateDiagramRenderer getFigNodeFor");
+
             throw new IllegalArgumentException(
                     "Node is not a recognised type. Received "
                     + node.getClass().getName());
@@ -132,7 +134,7 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
             newEdge = new FigTransition(edge, settings);
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, settings); // TODO -> settings
-        } 
+        }
         addEdge(lay, newEdge, edge);
         return newEdge;
     }

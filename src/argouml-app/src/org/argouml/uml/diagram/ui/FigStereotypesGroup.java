@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
@@ -61,20 +62,20 @@ import org.tigris.gef.presentation.FigText;
  * stereotypes of the model element represented by the parent Fig.
  * Currently, multiple stereotypes are shown stacked one on top of the other,
  * each enclosed by guillemets.<p>
- * 
+ *
  * The minimum width of this fig is the largest minimum width of its child
  * figs. The minimum height of this fig is the total minimum height of its child
  * figs.<p>
- * 
- * The owner of this Fig is the UML element that is extended 
- * with the stereotypes. We are listening to changes to the model: 
+ *
+ * The owner of this Fig is the UML element that is extended
+ * with the stereotypes. We are listening to changes to the model:
  * addition and removal of stereotypes. <p>
- * 
- * This fig supports showing one keyword 
+ *
+ * This fig supports showing one keyword
  * as the first "stereotype" in the list. <p>
- * 
+ *
  * There is no way to remove a keyword fig, once added. <p>
- * 
+ *
  * TODO: Allow for UML2 style display where all stereotypes are displayed in
  * the same guillemet pair and are delimited by commas. The style should be
  * changeable by calling getOrientation(Orientation). The swidget Orientation
@@ -84,12 +85,12 @@ import org.tigris.gef.presentation.FigText;
 public class FigStereotypesGroup extends ArgoFigGroup {
 
     private Fig bigPort;
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(FigStereotypesGroup.class);
+        Logger.getLogger(FigStereotypesGroup.class.getName());
 
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are
@@ -98,9 +99,9 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     private String keyword;
 
     private int stereotypeCount = 0;
-    
+
     private boolean hidingStereotypesWithIcon = false;
-    
+
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
         addFig(bigPort);
@@ -113,12 +114,12 @@ public class FigStereotypesGroup extends ArgoFigGroup {
 
     /**
      * The constructor.
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigStereotypesGroup(Object owner, Rectangle bounds, 
+    public FigStereotypesGroup(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, settings);
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -126,14 +127,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         populate();
     }
 
-    
+
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     @Override
     public void removeFromDiagram() {
-        /* Remove all items in the group, 
-         * otherwise the model event listeners remain: 
+        /* Remove all items in the group,
+         * otherwise the model event listeners remain:
          * TODO: Why does a FigGroup not do this? */
         for (Object f : getFigs()) {
             ((Fig) f).removeFromDiagram();
@@ -153,7 +154,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     protected Fig getBigPort() {
         return bigPort;
     }
-    
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         if (event instanceof AddAssociationEvent) {
@@ -162,7 +163,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                 Object stereotype = aae.getChangedValue();
                 if (findFig(stereotype) == null) {
                     FigText stereotypeTextFig =
-                        new FigStereotype(stereotype, 
+                        new FigStereotype(stereotype,
                                 getBoundsForNextStereotype(),
                                 getSettings());
                     stereotypeCount++;
@@ -171,7 +172,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                     damage();
                 }
             } else {
-                LOG.warn("Unexpected property " + event.getPropertyName());
+                LOG.log(Level.WARNING, "Unexpected property " + event.getPropertyName());
             }
         }
         if (event instanceof RemoveAssociationEvent) {
@@ -185,7 +186,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                     --stereotypeCount;
                 }
             } else {
-                LOG.warn("Unexpected property " + event.getPropertyName());
+                LOG.log(Level.WARNING, "Unexpected property " + event.getPropertyName());
             }
         }
     }
@@ -215,11 +216,11 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         }
 
 	List<Fig> n = new ArrayList<Fig>();
-	
+
 	n.addAll(others);
 	n.addAll(figsWithOutIcon);
-	n.addAll(figsWithIcon);	
-	
+	n.addAll(figsWithIcon);
+
 	setFigs(n);
     }
 
@@ -234,7 +235,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         }
         return null;
     }
-    
+
     /**
      * Get all the child figs that represent the individual stereotypes
      * @return a List of the stereotype Figs
@@ -250,7 +251,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         }
         return stereotypeFigs;
     }
-    
+
     private FigKeyword findFigKeyword() {
         for (Object f : getFigs()) {
             if (f instanceof FigKeyword) {
@@ -259,26 +260,26 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         }
         return null;
     }
-    
+
     /**
      * TODO: This should become private and only called from constructor
      *
      * @see org.argouml.uml.diagram.ui.FigCompartment#populate()
      */
     public void populate() {
-       
+
         stereotypeCount = 0;
         Object modelElement = getOwner();
         if (modelElement == null) {
             // TODO: This block can be removed after issue 4075 is tackled
-            LOG.debug("Cannot populate the stereotype compartment "
+            LOG.log(Level.FINE, "Cannot populate the stereotype compartment "
                      + "unless the parent has an owner.");
             return;
         }
-        
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Populating stereotypes compartment for "
-                    + Model.getFacade().getName(modelElement));
+
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.log(Level.FINE, "Populating stereotypes compartment for {0}",
+                    Model.getFacade().getName(modelElement));
         }
 
         /* This will contain the Figs that we do not need anymore: */
@@ -291,7 +292,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                 // The keyword fig does not exist yet.
                 // Let's create one:
                 keywordFig =
-                    new FigKeyword(keyword, 
+                    new FigKeyword(keyword,
                             getBoundsForNextStereotype(),
                             getSettings());
                 // bounds not relevant here
@@ -307,7 +308,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             FigStereotype stereotypeTextFig = findFig(stereo);
             if (stereotypeTextFig == null) {
                 stereotypeTextFig =
-                    new FigStereotype(stereo, 
+                    new FigStereotype(stereo,
                             getBoundsForNextStereotype(),
                             getSettings());
                 // bounds not relevant here
@@ -318,7 +319,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             }
             ++stereotypeCount;
         }
-        
+
         //cleanup of unused FigText's
         for (Fig f : removeCollection) {
             if (f instanceof FigStereotype || f instanceof FigKeyword) {
@@ -332,7 +333,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         updateHiddenStereotypes();
 
     }
-    
+
     /**
      * Get the number of stereotypes contained in this group
      * @return the number of stereotypes in this group
@@ -340,7 +341,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     public int getStereotypeCount() {
         return stereotypeCount;
     }
-    
+
     private Rectangle getBoundsForNextStereotype() {
         return new Rectangle(
                 bigPort.getX() + 1,
@@ -366,7 +367,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         // TODO: Find a way to replace this dependency on Project
         Project project = getProject();
         if (project == null) {
-            LOG.warn("getProject() returned null");
+            LOG.log(Level.WARNING, "getProject() returned null");
             return null;
         }
         Object owner = fs.getOwner();
@@ -390,7 +391,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         Dimension minimumSize = getMinimumSize();
         int newW = Math.max(w, minimumSize.width);
         int newH = Math.max(h, minimumSize.height);
-        
+
         int yy = y;
         for  (Fig fig : (Collection<Fig>) getFigs()) {
             if (fig != bigPort) {
@@ -426,7 +427,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
 
     /**
      * Turn on/off textual stereotype display in preference to icon.
-     * 
+     *
      * @param hideStereotypesWithIcon true to hide textual stereotypes and
      *                show icon instead.
      */
@@ -434,14 +435,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         this.hidingStereotypesWithIcon = hideStereotypesWithIcon;
         updateHiddenStereotypes();
     }
-    
+
     @Override
     public Dimension getMinimumSize() {
-        // if there are no stereotypes, we return (0,0), preventing 
+        // if there are no stereotypes, we return (0,0), preventing
         // double lines in the class (see issue 4939)
         Dimension dim = null;
         Object modelElement = getOwner();
-        
+
         if (modelElement != null) {
             List<FigStereotype> stereos = getStereotypeFigs();
             if (stereos.size() > 0 || keyword != null) {

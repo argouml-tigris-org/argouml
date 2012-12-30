@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
@@ -54,13 +56,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -70,21 +71,22 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
- * The basic stylepanel for a Fig which allows the user to see and adjust 
- * the common attributes of a Fig: 
+ * The basic stylepanel for a Fig which allows the user to see and adjust
+ * the common attributes of a Fig:
  * the boundaries box,
- * line and fill color information 
+ * line and fill color information
  * and the stereotype view combo box. <p>
- * 
+ *
  * Shown to the user as the "Presentation" tab.
  */
 public class StylePanelFig
     extends StylePanel
     implements ItemListener,
         FocusListener, KeyListener {
-    
-    private static final Logger LOG = Logger.getLogger(StylePanelFig.class);
-    
+
+    private static final Logger LOG =
+        Logger.getLogger(StylePanelFig.class.getName());
+
     private static final String CUSTOM_ITEM =
         Translator.localize("label.stylepane.custom") + "...";
 
@@ -107,7 +109,7 @@ public class StylePanelFig
         new JLabel(Translator.localize("menu.popup.stereotype-view") + ": ");
 
     private JComboBox stereoField = new JComboBox();
-    
+
     private SpacerPanel spacer = new SpacerPanel();
 
     private SpacerPanel spacer2 = new SpacerPanel();
@@ -205,10 +207,10 @@ public class StylePanelFig
         lineField.addItem(Color.orange);
         lineField.addItem(Color.pink);
         lineField.addItem(CUSTOM_ITEM);
-        
+
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         stereoField.setModel(model);
-        
+
         // NOTE: These must stay in this order to match rendering styles
         model.addElement(Translator
                 .localize("menu.popup.stereotype-view.textual"));
@@ -312,7 +314,7 @@ public class StylePanelFig
 
         stereoField.setEnabled(target instanceof StereotypeStyled);
         stereoLabel.setEnabled(target instanceof StereotypeStyled);
-        
+
         if (target instanceof StereotypeStyled) {
             StereotypeStyled fig = (StereotypeStyled) target;
             stereoField.setSelectedIndex(fig.getStereotypeStyle().ordinal());
@@ -423,7 +425,8 @@ public class StylePanelFig
                 // TODO: This exception will be thrown during autoscrolling
                 // when the edge of the canvas is reached causing either
                 // the width or height to be "adjusted" to a negative value
-                LOG.warn("Part of bounding box is off screen " + res);
+                LOG.log(Level.WARNING,
+                        "Part of bounding box is off screen " + res);
             }
             if (res.width < 0 || res.height < 0) {
                 // TODO: This exception will be thrown during autoscrolling
@@ -491,7 +494,7 @@ public class StylePanelFig
         }
         target.setFilled(isColor);
         target.endTrans();
-        
+
         // TODO: The following handling of multiselection is just a local
         // solution for the fill color, better find a more general solution:
         // (I don't know if it's undoable this way - thn)
@@ -528,7 +531,7 @@ public class StylePanelFig
         }
         target.setLineWidth(isColor ? ArgoFig.LINE_WIDTH : 0);
         target.endTrans();
-        
+
         // TODO: The following handling of multiselection is just a local
         // solution for the line color, better find a more general solution:
         // (I don't know if it's undoable this way - thn)
@@ -560,14 +563,14 @@ public class StylePanelFig
                 && target != null) {
             if (src == fillField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(fillField, 
+                    handleCustomColor(fillField,
                             "label.stylepane.custom-fill-color",
                             target.getFillColor());
                 }
                 setTargetFill();
             } else if (src == lineField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(lineField, 
+                    handleCustomColor(lineField,
                             "label.stylepane.custom-line-color",
                             target.getLineColor());
                 }
@@ -575,7 +578,7 @@ public class StylePanelFig
             } else if (src == stereoField) {
                 if (target instanceof StereotypeStyled) {
                     Object item = e.getItem();
-                    DefaultComboBoxModel model = 
+                    DefaultComboBoxModel model =
                         (DefaultComboBoxModel) stereoField.getModel();
                     int idx = model.getIndexOf(item);
                     StereotypeStyled fig = (StereotypeStyled) target;

@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,21 +47,22 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 
 /**
  * Implements a list of ToDoItem's.
  * <p>
- * 
+ *
  * It spawns a "sweeper" thread that periodically goes through the list and
  * eliminates ToDoItem's that are no longer valid.
  * <p>
- * 
+ *
  * One difficulty designers face is keeping track of all the myriad details of
  * their task. It is all too easy to skip a step in the design process, leave
  * part of the design unspecified, or make a mistake that requires revision.
@@ -72,13 +73,13 @@ import org.argouml.model.InvalidElementException;
  * list pane allow the designer to organize items in different ways: by
  * priority, by decision supported, by offending design element, etc.
  * <p>
- * 
+ *
  * Items are shown under all applicable headings.
  * <p>
- * 
+ *
  * This class is dependent on Designer.
  * <p>
- * 
+ *
  * @see Designer#inform
  * @author Jason Robbins
  */
@@ -86,7 +87,8 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ToDoList.class);
+    private static final Logger LOG =
+        Logger.getLogger(ToDoList.class.getName());
 
     /**
      * Number of seconds thread should sleep between passes
@@ -99,9 +101,9 @@ public class ToDoList extends Observable implements Runnable {
     private List<ToDoItem> items;
 
     private Set<ToDoItem> itemSet;
-    
+
     /**
-     * These are computed when needed. 
+     * These are computed when needed.
      */
     // TODO: Offenders need to be more strongly typed. - tfm 20070630
     private volatile ListSet allOffenders;
@@ -140,7 +142,7 @@ public class ToDoList extends Observable implements Runnable {
      * (waiting).
      */
     private boolean isPaused;
-    
+
     private Object pausedMutex = new Object();
 
     /**
@@ -150,7 +152,7 @@ public class ToDoList extends Observable implements Runnable {
 
         items = Collections.synchronizedList(new ArrayList<ToDoItem>(100));
         itemSet = Collections.synchronizedSet(new HashSet<ToDoItem>(100));
-        resolvedItems = 
+        resolvedItems =
             Collections.synchronizedSet(new LinkedHashSet<ResolvedCritic>(100));
         listenerList = new EventListenerList();
         longestToDoList = 0;
@@ -159,7 +161,7 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * Start a Thread to delete old items from the ToDoList.
-     * 
+     *
      * @param d the designer
      */
     public synchronized void spawnValidityChecker(Designer d) {
@@ -177,7 +179,7 @@ public class ToDoList extends Observable implements Runnable {
      */
     public void run() {
         final List<ToDoItem> removes = new ArrayList<ToDoItem>();
-        
+
         while (true) {
 
             // the validity checking thread should wait if disabled.
@@ -186,7 +188,7 @@ public class ToDoList extends Observable implements Runnable {
                     try {
                         pausedMutex.wait();
                     } catch (InterruptedException ignore) {
-                        LOG.error("InterruptedException!!!", ignore);
+                        LOG.log(Level.SEVERE, "InterruptedException!!!", ignore);
                     }
                 }
             }
@@ -196,7 +198,7 @@ public class ToDoList extends Observable implements Runnable {
             try {
                 Thread.sleep(SLEEP_SECONDS * 1000);
             } catch (InterruptedException ignore) {
-                LOG.error("InterruptedException!!!", ignore);
+                LOG.log(Level.SEVERE, "InterruptedException!!!", ignore);
             }
         }
     }
@@ -218,10 +220,10 @@ public class ToDoList extends Observable implements Runnable {
      * ValidityCheckingThread, and it can be called by the user pressing a
      * button via forceValidityCheck().
      * <p>
-     * 
+     *
      * <em>Warning: Fragile code!</em> No method that this method calls can
      * synchronized the Designer, otherwise there will be deadlock.
-     * 
+     *
      * @param removes a list containing the items to be removed
      */
     private synchronized void forceValidityCheck(
@@ -240,7 +242,7 @@ public class ToDoList extends Observable implements Runnable {
                             "Exception raised in ToDo list cleaning");
                     buf.append("\n");
                     buf.append(item.toString());
-                    LOG.error(buf.toString(), ex);
+                    LOG.log(Level.SEVERE,buf.toString(), ex);
                 }
                 if (!valid) {
                     numNotValid++;
@@ -291,7 +293,7 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * sets the pause state.
-     * 
+     *
      * @param paused if set to false, calls resume() also to start working
      */
     public void setPaused(boolean paused) {
@@ -374,7 +376,7 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @return the set of offenders
-     * 
+     *
      * TODO: The return value needs to be more strongly typed. - tfm - 20070630
      */
     public ListSet getOffenders() {
@@ -459,7 +461,7 @@ public class ToDoList extends Observable implements Runnable {
                 // cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasNext()) {
                     if (elems.next().equals(rc)) {
-                        LOG.debug("ToDoItem not added because it was resolved");
+                        LOG.log(Level.FINE, "ToDoItem not added because it was resolved");
                         return;
                     }
                 }
@@ -570,7 +572,7 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * Add the given resolved critic to the list of resolved critics.
-     * 
+     *
      * @param rc the resolved critic
      * @return <code>true</code> if successfully added; <code>false</code>
      *         otherwise
@@ -583,7 +585,7 @@ public class ToDoList extends Observable implements Runnable {
      * Remove all todo items.
      */
     public void removeAllElements() {
-        LOG.debug("removing all todo items");
+        LOG.log(Level.FINE, "removing all todo items");
         List<ToDoItem> oldItems = new ArrayList<ToDoItem>(items);
         items.clear();
         itemSet.clear();
@@ -654,7 +656,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param l the listener to be added
      */
     public void addToDoListListener(ToDoListListener l) {
-        // EventListenerList.add() is synchronized, so we don't need to 
+        // EventListenerList.add() is synchronized, so we don't need to
         // synchronize ourselves
         listenerList.add(ToDoListListener.class, l);
     }
@@ -663,7 +665,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param l the listener to be removed
      */
     public void removeToDoListListener(ToDoListListener l) {
-        // EventListenerList.remove() is synchronized, so we don't need to 
+        // EventListenerList.remove() is synchronized, so we don't need to
         // synchronize ourselves
         listenerList.remove(ToDoListListener.class, l);
     }

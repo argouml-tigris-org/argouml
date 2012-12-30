@@ -46,8 +46,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
@@ -158,7 +159,7 @@ public class ClassdiagramLayouter implements Layouter {
             ClassdiagramNode split = null;
             int width = 0;
             int count = 0;
-            for (Iterator<ClassdiagramNode> iter = ts.iterator(); 
+            for (Iterator<ClassdiagramNode> iter = ts.iterator();
                     iter.hasNext() && (width < maxWidth || count < 2);) {
                 ClassdiagramNode node = iter.next();
                 // split =
@@ -176,10 +177,9 @@ public class ClassdiagramLayouter implements Layouter {
             for (ClassdiagramNode n : ts.tailSet(split)) {
                 newRow.addNode(n);
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Row split. This row width: " + getWidth(gap)
-                        + " next row(s) width: " + newRow.getWidth(gap));
-            }
+            LOG.log(Level.FINE,
+                    "Row split. This row width: {0} next row(s) width: {1}",
+                    new Object[]{getWidth(gap), newRow.getWidth(gap)});
             return newRow;
         }
 
@@ -210,9 +210,11 @@ public class ClassdiagramLayouter implements Layouter {
             for (ClassdiagramNode node : nodes) {
                 result += node.getSize().width + gap;
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Width of row " + rowNumber + ": " + result);
-            }
+
+            LOG.log(Level.FINE,
+                    "Width of row {0}: {1}",
+                    new Object[]{ rowNumber, result});
+
             return result;
         }
 
@@ -270,7 +272,7 @@ public class ClassdiagramLayouter implements Layouter {
     private static final int H_GAP = 80;
 
     private static final Logger LOG =
-	Logger.getLogger(ClassdiagramLayouter.class);
+        Logger.getLogger(ClassdiagramLayouter.class.getName());
 
     /**
      * The maximum row width.
@@ -369,7 +371,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Return the minimum diagram size after the layout process.
-     * 
+     *
      * @return The minimum diagram size after the layout process.
      */
     public Dimension getMinimumDiagramSize() {
@@ -428,7 +430,8 @@ public class ClassdiagramLayouter implements Layouter {
         rankAndWeightNodes();
         placeNodes();
         placeEdges();
-        LOG.debug("layout duration: " + (System.currentTimeMillis() - s));
+        LOG.log(Level.FINE,
+                "layout duration: {0}", (System.currentTimeMillis() - s));
     }
 
     /**
@@ -468,12 +471,20 @@ public class ClassdiagramLayouter implements Layouter {
 	    Math.max(xPos + bumpX,
 		     uplinks.size() == 1 ? node.getPlacementHint() : -1);
         node.setLocation(new Point(xPosNew, yPos));
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("placeNode - Row: " + node.getRank() + " Col: "
-                    + node.getColumn() + " Weight: " + node.getWeight()
-                    + " Position: (" + xPosNew + "," + yPos + ") xPos: " 
-                    + xPos + " hint: " + node.getPlacementHint());
-        }
+
+        LOG.log(Level.FINE,
+                "placeNode - Row: {0} Col: {1} Weight: {2} Position: ({3},{4}) "
+                + "xPos: {5} hint: {6}",
+                new Object[] {
+                    node.getRank(),
+                    node.getColumn(),
+                    node.getWeight(),
+                    xPosNew,
+                    yPos,
+                    xPos,
+                    node.getPlacementHint()
+                });
+
         // If there's only a single child (and we're it's only parent),
         // set a hint for where to place it when we get to its row
         if (downlinks.size() == 1) {
@@ -490,7 +501,7 @@ public class ClassdiagramLayouter implements Layouter {
      */
     private void placeNodes() {
         // TODO: place comments near connected classes
-        // TODO: place from middle towards outer edges? (or place largest 
+        // TODO: place from middle towards outer edges? (or place largest
         // groups first)
         int xInit = 0;
         yPos = getVGap() / 2;
@@ -522,7 +533,7 @@ public class ClassdiagramLayouter implements Layouter {
             // TODO: Make another pass to deal with overlaps?
         }
     }
-    
+
     /**
      * Compute the horizontal center of a list of nodes.
      * @param nodes the list of nodes
@@ -570,15 +581,15 @@ public class ClassdiagramLayouter implements Layouter {
             } else {
                 int rowNum = node.getRank();
                 for (int i = nodeRows.size(); i <= rowNum; i++) {
-                    nodeRows.add(new NodeRow(rowNum));                    
+                    nodeRows.add(new NodeRow(rowNum));
                 }
                 nodeRows.get(rowNum).addNode(node);
             }
         }
         for (ClassdiagramNode node : comments) {
             int rowInd =
-                    node.getUpNodes().isEmpty() 
-                            ? 0 
+                    node.getUpNodes().isEmpty()
+                            ? 0
                             : ((node.getUpNodes().get(0)).getRank());
             // Issue 6450
             if (nodeRows.size() == 0) {
@@ -596,7 +607,7 @@ public class ClassdiagramLayouter implements Layouter {
             }
         }
     }
-    
+
     /**
      * Remove an object from the layout process.
      *
@@ -635,7 +646,7 @@ public class ClassdiagramLayouter implements Layouter {
                     }
                     edgeList.add((ClassdiagramInheritanceEdge) edge);
                 } else {
-                    LOG.error("Edge with missing end(s): " + edge);
+                    LOG.log(Level.SEVERE, "Edge with missing end(s): " + edge);
                 }
             } else if (edge instanceof ClassdiagramNoteEdge) {
                 if (parent.isComment()) {
@@ -643,16 +654,17 @@ public class ClassdiagramLayouter implements Layouter {
                 } else if (child.isComment()) {
                     child.addUplink(parent);
                 } else {
-                    LOG.error("Unexpected parent/child constellation for edge: "
-                                    + edge);
+                    LOG.log(Level.SEVERE,
+                            "Unexpected parent/child constellation for edge: "
+                            + edge);
                 }
             } else if (edge instanceof ClassdiagramAssociationEdge) {
                 // Associations not supported, yet
                 // TODO: Create appropriate ClassdiagramEdge
             } else {
-                LOG.error("Unsupported edge type");
+                LOG.log(Level.SEVERE, "Unsupported edge type");
             }
-            
+
         }
     }
 }

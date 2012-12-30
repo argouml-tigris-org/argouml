@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,9 +48,9 @@ import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
-import org.argouml.util.ArgoFrame;
 import org.argouml.ui.UndoableAction;
 import org.argouml.uml.ui.UMLAddDialog;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Abstract action that is the parent to all add actions that add the

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,8 +43,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -52,34 +53,34 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 
 /**
  * List of ProjectMembers. <p>
- * 
- * <p>The project members are grouped into 4 categories: 
+ *
+ * <p>The project members are grouped into 4 categories:
  * model, diagrams, the todo item list and the profile configuration. <p>
  *
- * <p>The purpose of these categories is to make sure that members are read 
- * and written in the correct order. 
- * 
+ * <p>The purpose of these categories is to make sure that members are read
+ * and written in the correct order.
+ *
  * <p>When reading the todo items it will fail if the diagrams elements or model
  * elements have not yet been read that they refer to. When reading diagrams
  * that will fail if the model elements don't yet exist that they refer to.
  * When loading the model that may fail if the correct profile has not been
  * loaded.
- * 
+ *
  * <p>Hence, the save (and therefore load) order is profile, model, diagrams,
  * todo items.
  *
  * <p>This implementation supports only one profile configuration, one model
  * member, multiple diagram members, one todo list member.
- * 
+ *
  * <p>Comments by mvw: <p>
- * This class should be reworked to be independent 
- * of the org.argouml.uml package. That can be done by extending the 
- * ProjectMember interface with functions returning the sorting order, 
+ * This class should be reworked to be independent
+ * of the org.argouml.uml package. That can be done by extending the
+ * ProjectMember interface with functions returning the sorting order,
  * and if multiple entries of the same type are allowed. <p>
- * 
- * In preparation, this class is made simpler by deprecating 
+ *
+ * In preparation, this class is made simpler by deprecating
  * all operations that are not part of the List interface.
- * 
+ *
  * @author Bob Tarling
  */
 class MemberList implements List<ProjectMember> {
@@ -87,11 +88,12 @@ class MemberList implements List<ProjectMember> {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(MemberList.class);
+    private static final Logger LOG =
+        Logger.getLogger(MemberList.class.getName());
 
     private AbstractProjectMember model;
 
-    private List<ProjectMemberDiagram> diagramMembers = 
+    private List<ProjectMemberDiagram> diagramMembers =
         new ArrayList<ProjectMemberDiagram>(10);
 
     private AbstractProjectMember todoList;
@@ -101,7 +103,7 @@ class MemberList implements List<ProjectMember> {
      * The constructor.
      */
     public MemberList() {
-        LOG.info("Creating a member list");
+        LOG.log(Level.INFO, "Creating a member list");
     }
 
     public synchronized boolean add(ProjectMember member) {
@@ -125,7 +127,7 @@ class MemberList implements List<ProjectMember> {
     }
 
     public synchronized boolean remove(Object member) {
-        LOG.info("Removing a member");
+        LOG.log(Level.INFO, "Removing a member");
         if (member instanceof ArgoDiagram) {
             return removeDiagram((ArgoDiagram) member);
         }
@@ -134,17 +136,18 @@ class MemberList implements List<ProjectMember> {
             model = null;
             return true;
         } else if (todoList == member) {
-            LOG.info("Removing todo list");
+            LOG.log(Level.INFO, "Removing todo list");
             setTodoList(null);
             return true;
         } else if (profileConfiguration == member) {
-            LOG.info("Removing profile configuration");
+            LOG.log(Level.INFO, "Removing profile configuration");
             profileConfiguration = null;
             return true;
         } else {
             final boolean removed = diagramMembers.remove(member);
             if (!removed) {
-                LOG.warn("Failed to remove diagram member " + member);
+                LOG.log(Level.WARNING,
+                        "Failed to remove diagram member " + member);
             }
             return removed;
         }
@@ -163,11 +166,11 @@ class MemberList implements List<ProjectMember> {
     }
 
     /**
-     * @return the list of members in the order that they need to be written 
+     * @return the list of members in the order that they need to be written
      *         out in.
      */
     private List<ProjectMember> buildOrderedMemberList() {
-        List<ProjectMember> temp = 
+        List<ProjectMember> temp =
             new ArrayList<ProjectMember>(size());
         if (profileConfiguration != null) {
             temp.add(profileConfiguration);
@@ -181,7 +184,7 @@ class MemberList implements List<ProjectMember> {
         }
         return temp;
     }
-    
+
     private boolean removeDiagram(ArgoDiagram d) {
         for (ProjectMemberDiagram pmd : diagramMembers) {
             if (pmd.getDiagram() == d) {
@@ -190,7 +193,7 @@ class MemberList implements List<ProjectMember> {
                 return true;
             }
         }
-        LOG.debug("Failed to remove diagram " + d);
+        LOG.log(Level.FINE, "Failed to remove diagram {0}", d);
         return false;
     }
 
@@ -222,7 +225,7 @@ class MemberList implements List<ProjectMember> {
     }
 
     public synchronized void clear() {
-        LOG.info("Clearing members");
+        LOG.log(Level.INFO, "Clearing members");
         if (model != null) {
             model.remove();
         }
@@ -254,7 +257,7 @@ class MemberList implements List<ProjectMember> {
                 return profileConfiguration;
             }
         }
-        
+
         if (i == (diagramMembers.size() + 1)) {
             return profileConfiguration;
         }
@@ -285,7 +288,7 @@ class MemberList implements List<ProjectMember> {
     }
 
     private void setTodoList(AbstractProjectMember member) {
-        LOG.info("Setting todoList to " + member);
+        LOG.log(Level.INFO, "Setting todoList to {0}", member);
         todoList = member;
     }
 

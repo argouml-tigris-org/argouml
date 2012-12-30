@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.model.Model;
 
 /**
@@ -49,7 +51,7 @@ import org.argouml.model.Model;
 class UMLTimeExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
-        Logger.getLogger(UMLTimeExpressionModel.class);
+        Logger.getLogger(UMLTimeExpressionModel.class.getName());
 
     /**
      * The constructor.
@@ -84,7 +86,7 @@ class UMLTimeExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression(String lang, String body) {
-        LOG.debug("new time expression");
+        LOG.log(Level.FINE, "new time expression");
         return Model.getDataTypesFactory().createTimeExpression(lang, body);
     }
 

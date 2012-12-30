@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,11 +41,12 @@ package org.argouml.uml.ui;
 import java.awt.BorderLayout;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.Critic;
 import org.argouml.model.Model;
@@ -81,10 +82,11 @@ public class TabProps
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TabProps.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(TabProps.class.getName());
+
     private JPanel blankPanel = new JPanel();
-    private Hashtable<Class, JPanel> panels = 
+    private Hashtable<Class, JPanel> panels =
         new Hashtable<Class, JPanel>();
     private JPanel lastPanel;
     private String panelClassBaseName = "";
@@ -93,7 +95,7 @@ public class TabProps
      * The panel currently displayed in center
      */
     private JPanel currentPanel;
-    
+
     private Object target;
 
     /**
@@ -185,18 +187,17 @@ public class TabProps
     @Deprecated
     public void setTarget(Object target) {
         // targets ought to be UML objects or diagrams
-        LOG.info("setTarget: there are "
-                + TargetManager.getInstance().getTargets().size()
-                + " targets");
+        LOG.log(Level.INFO, "setTarget: there are {0} targets",
+                TargetManager.getInstance().getTargets().size());
 
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        if (!(target == null || Model.getFacade().isAUMLElement(target) 
+        if (!(target == null || Model.getFacade().isAUMLElement(target)
                 || target instanceof ArgoDiagram
                 // TODO Improve extensibility of this!
                 || target instanceof Critic)) {
             target = null;
         }
-        
+
         if (lastPanel != null) {
             remove(lastPanel);
             if (lastPanel instanceof TargetListener) {
@@ -205,12 +206,12 @@ public class TabProps
                 removeTargetListener((TargetListener) lastPanel);
             }
         }
-  
-        // TODO: No need to do anything if we're not visible      
+
+        // TODO: No need to do anything if we're not visible
 //        if (!isVisible()) {
 //            return;
 //        }
-        
+
         this.target = target;
         if (target == null) {
             add(blankPanel, BorderLayout.CENTER);
@@ -222,7 +223,7 @@ public class TabProps
             if (newPanel != null && newPanel instanceof TabModelTarget) {
                 addTargetListener((TabModelTarget) newPanel);
             }
-            
+
             if (currentPanel != null) {
                 remove(currentPanel);
                 currentPanel = null;
@@ -254,16 +255,15 @@ public class TabProps
      */
     private JPanel findPanelFor(Object trgt) {
         // TODO: No test coverage for this or createPropPanel? - tfm
-        
+
         JPanel panel = createPropPanel(trgt);
         if (panel != null) {
-            LOG.debug("Factory created " + panel.getClass().getName()
-                    + " for " + trgt.getClass().getName());
+            LOG.log(Level.FINE,
+                    "Factory created {0} for {1}", new Object[]{panel.getClass().getName(), trgt.getClass().getName()});
             panels.put(trgt.getClass(), panel);
             return panel;
         }
-
-        LOG.error("Failed to create a prop panel for : " + trgt);
+        LOG.log(Level.SEVERE, "Failed to create a prop panel for: {0}", trgt);
         return null;
     }
 
@@ -283,9 +283,9 @@ public class TabProps
 	    if (propPanel != null) {
 	        return propPanel;
 	    }
-	}        
-        
-	/* This does not work (anymore/yet?), 
+	}
+
+	/* This does not work (anymore/yet?),
 	 * since we never have a FigText here: */
 	if (targetObject instanceof FigText) {
             propPanel = new PropPanelString();
@@ -294,7 +294,7 @@ public class TabProps
         if (propPanel instanceof Orientable) {
             ((Orientable) propPanel).setOrientation(getOrientation());
         }
-        
+
         // TODO: We shouldn't need this as well as the above.
         if (propPanel instanceof PropPanel) {
             ((PropPanel) propPanel).setOrientation(getOrientation());
@@ -341,8 +341,8 @@ public class TabProps
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
         }
-        
-        // TODO: this should be more extensible... may be only 
+
+        // TODO: this should be more extensible... may be only
         // "findPanelFor(target)" if there is a panel why not show it?
         return ((target instanceof Diagram || Model.getFacade().isAUMLElement(
                 target)) || target instanceof Critic

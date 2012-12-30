@@ -49,8 +49,9 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
@@ -66,20 +67,20 @@ import org.xml.sax.InputSource;
  *
  * @author Bob Tarling
  */
-class XmiFilePersister extends AbstractFilePersister 
+class XmiFilePersister extends AbstractFilePersister
     implements XmiExtensionParser {
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(XmiFilePersister.class);
+        Logger.getLogger(XmiFilePersister.class.getName());
 
     private List<String> pgmlStrings = new ArrayList<String>();
-    
+
     private String todoString;
-    
+
     private String argoString;
-    
+
     /**
      * The constructor.
      */
@@ -118,14 +119,14 @@ class XmiFilePersister extends AbstractFilePersister
     public void doSave(Project project, File file)
         throws SaveException, InterruptedException {
 
-        /* Retain the previous project file even when the save operation 
+        /* Retain the previous project file even when the save operation
          * crashes in the middle. Also create a backup file after saving. */
         boolean doSafeSaves = useSafeSaves();
-        
+
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(4);
         progressMgr.nextPhase();
-        
+
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -167,7 +168,7 @@ class XmiFilePersister extends AbstractFilePersister
             } catch (IOException ex) { }
             throw exc;
         } catch (Exception e) {
-            LOG.error("Exception occured during save attempt", e);
+            LOG.log(Level.SEVERE, "Exception occured during save attempt", e);
             try {
                 stream.close();
             } catch (IOException ex) { }
@@ -184,7 +185,7 @@ class XmiFilePersister extends AbstractFilePersister
         }
         progressMgr.nextPhase();
     }
-    
+
     /**
      * Write the output for a project on the given stream.
      *
@@ -195,9 +196,9 @@ class XmiFilePersister extends AbstractFilePersister
      * @throws SaveException If something goes wrong.
      * @throws InterruptedException     if the thread is interrupted
      */
-    void writeProject(Project project, 
-            OutputStream stream, 
-            ProgressMgr progressMgr) throws SaveException, 
+    void writeProject(Project project,
+            OutputStream stream,
+            ProgressMgr progressMgr) throws SaveException,
             InterruptedException {
 
         int size = project.getMembers().size();
@@ -205,10 +206,9 @@ class XmiFilePersister extends AbstractFilePersister
             ProjectMember projectMember =
                 project.getMembers().get(i);
             if (projectMember.getType().equalsIgnoreCase(getExtension())) {
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("Saving member of type: "
-                            + (project.getMembers()
-                                    .get(i)).getType());
+                if (LOG.isLoggable(Level.INFO)) {
+                    LOG.log(Level.INFO, "Saving member of type: {0}",
+                            projectMember.getType());
                 }
                 MemberFilePersister persister = new ModelMemberFilePersister();
                 persister.save(projectMember, stream);
@@ -242,12 +242,12 @@ class XmiFilePersister extends AbstractFilePersister
     public Project doLoad(File file)
         throws OpenException, InterruptedException {
 
-        LOG.info("Loading with XMIFilePersister");
-        
+        LOG.log(Level.INFO, "Loading with XMIFilePersister");
+
         try {
             Project p = ProjectFactory.getInstance().createProject();
-            
-            
+
+
             long length = file.length();
             long phaseSpace = 100000;
             int phases = (int) (length / phaseSpace);
@@ -255,20 +255,20 @@ class XmiFilePersister extends AbstractFilePersister
                 phaseSpace = length / 10;
                 phases = 10;
             }
-            LOG.info("File length is " + length + " phase space is "
+            LOG.log(Level.INFO, "File length is " + length + " phase space is "
                     + phaseSpace + " phases is " + phases);
             ProgressMgr progressMgr = new ProgressMgr();
             progressMgr.setNumberOfPhases(phases);
             ThreadUtils.checkIfInterrupted();
-            
+
             InputSource source = new InputSource(new XmiInputStream(file
                     .toURI().toURL().openStream(), this, phaseSpace,
                     progressMgr));
             source.setSystemId(file.toURI().toURL().toString());
-            
+
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
-            
+
             modelPersister.readModels(source);
             Object model = modelPersister.getCurModel();
             progressMgr.nextPhase();
@@ -278,12 +278,12 @@ class XmiFilePersister extends AbstractFilePersister
             p.addMember(model);
             parseXmiExtensions(p);
             modelPersister.registerDiagrams(p);
-            
+
             p.setRoot(model);
             p.setRoots(modelPersister.getElementsRead());
             p.updateRoots();
             File defaultProjectFile = new File(file.getPath() + ".zargo");
-            // Make sure the file doesn't exist so the user will 
+            // Make sure the file doesn't exist so the user will
             // get prompted to choose a new name
             for (int i = 0; i < 99; i++) {
                 if (!defaultProjectFile.exists()) {
@@ -304,7 +304,7 @@ class XmiFilePersister extends AbstractFilePersister
 
     /**
      * Returns true. All Argo specific files have an icon.
-     * 
+     *
      * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
      */
     public boolean hasAnIcon() {
@@ -329,14 +329,15 @@ class XmiFilePersister extends AbstractFilePersister
 
     /**
      * Parse all the extensions that were found when reading XMI
-     * 
+     *
      * @param project
      * @exception OpenException
      */
     public void parseXmiExtensions(Project project) throws OpenException {
-        
+
         if (argoString != null) {
-            LOG.info("Parsing argoString " + argoString.length());
+            LOG.log(Level.INFO, "Parsing argoString {0}", argoString.length());
+
             StringReader inputStream = new StringReader(argoString);
             ArgoParser parser = new ArgoParser();
             try {
@@ -348,9 +349,10 @@ class XmiFilePersister extends AbstractFilePersister
             project.addMember(new ProjectMemberTodoList("", project));
         }
         for (String pgml : pgmlStrings) {
-            LOG.info("Parsing pgml " + pgml.length());
+            LOG.log(Level.INFO, "Parsing pgml {0}", pgml.length());
+
             InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
-            MemberFilePersister persister = 
+            MemberFilePersister persister =
             // TODO: Cyclic dependency between PersistanceManager and here
                 PersistenceManager.getInstance()
                         .getDiagramMemberFilePersister();
@@ -359,8 +361,9 @@ class XmiFilePersister extends AbstractFilePersister
             persister.load(project, inputStream);
         }
         if (todoString != null) {
-            LOG.info("Parsing todoString " + todoString.length());
-            InputStream inputStream = 
+            LOG.log(Level.INFO, "Parsing todoString {0}", todoString.length());
+
+            InputStream inputStream =
                 new ByteArrayInputStream(todoString.getBytes());
             MemberFilePersister persister = null;
             persister = new TodoListMemberFilePersister();

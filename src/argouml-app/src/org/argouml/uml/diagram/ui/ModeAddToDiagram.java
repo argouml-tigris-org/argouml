@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
@@ -76,9 +77,10 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
 
     private final boolean addRelatedEdges = true;
 
-    private final String instructions; 
+    private final String instructions;
 
-    private static final Logger LOG = Logger.getLogger(ModeAddToDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(ModeAddToDiagram.class.getName());
 
     /**
      * Create a mode to add the given elements to the diagram
@@ -86,7 +88,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
      * @param instructions the instruction to place in status bar
      */
     public ModeAddToDiagram(
-            final Collection<Object> modelElements, 
+            final Collection<Object> modelElements,
             final String instructions) {
         this.modelElements = modelElements;
         if (instructions == null) {
@@ -94,7 +96,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         } else {
             this.instructions = instructions;
         }
-    } 
+    }
 
     ////////////////////////////////////////////////////////////////
     // user feedback
@@ -122,16 +124,15 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
     @Override
     public void mouseReleased(final MouseEvent me) {
     	if (me.isConsumed()) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("MouseReleased but rejected as already consumed");
-            }
+            LOG.log(Level.FINE,
+                    "MouseReleased but rejected as already consumed");
             return;
         }
         // TODO: Use per-project undo manager, not global
         UndoManager.getInstance().addMementoLock(this);
         start();
     	MutableGraphModel gm = (MutableGraphModel) editor.getGraphModel();
-        
+
         final int x = me.getX();
         final int y = me.getY();
         editor.damageAll();
@@ -139,13 +140,13 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         editor.snap(snapPt);
         editor.damageAll();
         int count = 0;
-        
+
         Layer lay = editor.getLayerManager().getActiveLayer();
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
-        
+
         final List<FigNode> placedFigs =
             new ArrayList<FigNode>(modelElements.size());
-        
+
         ArgoDiagram diag = DiagramUtils.getActiveDiagram();
         if (diag instanceof UMLDiagram) {
             for (final Object node : modelElements) {
@@ -153,10 +154,11 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                     final FigNode pers =
                         renderer.getFigNodeFor(gm, lay, node, null);
                     pers.setLocation(snapPt.x + (count++ * 100), snapPt.y);
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("mouseMoved: Location set ("
-                                + pers.getX() + "," + pers.getY() + ")");
-                    }
+                    
+                    LOG.log(Level.FINE,
+                            "mouseMoved: Location set ({0},{1})",
+                            new Object[]{pers.getX(), pers.getY()});
+                    
                     // TODO: Use per-project undo manager, not global
                     UndoManager.getInstance().startChain();
                     editor.add(pers);
@@ -164,7 +166,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                     if (addRelatedEdges) {
                         gm.addNodeRelatedEdges(node);
                     }
-    
+
                     Fig encloser = null;
                     final Rectangle bbox = pers.getBounds();
                     final List<Fig> otherFigs = lay.getContents();
@@ -185,18 +187,18 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                         if (trap != null
                                 && trap.contains(bbox.x, bbox.y)
                                 && trap.contains(
-                                        bbox.x + bbox.width, 
+                                        bbox.x + bbox.width,
                                         bbox.y + bbox.height)) {
                             encloser = otherFig;
                         }
                     }
                     pers.setEnclosingFig(encloser);
-                    
+
                     placedFigs.add(pers);
                 }
             }
         }
-        
+
         // TODO: Use per-project undo manager, not global
         UndoManager.getInstance().removeMementoLock(this);
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -206,31 +208,31 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         }
         UndoManager.getInstance().addMementoLock(this);
         editor.getSelectionManager().select(placedFigs);
-        
+
         done();
         me.consume();
     }
 
     public void keyTyped(KeyEvent ke) {
         if (ke.getKeyChar() == KeyEvent.VK_ESCAPE) {
-            LOG.debug("ESC pressed");
+            LOG.log(Level.FINE, "ESC pressed");
             leave();
         }
     }
 }
 
 class AddToDiagramMemento extends Memento {
-    
+
     private final List<FigNode> nodesPlaced;
     private final Editor editor;
     private final MutableGraphModel mgm;
-    
+
     AddToDiagramMemento(final Editor ed, final List<FigNode> nodesPlaced) {
         this.nodesPlaced = nodesPlaced;
         this.editor = ed;
         this.mgm = (MutableGraphModel) editor.getGraphModel();
     }
-    
+
     public void undo() {
         // TODO: Use per-project undo manager, not global
     	UndoManager.getInstance().addMementoLock(this);
@@ -251,7 +253,7 @@ class AddToDiagramMemento extends Memento {
     }
     public void dispose() {
     }
-    
+
     public String toString() {
         return (isStartChain() ? "*" : " ")
             + "AddToDiagramMemento";

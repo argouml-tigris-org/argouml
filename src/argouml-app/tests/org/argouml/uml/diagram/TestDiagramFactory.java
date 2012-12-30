@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,11 @@
 
 package org.argouml.uml.diagram;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import junit.framework.TestCase;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
@@ -46,27 +50,25 @@ import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 
-import junit.framework.TestCase;
-
 /**
  * Test the DiagramFactory.
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public class TestDiagramFactory extends TestCase {
 
-    private static final Logger LOG = 
-        Logger.getLogger(TestDiagramFactory.class);
+    private static final Logger LOG =
+        Logger.getLogger(TestDiagramFactory.class.getName());
     private Project project;
-    
+
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
-        
+
         project = ProjectManager.getManager().makeEmptyProject();
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         ProjectManager.getManager().removeProject(project);
@@ -78,7 +80,7 @@ public class TestDiagramFactory extends TestCase {
      */
     public void testCreateDefaultDiagram() {
         Object namespace = Model.getModelManagementFactory().createModel();
-        ArgoDiagram diagram = 
+        ArgoDiagram diagram =
             DiagramFactory.getInstance().createDefaultDiagram(namespace);
         assertNotNull(diagram);
         DiagramSettings settings = diagram.getDiagramSettings();
@@ -101,8 +103,9 @@ public class TestDiagramFactory extends TestCase {
             ArgoDiagram diagram;
             if (type == DiagramType.Sequence) {
                 // TODO: Fix this so that new sequence diagrams are tested
-                LOG.warn("Skipping Sequence Diagram test " 
-                         + "because they are in a separate module");
+                LOG.log(Level.WARNING,
+                        "Skipping Sequence Diagram test "
+                        + "because they are in a separate module");
                 return;
             } else if (type == DiagramType.State) {
                 Object context = Model.getCoreFactory().buildClass(model);
@@ -110,7 +113,7 @@ public class TestDiagramFactory extends TestCase {
                         .buildStateMachine(context);
                 diagram = DiagramFactory.getInstance().create(type, machine,
                         settings);
-            } else if (type == DiagramType.Collaboration 
+            } else if (type == DiagramType.Collaboration
                     || type == DiagramType.Sequence) {
                 Object collab = Model.getCollaborationsFactory()
                         .buildCollaboration(model);

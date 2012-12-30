@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.diagram;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -54,7 +55,7 @@ import org.argouml.configuration.ConfigurationKey;
  * Provides centralized methods dealing with diagram appearance.
  * <p>
  * These settings do not apply to the appearance of the ArgoUML application! <p>
- * 
+ *
  * In the MVC pattern, this is part of the Model.
  *
  * @stereotype singleton
@@ -65,7 +66,8 @@ public final class DiagramAppearance implements PropertyChangeListener {
     /**
      * Define a static log4j category variable for ArgoUML diagram appearance.
      */
-    private static final Logger LOG = Logger.getLogger(DiagramAppearance.class);
+    private static final Logger LOG =
+        Logger.getLogger(DiagramAppearance.class.getName());
 
     /**
      * The configuration key for the font name.
@@ -94,40 +96,40 @@ public final class DiagramAppearance implements PropertyChangeListener {
     /**
      * Indicates if the user wants to see the arrows when both
      * association ends in an association are navigable.
-     */    
+     */
     public static final ConfigurationKey KEY_HIDE_BIDIRECTIONAL_ARROWS =
         Configuration.makeKey("notation", "hide", "bidirectional-arrows");
-    
+
     /**
      * The instance.
      */
     private static final DiagramAppearance SINGLETON = new DiagramAppearance();
 
     /**
-     * Used for FigNodeModelElement#setStereotypeView(). 
-     * Represents the default view for 
+     * Used for FigNodeModelElement#setStereotypeView().
+     * Represents the default view for
      * stereotypes applied to this node.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.ActionStereotypeViewTextual
      */
     public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
 
     /**
-     * Used for FigNodeModelElement#setStereotypeView(). 
-     * Represents the view for stereotypes where the 
+     * Used for FigNodeModelElement#setStereotypeView().
+     * Represents the view for stereotypes where the
      * default representation is replaced by a provided
-     * icon. 
-     * 
+     * icon.
+     *
      * @see org.argouml.uml.diagram.ui.ActionStereotypeViewBigIcon
      */
     public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
 
     /**
-     * Used for FigNodeModelElement#setStereotypeView(). 
-     * Represents the view for stereotypes where the 
+     * Used for FigNodeModelElement#setStereotypeView().
+     * Represents the view for stereotypes where the
      * default view is adorned with a small version of the
      * provided icon.
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.ActionStereotypeViewSmallIcon
      */
     public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
@@ -153,14 +155,16 @@ public final class DiagramAppearance implements PropertyChangeListener {
 
     /*
      * Called after the diagram font gets changed. <p>
-     * 
+     *
      * TODO: Do we need to do anything here?
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {
-        LOG.info("Diagram appearance change:" + pce.getOldValue() + " to "
-                + pce.getNewValue());
+        LOG.log(Level.INFO,
+                "Diagram appearance change:{0} to {1}",
+                new Object[]{pce.getOldValue(), pce.getNewValue()});
+
         ArgoEventPump.fireEvent(
                 new ArgoDiagramAppearanceEvent(ArgoEventTypes.DIAGRAM_FONT_CHANGED, pce));
     }
@@ -168,7 +172,7 @@ public final class DiagramAppearance implements PropertyChangeListener {
     /**
      * Gets font name. If it doesn't exist in configuration it creates new
      * entries in configuration for appearance.
-     * 
+     *
      * TODO: Why create in a getter?
      *
      * @return the name of the configured font
@@ -188,14 +192,14 @@ public final class DiagramAppearance implements PropertyChangeListener {
 
         return fontName;
     }
-    
+
     /**
-     * This is the same function as 
+     * This is the same function as
      * LookAndFeelMgr.getInstance().getStandardFont();
-     * but used for a totally different puropose: here it determines 
+     * but used for a totally different puropose: here it determines
      * a default font when none is set. In the LookAndFeelMgr it
-     * determines the looks of the UI. 
-     * 
+     * determines the looks of the UI.
+     *
      * @return the standard textfield font
      */
     private Font getStandardFont() {

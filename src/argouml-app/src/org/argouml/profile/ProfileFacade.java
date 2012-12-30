@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2007,2010 Contributors - see below
+ * Copyright (c) 2007-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,22 +39,25 @@
 
 package org.argouml.profile;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.model.InvalidElementException;
 
 /**
- * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the 
- * profile subsystem. 
- * It provides a simplified interface to the subsystem, and access to objects 
+ * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the
+ * profile subsystem.
+ * It provides a simplified interface to the subsystem, and access to objects
  * of the subsystem when the methods it provides directly aren't enough.
  *
  * @author Luis Sergio Oliveira (euluis)
  * @since 0.25.4
  */
 public class ProfileFacade {
-    
-    private static final Logger LOG = Logger.getLogger(ProfileFacade.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(ProfileFacade.class.getName());
 
     /**
      * Register a profile in the {@link ProfileManager}.
@@ -83,7 +86,7 @@ public class ProfileFacade {
     }
 
     private static void notInitialized(String string) {
-        throw new RuntimeException("ProfileFacade's " + string  
+        throw new RuntimeException("ProfileFacade's " + string
                 + " isn't initialized!");
     }
 
@@ -105,12 +108,13 @@ public class ProfileFacade {
                 try {
                     manager.removeProfile(p);
                 } catch (InvalidElementException e) {
-                    LOG.debug("Attempted to delete extent twice in removeAllProfiles ");
+                    LOG.log(Level.FINE,
+                            "Attempted to delete extent twice.");
                 }
             }
         }
     }
-    
+
     /**
      * Reset profile subsystem to initial state (primarily for testing).
      */
@@ -130,11 +134,11 @@ public class ProfileFacade {
 
     /**
      * Applies the given ProfileConfiguration to ArgoUML
-     * 
+     *
      * @param pc the profile configuration
      */
     public static void applyConfiguration(ProfileConfiguration pc) {
         getManager().applyConfiguration(pc);
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -56,15 +57,16 @@ public class WizNavigable extends UMLWizard {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(WizNavigable.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizNavigable.class.getName());
 
-    private String instructions = 
+    private String instructions =
         Translator.localize("critics.WizNavigable-ins");
-    private String option0 = 
+    private String option0 =
         Translator.localize("critics.WizNavigable-option1");
-    private String option1 = 
+    private String option1 =
         Translator.localize("critics.WizNavigable-option2");
-    private String option2 = 
+    private String option2 =
         Translator.localize("critics.WizNavigable-option3");
 
     private WizStepChoice step1 = null;
@@ -81,7 +83,7 @@ public class WizNavigable extends UMLWizard {
     public List<String> getOptions() {
         List<String> result = new ArrayList<String>();
 	Object asc = getModelElement();
-	Object ae0 = 
+	Object ae0 =
             new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 	Object ae1 =
 	    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
@@ -89,12 +91,12 @@ public class WizNavigable extends UMLWizard {
 	Object cls1 = Model.getFacade().getType(ae1);
 
 	if (cls0 != null && !"".equals(Model.getFacade().getName(cls0))) {
-	    option0 = Translator.localize("critics.WizNavigable-option4") 
+	    option0 = Translator.localize("critics.WizNavigable-option4")
                 + Model.getFacade().getName(cls0);
         }
 
 	if (cls1 != null && !"".equals(Model.getFacade().getName(cls1))) {
-	    option1 = Translator.localize("critics.WizNavigable-option5") 
+	    option1 = Translator.localize("critics.WizNavigable-option5")
                 + Model.getFacade().getName(cls1);
         }
 
@@ -128,7 +130,8 @@ public class WizNavigable extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-	LOG.debug("doAction " + oldStep);
+        LOG.log(Level.FINE, "doAction {0}", oldStep);
+
 	switch (oldStep) {
 	case 1:
 	    int choice = -1;
@@ -149,7 +152,7 @@ public class WizNavigable extends UMLWizard {
 		Model.getCoreHelper().setNavigable(ae1,
 		        choice == 1 || choice == 2);
 	    } catch (Exception pve) {
-		LOG.error("could not set navigablity", pve);
+                LOG.log(Level.SEVERE, "could not set navigablity", pve);
 	    }
 	}
     }

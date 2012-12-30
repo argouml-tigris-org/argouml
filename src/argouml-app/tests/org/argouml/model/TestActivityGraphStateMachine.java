@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,22 +39,22 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
 
 
 /**
  * Tests for the state machines in an ActivityGraph.
- * 
+ *
  * @author Tom Morris
  */
 public class TestActivityGraphStateMachine extends TestCase {
 
-    private static final Logger LOG = 
-        Logger.getLogger(TestActivityGraphStateMachine.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(TestActivityGraphStateMachine.class.getName());
+
     /**
      * The constructor.
      *
@@ -67,10 +67,10 @@ public class TestActivityGraphStateMachine extends TestCase {
 
     @Override
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
     }
 
-     
+
     /**
      * Test that enclosed states get deleted along with their state machine.
      * <p>
@@ -79,37 +79,45 @@ public class TestActivityGraphStateMachine extends TestCase {
      */
     public void testDeleteStateMachineTop() {
         // Make sure we start off clean
-       
+
         // TODO: This doesn't work, but should
 //        Collection elements = Model.getFacade().getRootElements();
 //        Model.getUmlHelper().deleteCollection(elements);
 //        elements = Model.getFacade().getRootElements();
 //        assertTrue("Failed to create clean environment", elements.isEmpty());
-        
-        // Build an activity graph with a single action state 
+
+        // Build an activity graph with a single action state
         // the way the GUI would
         Object model = Model.getModelManagementFactory().createModel();
-        LOG.debug("Created model "  + model);
+
+        LOG.log(Level.FINE, "Created model {0}", model);
+
         Object activityGraph = Model.getActivityGraphsFactory()
                 .buildActivityGraph(model);
-        LOG.debug("Created activity graph "  + activityGraph);
+
+        LOG.log(Level.FINE, "Created activity graph {0}", activityGraph);
+
         Object top = Model.getFacade().getTop(activityGraph);
+
         assertNotNull("Activity graph got created without a top state", top);
-        LOG.debug("top state "  + top);
+
+        LOG.log(Level.FINE, "top state {0}", top);
 
         Object actionState = Model.getActivityGraphsFactory()
                 .createActionState();
-        LOG.debug("Created action state "  + top);
+
+        LOG.log(Level.FINE, "Created action state {0}", top);
+
         Model.getStateMachinesHelper().setContainer(actionState, top);
 
         Collection subs = Model.getFacade().getSubvertices(top);
-        assertEquals("setContainer didn't work", actionState, 
+        assertEquals("setContainer didn't work", actionState,
                 subs.iterator().next());
 
         Collection roots = Model.getFacade().getRootElements();
         assertEquals("More than one root element", 1, roots.size());
         assertEquals("Wrong root element", model, roots.iterator().next());
-        
+
         // Delete the model and make sure everything inside goes with it
         Model.getUmlFactory().delete(model);
         Collection theDregs = Model.getFacade().getRootElements();

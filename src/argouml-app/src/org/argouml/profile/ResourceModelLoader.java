@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,8 @@
 package org.argouml.profile;
 
 import java.util.Collection;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Loads models using the default ClassLoader or a provided one.
@@ -52,33 +52,33 @@ public class ResourceModelLoader extends URLModelLoader {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ResourceModelLoader.class);
-    
+    private static final Logger LOG = Logger.getLogger(ResourceModelLoader.class.getName());
+
     private Class clazz;
-    
+
     /**
-     * The default constructor for this class. Loads resources from the same 
+     * The default constructor for this class. Loads resources from the same
      * ClassLoader that loaded this class.
      */
     public ResourceModelLoader() {
         this.clazz = this.getClass();
     }
-    
+
     /**
      * Loads resources from the ClassLoader that loaded the given class
-     * 
+     *
      * @param c the reference class
      */
     public ResourceModelLoader(Class c) {
         clazz = c;
     }
 
-    
-    public Collection loadModel(ProfileReference reference) 
+
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
-        LOG.info("Loading profile from resource'" + reference.getPath() + "'");
-        return super.loadModel(clazz.getResource(reference.getPath()), 
+        LOG.log(Level.INFO, "Loading profile from resource {0}", reference.getPath());
+
+        return super.loadModel(clazz.getResource(reference.getPath()),
             reference.getPublicReference());
     }
 

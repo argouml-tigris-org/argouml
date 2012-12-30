@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,10 +49,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.ui.UndoableAction;
 
 /**
  * Test creation of Collaboration diagrams.
@@ -121,7 +121,7 @@ public class TestActionCollaborationDiagram extends TestCase {
     protected void setUp() {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
-        
+
         project = ProjectManager.getManager().makeEmptyProject();
 
         action = getAction();
@@ -141,9 +141,8 @@ public class TestActionCollaborationDiagram extends TestCase {
      * @param diagram The diagram to check the namespace for.
      */
     protected void checkNamespace(ArgoDiagram diagram) {
-        assertTrue(
-        	   "The Collaboration diagram has a non-valid namespace",
-        	   Model.getFacade().isACollaboration(diagram.getNamespace()));
+        assertTrue("The Collaboration diagram has a non-valid namespace",
+                   Model.getFacade().isACollaboration(diagram.getNamespace()));
     }
 
 

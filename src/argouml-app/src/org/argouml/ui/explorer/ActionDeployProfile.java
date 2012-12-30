@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,11 +42,12 @@ package org.argouml.ui.explorer;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
@@ -64,19 +65,19 @@ import org.argouml.util.ArgoFrame;
  * it (pointless, because a profile cannot be applied to itself), and also don't
  * change the configuration (so it will only be loaded on every startup when it
  * is deployed into a default profile directory).
- * 
+ *
  * @author Thomas Neustupny
  */
 public class ActionDeployProfile extends AbstractAction {
 
-    private static final Logger LOG = Logger
-            .getLogger(ActionDeployProfile.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionDeployProfile.class.getName());
 
     private Object undeployedProfile;
 
     /**
      * Default Constructor
-     * 
+     *
      * @param profile the selected profile
      */
     public ActionDeployProfile(Object profile) {
@@ -108,13 +109,13 @@ public class ActionDeployProfile extends AbstractAction {
             profileManager.registerProfile(new UserDefinedProfile(f,
                 profileManager));
         } catch (ProfileException e) {
-            LOG.warn("failed to load profile from file " + f.getPath(), e);
+            LOG.log(Level.WARNING, "failed to load profile from file " + f.getPath(), e);
         }
     }
 
     /**
      * Offers the saving of the profile by presenting a file dialog.
-     * 
+     *
      * @param fn the suggested default path for the file dialog
      * @return the File instance where the profile is saved, null on abort
      */

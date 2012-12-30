@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepManyTextFields;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -51,14 +52,15 @@ import org.argouml.model.Model;
 /**
  * A non-modal wizard to help the user change the name of a ModelElement to a
  * better name.
- * 
+ *
  * @author jrobbins
  */
 public class WizManyNames extends UMLWizard {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(WizManyNames.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizManyNames.class.getName());
 
     /**
      * The text that describes what to be done.
@@ -75,7 +77,7 @@ public class WizManyNames extends UMLWizard {
 
     /**
      * The constructor.
-     * 
+     *
      */
     public WizManyNames() {
     }
@@ -83,7 +85,7 @@ public class WizManyNames extends UMLWizard {
 
     /**
      * Set the list of offending ModelElements.
-     * 
+     *
      * @param elements the list of offending ModelElements
      */
     public void setModelElements(List elements) {
@@ -98,7 +100,7 @@ public class WizManyNames extends UMLWizard {
 
         mes = elements;
     }
-    
+
     /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
@@ -125,7 +127,8 @@ public class WizManyNames extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-        LOG.debug("doAction " + oldStep);
+        LOG.log(Level.FINE, "doAction {0}", oldStep);
+
         switch (oldStep) {
         case 1:
             List<String> newNames = null;
@@ -139,7 +142,7 @@ public class WizManyNames extends UMLWizard {
                     Model.getCoreHelper().setName(me, newNames.get(i));
                 }
             } catch (Exception pve) {
-                LOG.error("could not set name", pve);
+                LOG.log(Level.SEVERE, "could not set name", pve);
             }
             break;
 

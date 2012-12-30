@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,11 +46,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.NotImplementedException;
@@ -74,14 +74,14 @@ import org.omg.uml.modelmanagement.UmlPackage;
 class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
     private static final Logger LOG =
-        Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class);
+        Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class.getName());
 
     /**
      * The model implementation.
      */
     private MDRModelImplementation modelImpl;
 
-    private static Map<String, String> packageMap = 
+    private static Map<String, String> packageMap =
         new HashMap<String, String>(16);
 
     /**
@@ -102,12 +102,12 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         packageMap.put("modelmanagement", "Model_Management");
     }
 
-    
+
     public Collection<Stereotype> getStereotypes(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException("A namespace was expected we got " + ns);
         }
-        
+
         List<Stereotype> l = new ArrayList<Stereotype>();
         // TODO: this could be a huge collection - find a more efficient way
         try {
@@ -126,7 +126,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
     /* TODO: Make this work when the given stereotype
      * has more than one baseclass.
-     * TODO: Currently only works for stereotypes where the baseclass is 
+     * TODO: Currently only works for stereotypes where the baseclass is
      * equal to the given one - inheritance does not work.*/
     public Object getStereotype(Object ns, Object stereo) {
         if (!(ns instanceof Namespace)) {
@@ -139,13 +139,13 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
         try {
             String name = ((ModelElement) stereo).getName();
-            Collection<String> baseClasses = 
+            Collection<String> baseClasses =
                 ((Stereotype) stereo).getBaseClass();
             if (name == null || baseClasses.size() != 1) {
                 return null;
             }
             String baseClass = baseClasses.iterator().next();
-            
+
             for (Stereotype o : getStereotypes(ns)) {
                 if (name.equals(o.getName())
                         && o.getBaseClass().contains(baseClass)) {
@@ -169,13 +169,13 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
         try {
             String name = ((Stereotype) stereo).getName();
-            Collection<String> baseClasses = 
+            Collection<String> baseClasses =
                 ((Stereotype) stereo).getBaseClass();
             if (name == null || baseClasses.size() != 1) {
                 return null;
             }
             String baseClass = baseClasses.iterator().next();
-            
+
             for (Model model : ((Collection<Model>) models)) {
                 // TODO: this should call the single namespace form
                 // getStereotype(it2.next(); stereo);
@@ -198,7 +198,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return modelImpl.getMetaTypes().getName(m);
     }
 
-    
+
     /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(java.util.Collection, java.lang.Object)
      */
@@ -316,8 +316,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             if (base == null && !(st.getBaseClass().isEmpty())) {
                 return false;
             }
-            
-            return name.equals(st.getName()) 
+
+            return name.equals(st.getName())
                 && st.getBaseClass().contains(base);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -333,9 +333,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             if (isStereotype(object, name, base)) {
                 return true;
             }
-            /* TODO: mvw: do we really look into super-types of the stereotype, 
+            /* TODO: mvw: do we really look into super-types of the stereotype,
              * or should we be looking into super-types of the baseclass? */
-            Iterator it = 
+            Iterator it =
                 modelImpl.getCoreHelper().getSupertypes(object).iterator();
             while (it.hasNext()) {
                 if (isStereotypeInh(it.next(), name, base)) {
@@ -416,7 +416,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setValueOfTag(Object handle, String value) {
         setDataValues(handle, new String[] {value});
     }
-    
+
     public void setDataValues(Object handle, String[] values) {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;
@@ -475,7 +475,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setTaggedValue(Object handle, Object property, Object value) {
         throw new NotImplementedException();
     }
- 
+
     public void setTagType(Object handle, String tagType) {
         if (handle instanceof TagDefinition) {
             // TODO: What type of validation can we do here on tagType?
@@ -517,7 +517,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
         return false;
     }
-    
+
     public Object makeProfileApplicable(Object handle) {
         // there is nothing to do in UML1.4
         return handle;

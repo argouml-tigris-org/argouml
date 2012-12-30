@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,10 +45,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-//import javax.swing.event.EventListenerList;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -62,7 +60,7 @@ import org.apache.log4j.Logger;
  * TODO: This is hardwired to assume a fixed single byte
  * character encoding.  It needs to be updated to handle different
  * encodings, including multi-byte encodings. - tfm 20070607
- * 
+ *
  * @author Bob Tarling
  */
 class XmlInputStream extends BufferedInputStream {
@@ -82,7 +80,7 @@ class XmlInputStream extends BufferedInputStream {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(XmlInputStream.class);
+        Logger.getLogger(XmlInputStream.class.getName());
 
     /**
      * Construct a new XmlInputStream.
@@ -211,7 +209,7 @@ class XmlInputStream extends BufferedInputStream {
                     // cover the case we deal with.  Using a real XML parser
                     // would be better.
                     // Look for XML document has just a single root element
-                    || (currentTag.charAt(currentTag.length() - 1) == '/' 
+                    || (currentTag.charAt(currentTag.length() - 1) == '/'
                         && tag.startsWith(tagName)
                         && tag.indexOf(' ') == tagName.indexOf(' '))) {
                 return true;
@@ -305,8 +303,8 @@ class XmlInputStream extends BufferedInputStream {
                         ch = (char) realRead();
                     }
                     endTagName = "/" + tagName;
-                    LOG.info("Start tag = " + tagName);
-                    LOG.info("End tag = " + endTagName);
+                    LOG.log(Level.INFO, "Start tag = {0}", tagName);
+                    LOG.log(Level.INFO, "End tag = {0}", endTagName);
                 }
                 reset();
                 return;

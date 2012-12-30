@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Agency manages Critics.  Since classes are not really first class
@@ -67,9 +67,9 @@ import org.apache.log4j.Logger;
  * relevant to those manipulations to be applied.  This transition is
  * still half done.  Triggers are the critiquing requests.  The code
  * for triggers is currently dormant (latent?).<p>
- * 
+ *
  * TODO: There is a strong dependency cycle between Agency and Designer.  They
- * either need to be merged into a single class or partitioned differently, 
+ * either need to be merged into a single class or partitioned differently,
  * perhaps using an interface to break the cycle.  The Designer singleton gets
  * passed to almost every single part of the Critic subsystem, creating strong
  * coupling throughout. - tfm 20070620
@@ -80,16 +80,16 @@ public class Agency extends Observable { //implements java.io.Serialization
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Agency.class);
+    private static final Logger LOG = Logger.getLogger(Agency.class.getName());
 
 
     /**
      * A registry of all critics that are currently loaded into the
      * design environment.
      */
-    private static Hashtable<Class, List<Critic>> criticRegistry = 
+    private static Hashtable<Class, List<Critic>> criticRegistry =
         new Hashtable<Class, List<Critic>>(100);
-    
+
     private static List<Critic> critics = new ArrayList<Critic>();
 
     /**
@@ -97,8 +97,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      * be active.
      */
     private ControlMech controlMech;
-    
-    private static Hashtable<String, Critic> singletonCritics = 
+
+    private static Hashtable<String, Critic> singletonCritics =
         new Hashtable<String, Critic>(40);
 
 
@@ -130,7 +130,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * theAgency is actually stored in <code>Designer.theDesigner()</code>.
      *
      * @see Designer#theDesigner
-     * 
+     *
      * @return Agency the Agency instance
      */
     public static Agency theAgency() {
@@ -182,7 +182,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         try {
             dmClass = Class.forName(dmClassName);
         } catch (java.lang.ClassNotFoundException e) {
-            LOG.error("Error loading dm " + dmClassName, e);
+            LOG.log(Level.SEVERE, "Error loading dm " + dmClassName, e);
             return;
         }
         Critic cr = singletonCritics.get(crClassName);
@@ -191,16 +191,16 @@ public class Agency extends Observable { //implements java.io.Serialization
             try {
                 crClass = Class.forName(crClassName);
             } catch (java.lang.ClassNotFoundException e) {
-                LOG.error("Error loading cr " + crClassName, e);
+                LOG.log(Level.SEVERE, "Error loading cr " + crClassName, e);
                 return;
             }
             try {
                 cr = (Critic) crClass.newInstance();
             } catch (java.lang.IllegalAccessException e) {
-                LOG.error("Error instancating cr " + crClassName, e);
+                LOG.log(Level.SEVERE, "Error instancating cr " + crClassName, e);
                 return;
             } catch (java.lang.InstantiationException e) {
-                LOG.error("Error instancating cr " + crClassName, e);
+                LOG.log(Level.SEVERE, "Error instancating cr " + crClassName, e);
                 return;
             }
             singletonCritics.put(crClassName, cr);
@@ -228,7 +228,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         if (!theCritics.contains(cr)) {
             theCritics.add(cr);
             notifyStaticObservers(cr);
-            LOG.debug("Registered: " + theCritics.toString());
+            LOG.log(Level.FINE, "Registered: {0}", theCritics );
             cachedCritics.remove(clazz);
             addCritic(cr);
         }
@@ -242,21 +242,21 @@ public class Agency extends Observable { //implements java.io.Serialization
     public static void register(Critic cr, Object clazz) {
         register(cr, (Class) clazz);
     }
-    
+
     /**
      * Register a critic in the global table of critics that have been
      * loaded.
-     * 
+     *
      * @param cr the critic to register
      */
     public static void register(Critic cr) {
         Set<Object> metas = cr.getCriticizedDesignMaterials();
         for (Object meta : metas) {
-            register(cr, meta);            
+            register(cr, meta);
         }
     }
-    
-    private static Hashtable<Class, Collection<Critic>> cachedCritics = 
+
+    private static Hashtable<Class, Collection<Critic>> cachedCritics =
         new Hashtable<Class, Collection<Critic>>();
 
     /**
@@ -355,7 +355,7 @@ public class Agency extends Observable { //implements java.io.Serialization
                 try {
                     c.critique(dm, d);
                 } catch (Exception ex) {
-                    LOG.error("Disabling critique due to exception\n"
+                    LOG.log(Level.SEVERE, "Disabling critique due to exception\n"
 			      + c + "\n" + dm,
 			      ex);
                     c.setEnabled(false);
@@ -371,8 +371,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      * Note: I am setting global data, i.e. the
      * isEnabled bit in each critic, based on the needs of one designer.
      * I don't really support more than one Designer.
-     * Which is why each designer 
-     * (if we would support more than one designer) 
+     * Which is why each designer
+     * (if we would support more than one designer)
      * has his own Agency.
      *
      * TODO: should loop over simpler list of critics, not CompoundCritics

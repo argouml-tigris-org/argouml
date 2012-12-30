@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,19 +15,18 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.Component;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 abstract class UMLValueSpecificationValueField {
 
     /**
      * TODO: see if protected or need to be present in each subclass
      */
-    protected static final Logger LOG = Logger
-	    .getLogger(UMLValueSpecificationValueField.class);
+    protected static final Logger LOG =
+        Logger.getLogger(UMLValueSpecificationValueField.class.getName());
 
     /**
-     * 
+     *
      */
     private UMLValueSpecificationModel model;
 
@@ -41,7 +40,7 @@ abstract class UMLValueSpecificationValueField {
 
     /**
      * Constructor which create the Component
-     * 
+     *
      * @param model
      * @param notify
      */
@@ -58,7 +57,7 @@ abstract class UMLValueSpecificationValueField {
     /**
      * Update all the Field in the Component "allField", which are display, with
      * the value of the model
-     * 
+     *
      */
     protected abstract void updateFields();
 
@@ -76,7 +75,7 @@ abstract class UMLValueSpecificationValueField {
     /**
      * Return a component with all field need to display and modify this
      * ValueSpecification
-     * 
+     *
      * @return
      */
     public Component getComponent() {

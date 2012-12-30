@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.net.URL;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *   This class provides a user configuration based upon properties.
@@ -97,7 +97,7 @@ public abstract class ConfigurationHandler {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ConfigurationHandler.class);
+        Logger.getLogger(ConfigurationHandler.class.getName());
 
     /**
      * Anonymous constructor allows configuration changes.
@@ -436,7 +436,7 @@ public abstract class ConfigurationHandler {
         if (pcl == null) {
             pcl = new PropertyChangeSupport(this);
         }
-        LOG.debug("addPropertyChangeListener(" + p + ")");
+        LOG.log(Level.FINE, "addPropertyChangeListener({0})", p);
         pcl.addPropertyChangeListener(p);
     }
 
@@ -447,7 +447,7 @@ public abstract class ConfigurationHandler {
      */
     public final void removeListener(PropertyChangeListener p) {
         if (pcl != null) {
-            LOG.debug("removePropertyChangeListener()");
+            LOG.log(Level.FINE, "removePropertyChangeListener()");
             pcl.removePropertyChangeListener(p);
         }
     }
@@ -463,8 +463,7 @@ public abstract class ConfigurationHandler {
         if (pcl == null) {
             pcl = new PropertyChangeSupport(this);
         }
-        LOG.debug("addPropertyChangeListener("
-                                + key.getKey() + ")");
+        LOG.log(Level.FINE, "addPropertyChangeListener({0})", key.getKey());
         pcl.addPropertyChangeListener(key.getKey(), p);
     }
 
@@ -477,8 +476,7 @@ public abstract class ConfigurationHandler {
     public final void removeListener(ConfigurationKey key,
                                      PropertyChangeListener p) {
         if (pcl != null) {
-            LOG.debug("removePropertyChangeListener("
-                                    + key.getKey() + ")");
+            LOG.log(Level.FINE, "removePropertyChangeListener({0})", key.getKey());
             pcl.removePropertyChangeListener(key.getKey(), p);
         }
     }
@@ -577,5 +575,3 @@ public abstract class ConfigurationHandler {
      */
     public abstract void remove(String key);
 }
-
-

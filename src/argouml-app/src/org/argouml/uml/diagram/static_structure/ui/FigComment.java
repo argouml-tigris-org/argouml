@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,10 +54,11 @@ import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
@@ -90,7 +91,8 @@ public class FigComment
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(FigComment.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigComment.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -133,7 +135,7 @@ public class FigComment
     private void initialize() {
         Color fg = super.getLineColor(); // Use super because not fully init'd
         Color fill = super.getFillColor();
-        
+
         outlineFig = new FigPoly(fg, fill);
         outlineFig.addPoint(0, 0);
         outlineFig.addPoint(width - 1 - dogear, 0);
@@ -160,7 +162,7 @@ public class FigComment
         addFig(urCorner);
         addFig(getStereotypeFig());
         addFig(bodyTextFig);
-        
+
         col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
 
@@ -183,19 +185,19 @@ public class FigComment
     /**
      * Construct a comment figure with the given model element, bounds, and
      * settings. This constructor is used by the PGML parser.
-     * 
+     *
      * @param owner owning Comments
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigComment(Object owner, Rectangle bounds, 
+    public FigComment(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        
-        bodyTextFig = new FigMultiLineText(getOwner(), 
-                new Rectangle(2, 2, width - 2 - dogear, height - 4), 
+
+        bodyTextFig = new FigMultiLineText(getOwner(),
+                new Rectangle(2, 2, width - 2 - dogear, height - 4),
                 getSettings(), true);
-        
+
         initialize();
         updateBody();
         if (bounds != null) {
@@ -267,11 +269,11 @@ public class FigComment
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
             Object owner = getOwner();
-            if (Model.getFacade().isAModelElement(owner) 
+            if (Model.getFacade().isAModelElement(owner)
                     && !Model.getModelManagementHelper().isReadOnly(owner)) {
                 readyToEdit = true;
             } else {
-                LOG.debug("not ready to edit note");
+                LOG.log(Level.FINE, "not ready to edit note");
                 return;
             }
         }
@@ -303,8 +305,9 @@ public class FigComment
 		new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
         } else {
-            LOG.debug("FigNodeModelElement got vetoableChange"
-		      + " from non-owner:" + src);
+            LOG.log(Level.FINE,
+                    "FigNodeModelElement got vetoableChange from non-owner: {0}",
+                    src);
         }
     }
 
@@ -373,7 +376,7 @@ public class FigComment
                 storeBody("");
                 readyToEdit = true;
             } else {
-                LOG.debug("not ready to edit note");
+                LOG.log(Level.FINE, "not ready to edit note");
                 return;
             }
         }
@@ -536,7 +539,7 @@ public class FigComment
     public boolean getUseTrapRect() {
         return true;
     }
-    
+
     /**
      * Always returns null as the FigComment does not display its name.
      * @return null
@@ -649,7 +652,7 @@ public class FigComment
         } else if (mee instanceof RemoveAssociationEvent
                 && mee.getPropertyName().equals("annotatedElement")) {
             /* Remove the commentedge.
-             * If there are more then one comment-edges between 
+             * If there are more then one comment-edges between
              * the 2 objects, then delete them all. */
             Collection<FigEdgeNote> toRemove = new ArrayList<FigEdgeNote>();
             Collection c = getFigEdges(); // all connected edges
@@ -663,7 +666,7 @@ public class FigComment
                     toRemove.add(fen);
                 }
             }
-            
+
             for (FigEdgeNote fen : toRemove) {
                 fen.removeFromDiagram();
             }
@@ -717,7 +720,7 @@ public class FigComment
         // flag. Then set the bounds for the rectangle we have defined.
         newlyCreated = false;
     }
-    
+
     /**
      * Get the text body of the comment.
      * @return the body of the comment

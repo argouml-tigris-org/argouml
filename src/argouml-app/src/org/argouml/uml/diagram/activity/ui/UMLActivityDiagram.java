@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,10 +48,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ActivityGraphsHelper;
@@ -103,18 +104,18 @@ import org.tigris.gef.presentation.FigNode;
  * TODO: Finish the work on subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLActivityDiagram.class);
-    
+        Logger.getLogger(UMLActivityDiagram.class.getName());
+
     /**
      * The UID.
      */
     private static final long serialVersionUID = 6223128918989919230L;
-    
+
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
      */
@@ -147,8 +148,8 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     /**
      * Constructor.
-     * 
-     * @deprecated for 0.28 by tfmorris.  Use 
+     *
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -168,7 +169,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
      *
      * @param namespace the namespace for the diagram
      * @param agraph the ActivityGraph for the diagram
-     * @deprecated for 0.28 by tfmorris.  Use 
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -179,7 +180,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         if (namespace == null) {
             namespace = Model.getFacade().getNamespace(agraph);
         }
-        
+
         if (!Model.getFacade().isANamespace(namespace)
             || !Model.getFacade().isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
@@ -253,10 +254,10 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         setNamespace(namespace);
 
         theActivityGraph = agraph;
-        
-        
+
+
         ActivityDiagramGraphModel gm = createGraphModel();
-        
+
         gm.setHomeModel(namespace);
         if (theActivityGraph != null) {
             gm.setMachine(theActivityGraph);
@@ -269,12 +270,12 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
-        /* Listen to activitygraph deletion, 
+        /* Listen to activitygraph deletion,
          * delete this diagram. */
-        Model.getPump().addModelEventListener(this, theActivityGraph, 
+        Model.getPump().addModelEventListener(this, theActivityGraph,
                 new String[] {"remove", "namespace"});
     }
-    
+
     // TODO: Needs to be tidied up after stable release. Graph model
     // should be created in constructor
     private ActivityDiagramGraphModel createGraphModel() {
@@ -284,7 +285,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 	    return new ActivityDiagramGraphModel();
 	}
     }
-    
+
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -292,12 +293,12 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         if ((evt.getSource() == theActivityGraph)
                 && (evt instanceof DeleteInstanceEvent)
                 && "remove".equals(evt.getPropertyName())) {
-            Model.getPump().removeModelEventListener(this, 
+            Model.getPump().removeModelEventListener(this,
                     theActivityGraph, new String[] {"remove", "namespace"});
             getProject().moveToTrash(this);
         }
         if (evt.getSource() == getStateMachine()) {
-            Object newNamespace = 
+            Object newNamespace =
                 Model.getFacade().getNamespace(getStateMachine());
             if (getNamespace() != newNamespace) {
                 /* The namespace of the activitygraph is changed! */
@@ -324,7 +325,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     /**
      * @return the statemachine
-     * 
+     *
      * TODO: If this method is called by any of the Figs, it will introduce
      * a dependency cycle.  It would be much better if they could just
      * use {@link org.argouml.uml.diagram.ArgoDiagram#getOwner()} which does
@@ -606,14 +607,14 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         }
         return actionGuard;
     }
-    
+
     protected Action getActionCallAction() {
         if (actionCallAction == null) {
             actionCallAction = ActionNewCallAction.getButtonInstance();
         }
         return actionCallAction;
     }
-    
+
     protected Action getActionCreateAction() {
         if (actionCreateAction == null) {
             actionCreateAction = ActionNewCreateAction.getButtonInstance();
@@ -634,17 +635,17 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         }
         return actionReturnAction;
     }
-    
+
     protected Action getActionSendAction() {
         if (actionSendAction == null) {
             actionSendAction = ActionNewSendAction.getButtonInstance();
         }
         return actionSendAction;
     }
-    
+
     protected Action getActionTerminateAction() {
         if (actionTerminateAction == null) {
-            actionTerminateAction = 
+            actionTerminateAction =
                 ActionNewTerminateAction.getButtonInstance();
         }
         return actionTerminateAction;
@@ -652,7 +653,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     protected Action getActionUninterpretedAction() {
         if (actionUninterpretedAction == null) {
-            actionUninterpretedAction = 
+            actionUninterpretedAction =
                 ActionNewUninterpretedAction.getButtonInstance();
         }
         return actionUninterpretedAction;
@@ -660,7 +661,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     protected Action getActionActionSequence() {
         if (actionActionSequence == null) {
-            actionActionSequence = 
+            actionActionSequence =
                 ActionNewActionSequence.getButtonInstance();
         }
         return actionActionSequence;
@@ -700,7 +701,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     public boolean relocate(Object base) {
         return false;
     }
-    
+
     /**
      * Once the diagram has loaded we build the previous/next links between
      * any swimlanes.
@@ -711,7 +712,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
 	// Create a map of partitions keyed by x coordinate
 	HashMap map = new HashMap();
-	
+
 	Iterator it = new ArrayList(getLayer().getContents()).iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
@@ -719,11 +720,11 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 		map.put(Integer.valueOf(f.getX()), f);
 	    }
 	}
-	
+
 	// Sort the x coordinates into order
 	List xList = new ArrayList(map.keySet());
         Collections.sort(xList);
-	
+
         // Link the previous/next reference of the swimlanes
         // according to the x order.
 	it = xList.iterator();
@@ -736,7 +737,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 		}
 		fp.setPreviousPartition(previous);
 		fp.setNextPartition(null);
-		previous = fp; 
+		previous = fp;
 	    }
 	}
     }
@@ -750,29 +751,29 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
      */
     public void encloserChanged(
             FigNode enclosed, FigNode oldEncloser, FigNode newEncloser) {
-	
+
 	if (oldEncloser == null && newEncloser == null) {
 	    return;
 	}
-	
+
 	if (enclosed instanceof FigStateVertex
 		|| enclosed instanceof FigObjectFlowState) {
 	    changePartition(enclosed);
 	}
     }
-    
+
     /**
      * Extends basic functionality to handle logic for enclosement of states
      * within a swimlane.
      * @param enclosed The FigNode enclosed.
      */
     private void changePartition(FigNode enclosed) {
-	
+
 	assert enclosed != null;
-	
+
 	Object state = enclosed.getOwner();
 	ActivityGraphsHelper activityGraph = Model.getActivityGraphsHelper();
-	
+
         for (Object f : getLayer().getContentsNoEdges()) {
             if (f instanceof FigPartition) {
         	FigPartition fig = (FigPartition) f;
@@ -789,7 +790,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     private boolean isStateInPartition(Object state, Object partition) {
 	return Model.getFacade().getContents(partition).contains(state);
     }
-    
+
     @Override
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isAPartition(objectToAccept)) {
@@ -799,7 +800,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         } else if (Model.getFacade().isAPseudostate(objectToAccept)) {
             Object kind = Model.getFacade().getKind(objectToAccept);
             if (kind == null) {
-                LOG.warn("found a null type pseudostate");
+                LOG.log(Level.WARNING, "found a null type pseudostate");
                 return false;
             }
             if (kind.equals(
@@ -815,15 +816,15 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         }
         return false;
     }
-    
+
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAPartition(modelElement)) {
             figNode = new FigPartition(modelElement, bounds, settings);
         } else if (Model.getFacade().isAActionState(modelElement)) {
@@ -839,7 +840,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         } else if (Model.getFacade().isAPseudostate(modelElement)) {
             Object kind = Model.getFacade().getKind(modelElement);
             if (kind == null) {
-                LOG.warn("found a null type pseudostate");
+                LOG.log(Level.WARNING, "found a null type pseudostate");
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
@@ -857,20 +858,21 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
                     Model.getPseudostateKind().getJoin())) {
                 figNode = new FigJoinState(modelElement, bounds, settings);
             } else {
-                LOG.warn("found a type not known");
+                LOG.log(Level.WARNING, "found a type not known");
             }
         } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         }
-        
+
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }
-    
+
 
 }

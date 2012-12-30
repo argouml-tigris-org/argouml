@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
@@ -77,7 +78,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
- * Derived from NSUML implementation by: 
+ * Derived from NSUML implementation by:
  * @author Thierry Lach
  */
 class CollaborationsHelperMDRImpl implements CollaborationsHelper {
@@ -87,11 +88,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      */
     private MDRModelImplementation modelImpl;
 
-    private static final Logger LOG = Logger.getLogger(CollaborationsHelperMDRImpl.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(CollaborationsHelperMDRImpl.class.getName());
+
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -156,7 +158,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
         List<Classifier> roles = new ArrayList<Classifier>();
         try {
-            Collection<AssociationEnd> associationEnds = 
+            Collection<AssociationEnd> associationEnds =
                 Model.getFacade().getAssociationEnds(role);
             if (!associationEnds.isEmpty()) {
                 for (AssociationEnd end : associationEnds) {
@@ -187,7 +189,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         ClassifierRole to = (ClassifierRole) ato;
 
         try {
-            Collection<AssociationEnd> ends = 
+            Collection<AssociationEnd> ends =
                 Model.getFacade().getAssociationEnds(from);
             for (AssociationEnd end : ends) {
                 if (end instanceof AssociationEndRole) {
@@ -205,14 +207,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
         return null;
     }
-    
+
 
     public Collection<Message> getAllPossibleActivators(Object ames) {
         Message mes = (Message) ames;
         if (mes == null || mes.getInteraction() == null) {
             return Collections.unmodifiableCollection(Collections.EMPTY_LIST);
         }
-        
+
         try {
             Interaction inter = mes.getInteraction();
             Collection<Message> predecessors = mes.getPredecessor();
@@ -324,12 +326,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                     "In getAllPossiblePredecessors: "
                             + "argument message is null");
         }
-        
+
         try {
             Interaction inter = message.getInteraction();
             List<Message> list = new ArrayList<Message>();
             for (Message mes : inter.getMessage()) {
-                if (mes.getActivator() == message.getActivator() 
+                if (mes.getActivator() == message.getActivator()
                         && message != mes
                         && !mes.getPredecessor().contains(message)
                         && !message.getPredecessor().contains(message)) {
@@ -380,13 +382,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
 
     public Collection<Feature> allAvailableFeatures(Object arole) {
-        LOG.info("allAvailableFeatures start");
-        
+        LOG.log(Level.INFO, "allAvailableFeatures start");
+
         if (arole instanceof ClassifierRole) {
             try {
                 List<Feature> returnList = new ArrayList<Feature>();
                 ClassifierRole role = (ClassifierRole) arole;
-                for (ModelElement genElem 
+                for (ModelElement genElem
                         : CoreHelperMDRImpl.getAllParents(role)) {
                     if (genElem instanceof ClassifierRole) {
                         returnList.addAll(allAvailableFeatures(genElem));
@@ -395,7 +397,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 for (Classifier classifier : role.getBase()) {
                     returnList.addAll(classifier.getFeature());
                 }
-                LOG.info("allAvailableFeatures " + returnList.size());
+                LOG.log(Level.INFO, "allAvailableFeatures {0}", returnList.size());
                 return returnList;
             } catch (InvalidObjectException e) {
                 throw new InvalidElementException(e);
@@ -407,12 +409,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
 
     public Collection allAvailableContents(Object arole) {
-        LOG.info("allAvailableContents start");
+        LOG.log(Level.INFO, "allAvailableContents start");
         try {
             if (arole instanceof ClassifierRole) {
                 List returnList = new ArrayList();
                 ClassifierRole role = (ClassifierRole) arole;
-                for (ModelElement genElem 
+                for (ModelElement genElem
                         : CoreHelperMDRImpl.getAllParents(role)) {
                     if (genElem instanceof ClassifierRole) {
                         returnList.addAll(allAvailableContents(genElem));
@@ -421,7 +423,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 for (Classifier baseClassifier : role.getBase()) {
                     returnList.addAll(baseClassifier.getOwnedElement());
                 }
-                LOG.info("allAvailableContents " + returnList.size());
+                LOG.log(Level.INFO, "allAvailableFeatures {0}", returnList.size());
                 return returnList;
             }
         } catch (InvalidObjectException e) {
@@ -450,9 +452,9 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * Returns all possible bases for some AssociationRole taking into account
      * the wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
      * <p>
-     * Beware: this function does not return the actual base! 
+     * Beware: this function does not return the actual base!
      * Which is by design; there are easier ways to retrieve the actual base.
-     * 
+     *
      * @param aRole
      *            the given associationrole
      * @return Collection all possible bases
@@ -478,7 +480,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
         if (bases.isEmpty()) {
             ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
-            Namespace ns = 
+            Namespace ns =
                 ((Collaboration) aRole.getNamespace()).getNamespace();
             ret.addAll(
                     mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));
@@ -488,7 +490,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             CoreHelper ch = modelImpl.getCoreHelper();
             /* This double 'for' loop may be optimised as follows:
              * - Use arrays in stead of a Set for bases
-             * - Have the second loop start from the element after base1 
+             * - Have the second loop start from the element after base1
              * ... but I chose not to do this, since the gain is small,
              * and this is only used for a lazily filled combo.
              * BTW: This is also used by Notation.*/
@@ -502,14 +504,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // An Association can only have a single unnamed ClassifierRole, so
         Collection<UmlAssociation> listToRemove = new ArrayList<UmlAssociation>();
         for (UmlAssociation association : ret) {
-            Collection<AssociationRole> associationRoles = 
+            Collection<AssociationRole> associationRoles =
                 ((org.omg.uml.UmlPackage) (association)
                     .refOutermostPackage()).getCollaborations()
                     .getABaseAssociationRole().getAssociationRole(association);
             if (associationRoles.isEmpty()) {
                 continue;
             }
-            // if we are unnamed eliminate all classifiers which are already 
+            // if we are unnamed eliminate all classifiers which are already
             // the base of some role
             if (aRole.getName() == null || aRole.getName().equals("")) {
                 listToRemove.add(association);
@@ -531,7 +533,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * Returns all possible bases for some classifierrole taking into account
      * the wellformednessrules as defined in section 2.10.3 of the UML 1.4 spec.
      * <p>
-     * 
+     *
      * @param role
      *            the given classifierrole
      * @return Collection all possible bases
@@ -553,14 +555,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // TODO: This probably belongs in a critic instead of here
         Collection<Classifier> listToRemove = new ArrayList<Classifier>();
         for (Classifier classifier : returnList) {
-            Collection<ClassifierRole> classifierRoles = 
+            Collection<ClassifierRole> classifierRoles =
                 ((org.omg.uml.UmlPackage) (classifier)
                     .refOutermostPackage()).getCollaborations()
                     .getAClassifierRoleBase().getClassifierRole(classifier);
             if (classifierRoles.isEmpty()) {
                 continue;
             }
-            // if we are unnamed eliminate all classifiers which are already 
+            // if we are unnamed eliminate all classifiers which are already
             // the base of some role
             if (role.getName() == null || role.getName().equals("")) {
                 listToRemove.add(classifier);
@@ -576,8 +578,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         returnList.removeAll(listToRemove);
 
         /* We need to verify that ns is a Package,
-         * if not - find its parent package! 
-         * Otherwise this causes an exception when creating 
+         * if not - find its parent package!
+         * Otherwise this causes an exception when creating
          * a sequence diagram for a ClassifierRole.*/
         if (!(ns instanceof UmlPackage)) {
             while (ns != null) {
@@ -588,7 +590,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             }
         }
         // now get all classifiers imported from other packages
-        // TODO: This should probably happen automatically in 
+        // TODO: This should probably happen automatically in
         // getAllModelElementsOfKind() - tfm
         if (modelImpl.getFacade().isAPackage(ns)) {
             returnList.addAll(getAllImportedClassifiers(ns));
@@ -596,11 +598,11 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
         return returnList;
     }
-    
+
     /**
      * Return a collection of classifiers that are imported from other packages
      * into the given namespace.
-     *  
+     *
      * @param obj the given namespace
      * @return a collection of classifiers
      */
@@ -609,16 +611,16 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                         .getAllImportedElements(obj);
         return filterClassifiers(c);
     }
-    
+
     private Collection<Classifier> filterClassifiers(Collection in) {
         Collection<Classifier> out = new ArrayList<Classifier>();
         for (Object o : in) {
-            if (o instanceof Classifier && !(o instanceof ClassifierRole)) 
+            if (o instanceof Classifier && !(o instanceof ClassifierRole))
                 out.add((Classifier) o);
         }
         return out;
     }
-    
+
 
     public void setBase(Object arole, Object abase) {
         if (arole == null) {
@@ -655,14 +657,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                     }
                 }
             }
-    
+
             return;
         } else if (arole instanceof AssociationEndRole) {
             AssociationEndRole role = (AssociationEndRole) arole;
             AssociationEnd base = (AssociationEnd) abase;
 
             role.setBase(base);
-    
+
             return;
         }
 
@@ -672,7 +674,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     public boolean isAddingCollaborationAllowed(Object context) {
         return (
-                context instanceof Classifier 
+                context instanceof Classifier
                 || context instanceof Operation
                 //|| context instanceof Collaboration
                 //|| context instanceof Model
@@ -684,7 +686,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         try {
             if (handle instanceof ClassifierRole && c instanceof Classifier) {
                 ((ClassifierRole) handle).getBase().remove(c);
-                
+
                 return;
             }
         } catch (InvalidObjectException e) {
@@ -701,7 +703,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                     && constraint instanceof ModelElement) {
                 Collaboration collab = (Collaboration) handle;
                 collab.getConstrainingElement().remove(constraint);
-                
+
                 return;
             }
         } catch (InvalidObjectException e) {
@@ -718,7 +720,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 ((Interaction) handle).getMessage().remove(message);
                 return;
             }
-            if (handle instanceof AssociationRole 
+            if (handle instanceof AssociationRole
                     && message instanceof Message) {
                 ((AssociationRole) handle).getMessage().remove(message);
                 return;
@@ -791,7 +793,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             final Message message = (Message) elem;
             final Interaction interaction = (Interaction) handle;
             final Interaction oldInteraction = message.getInteraction();
-            
+
             if (oldInteraction != null) {
                 oldInteraction.getMessage().remove(message);
             }
@@ -805,7 +807,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("handle: " + handle + " or elem: "
                 + elem);
     }
- 
+
 
     public void addSuccessor(Object handle, Object mess) {
         if (handle instanceof Message && mess instanceof Message) {
@@ -844,7 +846,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         if (handle instanceof Interaction
                 && (col instanceof Collaboration || col == null)) {
             ((Interaction) handle).setContext((Collaboration) col);
-    
+
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or col: "
@@ -854,7 +856,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     public void setSuccessors(Object handle, Collection messages) {
         if (handle instanceof Message) {
-            Collection currentMessages = 
+            Collection currentMessages =
                 Model.getFacade().getSuccessors(handle);
             if (!currentMessages.isEmpty()) {
                 Collection successors = new ArrayList(currentMessages);
@@ -871,7 +873,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("predecessor: " + handle
                 + " or messages: " + messages);
     }
-    
+
     public void setMessageSort(Object message, Object messageSort) {
         setAction(message, messageSort);
     }
@@ -904,7 +906,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 && ((operation == null) || operation instanceof Operation)) {
             ((Collaboration) handle).
                 setRepresentedOperation((Operation) operation);
-    
+
             return;
         }
         throw new IllegalArgumentException("handle: " + handle

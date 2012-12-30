@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
@@ -60,17 +61,17 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
  */
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements PropertyChangeListener, VetoableChangeListener {
-    
+
     /**
      * The interaction that is shown on the communication diagram.
      */
     private Object interaction;
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(CollabDiagramGraphModel.class);
+        Logger.getLogger(CollabDiagramGraphModel.class.getName());
 
     /**
      * @param collaboration the collaboration to be set for this diagram
@@ -87,12 +88,12 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
                     + collaboration.getClass().getName());
             }
         } catch (IllegalArgumentException e) {
-            LOG.error("Illegal Argument to setCollaboration", e);
+            LOG.log(Level.SEVERE, "Illegal Argument to setCollaboration", e);
             throw e;
         }
         setHomeModel(collaboration);
     }
-    
+
     /**
      * Gets the interaction that is shown on the sequence diagram.
      * @return the interaction of the diagram.
@@ -102,7 +103,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
             interaction =
                 Model.getCollaborationsFactory().buildInteraction(
                     getHomeModel());
-            LOG.debug("Interaction built.");
+            LOG.log(Level.FINE, "Interaction built.");
             Model.getPump().addModelEventListener(this, interaction);
         }
         return interaction;
@@ -183,7 +184,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
             // A binary association is not a node so reject.
             return false;
         }
-    
+
 	if (containsNode(node)) {
             return false;
         }
@@ -240,7 +241,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	} else if (Model.getFacade().isADependency(edge)) {
 	    Collection clients = Model.getFacade().getClients(edge);
 	    Collection suppliers = Model.getFacade().getSuppliers(edge);
-	    if (clients == null || clients.isEmpty() 
+	    if (clients == null || clients.isEmpty()
 	            || suppliers == null || suppliers.isEmpty()) {
                 return false;
             }
@@ -250,28 +251,28 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = ((CommentEdge) edge).getSource();
 	    end1 = ((CommentEdge) edge).getDestination();
 	} else {
-	    return false;       
+	    return false;
         }
-        
+
         // Both ends must be defined and nodes that are on the graph already.
         if (end0 == null || end1 == null) {
-            LOG.error("Edge rejected. Its ends are not attached to anything");
+            LOG.log(Level.SEVERE, "Edge rejected. Its ends are not attached to anything");
             return false;
         }
-        
+
         if (!containsNode(end0)
                 && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to " + end0
+            LOG.log(Level.SEVERE, "Edge rejected. Its source end is attached to " + end0
                     + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1)
                 && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to "
+            LOG.log(Level.SEVERE, "Edge rejected. Its destination end is attached to "
                     + end1 + " but this is not in the graph model");
             return false;
         }
-        
+
         return true;
     }
 
@@ -283,7 +284,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     @Override
     public void addNode(Object node) {
-	LOG.debug("adding MClassifierRole node!!");
+  LOG.log(Level.FINE, "adding MClassifierRole node!!");
 	if (!canAddNode(node)) {
             return;
         }
@@ -304,7 +305,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     @Override
     public void addEdge(Object edge) {
-        LOG.debug("adding class edge!!!!!!");
+        LOG.log(Level.FINE, "adding class edge!!!!!!");
         if (!canAddEdge(edge)) {
             return;
         }
@@ -333,7 +334,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if (Model.getFacade().isAGeneralizableElement(node)) {
-	    Collection generalizations = 
+	    Collection generalizations =
 	        Model.getFacade().getGeneralizations(node);
 	    for (Object generalization : generalizations) {
 		if (canAddEdge(generalization)) {
@@ -393,7 +394,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    Object eo = /*(MElementImport)*/ pce.getNewValue();
 	    Object me = Model.getFacade().getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
-		LOG.debug("model removed " + me);
+
+    LOG.log(Level.FINE, "model removed {0}", me);
+
 		if (Model.getFacade().isAClassifier(me)) {
                     removeNode(me);
                 }
@@ -404,11 +407,11 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
                     removeEdge(me);
                 }
 	    } else {
-		LOG.debug("model added " + me);
+    LOG.log(Level.FINE, "model added {0}", me);
 	    }
 	}
     }
-    
+
     /**
      * In UML1.4 the sequence diagram is owned by a collaboration.
      * In UML2 it is owned by an Interaction (which might itself be owned by a
@@ -422,7 +425,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
             return getInteraction();
         }
     }
-    
+
     /**
      * Look for delete events of the interaction that this diagram
      * represents. Null our interaction reference if detected.

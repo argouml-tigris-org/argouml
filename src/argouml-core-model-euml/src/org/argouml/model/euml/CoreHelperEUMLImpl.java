@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007-2011 Tom Morris and other contributors
+ * Copyright (c) 2007-2012 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.Model;
 import org.argouml.model.NotImplementedException;
@@ -85,9 +86,9 @@ import org.eclipse.uml2.uml.VisibilityKind;
  */
 class CoreHelperEUMLImpl implements CoreHelper {
 
-    private static final Logger LOG = 
-        Logger.getLogger(CoreHelperEUMLImpl.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(CoreHelperEUMLImpl.class.getName());
+
     /**
      * The model implementation.
      */
@@ -97,7 +98,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *                The ModelImplementation.
      */
@@ -127,8 +128,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
             }
             if (!element.isStereotypeApplicable((Stereotype) o)) {
                 throw new UnsupportedOperationException(
-                        "The stereotype " + o 
-                        + " cannot be applied to " + modelElement); 
+                        "The stereotype " + o
+                        + " cannot be applied to " + modelElement);
             }
         }
         RunnableClass run = new RunnableClass() {
@@ -145,28 +146,28 @@ class CoreHelperEUMLImpl implements CoreHelper {
             }
 
             /**
-             * Call the model event pump and ask it to fire an event indicating 
+             * Call the model event pump and ask it to fire an event indicating
              * a stereotype has been added. This is a stop-gap until we have
              * determined how the event pump can detect itself that a stereotype
              * has been added.
-             *  
+             *
              * @param modelElement
              * @param stereotype
              */
             private void fireApplyStereotypeEvent(
-                    Object modelElement, 
+                    Object modelElement,
                     Object stereotype) {
                 final ModelEventPumpEUMLImpl pump =
                     (ModelEventPumpEUMLImpl) Model.getPump();
                 pump.fireEvent(
-                        modelElement, 
-                        null, 
-                        stereotype, 
-                        Notification.ADD, 
+                        modelElement,
+                        null,
+                        stereotype,
+                        Notification.ADD,
                         "stereotype",
                         null);
             }
-            
+
         };
         ChangeCommand cmd;
         if (stereos.size() == 1) {
@@ -309,7 +310,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         return run;
     }
-    
+
     private RunnableClass getRunnableClassForRemoveCommand(Element element) {
         final Command cmd = RemoveCommand.create(editingDomain, element);
         if (cmd == null || !cmd.canExecute()) {
@@ -409,7 +410,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         + "to the BehavioralFeature (operation) #",
                         method, handle));
     }
-    
+
     public void addOwnedElement(Object handle, Object me, String msg,
             Object... objects) {
         if (!(handle instanceof Namespace)) {
@@ -422,8 +423,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         Element element = (Element) me;
         if (element.getOwner() != null) {
-            LOG.info("Setting ignore delete for " + element); 
-            ModelEventPumpEUMLImpl pump = 
+            LOG.log(Level.INFO, "Setting ignore delete for {0}", element);
+
+            ModelEventPumpEUMLImpl pump =
                 (ModelEventPumpEUMLImpl) Model.getPump();
             pump.addElementForDeleteEventIgnore(element);
         }
@@ -433,13 +435,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addOwnedElement(Object handle, Object me) {
-        addOwnedElement(handle, me, "Add the owned element # to the owner #", 
+        addOwnedElement(handle, me, "Add the owned element # to the owner #",
                 me, handle);
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
         // TODO: In UML2.x Event has no parameters.
-        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) 
+        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2)
         // and Classifier
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
@@ -492,7 +494,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Add the Exception # to the Operation #", exception,
                         handle));
     }
-    
+
     public void addSourceFlow(Object handle, Object flow) {
         // TODO: implement
         throw new NotYetImplementedException();
@@ -544,8 +546,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addTemplateParameter(
-            Object handle, 
-            int index, 
+            Object handle,
+            int index,
             Object parameter) {
         // TODO: implement
         throw new NotYetImplementedException();
@@ -562,7 +564,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public boolean equalsAggregationKind(
-            Object associationEnd, 
+            Object associationEnd,
             String kindType) {
         if (!(associationEnd instanceof Property)) {
             throw new IllegalArgumentException(
@@ -619,7 +621,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         // TODO: not implemented
         return Collections.emptySet();
     }
-    
+
     public Collection<String> getAllMetatypeNames() {
         Collection<String> result = new ArrayList<String>();
         for (Field f : UMLPackage.Literals.class.getDeclaredFields()) {
@@ -638,7 +640,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    
+
     public Collection getAllNodes(Object ns) {
         final ModelManagementHelperEUMLImpl helper =
             modelImpl.getModelManagementHelper();
@@ -646,7 +648,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection getAllPossibleNamespaces(
-            Object modelElement, 
+            Object modelElement,
             Object model) {
         if (!(model instanceof Element) || !(modelElement instanceof Element)) {
             throw new IllegalArgumentException(
@@ -658,7 +660,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         final ModelManagementHelperEUMLImpl helper =
             modelImpl.getModelManagementHelper();
-        for (Object o 
+        for (Object o
                 : helper.getAllModelElementsOfKind(model, Namespace.class)) {
             if (isValidNamespace(modelElement, o)) {
                 result.add((Namespace) o);
@@ -672,7 +674,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "element must be instance of UML2 Class");
         }
-        final org.eclipse.uml2.uml.Class theClass = 
+        final org.eclipse.uml2.uml.Class theClass =
             (org.eclipse.uml2.uml.Class) element;
         return theClass.getAllImplementedInterfaces();
     }
@@ -813,7 +815,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 break;
             }
             results.add(c);
-            for (DirectedRelationship d 
+            for (DirectedRelationship d
                     : c.getTargetDirectedRelationships(
                             UMLPackage.Literals.GENERALIZATION)) {
                 for (Element e : d.getSources()) {
@@ -828,16 +830,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection<Dependency> getDependencies(
-            Object supplierObj, 
+            Object supplierObj,
             Object clientObj) {
-        if (!(supplierObj instanceof NamedElement) 
+        if (!(supplierObj instanceof NamedElement)
                 || !(clientObj instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "supplierObj and clientObj must be "
                     + "instances of NamedElement");
         }
         Collection<Dependency>  result = new ArrayList<Dependency> ();
-        for (Dependency d 
+        for (Dependency d
                 : ((NamedElement) clientObj).getClientDependencies()) {
             if (d.getSuppliers().contains(supplierObj)) {
                 result.add(d);
@@ -879,7 +881,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "'element' must be instance of Classifier");
         }
         Collection<Element> result = new HashSet<Element>();
-        for (DirectedRelationship d 
+        for (DirectedRelationship d
                 : ((Classifier) element).getTargetDirectedRelationships(
                         UMLPackage.Literals.GENERALIZATION)) {
             for (Element e : d.getSources()) {
@@ -921,7 +923,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Generalization getGeneralization(Object achild, Object aparent) {
-        if (!(achild instanceof Classifier) 
+        if (!(achild instanceof Classifier)
                 || !(aparent instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'achild' and 'aparent' must "
@@ -962,13 +964,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection<DirectedRelationship> getRelationships(
-            Object source, 
+            Object source,
             Object dest) {
         if (!(source instanceof Element) || !(dest instanceof Element)) {
             throw new IllegalArgumentException(
                     "'source' and 'dest' must be instances of Element");
         }
-        Collection<DirectedRelationship> result = 
+        Collection<DirectedRelationship> result =
             new ArrayList<DirectedRelationship>();
         for (DirectedRelationship d : ((Element) source)
                 .getSourceDirectedRelationships()) {
@@ -1041,7 +1043,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         return null;
     }
-    
+
     public Object getDestination(Object relationship) {
         // Link does not exist in UML2, a link is represented just as an
         // association
@@ -1072,7 +1074,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             return conns.get(0).getType();
         }
         if (relationship instanceof DirectedRelationship) {
-            List<Element> targets = 
+            List<Element> targets =
                 ((DirectedRelationship) relationship).getTargets();
             if (targets.isEmpty()) {
                 return null;
@@ -1099,7 +1101,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "'cls' must be instance of Classifier");
         }
         Collection<Element> results = new HashSet<Element>();
-        for (DirectedRelationship d 
+        for (DirectedRelationship d
                 : ((Classifier) cls).getTargetDirectedRelationships(
                         UMLPackage.Literals.GENERALIZATION)) {
             results.addAll(d.getSources());
@@ -1261,8 +1263,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         modelImpl,
                         getRunnableClassForRemoveCommand(
                                 (Element) value),
-                                "Remove the element # from the owner #", 
-                                value, 
+                                "Remove the element # from the owner #",
+                                value,
                                 handle));
     }
 
@@ -1280,7 +1282,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
 
     public void removeStereotype(
-            final Object modelElement, 
+            final Object modelElement,
             final Object stereo) {
         UMLUtil.checkArgs(new Object[] {modelElement, stereo},
                 new Class[] {Element.class, Stereotype.class});
@@ -1295,7 +1297,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
              * a stereotype has been removed. This is a stop-gap until we have
              * determined how the event pump can detect itself that a stereotype
              * has been removed.
-             *  
+             *
              * @param modelElement
              * @param stereotype
              */
@@ -1305,10 +1307,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 final ModelEventPumpEUMLImpl pump =
                     (ModelEventPumpEUMLImpl) Model.getPump();
                 pump.fireEvent(
-                        modelElement, 
-                        stereotype, 
-                        null, 
-                        Notification.REMOVE, 
+                        modelElement,
+                        stereotype,
+                        null,
+                        Notification.REMOVE,
                         "stereotype",
                         null);
             }
@@ -1320,7 +1322,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Remove the stereotype # from the element #",
                         stereo, modelElement));
     }
-    
+
     public void removeSupplierDependency(final Object supplier,
             final Object dependency) {
         if (!(supplier instanceof NamedElement)) {
@@ -1410,12 +1412,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (other == handle) {
             other = it.next();
         }
-        
+
         setAggregation2(handle, aggregationKind);
     }
 
     public void setAggregation2(
-            final Object handle, 
+            final Object handle,
             final Object aggregationKind) {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException(
@@ -1423,7 +1425,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         if (!(aggregationKind instanceof AggregationKind)) {
             throw new IllegalArgumentException(
-                    "aggregationKind must be instance of AggregationKind " 
+                    "aggregationKind must be instance of AggregationKind "
                     + aggregationKind + " recieved");
         }
         final Property property = (Property) handle;
@@ -1431,15 +1433,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
         RunnableClass run = new RunnableClass() {
             public void run() {
                 property.setAggregation(aggregation);
-                if (aggregation == AggregationKind.COMPOSITE_LITERAL 
+                if (aggregation == AggregationKind.COMPOSITE_LITERAL
                         || aggregation == AggregationKind.SHARED_LITERAL) {
-                    for (Property end 
+                    for (Property end
                             : property.getAssociation().getMemberEnds()) {
                         if (!end.equals(property)) {
                             end.setAggregation(AggregationKind.NONE_LITERAL);
                         }
                     }
-                }  
+                }
             }
         };
         editingDomain.getCommandStack().execute(
@@ -1448,10 +1450,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Set the aggregation # to the association end #",
                         aggregationKind, handle));
     }
-    
-    
+
+
     public void setAnnotatedElements(
-            final Object handle, 
+            final Object handle,
             final Collection elems) {
         if (!(handle instanceof Comment)) {
             throw new IllegalArgumentException(
@@ -1498,7 +1500,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setBody(Object handle, String body) {
-        
+
 	if (handle instanceof Comment) {
 	    ((Comment) handle).setBody(body);
 	    return;
@@ -1506,12 +1508,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
 	if (handle instanceof Operation) {
 
-	    // We need a method (operation implementation) 
+	    // We need a method (operation implementation)
 	    // to store the method body.
 	    OpaqueBehavior methodImpl = null;
 
 	    // Maybe this operation already has a method, that fits our purpose?
-	    // In this case, try to reuse it, instead of creating a new 
+	    // In this case, try to reuse it, instead of creating a new
 	    // implementation.
 	    for (Behavior impl : ((Operation) handle).getMethods()) {
 		if (impl instanceof OpaqueBehavior) {
@@ -1540,9 +1542,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 for (String language : methodImpl.getLanguages()) {
                     if ("java".equals(language)) {
 
-                        // Try to get the corresponding body and set it 
+                        // Try to get the corresponding body and set it
                         // to the current body
-                        // This _should_ work, if all the bodies 
+                        // This _should_ work, if all the bodies
                         // were stored with their corresponding languages.
                         methodImpl.getBodies().set(bodyIndex, body);
 			return;		// Job done.
@@ -1550,8 +1552,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
 		    bodyIndex++;
 		}
 	    }
-  
-            // It seems, there was no implementation of 
+
+            // It seems, there was no implementation of
             // our current target language, so we just add one.
             methodImpl.getLanguages().add("java");
             methodImpl.getBodies().add(body);
@@ -1592,7 +1594,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setConcurrency(
-            final Object handle, 
+            final Object handle,
             final Object concurrencyKind) {
         UMLUtil.checkArgs(new Object[] {handle, concurrencyKind},
                 new Class[] {Element.class, CallConcurrencyKind.class});
@@ -1649,7 +1651,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setKind(Object handle, Object kind) {
         // TODO: Needs undo support
-        if (handle instanceof Parameter 
+        if (handle instanceof Parameter
                 && kind instanceof ParameterDirectionKind) {
             ((Parameter) handle).setDirection((ParameterDirectionKind) kind);
             return;
@@ -1674,10 +1676,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        modelImpl, 
-                        run, 
-                        "Set isLeaf to # for #", 
-                        isLeaf, 
+                        modelImpl,
+                        run,
+                        "Set isLeaf to # for #",
+                        isLeaf,
                         handle));
     }
 
@@ -1723,7 +1725,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             lower = 0;
             upper = -1;
         } else if (arg.contains("..")) {
-            String[] pieces = arg.trim().split("\\.\\."); 
+            String[] pieces = arg.trim().split("\\.\\.");
             if (pieces.length > 2) {
                 throw new IllegalArgumentException((String) arg);
             }
@@ -1746,7 +1748,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             } else {
                 upper = Integer.parseInt(pieces[1]);
             }
-        } else { 
+        } else {
             lower = Integer.parseInt(arg);
             upper = lower;
         }
@@ -1757,7 +1759,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             final Object handle,
             final int lower,
             final int upper) {
-            
+
         RunnableClass run = new RunnableClass() {
             public void run() {
                 // TODO: We currently delete the old values before setting
@@ -1779,11 +1781,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         lower, upper, handle));
     }
 
-    
+
     public void setName(final Object handle, final String name) {
         if (!(handle instanceof NamedElement)) {
             if (handle instanceof Generalization) {
-                LOG.warn("Attempting to set the name of a generalization "
+                LOG.log(Level.WARNING, "Attempting to set the name of a generalization "
                         + "which is no longer a NamedElement in UML 2" + name
                         + handle.toString());
                 return;
@@ -1841,7 +1843,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Set isNavigable to # for the association end #", flag,
                         handle));
     }
-    
+
     public void setOperations(Object classifier, List operations) {
         throw new NotYetImplementedException();
     }
@@ -1992,7 +1994,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setType(final Object handle, final Object type) {
-        if (!(handle instanceof TypedElement) 
+        if (!(handle instanceof TypedElement)
                 && !(handle instanceof Operation)) {
             throw new IllegalArgumentException(
                     "handle must be instance of TypedElement");
@@ -2015,8 +2017,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl, run,
-                        "Set the type # for the typed element #", 
-                        type, 
+                        "Set the type # for the typed element #",
+                        type,
                         handle));
     }
 

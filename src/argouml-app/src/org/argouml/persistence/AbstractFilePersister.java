@@ -46,11 +46,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
@@ -70,21 +71,21 @@ import org.argouml.util.ThreadUtils;
 public abstract class AbstractFilePersister extends FileFilter
         implements ProjectFilePersister {
 
-    private static final Logger LOG = 
-        Logger.getLogger(AbstractFilePersister.class);
+    private static final Logger LOG =
+        Logger.getLogger(AbstractFilePersister.class.getName());
 
     /**
-     * Map of persisters by target class
+     * Map of persisters by target class.
      */
-    private static Map<Class, Class<? extends MemberFilePersister>> 
-    persistersByClass = 
+    private static Map<Class, Class<? extends MemberFilePersister>>
+    persistersByClass =
         new HashMap<Class, Class<? extends MemberFilePersister>>();
 
     /**
-     * Map of persisters by tag / file extension
+     * Map of persisters by tag / file extension.
      */
-    private static Map<String, Class<? extends MemberFilePersister>> 
-    persistersByTag = 
+    private static Map<String, Class<? extends MemberFilePersister>>
+    persistersByTag =
         new HashMap<String, Class<? extends MemberFilePersister>>();
 
     static {
@@ -97,9 +98,9 @@ public abstract class AbstractFilePersister extends FileFilter
         registerPersister(ProjectMemberModel.class, "xmi",
                 ModelMemberFilePersister.class);
     }
-    
+
     private EventListenerList listenerList = new EventListenerList();
-    
+
     // This can be made public to allow others to extend their own persisters
     private static boolean registerPersister(Class target, String tag,
             Class<? extends MemberFilePersister> persister) {
@@ -132,28 +133,28 @@ public abstract class AbstractFilePersister extends FileFilter
     }
 
     /**
-     * Saving in a safe way means: Retain the previous project 
+     * Saving in a safe way means: Retain the previous project
      * file even when the save operation causes an
-     * exception in the middle. 
+     * exception in the middle.
      * Also create a backup file after saving.
-     * 
-     * See issue 6012 - our method of saving in a safe way does not 
-     * work on a SharePoint drive. 
+     *
+     * See issue 6012 - our method of saving in a safe way does not
+     * work on a SharePoint drive.
      * Hence we can configure ArgoUML to save unsafe, too...
-     * 
+     *
      * @return true if we should be careful
      */
     protected boolean useSafeSaves() {
         boolean result = Configuration.getBoolean(
                         PersistenceManager.USE_SAFE_SAVES, true);
 
-        /* make sure this setting exists in the configuration file 
+        /* make sure this setting exists in the configuration file
          * to facilitate changing: */
         Configuration.setBoolean(PersistenceManager.USE_SAFE_SAVES, result);
-        
+
         return result;
     }
-    
+
     /**
      * Copies one file src to another, raising file exceptions
      * if there are some problems.
@@ -271,7 +272,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
-    public final void save(Project project, File file) throws SaveException, 
+    public final void save(Project project, File file) throws SaveException,
     InterruptedException {
         preSave(project, file);
         doSave(project, file);
@@ -376,12 +377,12 @@ public abstract class AbstractFilePersister extends FileFilter
     /**
      * Returns true if a FileChooser should visualize an icon for the
      * persister.
-     * 
-     * @return true if the persister is associated to an icon 
+     *
+     * @return true if the persister is associated to an icon
      */
     public abstract boolean hasAnIcon();
 
-    
+
     /**
      * Get a MemberFilePersister based on a given ProjectMember.
      *
@@ -395,7 +396,7 @@ public abstract class AbstractFilePersister extends FileFilter
         } else {
             /*
              * TODO: Not sure we need to do this, but just to be safe for now.
-             */       
+             */
             for (Class clazz : persistersByClass.keySet()) {
                 if (clazz.isAssignableFrom(pm.getClass())) {
                     persister = persistersByClass.get(clazz);
@@ -417,7 +418,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * @return the persister
      */
     protected MemberFilePersister getMemberFilePersister(String tag) {
-        Class<? extends MemberFilePersister> persister = 
+        Class<? extends MemberFilePersister> persister =
             persistersByTag.get(tag);
         if (persister != null) {
             return newPersister(persister);
@@ -430,17 +431,17 @@ public abstract class AbstractFilePersister extends FileFilter
         try {
             return clazz.newInstance();
         } catch (InstantiationException e) {
-            LOG.error("Exception instantiating file persister " + clazz, e);
+            LOG.log(Level.SEVERE, "Exception instantiating file persister " + clazz, e);
             return null;
         } catch (IllegalAccessException e) {
-            LOG.error("Exception instantiating file persister " + clazz, e);
+            LOG.log(Level.SEVERE, "Exception instantiating file persister " + clazz, e);
             return null;
         }
     }
-    
-    // TODO: Document 
+
+    // TODO: Document
     class ProgressMgr implements ProgressListener {
-        
+
         /**
          * The percentage completeness of phases complete.
          * Does not include part-completed phases.
@@ -459,7 +460,7 @@ public abstract class AbstractFilePersister extends FileFilter
          * version and one pahse for the final load.
          */
         private int numberOfPhases;
-        
+
         public void setPercentPhasesComplete(int aPercentPhasesComplete) {
             this.percentPhasesComplete = aPercentPhasesComplete;
         }
@@ -475,7 +476,7 @@ public abstract class AbstractFilePersister extends FileFilter
         public int getNumberOfPhases() {
             return this.numberOfPhases;
         }
-        
+
         protected void nextPhase() throws InterruptedException {
             ThreadUtils.checkIfInterrupted();
             ++phasesCompleted;
@@ -483,10 +484,10 @@ public abstract class AbstractFilePersister extends FileFilter
                 (phasesCompleted * 100) / numberOfPhases;
             fireProgressEvent(percentPhasesComplete);
         }
-        
+
         /**
          * Called when a ProgressEvent is fired.
-         *  
+         *
          * @see org.argouml.taskmgmt.ProgressListener#progress(org.argouml.taskmgmt.ProgressEvent)
          * @throws InterruptedException     if thread is interrupted
          */
@@ -498,13 +499,13 @@ public abstract class AbstractFilePersister extends FileFilter
             long proportion = (position * percentPhasesLeft) / length;
             fireProgressEvent(percentPhasesComplete + proportion);
         }
-        
+
         /**
          * Inform listeners of any progress notifications.
          * @param percent the current percentage progress.
          * @throws InterruptedException     if thread is interrupted
          */
-        protected void fireProgressEvent(long percent) 
+        protected void fireProgressEvent(long percent)
             throws InterruptedException {
             ProgressEvent event = null;
             // Guaranteed to return a non-null array
@@ -520,6 +521,6 @@ public abstract class AbstractFilePersister extends FileFilter
                     ((ProgressListener) listeners[i + 1]).progress(event);
                 }
             }
-        }        
+        }
     }
 }

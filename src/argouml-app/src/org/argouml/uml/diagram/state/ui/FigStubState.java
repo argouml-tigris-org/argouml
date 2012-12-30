@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,8 +43,9 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
@@ -63,8 +64,9 @@ import org.tigris.gef.presentation.FigText;
  */
 
 public class FigStubState extends FigStateVertex {
-    
-    private static final Logger LOG = Logger.getLogger(FigStubState.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(FigStubState.class.getName());
 
     private static final int X = 0;
     private static final int Y = 0;
@@ -73,14 +75,14 @@ public class FigStubState extends FigStateVertex {
 
     private FigText referenceFig;
     private FigLine stubline;
-    
+
     private Facade facade;
     private StateMachinesHelper stateMHelper;
 
-    
+
     /**
      * Construct a new FigStubState.
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
@@ -350,7 +352,7 @@ public class FigStubState extends FigStateVertex {
         super.renderingChanged();
         updateReferenceText();
     }
-    
+
     /**
      * Update the reference text.
      */
@@ -359,7 +361,7 @@ public class FigStubState extends FigStateVertex {
         try {
             text = facade.getReferenceState(getOwner());
         } catch (Exception e) {
-            LOG.error("Exception caught and ignored!!", e);
+            LOG.log(Level.SEVERE, "Exception caught and ignored!!", e);
         }
         if (text != null) {
             referenceFig.setText((String) text);
@@ -384,7 +386,7 @@ public class FigStubState extends FigStateVertex {
                 && facade.isASubmachineState(container)) {
             addElementListener(container);
         }
-        
+
         //All states in the new reference state's path are added
         // as listeners
         if (container != null
@@ -425,7 +427,7 @@ public class FigStubState extends FigStateVertex {
         if (container != null
                 && facade.isASubmachineState(container)
                 && facade.getSubmachine(container) != null) {
-            
+
             top = facade.getTop(facade.getSubmachine(container));
             reference = stateMHelper.getStatebyName(facade
                     .getReferenceState(owner), top);
@@ -468,7 +470,7 @@ public class FigStubState extends FigStateVertex {
         }
         super.updateListeners(getOwner(), newOwner);
     }
-    
+
     @Override
     protected void updateFont() {
         super.updateFont();

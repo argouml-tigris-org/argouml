@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,11 +41,12 @@ package org.argouml.ui;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.apache.log4j.Logger;
 import org.argouml.swingext.GlassPane;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.ArgoFrame;
@@ -55,7 +56,7 @@ import org.argouml.util.ArgoFrame;
  * SwingWorker 3), an abstract class that you subclass to
  * perform GUI-related work in a dedicated thread.  For
  * instructions on and examples of using this class, see:
- * 
+ *
  * http://java.sun.com/docs/books/tutorial/uiswing/misc/threads.html
  *
  * Note that the API changed slightly in the 3rd version:
@@ -63,19 +64,19 @@ import org.argouml.util.ArgoFrame;
  * creating it.
  */
 public abstract class SwingWorker {
-	
+
     private static final Logger LOG =
-        Logger.getLogger(SwingWorker.class);
-	
+        Logger.getLogger(SwingWorker.class.getName());
+
     private Object value;  // see getValue(), setValue()
 
     private GlassPane glassPane;
 
     private Timer timer;
-    
-    private ProgressMonitor pmw; 
-    
-    /** 
+
+    private ProgressMonitor pmw;
+
+    /**
      * Class to maintain reference to current worker thread
      * under separate synchronization control.
      */
@@ -97,43 +98,43 @@ public abstract class SwingWorker {
 
     private ThreadVar threadVar;
 
-    /** 
-     * Get the value produced by the worker thread, or null if it 
+    /**
+     * Get the value produced by the worker thread, or null if it
      * hasn't been constructed yet.
-     * 
+     *
      * @return 	the value produced by the worker thread
      */
-    protected synchronized Object getValue() { 
-        return value; 
+    protected synchronized Object getValue() {
+        return value;
     }
 
-    /** 
-     * Set the value produced by worker thread 
+    /**
+     * Set the value produced by worker thread
      */
-    private synchronized void setValue(Object x) { 
-        value = x; 
+    private synchronized void setValue(Object x) {
+        value = x;
     }
 
-    /** 
-     * Compute the value to be returned by the <code>get</code> method. 
-     * 
-     * @param progressMonitor	the ProgressMonitorWindow class - this 
+    /**
+     * Compute the value to be returned by the <code>get</code> method.
+     *
+     * @param progressMonitor	the ProgressMonitorWindow class - this
      * 	            class shall be registered as a progress listener.
      * @return 		the value to be returned
      */
     public abstract Object construct(ProgressMonitor progressMonitor);
-    
-    
-    /** 
-     * Instantiate and initialize an instance of ProgressMonitorWindow 
-     * 
+
+
+    /**
+     * Instantiate and initialize an instance of ProgressMonitorWindow
+     *
      * @return      an instance of ProgressMonitorWindow
      */
     public abstract ProgressMonitor initProgressMonitorWindow();
-    
+
     /**
-     * This method calls the construct(),  
-     * 
+     * This method calls the construct(),
+     *
      * @return		the value to be returned by the <code>get</code> method.
      */
     public Object doConstruct() {
@@ -144,22 +145,22 @@ public abstract class SwingWorker {
         		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         Object retVal = null;
-        
+
         //Create a timer.
         timer = new Timer(25, new TimerListener());
         timer.start();
-        
+
     	try {
     	    retVal = construct(pmw);
     	} catch (Exception exc) {
 	    // TODO: This error needs to be reported!
-    	    LOG.error("Error while loading project: ", exc);
+            LOG.log(Level.SEVERE, "Error while loading project: ", exc);
         } finally {
             pmw.close();
         }
         return retVal;
     }
-    
+
     /**
      * The actionPerformed method in this class
      * is called each time the Timer "goes off".
@@ -173,7 +174,7 @@ public abstract class SwingWorker {
             }
         }
     }
-    
+
     /**
      * Activate the capabilities of glasspane
      */
@@ -189,7 +190,7 @@ public abstract class SwingWorker {
             getGlassPane().setVisible(true);
         }
     }
-    
+
     /**
      * Deactivate the glasspane
      */
@@ -199,7 +200,7 @@ public abstract class SwingWorker {
             getGlassPane().setVisible(false);
         }
     }
-    
+
     /**
      * Called on the event dispatching thread (not on the worker thread)
      * after the <code>construct</code> method has returned.
@@ -209,7 +210,7 @@ public abstract class SwingWorker {
     	ArgoFrame.getFrame().setCursor(Cursor.getPredefinedCursor(
                 Cursor.DEFAULT_CURSOR));
     }
-    
+
     /**
      * Getter method for the glassPange
      *
@@ -218,7 +219,7 @@ public abstract class SwingWorker {
     protected GlassPane getGlassPane() {
         return glassPane;
     }
-    
+
     /**
      * Setter method
      *
@@ -227,7 +228,7 @@ public abstract class SwingWorker {
     protected void setGlassPane(GlassPane newGlassPane) {
         glassPane = newGlassPane;
     }
-    
+
     /**
      * A new method that interrupts the worker thread.  Call this method
      * to force the worker to stop what it's doing.
@@ -241,14 +242,14 @@ public abstract class SwingWorker {
     }
 
     /**
-     * Return the value created by the <code>construct</code> method.  
+     * Return the value created by the <code>construct</code> method.
      * Returns null if either the constructing thread or the current
      * thread was interrupted before a value was produced.
-     * 
+     *
      * @return the value created by the <code>construct</code> method
      */
     public Object get() {
-        while (true) {  
+        while (true) {
             Thread t = threadVar.get();
             if (t == null) {
                 return getValue();
@@ -270,12 +271,12 @@ public abstract class SwingWorker {
      */
     public SwingWorker() {
         final Runnable doFinished = new Runnable() {
-            public void run() { 
-                finished(); 
+            public void run() {
+                finished();
             }
         };
 
-        Runnable doConstruct = new Runnable() { 
+        Runnable doConstruct = new Runnable() {
             public void run() {
                 try {
                     setValue(doConstruct());
@@ -290,9 +291,9 @@ public abstract class SwingWorker {
 
         Thread t = new Thread(doConstruct);
         threadVar = new ThreadVar(t);
-        
+
     }
-    
+
     public SwingWorker(String threadName) {
         this();
         threadVar.get().setName(threadName);

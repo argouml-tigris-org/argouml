@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,10 +39,11 @@
 package org.argouml.ui;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.ArgoFrame;
@@ -56,14 +57,15 @@ import org.argouml.util.ArgoFrame;
 @Deprecated
 class LoadSwingWorker extends SwingWorker {
 
-    private static final Logger LOG = Logger.getLogger(LoadSwingWorker.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(LoadSwingWorker.class.getName());
+
     private boolean showUi;
     private File file;
 
     /**
      * This is the only constructor for LoadSwingWorker.
-     * 
+     *
      * @param aFile		the file that's going to be opened as a project
      * @param aShowUi	whether to show the UI or not
      */
@@ -72,12 +74,12 @@ class LoadSwingWorker extends SwingWorker {
         this.showUi = aShowUi;
         this.file = aFile;
     }
-	
+
     /**
      * Implements org.argouml.swingext.SwingWorker#construct(); this is
      * the main method for this SwingWorker.
      * In this case, it simply loads the project.
-     * 
+     *
      * @param pmw	the ProgressMonitorWindow used by ProjectBrowser
      * @return		always null
      */
@@ -91,19 +93,19 @@ class LoadSwingWorker extends SwingWorker {
     }
 
     /**
-     * Implements org.argouml.swingext.SwingWorker#initProgressMonitorWindow(); 
+     * Implements org.argouml.swingext.SwingWorker#initProgressMonitorWindow();
      * it just creates an instance of ProgressMonitorWindow.
-     * 
+     *
      * @return  an instance of ProgressMonitorWindow
      */
     public ProgressMonitor initProgressMonitorWindow() {
-        UIManager.put("ProgressMonitor.progressText", 
+        UIManager.put("ProgressMonitor.progressText",
                 Translator.localize("filechooser.open-project"));
         Object[] msgArgs = new Object[] {this.file.getPath()};
         return new ProgressMonitorWindow(ArgoFrame.getFrame(),
                 Translator.messageFormat("dialog.openproject.title", msgArgs));
     }
-    
+
     /**
      * Overrides the finished method of the SwingWorker class to update the GUI
      */
@@ -112,7 +114,7 @@ class LoadSwingWorker extends SwingWorker {
     	try {
     	    ProjectBrowser.getInstance().addFileSaved(file);
     	} catch (IOException exc) {
-            LOG.error("Failed to save file: " + file
+            LOG.log(Level.SEVERE, "Failed to save file: " + file
                     + " in most recently used list");
     	}
     }

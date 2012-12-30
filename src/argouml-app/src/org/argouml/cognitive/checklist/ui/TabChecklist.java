@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -58,7 +60,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.checklist.CheckItem;
@@ -119,7 +120,7 @@ public class TabChecklist extends AbstractArgoJPanel
 	add(new JLabel(Translator.localize("tab.checklist.warning")),
 	    BorderLayout.NORTH);
 	add(sp, BorderLayout.CENTER);
-	
+
 	addComponentListener(this);
     }
 
@@ -276,7 +277,7 @@ public class TabChecklist extends AbstractArgoJPanel
         // Update our model with our saved target
         setTargetInternal(target);
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */
@@ -307,7 +308,7 @@ class TableModelChecklist extends AbstractTableModel
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(TableModelChecklist.class);
+        Logger.getLogger(TableModelChecklist.class.getName());
 
     ////////////////
     // instance varables
@@ -350,7 +351,7 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // TableModel implemetation
-    
+
     /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
@@ -431,7 +432,9 @@ class TableModelChecklist extends AbstractTableModel
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
+        LOG.log(Level.FINE,
+                "setting table value {0}, {1}",
+                new Object[]{rowIndex, columnIndex});
 	if (columnIndex != 0) {
 	    return;
 	}
@@ -476,4 +479,4 @@ class TableModelChecklist extends AbstractTableModel
         fireTableStructureChanged();
         panel.resizeColumns();
     }
-} 
+}

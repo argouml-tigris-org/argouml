@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -60,9 +61,9 @@ import org.argouml.uml.diagram.DiagramSettings;
  * The children of this class should implement createDiagram to do any specific
  * actions for creating a diagram and isValidNamespace that checks if some
  * namespace is valid to add the diagram to. <p>
- * 
+ *
  * ArgoUML shall never create a diagram for a read-only modelelement.<p>
- * 
+ *
  * TODO: This class should be merged with ActionNewDiagram.
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -72,7 +73,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ActionAddDiagram.class);
+        Logger.getLogger(ActionAddDiagram.class.getName());
 
     /**
      * Constructor for ActionAddDiagram.
@@ -83,7 +84,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
         super(Translator.localize(s),
                 ResourceLoaderWrapper.lookupIcon(s));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize(s));
     }
 
@@ -98,19 +99,19 @@ public abstract class ActionAddDiagram extends UndoableAction {
 
         if (ns != null && isValidNamespace(ns)) {
             super.actionPerformed(e);
-            DiagramSettings settings = 
+            DiagramSettings settings =
                 p.getProjectSettings().getDefaultDiagramSettings();
             // TODO: We should really be passing the default settings to
             // the diagram factory so they get set at creation time
             ArgoDiagram diagram = createDiagram(ns, settings);
-                    
+
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.
             ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
             TargetManager.getInstance().setTarget(diagram);
         } else {
-            LOG.error("No valid namespace found");
+            LOG.log(Level.SEVERE, "No valid namespace found");
             throw new IllegalStateException("No valid namespace found");
         }
     }
@@ -176,7 +177,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
     /**
      * Creates the diagram. Classes derived from this class should implement any
      * specific behaviour to create the diagram.
-     * 
+     *
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
      * @deprecated for 0.27.3 by tfmorris. Subclasses should override
@@ -188,11 +189,11 @@ public abstract class ActionAddDiagram extends UndoableAction {
         // Do nothing during the deprecation period, then it can be removed.
         return null;
     }
-    
+
     /**
      * Create a new diagram. To be implemented by subclasses. It will become
      * abstract after 0.28 to enforce this requirement.
-     * 
+     *
      * @param owner owner of the diagram. May be a namespace, statemachine, or
      *            collaboration depending on the type of diagram.
      * @param settings default rendering settings for all figs in the new

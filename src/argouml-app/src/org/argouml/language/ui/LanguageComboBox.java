@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.language.ui;
 
 import java.awt.Dimension;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoGeneratorEvent;
@@ -60,7 +61,8 @@ public class LanguageComboBox
     implements ArgoGeneratorEventListener {
 
     /** logger */
-    private static final Logger LOG = Logger.getLogger(LanguageComboBox.class);
+    private static final Logger LOG =
+        Logger.getLogger(LanguageComboBox.class.getName());
 
     /**
      * The constructor.
@@ -97,7 +99,7 @@ public class LanguageComboBox
                 Language ll = (Language) iterator.next();
                 addItem(ll);
             } catch (Exception e) {
-                LOG.error("Unexpected exception", e);
+                LOG.log(Level.SEVERE, "Unexpected exception", e);
             }
         }
         setVisible(true);

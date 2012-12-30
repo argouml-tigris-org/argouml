@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,10 +42,11 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DeploymentDiagram;
 import org.argouml.model.Facade;
@@ -67,6 +68,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -83,7 +85,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLDeploymentDiagram.class);
+        Logger.getLogger(UMLDeploymentDiagram.class.getName());
 
     ////////////////
     // actions for toolbar
@@ -107,10 +109,10 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
     private Action actionMGeneralization;
     private Action actionMAbstraction;
 
-    
+
     /**
      * Constructor.
-     * @deprecated for 0.28 by tfmorris.  Use 
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -124,7 +126,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
 
     /**
      * @param namespace the namespace for the new diagram
-     * @deprecated for 0.28 by tfmorris.  Use 
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -151,7 +153,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
      */
     public void setNamespace(Object handle) {
         if (!Model.getFacade().isANamespace(handle)) {
-            LOG.error(
+            LOG.log(Level.SEVERE,
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
@@ -170,7 +172,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
             setLayer(lay);
         }
     }
-    
+
     // TODO: Needs to be tidied up after stable release. Graph model
     // should be created in constructor
     private DeploymentDiagramGraphModel createGraphModel() {
@@ -490,7 +492,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
 
     @SuppressWarnings("unchecked")
     public Collection getRelocationCandidates(Object root) {
-        return 
+        return
         Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
             root, Model.getMetaTypes().getPackage());
     }
@@ -503,7 +505,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
         damage();
         return true;
     }
-    
+
     /**
      * Provides the standard functionality of the superclass only for
      * deployment diagram specific model elements
@@ -512,28 +514,30 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
      * @see org.argouml.uml.diagram.ui.UMLDiagram#setModelElementNamespace(java.lang.Object, Object)
      */
     public void setModelElementNamespace(
-	    Object modelElement, 
+	    Object modelElement,
 	    Object namespace) {
 	Facade facade = Model.getFacade();
 	if (facade.isANode(modelElement)
 		|| facade.isANodeInstance(modelElement)
 		|| facade.isAComponent(modelElement)
 		|| facade.isAComponentInstance(modelElement)) {
-	    LOG.info("Setting namespace of " + modelElement);
-	    super.setModelElementNamespace(modelElement, namespace);
+
+            LOG.log(Level.INFO, "Setting namespace of {0}", modelElement);
+
+            super.setModelElementNamespace(modelElement, namespace);
 	}
     }
 
     /*
-     * If the new encloser is null, and the old one is a Component, 
+     * If the new encloser is null, and the old one is a Component,
      * then the "enclosed" Fig has been moved on the diagram.
      * This causes the model to be adapted as follows:
-     * remove the elementResidence 
+     * remove the elementResidence
      * between the "enclosed" and the oldEncloser.
-     * 
+     *
      * @see org.argouml.ui.ArgoDiagram#changeFigEncloser(org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode, org.tigris.gef.presentation.FigNode)
      */
-    public void encloserChanged(FigNode enclosed, FigNode oldEncloser, 
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
             FigNode newEncloser) {
         if (oldEncloser != null && newEncloser == null
                 && Model.getFacade().isAComponent(oldEncloser.getOwner())) {
@@ -548,7 +552,7 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
             }
         }
     }
-    
+
     @Override
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isANode(objectToAccept)) {
@@ -574,16 +578,16 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
         }
         return false;
     }
-    
+
 
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isANode(modelElement)) {
             figNode = new FigMNode(modelElement, bounds, settings);
         } else if (Model.getFacade().isAAssociation(modelElement)) {
@@ -606,12 +610,13 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
         } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         }
-        
+
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }

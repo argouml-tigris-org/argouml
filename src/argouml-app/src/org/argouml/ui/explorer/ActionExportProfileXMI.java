@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,12 +44,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
@@ -64,7 +65,7 @@ import org.argouml.profile.ProfileException;
 import org.argouml.util.ArgoFrame;
 
 /**
- * Exports the model of a selected profile as XMI
+ * Exports the model of a selected profile as XMI.
  *
  * @author Marcos Aurélio
  */
@@ -73,14 +74,14 @@ public class ActionExportProfileXMI extends AbstractAction {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ActionExportProfileXMI.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionExportProfileXMI.class.getName());
 
     private Profile selectedProfile;
-    
+
     /**
      * Default Constructor
-     * 
+     *
      * @param profile the selected profile
      */
     public ActionExportProfileXMI(Profile profile) {
@@ -88,13 +89,13 @@ public class ActionExportProfileXMI extends AbstractAction {
         this.selectedProfile = profile;
     }
 
-    
+
     public void actionPerformed(ActionEvent arg0) {
         try {
-            final Collection profilePackages = 
+            final Collection profilePackages =
                 selectedProfile.getProfilePackages();
             final Object model = profilePackages.iterator().next();
-            
+
             if (model != null) {
                 File destiny = getTargetFile();
                 if (destiny != null) {
@@ -103,11 +104,11 @@ public class ActionExportProfileXMI extends AbstractAction {
             }
         } catch (ProfileException e) {
             // TODO: We should be giving the user more direct feedback
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         } catch (IOException e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         } catch (UmlException e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         }
     }
 
@@ -115,8 +116,8 @@ public class ActionExportProfileXMI extends AbstractAction {
     private void saveModel(File destiny, Object model) throws IOException,
             UmlException {
         OutputStream stream = new FileOutputStream(destiny);
-        XmiWriter xmiWriter = 
-            Model.getXmiWriter(model, stream, 
+        XmiWriter xmiWriter =
+            Model.getXmiWriter(model, stream,
                     ApplicationVersion.getVersion() + "("
                         + UmlFilePersister.PERSISTENCE_VERSION + ")");
         xmiWriter.write();
@@ -163,13 +164,13 @@ public class ActionExportProfileXMI extends AbstractAction {
                 return theFile;
             }
         }
-        
+
         return null;
     }
-    
+
     private static boolean isXmiFile(File file) {
         return file.isFile()
-                && (file.getName().toLowerCase().endsWith(".xml") 
+                && (file.getName().toLowerCase().endsWith(".xml")
                         || file.getName().toLowerCase().endsWith(".xmi"));
     }
 }

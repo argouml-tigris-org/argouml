@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.profile.internal.ocl.uml14.Bag;
 import org.argouml.profile.internal.ocl.uml14.HashBag;
 import org.argouml.profile.internal.ocl.uml14.OclEnumLiteral;
@@ -100,7 +101,7 @@ import tudresden.ocl.parser.node.PExpressionListTail;
  * Evaluates OCL expressions, this class should not depend on the model
  * subsystem. This adapter assumes the ocl expression is syntatically and
  * semantically correct.
- * 
+ *
  * @author maurelio1234
  */
 public class EvaluateExpression extends DepthFirstAdapter {
@@ -108,8 +109,8 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(EvaluateExpression.class);
+    private static final Logger LOG =
+        Logger.getLogger(EvaluateExpression.class.getName());
 
     /**
      * The Variable Table
@@ -130,10 +131,10 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * The model interpreter
      */
     private ModelInterpreter interp = null;
-    
+
     /**
      * Constructor
-     * 
+     *
      * @param modelElement self
      * @param mi model interpreter
      */
@@ -143,22 +144,22 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
     /**
      * Constructor
-     * 
+     *
      * @param variableTable the variable table
      * @param modelInterpreter model interpreter
      */
-    public EvaluateExpression(Map<String, Object> variableTable, 
+    public EvaluateExpression(Map<String, Object> variableTable,
             ModelInterpreter modelInterpreter) {
         reset(variableTable, modelInterpreter);
     }
-    
+
     /**
      * Resets the internal state of this adapter
-     * 
+     *
      * @param mi the model interpreter
      * @param element the model element
      */
-    public void reset(Object element, ModelInterpreter mi) {        
+    public void reset(Object element, ModelInterpreter mi) {
         vt = new HashMap<String, Object>();
         vt.put("self", element);
         reset(vt, mi);
@@ -182,7 +183,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     public Object getValue() {
         return val;
     }
-    
+
     /** Interpreter Code * */
 
     /*
@@ -318,7 +319,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 error(node);
             }
         } else {
-            // if one side is null, compare with the equality operator 
+            // if one side is null, compare with the equality operator
             if (op instanceof AEqualRelationalOperator) {
                 val = (left == right);
             } else if (op instanceof ANEqualRelationalOperator) {
@@ -531,13 +532,13 @@ public class EvaluateExpression extends DepthFirstAdapter {
                      */
                     public Object evaluate(Map<String, Object> vti,
                             Object expi) {
-                        
+
                         Object state = EvaluateExpression.this.saveState();
 
                         EvaluateExpression.this.vt = vti;
                         EvaluateExpression.this.val = null;
                         EvaluateExpression.this.fwd = null;
-                        
+
                         ((PExpression) expi).apply(EvaluateExpression.this);
 
                         Object reti = EvaluateExpression.this.val;
@@ -558,7 +559,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         }
         outAFeatureCallParameters(node);
     }
-    
+
     @SuppressWarnings("unchecked")
     private void loadState(Object state) {
         Object[] stateArr = (Object[]) state;
@@ -657,7 +658,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      */
     public void outAStringLiteral(AStringLiteral node) {
         String text = node.getStringLit().getText();
-        val = text.substring(1, text.length() - 1); 
+        val = text.substring(1, text.length() - 1);
         defaultOut(node);
     }
 
@@ -693,7 +694,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         val = new OclEnumLiteral(node.getName().toString().trim());
         defaultOut(node);
     }
-    
+
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALiteralCollection(tudresden.ocl.parser.node.ALiteralCollection)
      */
@@ -701,21 +702,21 @@ public class EvaluateExpression extends DepthFirstAdapter {
     public void caseALiteralCollection(ALiteralCollection node)
     {
         Collection<Object> col = null;
-        
+
         inALiteralCollection(node);
         if (node.getCollectionKind() != null)
         {
             node.getCollectionKind().apply(this);
-            
+
             String kind = node.getCollectionKind().toString().trim();
             if (kind.equalsIgnoreCase("Set")) {
                 col = new HashSet<Object>();
             } else if (kind.equalsIgnoreCase("Sequence")) {
                 col = new ArrayList<Object>();
             } else if (kind.equalsIgnoreCase("Bag")) {
-                col = new HashBag<Object>();                
+                col = new HashBag<Object>();
             }
-        }        
+        }
         if (node.getLBrace() != null) {
             node.getLBrace().apply(this);
         }
@@ -774,7 +775,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         }
         outAListExpressionListOrRangeTail(node);
     }
-    
+
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
      */
@@ -857,7 +858,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
     private Object runFeatureCall(Object subject, Object feature, Object type,
             List parameters) {
-        // LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + ""
+        // LOG.log(Level.FINE, "OCL FEATURE CALL: " + subject + ""+ type +""+ feature + ""
         // + parameters);
 
         if (parameters == null) {
@@ -866,7 +867,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
         // XXX this should be done in CollectionsModelInterpreter
         // but it can't trigger another invokeFeature...
-        
+
         if ((subject instanceof Collection)
                 && type.toString().trim().equals(".")) {
             Collection col = (Collection) subject;
@@ -884,7 +885,8 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
     /** Error Handling * */
     private void errorNotType(Object node, String type, Object dft) {
-        LOG.error("OCL does not evaluate to a " + type + " expression!! Exp: "
+        LOG.log(Level.SEVERE,
+                "OCL does not evaluate to a " + type + " expression!! Exp: "
                 + node + " Val: " + val);
         val = dft;
         // TODO: We need a specific exception type here.
@@ -892,7 +894,8 @@ public class EvaluateExpression extends DepthFirstAdapter {
     }
 
     private void error(Object node) {
-        LOG.error("Unknown error processing OCL exp!! Exp: " + node + " Val: "
+        LOG.log(Level.SEVERE,
+                "Unknown error processing OCL exp!! Exp: " + node + " Val: "
                 + val);
         val = null;
         // TODO: We need a specific exception type here.

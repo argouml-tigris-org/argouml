@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,9 +39,9 @@
 package org.argouml.kernel;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 
@@ -57,14 +57,14 @@ public class TestProjectManager extends TestCase {
      * @param arg0 is the name of the test case.
      */
     public TestProjectManager(String arg0) {
-	super(arg0);
+        super(arg0);
     }
 
     /*
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
-	super.setUp();
+        super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
     }
@@ -73,9 +73,9 @@ public class TestProjectManager extends TestCase {
      * Test the makeEmptyProject() function.
      */
     public void testMakeEmptyProject() {
-	Project p = ProjectManager.getManager().makeEmptyProject();
-	assertEquals(2, p.getDiagramList().size());
-        assertEquals(Translator.localize("misc.untitled-model"), 
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        assertEquals(2, p.getDiagramList().size());
+        assertEquals(Translator.localize("misc.untitled-model"),
                 Model.getFacade().getName(p.getModel()));
     }
 }

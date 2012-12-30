@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -52,7 +54,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ActionDeploymentDiagram.class);
+        Logger.getLogger(ActionDeploymentDiagram.class.getName());
 
     /**
      * Constructor.
@@ -69,8 +71,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // according to the UML spec, but we rely on the caller to enforce
         // that if desired.
         if (!Model.getFacade().isANamespace(namespace)) {
-            LOG.error("No namespace as argument");
-            LOG.error(namespace);
+            LOG.log(Level.SEVERE, "No namespace as argument {0}",namespace);
+            
             throw new IllegalArgumentException(
 					       "The argument " + namespace
 					       + "is not a namespace.");
@@ -88,10 +90,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // a deployment diagram shows something about the whole model
         // according to the uml spec
         if (!Model.getFacade().isANamespace(namespace)) {
-            LOG.error("No namespace as argument");
-            LOG.error(namespace);
-            throw new IllegalArgumentException(
-					       "The argument " + namespace
+            LOG.log(Level.SEVERE, "No namespace as argument {0}",namespace);
+            
+            throw new IllegalArgumentException("The argument " + namespace
 					       + "is not a namespace.");
         }
         // may only occur as child of the model or in a package
@@ -101,9 +102,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         return false;
     }
 
-    /* 
-     * For a deployment diagram, not just any 
-     * namespace will do - we need a package. 
+    /*
+     * For a deployment diagram, not just any
+     * namespace will do - we need a package.
      */
     @Override
     protected Object findNamespace() {
@@ -129,4 +130,4 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * The UID.
      */
     private static final long serialVersionUID = 9027235104963895167L;
-} 
+}

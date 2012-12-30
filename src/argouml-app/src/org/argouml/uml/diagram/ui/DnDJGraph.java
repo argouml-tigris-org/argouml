@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,8 +51,9 @@ import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Owned;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -77,8 +78,9 @@ import org.tigris.gef.presentation.FigNode;
 class DnDJGraph
     extends JGraph
     implements DropTargetListener {
-    
-    private static final Logger LOG = Logger.getLogger(DnDJGraph.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(DnDJGraph.class.getName());
 
     /**
      * The constructor.
@@ -134,7 +136,7 @@ class DnDJGraph
                 DnDConstants.ACTION_COPY_OR_MOVE,
                 this);
     }
-    
+
     /*
      * @see java.awt.dnd.DropTargetListener#dragEnter(
      *         java.awt.dnd.DropTargetDragEvent)
@@ -159,7 +161,7 @@ class DnDJGraph
     public void dragOver(DropTargetDragEvent dtde) {
     	try {
     	    ArgoDiagram dia = DiagramUtils.getActiveDiagram();
-    	    if (dia instanceof UMLDiagram 
+    	    if (dia instanceof UMLDiagram
                 /*&& ((UMLDiagram) dia).doesAccept(dtde.getSource())*/) {
     	        dtde.acceptDrag(dtde.getDropAction());
     	        return;
@@ -196,7 +198,7 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDropEvent)
      */
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
-        
+
         Transferable tr = dropTargetDropEvent.getTransferable();
         if (!tr.isDataFlavorSupported(
                      TransferableModelElements.UML_COLLECTION_FLAVOR)) {
@@ -214,11 +216,11 @@ class DnDJGraph
                 (MutableGraphModel) diagram.getGraphModel();
             final Point point = dropTargetDropEvent.getLocation();
             final double scale = editor.getScale();
-            
+
             int dx = getViewPosition().x;
             int dy = getViewPosition().y;
             point.translate(dx, dy);
-            
+
             double xp = point.getX();
             double yp = point.getY();
             point.translate(
@@ -229,19 +231,19 @@ class DnDJGraph
             Collection modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
-            
+
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
-                /* TODO: Why not call UMLDiagram.doesAccept() first, 
+                /* TODO: Why not call UMLDiagram.doesAccept() first,
                  * like in ClassDiagramRenderer?  */
                 final DiagramElement figNode = diagram.drop(i.next(), point);
-                
+
                 if (figNode != null && figNode instanceof Owned) {
                     Object owner = ((Owned) figNode).getOwner();
                     if (!gm.getNodes().contains(owner)) {
                         gm.getNodes().add(owner);
                     }
-                    
+
                     layer.add((Fig) figNode);
                     if (figNode instanceof FigNode && figNode instanceof Owned) {
                         gm.addNodeRelatedEdges(((Owned) figNode).getOwner());
@@ -251,9 +253,9 @@ class DnDJGraph
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
-            LOG.error("Exception caught", e);
+            LOG.log(Level.SEVERE, "Exception caught", e);
         } catch (IOException e) {
-            LOG.error("Exception caught", e);
+            LOG.log(Level.SEVERE, "Exception caught", e);
         }
     }
 

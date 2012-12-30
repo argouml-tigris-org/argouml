@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,18 +47,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 
-import org.apache.log4j.Logger;
+import org.argouml.model.Defaults;
 import org.argouml.model.DummyModelCommand;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.Defaults;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
@@ -180,7 +181,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(UmlFactoryMDRImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(UmlFactoryMDRImpl.class.getName());
 
     /**
      * The model implementation.
@@ -198,12 +200,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     private Map<Class<?>, List<Class<?>[]>> validConnectionMap =
         new HashMap<Class<?>, List<Class<?>[]>>();
-    
+
     /**
-     * A map of the valid model elements that are valid to be contained 
+     * A map of the valid model elements that are valid to be contained
      * by other model elements.
      */
-    private HashMap<Class<?>, Class<?>[]> validContainmentMap = 
+    private HashMap<Class<?>, Class<?>[]> validContainmentMap =
         new HashMap<Class<?>, Class<?>[]>();
 
     /**
@@ -214,7 +216,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * Ordered list of elements to be deleted.
      */
-    private List<RefObject> elementsInDeletionOrder = 
+    private List<RefObject> elementsInDeletionOrder =
         new ArrayList<RefObject>();
 
     /**
@@ -269,13 +271,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         {Abstraction.class, UmlClass.class, UmlClass.class, null, },
         {Abstraction.class, UmlPackage.class, UmlPackage.class, null, },
         {Abstraction.class, Component.class, Interface.class, null, },
-        {UmlAssociation.class,     Classifier.class, }, 
+        {UmlAssociation.class,     Classifier.class, },
         {AssociationRole.class,  ClassifierRole.class, },
         {Extend.class,           UseCase.class, },
         {Include.class,          UseCase.class, },
-        {Link.class, Instance.class, }, 
+        {Link.class, Instance.class, },
         {Transition.class,       StateVertex.class, },
-        {AssociationClass.class, UmlClass.class, }, 
+        {AssociationClass.class, UmlClass.class, },
         {AssociationEnd.class, Classifier.class, UmlAssociation.class, },
         {Message.class, ClassifierRole.class },
     };
@@ -291,7 +293,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         metaTypes = modelImpl.getMetaTypes();
 
         buildValidConnectionMap();
-        
+
         buildValidContainmentMap();
     }
 
@@ -331,38 +333,38 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
     }
-    
+
     /**
-     * Initializes the validContainmentMap based on the rules for 
+     * Initializes the validContainmentMap based on the rules for
      * valid containment of elements.
-     * 
+     *
      * @author Scott Roberts
      */
     private void buildValidContainmentMap() {
-       
+
         validContainmentMap.clear();
 
         validContainmentMap.put(ModelElement.class,
                 new Class<?>[] {
                     TemplateParameter.class
                 });
-        
-        // specifies valid elements for a Model to contain 
+
+        // specifies valid elements for a Model to contain
         validContainmentMap.put(org.omg.uml.modelmanagement.Model.class,
             new Class<?>[] {
                 TemplateParameter.class,
                 ComponentInstance.class, NodeInstance.class
             });
 
-        // specifies valid elements for a Model to contain 
+        // specifies valid elements for a Model to contain
         validContainmentMap.put(AssociationEnd.class,
             new Class<?>[] {
                 Attribute.class
             });
 
         // specifies valid elements for a Package to contain
-        validContainmentMap.put(UmlPackage.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(UmlPackage.class,
+            new Class<?>[] {
                 TemplateParameter.class,
                 UmlPackage.class, Actor.class,
                 UseCase.class, UmlClass.class,
@@ -371,267 +373,267 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 Enumeration.class, DataType.class,
                 UmlException.class, Signal.class
             });
-                
+
         // specifies valid elements for a class to contain
-        validContainmentMap.put(UmlClass.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(UmlClass.class,
+            new Class<?>[] {
                 TemplateParameter.class,
                 Attribute.class, Operation.class,
                 UmlClass.class, Reception.class
             });
-        
+
         // specifies valid elements for a classifier to contain
-        validContainmentMap.put(Classifier.class, 
-            new Class<?>[] { 
+        validContainmentMap.put(Classifier.class,
+            new Class<?>[] {
                 TemplateParameter.class
             });
-        
+
         // specifies valid elements for an Interface to contain
-        validContainmentMap.put(Interface.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Interface.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Operation.class, Reception.class
                 });
-        
+
         // specifies valid elements for a Signal to contain
-        validContainmentMap.put(Signal.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Signal.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Operation.class, Attribute.class
                 });
-        
+
         // specifies valid elements for an Actor to contain
-        validContainmentMap.put(Actor.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Actor.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Use Case to contain
-        validContainmentMap.put(UseCase.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(UseCase.class,
+                new Class<?>[] {
                     TemplateParameter.class,
-                    ExtensionPoint.class, Attribute.class, 
+                    ExtensionPoint.class, Attribute.class,
                     Operation.class, Reception.class
                 });
-        
+
         // specifies valid elements for a Use Case to contain
-        validContainmentMap.put(Extend.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Extend.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     ExtensionPoint.class
                 });
-        
+
         // specifies valid elements for a Component to contain
-        validContainmentMap.put(Component.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Component.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Reception.class,
                     Operation.class
                 });
-        
+
         // specifies valid elements for a Node to contain
-        validContainmentMap.put(Node.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Node.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Enumeration to contain
-        validContainmentMap.put(Enumeration.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Enumeration.class,
+                new Class<?>[] {
                     TemplateParameter.class,
-                    EnumerationLiteral.class, Operation.class 
+                    EnumerationLiteral.class, Operation.class
                 });
-        
+
         // specifies valid elements for a DataType to contain
-        validContainmentMap.put(DataType.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(DataType.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
-        
+
         // specifies valid elements for a Operation to contain
-        validContainmentMap.put(Operation.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Operation.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Parameter.class,
                     Signal.class,
                     Method.class
                 });
-        
+
         // specifies valid elements for an Event to contain
-        validContainmentMap.put(Event.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Event.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Parameter.class
                 });
-        
+
         // specifies valid elements for an ObjectFlowState to contain
-        validContainmentMap.put(ObjectFlowState.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(ObjectFlowState.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Parameter.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(AssociationRole.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(AssociationRole.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Message.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(CallAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(CallAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(UninterpretedAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(UninterpretedAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(ReturnAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(ReturnAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(DestroyAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(DestroyAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(SendAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(SendAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(TerminateAction.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(TerminateAction.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Argument.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(ActionSequence.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(ActionSequence.class,
+                new Class<?>[] {
                     TemplateParameter.class, Argument.class,
                     CallAction.class, ReturnAction.class, CreateAction.class,
                     DestroyAction.class, SendAction.class,
                     TerminateAction.class, UninterpretedAction.class,
                     ActionSequence.class,
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(Transition.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Transition.class,
+                new Class<?>[] {
                     TemplateParameter.class,
                     Guard.class,
                     CallAction.class, ReturnAction.class,
                     CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(SignalEvent.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(SignalEvent.class,
+                new Class<?>[] {
                     Signal.class
                 });
-        
+
         // specifies valid elements for an AssociationRole to contain
-        validContainmentMap.put(Reception.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(Reception.class,
+                new Class<?>[] {
                     Parameter.class,
                     TemplateParameter.class
                 });
-        
+
         // specifies valid elements for an State to contain
-        validContainmentMap.put(State.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(State.class,
+                new Class<?>[] {
                     CallEvent.class, ChangeEvent.class, SignalEvent.class,
                     TimeEvent.class
                 });
-        
+
         // specifies valid elements for an CallState to contain
-        validContainmentMap.put(CallState.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(CallState.class,
+                new Class<?>[] {
                     CallAction.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class,
                     TimeEvent.class
                 });
-        
+
         // specifies valid elements for an SimpleState to contain
-        validContainmentMap.put(SimpleState.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(SimpleState.class,
+                new Class<?>[] {
                     Transition.class,
                     CallAction.class, CreateAction.class, DestroyAction.class,
-                    ReturnAction.class, SendAction.class, 
+                    ReturnAction.class, SendAction.class,
                     TerminateAction.class,
                     UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
                     TimeEvent.class
                 });
-        
+
         // specifies valid elements for an SimpleState to contain
-        validContainmentMap.put(FinalState.class, 
-                new Class<?>[] { 
+        validContainmentMap.put(FinalState.class,
+                new Class<?>[] {
                     Transition.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, 
+                    CallAction.class, CreateAction.class, DestroyAction.class,
                     ReturnAction.class, SendAction.class, TerminateAction.class,
                     UninterpretedAction.class, ActionSequence.class
                 });
-        
+
         // specifies valid elements for an SubactivityState to contain
-        validContainmentMap.put(SubactivityState.class, 
-                new Class<?>[] { 
-                    Transition.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, 
-                    ReturnAction.class, SendAction.class, TerminateAction.class, 
-                    UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
-                    TimeEvent.class
-                });
-        
-        // specifies valid elements for an ActionState to contain
-        validContainmentMap.put(ActionState.class, 
-                new Class<?>[] { 
-                    CallAction.class, CreateAction.class, DestroyAction.class, 
-                    ReturnAction.class, SendAction.class, TerminateAction.class, 
-                    UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
-                    TimeEvent.class
-                });
-        
-        // specifies valid elements for an ActionState to contain
-        validContainmentMap.put(CompositeState.class, 
+        validContainmentMap.put(SubactivityState.class,
                 new Class<?>[] {
                     Transition.class,
-                    Pseudostate.class, SynchState.class, StubState.class, 
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an ActionState to contain
+        validContainmentMap.put(ActionState.class,
+                new Class<?>[] {
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an ActionState to contain
+        validContainmentMap.put(CompositeState.class,
+                new Class<?>[] {
+                    Transition.class,
+                    Pseudostate.class, SynchState.class, StubState.class,
                     CompositeState.class, SimpleState.class,
-                    FinalState.class, 
+                    FinalState.class,
                     SubmachineState.class,
                     CallAction.class, CreateAction.class, DestroyAction.class,
-                    ReturnAction.class, SendAction.class, 
-                    TerminateAction.class, 
+                    ReturnAction.class, SendAction.class,
+                    TerminateAction.class,
                     UninterpretedAction.class, ActionSequence.class
                 });
-        
+
     }
-    
+
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
@@ -645,7 +647,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         Object connection = null;
-        boolean uni = (unidirectional instanceof Boolean) 
+        boolean uni = (unidirectional instanceof Boolean)
             ? ((Boolean) unidirectional).booleanValue() : false;
         if (elementType == metaTypes.getAssociation()) {
             connection =
@@ -789,12 +791,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getTransition()) {
             return getStateMachines().createTransition();
         }
-            
+
         throw new IllegalArgumentException(
-                "Attempted to create unsupported model element type: " 
+                "Attempted to create unsupported model element type: "
                 + elementType);
     }
-    
+
     public Object buildNode(Object elementType, Object container, String property, Defaults defaults) {
         Object element = buildNode(elementType, container, property);
         if (defaults != null) {
@@ -811,12 +813,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         return element;
     }
-    
+
 
     public Object buildNode(Object elementType, Object container, String properyName) {
-        
+
         Object element = null;
-        
+
         // if this is a feature get the owner of that feature
         // TODO: Does anything actually make use of this? It can
         // cause unexpected behaviour.
@@ -826,11 +828,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 && elementType != metaTypes.getSignal()) {
             container = this.modelImpl.getFacade().getOwner(container);
         }
-        
-        // supports implementation of some special elements not 
+
+        // supports implementation of some special elements not
         // supported by buildNode
         if (elementType == this.metaTypes.getAttribute()) {
-            element = getCore().buildAttribute2(container, null);   
+            element = getCore().buildAttribute2(container, null);
         } else if (elementType == this.metaTypes.getOperation()) {
             element = getCore().buildOperation(container, null);
         } else if (elementType == this.metaTypes.getReception()) {
@@ -839,7 +841,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = getCore().buildEnumerationLiteral(null, container);
         } else if (elementType == this.metaTypes.getExtensionPoint()) {
             element = this.modelImpl.getUseCasesFactory().
-                buildExtensionPoint(container);            
+                buildExtensionPoint(container);
         } else if (elementType == this.metaTypes.getTemplateParameter()) {
             // TODO: the type of the model element used in a type parameter
             // (ie the formal) needs to match the actual parameter that it
@@ -848,8 +850,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // don't have time to debug it right now. - tfm - 20090608
             Parameter param = getCore().createParameter();
             param.setName("T"); // default parameter name
-            element = 
-                modelImpl.getCoreFactory().buildTemplateParameter(container, 
+            element =
+                modelImpl.getCoreFactory().buildTemplateParameter(container,
                         param, null);
         } else if (elementType == metaTypes.getParameter()) {
             element = getCore().buildParameter(container, null);
@@ -946,20 +948,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
-            
-            if (container instanceof Namespace 
+
+            if (container instanceof Namespace
                     && element instanceof Namespace) {
                 ((Namespace) element).setNamespace(
                         ((Namespace) container).getNamespace());
             }
-            
+
             this.modelImpl.getCoreHelper().addOwnedElement(container, element);
         }
-        
+
         modelImpl.getCoreHelper().setName(element, "");
         return element;
     }
-    
+
     private void setNewAction(Object container, Action action, String propertyName) {
         if (container instanceof Transition) {
             ((Transition) container).setEffect(action);
@@ -981,8 +983,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Object buildNode(Object elementType, Object container) {
         return buildNode(elementType, container, (String) null);
     }
-    
-    
+
+
     /**
      * Add a newly created event to a trigger
      * @param transition
@@ -995,7 +997,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         final Namespace namespace = statemachine.getNamespace();
         event.setNamespace(namespace);
     }
-    
+
     /**
      * Add a newly created event to a trigger
      * @param transition
@@ -1008,10 +1010,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         do {
             parent = ((RefObject) parent).refImmediateComposite();
         } while (!(parent instanceof Namespace));
-        
+
         event.setNamespace((Namespace) parent);
     }
-    
+
     public boolean isConnectionType(Object connectionType) {
         // If our map has any entries for this type, it's a connection type
         return (validConnectionMap.get(connectionType) != null);
@@ -1052,29 +1054,29 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         return false;
     }
-    
+
     public boolean isContainmentValid(Object metaType, Object container) {
-        
+
         // find the passed in container in validContainmentMap
         for (Class<?> containerType : validContainmentMap.keySet()) {
-            
+
             if (containerType.isInstance(container)) {
                 // determine if metaType is a valid element for container
-                Class<?>[] validElements = 
+                Class<?>[] validElements =
                     validContainmentMap.get(containerType);
-                
+
                 for (int eIter = 0; eIter < validElements.length; ++eIter) {
-                    
+
                     if (metaType == validElements[eIter]) {
                         return true;
                     }
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     /**
      * Run through any well formedness rules we wish to enforce for a
      * connection.
@@ -1087,11 +1089,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Class<?> connectionType,
             ModelElement fromElement,
             ModelElement toElement) {
-        
+
         if (fromElement == null || toElement == null) {
             return false;
         }
-            
+
         if (connectionType == Generalization.class) {
             /*
              * UML 1.4.2 Spec section 4.5.3.20 [5]
@@ -1102,7 +1104,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -1224,7 +1226,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *
      * @param elem
      *            The element to be deleted
-     *            
+     *
      * @see org.argouml.model.UmlFactory#delete(java.lang.Object)
      */
     public void delete(Object elem) {
@@ -1244,12 +1246,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             elementsToBeDeleted.add((RefObject) elem);
         }
 
-        if (LOG.isDebugEnabled()) {
-            if (top == elem) {
-                LOG.debug("Set top for cascade delete to " + elem);
-            }
-            LOG.debug("Deleting " + elem);
+        if (top == elem) {
+            LOG.log(Level.FINE, "Set top for cascade delete to {0}", elem);
         }
+        LOG.log(Level.FINE, "Deleting {0}", elem);
 
         // Begin a transaction - we'll do a bunch of reads first
         // to collect a set of elements to delete - then delete them all
@@ -1346,7 +1346,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 getModelManagement().deleteElementImport(elem);
             } else if (elem instanceof ElementResidence) {
                 getCore().deleteElementResidence(elem);
-            } 
+            }
 
             if (elem instanceof Partition) {
                 getActivityGraphs().deletePartition(elem);
@@ -1360,10 +1360,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } catch (InvalidObjectException e) {
             // If we get this with the repository locked, it means our root
             // model element was already deleted.  Nothing to do...
-            LOG.error("Encountered deleted object during delete of " + elem);
+            LOG.log(Level.SEVERE, "Encountered deleted object during delete of " + elem);
         } catch (InvalidElementException e) {
             // Our wrapped version of the same error
-            LOG.error("Encountered deleted object during delete of " + elem);
+            LOG.log(Level.SEVERE, "Encountered deleted object during delete of " + elem);
         } finally {
             // end our transaction
             modelImpl.getRepository().endTrans();
@@ -1378,22 +1378,22 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 Object container = ((RefObject) elem).refImmediateComposite();
                 if (container == null
                         || !elementsToBeDeleted.contains(container)
-                        // There is a bug in the version of MDR (20050711) that 
-                        // we use  that causes it to fail to delete aggregate 
-                        // elements which are single valued and where the 
+                        // There is a bug in the version of MDR (20050711) that
+                        // we use  that causes it to fail to delete aggregate
+                        // elements which are single valued and where the
                         // aggregate end is listed second in the association
                         // defined in the metamodel. For the UML 1.4 metamodel,
                         // this affects a StateMachine's top StateVertex and
-                        // a Transition's Guard.  See issue 4948 & 5227 - tfm 
+                        // a Transition's Guard.  See issue 4948 & 5227 - tfm
                         // 20080713
-                        || (container instanceof StateMachine 
+                        || (container instanceof StateMachine
                                 && elem instanceof StateVertex)
-                        || (container instanceof Transition 
+                        || (container instanceof Transition
                                 && elem instanceof Guard)) {
                     elementsInDeletionOrder.add((RefObject) elem);
                 }
             } catch (InvalidObjectException e) {
-                LOG.debug("Object already deleted " + elem);
+                LOG.log(Level.FINE, "Object already deleted {0}", elem);
             }
 
             if (elem == top) {
@@ -1409,7 +1409,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         // If this is broken by deletion of substate then we
                         // change the parent composite substate to be not
                         // concurrent.
-                        CompositeState deletedCompositeState = 
+                        CompositeState deletedCompositeState =
                             (CompositeState) o;
                         try {
                             CompositeState containingCompositeState =
@@ -1422,27 +1422,25 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                                 containingCompositeState.setConcurrent(false);
                             }
                         } catch (InvalidObjectException e) {
-                            LOG.debug("Object already deleted " + o);
+                            LOG.log(Level.FINE, "Object already deleted {0}", o);
                         }
                     }
                     try {
                         o.refDelete();
                     } catch (InvalidObjectException e) {
-                        LOG.debug("Object already deleted " + o);
+                        LOG.log(Level.FINE, "Object already deleted {0}", o);
                     }
                     elementsToBeDeleted.remove(o);
                 }
                 top = null;
                 elementsInDeletionOrder.clear();
                 if (!elementsToBeDeleted.isEmpty()) {
-                    LOG.debug("**Skipped deleting "
-                            + elementsToBeDeleted.size()
-                            + " elements (probably in a deleted container");
+                    LOG.log(Level.FINE, "**Skipped deleting {0} elements (probably in a deleted container", elementsToBeDeleted.size());
                     elementsToBeDeleted.clear();
                 }
             }
         }
-        
+
         Model.execute(new DummyModelCommand());
     }
 
@@ -1672,20 +1670,22 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     public void deleteExtent(Object element) {
         try {
-            org.omg.uml.UmlPackage extent = 
+            org.omg.uml.UmlPackage extent =
                 (org.omg.uml.UmlPackage) ((RefObject) element)
                     .refOutermostPackage();
-            LOG.debug("Removing extent " + extent);
+
+            LOG.log(Level.FINE, "Removing extent {0}", extent);
+
             modelImpl.deleteExtent(extent);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
     }
-    
+
     public Collection getExtentElements(String name) {
         return getExtentPackages(name);
     }
-    
+
     public Collection getExtentPackages(String name) {
         org.omg.uml.UmlPackage pkg = modelImpl.getExtent(name);
         if (pkg == null) {

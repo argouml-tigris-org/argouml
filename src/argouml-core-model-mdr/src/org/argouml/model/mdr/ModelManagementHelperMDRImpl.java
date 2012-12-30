@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,13 +45,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
@@ -71,7 +72,7 @@ import org.omg.uml.modelmanagement.UmlPackage;
 /**
  * Helper class for UML ModelManagement Package.
  * <p>
- * 
+ *
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * <p>
@@ -79,10 +80,10 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * @author Thierry Lach
  */
 class ModelManagementHelperMDRImpl implements ModelManagementHelper {
-    
-    private static final Logger LOG = 
-        Logger.getLogger(ModelManagementHelperMDRImpl.class);
-    
+
+    private static final Logger LOG =
+        Logger.getLogger(ModelManagementHelperMDRImpl.class.getName());
+
     /**
      * The model implementation.
      */
@@ -91,7 +92,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     /**
      * Construct a ModelManagementHelper.  Not for use outside of the
      * Model subsystem implementation.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -107,7 +108,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-        
+
         Iterator it = ((Namespace) ns).getOwnedElement().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
@@ -181,9 +182,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         return ret;
     }
-    
 
-    public Collection getAllModelElementsOfKind(Object nsa, Object type) {        
+
+    public Collection getAllModelElementsOfKind(Object nsa, Object type) {
         // TODO: Performance critical method
         long startTime = System.currentTimeMillis();
         if (nsa == null || type == null) {
@@ -227,10 +228,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             // TODO: Optimize for root model case? - tfm
             if (contained(nsa, me)) {
                 returnElements.add(me);
-            } 
+            }
         }
-        long duration = System.currentTimeMillis() - startTime;
-        LOG.debug("Get allOfKind took " + duration + " msec.");
+        if ( LOG.isLoggable( Level.FINE ) ) {
+            long duration = System.currentTimeMillis() - startTime;
+            LOG.log(Level.FINE, "Get allOfKind took {0} msec.", duration);
+        }
         return returnElements;
     }
 
@@ -294,7 +297,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         // Get Classifiers in Namespace
         ArrayList features = new ArrayList();
         try {
-            Collection classifiers = getAllModelElementsOfKind(ns, 
+            Collection classifiers = getAllModelElementsOfKind(ns,
                     modelImpl.getMetaTypes().getClassifier());
             Iterator i = classifiers.iterator();
             // Get Features owned by those Classifiers
@@ -319,7 +322,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
     public Collection getAllPossibleImports(Object pack) {
         // TODO: Fully implement this!
-        
+
         Object container = pack;
         Object cc = modelImpl.getFacade().getModelElementContainer(pack);
         while (cc != null) {
@@ -327,9 +330,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             cc = modelImpl.getFacade().getModelElementContainer(cc);
         }
 
-        Collection mes = getAllModelElementsOfKind(container, 
+        Collection mes = getAllModelElementsOfKind(container,
                 modelImpl.getMetaTypes().getModelElement());
-        
+
         Collection vmes = new ArrayList();
         Iterator i = mes.iterator();
         while (i.hasNext()) {
@@ -338,7 +341,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 vmes.add(me);
             }
         }
-        
+
         return vmes;
     }
 
@@ -373,27 +376,27 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             return root;
         }
     }
- 
-    
+
+
     public Object getElement (List<String> fullPath) {
         if (fullPath == null || fullPath.isEmpty()) {
             return null;
         }
         Object element = null;
         for (Object root : modelImpl.getFacade().getRootElements()) {
-            /* 
+            /*
              * modelImpl.getFacade().getRootElements()  gets all root elements
-             * in the UML repository, including available profiles that are not 
+             * in the UML repository, including available profiles that are not
              * part of the current project (degrades performance).
-             * 
-             * ProjectManager.getManager().getCurrentProject().getRoots() only 
+             *
+             * ProjectManager.getManager().getCurrentProject().getRoots() only
              * returns user model roots, and no profiles.
-             * 
+             *
              * ProjectManager.getManager().getCurrentProject().getModels() gets
              * all root models, but no root namespaces.
-             * 
+             *
              * TODO: Which is best? Is there any other way?
-             */  
+             */
             if (((ModelElement) root).getName().equals(fullPath.get(0))) {
                 element = root;
                 if (root instanceof Namespace && fullPath.size() > 1) {
@@ -425,7 +428,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
         return path;
     }
-    
+
 
     public List<Object> getRootElements(Object model) {
         List<Object> contents = new ArrayList<Object>();
@@ -433,7 +436,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return contents;
     }
 
-    
+
     public boolean isCyclicOwnership(Object parent, Object child) {
         return (getOwnerShipPath(parent).contains(child) || parent == child);
     }
@@ -441,7 +444,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     /**
      * Return a list of all ModelElements which contain this one, starting with
      * the immediate parent and ending with the top level ModelElement.
-     * 
+     *
      * @param elem
      *            the model element to search for
      * @return a list of ModelElements
@@ -481,7 +484,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
-                "There must be a Package and a ModelElement we got " + pack + " and " + me); 
+                "There must be a Package and a ModelElement we got " + pack + " and " + me);
     }
 
 
@@ -544,7 +547,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             // This is silly, but for backward compatibility
             return Collections.emptySet();
         }
-        throw new IllegalArgumentException("Unsupported element type " 
+        throw new IllegalArgumentException("Unsupported element type "
                 + modelelement);
     }
 
@@ -572,7 +575,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         } else if (modelelement == null) {
             return;
         }
-        throw new IllegalArgumentException("Unsupported element type " 
+        throw new IllegalArgumentException("Unsupported element type "
                 + modelelement);
     }
 
@@ -580,13 +583,13 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * Get the contents of a Package.
      * <p>
      * For a Package: <pre>
-     * [1] The operation contents results in a Set containing 
+     * [1] The operation contents results in a Set containing
      * the ModelElements owned by or imported by the Package.
      * contents : Set(ModelElement)
      * contents = self.ownedElement->union(self.importedElement)
      * </pre>
      * For a Subsystem (subtype of Package): <pre>
-     * [2] The operation contents results in a Set containing 
+     * [2] The operation contents results in a Set containing
      * the ModelElements owned by or imported by the Subsystem.
      *   contents : Set(ModelElement)
      *   contents = self.ownedElement->union(self.importedElement)
@@ -624,11 +627,11 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * all owning namespaces).
      * <p>
      * For a Namespace: <pre>
-     * [1] The operation contents results in a Set containing 
+     * [1] The operation contents results in a Set containing
      * all ModelElements contained by the Namespace.
      * contents : Set(ModelElement)
      * contents = self.ownedElement -> union(self.namespace, contents)
-     * </pre> 
+     * </pre>
      * @param namespace Namespace to get contents of
      * @return contents of namespace and all containing namespaces
      */
@@ -658,11 +661,11 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         // TODO: Should we handle <<access>> and <<import>>?
     }
-    
+
     /**
      * Return the contents of an Instance.
      * For a Instance: <pre>
-     * [5] The operation contents results in a Set containing all 
+     * [5] The operation contents results in a Set containing all
      * ModelElements contained by the Instance.
      *   contents: Set(ModelElement);
      *   contents = self.ownedInstance->union(self.ownedLink)
@@ -676,7 +679,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         results.addAll(instance.getOwnedLink());
         return results;
     }
-    
+
     /**
      * Adds the contents of an instance to the given collection.
      * Same as {@link #getContents(Instance)} but adding to results to an
@@ -688,7 +691,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         results.addAll(instance.getOwnedInstance());
         results.addAll(instance.getOwnedLink());
     }
-    
+
     public Collection<ModelElement> getAllImportedElements(Object pack) {
         if (!(pack instanceof Namespace)) {
             return Collections.emptyList();
@@ -716,7 +719,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         Namespace ns = ((Namespace) pack);
         try {
             /* TODO: This is not according the contract for this function, but
-             * it is used in several places, and I (MVW) presume that 
+             * it is used in several places, and I (MVW) presume that
              * we need this generally.
              * This part (1) is about drawing an <<import>> permission
              * between packages.
@@ -779,14 +782,14 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         if (pack == null || dupCheck.contains(pack)) {
             return;
         }
-        
+
         dupCheck.add(pack);
 
         try {
             /*
              * For a Namespace:
              * <pre>
-             * [2] The operation allContents results in a Set containing 
+             * [2] The operation allContents results in a Set containing
              * all ModelElements contained by the Namespace.
              *   allContents : Set(ModelElement);
              *   allContents = self.contents
@@ -801,7 +804,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             /*
              * For a Classifier:
              * <pre>
-             * [10] The operation allContents returns a Set containing 
+             * [10] The operation allContents returns a Set containing
              * all ModelElements contained in the Classifier together
              * with the contents inherited from its parents.
              *   allContents : Set(ModelElement);
@@ -810,7 +813,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              *            e.elementOwnership.visibility = #public or
              *            e.elementOwnership.visibility = #protected))
              * where parent is defined for GeneralizableElement as:
-             * [1] The operation parent returns a Set containing all direct 
+             * [1] The operation parent returns a Set containing all direct
              * parents
              *   parent : Set(GeneralizableElement);
              *   parent = self.generalization.parent
@@ -820,18 +823,18 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             /*
              * For a Package:
              * <pre>
-             * [3]  The operation allContents results in a Set containing 
-             * the ModelElements owned by or imported 
+             * [3]  The operation allContents results in a Set containing
+             * the ModelElements owned by or imported
              * by the Package or one of its ancestors.
              *   allContents : Set(ModelElement);
              *   allContents = self.contents->union(
              *     self.parent.allContents->select(e |
              *          e.elementOwnership.visibility = #public or
              *          e.elementOwnership.visibility = #protected))
-             *          
+             *
              * where the required operations are defined as :
-             * 
-             * [1] The operation contents results in a Set containing the 
+             *
+             * [1] The operation contents results in a Set containing the
              * ModelElements owned by or imported by the Package.
              *   contents : Set(ModelElement)
              *   contents = self.ownedElement->union(self.importedElement)
@@ -839,28 +842,28 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              * the ModelElements imported by the Package or one of its parents.
              *   allImportedElements : Set(ModelElement)
              *   allImportedElements = self.importedElement->union(
-             *     self.parent.oclAsType(Package).allImportedElements->select( 
+             *     self.parent.oclAsType(Package).allImportedElements->select(
              *                   re | re.elementImport.visibility = #public or
              *                        re.elementImport.visibility = #protected))
              * </pre>
              */
 
             if (pack instanceof Classifier || pack instanceof UmlPackage) {
-                Collection<GeneralizableElement> parents = 
+                Collection<GeneralizableElement> parents =
                     CoreHelperMDRImpl.getParents((GeneralizableElement) pack);
                 // TODO: Try reusing the same set on every recursion
                 Set<ModelElement> allContents = new HashSet<ModelElement>(2000);
                 for (GeneralizableElement parent : parents) {
                     getAllContents(allContents, parent, dupCheck);
                 }
-                
+
                 if (pack instanceof UmlPackage) {
                     getAllImportedElements(allContents, pack);
                     for (GeneralizableElement parent : parents) {
                         getAllImportedElements(allContents, parent);
                     }
                 }
-                
+
                 for (ModelElement element : allContents) {
                     if (VisibilityKindEnum.VK_PUBLIC.equals(element
                             .getVisibility())
@@ -877,22 +880,22 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             /*
              * For a Collaboration:
              * <pre>
-             * [1 ] The operation allContents results in the set of 
+             * [1 ] The operation allContents results in the set of
              * all ModelElements contained in the Collaboration
-             * together with those contained in the parents 
+             * together with those contained in the parents
              * except those that have been specialized.
              *   allContents : Set(ModelElement);
              *   allContents = self.contents->union (
              *                       self.parent.allContents->reject ( e |
              *                       self.contents.name->include (e.name) ))
-             *                       
+             *
              *  parent here is the GeneralizableElement definition
              * </pre>
              */
             if (pack instanceof Collaboration) {
                 // TODO: Not implemented
-                LOG.debug(
-                        "Not implemented - getAllContents for: " + pack);
+                LOG.log(Level.FINE,
+                        "Not implemented - getAllContents for: {0}", pack);
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);

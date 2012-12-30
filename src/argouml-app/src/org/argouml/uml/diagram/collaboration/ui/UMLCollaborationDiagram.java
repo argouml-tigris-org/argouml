@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,11 @@ import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.CollaborationDiagram;
 import org.argouml.model.Model;
@@ -88,7 +89,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
      * Logging.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLCollaborationDiagram.class);
+        Logger.getLogger(UMLCollaborationDiagram.class.getName());
 
     ////////////////////////
     // actions for toolbar
@@ -114,7 +115,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
     /**
      * This constructor is used to build a dummy collaboration diagram so
      * that a project will load properly.
-     * @deprecated for 0.28 by tfmorris.  Use 
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -130,7 +131,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
      * The constructor.
      *
      * @param collaboration the collaboration aka namespace for the diagram
-     * @deprecated for 0.28 by tfmorris.  Use 
+     * @deprecated for 0.28 by tfmorris.  Use
      * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
@@ -174,7 +175,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
      */
     public void setNamespace(Object handle) {
         if (!Model.getFacade().isANamespace(handle)) {
-            LOG.error(
+            LOG.log(Level.SEVERE,
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
@@ -189,8 +190,8 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
     }
-    
-    
+
+
     // TODO: Needs to be tidied up after stable release. Graph model
     // should be created in constructor
     private CollabDiagramGraphModel createGraphModel() {
@@ -216,7 +217,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
                 getActionDepend(),
                 null,
                 //this one behaves differently, hence seperated:
-                getActionMessage(), 
+                getActionMessage(),
             };
             return actions;
         } else {
@@ -239,7 +240,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
         };
-        ToolBarUtility.manageDefault(actions, 
+        ToolBarUtility.manageDefault(actions,
                 "diagram.collaboration.association");
         return actions;
     }
@@ -315,7 +316,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         }
         return actionAssociation;
     }
-    
+
     /**
      * @return Returns the actionAssociation.
      */
@@ -331,7 +332,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         }
         return actionConnector;
     }
-    
+
     /**
      * @return Returns the actionComposition.
      */
@@ -475,14 +476,14 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         return c;
     }
 
-    public void encloserChanged(FigNode enclosed, 
+    public void encloserChanged(FigNode enclosed,
             FigNode oldEncloser, FigNode newEncloser) {
-        // Do nothing.        
+        // Do nothing.
     }
-    
+
     /**
-     * A sequence diagram can accept all classifiers. It will add them as a new 
-     * Classifier Role with that classifier as a base. All other accepted figs 
+     * A sequence diagram can accept all classifiers. It will add them as a new
+     * Classifier Role with that classifier as a base. All other accepted figs
      * are added as is.
      * @param objectToAccept
      * @return true if the diagram can accept the object, else false
@@ -501,7 +502,7 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         }
         return false;
     }
-    
+
     /**
      * Creates a new Classifier Role with a specified base.
      * @param base
@@ -519,43 +520,43 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
                         collaboration);
         }
         Model.getCollaborationsHelper().addBase(node, base);
-        
+
         return node;
     }
-    
+
     /**
-     * Creates the Fig for the CR. Y position will be adjusted to match other 
+     * Creates the Fig for the CR. Y position will be adjusted to match other
      * the other CRs.
      * @param classifierRole
      * @param location The position where to put the new fig.
      * @return
      */
-    private FigClassifierRole makeNewFigCR(Object classifierRole, 
+    private FigClassifierRole makeNewFigCR(Object classifierRole,
             Point location) {
         if (classifierRole != null) {
             FigClassifierRole newCR = new FigClassifierRole(classifierRole,
                     new Rectangle(location), getDiagramSettings());
-            
+
             getGraphModel().getNodes().add(newCR.getOwner());
 
             return newCR;
         }
         return null;
     }
-    
+
     @Override
     public DiagramElement drop(Object droppedObject, Point location) {
         DiagramElement figNode = null;
         GraphModel gm = getGraphModel();
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
-        
+
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
         if (location != null) {
             bounds = new Rectangle(location.x, location.y, 0, 0);
         }
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
             figNode = new FigClassifierRole(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAMessage(droppedObject)) {
@@ -563,28 +564,28 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            figNode = makeNewFigCR(droppedObject, location);           
+            figNode = makeNewFigCR(droppedObject, location);
         } else if (Model.getFacade().isAClassifier(droppedObject)) {
             figNode = makeNewFigCR(makeNewCR(droppedObject), location);
         }
         if (figNode != null) {
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE, "Dropped object {0} converted to {1}",
+                    new Object[]{droppedObject, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + droppedObject);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", droppedObject);
         }
         return figNode;
     }
-    
+
 
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAClassifierRole(modelElement)) {
             figNode = new FigClassifierRole(modelElement, bounds, settings);
         } else if (Model.getFacade().isAMessage(modelElement)) {
@@ -593,28 +594,28 @@ public class UMLCollaborationDiagram extends UMLDiagram implements Collaboration
             figNode = new FigComment(modelElement, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(modelElement)) {
             figNode =
-                makeNewFigCR(modelElement, bounds.getLocation());           
+                makeNewFigCR(modelElement, bounds.getLocation());
         } else if (Model.getFacade().isAClassifier(modelElement)) {
             figNode =
                 makeNewFigCR(makeNewCR(modelElement), bounds.getLocation());
         }
-        
+
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE, "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }
-    
+
     @Override
     public String getInstructions(Object droppedObject) {
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
             return super.getInstructions(droppedObject);
     	} else if (Model.getFacade().isAClassifier(droppedObject)) {
             return Translator.localize(
-                    "misc.message.click-on-diagram-to-add-as-cr", 
+                    "misc.message.click-on-diagram-to-add-as-cr",
                     new Object[] {Model.getFacade().toString(droppedObject)});
         }
         return super.getInstructions(droppedObject);

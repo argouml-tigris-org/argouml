@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
@@ -73,7 +74,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLMutableGraphSupport.class);
+        Logger.getLogger(UMLMutableGraphSupport.class.getName());
 
     private DiDiagram diDiagram;
 
@@ -100,7 +101,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * The project this graph model is in.
      */
     private Project project;
-    
+
     /**
      * Constructor.
      *
@@ -128,7 +129,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public List getEdges() {
         return edges;
     }
-    
+
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#containsNode(java.lang.Object)
      */
@@ -205,7 +206,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
     /**
      * Set the namespace or homemodel of the diagram.  This will become the
-     * default namespace for any model elements which are created on 
+     * default namespace for any model elements which are created on
      * the diagram.
      *
      * @param ns the namespace
@@ -267,8 +268,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 model);
 
         if (connection == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Cannot make a " + edgeType
+            if (LOG.isLoggable(Level.FINE)) {
+                LOG.log(Level.FINE, "Cannot make a " + edgeType
                         + " between a " + fromPort.getClass().getName()
                         + " and a " + toPort.getClass().getName());
             }
@@ -276,8 +277,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         }
 
         addEdge(connection);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Connection type" + edgeType
+        if (LOG.isLoggable(Level.FINE)) {
+            LOG.log(Level.FINE, "Connection type" + edgeType
                       + " made between a " + fromPort.getClass().getName()
                       + " and a " + toPort.getClass().getName());
         }
@@ -341,7 +342,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         // Don't know what to do otherwise
 
-        LOG.error(this.getClass().toString() + ": getSourcePort("
+        LOG.log(Level.SEVERE,this.getClass().toString() + ": getSourcePort("
                 + edge.toString() + ") - can't handle");
 
         return null;
@@ -373,7 +374,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
         // Don't know what to do otherwise
 
-        LOG.error(this.getClass().toString() + ": getDestPort("
+        LOG.log(Level.SEVERE,this.getClass().toString() + ": getDestPort("
                 + edge.toString() + ") - can't handle");
 
         return null;
@@ -389,7 +390,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             return isConnectionValid(CommentEdge.class,
                     ce.getSource(),
                     ce.getDestination());
-        } else if (edge != null 
+        } else if (edge != null
                 && Model.getUmlFactory().isConnectionType(edge)) {
             return isConnectionValid(edge.getClass(),
                 Model.getUmlHelper().getSource(edge),
@@ -415,7 +416,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                 }
             }
         }
-        
+
         // Commentlinks for comments. Iterate over all the comment links
         // to find the comment and annotated elements.
 
@@ -476,8 +477,10 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                             toStyle,
                             unidirectional,
                             namespace);
-        	LOG.info("Created " + connection + " between " 
+                LOG.log(Level.INFO,
+                        "Created " + connection + " between "
         	        + fromElement + " and " + toElement);
+
             } catch (UmlException ex) {
                 // fail silently as we expect users to accidentally drop
                 // on to wrong component
@@ -487,7 +490,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         	// TODO: IllegalArgumentException should not be used for
         	// events we expect to happen. We need a different way of
         	// catching well-formedness rules.
-        	LOG.warn("IllegalArgumentException caught", iae);
+                LOG.log(Level.WARNING, "IllegalArgumentException caught", iae);
             }
         }
         return connection;
@@ -587,7 +590,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public boolean isRemoveFromDiagramAllowed(Collection figs) {
         return !figs.isEmpty();
     }
-    
+
     /**
      * Set the project that the graph model is inside.
      * @param p the project
@@ -595,7 +598,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public void setProject(Project p) {
 	project = p;
     }
-    
+
     /**
      * Get the project that the graph model is inside.
      * @return the project

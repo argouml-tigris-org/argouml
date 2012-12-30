@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Bob Tarling
- *    
+ *
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,12 +44,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.InvalidElementException;
@@ -62,7 +63,7 @@ import org.argouml.model.Model;
  * Necessary since ArgoUML needs some extra init.
  *
  * @since Nov 24, 2002
- * @author jaap.branderhorst@xs4all.nl 
+ * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
 public final class ResourceLoaderWrapper {
@@ -71,7 +72,7 @@ public final class ResourceLoaderWrapper {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ResourceLoaderWrapper.class);
+        Logger.getLogger(ResourceLoaderWrapper.class.getName());
 
     private static ImageIcon initialStateIcon;
     private static ImageIcon deepIcon;
@@ -179,7 +180,7 @@ public final class ResourceLoaderWrapper {
                 .addResourceLocation("/org/argouml/Images");
         org.tigris.gef.util.ResourceLoader
                 .addResourceLocation("/org/tigris/gef/Images");
-        
+
         initialStateIcon = ResourceLoader.lookupIconResource("Initial");
         deepIcon = ResourceLoader.lookupIconResource("DeepHistory");
         shallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
@@ -194,9 +195,9 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * This public operation is needed 
+     * This public operation is needed
      * to allow modules to add their own images.
-     * 
+     *
      * @param location the path were the images are
      */
     public static void addResourceLocation(String location) {
@@ -256,10 +257,10 @@ public final class ResourceLoaderWrapper {
         }
 
         Icon icon = iconCache.get(value.getClass());
-        
+
         try {
             if (Model.getFacade().isAPseudostate(value)) {
-                
+
                 Object kind = Model.getFacade().getKind(value);
                 DataTypesHelper helper = Model.getDataTypesHelper();
                 if (helper.equalsINITIALKind(kind)) {
@@ -286,7 +287,7 @@ public final class ResourceLoaderWrapper {
                 // if (MPseudostateKind.FINAL.equals(kind))
                 // icon = _FinalStateIcon;
             }
-            
+
             if (Model.getFacade().isAAbstraction(value)) {
                 icon = realizeIcon;
             }
@@ -298,27 +299,28 @@ public final class ResourceLoaderWrapper {
                     icon = signalIcon;
                 }
             }
-            
+
             if (Model.getFacade().isAComment(value)) {
                 icon = commentIcon;
             }
-            
+
             if (icon == null) {
-                
+
                 String cName = Model.getMetaTypes().getName(value);
-                
+
                 icon = lookupIconResource(cName);
                 if (icon == null) {
-                    LOG.debug("Can't find icon for " + cName);
+                    LOG.log(Level.FINE,
+                            "Can't find icon for {0}", cName);
                 } else {
                     synchronized (iconCache) {
                         iconCache.put(value.getClass(), icon);
                     }
                 }
-                
+
             }
         } catch (InvalidElementException e) {
-            LOG.debug("Attempted to get icon for deleted element");
+            LOG.log(Level.FINE, "Attempted to get icon for deleted element");
             return null;
         }
         return icon;
@@ -489,10 +491,10 @@ public final class ResourceLoaderWrapper {
         }
         return found;
     }
-    
+
     /**
      * Find the path to a given icon and return it as a URL.
-     * 
+     *
      * @param name base name of the icon to search for
      * @param loader class loader to use or null to use the default class loader
      * @return the URL where the icon was found
@@ -500,10 +502,10 @@ public final class ResourceLoaderWrapper {
     public static URL lookupIconUrl(String name, ClassLoader loader) {
         return ResourceLoader.lookupIconUrl(name, loader);
     }
-    
+
     /**
      * Find the path to a given icon and return it as a URL.
-     * 
+     *
      * @param name base name of the icon to search for
      * @return the URL where the icon was found
      */

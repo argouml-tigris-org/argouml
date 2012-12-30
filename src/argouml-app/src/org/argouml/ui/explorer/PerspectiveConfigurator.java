@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -70,7 +72,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
@@ -101,7 +102,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Logger.
      */
     private static final Logger LOG =
-	Logger.getLogger(PerspectiveConfigurator.class);
+        Logger.getLogger(PerspectiveConfigurator.class.getName());
 
     /**
      * Insets in pixels.
@@ -144,25 +145,25 @@ public class PerspectiveConfigurator extends ArgoDialog {
 
         configPanelNorth = new JPanel();
         configPanelSouth = new JPanel();
-        
+
         makeLists();
-        
+
         makeButtons();
-        
+
         makeLayout();
         updateRuleLabel();
-        
+
         makeListeners();
-        
+
         loadPerspectives();
         loadLibrary();
         //sortJListModel(ruleLibraryList);
-        
+
         splitPane =
             new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                     configPanelNorth, configPanelSouth);
         splitPane.setContinuousLayout(true);
-        
+
         setContent(splitPane);
     }
 
@@ -434,7 +435,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Load the perspectives from the perspective manager for presentation.
      */
     private void loadPerspectives() {
-        List<ExplorerPerspective> perspectives = 
+        List<ExplorerPerspective> perspectives =
             PerspectiveManager.getInstance().getPerspectives();
 
         // must add an editable list of new ExplorerPerspective's
@@ -513,7 +514,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             PerspectiveManager.getInstance().removeAllPerspectives();
 
             for (int i = 0; i < perspectiveListModel.size(); i++) {
-                ExplorerPerspective perspective = 
+                ExplorerPerspective perspective =
                     (ExplorerPerspective) perspectiveListModel.get(i);
                 PerspectiveManager.getInstance().addPerspective(perspective);
             }
@@ -643,7 +644,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         Object sel = ruleLibraryList.getSelectedValue();
         int selLibNr = ruleLibraryList.getSelectedIndex();
         try {
-            PerspectiveRule newRule = 
+            PerspectiveRule newRule =
                 (PerspectiveRule) sel.getClass().newInstance();
 
             perspectiveRulesListModel.insertElementAt(newRule, 0);
@@ -660,7 +661,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             ruleLibraryList.setSelectedIndex(selLibNr);
             updateRuleLabel();
         } catch (Exception e) {
-            LOG.error("problem adding rule", e);
+            LOG.log(Level.SEVERE, "problem adding rule", e);
         }
     }
 

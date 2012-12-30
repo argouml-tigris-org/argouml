@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,12 +45,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.JToolBar;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.model.Model;
 import org.argouml.ocl.ArgoFacade;
@@ -84,7 +85,8 @@ import tudresden.ocl.parser.node.TName;
 public class TabConstraints extends AbstractArgoJPanel
     implements TabModelTarget, ComponentListener {
 
-    private static final Logger LOG = Logger.getLogger(TabConstraints.class);
+    private static final Logger LOG =
+        Logger.getLogger(TabConstraints.class.getName());
 
     /**
      * The actual editor pane.
@@ -115,7 +117,7 @@ public class TabConstraints extends AbstractArgoJPanel
         getOclToolbar().setName("misc.toolbar.constraints");
 
         add(mOcleEditor);
-        
+
         addComponentListener(this);
     }
 
@@ -408,7 +410,7 @@ public class TabConstraints extends AbstractArgoJPanel
                     } catch (IOException ioe) {
                         // Ignored: Highly unlikely, and what would we
                         // do anyway?  log it
-                        LOG.error("problem parsing And Checking Constraints",
+                        LOG.log(Level.SEVERE, "problem parsing And Checking Constraints",
 				   ioe);
                         return;
                     }
@@ -520,15 +522,15 @@ public class TabConstraints extends AbstractArgoJPanel
                             theMMcConstraint);
 
                 } catch (OclTypeException pe) {
-                    LOG.warn("There was some sort of OCL Type problem", pe);
+                    LOG.log(Level.WARNING, "There was some sort of OCL Type problem", pe);
                     throw pe;
                 } catch (OclParserException pe1) {
-                    LOG.warn("Could not parse the constraint", pe1);
+                    LOG.log(Level.WARNING, "Could not parse the constraint", pe1);
                     throw pe1;
                 } catch (OclException oclExc) {
                     // a runtime exception that occurs when some
                     // internal test fails
-                    LOG.warn("There was some unidentified problem");
+                    LOG.log(Level.WARNING, "There was some unidentified problem");
                     throw oclExc;
                 }
             }
@@ -601,7 +603,7 @@ public class TabConstraints extends AbstractArgoJPanel
                         // OK, so that didn't work out... Just ignore
                         // any problems and don't set the name in the
                         // constraint body better had log it.
-                        LOG.error("some unidentified problem", t);
+                        LOG.log(Level.SEVERE, "some unidentified problem", t);
                     }
                 } else {
                     throw new IllegalStateException(
@@ -776,7 +778,7 @@ public class TabConstraints extends AbstractArgoJPanel
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
      */
@@ -784,7 +786,7 @@ public class TabConstraints extends AbstractArgoJPanel
         // Update our model with our saved target
         setTargetInternal(mMmeiTarget);
     }
-    
+
     /*
      * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
      */

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -57,8 +58,9 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigVertex extends FigNodeModelElement {
 
-    private static final Logger LOG = Logger.getLogger(FigVertex.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(FigVertex.class.getName());
+
     private static final int MARGIN = 2;
 
     private NotationProvider notationProviderBody;
@@ -67,7 +69,7 @@ public class FigVertex extends FigNodeModelElement {
      * The body for entry/exit/do actions
      */
     private FigBody bodyText;
-    
+
     private FigGroup regionCompartment;
 
     /**
@@ -88,8 +90,8 @@ public class FigVertex extends FigNodeModelElement {
                 .getNotationProvider(NotationProviderFactory2.TYPE_STATEBODY,
                         getOwner(), this, notation);
         updateNameText();
-        
-        LOG.info("Registering as listener");
+
+        LOG.log(Level.INFO, "Registering as listener");
         Model.getPump().addModelEventListener(this, getOwner(), "region");
     }
 
@@ -99,7 +101,7 @@ public class FigVertex extends FigNodeModelElement {
         if (lp == null) {
             return;
         }
-        
+
         super.setEnclosingFig(encloser);
 
         Object region = null;
@@ -131,7 +133,7 @@ public class FigVertex extends FigNodeModelElement {
             // If there is no region in the StateMachine then create one.
             ArgoDiagram diagram = (ArgoDiagram) lp.getDiagram();
             Object stateMachine = diagram.getOwner();
-            List regions = 
+            List regions =
                 Model.getStateMachinesHelper().getRegions(stateMachine);
             if (regions.isEmpty()) {
                 region = Model.getUmlFactory().buildNode(
@@ -157,7 +159,7 @@ public class FigVertex extends FigNodeModelElement {
 
         bodyText = new FigBody(0,0,0,0);
         regionCompartment = new FigRegionCompartment(0,0,0,0);
-        
+
         addFig(getBigPort());
         addFig(getNameFig());
         addFig(getBodyText());
@@ -190,20 +192,20 @@ public class FigVertex extends FigNodeModelElement {
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        
+
         assert (mee.getPropertyName().equals("region"));
-        
+
         if (mee instanceof AddAssociationEvent) {
             // TODO: Before adding a new region make the last region
             // its minimum size (smallest size that will still
             // contain all enclosed)
-            
+
             Object newRegion = mee.getNewValue();
             FigRegion rg = new FigRegion(newRegion);
             rg.setBounds(
                     regionCompartment.getX(), regionCompartment.getY(),
                     rg.getMinimumSize().width, rg.getMinimumSize().height);
-            
+
             regionCompartment.addFig(rg);
             setSize(Math.max(getMinimumSize().width, getWidth()),
                     Math.max(getMinimumSize().height, getHeight()));
@@ -219,7 +221,7 @@ public class FigVertex extends FigNodeModelElement {
                     damage();
                 }
             }
-            LOG.debug("Removing region " + oldRegion);
+            LOG.log(Level.FINE, "Removing region {0}", oldRegion);
         }
     }
 
@@ -297,15 +299,15 @@ public class FigVertex extends FigNodeModelElement {
             + getBottomMargin();
 
         h += regionCompartment.getMinimumSize().height;
-        
+
         if (getBodyText().getText().length() > 0) {
             h += bodySize.height;
         }
-        
+
         int w = getLeftMargin()
             + Math.max(nameSize.width, bodySize.width)
             + getRightMargin();
-        
+
         if (Model.getFacade().isACompositeState(getOwner())) {
             w = Math.max(180, w);
             h = Math.max(150, h);
@@ -313,7 +315,7 @@ public class FigVertex extends FigNodeModelElement {
             w = Math.max(80, w);
             h = Math.max(40, h);
         }
-        
+
         return new Dimension(w, h);
     }
 
@@ -328,7 +330,7 @@ public class FigVertex extends FigNodeModelElement {
             return rects;
         } else {
             List regions = Model.getStateMachinesHelper().getRegions(getOwner());
-            
+
             ArrayList<Rectangle> rects = new ArrayList<Rectangle>(regions.size());
             if (regions.isEmpty()) {
                 rects.add(regionCompartment.getBounds());
@@ -340,7 +342,7 @@ public class FigVertex extends FigNodeModelElement {
             return rects;
         }
     }
-    
+
     protected void setStandardBounds(int x, int y, int w, int h) {
         Dimension nameSize = getNameFig().getMinimumSize();
         Dimension bodySize = getBodyText().getMinimumSize();
@@ -350,7 +352,7 @@ public class FigVertex extends FigNodeModelElement {
                 w - getLeftMargin() - getRightMargin(), nameSize.height);
 
 
-        
+
         if (getBodyText().getText().length() > 0) {
             getBodyText().setBounds(
                     x + getLeftMargin(), y + getTopMargin() + nameSize.height,
@@ -362,7 +364,7 @@ public class FigVertex extends FigNodeModelElement {
                     bodySize.width,
                     1);
         }
-        
+
         regionCompartment.setBounds(
                 x + getLeftMargin(),
                 getBodyText().getY() + getBodyText().getHeight(),
@@ -371,12 +373,12 @@ public class FigVertex extends FigNodeModelElement {
                     - getNameFig().getHeight() - getBodyText().getHeight());
 
         getBigPort().setBounds(x, y, w, h);
-        
+
         calcBounds(); // _x = x; _y = y; _w = w; _h = h;
     }
-    
-    
-    
+
+
+
     int getRightMargin() {
         return MARGIN;
     }
@@ -384,15 +386,15 @@ public class FigVertex extends FigNodeModelElement {
     int getLeftMargin() {
         return MARGIN;
     }
-    
+
     int getTopMargin() {
         return MARGIN;
     }
-    
+
     int getBottomMargin() {
         return MARGIN;
     }
-    
+
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
@@ -406,7 +408,7 @@ public class FigVertex extends FigNodeModelElement {
         }
         return popUpActions;
     }
-    
+
     /**
      * The text Fig that displays the body of the actions on the state
      *
@@ -424,7 +426,7 @@ public class FigVertex extends FigNodeModelElement {
             setJustification(FigText.JUSTIFY_LEFT);
         }
     }
-    
+
     /**
      * The text Fig that displays the body of the actions on the state
      *
@@ -434,7 +436,7 @@ public class FigVertex extends FigNodeModelElement {
         public FigRegionCompartment(int x, int y, int width, int height) {
             super();
         }
-        
+
         @Override
         protected void setBoundsImpl(
                 final int x,
@@ -446,7 +448,7 @@ public class FigVertex extends FigNodeModelElement {
             _y = y;
             _w = w;
             _h = h;
-            
+
             for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
                 Fig fig = (Fig) it.next();
                 if (it.hasNext()) {
@@ -458,8 +460,8 @@ public class FigVertex extends FigNodeModelElement {
                 y += fig.getHeight();
             }
         }
-        
-        
+
+
         @Override
         public Dimension getMinimumSize() {
             int minWidth = 0;
@@ -476,28 +478,28 @@ public class FigVertex extends FigNodeModelElement {
 
             return new Dimension(minWidth, minHeight);
         }
-        
+
         public void paint(Graphics g) {
             super.paint(g);
-            
+
             for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
                 Fig fig = (Fig) it.next();
                 if (it.hasNext()) {
                     g.setColor(getLineColor());
-                    
+
                     drawDashedLine(
-                            g, 1, 
-                            fig.getX(), 
+                            g, 1,
+                            fig.getX(),
                             fig.getY() + fig.getHeight(),
                             fig.getX() + fig.getWidth(),
                             fig.getY() + fig.getHeight(),
-                            0, new float [] { 5.0f, 5.0f }, 10);            
+                            0, new float [] { 5.0f, 5.0f }, 10);
                 }
             }
-            
+
         }
     }
-    
+
     /**
      * Return a Selection for a Vertex.
      *

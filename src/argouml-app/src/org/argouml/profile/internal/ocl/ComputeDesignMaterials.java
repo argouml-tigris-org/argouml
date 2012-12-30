@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.profile.internal.ocl;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 
@@ -50,8 +51,8 @@ import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AClassifierContext;
 
 /**
- * Check the design materials related to this OCL
- * 
+ * Check the design materials related to this OCL.
+ *
  * @author maurelio1234
  */
 public class ComputeDesignMaterials extends DepthFirstAdapter {
@@ -59,8 +60,8 @@ public class ComputeDesignMaterials extends DepthFirstAdapter {
     /**
      * Logger.
      */
-    private static final Logger LOG = 
-        Logger.getLogger(ComputeDesignMaterials.class);
+    private static final Logger LOG =
+        Logger.getLogger(ComputeDesignMaterials.class.getName());
 
     private Set<Object> dms = new HashSet<Object>();
 
@@ -70,11 +71,11 @@ public class ComputeDesignMaterials extends DepthFirstAdapter {
     @Override
     public void caseAClassifierContext(AClassifierContext node) {
         String str = ("" + node.getPathTypeName()).trim();
-        
+
         // TODO: This appears unused.  If it's needed, the Model API should
         // be enhanced to provide a method that does this directly.
         if (str.equals("Class")) {
-            dms.add(Model.getMetaTypes().getUMLClass());            
+            dms.add(Model.getMetaTypes().getUMLClass());
         } else {
             try {
                 Method m = MetaTypes.class.getDeclaredMethod("get" + str,
@@ -83,7 +84,7 @@ public class ComputeDesignMaterials extends DepthFirstAdapter {
                     dms.add(m.invoke(Model.getMetaTypes(), new Object[0]));
                 }
             } catch (Exception e) {
-                LOG.error("Metaclass not found: " + str, e);
+                LOG.log(Level.SEVERE, "Metaclass not found: " + str, e);
             }
         }
     }

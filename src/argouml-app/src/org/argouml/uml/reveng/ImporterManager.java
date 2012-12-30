@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,8 @@ package org.argouml.uml.reveng;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Keeps an instance of each ImportInterface implementation module registered.
@@ -53,7 +53,7 @@ public final class ImporterManager {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ImporterManager.class);
+        Logger.getLogger(ImporterManager.class.getName());
 
     /**
      * The instance.
@@ -79,7 +79,7 @@ public final class ImporterManager {
 
 
     /**
-     * Register a new source language importer. 
+     * Register a new source language importer.
      *
      * @param importer The ImportInterface object to register.
      */
@@ -87,15 +87,15 @@ public final class ImporterManager {
         importers.add(importer);
 //        ArgoEventPump.fireEvent(
 //                new ArgoImporterEvent(ArgoEventTypes.IMPORTER_ADDED, gen));
-        LOG.debug("Added importer " + importer );
+        LOG.log(Level.FINE, "Added importer {0}", importer );
     }
 
     /**
      * Removes a importer.
-     * 
+     *
      * @param importer
      *            the importer to be removed
-     * 
+     *
      * @return false if no matching importer had been registered
      */
     public boolean removeImporter(ImportInterface importer) {
@@ -105,7 +105,7 @@ public final class ImporterManager {
 //                    new ArgoImporterEvent(
 //                            ArgoEventTypes.IMPORTER_REMOVED, old));
 //        }
-        LOG.debug("Removed importer " + importer );
+        LOG.log(Level.FINE, "Removed importer {0}", importer );
         return status;
     }
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,13 @@
 package org.argouml.uml.ui;
 
 import java.beans.PropertyChangeEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
@@ -69,7 +70,7 @@ public abstract class UMLPlainTextDocument
     implements UMLDocument {
 
     private static final Logger LOG =
-        Logger.getLogger(UMLPlainTextDocument.class);
+        Logger.getLogger(UMLPlainTextDocument.class.getName());
 
     /**
      * True if an event should be fired when the text of the document is changed
@@ -111,7 +112,7 @@ public abstract class UMLPlainTextDocument
         // NOTE: This may be called from a different thread, so we need to be
         // careful of the threading restrictions imposed by AbstractDocument
         // for mutators to be sure we don't deadlock.
-        if (evt instanceof AttributeChangeEvent 
+        if (evt instanceof AttributeChangeEvent
                 && eventName.equals(evt.getPropertyName())) {
             updateText((String) evt.getNewValue());
         }
@@ -152,10 +153,10 @@ public abstract class UMLPlainTextDocument
      */
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
-        
-        // Mutators hold write lock & will deadlock if use is not thread safe 
+
+        // Mutators hold write lock & will deadlock if use is not thread safe
         super.insertString(offset, str, a);
-        
+
         setPropertyInternal(getText(0, getLength()));
     }
 
@@ -165,16 +166,16 @@ public abstract class UMLPlainTextDocument
      */
     public void remove(int offs, int len) throws BadLocationException {
 
-        // Mutators hold write lock & will deadlock if use is not thread safe 
+        // Mutators hold write lock & will deadlock if use is not thread safe
         super.remove(offs, len);
-        
+
         setPropertyInternal(getText(0, getLength()));
     }
 
     /**
      * Wrapped version of setProperty which attempts to keep us from hearing
      * our own echo on the event listener when we change something.  Also
-     * skips updates equal the current value. 
+     * skips updates equal the current value.
      */
     private void setPropertyInternal(String newValue) {
         // TODO: This is updating model on a per character basis as
@@ -202,7 +203,7 @@ public abstract class UMLPlainTextDocument
      * Enable/disable firing of updates.  As a side effect, it unregisters
      * model event listeners during disable and registers them again during
      * enable.
-     * 
+     *
      * @param f new firing state.  Pass false to disable updates.
      */
     private final synchronized void setFiring(boolean f) {
@@ -218,7 +219,7 @@ public abstract class UMLPlainTextDocument
     /**
      * Return the state of the firing flag.  Method is synchronized so it will
      * return the correct value from any thread.
-     * 
+     *
      * @return true firing of updates is allowed currently. Returns false if we
      *         are in the process of doing an update so that we know to ignore
      *         any resulting events.
@@ -235,14 +236,14 @@ public abstract class UMLPlainTextDocument
             String currentValue = getText(0, getLength());
             if (isFiring() && !textValue.equals(currentValue)) {
                 setFiring(false);
-                
-                // Mutators hold write lock & will deadlock 
-                // if use is not thread-safe 
+
+                // Mutators hold write lock & will deadlock
+                // if use is not thread-safe
                 super.remove(0, getLength());
                 super.insertString(0, textValue, null);
             }
         } catch (BadLocationException b) {
-            LOG.error(
+            LOG.log(Level.SEVERE,
 		      "A BadLocationException happened\n"
 		      + "The string to set was: "
 		      + getProperty(),

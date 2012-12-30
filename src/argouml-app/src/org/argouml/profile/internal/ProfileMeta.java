@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2008,2010 Contributors - see below
+ * Copyright (c) 2008-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
@@ -61,24 +62,25 @@ import org.argouml.profile.internal.ocl.InvalidOclException;
 
 /**
  * Meta Profile which defines the TaggedValues to be used in User defined
- * Profiles
- * 
+ * Profiles.
+ *
  * @author maas
  */
 public class ProfileMeta extends Profile {
 
-    private static final Logger LOG = Logger.getLogger(ProfileMeta.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(ProfileMeta.class.getName());
+
     private static final String PROFILE_FILE = "metaprofile.xmi";
     private ProfileReference profileReference = null;
-    
+
     private Collection model = null;
-    
+
     Set<Critic> critics = null;
 
     /**
      * Creates a new instance of this profile
-     * 
+     *
      * @throws ProfileException if something goes wrong
      */
     public ProfileMeta() throws ProfileException {
@@ -97,7 +99,8 @@ public class ProfileMeta extends Profile {
             try {
                 model = profileModelLoader.loadModel(profileReference);
             } catch (ProfileException e) {
-                LOG.error("Exception loading metaprofile " + PROFILE_FILE, e);
+                LOG.log(Level.SEVERE,
+                        "Exception loading metaprofile " + PROFILE_FILE, e);
             }
 
             if (model == null) {
@@ -110,10 +113,10 @@ public class ProfileMeta extends Profile {
 
     private void loadWellFormednessRules() {
         critics = new HashSet<Critic>();
-                
+
         try {
             critics.add(new CrOCL("context ModelElement inv: "
-                    + "self.taggedValue->" 
+                    + "self.taggedValue->"
                     + "exists(x|x.type.name='Dependency') implies "
                               + "self.stereotype->exists(x|x.name = 'Profile')",
                  "The 'Dependency' tag definition should be applied"
@@ -126,7 +129,7 @@ public class ProfileMeta extends Profile {
 
         try {
             critics.add(new CrOCL("context ModelElement inv: "
-                    + "self.taggedValue->" 
+                    + "self.taggedValue->"
                     + "exists(x|x.type.name='Figure') or "
                     + "exists(x|x.type.name='Description') or "
                     + "exists(x|x.type.name='i18n') or "
@@ -138,19 +141,19 @@ public class ProfileMeta extends Profile {
                     + "exists(x|x.type.name='Headline') "
                     + "implies "
                               + "self.stereotype->exists(x|x.name = 'Critic')",
-                              
+
                     "Misuse of Metaprofile TaggedValues",
-                    "The 'Figure', 'i18n', 'KnowledgeType', 'MoreInfoURL', " 
-                    + "'Priority', 'SupportedDecision', 'Description' " 
+                    "The 'Figure', 'i18n', 'KnowledgeType', 'MoreInfoURL', "
+                    + "'Priority', 'SupportedDecision', 'Description' "
                     + "and 'Headline' tag definitions "
                     + "should be applied only to OCL critics.",
-                    
+
                     ToDoItem.MED_PRIORITY, null, null,
                     "http://argouml.tigris.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
         }
-        
+
         try {
             critics.add(new CrOCL("context Stereotype inv: "
                     + "self.namespace.stereotype->exists(x|x.name = 'Profile')",
@@ -165,7 +168,7 @@ public class ProfileMeta extends Profile {
 
         setCritics(critics);
     }
-    
+
     @Override
     public String getDisplayName() {
         return "MetaProfile";
@@ -185,7 +188,7 @@ public class ProfileMeta extends Profile {
             return Collections.unmodifiableCollection(model);
         }
     }
-    
+
     @Override
     public Set<Critic> getCritics() {
         if (critics == null) {
@@ -193,5 +196,5 @@ public class ProfileMeta extends Profile {
         }
         return super.getCritics();
     }
-    
+
 }

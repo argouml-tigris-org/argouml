@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@
 package org.argouml.model.mdr;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.StateMachinesFactory;
 import org.omg.uml.behavioralelements.statemachines.CallEvent;
 import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
@@ -87,8 +88,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     /**
      * Logger
      */
-    private Logger LOG = Logger.getLogger(StateMachinesFactoryMDRImpl.class);
-	
+    private static final Logger LOG =
+        Logger.getLogger(StateMachinesFactoryMDRImpl.class.getName());
+
     /**
      * The model implementation.
      */
@@ -103,7 +105,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     StateMachinesFactoryMDRImpl(MDRModelImplementation implementation) {
         modelImpl = implementation;
     }
-    
+
     private StateMachinesPackage getSmPackage() {
         return modelImpl.getUmlPackage().getStateMachines();
     }
@@ -233,18 +235,18 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (oContext != null
                 && (modelImpl.getStateMachinesHelper().
                         isAddingStatemachineAllowed(oContext))) {
-            
+
             StateMachine machine = createStateMachine();
             ModelElement modelelement = (ModelElement) oContext;
             machine.setContext(modelelement);
-            
+
             if (modelelement instanceof BehavioralFeature) {
                 modelelement = ((BehavioralFeature) modelelement).getOwner();
             }
             if (modelelement instanceof Namespace) {
                 Namespace namespace = (Namespace) modelelement;
                 /* Follow well-formedness rule for a Class [2].
-                 * See issue 4282. Do not use a class 
+                 * See issue 4282. Do not use a class
                  * as the namespace for a statemachine: */
                 while (namespace instanceof UmlClass) {
                     Namespace pns = namespace.getNamespace();
@@ -263,7 +265,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Transition buildTransition(Object owningState, Object source, 
+    public Transition buildTransition(Object owningState, Object source,
             Object dest) {
         if (!(owningState instanceof CompositeState)) {
             throw new IllegalArgumentException("owningState");
@@ -380,7 +382,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             trans.setTarget((State) state);
             return trans;
         }
-        throw new IllegalArgumentException("Argument must be a State");    
+        throw new IllegalArgumentException("Argument must be a State");
     }
 
 
@@ -420,7 +422,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (op != null) {
             evt.setOperation((Operation) op);
         }
-        return evt;        
+        return evt;
     }
 
 
@@ -479,7 +481,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (transition instanceof Transition) {
             Transition t = (Transition) transition;
             if (t.getGuard() != null) {
-                LOG.warn("Replacing Guard " + t.getGuard().getName() 
+                LOG.log(Level.WARNING, "Replacing Guard " + t.getGuard().getName()
                         + " on Transition " + t.getName());
             }
             Guard guard = createGuard();
@@ -511,7 +513,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     /**
      * Deletes any associated subVertices.
-     * 
+     *
      * This also enforces the following well-formedness rule.
      * <p>Well formedness rule 4.12.3.1 CompositeState
      * [4] There have to be at least two composite substates in a
@@ -531,10 +533,10 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         for (StateVertex vertex : compositeState.getSubvertex()) {
             modelImpl.getUmlFactory().delete(vertex);
         }
-        
-        final CompositeState containingCompositeState = 
+
+        final CompositeState containingCompositeState =
             compositeState.getContainer();
-                
+
         // Well formedness rule 4.12.3.1 CompositeState
         // [4] There have to be at least two composite substates in a
         // concurrent composite state.
@@ -544,7 +546,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 && containingCompositeState.isConcurrent()) {
             final Collection<StateVertex> siblings =
                 containingCompositeState.getSubvertex();
-            
+
             final int substatesRemaining = siblings.size();
             if (substatesRemaining == 2) {
                 for (StateVertex sibling : siblings) {
@@ -628,7 +630,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             modelImpl.getUmlFactory().delete(action);
         }
     }
-    
+
     /**
      * @param elem
      *            the UML element to be deleted
@@ -651,7 +653,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
         StateMachine stateMachine = (StateMachine) elem;
-        
+
         // This shouldn't be required since it's a composite, but there's
         // a bug in the version of MDR that we use (20050711) that causes
         // it to fail to delete aggregate elements which are single valued
@@ -661,7 +663,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (top != null) {
             modelImpl.getUmlFactory().delete(top);
         }
-        
+
         modelImpl.getUmlHelper().deleteCollection(
                 stateMachine.getSubmachineState());
     }
@@ -735,7 +737,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Transition)) {
             throw new IllegalArgumentException();
         }
-        
+
         final Transition transition = (Transition) elem;
         final Guard guard = transition.getGuard();
         if (guard != null) {
@@ -746,9 +748,8 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             // defined in the metamodel. - tfm 20080713
             modelImpl.getUmlFactory().delete(guard);
         }
-        
+
         // The effect will get deleted automatically by MDR, unlike the Guard.
     }
 
 }
-

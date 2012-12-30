@@ -8,7 +8,7 @@ This is designed to work in two different environments:
     (ie argouml/src/model-euml)
   - in a peer directory of argouml, as checked out for Eclipse
     (ie argouml-core-model-euml)
-    
+
 -->
 
 <project default="compile" name="ArgoUML eUML Model subsystem">
@@ -29,7 +29,7 @@ This is designed to work in two different environments:
     <property name="tests.classes" value="${build.dir}/tests/classes"/>
     <property name="tests.reports" value="${build.dir}/tests/reports"/>
 
-    <property name="lib.dir" value="lib" /> 
+    <property name="lib.dir" value="lib" />
 
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
@@ -60,9 +60,6 @@ This is designed to work in two different environments:
     </path>
 
     <path id="compile.classpath">
-      <fileset dir="../argouml-core-infra/build/">
-        <include name="*.jar"/>
-      </fileset>
       <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
@@ -86,7 +83,7 @@ This is designed to work in two different environments:
       <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
       <path refid="junit.classpath"/>
     </path>
-        
+
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
       <classpath refid="ant.optional.classpath"/>
     </taskdef>
@@ -99,7 +96,7 @@ This is designed to work in two different environments:
 
   </target>
 
-  
+
   <!-- =================================================================== -->
   <!-- Run from classes                                                    -->
   <!-- =================================================================== -->
@@ -139,13 +136,13 @@ This is designed to work in two different environments:
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
-           includeAntRuntime="no" 
-           bootclasspath="${bundleBootClasspath}" 
+           includeAntRuntime="no"
+           bootclasspath="${bundleBootClasspath}"
            source="1.5"
            target="1.5"
        >
        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />      
+       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />
        <classpath>
          <path refid="compile.classpath"/>
        </classpath>

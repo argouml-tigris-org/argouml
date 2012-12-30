@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Owned;
 import org.argouml.kernel.Project;
@@ -63,17 +64,18 @@ import org.tigris.gef.presentation.FigNode;
 /**
  * Class to display a UML note connection to a annotated model element.
  * <p>
- * 
+ *
  * The owner of this fig is always a CommentEdge. Because it is different from
  * most every other FigEdge in ArgoUML, it doesn't subclass FigEdgeModelElement.
- * 
+ *
  * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
  */
 public class FigEdgeNote extends FigEdgePoly
         implements ArgoFig, DiagramElement, Owned, IItemUID, PropertyChangeListener {
 
-    private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigEdgeNote.class.getName());
 
     private Object comment;
     private Object annotatedElement;
@@ -81,7 +83,7 @@ public class FigEdgeNote extends FigEdgePoly
     private DiagramSettings settings;
 
     private ItemUID itemUid;
-    
+
     /**
      * @param element owning CommentEdge object. This is a special case since it
      *            is not a UML element.
@@ -98,14 +100,14 @@ public class FigEdgeNote extends FigEdgePoly
         } else {
             super.setOwner(new CommentEdge());
         }
-        
+
         setBetweenNearestPoints(true);
         getFig().setLineWidth(LINE_WIDTH);
         getFig().setDashed(true);
-        
+
         // Unfortunately the Fig and it's associated CommentEdge will not be
         // fully initialized yet here if we're being loaded from a PGML file.
-        // The remainder of the initialization will happen when 
+        // The remainder of the initialization will happen when
         // set{Dest|Source}FigNode are called from PGMLStackParser.attachEdges()
     }
 
@@ -114,7 +116,8 @@ public class FigEdgeNote extends FigEdgePoly
      */
     @Override
     public void setFig(Fig f) {
-        LOG.info("Setting the internal fig to " + f);
+        LOG.log(Level.INFO, "Setting the internal fig to {0}", f);
+
         super.setFig(f);
         getFig().setDashed(true);
     }
@@ -140,7 +143,7 @@ public class FigEdgeNote extends FigEdgePoly
             removeFromDiagram();
         }
     }
-    
+
     /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
@@ -158,7 +161,7 @@ public class FigEdgeNote extends FigEdgePoly
         modelChanged(pve);
     }
 
- 
+
 
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
@@ -172,7 +175,7 @@ public class FigEdgeNote extends FigEdgePoly
         super.removeFromDiagram();
         damage();
     }
- 
+
 
     /**
      * Returns the source of the edge. The source is the owner of the
@@ -201,7 +204,7 @@ public class FigEdgeNote extends FigEdgePoly
         }
         return null;
     }
-    
+
     /*
      * @see org.tigris.gef.presentation.FigEdge#setDestFigNode(org.tigris.gef.presentation.FigNode)
      */
@@ -218,9 +221,9 @@ public class FigEdgeNote extends FigEdgePoly
             if (comment != null) {
                 addElementListener(comment);
             }
-            
+
             ((CommentEdge) getOwner()).setComment(comment);
-        } else if (fn != null 
+        } else if (fn != null
                 && !Model.getFacade().isAComment(fn.getOwner())) {
             annotatedElement = fn.getOwner();
             ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);
@@ -246,18 +249,18 @@ public class FigEdgeNote extends FigEdgePoly
                 addElementListener(comment);
             }
             ((CommentEdge) getOwner()).setComment(comment);
-        } else if (fn != null 
+        } else if (fn != null
                 && !Model.getFacade().isAComment(fn.getOwner())) {
             annotatedElement = fn.getOwner();
             ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);
         }
         super.setSourceFigNode(fn);
     }
-    
+
     private void addElementListener(Object element) {
         Model.getPump().addModelEventListener(this, element);
     }
-    
+
     private void removeElementListener(Object element) {
         Model.getPump().removeModelEventListener(this, element);
     }
@@ -273,7 +276,7 @@ public class FigEdgeNote extends FigEdgePoly
     }
 
     public void renderingChanged() {
-  
+
     }
 
     @SuppressWarnings("deprecation")
@@ -301,12 +304,12 @@ public class FigEdgeNote extends FigEdgePoly
     public ItemUID getItemUID() {
         return itemUid;
     }
-    
+
 
     /**
      * Setting the owner of the Fig must be done in the constructor and not
      * changed afterwards for all ArgoUML figs.
-     * 
+     *
      * @param owner owning UML element
      * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
      *             is implemented in GEF, so we'll leave this implementation
@@ -321,4 +324,4 @@ public class FigEdgeNote extends FigEdgePoly
         }
     }
 
-} 
+}

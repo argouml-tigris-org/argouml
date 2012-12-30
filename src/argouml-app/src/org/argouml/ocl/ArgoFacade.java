@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@ package org.argouml.ocl;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -110,7 +111,7 @@ class ArgoAny implements Any, Type2 {
     /**
      * Logger for the ArgoAny class.
      */
-    private static final Logger LOG = Logger.getLogger(ArgoAny.class);
+    private static final Logger LOG = Logger.getLogger(ArgoAny.class.getName());
 
     private Object classifier;
 
@@ -190,7 +191,7 @@ class ArgoAny implements Any, Type2 {
 		    && (Model.getFacade().getUpper(multiplicity) > 1
 			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
-		    if (Model.getExtensionMechanismsHelper().hasStereotype(ae, 
+		    if (Model.getExtensionMechanismsHelper().hasStereotype(ae,
 		            "ordered")) {
                         isSequence = true;
                     } else {
@@ -297,22 +298,22 @@ class ArgoAny implements Any, Type2 {
 	    }
 	}
 
-        Collection returnParams = 
+        Collection returnParams =
             Model.getCoreHelper().getReturnParameters(foundOp);
         Object rp;
         if (returnParams.size() == 0) {
             rp = null;
         } else {
             rp = returnParams.iterator().next();
-        } 
+        }
         if (returnParams.size() > 1)  {
-            LOG.warn("OCL compiler only handles one return parameter"
+            LOG.log(Level.WARNING, "OCL compiler only handles one return parameter"
                     + " - Found " + returnParams.size()
                     + " for " + Model.getFacade().getName(foundOp));
         }
 
 	if (rp == null || Model.getFacade().getType(rp) == null) {
-	    LOG.warn("WARNING: supposing return type void!");
+            LOG.log(Level.WARNING, "WARNING: supposing return type void!");
 	    return new ArgoAny(null);
 	}
 	Object returnType = Model.getFacade().getType(rp);
@@ -369,8 +370,9 @@ class ArgoAny implements Any, Type2 {
      * @see tudresden.ocl.check.types.Type#hasState(java.lang.String)
      */
     public boolean hasState(String name) {
-	LOG.warn("ArgoAny.hasState() has been called, but is "
-		 + "not implemented yet!");
+        LOG.log(Level.WARNING,
+                "ArgoAny.hasState() has been called, but is "
+                + "not implemented yet!");
 	return false;
     }
 
@@ -422,7 +424,7 @@ class ArgoAny implements Any, Type2 {
                 Model.getFacade().getParameters(operation);
 	if (!Model.getFacade().isReturn(
                         operationParameters.iterator().next())) {
-	    LOG.warn(
+            LOG.log(Level.WARNING,
                 "ArgoFacade$ArgoAny expects the first operation parameter "
 		+ "to be the return type; this isn't the case"
 	    );

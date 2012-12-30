@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -51,7 +52,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
- * 
+ *
  * Well-formedness rule [3] for GeneralizableElement. See page 59 of UML 1.4
  * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
@@ -62,7 +63,7 @@ public class CrCircularInheritance extends CrUML {
      * Logger.
      */
     private static final Logger LOG =
-	Logger.getLogger(CrCircularInheritance.class);
+        Logger.getLogger(CrCircularInheritance.class.getName());
 
     /**
      * The constructor.
@@ -87,8 +88,8 @@ public class CrCircularInheritance extends CrUML {
 	    try {
 		Model.getCoreHelper().getChildren(dm);
 	    } catch (IllegalStateException ex) {
-		problem = PROBLEM_FOUND;
-                LOG.info("problem found for: " + this);
+                problem = PROBLEM_FOUND;
+                LOG.log(Level.INFO, "problem found for: {0}", this);
 	    }
 	}
 	return problem;
@@ -103,6 +104,5 @@ public class CrCircularInheritance extends CrUML {
         ret.add(Model.getMetaTypes().getGeneralizableElement());
         return ret;
     }
-    
-} /* end class CrCircularInheritance */
 
+} /* end class CrCircularInheritance */

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,9 +38,11 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -52,7 +54,8 @@ import org.argouml.model.Model;
  * @author jrobbins
  */
 public class WizMEName extends UMLWizard {
-    private static final Logger LOG = Logger.getLogger(WizMEName.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizMEName.class.getName());
 
     private String instructions = Translator.localize("critics.WizMEName-ins");
     private String label = Translator.localize("label.name");
@@ -128,7 +131,8 @@ public class WizMEName extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-	LOG.debug("doAction " + oldStep);
+        LOG.log(Level.FINE, "doAction {0}", oldStep);
+
 	switch (oldStep) {
 	case 1:
 	    String newName = getSuggestion();
@@ -140,7 +144,7 @@ public class WizMEName extends UMLWizard {
 		Model.getCoreHelper().setName(me, newName);
 	    }
 	    catch (Exception pve) {
-		LOG.error("could not set name", pve);
+                LOG.log(Level.SEVERE, "could not set name", pve);
 	    }
             break;
 	}

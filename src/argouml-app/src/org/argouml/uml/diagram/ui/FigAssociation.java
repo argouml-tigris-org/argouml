@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,8 +49,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -75,7 +76,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigAssociation extends FigEdgeModelElement {
 
-    private static final Logger LOG = Logger.getLogger(FigAssociation.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigAssociation.class.getName());
 
     /**
      * Group for the FigTexts concerning the source association end.
@@ -95,15 +97,15 @@ public class FigAssociation extends FigEdgeModelElement {
 
     /**
      * Constructor used by PGML parser.
-     * 
+     *
      * @param diagramEdgeSettings the destination uml association-end element
      * @param settings rendering settings
      */
     public FigAssociation(
-            final DiagramEdgeSettings diagramEdgeSettings, 
+            final DiagramEdgeSettings diagramEdgeSettings,
             final DiagramSettings settings) {
         super(diagramEdgeSettings.getOwner(), settings);
-        
+
         createNameLabel(getOwner(), settings);
 
         Object sourceAssociationEnd =
@@ -118,7 +120,7 @@ public class FigAssociation extends FigEdgeModelElement {
             // association.
             Iterator it =
                 Model.getFacade().getConnections(getOwner()).iterator();
-            
+
             sourceAssociationEnd = it.next();
             destAssociationEnd = it.next();
         }
@@ -127,26 +129,26 @@ public class FigAssociation extends FigEdgeModelElement {
                 sourceAssociationEnd,
                 destAssociationEnd,
                 settings, 45);
-        
+
         setBetweenNearestPoints(true);
-        
+
         initializeNotationProvidersInternal(getOwner());
-        
+
         if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
-            Model.getPump().addModelEventListener(this, getOwner(), 
+            Model.getPump().addModelEventListener(this, getOwner(),
                     new String[] {"navigableOwnedEnd"});
         }
     }
-    
+
     protected void removeFromDiagramImpl() {
         if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
-            Model.getPump().removeModelEventListener(this, 
-                    getOwner(), 
+            Model.getPump().removeModelEventListener(this,
+                    getOwner(),
                     new String[] {"navigableOwnedEnd"});
         }
         super.removeFromDiagramImpl();
     }
-    
+
     public void propertyChange(PropertyChangeEvent pce) {
         if (Model.getFacade().getUmlVersion().charAt(0) == '2'
                 && pce instanceof AssociationChangeEvent
@@ -156,8 +158,8 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         super.propertyChange(pce);
     }
-    
-    
+
+
     /**
      * Called by the constructor to create the Figs at each end
      * of the association.
@@ -165,7 +167,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * override setDestFigNode and setSourceFigNode and create the ends there.
      * That will allow the same pattern to work for UML2 where we cannot assume
      * the connection order.
-     * 
+     *
      * @param sourceAssociationEnd
      * @param destAssociationEnd
      * @param settings
@@ -176,13 +178,13 @@ public class FigAssociation extends FigEdgeModelElement {
             final DiagramSettings settings,
             final int displacementAngle) {
         srcEnd = createEnd(
-                sourceAssociationEnd, 
+                sourceAssociationEnd,
                 settings, 0, 5, 180 - displacementAngle, 5);
         destEnd = createEnd(
-                destAssociationEnd, 
+                destAssociationEnd,
                 settings, 100, -5, displacementAngle, 5);
     }
-    
+
     private EndDecoration createEnd(
             final Object endOwner,
             final DiagramSettings settings,
@@ -202,13 +204,13 @@ public class FigAssociation extends FigEdgeModelElement {
      * This can be overridden in subclasses to change behaviour.
      * TODO: Consider introducing this to FigEdgeModelElement and
      * using throughout all edges.
-     * 
+     *
      * @param owner owning uml element
      * @param settings rendering settings
      */
     protected void createNameLabel(Object owner, DiagramSettings settings) {
         middleGroup = new FigTextGroup(owner, settings);
-     
+
         // let's use groups to construct the different text sections at
         // the association
         if (getNameFig() != null) {
@@ -256,7 +258,7 @@ public class FigAssociation extends FigEdgeModelElement {
                     });
         }
         updateElementListeners(listeners);
-        /* No further listeners required in this case - the rest is handled 
+        /* No further listeners required in this case - the rest is handled
          * by the notationProvider and sub-Figs. */
     }
 
@@ -267,7 +269,7 @@ public class FigAssociation extends FigEdgeModelElement {
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_NAME;
     }
-    
+
     /**
      * Get the source classifier that the association was drawn from.
      * Note that source and destination are not necessarily meaningful
@@ -284,7 +286,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         return Model.getFacade().getClassifier(srcEnd.getOwner());
     }
-    
+
     /**
      * Get the destination classifier that the association was drawn from.
      * Note that source and destination are not necessarily meaningful
@@ -301,7 +303,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         return Model.getFacade().getClassifier(destEnd.getOwner());
     }
-    
+
     /**
      * Get the model element at the source end of the edge. This is not the
      * same as the owner of the node at the source end, rather it is the
@@ -319,7 +321,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         return srcEnd.getOwner();
     }
-    
+
     /**
      * Get the model element at the destination end of the edge. This is not
      * the same as the owner of the node at the source end, rather it is the
@@ -337,8 +339,8 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         return destEnd.getOwner();
     }
-    
-    
+
+
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -350,7 +352,7 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         }
         super.textEdited(ft);
-        
+
         Collection conn = Model.getFacade().getConnections(getOwner());
         if (conn == null || conn.size() == 0) {
             return;
@@ -387,13 +389,13 @@ public class FigAssociation extends FigEdgeModelElement {
 
     /**
      * Choose the arrowhead style for each end. <p>
-     * 
-     * TODO: This is called from paint(). Would it not better 
+     *
+     * TODO: This is called from paint(). Would it not better
      * be called from renderingChanged()?
      */
     protected void applyArrowHeads() {
         if (srcEnd == null || destEnd == null) {
-            /* This only happens if model-change events arrive 
+            /* This only happens if model-change events arrive
              * before we are completely constructed. */
             return;
         }
@@ -406,13 +408,13 @@ public class FigAssociation extends FigEdgeModelElement {
             sourceArrowType -= 3;
             destArrowType -= 3;
         }
-        
+
         setSourceArrowHead(FigAssociationEndAnnotation
                 .ARROW_HEADS[sourceArrowType]);
         setDestArrowHead(FigAssociationEndAnnotation
                 .ARROW_HEADS[destArrowType]);
     }
-    
+
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
@@ -459,11 +461,11 @@ public class FigAssociation extends FigEdgeModelElement {
         int destDeterminingFactor =
             getSquaredDistance(p, lastPoint);
 
-        return destDeterminingFactor < rSquared 
+        return destDeterminingFactor < rSquared
                 || (srcDeterminingFactor < rSquared
                         && srcDeterminingFactor < destDeterminingFactor);
     }
-    
+
     private void buildMultiplicityMenu(
             final Vector popUpActions) {
         ArgoJMenu menu =
@@ -475,8 +477,8 @@ public class FigAssociation extends FigEdgeModelElement {
         popUpActions.add(popUpActions.size() - getPopupAddOffset(),
                 menu);
     }
-    
-    
+
+
     private void buildNavigationMenu(
             final Vector popUpActions,
             final Object ascStart,
@@ -501,7 +503,7 @@ public class FigAssociation extends FigEdgeModelElement {
                 popUpActions.size() - getPopupAddOffset(),
                 menu);
     }
-    
+
     private void buildAggregationMenu(
             final Vector popUpActions,
             final Object ascStart,
@@ -538,8 +540,8 @@ public class FigAssociation extends FigEdgeModelElement {
      * Updates the multiplicity fields.
      */
     protected void updateMultiplicity() {
-        if (getOwner() != null 
-                && srcEnd.getOwner() != null 
+        if (getOwner() != null
+                && srcEnd.getOwner() != null
                 && destEnd.getOwner() != null) {
             srcEnd.getMult().setText();
             destEnd.getMult().setText();
@@ -552,13 +554,13 @@ public class FigAssociation extends FigEdgeModelElement {
     @Override
     public void paint(Graphics g) {
         if (getOwner() == null ) {
-            LOG.error("Trying to paint a FigAssociation without an owner. ");
+            LOG.log(Level.SEVERE, "Trying to paint a FigAssociation without an owner. ");
         } else {
             if (!Model.getFacade().isAConnector(getOwner())) {
                 // If we're a UML2 Connector then we don't need arrows.
                 // TODO: When issue 6266 is implemented we can
                 // get rid of the condition and always call applyArrowHeads
-                applyArrowHeads(); 
+                applyArrowHeads();
             }
         }
         if (getSourceArrowHead() != null && getDestArrowHead() != null) {
@@ -574,7 +576,7 @@ public class FigAssociation extends FigEdgeModelElement {
     protected FigTextGroup getMiddleGroup() {
         return middleGroup;
     }
-    
+
     /**
      * Lays out the association edges as any other edge except for
      * special rules for an association that loops back to the same
@@ -605,12 +607,12 @@ public class FigAssociation extends FigEdgeModelElement {
             super.layoutEdge();
         }
     }
-    
+
     /**
      * If the name is updated, update the bounds of the middle group.
      * This makes the selection box appear correctly during prop-panel edit.
-     * This is a temporary solution, until a better architecture is decided 
-     * upon, see issue 5477 and 
+     * This is a temporary solution, until a better architecture is decided
+     * upon, see issue 5477 and
      * http://argouml.tigris.org/issues/show_bug.cgi?id=5621#desc19.
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
@@ -623,15 +625,15 @@ public class FigAssociation extends FigEdgeModelElement {
             middleGroup.calcBounds();
         }
     }
-    
+
 
     /**
-     * 
+     *
      */
     class EndDecoration {
         private FigAssociationEndAnnotation group;
         private FigMultiplicity mult;
-        
+
         EndDecoration(
             final Object endOwner,
             final DiagramSettings settings,
@@ -640,22 +642,22 @@ public class FigAssociation extends FigEdgeModelElement {
             final int displacementAngle,
             final int displacementDistance) {
             mult = new FigMultiplicity(endOwner, settings);
-            addPathItem(mult, 
-                    new PathItemPlacement(FigAssociation.this, mult, 
-                            percentPostionOnLine, pathDelta, 
+            addPathItem(mult,
+                    new PathItemPlacement(FigAssociation.this, mult,
+                            percentPostionOnLine, pathDelta,
                             displacementAngle, displacementDistance));
             ArgoFigUtil.markPosition(
-                    FigAssociation.this, percentPostionOnLine, pathDelta, 
+                    FigAssociation.this, percentPostionOnLine, pathDelta,
                     displacementAngle, displacementDistance, Color.green);
-            
+
             group = new FigAssociationEndAnnotation(
                     FigAssociation.this, endOwner, settings);
-            addPathItem(group, 
-                    new PathItemPlacement(FigAssociation.this, group, 
-                            percentPostionOnLine, pathDelta, 
+            addPathItem(group,
+                    new PathItemPlacement(FigAssociation.this, group,
+                            percentPostionOnLine, pathDelta,
                             -displacementAngle, displacementDistance));
             ArgoFigUtil.markPosition(
-                    FigAssociation.this, percentPostionOnLine, pathDelta, 
+                    FigAssociation.this, percentPostionOnLine, pathDelta,
                     -displacementAngle, displacementDistance, Color.blue);
         }
 
@@ -666,43 +668,43 @@ public class FigAssociation extends FigEdgeModelElement {
         public FigMultiplicity getMult() {
             return mult;
         }
-        
+
         public FigRole getRole() {
             return group.getRole();
         }
-        
+
         public int getArrowType() {
             return group.getArrowType();
         }
-        
+
         public void renderingChanged() {
             mult.renderingChanged();
             group.renderingChanged();
         }
-        
+
         public void initNotationProviders() {
             mult.initNotationProviders();
         }
-        
+
         public Object getOwner() {
             return mult.getOwner();
         }
     }
-    
+
 } /* end class FigAssociation */
 
 /**
  * A Fig representing the multiplicity of some model element.
  * This has potential reuse for other edges showing multiplicity. <p>
- * 
+ *
  * The owner is an AssociationEnd.
- * 
+ *
  * @author Bob Tarling
  */
 class FigMultiplicity extends FigSingleLineTextWithNotation {
 
     FigMultiplicity(Object owner, DiagramSettings settings) {
-        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,
                 new String[] {"multiplicity", "upperValue"});
         // Note that "multiplicity" is what is the notation is listening
         // for in UML1.4 "uppervalue" are listened to in UML2. It is not
@@ -723,23 +725,23 @@ class FigMultiplicity extends FigSingleLineTextWithNotation {
  * A textual Fig representing the ordering of some model element,
  * i.e. "{ordered}" or nothing.
  * This has potential reuse for other edges showing ordering. <p>
- * 
+ *
  * This Fig is not editable by the user.
- * 
+ *
  * @author Bob Tarling
  */
 class FigOrdering extends FigSingleLineText {
 
     private static final long serialVersionUID = 5385230942216677015L;
-    
+
     FigOrdering(Object owner, DiagramSettings settings) {
-        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,
                 "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
         setEditable(false);
     }
-    
+
     @Override
     protected void setText() {
         assert getOwner() != null;
@@ -777,16 +779,16 @@ class FigOrdering extends FigSingleLineText {
 
 /**
  * A Fig representing the association end role of some model element.
- * This class is designed as a composite part and should always be 
+ * This class is designed as a composite part and should always be
  * part of a FigGroup.
  * @author Bob Tarling
  */
 class FigRole extends FigSingleLineTextWithNotation {
 
     FigRole(Object owner, DiagramSettings settings) {
-        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
-                (String[]) null 
-        // no need to listen to these property changes - the 
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,
+                (String[]) null
+        // no need to listen to these property changes - the
         // notationProvider takes care of this.
                 /*, new String[] {"name", "visibility", "stereotype"}*/
                 );
@@ -798,12 +800,12 @@ class FigRole extends FigSingleLineTextWithNotation {
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
-    
+
     /**
      * Property change listener to recalculate bounds of enclosing
      * group whenever any properties of the FigRole get changed.
      * This is only really needed for the name, see issue 5621.
-     * 
+     *
      * @param pce The property change event to process.
      * @see org.argouml.uml.diagram.ui.FigSingleLineTextWithNotation#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -817,17 +819,17 @@ class FigRole extends FigSingleLineTextWithNotation {
 }
 
 /**
- * The arrowhead and the group of labels shown at the association end: 
- * the role name and the ordering property. 
+ * The arrowhead and the group of labels shown at the association end:
+ * the role name and the ordering property.
  * This does not include the multiplicity. <p>
- * 
- * This class does not yet support arrows for a FigAssociationEnd, 
+ *
+ * This class does not yet support arrows for a FigAssociationEnd,
  * as is used for N-ary associations.
  */
 class FigAssociationEndAnnotation extends FigTextGroup {
 
     private static final long serialVersionUID = 1871796732318164649L;
-    
+
     private static final ArrowHead NAV_AGGR =
         new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
                    new ArrowHeadGreater());
@@ -840,10 +842,10 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     private static final int NONE = 0;
     private static final int AGGREGATE = 1;
     private static final int COMPOSITE = 2;
-    
+
     // Added to the arrow type for navigable
     private static final int NAV = 3;
-    
+
     /**
      * All the arrow head types.
      */
@@ -856,7 +858,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         ARROW_HEADS[NAV + AGGREGATE] = NAV_AGGR;
         ARROW_HEADS[NAV + COMPOSITE] = NAV_COMP;
     }
-    
+
     private FigRole role;
     private FigOrdering ordering;
     private FigEdgeModelElement figEdge;
@@ -865,14 +867,14 @@ class FigAssociationEndAnnotation extends FigTextGroup {
             DiagramSettings settings) {
         super(owner, settings);
         figEdge = edge;
-        
+
         role = new FigRole(owner, settings);
         addFig(role);
 
         ordering = new FigOrdering(owner, settings);
         addFig(ordering);
 
-        Model.getPump().addModelEventListener(this, owner, 
+        Model.getPump().addModelEventListener(this, owner,
                 new String[] {"isNavigable", "aggregation", "participant"});
     }
 
@@ -881,12 +883,12 @@ class FigAssociationEndAnnotation extends FigTextGroup {
      */
     @Override
     public void removeFromDiagram() {
-        Model.getPump().removeModelEventListener(this, 
-                getOwner(), 
+        Model.getPump().removeModelEventListener(this,
+                getOwner(),
                 new String[] {"isNavigable", "aggregation", "participant"});
         super.removeFromDiagram();
     }
-    
+
     /*
      * @see org.tigris.gef.presentation.Fig#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -928,7 +930,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
      */
     public int getArrowType() {
         assert getOwner() != null;
-        
+
 
         final Object ak = Model.getFacade().getAggregation1(getOwner());
         final boolean nav = Model.getFacade().isNavigable(getOwner());

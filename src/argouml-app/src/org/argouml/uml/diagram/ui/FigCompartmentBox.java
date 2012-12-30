@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,10 +47,11 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
@@ -68,38 +69,38 @@ import org.tigris.gef.presentation.FigRect;
 /**
  * Class to display graphics for a node with compartments in a diagram.
  * <p>
- * 
+ *
  * The leaf descendants of this class shall add the compartments in top to
  * bottom order.
  * <p>
- * 
+ *
  * It deals with highlighting editable compartments.
  * <p>
- * 
+ *
  * All descendants of this class have the bigPort filled with the main fig fill
  * color, with line border.
  * <p>
- * 
+ *
  * The name, keyword and stereotype are shown in transparent figs without
  * border, but their size is reduced so that they fit within the border of the
  * borderFig.
  */
 public abstract class FigCompartmentBox extends FigNodeModelElement {
 
-    private static final Logger LOG = Logger.getLogger(
-            FigCompartmentBox.class);
-    
-    
+    private static final Logger LOG =
+        Logger.getLogger(FigCompartmentBox.class.getName());
+
+
 
     /**
      * Default bounds for a compartment.
      */
-    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS 
+    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS
         = new Rectangle(
-            X0, Y0 + 20 /* 20 = height of name fig ?*/, 
+            X0, Y0 + 20 /* 20 = height of name fig ?*/,
             WIDTH, ROWHEIGHT + 2 /* 2*LINE_WIDTH?  or extra padding? */ );
-    
-    private List<FigCompartment> compartments = 
+
+    private List<FigCompartment> compartments =
         new ArrayList<FigCompartment>();
 
     /**
@@ -123,7 +124,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     /**
      * Overrule this if a rectangle is not usable.
-     * 
+     *
      * @return the Fig to be used as bigPort
      */
     protected Fig createBigPortFig() {
@@ -133,7 +134,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     /**
      * Construct a Fig with owner, bounds, and settings.
-     * 
+     *
      * @param owner the model element that owns this fig
      * @param bounds the rectangle defining the bounds
      * @param settings the rendering settings
@@ -143,7 +144,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         super(owner, bounds, settings);
         initialize();
     }
-    
+
     /**
      * Get the compartment that lists model elements of the given type.
      * This can also be used to test if a Fig supports a particular type
@@ -160,7 +161,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
         return null;
     }
-    
+
     /**
      * Return true of a compartment exists and is visible
      * @param metaType the model element type for which the compartment is
@@ -174,7 +175,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
         return f.isVisible();
     }
-    
+
     protected List<FigCompartment> getCompartments() {
         return compartments;
     }
@@ -192,7 +193,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         addFig(c.getSeparatorFig());
         compartments.add(c);
     }
-    
+
     protected void createCompartments() {
         Object owner = getOwner();
         if (Model.getUmlFactory().isContainmentValid(
@@ -217,8 +218,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             addFig(fc);
         }
     }
-    
-    
+
+
     protected int getVisibleCompartmentCount() {
         int result = 0;
         for (int i = 0; i < compartments.size(); i++) {
@@ -249,16 +250,16 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * dimensions to the minimum space required for its contents:
          */
         aSize.width = Math.max(WIDTH, aSize.width);
-        
+
         aSize = addCompartmentBoxSurroundings(aSize);
 
         return aSize;
     }
-    
+
     /**
-     * Increase the size of the given box with the area around the 
+     * Increase the size of the given box with the area around the
      * compartments.
-     * 
+     *
      * @param box the minimum box size needed for the compartments
      * @return the dimensions of the complete fig
      */
@@ -268,16 +269,16 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         box.height += 2 * getLineWidth();
         return box;
     }
-    
+
     /**
-     * Given the outside dimensions and location of the Fig, calculate 
+     * Given the outside dimensions and location of the Fig, calculate
      * the position and size of the box for the compartments.
      * The compartments are located inside the complete fig. For a
-     * rectangle (i.e. the default implementation), only the line-width 
+     * rectangle (i.e. the default implementation), only the line-width
      * of the outside box needs to be added.
-     * Other Figs may have other shapes, e.g. a Use Case has the 
+     * Other Figs may have other shapes, e.g. a Use Case has the
      * box located inside an ellipse. So, they need to overrule this method.
-     * 
+     *
      * @param x outside top left
      * @param y outside top left
      * @param w outside dimension, including line-width
@@ -287,8 +288,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     protected Rectangle calculateCompartmentBoxDimensions(
             final int x, final int y, final int w, final int h) {
         return new Rectangle(
-                x + getLineWidth(), 
-                y + getLineWidth(), 
+                x + getLineWidth(),
+                y + getLineWidth(),
                 w - 2 * getLineWidth(),
                 h - 2 * getLineWidth());
     }
@@ -297,19 +298,19 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * Sets the bounds, but the size will be at least the one returned by
      * {@link #getMinimumSize()}, unless checking of size is disabled.
      * <p>
-     * 
+     *
      * If the required height is bigger, then the additional height is equally
      * distributed among all compartments, such that the accumulated height of
      * all visible figs equals the demanded height.
-     * 
+     *
      * @param x Desired X coordinate of upper left corner
-     * 
+     *
      * @param y Desired Y coordinate of upper left corner
-     * 
+     *
      * @param width Desired width of the Fig
-     * 
+     *
      * @param height Desired height of the Fig
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
@@ -323,8 +324,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         Dimension minimumSize = getMinimumSize();
         int newW = Math.max(w, minimumSize.width);
         int newH = Math.max(h, minimumSize.height);
-        
-        /* The box for the compartments is somewhere 
+
+        /* The box for the compartments is somewhere
          * inside the outside bounds: */
         Rectangle box = calculateCompartmentBoxDimensions(
                 x, y, newW, newH);
@@ -336,7 +337,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
                     box.x,
-                    box.y, 
+                    box.y,
                     box.width,
                     stereotypeHeight);
         } else {
@@ -352,7 +353,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         /* The new height can not be less than the name height: */
         /*
-         * TODO: Is this needed/correct? 
+         * TODO: Is this needed/correct?
          * For when all compartments are hidden?
          */
         newH = Math.max(minNameHeight + 2 * getLineWidth(), newH);
@@ -379,10 +380,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                     compartmentHeight += (requestedHeight - neededHeight)
                             / getVisibleCompartmentCount();
                 }
-                setCompartmentBounds(c, 
+                setCompartmentBounds(c,
                         new Rectangle(
-                                box.x, 
-                                box.y + currentHeight, 
+                                box.x,
+                                box.y + currentHeight,
                                 box.width,
                                 compartmentHeight),
                         new Rectangle(x, y, newW, newH));
@@ -407,26 +408,29 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         calcBounds();
         updateEdges();
-        LOG.debug("Bounds change : old - " + oldBounds + ", new - "
-                + getBounds());
+
+        LOG.log(Level.FINE,
+                "Bounds change : old - {0}, new - {1}",
+                new Object[]{oldBounds, getBounds()});
+
         firePropChange("bounds", oldBounds, getBounds());
     }
 
     /**
-     * Set the bounds of the compartment. 
-     * 
+     * Set the bounds of the compartment.
+     *
      * @param c the compartment
      * @param cb the new compartment bounds
      * @param ob the new outside fig bounds
      */
-    protected void setCompartmentBounds(FigCompartment c, 
+    protected void setCompartmentBounds(FigCompartment c,
             Rectangle cb, Rectangle ob) {
         Rectangle r = new Rectangle();
         r.y = cb.y;
         r.height = getLineWidth();
         r.width = ob.width;
         r.x = ob.x;
-        c.setExternalSeparatorFigBounds(r);            
+        c.setExternalSeparatorFigBounds(r);
         c.setBounds(cb.x, cb.y + 1, cb.width, cb.height - 1);
     }
 
@@ -448,7 +452,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
+        if (mee instanceof AssociationChangeEvent
                 || mee instanceof AttributeChangeEvent) {
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {
@@ -456,17 +460,15 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                         renderingChanged();
                         updateListeners(getOwner(), getOwner());
                     } catch (InvalidElementException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("method accessed "
-                                    + "deleted element", e);
-                        }
+                        LOG.log(Level.FINE,
+                                "method accessed deleted element", e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
@@ -512,8 +514,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             return;
         }
         ((FigCompartment) fg).createModelElement();
-        /* Populate the compartment now, 
-         * so that we can put the last one in edit mode: 
+        /* Populate the compartment now,
+         * so that we can put the last one in edit mode:
          * This fixes issue 5439. */
         ((FigCompartment) fg).populate();
         // TODO: The above populate works but seems rather heavy here.
@@ -536,7 +538,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     /**
      * Show or hide a compartment based on the meta-type of its contents.
-     * 
+     *
      * @param metaType the compartment type to be shown
      * @param visible true if the compartment should be visible
      */

@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.kernel.Command;
 import org.argouml.model.AddAssociationEvent;
@@ -32,7 +33,7 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.util.CollectionUtil;
 
 /**
- * The simplest model for a list of UML elements
+ * The simplest model for a list of UML elements.
  */
 class SimpleListModel
         extends DefaultListModel implements PropertyChangeListener {
@@ -41,19 +42,20 @@ class SimpleListModel
      * The class uid
      */
     private static final long serialVersionUID = -8491023641828449064L;
-    
-    private static final Logger LOG = Logger.getLogger(SimpleListModel.class);
-    
+
+    private static final Logger LOG =
+        Logger.getLogger(SimpleListModel.class.getName());
+
     /**
-     * The metatypes to provide buttons to create
+     * The metatypes to provide buttons to create.
      */
     private final List<Class<?>> metaTypes;
-    
+
     private final Object umlElement;
     private final String propertyName;
 
     final private GetterSetterManager getterSetterManager;
-    
+
     SimpleListModel(
             final String propertyName,
             final List<Class<?>> types,
@@ -66,48 +68,48 @@ class SimpleListModel
         this.umlElement = umlElement;
 
         build();
-        
+
         Model.getPump().addModelEventListener(this, umlElement, propertyName);
     }
-    
+
     public void removeModelEventListener() {
         Model.getPump().removeModelEventListener(this, umlElement, propertyName);
     }
-    
+
     public Object getMetaType() {
         if (metaTypes.size() > 0) {
             return metaTypes.get(0);
         }
         return getterSetterManager.getMetaType(propertyName);
     }
-    
+
     public String getPropertyName() {
     	return propertyName;
     }
-    
+
     public List getMetaTypes() {
         return metaTypes;
     }
-    
+
     public Command getRemoveCommand(Object objectToRemove) {
     	return getterSetterManager.getRemoveCommand(propertyName, umlElement, objectToRemove);
     }
-    
+
     public Command getAddCommand() {
     	return getterSetterManager.getAddCommand(propertyName, umlElement);
     }
-    
+
     public List<Command> getAdditionalCommands() {
     	return getterSetterManager.getAdditionalCommands(propertyName, umlElement);
     }
-    
+
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(final PropertyChangeEvent e) {
         if (e instanceof RemoveAssociationEvent
                 || e instanceof AddAssociationEvent) {
-                
+
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {
                     try {
@@ -132,14 +134,14 @@ class SimpleListModel
         	                        && !SimpleListModel.this.contains(newElement)) {
         		            if (Model.getUmlHelper().isMovable(getMetaType())) {
         		                final Collection c =
-        		                    (Collection) getterSetterManager.getOptions( 
-        		                        umlElement, 
-        		                        propertyName, 
+        		                    (Collection) getterSetterManager.getOptions(
+        		                        umlElement,
+        		                        propertyName,
         		                        metaTypes);
         		                final int index =
         		                    CollectionUtil.indexOf(c, newElement);
         		                if (index < 0 || index > getSize() - 1) {
-        		                    LOG.warn(
+                                            LOG.log(Level.WARNING,
         		                            "Unable to add element at correct position "
         		                            + index + " added to end instead");
         		                    addElement(newElement);
@@ -153,9 +155,11 @@ class SimpleListModel
         	            }
                         }
                     } catch (InvalidElementException e) {
-                        LOG.debug("propertyChange accessed a deleted element ", e);
+                        LOG.log(Level.FINE,
+                                "propertyChange accessed a deleted element ",
+                                e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         } else if (e.getPropertyName().equals("baseClass")
@@ -168,9 +172,10 @@ class SimpleListModel
        	    removeAllElements();
             build();
         } else {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("We are listening for too much here. An event we don't need " + e);
-            }
+            LOG.log(Level.FINE,
+                    "We are listening for too much here. "
+                    + "An event we don't need {0}",
+                    e);
         }
     }
 
@@ -179,19 +184,19 @@ class SimpleListModel
      */
     private void build() {
         try {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Getting options for " + umlElement
-                	+ " " + propertyName + " " + metaTypes);
-            }
-            final Collection c = (Collection) getterSetterManager.getOptions( 
-                    umlElement, 
-                    propertyName, 
+            LOG.log(Level.FINE,
+                    "Getting options for {0} {1} {2}",
+                    new Object[]{umlElement, propertyName, metaTypes});
+            
+            final Collection c = (Collection) getterSetterManager.getOptions(
+                    umlElement,
+                    propertyName,
                     metaTypes);
             for (Object o : c) {
                 addElement(o);
             }
         } catch (InvalidElementException exception) {
-            LOG.debug("buildModelList threw exception for target " 
+            LOG.log(Level.FINE, "buildModelList threw exception for target "
                     + umlElement + ": "
                     + exception);
         }
@@ -200,5 +205,5 @@ class SimpleListModel
     public Object getUmlElement() {
         return umlElement;
     }
-    
+
 }

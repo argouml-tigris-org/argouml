@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An implementation for the ProfileModelLoader that loads profiles from files.
@@ -52,11 +52,14 @@ import org.apache.log4j.Logger;
  */
 public class FileModelLoader extends URLModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
+    private static final Logger LOG =
+        Logger.getLogger(FileModelLoader.class.getName());
 
-    public Collection loadModel(ProfileReference reference) 
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
-        LOG.info("Loading profile from file'" + reference.getPath() + "'");
+        LOG.log(Level.INFO,
+                "Loading profile from file {0}", reference.getPath());
+
         try {
             File modelFile = new File(reference.getPath());
             URL url = modelFile.toURI().toURL();

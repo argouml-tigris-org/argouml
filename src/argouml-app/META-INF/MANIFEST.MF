@@ -135,8 +135,7 @@ Export-Package: org.argouml.Images,
  tudresden.ocl.parser.lexer,
  tudresden.ocl.parser.node,
  tudresden.ocl.parser.parser
-Require-Bundle: org.argouml.core.infra,
- org.argouml.core.model
+Require-Bundle: org.argouml.core.model
 Eclipse-RegisterBuddy: org.argouml.core.infra
 Eclipse-BuddyPolicy: registered
 Bundle-ClassPath: lib/commons-logging-1.0.2.jar,

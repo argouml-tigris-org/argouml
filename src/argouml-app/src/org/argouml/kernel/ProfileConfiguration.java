@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoProfileEvent;
@@ -63,8 +64,8 @@ import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 
 /**
- *   This class captures represents the unique access point for the 
- *   configurability allowed by the use of profiles. 
+ *   This class captures represents the unique access point for the
+ *   configurability allowed by the use of profiles.
  *
  *   @author maurelio1234
  */
@@ -72,8 +73,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ProfileConfiguration.class);
+    private static final Logger LOG =
+        Logger.getLogger(ProfileConfiguration.class.getName());
 
     private FormatingStrategy formatingStrategy;
 
@@ -84,24 +85,24 @@ public class ProfileConfiguration extends AbstractProjectMember {
     private List<Profile> profiles = new ArrayList<Profile>();
 
     private List<Object> profileModels = new ArrayList<Object>();
-    
+
     /**
      * The extension used in serialization and returned by {@link #getType()}
      */
     public static final String EXTENSION = "profile";
-    
+
 
     /**
      * The configuration key for the default stereotype view.
      */
-    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = 
+    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW =
         Configuration.makeKey("profiles", "stereotypeView");
-    
+
     /**
-     * The default constructor for this class. Sets the default profiles as 
-     * given by {@link org.argouml.profile.ProfileManager} as the profiles of 
+     * The default constructor for this class. Sets the default profiles as
+     * given by {@link org.argouml.profile.ProfileManager} as the profiles of
      * the project.
-     * 
+     *
      * @param project the project that contains this configuration
      */
     public ProfileConfiguration(Project project) {
@@ -117,15 +118,15 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
         updateStrategies();
     }
-    
+
     /**
-     * The constructor for pre-defined profile configurations, such as when a 
+     * The constructor for pre-defined profile configurations, such as when a
      * project is read from a saved file.
      * @param project the project that contains this configuration
-     * @param configuredProfiles the {@link Profile}s that will be the project 
+     * @param configuredProfiles the {@link Profile}s that will be the project
      *        profiles
      */
-    public ProfileConfiguration(Project project, 
+    public ProfileConfiguration(Project project,
             Collection<Profile> configuredProfiles) {
         super(EXTENSION, project);
         List c = project.getUserDefinedModelList();
@@ -135,11 +136,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
         }
         updateStrategies();
     }
-    
+
     private void updateStrategies() {
         for (Profile profile : profiles) {
-            activateFormatingStrategy(profile);                
-            activateDefaultTypeStrategy(profile);                
+            activateFormatingStrategy(profile);
+            activateDefaultTypeStrategy(profile);
         }
     }
 
@@ -156,11 +157,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return defaultTypeStrategy;
     }
-    
+
     /**
-     * Updates the current strategy to the strategy provided by the 
+     * Updates the current strategy to the strategy provided by the
      * passed profile. The profile should have been previously registered.
-     * 
+     *
      * @param profile the profile providing the current default type strategy
      */
     public void activateDefaultTypeStrategy(Profile profile) {
@@ -169,11 +170,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
             this.defaultTypeStrategy = profile.getDefaultTypeStrategy();
         }
     }
-    
+
     /**
-     * Updates the current strategy to the strategy provided by the 
+     * Updates the current strategy to the strategy provided by the
      * passed profile. The profile should have been previously registered.
-     * 
+     *
      * @param profile the profile providing the current formating strategy
      */
     public void activateFormatingStrategy(Profile profile) {
@@ -192,7 +193,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
     /**
      * Applies a new profile to this configuration.
-     * 
+     *
      * @param p the profile to be applied
      * @deprecated for 0.29.2, because since UML2 a profile must be applied to
      * a model
@@ -205,7 +206,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * Applies a new profile to this configuration and to the given model (or
      * other profile, which could be later a collection).
-     * 
+     *
      * @param p the profile to be applied
      * @param m the model (or profile) to which the profile will be applied
      */
@@ -220,9 +221,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
                 }
                 profileModels.addAll(p.getProfilePackages());
             } catch (ProfileException e) {
-                LOG.warn("Error retrieving profile's " + p + " packages.", e);
+                LOG.log(Level.WARNING,
+                        "Error retrieving profile's " + p + " packages.",
+                        e);
             }
-            
+
             FigNodeStrategy fns = p.getFigureStrategy();
             if (fns != null) {
                 figNodeStrategies.add(fns);
@@ -238,7 +241,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
                             "profile", null, p)));
         }
     }
-        
+
     /**
      * @return the list of models of the currently applied profile.
      */
@@ -248,7 +251,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
     /**
      * Removes the passed profile from this configuration.
-     * 
+     *
      * @param p the profile to be applied
      * @deprecated for 0.29.2, because since UML2 a profile must be unapplied
      * from a model
@@ -261,7 +264,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * Removes the passed profile from the configuration and unapplies it from
      * the given model (or other profile, which could be later a collection).
-     * 
+     *
      * @param p the profile to be removed/unapplied
      * @param m the model (or profile) to which the profile will be unapplied
      */
@@ -273,7 +276,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             }
             profileModels.removeAll(p.getProfilePackages());
         } catch (ProfileException e) {
-            LOG.error("Exception", e);
+            LOG.log(Level.SEVERE, "Exception", e);
         }
 
         FigNodeStrategy fns = p.getFigureStrategy();
@@ -301,7 +304,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
                 ArgoEventTypes.PROFILE_REMOVED, new PropertyChangeEvent(this,
                         "profile", p, null)));
     }
-    
+
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
 	public Image getIconForStereotype(Object element) {
@@ -317,14 +320,14 @@ public class ProfileConfiguration extends AbstractProjectMember {
 	    }
 	    return null;
 	}
-	
+
     };
-    
+
     /**
      * @return the current FigNodeStrategy
      */
     public FigNodeStrategy getFigNodeStrategy() {
-	return compositeFigNodeStrategy; 
+	return compositeFigNodeStrategy;
     }
 
     /**
@@ -336,9 +339,9 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Objects of this class are always consistent, there's no need 
+     * Objects of this class are always consistent, there's no need
      * to repair them.
-     * 
+     *
      * @return the empty string.
      * @see org.argouml.kernel.ProjectMember#repair()
      */
@@ -357,16 +360,16 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
 
     /**
-     * Find a stereotype with the given name which is applicable to the given 
+     * Find a stereotype with the given name which is applicable to the given
      * element.
-     * 
+     *
      * @param name name of stereotype to look for
      * @param element model element to which the stereotype must be applicable
      * @return the stereotype or null if none found
      */
     public Object findStereotypeForObject(String name, Object element) {
         Iterator iter = null;
-        
+
         for (Object model : profileModels) {
             iter = Model.getFacade().getOwnedElements(model).iterator();
 
@@ -389,7 +392,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
     /**
      * Search for the given type in all of the profile models.
-     * 
+     *
      * @param name name of type to be found
      * @return the type or null
      */
@@ -405,10 +408,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
     /**
      * Finds a type in a model by name
-     * 
-     * FIXME: duplicated from the method with the same name in 
+     *
+     * FIXME: duplicated from the method with the same name in
      * org.argouml.profile.internal.ModelUtils.
-     * 
+     *
      * @param s the type name
      * @param model the model
      * @return the type or <code>null</code> if the type has not been found.
@@ -443,11 +446,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Find all the model elements in the configured {@link Profile}s 
+     * Find all the model elements in the configured {@link Profile}s
      * of the given meta type.
-     * 
+     *
      * @param metaType the meta type of the model elements to find
-     * @return a {@link Collection} containing the model elements that 
+     * @return a {@link Collection} containing the model elements that
      *         are of the given meta type
      */
     @SuppressWarnings("unchecked")

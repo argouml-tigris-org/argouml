@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.cognitive.checklist;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
@@ -54,7 +56,7 @@ import org.tigris.gef.ocl.ExpansionException;
 
 public class UMLCheckItem extends CheckItem {
     private static final Logger LOG =
-        Logger.getLogger(UMLCheckItem.class);
+        Logger.getLogger(UMLCheckItem.class.getName());
 
     /**
      * The constructor.
@@ -72,11 +74,11 @@ public class UMLCheckItem extends CheckItem {
      * @param m the more-info-url
      * @param p the predicate
      */
-    public UMLCheckItem(String c, String d, String m, 
+    public UMLCheckItem(String c, String d, String m,
             org.argouml.util.Predicate p) {
         super(c, d, m, p);
     }
-    
+
     /*
      * @see org.argouml.cognitive.checklist.CheckItem#expand(java.lang.String,
      *      java.lang.Object)
@@ -99,13 +101,15 @@ public class UMLCheckItem extends CheckItem {
 	                            .evalToString(dm, expr);
 	    } catch (ExpansionException e) {
 	        // Really ought to have a CriticException to throw here.
-	        LOG.error("Failed to evaluate critic expression", e);
+                LOG.log(Level.SEVERE,
+                        "Failed to evaluate critic expression", e);
 	    } catch (InvalidElementException e) {
-                /* The modelelement must have been 
+                /* The modelelement must have been
                  * deleted - ignore this - it will pass. */
                 evalStr = Translator.localize("misc.name.deleted");
             }
-	    LOG.debug("expr='" + expr + "' = '" + evalStr + "'");
+            LOG.log(Level.FINE, "expr={0} = {1}", new Object[]{expr, evalStr});
+
 	    res = res.substring(0, matchPos) + evalStr
 	        + res.substring(endExpr + OCLEvaluator.OCL_END.length());
 	    searchPos = endExpr + 1;

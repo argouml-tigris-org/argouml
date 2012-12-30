@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
@@ -60,7 +61,7 @@ public class CrMultipleInitialStates extends CrUML {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(CrMultipleInitialStates.class);
+        Logger.getLogger(CrMultipleInitialStates.class.getName());
 
     /**
      * The constructor.
@@ -91,10 +92,10 @@ public class CrMultipleInitialStates extends CrUML {
         // container state / composite state
         Object cs = Model.getFacade().getContainer(dm);
         if (cs == null) {
-            LOG.debug("null parent state");
+            LOG.log(Level.FINE, "null parent state");
             return NO_PROBLEM;
         }
-        
+
         int initialStateCount = 0;
         Collection peers = Model.getFacade().getSubvertices(cs);
         for (Object sv : peers) {
@@ -130,10 +131,10 @@ public class CrMultipleInitialStates extends CrUML {
         ListSet offs = new ListSet(ps);
         Object cs = Model.getFacade().getContainer(ps);
         if (cs == null) {
-            LOG.debug("null parent in still valid");
+            LOG.log(Level.FINE, "null parent in still valid");
             return offs;
 	}
-        
+
         Collection peers = Model.getFacade().getSubvertices(cs);
         for (Object sv : peers) {
             if (Model.getFacade().isAPseudostate(sv)
@@ -178,4 +179,3 @@ public class CrMultipleInitialStates extends CrUML {
      */
     private static final long serialVersionUID = 4151051235876065649L;
 }
-

@@ -1,13 +1,13 @@
 // $Id$
 /***************************************************************************
- * Copyright (c) 2007-2011 Tom Morris and other contributors
+ * Copyright (c) 2007-2012 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Tom Morris - initial framework 
+ *    Tom Morris - initial framework
  *    Bob Tarling
  *    Michiel van der Wulp
  ***************************************************************************/
@@ -16,8 +16,9 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 import org.eclipse.uml2.uml.Classifier;
@@ -33,9 +34,9 @@ import org.eclipse.uml2.uml.Vertex;
  */
 class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
-    private static final Logger LOG = 
-        Logger.getLogger(StateMachinesHelperEUMLImpl.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(StateMachinesHelperEUMLImpl.class.getName());
+
     /**
      * The model implementation.
      */
@@ -43,7 +44,7 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *            The ModelImplementation.
      */
@@ -146,7 +147,7 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
         throw new NotYetImplementedException();
 
     }
-    
+
     public List getRegions(Object handle) {
         if (handle instanceof StateMachine) {
             return ((StateMachine) handle).getRegions();
@@ -241,9 +242,9 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
             throw new IllegalArgumentException(
                     "Expected a vertext, got a " + handle); //$NON-NLS-1$
         }
-        
+
         Vertex vertex = (Vertex) handle;
-        
+
         if (region instanceof State) {
             List<Region> regions = ((State) region).getRegions();
             if (regions.isEmpty()) {
@@ -253,13 +254,14 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
                 region = regions.get(0);
             }
         }
-                        
+
         if (region == null || region instanceof Region) {
             if (vertex.getContainer() != null && region != null) {
                 // If the region is changed to another region then
                 // we make sure that a delete event is not fired
                 // as a result.
-                LOG.info("Setting ignore delete for " + vertex); //$NON-NLS-1$
+                LOG.log(Level.INFO, "Setting ignore delete for {0}", vertex); //$NON-NLS-1$
+
                 ModelEventPumpEUMLImpl pump =
                     (ModelEventPumpEUMLImpl) Model.getPump();
                 pump.addElementForDeleteEventIgnore((Vertex) handle);
@@ -271,7 +273,7 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
             vertex.setContainer((Region) region);
             return;
         }
-                        
+
         throw new IllegalArgumentException(
                 "Expected a State or Region, got a " + handle); //$NON-NLS-1$
     }
@@ -357,7 +359,7 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     public void setStatemachineAsSubmachine(Object oSubmachineState,
             Object oStatemachine) {
         if (!(oSubmachineState instanceof State)
-                || !(oStatemachine instanceof StateMachine 
+                || !(oStatemachine instanceof StateMachine
                         || oStatemachine == null)) {
             throw new IllegalArgumentException(
                     "Expected a state and statemachine, got a " //$NON-NLS-1$

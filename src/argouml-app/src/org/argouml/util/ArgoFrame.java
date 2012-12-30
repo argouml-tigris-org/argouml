@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,29 +39,30 @@
 package org.argouml.util;
 
 import java.awt.Frame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
-
 /**
  * Helper class to store/find a top level application frame.
- * 
+ *
  * This has been factored out of ProjectBrowser solely to allow easy
  * identification of things that want a ProjectBrowser because it is the top
  * level JFrame and those things that want to actually call a ProjectBrowser
  * method for some other purpose.
- * 
+ *
  * @author Tom Morris
- * 
+ *
  */
 public class ArgoFrame {
 
-    private static final Logger LOG = Logger.getLogger(ArgoFrame.class);
+    private static final Logger LOG =
+        Logger.getLogger(ArgoFrame.class.getName());
 
     private static Frame topFrame;
-    
+
     private ArgoFrame() {
         // prohibit instantiation
     }
@@ -71,7 +72,7 @@ public class ArgoFrame {
      * dialogs. The method name and return type were the same as the old
      * ProjectBrowser.getInstance() usage for compatibility, but getFrame should
      * be used for new uses.
-     * 
+     *
      * @return a top level JFrame to use as parent for new dialogs
      * @deprecated for 0.29.1 by tfmorris. Use {@link #getFrame()}.
      */
@@ -84,8 +85,8 @@ public class ArgoFrame {
     }
     /**
      * Get a top level frame which can be used as the parent for creating new
-     * dialogs. 
-     * 
+     * dialogs.
+     *
      * @return a top level JFrame to use as parent for new dialogs
      */
     public static Frame getFrame() {
@@ -98,14 +99,15 @@ public class ArgoFrame {
                 for (int i = 0; i < frames.length; i++) {
                     if (frames[i] instanceof JFrame) {
                         if (topFrame != null) {
-                            LOG.warn("Found multiple JFrames");
+                            LOG.log(Level.WARNING, "Found multiple JFrames");
                         } else {
                             setFrame(frames[i]);
                         }
                     }
                 }
                 if (topFrame == null) {
-                    LOG.warn("Failed to find JFrame - using rootFrame");
+                    LOG.log(Level.WARNING,
+                            "Failed to find JFrame - using rootFrame");
                     setFrame(JOptionPane.getRootFrame());
                 }
             }
@@ -116,7 +118,7 @@ public class ArgoFrame {
 
     /**
      * Set the given JFrame to use as the main application frame.
-     * 
+     *
      * @param frame the main application frame.
      * @deprecated for 0.29.1 by tfmorris.  Use {@link #setFrame(Frame)}.
      */
@@ -124,10 +126,10 @@ public class ArgoFrame {
     public static void setInstance(JFrame frame) {
         setFrame(frame);
     }
-    
+
     /**
      * Set the given Frame to use as the main application frame.
-     * 
+     *
      * @param frame the main application frame.
      */
     public static void setFrame(Frame frame) {

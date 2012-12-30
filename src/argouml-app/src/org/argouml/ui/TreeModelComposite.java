@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,10 +38,11 @@
 
 package org.argouml.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-
-import org.apache.log4j.Logger;
 
 /**
  * This class is the TreeModel for the navigator and todo list panels.<p>
@@ -53,7 +54,7 @@ import org.apache.log4j.Logger;
 public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
     private static final Logger LOG =
-        Logger.getLogger(TreeModelComposite.class);
+        Logger.getLogger(TreeModelComposite.class.getName());
 
     /** The root of the model. */
     private Object root;
@@ -113,7 +114,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
             }
             childCount += tm.getChildCount(parent);
         }
-        LOG.debug("child not found!");
+        LOG.log(Level.FINE, "child not found!");
 
         //The child is sometimes not found when the tree is being updated
         return -1;
@@ -135,11 +136,11 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     /*
      * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
      */
-    public void valueForPathChanged(TreePath path, Object newValue) { 
+    public void valueForPathChanged(TreePath path, Object newValue) {
         //  Empty implementation - not used.
     }
 
-    
+
     /**
      * @param r the root of the model
      */

@@ -49,10 +49,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
@@ -168,7 +169,8 @@ class CoreHelperMDRImpl implements CoreHelper {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(CoreHelperMDRImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(CoreHelperMDRImpl.class.getName());
 
     /**
      * The model implementation.
@@ -219,12 +221,12 @@ class CoreHelperMDRImpl implements CoreHelper {
 
         GeneralizableElement ge = (GeneralizableElement) cls1;
 
-        Collection<GeneralizableElement> result = 
+        Collection<GeneralizableElement> result =
             new HashSet<GeneralizableElement>();
         try {
             Collection<GeneralizableElement> toBeAdded = getSupertypes(ge);
             do {
-                Collection<GeneralizableElement> newlyAdded = 
+                Collection<GeneralizableElement> newlyAdded =
                     new HashSet<GeneralizableElement>();
                 for (GeneralizableElement element : toBeAdded) {
                     newlyAdded.addAll(getSupertypes(element));
@@ -240,7 +242,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     public Collection<GeneralizableElement> getSupertypes(Object genElement) {
-        Collection<GeneralizableElement> result = 
+        Collection<GeneralizableElement> result =
             new HashSet<GeneralizableElement>();
         try {
             if (genElement instanceof GeneralizableElement) {
@@ -295,7 +297,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public void removeLiteral(Object enu, Object literal) {
         try {
-            if (enu instanceof Enumeration 
+            if (enu instanceof Enumeration
                     && literal instanceof EnumerationLiteral) {
                 ((Enumeration) enu).getLiteral().remove(literal);
                 return;
@@ -311,7 +313,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setOperations(Object classifier, List operations) {
         if (classifier instanceof Classifier) {
             Classifier mclassifier = (Classifier) classifier;
-            List<Feature> result = 
+            List<Feature> result =
                 new ArrayList<Feature>(mclassifier.getFeature());
             for (Feature feature : mclassifier.getFeature()) {
                 if (feature instanceof Operation) {
@@ -333,7 +335,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setAttributes(Object classifier, List attributes) {
         if (classifier instanceof Classifier) {
             Classifier mclassifier = (Classifier) classifier;
-            List<Feature> result = 
+            List<Feature> result =
                 new ArrayList<Feature>(mclassifier.getFeature());
             for (Feature feature : mclassifier.getFeature()) {
                 if (feature instanceof Attribute) {
@@ -401,7 +403,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
     }
-    
+
     /**
      * Return the parents of a GeneralizableElement
      * @param ge generalizable element
@@ -419,18 +421,18 @@ class CoreHelperMDRImpl implements CoreHelper {
     /**
      * Return the parents of a GeneralizableElement and parents of those parents
      * all the way up the hierarchy.
-     * 
+     *
      * @param ge generalizable element
      * @return parents of all generalizations
      */
     static Collection<GeneralizableElement> getAllParents(
             GeneralizableElement ge) {
-        Collection<GeneralizableElement> result = 
+        Collection<GeneralizableElement> result =
             new HashSet<GeneralizableElement>(2000);
         getAllParents(result, ge);
         return result;
     }
-    
+
     private static void getAllParents(
             final Collection<GeneralizableElement> result,
             final GeneralizableElement ge) {
@@ -440,11 +442,11 @@ class CoreHelperMDRImpl implements CoreHelper {
             getAllParents(result, parent);
         }
     }
-    
+
     /**
      * A recursive method that iterates through generalizable elements to find
      * if the model element is visible from any super namespace.
-     * 
+     *
      * @param element the model element to test
      * @param ge the namespace which is a generalizable element
      * @param dupCheck Used to prevent recursion continuing endlessly due to
@@ -457,17 +459,17 @@ class CoreHelperMDRImpl implements CoreHelper {
             final ModelElement element,
             final GeneralizableElement ge,
             final Set<ModelElement> dupCheck) {
-        
+
         assert dupCheck != null;
         assert ge != null;
         assert element != null;
-        
+
         final boolean alreadyChecked = !dupCheck.add(ge);
         if (alreadyChecked) {
-            LOG.warn("Cyclic generalization found " + getFullName(ge));
+            LOG.log(Level.WARNING, "Cyclic generalization found " + getFullName(ge));
             return false;
         }
-        
+
         for (final Generalization g : ge.getGeneralization()) {
             final GeneralizableElement parent = g.getParent();
             if (parent instanceof Namespace
@@ -475,7 +477,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 return true;
             }
         }
-        
+
         for (final Generalization g : ge.getGeneralization()) {
             // Recurse into ourself for each parent
             if (isVisiblyOwned(element, g.getParent(), dupCheck)) {
@@ -484,7 +486,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         return false;
     }
-    
+
     private String getFullName(ModelElement elem) {
         String name = elem.getName();
         while (elem.getNamespace() != null) {
@@ -493,7 +495,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         return name;
     }
-    
+
     public List<Parameter> getReturnParameters(Object bf) {
         List<Parameter> returnParams = new ArrayList<Parameter>();
         try {
@@ -520,13 +522,13 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    
+
     public Collection<GeneralizableElement> getSubtypes(Object cls) {
         if (!(cls instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
 
-        Collection<GeneralizableElement> result = 
+        Collection<GeneralizableElement> result =
             new ArrayList<GeneralizableElement>();
         try {
             Collection<Generalization> gens = Model.getFacade()
@@ -647,7 +649,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         List<Interface> result = new ArrayList<Interface>();
         // TODO: This should be using internalGetAllRealizedInterfaces()
         try {
-            for (Dependency clientDependency 
+            for (Dependency clientDependency
                     : classifier.getClientDependency()) {
                 if (clientDependency instanceof Abstraction) {
                     Abstraction abstraction = (Abstraction) clientDependency;
@@ -683,7 +685,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             for (Object gen : modelImpl.getFacade().getGeneralizations(clazz)) {
                 GeneralizableElement parent = ((Generalization) gen).getParent();
                 if (parent != null) {
-                    // If we were handed a Classifier to start, 
+                    // If we were handed a Classifier to start,
                     // this must be a Classifier
                     result.add((Classifier) parent);
                 }
@@ -762,7 +764,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         if (clazz == null) {
             return Collections.EMPTY_SET;
         }
-        List<GeneralizableElement> list = 
+        List<GeneralizableElement> list =
             new ArrayList<GeneralizableElement>();
         try {
             for (Generalization gen : (Collection<Generalization>) modelImpl
@@ -1014,7 +1016,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
     }
-    
+
     /**
      * Get all publicly visible elements in a namespace.
      * @param ns the namespace
@@ -1111,7 +1113,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new IllegalArgumentException("Argument is not "
                     + "a relationship");
         }
-        
+
         try {
             if (relationship instanceof Link) {
                 Iterator it = modelImpl.getFacade()
@@ -1127,7 +1129,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                     return null;
                 }
             }
-            
+
             if (relationship instanceof UmlAssociation) {
                 UmlAssociation assoc = (UmlAssociation) relationship;
                 List<AssociationEnd> conns = assoc.getConnection();
@@ -1224,13 +1226,13 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         return result;
     }
-    
+
     /**
      * Return true if the given Permission has any of our acceptable
      * import stereotypes <code>import</code> or <code>access</code>.
      * <p>
      * NOTE: We don't currently consider the <code>friend</code> stereotype.
-     * 
+     *
      * @param permission Permission to test
      * @return true if this is an import permission
      */
@@ -1244,7 +1246,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 //                        permission, ModelManagementHelper.FRIEND_STEREOTYPE)
                         );
     }
-    
+
     public Permission getPackageImport(Object supplier, Object client) {
         for (Dependency dependency : getDependencies(supplier, client)) {
             if (dependency instanceof Permission
@@ -1276,7 +1278,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                     && dest instanceof GeneralizableElement) {
                 ret.add(getGeneralization(source, dest));
                 ret.add(getGeneralization(dest, source));
-                if (source instanceof Classifier 
+                if (source instanceof Classifier
                         && dest instanceof Classifier) {
                     ret.addAll(getAssociations(source, dest));
                 }
@@ -1509,18 +1511,18 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     private boolean isValidNamespace(Generalization gen, Namespace ns) {
         // TODO: Implement following WFR for GeneralizableElements
-        // [4] The parent must be included in the Namespace of the 
+        // [4] The parent must be included in the Namespace of the
         //     GeneralizableElement.
         //       self.generalization->forAll(g |
         //           self.namespace.allContents->includes(g.parent) )
 //        return ModelManagementHelperMDRImpl.getContents(ns).contains(
 //                gen.getParent());
-        
+
         // There actually don't appear to be any restrictions on the
         // namespace for a Generalization.  The UML 1.4 WFR 2.5.3.20 #3
         // refers to GeneralizableElements, not Generalizations - tfm
         return true;
-        
+
         // These old checks don't appear to be supported by the
         // UML 1.4 spec. - tfm 20080514
 //      if (gen.getParent() == null || gen.getChild() == null) {
@@ -1561,7 +1563,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         return true;
     }
-    
+
     /**
      * Return true if the given element is visible from this namespace.
      * <blockquote>The OCL that this is intended to check is this:
@@ -1584,12 +1586,12 @@ class CoreHelperMDRImpl implements CoreHelper {
         #public) ->includes (r.participant) ) )
         </blockquote>
      * <p>
-     * NOTE: This is very similar to the logic in 
+     * NOTE: This is very similar to the logic in
      * {@link ModelManagementHelperMDRImpl#getAllImportedElements(Object)}
      * which returns a collection of imported elements.  Here we quit as soon
-     * as we find the element that we're testing for (and we don't deal with 
+     * as we find the element that we're testing for (and we don't deal with
      * the <code>friend</code> or <code>access</code> stereotypes.
-     * 
+     *
      * @param ns
      *                The namespace to check visibility from
      * @param element
@@ -1601,9 +1603,9 @@ class CoreHelperMDRImpl implements CoreHelper {
             return false;
         }
 
-        //  self.allConnections->forAll(r 
+        //  self.allConnections->forAll(r
         // | self.namespace.allContents->includes(r.participant) )
-        Collection nsAllContents = 
+        Collection nsAllContents =
             modelImpl.getModelManagementHelper().getAllContents(ns);
         if (nsAllContents.contains(element)) {
             return true;
@@ -1615,7 +1617,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         //      self.namespace.clientDependency->exists (d |
         //      d.oclIsTypeOf(Permission) and
         //      d.stereotype.name = 'access' and
-        
+
         // TODO: this actually returns permissions with stereotypes
         // of both <<access>> and <<import>> when the spec calls for
         // only the former, but that seems to give different semantics
@@ -1636,15 +1638,15 @@ class CoreHelperMDRImpl implements CoreHelper {
                 //              e. elementOwnership.visibility =
                 //                      #public)->includes (r.participant) or
                 if (me instanceof GeneralizableElement) {
-                    
+
                     // TODO: Performance. Consider instantiating this just
                     // once outside the for loops and clear at this point
                     // instead.
                     final Set<ModelElement> dupCheck =
                         new HashSet<ModelElement>(10);
-                    
+
                     if (isVisiblyOwned(
-                                element, 
+                                element,
                                 (GeneralizableElement) me,
                                 dupCheck)) {
                         return true;
@@ -1665,14 +1667,14 @@ class CoreHelperMDRImpl implements CoreHelper {
                     }
                 }
             }
-        }       
+        }
         return false;
     }
-    
+
     /**
      * Returns true if ModelElement is owned by the given Namespace and it is
      * publicly visible.
-     * 
+     *
      * @param me ModelElement
      * @param ns Namespace
      * @return true if ModelElement is owned by the given Namespace and it is
@@ -1682,29 +1684,29 @@ class CoreHelperMDRImpl implements CoreHelper {
         return ns.getOwnedElement().contains(me)
                 && VisibilityKindEnum.VK_PUBLIC.equals(me.getVisibility());
     }
-    
+
     /**
-     * This code tests WFR [4] of a GeneralizableElement, 
+     * This code tests WFR [4] of a GeneralizableElement,
      * according OMG UML 1.4.2 standard page 59:
-     * 
-     * [4]The parent must be included in the Namespace 
+     *
+     * [4]The parent must be included in the Namespace
      * of the GeneralizableElement.
      * self.generalization->forAll(g |
      *   self.namespace.allContents->includes(g.parent) )
      */
 // TODO: Issue 6144. It is proposed to allow any paclage to return as a potential
 // namespace. Commenting out until this is reviewed and clearly accepted by all.
-     
+
 //    private boolean isValidNamespace(
 //            GeneralizableElement generalizableElement,
 //            Namespace namespace) {
-//        
-//        Collection<Generalization> generalizations = 
+//
+//        Collection<Generalization> generalizations =
 //            generalizableElement.getGeneralization();
-//        
-//        ModelManagementHelperMDRImpl modelManagementHelper = 
+//
+//        ModelManagementHelperMDRImpl modelManagementHelper =
 //            (ModelManagementHelperMDRImpl) modelImpl.getModelManagementHelper();
-//        
+//
 //        for (Generalization generalization : generalizations) {
 //            final GeneralizableElement parent = generalization.getParent();
 //            final Set<ModelElement> results = new HashSet<ModelElement>(2000);
@@ -1755,7 +1757,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
     }
-    
+
 
     /*
      * Return a list of namespaces enclosing this element.
@@ -1775,14 +1777,14 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public Collection<Namespace> getAllPossibleNamespaces(Object modelElement,
             Object model) {
-        LOG.debug("getAllPossibleNamespaces start");
+        LOG.log(Level.FINE, "getAllPossibleNamespaces start");
         ModelElement m = (ModelElement) modelElement;
         Collection<Namespace>  ret = new HashSet<Namespace> ();
         if (m == null) {
-            LOG.debug("getAllPossibleNamespaces end");
+            LOG.log(Level.FINE, "getAllPossibleNamespaces end");
             return ret;
         }
-        
+
         try {
             if (isValidNamespace(m, model)) {
                 ret.add((Namespace) model);
@@ -1798,21 +1800,18 @@ class CoreHelperMDRImpl implements CoreHelper {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        
-        if (LOG.isDebugEnabled()) {
-            // This is an expensive method that we should ensure is called
-            // rarely. Hence info level to track easily.
-            LOG.debug(
-                    "getAllPossibleNamespaces returns "
-                    + ret.size() + " items");
-        }
+
+        // This is an expensive method that we should ensure is called
+        // rarely. Hence info level to track easily.
+        LOG.log(Level.FINE,
+                "getAllPossibleNamespaces returns {0} items", ret.size() );
         return ret;
     }
 
 
     public Collection<GeneralizableElement> getChildren(Object o) {
         if (o instanceof GeneralizableElement) {
-            Collection<GeneralizableElement> col = 
+            Collection<GeneralizableElement> col =
                 new ArrayList<GeneralizableElement>();
             Collection<Generalization> generalizations = new ArrayList<Generalization>();
             try {
@@ -1899,7 +1898,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 }
                 for (Object supertype : getSupertypes(o)) {
                     if (!visited.contains(supertype)) {
-                        internalGetAllRealizedInterfaces(supertype, col, 
+                        internalGetAllRealizedInterfaces(supertype, col,
                                 visited);
                     }
                 }
@@ -2033,7 +2032,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + value);
     }
 
-    
+
     public void removeParameter(Object handle, Object parameter) {
         try {
             if (parameter instanceof Parameter) {
@@ -2063,7 +2062,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + " or parameter: " + parameter);
     }
 
-    
+
     public void removeQualifier(Object handle, Object qualifier) {
         try {
             if (qualifier instanceof Attribute) {
@@ -2138,8 +2137,8 @@ class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle
                 + " or parameter: " + argument);
     }
-    
-    
+
+
     public void removeTemplateParameter(Object handle, Object parameter) {
         try {
             if (parameter instanceof TemplateParameter) {
@@ -2155,7 +2154,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle
                 + " or parameter: " + parameter);
     }
-    
+
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
         if (comment instanceof Comment
                 && annotatedElement instanceof ModelElement) {
@@ -2201,7 +2200,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void addConnection(Object handle, Object connection) {
         if (handle instanceof UmlAssociation
                 && connection instanceof AssociationEnd) {
-            List<AssociationEnd> ends = 
+            List<AssociationEnd> ends =
                 ((UmlAssociation) handle).getConnection();
             ends.add((AssociationEnd) connection);
             // UML 1.4 WFR 2.5.3.1 #3
@@ -2226,7 +2225,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 && connection instanceof AssociationEnd) {
             ((UmlAssociation) handle).getConnection().add(position,
                     (AssociationEnd) connection);
-            List<AssociationEnd> ends = 
+            List<AssociationEnd> ends =
                 ((UmlAssociation) handle).getConnection();
             // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
             if (ends.size() >= 3) {
@@ -2236,9 +2235,9 @@ class CoreHelperMDRImpl implements CoreHelper {
             }
             return;
         }
-        /* Strange, but the Link.getConnection() 
+        /* Strange, but the Link.getConnection()
          * returns a Collection, not a List!
-         * This is a bug, compared to the UML standard (IMHO, mvw). 
+         * This is a bug, compared to the UML standard (IMHO, mvw).
          * Hence, the LinkEnd is added to the end instead... */
         if (handle instanceof Link && connection instanceof LinkEnd) {
             ((Link) handle).getConnection().add((LinkEnd) connection);
@@ -2247,7 +2246,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle
                 + " or connection: " + connection);
     }
-    
+
 
     public void addConstraint(Object handle, Object mc) {
         if (handle instanceof ModelElement && mc instanceof Constraint) {
@@ -2326,16 +2325,16 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or f: " + f);
     }
-    
+
 
     public void addLiteral(Object handle, int index, Object literal) {
-        if (handle instanceof Enumeration 
+        if (handle instanceof Enumeration
                 && literal instanceof EnumerationLiteral) {
             ((Enumeration) handle).getLiteral().add(index,
                     (EnumerationLiteral) literal);
             return;
         }
-        throw new IllegalArgumentException("enumeration: " + handle 
+        throw new IllegalArgumentException("enumeration: " + handle
                 + " or literal: " + literal);
     }
 
@@ -2465,9 +2464,9 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     /**
      *  Dummy method for exceptions in MDR metamodel.
-     *  
+     *
      * @author Andreas Rueckert <a_rueckert@gmx.net>
-     *  
+     *
      * @see org.argouml.model.CoreHelper#addRaisedException(java.lang.Object, java.lang.Object)
      */
     public void addRaisedException(Object handle, Object Exception) {
@@ -2531,7 +2530,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
 
     public void addTemplateArgument(Object handle, Object argument) {
-        if (argument instanceof TemplateArgument 
+        if (argument instanceof TemplateArgument
                 && handle instanceof Binding) {
             ((Binding) handle).getArgument().add((TemplateArgument) argument);
             return;
@@ -2540,8 +2539,8 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + " or argument: " + argument);
     }
 
-    
-    public void addTemplateParameter(Object handle, int index, 
+
+    public void addTemplateParameter(Object handle, int index,
             Object parameter) {
         if (parameter instanceof TemplateParameter) {
             if (handle instanceof ModelElement) {
@@ -2602,7 +2601,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         AggregationKind ak = (AggregationKind) aggregationKind;
         AssociationEnd ae = (AssociationEnd) handle;
-        // We silently ignore requests which conflict with 
+        // We silently ignore requests which conflict with
         // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for n-ary associations
         if (ak == AggregationKindEnum.AK_NONE
                 || ae.getAssociation().getConnection().size() < 3) {
@@ -2743,7 +2742,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             return expr1.equals(expr2);
         }
     }
-    
+
     @Deprecated
     public void setChangeability(Object handle, Object ck) {
         if (ck == null || ck instanceof ChangeableKind) {
@@ -2780,7 +2779,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
         if (handle instanceof Operation
-                && (concurrencyKind == null 
+                && (concurrencyKind == null
                     || concurrencyKind instanceof CallConcurrencyKind)) {
             ((Operation) handle).
                     setConcurrency((CallConcurrencyKind) concurrencyKind);
@@ -2793,7 +2792,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public void setConnections(Object handle, Collection elems) {
         if (handle instanceof UmlAssociation && elems instanceof List) {
-            List<AssociationEnd> ends = 
+            List<AssociationEnd> ends =
                 ((UmlAssociation) handle).getConnection();
             CollectionHelper.update(ends, elems);
             // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
@@ -2823,7 +2822,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + " or model element: " + element);
     }
 
-    
+
     public void setDefaultValue(Object handle, Object expr) {
         if (handle instanceof Parameter
                 && (expr == null || expr instanceof Expression)) {
@@ -3004,7 +3003,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     /**
-     * @param handle shall not be null. Shall be one of AssociationRole, 
+     * @param handle shall not be null. Shall be one of AssociationRole,
      * ClassifierRole, StructuralFeature, AssociationEnd, TagDefinition.
      * @param arg null is allowed
      */
@@ -3024,13 +3023,11 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         /* See issue 6038 for the reason behind the next statements: */
         if (previousMult != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Previous multiplicity of " + handle + " will be deleted." + arg);
-            }
+            LOG.log(Level.FINE, "Previous multiplicity of {0} will be deleted.", new Object[]{ handle, arg});
             Model.getUmlFactory().delete(previousMult);
-        }        
+        }
     }
-    
+
     @Deprecated
     public void setMultiplicity(Object handle, Object arg) {
         if (arg instanceof String) {
@@ -3076,7 +3073,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
         Multiplicity arg = modelImpl.getDataTypesFactoryInternal()
                 .createMultiplicityInternal(lower, upper);
-        
+
         setMultiplicityInternal(handle, arg);
     }
 
@@ -3091,7 +3088,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 name,
                 Model.getFacade().getName(handle),
                 "name = " + name);
-            
+
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or name: "
@@ -3179,7 +3176,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         throw new IllegalArgumentException("handle: " + handle);
     }
-    
+
     public void setParameter(Object handle, Object parameter) {
         if (handle instanceof TemplateParameter
                 && parameter instanceof ModelElement) {
@@ -3488,10 +3485,10 @@ class CoreHelperMDRImpl implements CoreHelper {
         try {
             if (modelElement instanceof ModelElement
                     && stereo instanceof Stereotype) {
-                
+
                 ModelElement me = (ModelElement) modelElement;
                 Stereotype stereotype = (Stereotype) stereo;
-                
+
                 if (me.getStereotype().contains(stereo)) {
                     me.getStereotype().remove(stereotype);
                 }
@@ -3531,14 +3528,14 @@ class CoreHelperMDRImpl implements CoreHelper {
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.ModelElement) element).getName();
             if (names.add(name)) {
-                LOG.debug(" Class " + name);
+                LOG.log(Level.FINE, " Class {0}", name);
             } else {
-                LOG.error("Found duplicate class " + name + " in metamodel");
+                LOG.log(Level.SEVERE, "Found duplicate class " + name + " in metamodel");
             }
         }
         return names;
     }
-    
+
     public Collection<String> getAllMetaDatatypeNames() {
         Set<String> names = new HashSet<String>();
         // Returns nothing
@@ -3546,9 +3543,9 @@ class CoreHelperMDRImpl implements CoreHelper {
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.DataType) element).getName();
             if (names.add(name)) {
-                LOG.debug(" DataType " + name);
+                LOG.log(Level.FINE, " DataType {0}", name);
             } else {
-                LOG.error("Found duplicate datatype " + name + " in metamodel");
+                LOG.log(Level.SEVERE, "Found duplicate datatype " + name + " in metamodel");
             }
         }
         // ScopeKind, VisibilityKind, PseudostateKind, etc
@@ -3557,9 +3554,9 @@ class CoreHelperMDRImpl implements CoreHelper {
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.EnumerationType) element).getName();
             if (names.add(name)) {
-                LOG.debug(" EnumerationType " + name);
+                LOG.log(Level.FINE, " EnumerationType {0}", name);
             } else {
-                LOG.error("Found duplicate EnumerationType " + name 
+                LOG.log(Level.SEVERE, "Found duplicate EnumerationType " + name
                         + " in metamodel");
             }
         }
@@ -3569,17 +3566,17 @@ class CoreHelperMDRImpl implements CoreHelper {
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.PrimitiveType) element).getName();
             if (names.add(name)) {
-                LOG.debug(" PrimitiveType " + name);
+                LOG.log(Level.FINE, " PrimitiveType {0}", name);
             } else {
-                LOG.error("Found duplicate primitive type " + name 
+                LOG.log(Level.SEVERE, "Found duplicate primitive type " + name
                         + " in metamodel");
             }
         }
 
         return names;
     }
-    
-    
+
+
     /**
      * Create a command for a setter of a String value.
      *

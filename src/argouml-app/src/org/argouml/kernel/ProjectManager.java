@@ -45,11 +45,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -71,8 +72,8 @@ import org.argouml.uml.diagram.DiagramFactory;
  * of projects like one would expect. This could be a nice extension
  * for the future of ArgoUML.  As soon as the current project is
  * changed, a property changed event is fired. <p>
- * 
- * TODO: Move everything related to the creation of a project 
+ *
+ * TODO: Move everything related to the creation of a project
  * into the ProjectFactory.
  *
  * @since Nov 17, 2002
@@ -85,10 +86,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The name of the property that defines the current project.  The values
      * passed are Projects, not Strings.  The 'name' here refers to the name
      * of this property, not the name of the project.
-     * 
+     *
      * @deprecated for 0.27.2 by tfmorris. Listeners of this event which expect
      *             it to indicate a new project being opened should listen for
-     *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think 
+     *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think
      *             they need to know a single global current project need
      *             to be changed to deal with things on a per-project basis.
      */
@@ -101,7 +102,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      */
     public static final String OPEN_PROJECTS_PROPERTY = "openProjects";
 
-    private static final Logger LOG = Logger.getLogger(ProjectManager.class);
+    private static final Logger LOG =
+        Logger.getLogger(ProjectManager.class.getName());
 
     /**
      * The singleton instance of this class.
@@ -112,7 +114,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The project that is visible in the projectbrowser.
      */
     private static Project currentProject;
-    
+
     private static LinkedList<Project> openProjects = new LinkedList<Project>();
 
     /**
@@ -122,7 +124,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     private boolean creatingCurrentProject;
 
     private Action saveAction;
-    
+
     /**
      * The listener list.
      */
@@ -211,7 +213,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * <p>
      * If the argument is null, then the current project will be forgotten
      * about.
-     * 
+     *
      * @param newProject The new project.
      * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
      *             single global "current" project. In the future, multiple
@@ -253,7 +255,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * which they can discover by traversing their containing elements (e.g.
      * Fig->Diagram->DiagramSettings).
      * <p>
-     * 
+     *
      * @return Project the current project or null if none
      * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
      *             single global "current" project. In the future, multiple
@@ -269,7 +271,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     public Project getCurrentProject() {
         return currentProject;
     }
-    
+
     /**
      * @return a list of the currently open Projects in the order they were
      * opened
@@ -279,9 +281,9 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         if (currentProject != null) {
             result.add(currentProject);
         }
-        return result;        
+        return result;
     }
-    
+
     /**
      * Makes an empty project.
      * @return Project the empty project
@@ -296,21 +298,21 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * Historically new projects have been created with two default diagrams
      * (Class and Use Case). NOTE: ArgoUML currently requires at least one
      * diagram for proper operation.
-     * 
+     *
      * @param addDefaultDiagrams
      *            if true the project will be be created with the two standard
      *            default diagrams (Class and Use Case)
      * @return Project the newly created project
      */
-    public Project makeEmptyProject(final boolean addDefaultDiagrams) {    
+    public Project makeEmptyProject(final boolean addDefaultDiagrams) {
         final Command cmd = new NonUndoableCommand() {
 
             @Override
             public Object execute() {
                 Model.getPump().stopPumpingEvents();
-                
+
                 creatingCurrentProject = true;
-                LOG.info("making empty project");
+                LOG.log(Level.INFO, "making empty project");
                 Project newProject = new ProjectImpl();
                 createDefaultModel(newProject);
                 if (addDefaultDiagrams) {
@@ -342,7 +344,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * Historically new projects have been created with two default diagrams
      * (Class and Use Case). NOTE: ArgoUML currently requires at least one
      * diagram for proper operation.
-     * 
+     *
      * @param addDefaultDiagrams
      *            if true the project will be be created with the standard
      *            default diagram (Class)
@@ -354,9 +356,9 @@ public final class ProjectManager implements ModelCommandCreationObserver {
             @Override
             public Object execute() {
                 Model.getPump().stopPumpingEvents();
-                
+
                 creatingCurrentProject = true;
-                LOG.info("making empty profile project");
+                LOG.log(Level.INFO, "making empty profile project");
                 Project newProject = new ProjectImpl(Project.PROFILE_PROJECT);
                 createDefaultProfile(newProject);
                 if (addDefaultDiagrams) {
@@ -379,7 +381,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * Apply all profiles from the profile configuration to a model (can be a
      * profile too).
-     * 
+     *
      * @param project The project with the profile configuration.
      * @param model The model to apply the profiles to.
      */
@@ -394,8 +396,9 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                             .applyProfile(model, profile);
                     }
                 } catch (ProfileException pe) {
-                    LOG.warn("Failed to get profile packages from profile "
-                            + p.getDisplayName());
+                    LOG.log(Level.WARNING,
+                            "Failed to get profile packages from profile {0}",
+                            p);
                 }
             }
         }
@@ -404,17 +407,17 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * Create the default diagrams for the project. Currently a Class Diagram
      * and a UseCase diagram.
-     * 
+     *
      * @param project the project to create the diagrams in.
      */
     private void createDefaultDiagrams(Project project) {
-        LOG.debug("Creating default diagrams");
+        LOG.log(Level.FINE, "Creating default diagrams");
         Object model = project.getRoots().iterator().next();
         DiagramFactory df = DiagramFactory.getInstance();
         ArgoDiagram d = createClassDiagram(project);
-        LOG.debug("Creating use case diagram");
+        LOG.log(Level.FINE, "Creating use case diagram");
         project.addMember(df.create(
-                DiagramFactory.DiagramType.UseCase, model, 
+                DiagramFactory.DiagramType.UseCase, model,
                 project.getProjectSettings().getDefaultDiagramSettings()));
         project.addMember(new ProjectMemberTodoList("",
                 project));
@@ -424,16 +427,16 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * Create a class diagrams for the project.
-     * 
+     *
      * @param project the project to create the diagram in.
      * @return the created class diagram
      */
     private ArgoDiagram createClassDiagram(Project project) {
-        LOG.debug("Creating class diagram");
+        LOG.log(Level.FINE, "Creating class diagram");
         Object model = project.getRoots().iterator().next();
         DiagramFactory df = DiagramFactory.getInstance();
         ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,
-                model, 
+                model,
                 project.getProjectSettings().getDefaultDiagramSettings());
         project.addMember(d);
         return d;
@@ -441,11 +444,11 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * Create a todo list for the project.
-     * 
+     *
      * @param project the project to create the todo list in.
      */
     private void createTodoList(Project project) {
-        LOG.debug("Creating todo list");
+        LOG.log(Level.FINE, "Creating todo list");
         project.addMember(new ProjectMemberTodoList("",
                 project));
     }
@@ -453,7 +456,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * Create the top level model for the project and set it as a root and the
      * current namespace.
-     * 
+     *
      * @param project the project to create the model in.
      */
     private void createDefaultModel(Project project) {
@@ -472,7 +475,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * Create the top level profile for the project and set it as a root and the
      * current namespace.
-     * 
+     *
      * @param project the project to create the model in.
      */
     private void createDefaultProfile(Project project) {
@@ -487,10 +490,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         // finally, apply profile configuration to the model
         applyProfileConfiguration(project, model);
     }
-    
+
     /**
      * Set the save action.
-     * 
+     *
      * @param save the action to be used
      */
     public void setSaveAction(Action save) {
@@ -500,7 +503,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         // save button/menu item etc.
         Designer.setSaveAction(save);
     }
-    
+
     /**
      * @return true is the save action is currently enabled
      * <p>
@@ -515,7 +518,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * current project's save state has changed. There are 2 receivers:
      * the SaveProject tool icon and the title bar (for showing a *).
      * <p>
-     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * @deprecated for 0.27.2 by tfmorris.  Use
      * {@link Project#setDirty(boolean)}.
      */
     public void setSaveEnabled(boolean newValue) {
@@ -527,7 +530,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     private void addProject(Project newProject) {
         openProjects.addLast(newProject);
     }
-    
+
     /**
      * Remove the project.
      *
@@ -535,7 +538,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      */
     public void removeProject(Project oldProject) {
         openProjects.remove(oldProject);
-        
+
         // TODO: This code can be removed when getCurrentProject is removed
         if (currentProject == oldProject) {
             if (openProjects.size() > 0) {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,6 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -50,7 +49,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * Diagram for UML2 State Machine diagram
+ * Diagram for UML2 State Machine diagram.
  * @author Bob Tarling
  */
 public class UMLStateDiagram extends UMLDiagram implements StateDiagram {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -74,9 +75,9 @@ public class ActionSaveGraphics extends AbstractAction
         implements CommandLineInterface {
 
     private static final long serialVersionUID = 3062674953320109889L;
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ActionSaveGraphics.class);
+        Logger.getLogger(ActionSaveGraphics.class.getName());
 
     /**
      * Constructor for this action.
@@ -160,11 +161,11 @@ public class ActionSaveGraphics extends AbstractAction
             ed.setModal(true);
             ed.setVisible(true);
         } catch (Exception e) {
-            ExceptionDialog ed = 
+            ExceptionDialog ed =
                 new ExceptionDialog(ArgoFrame.getFrame(), e);
             ed.setModal(true);
             ed.setVisible(true);
-            LOG.error("Got some exception", e);
+            LOG.log(Level.SEVERE, "Got some exception", e);
         }
 
         return false;
@@ -219,12 +220,12 @@ public class ActionSaveGraphics extends AbstractAction
         }
         if (useUI) {
             updateStatus(Translator.localize(
-                    "statusmsg.bar.save-graphics-status-wrote", 
+                    "statusmsg.bar.save-graphics-status-wrote",
                     new Object[] {theFile}));
         }
 	return true;
     }
-    
+
     private void updateStatus(String status) {
         ArgoEventPump.fireEvent(
                 new ArgoStatusEvent(ArgoEventTypes.STATUS_TEXT,
@@ -256,9 +257,9 @@ public class ActionSaveGraphics extends AbstractAction
 	try {
 	    return doSave(file, suffix, false);
 	} catch (FileNotFoundException e) {
-	    LOG.error("File not found error when writing.", e);
+            LOG.log(Level.SEVERE, "File not found error when writing.", e);
 	} catch (IOException e) {
-	    LOG.error("IO error when writing.", e);
+            LOG.log(Level.SEVERE, "IO error when writing.", e);
 	}
 	return false;
     }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,13 +43,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -71,7 +72,8 @@ public class StylePanel
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(StylePanel.class);
+    private static final Logger LOG =
+        Logger.getLogger(StylePanel.class.getName());
 
     private Fig panelTarget;
 
@@ -155,7 +157,7 @@ public class StylePanel
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
-	LOG.debug(getClass().getName() + " insert");
+        LOG.log(Level.FINE, "{0} insert", getClass().getName());
     }
 
     /*

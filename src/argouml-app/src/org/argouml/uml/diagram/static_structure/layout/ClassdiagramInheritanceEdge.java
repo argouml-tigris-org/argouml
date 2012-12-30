@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
@@ -47,9 +49,9 @@ import org.tigris.gef.presentation.FigEdge;
  * @author mkl
  */
 public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
-    private static final Logger LOG = Logger
-            .getLogger(ClassdiagramInheritanceEdge.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(ClassdiagramInheritanceEdge.class.getName());
+
     /**
      * The largest difference that we consider equivalent to zero
      */
@@ -133,37 +135,40 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
          * If center points are "close enough" we just adjust the endpoints
          * of the line a little bit.  Otherwise we add a jog in the middle to
          * deal with the offset.
-         * 
+         *
          * TODO: Epsilon is currently fixed, but could probably be computed
          * dynamically as 10% of the width of the narrowest figure or some
          * other value which is visually not noticeable.
          */
         if (Math.abs(difference) < EPSILON) {
-            fig.addPoint(centerLow + (difference / 2 + (difference % 2)), 
+            fig.addPoint(centerLow + (difference / 2 + (difference % 2)),
                     (int) (low.getLocation().getY()));
             fig.addPoint(centerHigh - (difference / 2),
                     high.getLocation().y + high.getSize().height);
         } else {
             fig.addPoint(centerLow, (int) (low.getLocation().getY()));
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Point: x: " + centerLow + " y: " 
-                        + low.getLocation().y);
-            }
+            LOG.log(Level.FINE,
+                    "Point: x: {0} y: {1}",
+                    new Object[]{ centerLow, low.getLocation().y});
 
+            LOG.log(Level.FINE,
+                    "Point: x: {0} y: {1}",
+                    new Object[]{(centerHigh - difference), getDownGap()});
             getUnderlyingFig().addPoint(centerHigh - difference, getDownGap());
-            getUnderlyingFig().addPoint(centerHigh, getDownGap());
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Point: x: " + (centerHigh - difference) + " y: "
-                        + getDownGap());
-                LOG.debug("Point: x: " + centerHigh + " y: " + getDownGap());
-            }
 
-            fig.addPoint(centerHigh, 
-                    high.getLocation().y + high.getSize().height);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Point x: " + centerHigh + " y: "
-                        + (high.getLocation().y + high.getSize().height));
-            }
+            LOG.log(Level.FINE,
+                    "Point: x: {0} y: {1}",
+                    new Object[]{centerHigh, getDownGap()});
+            getUnderlyingFig().addPoint(centerHigh, getDownGap());
+            
+
+            LOG.log(Level.FINE,
+                    "Point x: {0} y: {1}",
+                    new Object[] {
+                        centerHigh,
+                        (high.getLocation().y + high.getSize().height)
+                    });
+            fig.addPoint(centerHigh, high.getLocation().y + high.getSize().height);            
         }
         fig.setFilled(false);
         getCurrentEdge().setFig(getUnderlyingFig());
@@ -188,4 +193,3 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
     }
 
 }
-

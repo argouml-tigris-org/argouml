@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,10 +39,11 @@
 package org.argouml.notation.ui;
 import java.awt.Dimension;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComboBox;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -63,7 +64,8 @@ public class NotationComboBox
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(NotationComboBox.class);
+    private static final Logger LOG =
+        Logger.getLogger(NotationComboBox.class.getName());
 
     /**
      * The instance.
@@ -102,14 +104,14 @@ public class NotationComboBox
      */
     public void notationChanged(ArgoNotationEvent event) {
     }
-    
+
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent event) {
         refresh();
     }
-    
+
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
@@ -140,7 +142,7 @@ public class NotationComboBox
                 NotationName nn = (NotationName) iterator.next();
                 addItem(nn);
             } catch (Exception e) {
-                LOG.error("Unexpected exception", e);
+                LOG.log(Level.SEVERE, "Unexpected exception", e);
             }
         }
         setVisible(true);

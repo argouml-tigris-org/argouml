@@ -48,10 +48,11 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -71,7 +72,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
      * Logger.
      */
     private static final Logger LOG =
-	Logger.getLogger(OldZargoFilePersister.class);
+        Logger.getLogger(OldZargoFilePersister.class.getName());
 
     /**
      * This is the old version of the ArgoUML tee file which does not contain
@@ -79,7 +80,7 @@ class OldZargoFilePersister extends ZargoFilePersister {
      */
     private static final String ARGO_MINI_TEE =
         "/org/argouml/persistence/argo.tee";
-    
+
     /**
      * The constructor.
      */
@@ -92,14 +93,14 @@ class OldZargoFilePersister extends ZargoFilePersister {
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.zargo");
     }
-    
+
     /*
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
     public boolean isSaveEnabled() {
         return true;
     }
-    
+
     /**
      * Save the project in ".zargo" format.
      *
@@ -114,17 +115,17 @@ class OldZargoFilePersister extends ZargoFilePersister {
      * @see org.argouml.persistence.ProjectFilePersister#save(
      *      org.argouml.kernel.Project, java.io.File)
      */
-    public void doSave(Project project, File file) throws SaveException, 
+    public void doSave(Project project, File file) throws SaveException,
     InterruptedException {
 
-        /* Retain the previous project file even when the save operation 
+        /* Retain the previous project file even when the save operation
          * crashes in the middle. Also create a backup file after saving. */
         boolean doSafeSaves = useSafeSaves();
 
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(4);
         progressMgr.nextPhase();
-        
+
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -169,17 +170,17 @@ class OldZargoFilePersister extends ZargoFilePersister {
             writer.flush();
 
             stream.closeEntry();
-            
+
             int counter = 0;
             int size = project.getMembers().size();
             Collection<String> names = new ArrayList<String>();
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = project.getMembers().get(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member: " 
-                                + project.getMembers().get(i).getZipName());
-                    }
+                    
+                    LOG.log(Level.INFO,
+                            "Saving member: {0}", projectMember.getZipName());
+
                     String name = projectMember.getZipName();
                     String originalName = name;
                     while (names.contains(name)) {
@@ -195,14 +196,15 @@ class OldZargoFilePersister extends ZargoFilePersister {
                     stream.closeEntry();
                 }
             }
-            
+
             for (int i = 0; i < size; i++) {
                 ProjectMember projectMember = project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                                + project.getMembers().get(i).getType());
-                    }
+                    
+                    LOG.log(Level.INFO,
+                            "Saving member of type: {0}",
+                            projectMember.getType());
+
                     stream.putNextEntry(
                             new ZipEntry(projectMember.getZipName()));
                     OldModelMemberFilePersister persister =
@@ -224,13 +226,13 @@ class OldZargoFilePersister extends ZargoFilePersister {
                 }
                 if (tempFile.exists()) {
                     tempFile.delete();
-                }            
+                }
             }
 
             progressMgr.nextPhase();
 
         } catch (Exception e) {
-            LOG.error("Exception occured during save attempt", e);
+            LOG.log(Level.SEVERE, "Exception occured during save attempt", e);
             try {
                 writer.close();
             } catch (Exception ex) {
@@ -251,16 +253,16 @@ class OldZargoFilePersister extends ZargoFilePersister {
         try {
             writer.close();
         } catch (IOException ex) {
-            LOG.error("Failed to close save output writer", ex);
+            LOG.log(Level.SEVERE, "Failed to close save output writer", ex);
         }
     }
-    
+
     /**
      * The .zargo save format is able to save. We must override
      * UmlFilePersister which has turned this off (suggests a need for some
      * refactoring here)
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
-     * 
+     *
      * @return boolean
      */
     public boolean isLoadEnabled() {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,8 +47,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Reading and writing preserved sections from the code.
@@ -60,7 +60,7 @@ public abstract class AbstractSection {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(AbstractSection.class);
+        Logger.getLogger(AbstractSection.class.getName());
 
     /**
      * System newline separator.
@@ -74,7 +74,7 @@ public abstract class AbstractSection {
      * Creates a new instance of Section.
      */
     public AbstractSection() {
-        mAry = new HashMap<String, String>();        
+        mAry = new HashMap<String, String>();
     }
 
     /**
@@ -126,7 +126,7 @@ public abstract class AbstractSection {
                             endSectionId = getSectId(line);
                         } while (endSectionId == null);
                         if (!endSectionId.equals(sectionId)) {
-                            LOG.error("Mismatch between sectionId (\""
+                            LOG.log(Level.SEVERE, "Mismatch between sectionId (\""
                                     + sectionId + "\") and endSectionId (\""
                                     + endSectionId + "\")!");
                         }
@@ -156,7 +156,7 @@ public abstract class AbstractSection {
             fr.close();
             fw.close();
         } catch (IOException e) {
-            LOG.error("Error: " + e.toString());
+            LOG.log(Level.SEVERE, "Error: " + e.toString());
         }
     }
 
@@ -195,7 +195,7 @@ public abstract class AbstractSection {
             }
             fr.close();
         } catch (IOException e) {
-            LOG.error("Error: " + e.toString());
+            LOG.log(Level.SEVERE, "Error: " + e.toString());
         }
     }
 

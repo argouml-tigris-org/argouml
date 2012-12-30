@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,27 +14,29 @@
 
 package org.argouml.notation2;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.moduleloader.ModuleInterface;
 
 
 public class NotationModule implements ModuleInterface {
 
-    private static final Logger LOG = Logger
-            .getLogger(NotationModule.class);
+    private static final Logger LOG =
+        Logger.getLogger(NotationModule.class.getName());
 
     public boolean enable() {
-        
-        LOG.info("Notation Module enabled.");
+
+        LOG.log(Level.INFO, "Notation Module enabled.");
         NotationLanguage lang = new UmlNotationLanguage();
         NotationManager.getInstance().addNotationLanguage(lang);
-        
+
         return true;
     }
 
     public boolean disable() {
 
-        LOG.info("Notation Module disabled.");
+        LOG.log(Level.INFO, "Notation Module disabled.");
         return true;
     }
 

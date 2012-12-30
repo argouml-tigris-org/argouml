@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@ package org.argouml.model.mdr;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.netbeans.lib.jmi.xmi.WriterBase;
 import org.netbeans.lib.jmi.xmi.XMIHeaderProvider;
 
@@ -49,13 +50,13 @@ import org.netbeans.lib.jmi.xmi.XMIHeaderProvider;
  * version, etc.
  */
 class XmiHeaderProviderImpl implements XMIHeaderProvider {
-    
+
     private static final String UML_VERSION = "1.4";
-    private static final Logger LOG = Logger
-            .getLogger(XmiHeaderProviderImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(XmiHeaderProviderImpl.class.getName());
 
     private String version;
-    
+
     /**
      * Constructor.
      * @param ver the version of ArgoUML that saved the XMI
@@ -72,8 +73,8 @@ class XmiHeaderProviderImpl implements XMIHeaderProvider {
         String header =
               "    <XMI.documentation>\n"
             + "      <XMI.exporter>ArgoUML"
-                    + " (using "  + WriterBase.EXPORTER_NAME 
-                    + " version " + WriterBase.EXPORTER_VERSION 
+                    + " (using "  + WriterBase.EXPORTER_NAME
+                    + " version " + WriterBase.EXPORTER_VERSION
                     + ")</XMI.exporter>\n"
             + "      <XMI.exporterVersion>" + version
                     + " revised on "
@@ -82,11 +83,11 @@ class XmiHeaderProviderImpl implements XMIHeaderProvider {
             + "    </XMI.documentation>\n"
             + "    <XMI.metamodel xmi.name=\"UML\" xmi.version=\""
                     + UML_VERSION + "\"/>";
-        
+
         try {
             ps.write(header);
         } catch (IOException e) {
-            LOG.error("Exception while writing XMI header + ", e);
+            LOG.log(Level.SEVERE, "Exception while writing XMI header + ", e);
         }
     }
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,10 +43,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 
 /**
@@ -58,18 +59,17 @@ public class Tools {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Tools.class);
+    private static final Logger LOG = Logger.getLogger(Tools.class.getName());
 
     private static final String[] PACKAGELIST =
-	new String[]{
-	    "org.argouml.application", 
+	new String[] {
+	    "org.argouml.application",
             // TODO: The following is MDR specific.  We need something generic
             // to all Model subsystems - tfm 20070716
 	    "org.netbeans.mdr",
-            "org.tigris.gef.base", 
+            "org.tigris.gef.base",
             "org.xml.sax",
-            "java.lang", 
-            "org.apache.log4j",
+            "java.lang",
 	};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) {
@@ -113,8 +113,7 @@ public class Tools {
             // class preloading, so packages are there...
             Class cls = org.tigris.gef.base.Editor.class;
             cls = org.xml.sax.AttributeList.class;
-            cls = org.apache.log4j.Logger.class;
-            
+
             // TODO: The following is MDR specific.  We need something generic
             // to all Model subsystems - tfm 20070716
             try {
@@ -200,7 +199,7 @@ public class Tools {
                 if (s == null) {
                     break;
                 }
-                LOG.info(s);
+                LOG.log(Level.INFO, s);
             }
         } catch (IOException ioe) { }
     }
@@ -222,4 +221,3 @@ public class Tools {
         return ext;
     }
 }
-

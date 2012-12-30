@@ -67,6 +67,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -79,7 +81,6 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoEventPump;
@@ -152,7 +153,7 @@ public final class ProjectBrowser
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ProjectBrowser.class);
+        Logger.getLogger(ProjectBrowser.class.getName());
 
 
     /**
@@ -162,15 +163,15 @@ public final class ProjectBrowser
         Center, North, South, East, West,
         NorthEast, SouthEast, SouthWest, NorthWest
     }
-    
+
     // Make sure the correspondence that we depend on doesn't change
     static {
         assert Position.Center.toString().equals(BorderSplitPane.CENTER);
-        assert Position.North.toString().equals(BorderSplitPane.NORTH); 
-        assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST); 
-        assert Position.South.toString().equals(BorderSplitPane.SOUTH); 
+        assert Position.North.toString().equals(BorderSplitPane.NORTH);
+        assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST);
+        assert Position.South.toString().equals(BorderSplitPane.SOUTH);
     }
-    
+
     /**
      * Flag to indicate if we are the main application
      * or being integrated in another top level application such
@@ -202,7 +203,7 @@ public final class ProjectBrowser
     private DetailsPane southEastPane;
     private DetailsPane southPane;
 
-    private Map<Position, DetailsPane> detailsPanesByCompassPoint = 
+    private Map<Position, DetailsPane> detailsPanesByCompassPoint =
         new HashMap<Position, DetailsPane>();
 
     private GenericArgoMenuBar menuBar;
@@ -235,7 +236,7 @@ public final class ProjectBrowser
     private JPanel todoPane;
 
     /**
-     * A class that handles the title of this frame, 
+     * A class that handles the title of this frame,
      * e.g. to indicate save status.
      */
     private TitleHandler titleHandler = new TitleHandler();
@@ -262,7 +263,7 @@ public final class ProjectBrowser
 
     /**
      * The constructor.
-     * 
+     *
      * @param applicationName
      *            the title of the frame
      * @param splash
@@ -270,17 +271,17 @@ public final class ProjectBrowser
      * @param mainApplication
      *            flag indicating whether we are the top level application.
      *            False if we are providing components to another top level app.
-     * @param leftBottomPane 
+     * @param leftBottomPane
      *            the panel to fit in the left bottom corner
      */
-    private ProjectBrowser(String applicationName, SplashScreen splash, 
+    private ProjectBrowser(String applicationName, SplashScreen splash,
              boolean mainApplication, JPanel leftBottomPane) {
         super(applicationName);
         theInstance = this;
         isMainApplication = mainApplication;
-        
+
         getContentPane().setFont(defaultFont);
-        
+
         // TODO: This causes a cyclic depencency with ActionSaveProject
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
@@ -305,7 +306,7 @@ public final class ProjectBrowser
             // allows me to ask "Do you want to save first?"
             setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowCloser());
-            
+
             setApplicationIcon();
 
             // Add listener for project changes
@@ -343,7 +344,7 @@ public final class ProjectBrowser
                     // field is about to start.
                     // Not a good assumption. We Need to see if we can get
                     // rid of this.
-                    Project p = 
+                    Project p =
                         ProjectManager.getManager().getCurrentProject();
                     if (p != null) {
                         p.getUndoManager().startInteraction("Focus");
@@ -360,20 +361,20 @@ public final class ProjectBrowser
     private void setApplicationIcon() {
         final ImageIcon argoImage16x16 =
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon16x16");
-        
+
         final ImageIcon argoImage32x32 = ResourceLoaderWrapper
                 .lookupIconResource("ArgoIcon32x32");
         final List<Image> argoImages = new ArrayList<Image>(2);
         argoImages.add(argoImage16x16.getImage());
         argoImages.add(argoImage32x32.getImage());
-        
+
         setIconImages(argoImages);
     }
 
     /**
      * Singleton retrieval method for the projectbrowser.
      * Do not use this before makeInstance is called!
-     *  
+     *
      * @return the singleton instance of the projectbrowser
      */
     public static synchronized ProjectBrowser getInstance() {
@@ -385,19 +386,19 @@ public final class ProjectBrowser
      * Creator method for the ProjectBrowser which optionally allows all
      * components to be created without making a top level application window
      * visible.
-     * 
+     *
      * @param splash
      *            true if we are allowed to show a splash screen
      * @param mainApplication
      *            true to create a top level application, false if integrated
      *            with something else.
      * @param leftBottomPane panel to place in the bottom left corner of the GUI
-     * 
+     *
      * @return the singleton instance of the projectbrowser
      */
     public static ProjectBrowser makeInstance(SplashScreen splash,
             boolean mainApplication, JPanel leftBottomPane) {
-        return new ProjectBrowser("ArgoUML", splash, 
+        return new ProjectBrowser("ArgoUML", splash,
                 mainApplication, leftBottomPane);
     }
 
@@ -425,7 +426,7 @@ public final class ProjectBrowser
             splash.getStatusBar().showProgress(10);
             splash.setVisible(true);
         }
-        
+
         editorPane = new MultiEditorPane();
         if (splash != null) {
             splash.getStatusBar().showStatus(
@@ -460,12 +461,12 @@ public final class ProjectBrowser
         // There are various details panes all of which could hold
         // different tabs pages according to users settings.
         // Place each pane in the required border area.
-        for (Map.Entry<Position, DetailsPane> entry 
+        for (Map.Entry<Position, DetailsPane> entry
                 : detailsPanesByCompassPoint.entrySet()) {
             Position position = entry.getKey();
             addPanel(entry.getValue(), position);
         }
-        
+
         // Toolbar boundary is the area between the menu and the status
         // bar. It contains the workarea at centre and the toolbar
         // position north, south, east or west.
@@ -594,7 +595,7 @@ public final class ProjectBrowser
         }
     }
 
-    
+
     /**
      * Add a panel to a split pane area.
      *
@@ -669,14 +670,14 @@ public final class ProjectBrowser
     private int getSavedHeight(ConfigurationKey height) {
         return Configuration.getInteger(height, DEFAULT_COMPONENTHEIGHT);
     }
-    
+
     /**
      * Handle the title-bar of the window.
-     * 
+     *
      * @author michiel
      */
     private class TitleHandler implements PropertyChangeListener {
-        
+
         private ArgoDiagram monitoredDiagram = null;
 
         /**
@@ -685,7 +686,7 @@ public final class ProjectBrowser
          * @param projectFileName the project-file name
          * @param activeDiagram the (new) current diagram
          */
-        protected void buildTitle(String projectFileName, 
+        protected void buildTitle(String projectFileName,
                 ArgoDiagram activeDiagram) {
             if (projectFileName == null || "".equals(projectFileName)) {
                 if (ProjectManager.getManager().getCurrentProject() != null) {
@@ -711,11 +712,11 @@ public final class ProjectBrowser
                         + activeDiagram.getName() + " - " + getAppName()
                         + changeIndicator);
             } else {
-                setTitleInternal(projectFileName + " - " + getAppName() 
+                setTitleInternal(projectFileName + " - " + getAppName()
                         + changeIndicator);
             }
         }
-        
+
         private void setTitleInternal(final String title) {
             if (SwingUtilities.isEventDispatchThread()) {
                 setTitle(title);
@@ -727,7 +728,7 @@ public final class ProjectBrowser
                 });
             }
         }
-        
+
         /*
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
@@ -735,9 +736,9 @@ public final class ProjectBrowser
             if (evt.getPropertyName().equals("name")
                     && evt.getSource() instanceof ArgoDiagram) {
                 buildTitle(
-                    ProjectManager.getManager().getCurrentProject().getName(), 
+                    ProjectManager.getManager().getCurrentProject().getName(),
                     (ArgoDiagram) evt.getSource());
-            }            
+            }
         }
     }
     /**
@@ -782,7 +783,7 @@ public final class ProjectBrowser
 
     /**
      * Select the tab page containing the todo item.
-     * 
+     *
      * @param o the todo item to select
      * @deprecated for 0.25.5 by tfmorris. Send an event that the
      *             DetailsPane/TabToDo will be listening for.
@@ -801,7 +802,7 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class.
-     * 
+     *
      * @param tabClass the given class
      * @return the tabpage
      * @deprecated by for 0.25.5 by tfmorris. Tabs should register themselves
@@ -853,7 +854,7 @@ public final class ProjectBrowser
     public NavigatorPane getExplorerPane() {
         return explorerPane;
     }
-    
+
     /**
      * @return the details pane
      */
@@ -923,7 +924,7 @@ public final class ProjectBrowser
             Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
             Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());
         }
-        Configuration.setBoolean(Argo.KEY_SCREEN_MAXIMIZED, 
+        Configuration.setBoolean(Argo.KEY_SCREEN_MAXIMIZED,
                 maximized);
     }
 
@@ -951,9 +952,9 @@ public final class ProjectBrowser
      * save and exit, exit without saving or cancel the exit operation.
      */
     public boolean tryExit() {
-        LOG.info("Trying to exit the application");
+        LOG.log(Level.INFO, "Trying to exit the application");
         if (saveAction != null && saveAction.isEnabled()) {
-            LOG.info("A save is needed - prompting the user");
+            LOG.log(Level.INFO, "A save is needed - prompting the user");
             Project p = ProjectManager.getManager().getCurrentProject();
 
             String t =
@@ -968,23 +969,23 @@ public final class ProjectBrowser
                 // The trySave method results in the save taking place in another thread.
                 // If that completes without error the ProjectBrowser.exit() method will
                 // be called which will actually exist the system.
-                LOG.info("The user chose to exit and save");
+                LOG.log(Level.INFO, "The user chose to exit and save");
                 trySave(ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null,
                                 false, true);
                 return false;
             } else if (response == JOptionPane.CANCEL_OPTION) {
-                LOG.info("The user cancelled the save dialog");
+                LOG.log(Level.INFO, "The user cancelled the save dialog");
                 return false;
             }
         }
-        LOG.info("We will now exit");
+        LOG.log(Level.INFO, "We will now exit");
         exit();
         return true;
     }
-    
-    
+
+
     /**
      * Exit the application saving the current user settings.
      */
@@ -1015,7 +1016,9 @@ public final class ProjectBrowser
          * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
          */
         public void windowClosing(WindowEvent e) {
-            LOG.info("Detected attempt to close application - checking if save needed");
+            LOG.log(Level.INFO,
+                    "Detected attempt to close application - "
+                    + "checking if save needed");
             tryExit();
         }
     } /* end class WindowCloser */
@@ -1066,7 +1069,7 @@ public final class ProjectBrowser
     public void targetSet(TargetEvent e) {
     	targetChanged(e.getNewTarget());
     }
-    
+
     /**
      * Called to update the current namespace and active diagram after
      * the target has changed.
@@ -1078,9 +1081,9 @@ public final class ProjectBrowser
             titleHandler.buildTitle(null, (ArgoDiagram) target);
         }
         determineRemoveEnabled();
-        
+
         Project p = ProjectManager.getManager().getCurrentProject();
-        
+
         Object theCurrentNamespace = null;
         target = TargetManager.getInstance().getTarget();
         if (target instanceof ArgoDiagram) {
@@ -1129,7 +1132,7 @@ public final class ProjectBrowser
     public Font getDefaultFont() {
         return defaultFont;
     }
-    
+
     /**
      * Try to save the project, possibly not creating a new file
      * @param overwrite if true, then we overwrite without asking
@@ -1137,17 +1140,17 @@ public final class ProjectBrowser
     public void trySave(boolean overwrite) {
         this.trySave(overwrite, false);
     }
-    
+
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
      * @param saveNewFile if true, we'll ask for a new file even if
-     *                    the current project already had one  
-     */        
+     *                    the current project already had one
+     */
     public void trySave(boolean overwrite, boolean saveNewFile) {
         trySave(overwrite, saveNewFile, false);
     }
-    
+
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
@@ -1155,7 +1158,7 @@ public final class ProjectBrowser
      *                    the current project already had one
      * @param exitAfterSave The application will exit when the save has
      * completed successfully
-     */        
+     */
     public void trySave(
             final boolean overwrite,
             boolean saveNewFile,
@@ -1171,7 +1174,7 @@ public final class ProjectBrowser
 
             // does the file really exists?
             if (!file.exists()) {
-                LOG.warn("Project file not found - URI: " + uri);
+                LOG.log(Level.WARNING, "Project file not found - URI: " + uri);
                 // project file doesn't exist. let's pop up a message dialog..
                 int response = JOptionPane.showConfirmDialog(
                         this,
@@ -1209,7 +1212,7 @@ public final class ProjectBrowser
         // let's call the real save method
         trySaveWithProgressMonitor(overwrite, file, exitAfterSave);
     }
-    
+
     /**
      * Checks if the given file is writable or read-only
      * @param file the file to be checked
@@ -1217,21 +1220,21 @@ public final class ProjectBrowser
      */
     private boolean isFileReadonly(File file) {
         try {
-            return (file == null) 
-                || (file.exists() && !file.canWrite()) 
+            return (file == null)
+                || (file.exists() && !file.canWrite())
                 || (!file.exists() && !file.createNewFile());
-        
+
         } catch (IOException ioExc) {
             return true;
         }
     }
-    
+
     /**
      * Loads a project displaying a nice ProgressMonitor
-     * 
+     *
      * @param overwrite if true, the file is going to be overwritten
      * @param file      the target file
-     * 
+     *
      * TODO: Separate this into a Swing specific class - tfm
      * @param exit if true: exit ArgoUML when done
      */
@@ -1244,7 +1247,7 @@ public final class ProjectBrowser
             return;
         }
         if (this.isFileReadonly(file)) {
-            JOptionPane.showMessageDialog(this, 
+            JOptionPane.showMessageDialog(this,
                     Translator.localize(
                             "optionpane.save-project-read-only"),
                     Translator.localize(
@@ -1257,43 +1260,43 @@ public final class ProjectBrowser
                 ProjectManager.getManager().getCurrentProject(),
                 file,
                 exit);
-        LOG.info("Starting save thread");
+        LOG.log(Level.INFO, "Starting save thread");
         worker.start();
     }
-    
+
     /**
      * Rebuild the title using the name of the current project.
      *
      */
     public void buildTitleWithCurrentProjectName() {
         titleHandler.buildTitle(
-                ProjectManager.getManager().getCurrentProject().getName(), 
+                ProjectManager.getManager().getCurrentProject().getName(),
                 null);
     }
-    
+
     /**
      * Try to save the project.
      * @param overwrite if true, then we overwrite without asking
      * @param file the File to save to
-     * @param pmw       the ProgressMonitor to be updated;  
+     * @param pmw       the ProgressMonitor to be updated;
      * @return true if successful
-     * 
+     *
      * TODO: Separate this into a Swing specific class - tfm
      * @deprecated in 0.29.1 by Bob Tarling use trySaveWithProgressMonitor
      */
     @Deprecated
-    public boolean trySave(boolean overwrite, 
-            File file, 
+    public boolean trySave(boolean overwrite,
+            File file,
             ProgressMonitor pmw) {
-        LOG.info("Saving the project");
-        
+        LOG.log(Level.INFO, "Saving the project");
+
         if (!PersistenceManager.getInstance().confirmOverwrite(
                 ArgoFrame.getFrame(), overwrite, file)) {
             return false;
         }
-        
+
         if (this.isFileReadonly(file)) {
-            JOptionPane.showMessageDialog(this, 
+            JOptionPane.showMessageDialog(this,
                     Translator.localize(
                             "optionpane.save-project-read-only"),
                     Translator.localize(
@@ -1309,16 +1312,16 @@ public final class ProjectBrowser
     /**
      * Save the project.
      * @param file the File to save to
-     * @param pmw       the ProgressMonitor to be updated;  
+     * @param pmw       the ProgressMonitor to be updated;
      * @return true if successful
-     * 
+     *
      * TODO: Separate this into a Swing specific class - tfm
      */
     boolean trySave(
-            final File file, 
+            final File file,
             final ProgressMonitor pmw,
             final Project project) {
-        LOG.info("Saving the project");
+        LOG.log(Level.INFO, "Saving the project");
         PersistenceManager pm = PersistenceManager.getInstance();
         ProjectFilePersister persister = null;
 
@@ -1345,29 +1348,29 @@ public final class ProjectBrowser
             String report = project.repair();
             if (report.length() > 0) {
                 // TODO: i18n
-                report = 
+                report =
                     "An inconsistency has been detected when saving the model."
                         + "These have been repaired and are reported below. "
                         + "The save will continue with the model having been "
                         + "amended as described.\n" + report;
                 reportError(
-                        pmw, 
+                        pmw,
                         Translator.localize("dialog.repair") + report, true);
             }
-            
+
             if (pmw != null) {
                 pmw.updateProgress(25);
                 persister.addProgressListener(pmw);
             }
-            
+
             project.preSave();
             persister.save(project, file);
             project.postSave();
 
             ArgoEventPump.fireEvent(new ArgoStatusEvent(
-                    ArgoEventTypes.STATUS_PROJECT_SAVED, this, 
+                    ArgoEventTypes.STATUS_PROJECT_SAVED, this,
                     file.getAbsolutePath()));
-            LOG.debug ("setting most recent project file to "
+            LOG.fine ("setting most recent project file to "
                    + file.getCanonicalPath());
 
             /*
@@ -1381,7 +1384,7 @@ public final class ProjectBrowser
                 // that can never be null
                 saveAction.setEnabled(false);
             }
-            
+
             addFileSaved(file);
 
             Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
@@ -1406,7 +1409,7 @@ public final class ProjectBrowser
                             new Object[] {file.getName()}),
                     true, ex);
 
-            LOG.error(sMessage, ex);
+            LOG.log(Level.SEVERE,sMessage, ex);
         }
 
         return false;
@@ -1425,7 +1428,7 @@ public final class ProjectBrowser
             // A Fig with a null owner
             if (figs.size() > 0) {
                 Fig fig = (Fig) figs.get(0);
-                LOG.error("Setting owner of " 
+                LOG.log(Level.SEVERE, "Setting owner of "
                         + fig.getClass().getName() + " to null");
                 fig.setOwner(null);
             }
@@ -1499,10 +1502,10 @@ public final class ProjectBrowser
 
     /**
      * Loads a project displaying a nice ProgressMonitor
-     * 
+     *
      * @param file      the project to be opened
      * @param showUI    whether to show the GUI or not
-     * 
+     *
      * TODO: This needs to be refactored to be GUI independent - tfm
      */
     public void loadProjectWithProgressMonitor(File file, boolean showUI) {
@@ -1518,17 +1521,17 @@ public final class ProjectBrowser
      * @param file the file to open.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
-     * @param pmw       the ProgressMonitor to be updated;  
-     *                          if not needed, use null 
+     * @param pmw       the ProgressMonitor to be updated;
+     *                          if not needed, use null
      * @return true if the file was successfully opened
-     * 
+     *
      * TODO: Separate this into a Swing specific class - tfm
      */
-    public boolean loadProject(File file, boolean showUI, 
+    public boolean loadProject(File file, boolean showUI,
             ProgressMonitor pmw) {
         return (loadProject2(file, showUI, pmw) != null);
     }
-    
+
     /**
      * Loads the project file and opens all kinds of error message windows
      * if it doesn't work for some reason. In those cases it preserves
@@ -1537,16 +1540,16 @@ public final class ProjectBrowser
      * @param file the file to open.
      * @param showUI true if an error message may be shown to the user,
      *               false if run in commandline mode
-     * @param pmw 	the ProgressMonitor to be updated;  
-     * 				if not needed, use null 
+     * @param pmw 	the ProgressMonitor to be updated;
+     * 				if not needed, use null
      * @return project the project that was created based on the file that was
      *                 successfully opened
-     * 
+     *
      * TODO: Separate this into a Swing specific class - tfm
      */
-    public Project loadProject2(File file, boolean showUI, 
+    public Project loadProject2(File file, boolean showUI,
             ProgressMonitor pmw) {
-        LOG.info("Loading project.");
+        LOG.log(Level.INFO, "Loading project.");
 
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
@@ -1559,7 +1562,7 @@ public final class ProjectBrowser
             ProjectManager.getManager().removeProject(oldProject);
             oldProject = p;
         }
-        
+
         boolean success = false;
 
         // TODO:
@@ -1599,7 +1602,7 @@ public final class ProjectBrowser
                 if (pmw != null) {
                     persister.addProgressListener(pmw);
                 }
-                
+
 
                 project = persister.doLoad(file);
 
@@ -1607,7 +1610,7 @@ public final class ProjectBrowser
                     persister.removeProgressListener(pmw);
                 }
                 ThreadUtils.checkIfInterrupted();
-                
+
 //                if (Model.getDiagramInterchangeModel() != null) {
                 // TODO: This assumes no more than one project at a time
                 // will be loaded.  If it is ever reinstituted, this needs to
@@ -1630,7 +1633,7 @@ public final class ProjectBrowser
                 // in the configuration file
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
-                
+
                 updateStatus(
                         Translator.localize(
                                 "statusmsg.bar.open-project-status-read",
@@ -1644,13 +1647,14 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI);
             } catch (OutOfMemoryError ex) {
-                LOG.error("Out of memory while loading project", ex);
+                LOG.log(Level.SEVERE,
+                        "Out of memory while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize("dialog.error.memory.limit"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
-                LOG.error("Project loading interrupted by user");
+                LOG.log(Level.SEVERE, "Project loading interrupted by user");
             } catch (UmlVersionException ex) {
                 reportError(
                         pmw,
@@ -1662,7 +1666,7 @@ public final class ProjectBrowser
                 if (ex.getCause() instanceof XmiReferenceException) {
                     // an error that can be corrected by the user, so no stack
                     // trace, but instead an explanation and a hint how to fix
-                    String reference = 
+                    String reference =
                         ((XmiReferenceException) ex.getCause()).getReference();
                     reportError(
                             pmw,
@@ -1680,7 +1684,7 @@ public final class ProjectBrowser
                                     showUI, ex);
                 }
             } catch (IOException ex) {
-                LOG.error("Exception while loading project", ex);
+                LOG.log(Level.SEVERE, "Exception while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1688,7 +1692,7 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } catch (OpenException ex) {
-                LOG.error("Exception while loading project", ex);
+                LOG.log(Level.SEVERE, "Exception while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1703,7 +1707,7 @@ public final class ProjectBrowser
                         new Object[] {ex.getReference(), ex.getMessage()}),
                     ex.toString(), showUI);
             } catch (RuntimeException ex) {
-                LOG.error("Exception while loading project", ex);
+                LOG.log(Level.SEVERE, "Exception while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1714,16 +1718,16 @@ public final class ProjectBrowser
 
                 try {
                     if (!success) {
-                        project = 
+                        project =
                             ProjectManager.getManager().makeEmptyProject();
                     }
                     ProjectManager.getManager().setCurrentProject(project);
                     if (oldProject != null) {
                         ProjectManager.getManager().removeProject(oldProject);
                     }
-                    
+
                     project.getProjectSettings().init();
-                    
+
                     Command cmd = new NonUndoableCommand() {
                         public Object execute() {
                             // This is temporary. Load project
@@ -1735,14 +1739,15 @@ public final class ProjectBrowser
                     };
                     project.getUndoManager().addCommand(cmd);
 
-                    LOG.info("There are " + project.getDiagramList().size()
-                            + " diagrams in the current project");
+                    LOG.log(Level.INFO,
+                            "There are {0} diagrams in the current project",
+                            project.getDiagramList().size());
 
                     Designer.enableCritiquing();
                 } finally {
                     // Make sure save action is always reinstated
                     this.saveAction = rememberedSaveAction;
-                    
+
                     // We clear the save-required flag on the Swing event thread
                     // in the hopes that it gets done after any other background
                     // work (listener updates) that is being done there
@@ -1774,7 +1779,7 @@ public final class ProjectBrowser
         if (showUI) {
             if (monitor != null) {
                 monitor.notifyMessage(
-                        Translator.localize("dialog.error.title"), 
+                        Translator.localize("dialog.error.title"),
                         Translator.localize("dialog.error.open.save.error"),
                         message);
             } else {
@@ -1810,7 +1815,7 @@ public final class ProjectBrowser
             if (monitor != null) {
                 monitor.notifyMessage(
                         Translator.localize("dialog.error.title"),
-                        message, 
+                        message,
                         ExceptionDialog.formatException(
                                 message, ex, ex instanceof OpenException));
             } else {
@@ -1820,7 +1825,7 @@ public final class ProjectBrowser
                             new ExceptionDialog(
                                     ArgoFrame.getFrame(),
                                     Translator.localize("dialog.error.title"),
-                                    message, 
+                                    message,
                                     ExceptionDialog.formatException(
                                                 message, ex,
                                                 ex instanceof OpenException));
@@ -1917,7 +1922,7 @@ public final class ProjectBrowser
 
         JFileChooser chooser = null;
         URI uri = p.getURI();
-        
+
         if (uri != null) {
             File projectFile = new File(uri);
             if (projectFile.length() > 0) {
@@ -1940,7 +1945,7 @@ public final class ProjectBrowser
         chooser.setAcceptAllFileFilterUsed(false);
 
         PersistenceManager.getInstance().setSaveFileChooserFilters(
-                chooser, 
+                chooser,
                 uri != null ? Util.URIToFilename(uri.toString()) : null);
 
         int retval = chooser.showSaveDialog(pb);
@@ -1966,7 +1971,7 @@ public final class ProjectBrowser
         }
         return null;
     }
-    
+
     /**
      * The UID.
      */

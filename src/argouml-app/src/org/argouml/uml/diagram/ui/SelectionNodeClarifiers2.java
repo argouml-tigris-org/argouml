@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
@@ -62,10 +63,10 @@ import org.tigris.gef.presentation.Handle;
  * Enhanced version of SelectionNodeClarifiers with the new methods
  * necessary for the enhanced support marked as abstract so that implementors
  * are forced to implement them.  SelectionNodeClarifiers is simple
- * extension of this which implements null versions of the required 
+ * extension of this which implements null versions of the required
  * methods for backward compatibility with the previous implementation.
  * <p>
- * To upgrade subtypes of SelectionNodeClarifiers, change them to 
+ * To upgrade subtypes of SelectionNodeClarifiers, change them to
  * extend this class instead and implement the required abstract methods.
  * The methods paintButtons, dragHandle, hitHandle, and createEdge* can
  * all usually be removed.
@@ -74,9 +75,9 @@ import org.tigris.gef.presentation.Handle;
  * @author Tom Morris
  */
 public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
-    
+
     private static final Logger LOG =
-            Logger.getLogger(SelectionNodeClarifiers2.class);
+        Logger.getLogger(SelectionNodeClarifiers2.class.getName());
 
     /** Base index of array */
     protected static final int BASE = 10;
@@ -90,23 +91,23 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected static final int RIGHT = 13;
     /** Lower left corner Handle */
     protected static final int LOWER_LEFT = 14;
-    
-    private static final int OFFSET = 2; 
-    
+
+    private static final int OFFSET = 2;
+
     private Object newEdge = null;
 
     private int button;
-    
+
     /**
      * Construct a new SelectionNodeClarifiers for the given Fig
-     * 
+     *
      * @param f
      *            the given Fig
      */
     public SelectionNodeClarifiers2(Fig f) {
         super(f);
     }
-    
+
     /*
      * @see org.tigris.gef.base.SelectionButtons#paint(java.awt.Graphics)
      */
@@ -139,12 +140,12 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             int cy = getContent().getY();
             int cw = getContent().getWidth();
             int ch = getContent().getHeight();
-            
+
             if (icons[0] != null) {
                 paintButtonAbove(icons[0], g, cx + cw / 2, cy - OFFSET, TOP);
             }
             if (icons[1] != null) {
-                paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET, 
+                paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET,
                         BOTTOM);
             }
             if (icons[2] != null) {
@@ -166,17 +167,17 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected Object getNewNode(int arg0) {
         return null;
     }
-    
+
     /**
      * Compute handle selection, if any, from cursor location.
-     * 
+     *
      * @param cursor
      *            cursor point represented by a 0-size rectangle
      * @param h
      *            handle in which to return selected Handle information (output
      *            parameter). A handle index of -1 indicates that the cursor is
      *            not over any handle.
-     * 
+     *
      * If GEF had any API documentation you could see the following:
      * @see org.tigris.gef.base.SelectionResize#hitHandle(java.awt.Rectangle,
      *      org.tigris.gef.presentation.Handle)
@@ -225,24 +226,24 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
          *            11
          * </pre>
          */
-        if (icons[0] != null && hitAbove(cx + cw / 2, cy, 
-                icons[0].getIconWidth(), icons[0].getIconHeight(), 
+        if (icons[0] != null && hitAbove(cx + cw / 2, cy,
+                icons[0].getIconWidth(), icons[0].getIconHeight(),
                 cursor)) {
             h.index = TOP;
-        } else if (icons[1] != null && hitBelow(cx + cw / 2, cy + ch, 
-                icons[1].getIconWidth(), icons[1].getIconHeight(), 
+        } else if (icons[1] != null && hitBelow(cx + cw / 2, cy + ch,
+                icons[1].getIconWidth(), icons[1].getIconHeight(),
                 cursor)) {
             h.index = BOTTOM;
-        } else if (icons[2] != null && hitLeft(cx, cy + ch / 2, 
-                icons[2].getIconWidth(), icons[2].getIconHeight(), 
+        } else if (icons[2] != null && hitLeft(cx, cy + ch / 2,
+                icons[2].getIconWidth(), icons[2].getIconHeight(),
                 cursor)) {
             h.index = LEFT;
-        } else if (icons[3] != null && hitRight(cx + cw, cy + ch / 2, 
-                icons[3].getIconWidth(), icons[3].getIconHeight(), 
+        } else if (icons[3] != null && hitRight(cx + cw, cy + ch / 2,
+                icons[3].getIconWidth(), icons[3].getIconHeight(),
                 cursor)) {
             h.index = RIGHT;
-        } else if (icons[4] != null && hitLeft(cx, cy + ch, 
-                icons[4].getIconWidth(), icons[4].getIconHeight(), 
+        } else if (icons[4] != null && hitLeft(cx, cy + ch,
+                icons[4].getIconWidth(), icons[4].getIconHeight(),
                 cursor)) {
             h.index = LOWER_LEFT;
         } else {
@@ -260,11 +261,11 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-        
+
         // Don't allow drag outside of bounds of diagram
         mX = Math.max(mX, 0);
         mY = Math.max(mY, 0);
-        
+
         if (hand.index < 10) {
             setPaintButtons(false);
             super.dragHandle(mX, mY, anX, anY, hand);
@@ -277,11 +278,11 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         int cw = getContent().getWidth(), ch = getContent().getHeight();
 
         int bx = mX, by = mY;
-        
+
         // Remember what handle was clicked for the case where the drag
         // is released over empty space
         button = hand.index;
-        
+
         switch (hand.index) {
         case TOP:
             by = cy;
@@ -304,14 +305,14 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             bx = cx;
             break;
         default:
-            LOG.warn("invalid handle number");
+            LOG.log(Level.WARNING, "invalid handle number");
             break;
         }
-        
+
         Object nodeType = getNewNodeType(hand.index);
         Object edgeType = getNewEdgeType(hand.index);
         boolean reverse = isReverseEdge(hand.index);
-        
+
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
@@ -322,10 +323,10 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
             ce.pushMode(m);
         }
     }
-    
+
     /**
      * Override this to implement post-processing.
-     * 
+     *
      * @param ce the current Editor
      * @param edgeType the new edge type
      * @param postProcess true if post-processing is wanted
@@ -333,12 +334,12 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * @return the ModeCreate
      */
     protected ModeCreateEdgeAndNode getNewModeCreateEdgeAndNode(
-            Editor ce, Object edgeType, boolean postProcess, 
+            Editor ce, Object edgeType, boolean postProcess,
             SelectionNodeClarifiers2 nodeCreator) {
         return  new ModeCreateEdgeAndNode(ce,
               edgeType, postProcess, nodeCreator);
     }
-    
+
     @Override
     public void buttonClicked(int buttonCode) {
         super.buttonClicked(buttonCode);
@@ -373,7 +374,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         }
         return newEdge;
     }
-    
+
     protected Object createEdgeToSelf(MutableGraphModel gm) {
         Object edge = gm.connect(
                 getContent().getOwner(), getContent().getOwner(),
@@ -389,16 +390,16 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
 
     /**
      * Get the "instructions" string to pass to GEF for the given handle number.
-     * 
+     *
      * @param index
      *            handle number that is being dragged from
      * @return string or null
      */
     protected abstract String getInstructions(int index);
-    
+
     /**
      * Get the node type to create when dragging from the given handle number.
-     * 
+     *
      * @param index
      *            handle number that is being dragged from
      * @return metatype for model element. Null to disallow drag.
@@ -407,16 +408,16 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
 
     /**
      * Get the edge type to create when dragging from the given handle number.
-     * 
+     *
      * @param index
      *            handle number that is being dragged from
      * @return metatype for model element. Null to disallow drag.
      */
     protected abstract Object getNewEdgeType(int index);
-    
+
     /**
      * Get the node type to create when dragging from the given handle number.
-     * 
+     *
      * @param index
      *            handle number that is being dragged from
      * @return true to reverse direction of association from direction of drag.
@@ -426,12 +427,12 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected boolean isReverseEdge(int index) {
         return false;
     }
-    
+
     /**
      * Get the draggability of a particular handle. Default implementation
      * always returns true. Override to return false for handles which shouldn't
      * be draggable (i.e. they only support clicks, not drags).
-     * 
+     *
      * @param index
      *            handle index to check draggability for
      * @return true if this handle is draggable, false otherwise
@@ -439,11 +440,11 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected boolean isDraggableHandle(int index) {
         return true;
     }
-    
+
     /**
      * Request post processing of edge by GEF after it is created using
      * {@link ModeCreateEdgeAndNode#ModeCreateEdgeAndNode(Editor, Object, Object, boolean)}
-     * 
+     *
      * @return true if postprocessing requested
      */
     protected boolean isEdgePostProcessRequested() {
@@ -463,6 +464,5 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected int getButton() {
         return button;
     }
-    
-} 
 
+}

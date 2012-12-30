@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -66,7 +68,6 @@ import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
@@ -131,7 +132,7 @@ import org.tigris.gef.presentation.FigText;
  * This Fig is prepared to show a (possibly editable) name,
  * and/or multiple stereotypes.
  * <p>
- * NOTE: This will drop the ArgoNotationEventListener and 
+ * NOTE: This will drop the ArgoNotationEventListener and
  * ArgoDiagramAppearanceEventListener
  * interfaces in the next release.  The corresponding methods have been marked
  * as deprecated.
@@ -155,7 +156,7 @@ public abstract class FigEdgeModelElement
         Owned {
 
     private static final Logger LOG =
-        Logger.getLogger(FigEdgeModelElement.class);
+        Logger.getLogger(FigEdgeModelElement.class.getName());
 
     private DiElement diElement = null;
 
@@ -194,39 +195,39 @@ public abstract class FigEdgeModelElement
     private Set<Object[]> listeners = new HashSet<Object[]>();
 
     private DiagramSettings settings;
-    
+
     /**
      * Construct a new FigEdge. This method creates the name element that holds
      * the name of the model element and adds itself as a listener. Also a
      * stereotype is constructed.
      * <p>
      * This constructor is only intended for use by concrete subclasses.
-     * 
+     *
      * @param element owning uml element
      * @param renderSettings rendering settings
      */
-    protected FigEdgeModelElement(Object element, 
+    protected FigEdgeModelElement(Object element,
             DiagramSettings renderSettings) {
         super();
         // TODO: We don't have any settings that can change per-fig currently
         // so we can just use the default settings;
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
-        
-        // TODO: It doesn't matter what these get set to because GEF can't 
+
+        // TODO: It doesn't matter what these get set to because GEF can't
         // draw anything except 1 pixel wide lines
         super.setLineColor(LINE_COLOR);
         super.setLineWidth(LINE_WIDTH);
         getFig().setLineColor(LINE_COLOR);
         getFig().setLineWidth(LINE_WIDTH);
-        
-        nameFig = new FigNameWithAbstract(element, 
-                new Rectangle(X0, Y0 + 20, 90, 20), 
+
+        nameFig = new FigNameWithAbstract(element,
+                new Rectangle(X0, Y0 + 20, 90, 20),
                 renderSettings, false);
-        stereotypeFig = new FigStereotypesGroup(element, 
+        stereotypeFig = new FigStereotypesGroup(element,
                 new Rectangle(X0, Y0, 90, 15),
                 settings);
-      
+
         initFigs();
         initOwner(element);
     }
@@ -237,8 +238,8 @@ public abstract class FigEdgeModelElement
         nameFig.setTextFilled(false);
         setBetweenNearestPoints(true);
     }
-    
-    
+
+
     private void initOwner(Object element) {
         if (element != null) {
             if (!Model.getFacade().isAUMLElement(element)) {
@@ -246,7 +247,7 @@ public abstract class FigEdgeModelElement
                         "The owner must be a model element - got a "
                         + element.getClass().getName());
             }
-            super.setOwner(element);  
+            super.setOwner(element);
             if (edgePort != null) {
                 edgePort.setOwner(getOwner());
             }
@@ -267,7 +268,7 @@ public abstract class FigEdgeModelElement
      */
     public void makeEdgePort() {
         if (edgePort == null) {
-            edgePort = new FigEdgePort(getOwner(), new Rectangle(), 
+            edgePort = new FigEdgePort(getOwner(), new Rectangle(),
                     getSettings());
             edgePort.setVisible(false);
             addPathItem(edgePort,
@@ -317,7 +318,7 @@ public abstract class FigEdgeModelElement
             } catch (InvalidElementException e) {
                 // We moused over an object just as it was deleted
                 // transient condition - doesn't require I18N
-                LOG.warn("A deleted element still exists on the diagram");
+                LOG.log(Level.WARNING, "A deleted element still exists on the diagram");
                 return Translator.localize("misc.name.deleted");
             }
         } else {
@@ -339,11 +340,11 @@ public abstract class FigEdgeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         ActionList popUpActions =
             new ActionList(super.getPopUpActions(me), isReadOnly());
-        
+
         // Added this part to load the extra menu content
         final List<Action> modulesActions =
             ContextActionFactoryManager.getContextPopupActions();
-        
+
         for (Action a : modulesActions) {
             if (a instanceof List) {
                 JMenu m = new JMenu((Action) a);
@@ -355,7 +356,7 @@ public abstract class FigEdgeModelElement
                 popUpActions.add(a);
             }
         }
-        
+
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.add(new JSeparator());
         popupAddOffset = 1;
@@ -406,12 +407,12 @@ public abstract class FigEdgeModelElement
 
         return popUpActions;
     }
-    
+
     /**
      * Get the set of Actions which valid for adding/removing
      * Stereotypes on the ModelElement of this Fig's owner.
-     *  
-     * @return array of Actions 
+     *
+     * @return array of Actions
      */
     protected Action[] getApplyStereotypeActions() {
         Collection<Object> elements = new ArrayList<Object>();
@@ -550,7 +551,7 @@ public abstract class FigEdgeModelElement
     /**
      * @return a {@link SelectionRerouteEdge} object that manages selection and
      *         rerouting of the edge.
-     * 
+     *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     @Override
@@ -567,7 +568,7 @@ public abstract class FigEdgeModelElement
     protected FigText getNameFig() {
         return nameFig;
     }
-    
+
     /**
      * Get the Rectangle in which the model elements name is displayed
      *
@@ -576,7 +577,7 @@ public abstract class FigEdgeModelElement
     public Rectangle getNameBounds() {
         return nameFig.getBounds();
     }
-    
+
     /**
      * @return the text of the namefig
      */
@@ -620,7 +621,7 @@ public abstract class FigEdgeModelElement
      * This method gets called when a bound property gets changed. This may
      * represent a UML element value from the Model subsystem, a GEF property,
      * or something which ArgoUML itself implements.
-     * 
+     *
      * @param pve the event containing the property change information
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -634,10 +635,10 @@ public abstract class FigEdgeModelElement
                     try {
                         removeFromDiagram();
                     } catch (InvalidElementException e) {
-                        LOG.error("updateLayout method accessed "
+                        LOG.log(Level.SEVERE, "updateLayout method accessed "
                                     + "deleted element", e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
             return;
@@ -645,7 +646,7 @@ public abstract class FigEdgeModelElement
         // We handle and consume editing events
         if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
-            LOG.debug("finished editing");
+            LOG.log(Level.FINE, "finished editing");
             // parse the text that was edited
             textEdited((FigText) src);
             calcBounds();
@@ -658,31 +659,28 @@ public abstract class FigEdgeModelElement
             super.propertyChange(pve);
         }
 
-        if (Model.getFacade().isAUMLElement(src) 
+        if (Model.getFacade().isAUMLElement(src)
                 && getOwner() != null
                 && !Model.getUmlFactory().isRemoved(getOwner())) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
-            
+
             final UmlChangeEvent event = (UmlChangeEvent) pve;
-            
+
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {
                     try {
                         updateLayout(event);
                     } catch (InvalidElementException e) {
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug("updateLayout method accessed "
-                                    + "deleted element ", e);
-                        }
+                        LOG.log(Level.FINE, "updateLayout method accessed deleted element ", e);
                     }
-                }  
+                }
             };
             SwingUtilities.invokeLater(doWorkRunnable);
-            
+
         }
-        /* The following is a possible future improvement 
+        /* The following is a possible future improvement
          * of the modelChanged() function.
          * Michiel: Propose not to do this to keep architecture stable. */
 //        if (pve instanceof AttributeChangeEvent) {
@@ -693,10 +691,10 @@ public abstract class FigEdgeModelElement
 //            modelAssociationRemoved((RemoveAssociationEvent) pve);
 //        }
     }
-    
+
     /**
      * Called whenever we receive an AttributeChangeEvent.
-     * 
+     *
      * @param ace the event
      */
     protected void modelAttributeChanged(AttributeChangeEvent ace) {
@@ -705,29 +703,29 @@ public abstract class FigEdgeModelElement
 
     /**
      * Called whenever we receive an AddAssociationEvent.
-     * 
+     *
      * @param aae the event
      */
     protected void modelAssociationAdded(AddAssociationEvent aae) {
-        // Default implementation is to do nothing        
+        // Default implementation is to do nothing
     }
 
     /**
      * Called whenever we receive an RemoveAssociationEvent.
-     * 
+     *
      * @param rae the event
      */
     protected void modelAssociationRemoved(RemoveAssociationEvent rae) {
         // Default implementation is to do nothing
     }
-    
+
     /**
      * This is a template method called by the ArgoUML framework as the result
      * of a change to a model element. Do not call this method directly
      * yourself.
      * <p>Override this in any subclasses in order to restructure the FigNode
      * due to change of any model element that this FigNode is listening to.</p>
-     * <p>This method is guaranteed by the framework to be running on the 
+     * <p>This method is guaranteed by the framework to be running on the
      * Swing/AWT thread.</p>
      *
      * @param event the UmlChangeEvent that caused the change
@@ -749,11 +747,11 @@ public abstract class FigEdgeModelElement
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString(getOwner(), 
+            ft.setText(notationProviderName.toString(getOwner(),
                     getNotationSettings()));
         }
     }
-    
+
 
     /**
      * Utility function to localize the given string with help text,
@@ -785,7 +783,7 @@ public abstract class FigEdgeModelElement
                 return;
             }
             notationProviderName.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderName.toString(getOwner(), 
+            ft.setText(notationProviderName.toString(getOwner(),
                     getNotationSettings()));
         }
     }
@@ -845,7 +843,7 @@ public abstract class FigEdgeModelElement
         }
         me.consume();
     }
-    
+
     /**
      * Return true if the model element that this Fig represents is read only
      * @return The model element is read only.
@@ -858,7 +856,7 @@ public abstract class FigEdgeModelElement
         return false;
     }
 
-    
+
 
     /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -889,16 +887,16 @@ public abstract class FigEdgeModelElement
 
     /**
      * Rerenders the attached elements of the fig. <p>
-     * 
-     * Warning: The purpose of this function is NOT 
+     *
+     * Warning: The purpose of this function is NOT
      * to redraw the whole Fig every time
      * something changes. That would be inefficient.<p>
-     * 
+     *
      * Instead, this function should only be called
-     * for major changes that require a complete redraw, 
-     * such as change of owner, 
+     * for major changes that require a complete redraw,
+     * such as change of owner,
      * and change of notation language. <p>
-     * 
+     *
      * Overrule this function for subclasses that add extra
      * or remove graphical parts.
      */
@@ -910,7 +908,7 @@ public abstract class FigEdgeModelElement
         updateStereotypeText();
         damage();
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // internal methods
 
@@ -926,8 +924,8 @@ public abstract class FigEdgeModelElement
             // No need to update if model element went away
             return;
         }
-        
-        if (e instanceof AssociationChangeEvent 
+
+        if (e instanceof AssociationChangeEvent
                 || e instanceof AttributeChangeEvent) {
             updateListeners(getOwner(), getOwner());
         }
@@ -936,7 +934,7 @@ public abstract class FigEdgeModelElement
         // TODO: Presumably this should only happen on a add or remove event
         determineFigNodes();
     }
-    
+
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
      */
@@ -983,31 +981,31 @@ public abstract class FigEdgeModelElement
      * After the removal of the deprecated method setOwner(),
      * this method shall contain the following statement:
      *     assert notationProviderName != null
-     * 
+     *
      * @param own the current owner
-     */ 
+     */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
             notationProviderName.cleanListener();
         }
-        /* This should NOT be looking for a NamedElement, 
-         * since this is not always about the name of this 
+        /* This should NOT be looking for a NamedElement,
+         * since this is not always about the name of this
          * modelelement alone.*/
         if (Model.getFacade().isANamedElement(own)) {
             final NotationName notation = Notation.findNotation(
                     getNotationSettings().getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this, 
+                        getNotationProviderType(), own, this,
                         notation);
         }
     }
 
 
     /**
-     * Overrule this for subclasses 
+     * Overrule this for subclasses
      * that need a different NotationProvider.
-     * 
+     *
      * @return the type of the notation provider
      */
     protected int getNotationProviderType() {
@@ -1019,33 +1017,33 @@ public abstract class FigEdgeModelElement
      * (model)events that may cause a repaint to be necessary.
      * In the simplest case, the fig should register itself
      * as listening to (all) events fired by (only) the owner. <p>
-     *  
+     *
      * But for, for example, for a
      * FigLink the fig must also register for events fired by the
-     * association of the owner - because the name of 
+     * association of the owner - because the name of
      * the association is shown, not the name of the Link.<p>
-     * 
-     * In other cases, there is no need to register for any event, 
+     *
+     * In other cases, there is no need to register for any event,
      * e.g. when a notationProvider is used. <p>
-     * 
+     *
      * This function is called in 2 places: at creation (load) time of this Fig,
-     * i.e. when the owner changes, 
-     * and in some cases by the modelChanged() function, 
+     * i.e. when the owner changes,
+     * and in some cases by the modelChanged() function,
      * i.e. when the model changes. <p>
-     * 
+     *
      * This function shall always register for the "remove" event of the owner!
      * Otherwise the Fig will not be deleted when the owner gets deleted.<p>
-     * 
-     *  IF this method is called with both the oldOwner and the 
-     *  newOwner equal and not null, 
+     *
+     *  IF this method is called with both the oldOwner and the
+     *  newOwner equal and not null,
      *  AND we listen only to the owner itself,
-     *  THEN we can safely ignore the call, but 
-     *  ELSE we need to update the listeners of the related elements, 
+     *  THEN we can safely ignore the call, but
+     *  ELSE we need to update the listeners of the related elements,
      *  since the related elements may have been replaced.
-     * 
-     * @param newOwner the new owner for the listeners, 
+     *
+     * @param newOwner the new owner for the listeners,
      *          or null if all listeners have to be removed
-     * @param oldOwner the previous owner, 
+     * @param oldOwner the previous owner,
      *          or null if there was none, and all listeners have to be set
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
@@ -1063,7 +1061,7 @@ public abstract class FigEdgeModelElement
     public void setLayer(Layer lay) {
         super.setLayer(lay);
         getFig().setLayer(lay);
-        
+
         // TODO: Workaround for GEF redraw problem
         // Force all child figs into the same layer
         for (Fig f : (List<Fig>) getPathItemFigs()) {
@@ -1172,7 +1170,7 @@ public abstract class FigEdgeModelElement
             removeFromDiagramImpl();
         }
     }
-    
+
     /**
      * Subclasses should override this to redirect a remove request from
      * one Fig to another.
@@ -1183,7 +1181,7 @@ public abstract class FigEdgeModelElement
     protected Fig getRemoveDelegate() {
         return this;
     }
-    
+
     protected void removeFromDiagramImpl() {
         Object o = getOwner();
         if (o != null) {
@@ -1203,7 +1201,7 @@ public abstract class FigEdgeModelElement
         super.removeFromDiagram();
         damage();
     }
-    
+
     protected void superRemoveFromDiagram() {
         super.removeFromDiagram();
     }
@@ -1227,7 +1225,7 @@ public abstract class FigEdgeModelElement
      * <p>e.g. if the participant of an association end is changed.
      * <p>Calls a helper method (layoutThisToSelf) to avoid this edge
      * disappearing if the new source and dest are the same node.
-     * 
+     *
      * TODO: This method is called far too frequently. It should only be called
      * when a specific event is received. It seems to be currently called whenever
      * any event is received from the owner.
@@ -1237,11 +1235,11 @@ public abstract class FigEdgeModelElement
     protected boolean determineFigNodes() {
         Object owner = getOwner();
         if (owner == null) {
-            LOG.error("The FigEdge has no owner");
+            LOG.log(Level.SEVERE, "The FigEdge has no owner");
             return false;
         }
         if (getLayer() == null) {
-            LOG.error("The FigEdge has no layer");
+            LOG.log(Level.SEVERE, "The FigEdge has no layer");
             return false;
         }
 
@@ -1286,7 +1284,7 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * A version of GEF's presentationFor() method which 
+     * A version of GEF's presentationFor() method which
      * @param element ModelElement to return presentation for
      * @return the Fig representing the presentation
      */
@@ -1294,7 +1292,7 @@ public abstract class FigEdgeModelElement
         if (element == null) {
             throw new IllegalArgumentException("Can't search for a null owner");
         }
-        
+
         List contents = PgmlUtility.getContentsNoEdges(getLayer());
         int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
@@ -1354,7 +1352,7 @@ public abstract class FigEdgeModelElement
         }
         return null;
     }
-    
+
     /**
      * Get the model element at the source end of the edge. This is not the
      * same as the owner of the node at the source end, rather it is the
@@ -1369,7 +1367,7 @@ public abstract class FigEdgeModelElement
     public Object getSourceConnector() {
         return null;
     }
-    
+
     /**
      * Get the model element at the destination end of the edge. This is not
      * the same as the owner of the node at the source end, rather it is the
@@ -1384,7 +1382,7 @@ public abstract class FigEdgeModelElement
     public Object getDestinationConnector() {
         return null;
     }
-    
+
     /**
      * Returns the destination of the edge. The destination is the
      * owner of the node the edge travels to in a binary
@@ -1410,7 +1408,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * Set the associated Diagram Interchange element.
-     * 
+     *
      * @param element the element to be associated with this Fig
      */
     public void setDiElement(DiElement element) {
@@ -1430,11 +1428,11 @@ public abstract class FigEdgeModelElement
     protected static int getPopupAddOffset() {
         return popupAddOffset;
     }
-    
+
 
     /**
      * Add an element listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
@@ -1446,7 +1444,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * Add a listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -1460,7 +1458,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * Add a listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -1471,10 +1469,10 @@ public abstract class FigEdgeModelElement
         listeners.add(new Object[] {element, property});
         Model.getPump().addModelEventListener(this, element, property);
     }
-    
+
     /**
      * Add an element listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
@@ -1483,8 +1481,8 @@ public abstract class FigEdgeModelElement
         listeners.remove(new Object[] {element, null});
         Model.getPump().removeModelEventListener(this, element);
     }
-   
-    
+
+
     /**
      * Unregister all listeners registered through addElementListener
      * @see #addElementListener(Object, String)
@@ -1529,18 +1527,18 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Update the set of registered listeners to match the given set using 
-     * a minimal update strategy to remove unneeded listeners and add new 
+     * Update the set of registered listeners to match the given set using
+     * a minimal update strategy to remove unneeded listeners and add new
      * listeners.
-     * 
+     *
      * @param listenerSet a set of arrays containing a tuple of a UML element
-     * to be listened to and a set of property to be listened for.  
+     * to be listened to and a set of property to be listened for.
      */
     protected void updateElementListeners(Set<Object[]> listenerSet) {
         Set<Object[]> removes = new HashSet<Object[]>(listeners);
         removes.removeAll(listenerSet);
         removeElementListeners(removes);
-        
+
         Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
         adds.removeAll(listeners);
         addElementListeners(adds);
@@ -1548,7 +1546,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * This optional method is not implemented.  It will throw an
-     * {@link UnsupportedOperationException} if used. Figs are 
+     * {@link UnsupportedOperationException} if used. Figs are
      * added to a GraphModel which is, in turn, owned by a project.
      * @param project the project
      * @deprecated
@@ -1558,11 +1556,11 @@ public abstract class FigEdgeModelElement
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
-    
+
     /**
      * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
      * the information that they require in the DiagramSettings object.
-     * 
+     *
      * @return the owning project
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
@@ -1570,10 +1568,10 @@ public abstract class FigEdgeModelElement
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
     }
-    
+
     /**
      * Handles diagram font changing.
-     * 
+     *
      * @param e the event
      * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
      * @deprecated for 0.27.2 by tfmorris. Global rendering changes are now
@@ -1585,9 +1583,9 @@ public abstract class FigEdgeModelElement
         calcBounds(); //TODO: Does this help?
         redraw();
     }
-    
+
     /**
-     * This function should, for all FigTexts, 
+     * This function should, for all FigTexts,
      * recalculate the font-style (plain, bold, italic, bold/italic),
      * and apply it by calling FigText.setFont().
      */
@@ -1599,11 +1597,11 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Determines the font style based on the UML model. 
-     * Overrule this in Figs that have to show bold or italic based on the 
-     * UML model they represent. 
+     * Determines the font style based on the UML model.
+     * Overrule this in Figs that have to show bold or italic based on the
+     * UML model they represent.
      * E.g. abstract classes show their name in italic.
-     * 
+     *
      * @return the font style for the nameFig.
      */
     protected int getNameFigFontStyle() {
@@ -1620,13 +1618,13 @@ public abstract class FigEdgeModelElement
 
     /**
      * Changes the font for all Figs contained in the given FigGroup. <p>
-     * 
+     *
      *  TODO: In fact, there is a design error in this method:
      *  E.g. for a class, if the name is Italic since the class is abstract,
      *  then the classes features should be in Plain font.
-     *  This problem can be fixed by implementing 
+     *  This problem can be fixed by implementing
      *  the updateFont() method in all subclasses.
-     *  
+     *
      * @param fg the FigGroup to change the font of.
      */
     private void deepUpdateFontRecursive(Font f, Object pathFig) {
@@ -1640,13 +1638,13 @@ public abstract class FigEdgeModelElement
             }
         }
     }
-    
+
 
     public DiagramSettings getSettings() {
         // TODO: This is a temporary crutch to use until all Figs are updated
         // to use the constructor that accepts a DiagramSettings object
         if (settings == null) {
-            LOG.debug("Falling back to project-wide settings");
+            LOG.log(Level.FINE, "Falling back to project-wide settings");
             Project p = getProject();
             if (p != null) {
                 return p.getProjectSettings().getDefaultDiagramSettings();
@@ -1654,23 +1652,23 @@ public abstract class FigEdgeModelElement
         }
         return settings;
     }
-    
+
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();
     }
-    
+
     /**
      * @return the current notation settings
      */
     protected NotationSettings getNotationSettings() {
         return getSettings().getNotationSettings();
     }
-    
+
 //    public void setLineWidth(int w) {
 //        super.setLineWidth(w);
 //    }
-    
+
     public void setLineColor(Color c) {
         super.setLineColor(c);
         ArrowHead arrow = getDestArrowHead();
@@ -1678,7 +1676,7 @@ public abstract class FigEdgeModelElement
             arrow.setLineColor(getLineColor());
         }
     }
-    
+
     public void setFig(Fig f) {
         super.setFig(f);
         // GEF sets a different Fig than the one that we had at construction
@@ -1686,12 +1684,12 @@ public abstract class FigEdgeModelElement
         f.setLineColor(getLineColor());
         f.setLineWidth(getLineWidth());
     }
-    
+
 
     /**
      * Setting the owner of the Fig must be done in the constructor and not
      * changed afterwards for all ArgoUML figs.
-     * 
+     *
      * @param owner owning UML element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      * @throws UnsupportedOperationException
@@ -1707,27 +1705,27 @@ public abstract class FigEdgeModelElement
                     "Owner must be set in constructor and left unchanged");
         }
     }
-    
+
     /**
      * We override GEF completely here (no call to super method).
      * Code is unfortunately copied from GEF to avoid multiple calls
      * to calcBounds()
-     * 
+     *
      * @see org.tigris.gef.presentation.FigEdgePoly#computeRouteImpl()
      */
     public void computeRouteImpl() {
-        
+
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
 
         if (sourcePortFig instanceof FigNodeModelElement) {
             sourcePortFig = ((FigNodeModelElement) sourcePortFig).getBigPort();
         }
-        
+
         if (destPortFig instanceof FigNodeModelElement) {
             destPortFig = ((FigNodeModelElement) destPortFig).getBigPort();
         }
-        
+
         if (!(sourcePortFig instanceof FigCircle)
                 || !(destPortFig instanceof FigCircle)) {
             // If this is not a circle to circle edge we default to let GEF
@@ -1738,18 +1736,18 @@ public abstract class FigEdgeModelElement
             // cases) we have our own implementation overriding GEF. Which
             // attempts to keep the edges perpendicular if the edge is already
             // close to perpendicular.
-        
+
             if (!_initiallyLaidOut) {
                 layoutEdge();
                 _initiallyLaidOut = true;
             }
             FigPoly p = ((FigPoly) getFig());
-    
-            
-            
+
+
+
             Point srcPt = sourcePortFig.getCenter();
             Point dstPt = destPortFig.getCenter();
-    
+
             if (_useNearest) {
                 if (p.getNumPoints() == 2) {
                     // ? two iterations of refinement, maybe should be a for-loop
@@ -1758,14 +1756,14 @@ public abstract class FigEdgeModelElement
                             .getPoint(p.getNumPoints() - 2));
                     srcPt = sourcePortFig.connectionPoint(dstPt);
                     dstPt = destPortFig.connectionPoint(srcPt);
-                    
+
                     // If the line angle is less than 3 degrees then snap the line
                     // straight
                     final int delta = 3;
                     double angle = Geometry.segmentAngle(srcPt, dstPt);
                     double mod = angle % 90;
                     final boolean snapStraight = (mod != 0 && (mod < delta || mod > 90 - delta));
-    
+
                     if (snapStraight) {
                         int newX = (srcPt.x + dstPt.x) / 2;
                         int newY = (srcPt.y + dstPt.y) / 2;
@@ -1785,12 +1783,12 @@ public abstract class FigEdgeModelElement
                             .getPoint(p.getNumPoints() - 2));
                 }
             }
-    
+
             setEndPoints(srcPt, dstPt);
             calcBounds();
         }
     } /* end computeRoute */
-    
+
     public void notationRenderingChanged(NotationProvider np, String rendering) {
         if (notationProviderName == np) {
             nameFig.setText(rendering);

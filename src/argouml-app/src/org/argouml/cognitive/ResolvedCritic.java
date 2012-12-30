@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@ package org.argouml.cognitive;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.util.ItemUID;
 
 // TODO: Maybe the exception strings should be internationalized
@@ -56,7 +57,8 @@ public class ResolvedCritic {
     /**
      * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(ResolvedCritic.class);
+    private static final Logger LOG =
+        Logger.getLogger(ResolvedCritic.class.getName());
 
     /**
      * The name of the critic.
@@ -84,7 +86,7 @@ public class ResolvedCritic {
             offenders = new ArrayList<String>();
         }
     }
-    
+
     /**
      * Same as {@link #ResolvedCritic(Critic,ListSet,boolean)}.
      *
@@ -117,7 +119,8 @@ public class ResolvedCritic {
 	    throw new IllegalArgumentException();
 	}
 
-	//LOG.debug("Adding resolution for: " + c.getClass() + " " + canCreate);
+        // LOG.log(Level.FINE,
+        //         "Adding resolution for: " + c.getClass() + " " + canCreate);
 
 	try {
 	    if (offs != null && offs.size() > 0) {
@@ -264,7 +267,8 @@ public class ResolvedCritic {
 		    fail = fail + ", " + obj.getClass().toString();
 		}
 
-		LOG.warn("Offender " + obj.getClass() + " unresolvable");
+                LOG.log(Level.WARNING,
+                        "Offender {0} unresolvable", obj.getClass());
 
 		// Use this for fast fail instead.
 		// Sacrificed for complete fail. d00mst
@@ -318,4 +322,3 @@ public class ResolvedCritic {
 	return sb.toString();
     }
 }
-

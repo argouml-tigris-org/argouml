@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -53,32 +54,33 @@ import org.tigris.gef.presentation.Fig;
  * (much of this code is cloned from FigInterface - perhaps we need
  * a more generic class provide this common code).
  * <p>
- * A DataType shows a keyword, a name, stereotypes and 
- * an operations compartment. Attributes are not supported 
+ * A DataType shows a keyword, a name, stereotypes and
+ * an operations compartment. Attributes are not supported
  * in ArgoUML. <p>
- * 
- * Every DataType shows a keyword, but it is not 
+ *
+ * Every DataType shows a keyword, but it is not
  * always <<datatype>>, e.g. for an Enumeration. <p>
- * 
- * There is no need for a specific minimal width for this Fig, 
+ *
+ * There is no need for a specific minimal width for this Fig,
  * since its width will most of the time be determined by the keyword.<p>
- * 
- * This Fig supports a compartment for operations at the bottom. 
- * Other compartments may be added above it by specializations 
+ *
+ * This Fig supports a compartment for operations at the bottom.
+ * Other compartments may be added above it by specializations
  * of the DataType Fig by overriding the addExtraCompartments() method.
  */
 public class FigDataType extends FigClassifierBox {
 
-    private static final Logger LOG = Logger.getLogger(FigDataType.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigDataType.class.getName());
 
     private void constructFigs(Rectangle bounds) {
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        
+
         getStereotypeFig().setKeyword(getKeyword());
         getStereotypeFig().setVisible(true);
-        /* The next line is needed so that we have the right dimension 
-         * when drawing this Fig on the diagram by pressing down 
+        /* The next line is needed so that we have the right dimension
+         * when drawing this Fig on the diagram by pressing down
          * the mouse button, even before releasing the mouse button: */
         getNameFig().setTopMargin(
                 getStereotypeFig().getMinimumSize().height);
@@ -87,13 +89,13 @@ public class FigDataType extends FigClassifierBox {
         addFig(getNameFig());
         addFig(getStereotypeFig());
         createCompartments();
-        
+
         // Make all the parts match the main fig
         setFilled(true);
         setFillColor(FILL_COLOR);
         setLineColor(LINE_COLOR);
         setLineWidth(LINE_WIDTH);
-        
+
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
@@ -120,12 +122,12 @@ public class FigDataType extends FigClassifierBox {
      *
      * The properties of all these graphic elements are adjusted
      * appropriately.
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigDataType(Object owner, Rectangle bounds, 
+    public FigDataType(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs(bounds);
@@ -133,10 +135,10 @@ public class FigDataType extends FigClassifierBox {
 
     /**
      * This function shall return the keyword to be used by the constructor. <p>
-     * 
-     * Subclasses of DataType shall 
+     *
+     * Subclasses of DataType shall
      * override this method to set their own keyword.
-     * 
+     *
      * @return the string to be used as the keyword
      */
     protected String getKeyword() {
@@ -187,7 +189,8 @@ public class FigDataType extends FigClassifierBox {
                 Model.getCoreHelper().setNamespace(me, m);
             }
         } catch (Exception e) {
-            LOG.error("could not set package due to:" + e
+            LOG.log(Level.SEVERE,
+                    "could not set package due to:" + e
                     + "' at " + encloser, e);
         }
 

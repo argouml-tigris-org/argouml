@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2012 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -46,21 +47,22 @@ import org.xml.sax.InputSource;
  * The implementation of the XmiReader for EUML2.
  */
 class XmiReaderEUMLImpl implements XmiReader {
-    
-    private static final Logger LOG = Logger.getLogger(XmiReaderEUMLImpl.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(XmiReaderEUMLImpl.class.getName());
 
     /**
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
-    
+
     private static Set<String> searchDirs = new HashSet<String>();
-    
+
     private Resource resource;
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *            The ModelImplementation.
      */
@@ -93,7 +95,7 @@ class XmiReaderEUMLImpl implements XmiReader {
 
     public Collection parse(InputSource inputSource, boolean readOnly)
         throws UmlException {
-        
+
         if (inputSource == null) {
             throw new NullPointerException(
                     "The input source must be non-null."); //$NON-NLS-1$
@@ -107,14 +109,15 @@ class XmiReaderEUMLImpl implements XmiReader {
         if (name == null) {
             name = inputSource.toString();
         }
-        LOG.debug("Parsing " + name); //$NON-NLS-1$
+        LOG.log(Level.FINE, "Parsing {0}", name); //$NON-NLS-1$
+
         if (inputSource.getByteStream() != null) {
             is = inputSource.getByteStream();
         } else if (inputSource.getSystemId() != null) {
             try {
                 URL url = new URL(inputSource.getSystemId());
                 if (url != null) {
-                    LOG.debug("Parsing URL " + url); //$NON-NLS-1$
+                    LOG.log(Level.FINE, "Parsing URL {0}", url); //$NON-NLS-1$
                     is = url.openStream();
                     if (is != null) {
                         is = new BufferedInputStream(is);
@@ -146,9 +149,9 @@ class XmiReaderEUMLImpl implements XmiReader {
             }
         }
 
-        Resource r = UMLUtil.getResource(modelImpl, 
+        Resource r = UMLUtil.getResource(modelImpl,
                 URI.createURI(id), readOnly);
-        
+
         try {
             modelImpl.getModelEventPump().stopPumpingEvents();
             r.unload();
@@ -174,8 +177,9 @@ class XmiReaderEUMLImpl implements XmiReader {
             }
         }
         resource = r;
-        LOG.debug("Parsed resource " + resource  //$NON-NLS-1$
-                + " with " + resource.getContents().size() //$NON-NLS-1$ 
+        LOG.log(Level.FINE,
+                "Parsed resource " + resource  //$NON-NLS-1$
+                + " with " + resource.getContents().size() //$NON-NLS-1$
                 + " elements"); //$NON-NLS-1$
         return r.getContents();
     }
@@ -183,7 +187,7 @@ class XmiReaderEUMLImpl implements XmiReader {
     /**
      * Test whether this is a UML2 file. Returns as soon as the first UML2
      * element is seen.
-     * 
+     *
      * @param r resource containing loaded UML model
      * @return true if any of the contained objects are instances of UML2
      *         Element.
@@ -196,11 +200,11 @@ class XmiReaderEUMLImpl implements XmiReader {
         }
         return false;
     }
-    
+
     /**
      * Attempt to detect ArgoUML/NetBeans MDR style UML 1.4 XMI files. These can
      * be loaded without complaint by EMF, but they won't do us any good.
-     * 
+     *
      * @param r resource containing the loaded file
      * @return true if XMI.header/XMI.metamodel contains xmi.name="UML" and
      *         xmi.version="1.4"
@@ -220,7 +224,8 @@ class XmiReaderEUMLImpl implements XmiReader {
                                     String n = x.getEStructuralFeature().getName();
                                     if ("xmi.name".equals(n)) {
                                         if (!("UML".equals((String) x.getValue()))) {
-                                            LOG.warn("Tried to parse XMI file with "
+                                            LOG.log(Level.WARNING,
+                                                    "Tried to parse XMI file with "
                                                      + "XMI.header/XMI.metamodel/xmi.name = "
                                                      + (String) x.getValue());
                                             return false;
@@ -229,9 +234,10 @@ class XmiReaderEUMLImpl implements XmiReader {
                                         String version = (String) x.getValue();
                                         if (version != null
                                                 && version.startsWith("1.4")) {
-                                            LOG.debug("Tried to parse XMI file with "
-                                                      + "XMI.header/XMI.metamodel/xmi.version = "
-                                                      + version);
+                                            LOG.log(Level.FINE,
+                                                    "Tried to parse XMI file with "
+                                                    + "XMI.header/XMI.metamodel/xmi.version = "
+                                                    + version);
                                             return true;
                                         }
                                     }
@@ -262,7 +268,7 @@ class XmiReaderEUMLImpl implements XmiReader {
         List l = resource.getContents();
         if (!l.isEmpty()) {
             return "uml:" //$NON-NLS-1$
-                    + modelImpl.getMetaTypes().getName(l.get(0)); 
+                    + modelImpl.getMetaTypes().getName(l.get(0));
         } else {
             return null;
         }
@@ -284,5 +290,5 @@ class XmiReaderEUMLImpl implements XmiReader {
         // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
-    
+
 }

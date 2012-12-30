@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -59,8 +60,9 @@ import org.tigris.gef.presentation.Fig;
  * @author mvw@tigris.org
  */
 public class ActionNewStereotype extends AbstractActionNewModelElement {
-    
-    static final Logger LOG = Logger.getLogger(ActionNewStereotype.class);
+
+    static final Logger LOG =
+        Logger.getLogger(ActionNewStereotype.class.getName());
 
     /**
      * The constructor.
@@ -97,7 +99,7 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
             }
             TargetManager.getInstance().setTarget(newStereo);
         } else {
-            LOG.error("We failed to create a stereotype");
+            LOG.log(Level.SEVERE, "We failed to create a stereotype");
         }
         super.actionPerformed(e);
     }

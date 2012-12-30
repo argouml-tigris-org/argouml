@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.management.ListenerNotFoundException;
 import javax.management.Notification;
@@ -54,7 +56,6 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -138,11 +139,11 @@ public final class TargetManager {
         private int currentTarget = -1;
 
         /**
-         * The listener to UML model changes. 
-         * Deleted model elements are removed 
-         * from the history list. 
+         * The listener to UML model changes.
+         * Deleted model elements are removed
+         * from the history list.
          */
-        private Remover umlListener = new HistoryRemover(); 
+        private Remover umlListener = new HistoryRemover();
 
         /**
          * Default constructor that registrates the history manager as target
@@ -259,7 +260,7 @@ public final class TargetManager {
 
         /**
          * Checks if it's possible to navigate back.
-         * 
+         *
          * @return true if it's possible to navigate back.
          */
         private boolean navigateBackPossible() {
@@ -361,7 +362,8 @@ public final class TargetManager {
     /**
      * The log4j logger to log messages to.
      */
-    private static final Logger LOG = Logger.getLogger(TargetManager.class);
+    private static final Logger LOG =
+        Logger.getLogger(TargetManager.class.getName());
 
     /**
      * The singleton instance.
@@ -393,13 +395,13 @@ public final class TargetManager {
      * is emulated.
      */
     private HistoryManager historyManager = new HistoryManager();
-    
+
     /**
-     * The listener to UML model changes. 
-     * Deleted model elements are removed 
-     * from the target list. 
+     * The listener to UML model changes.
+     * Deleted model elements are removed
+     * from the target list.
      */
-    private Remover umlListener = new TargetRemover(); 
+    private Remover umlListener = new TargetRemover();
 
     /**
      * Flag to indicate that there is a setTarget method running.
@@ -482,7 +484,7 @@ public final class TargetManager {
 	    return;
 	}
 
-	LOG.error("Unknown eventName: " + eventName);
+        LOG.log(Level.SEVERE, "Unknown eventName: " + eventName);
     }
 
     /**
@@ -596,7 +598,8 @@ public final class TargetManager {
      */
     public synchronized void addTarget(Object target) {
         if (target instanceof TargetListener) {
-            LOG.warn("addTarget method received a TargetListener, "
+            LOG.log(Level.WARNING,
+                    "addTarget method received a TargetListener, "
                     + "perhaps addTargetListener was intended! - " + target);
         }
 	if (isInTargetTransaction()) {
@@ -704,13 +707,13 @@ public final class TargetManager {
     /**
      * If there is only one target, then it is returned.
      * Otherwise null.
-     * 
+     *
      * @return the one and only target
      */
     public synchronized Object getSingleTarget() {
         return targets.size() == 1 ? targets.get(0) : null;
     }
-    
+
     /**
      * @return the target from the model
      */
@@ -772,7 +775,7 @@ public final class TargetManager {
 	            ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
 	        }
 	    } catch (RuntimeException e) {
-	        LOG.error("While calling targetSet for "
+                LOG.log(Level.SEVERE, "While calling targetSet for "
 	                + targetEvent
 	                + " in "
 	                + listeners[i + 1]
@@ -794,12 +797,11 @@ public final class TargetManager {
 		        .targetAdded(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		LOG.error("While calling targetAdded for "
-			  + targetEvent
-			  + " in "
-			  + listeners[i + 1]
-			  + " an error is thrown.",
-			  e);
+                LOG.log(Level.SEVERE,
+                        "While calling targetAdded for "
+                        + targetEvent + " in " + listeners[i + 1]
+                        + " an error is thrown.",
+                        e);
                 e.printStackTrace();
 	    }
         }
@@ -816,12 +818,10 @@ public final class TargetManager {
 		        .targetRemoved(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		LOG.warn("While calling targetRemoved for "
-			  + targetEvent
-			  + " in "
-			  + listeners[i + 1]
-			  + " an error is thrown.",
-			  e);
+                LOG.log(Level.WARNING, "While calling targetRemoved for "
+                        + targetEvent + " in " + listeners[i + 1]
+                        + " an error is thrown.",
+                        e);
 	    }
         }
     }
@@ -877,7 +877,7 @@ public final class TargetManager {
      * be returned. If the target is a fig but owned by a modelelement
      * that modelelement will be returned.  Otherwise null will be
      * returned.
-     * 
+     *
      * @return the target in it's 'modelform'.
      */
     public Object getModelTarget() {
@@ -910,7 +910,7 @@ public final class TargetManager {
      */
     public void navigateForward() throws IllegalStateException {
         historyManager.navigateForward();
-        LOG.debug("Navigate forward");
+        LOG.log(Level.FINE, "Navigate forward");
     }
 
     /**
@@ -922,7 +922,7 @@ public final class TargetManager {
      */
     public void navigateBackward() throws IllegalStateException {
         historyManager.navigateBackward();
-        LOG.debug("Navigate backward");
+        LOG.log(Level.FINE, "Navigate backward");
 
     }
 
@@ -959,17 +959,17 @@ public final class TargetManager {
     }
 
     /**
-     * The listener to removals of UML model elements, 
-     * diagrams and CommentEdges. 
-     * Deleted elements are removed 
-     * from the target list and/or from the history. 
-     * 
+     * The listener to removals of UML model elements,
+     * diagrams and CommentEdges.
+     * Deleted elements are removed
+     * from the target list and/or from the history.
+     *
      * @author michiel
      */
-    private abstract class Remover implements PropertyChangeListener, 
-        NotificationListener 
+    private abstract class Remover implements PropertyChangeListener,
+        NotificationListener
     {
-        
+
         protected Remover() {
             // Listen for the removal of diagrams from project
             ProjectManager.getManager().addPropertyChangeListener(this);
@@ -979,7 +979,7 @@ public final class TargetManager {
             if (Model.getFacade().isAModelElement(o)) {
                 Model.getPump().addModelEventListener(this, o, "remove");
             } else if (o instanceof Diagram) {
-                // Figs on a diagram without an owning model element 
+                // Figs on a diagram without an owning model element
                 ((Diagram) o).addPropertyChangeListener(this);
             } else if (o instanceof NotificationEmitter) {
                 // CommentEdge - the owner of a FigEdgeNote
@@ -997,8 +997,9 @@ public final class TargetManager {
                 try {
                     ((NotificationEmitter) o).removeNotificationListener(this);
                 } catch (ListenerNotFoundException e) {
-                    LOG.error("Notification Listener for "
-                                + "CommentEdge not found", e);
+                    LOG.log(Level.SEVERE,
+                            "Notification Listener for CommentEdge not found",
+                            e);
                 }
             }
         }
@@ -1022,14 +1023,14 @@ public final class TargetManager {
         /*
          * @see javax.management.NotificationListener#handleNotification(javax.management.Notification, java.lang.Object)
          */
-        public void handleNotification(Notification notification, 
+        public void handleNotification(Notification notification,
                 Object handback) {
             if ("remove".equals(notification.getType())) {
                 remove(notification.getSource());
             }
-            
+
         }
-        
+
         protected abstract void remove(Object obj);
     }
 
@@ -1045,4 +1046,3 @@ public final class TargetManager {
         }
     }
 }
-

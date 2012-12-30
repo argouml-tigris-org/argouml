@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -23,23 +25,21 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Logger;
-
 /**
  * Checkbox creates or nulls the instance of valueSpecificationPanel
- * 
+ *
  * @author BRAUD (issue 6215)
- * 
+ *
  *         Do we need : ChangeListener
  */
 class UMLValueSpecificationPanelOptional extends JPanel implements
 	ChangeListener {
 
-    private static final Logger LOG = Logger
-	    .getLogger(UMLValueSpecificationPanel.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLValueSpecificationPanel.class.getName());
 
     /**
-     * 
+     *
      */
     private JCheckBox valueExists;
 
@@ -49,7 +49,7 @@ class UMLValueSpecificationPanelOptional extends JPanel implements
     private UMLValueSpecificationPanel uvsPanel;
 
     /**
-     * 
+     *
      */
     private final UMLValueSpecificationModel model;
 
@@ -57,8 +57,8 @@ class UMLValueSpecificationPanelOptional extends JPanel implements
 	    UMLValueSpecificationModel aModel, String title) {
 
 	super(new BorderLayout());
-	
-	LOG.debug(">>New Optional ValueSpecification panel created");
+
+        LOG.log(Level.FINE, ">>New Optional ValueSpecification panel created");
 
 	TitledBorder border = new TitledBorder(title);
 	this.setBorder(border);
@@ -103,7 +103,7 @@ class UMLValueSpecificationPanelOptional extends JPanel implements
 
     /**
      * TODO: Is is really used ?
-     * 
+     *
      * @see javax.swing.JComponent#removeNotify()
      */
     @Override
@@ -114,11 +114,11 @@ class UMLValueSpecificationPanelOptional extends JPanel implements
 
     /**
      * TODO: Is is really used ?
-     * 
+     *
      * @see javax.swing.JComponent#removeNotify()
      */
     public void stateChanged(ChangeEvent e) {
-	LOG.debug(">>Values shown on panel are changed");
+        LOG.log(Level.FINE, ">>Values shown on panel are changed");
 
     }
 

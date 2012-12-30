@@ -3,8 +3,7 @@ Bundle-Version: 0.30.1
 Bundle-Name: ArgoUML Property Panels
 Bundle-Vendor: ArgoUML Team
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.argouml.core.infra;bundle-version="0.29.3",
- org.argouml.core.model,
+Require-Bundle: org.argouml.core.model,
  org.argouml.app,
  org.argouml.core.model.mdr,
  org.argouml.core.model.euml

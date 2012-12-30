@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 20011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,8 @@ package org.argouml.activity2.diagram;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.notation2.NotatedItem;
 import org.argouml.notation2.NotationLanguage;
 import org.argouml.notation2.NotationManager;
@@ -31,13 +31,14 @@ import org.tigris.gef.presentation.FigText;
  */
 class FigNotation extends FigText implements NotatedItem, DiagramElement {
 
-    private static final Logger LOG = Logger.getLogger(FigNotation.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigNotation.class.getName());
 
     private final NotationType notationType;
-    
+
     /**
      * Construct the notation fig
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings diagram settings
@@ -62,25 +63,25 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
     public void setLineWidth(int lw) {
         super.setLineWidth(0);
     }
-    
+
     /**
      * Notation is always transparent
      */
     public void setFilled(boolean filled) {
     }
-    
+
     @Override
     public Dimension getMinimumSize() {
-        
+
         int w = getFontMetrics().stringWidth(getText());
         int h = getFontMetrics().getHeight();
-        
-        final int minWidth = 
+
+        final int minWidth =
             w
             + getLeftMargin()
             + getRightMargin()
             + 2 * getLineWidth();
-        final int minHeight = 
+        final int minHeight =
             h
             + getTopMargin()
             + getBotMargin()
@@ -110,7 +111,7 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         }
         this.damage();
     }
-    
+
     public void setText(String s) {
         final String oldText = getText();
         if (s.equals(oldText)) {
@@ -130,7 +131,7 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
             group.calcBounds();
         }
     }
-    
+
     /**
      * Prevent underline events if underline does not change.
      * TODO: GEF should manage this after GEF 0.13.4 is included.
@@ -141,8 +142,8 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         }
         super.setUnderline(u);
     }
-    
-    
+
+
     /**
      * Prevent bold events if bold does not change.
      * TODO: GEF should manage this after GEF 0.13.4 is included.
@@ -153,7 +154,7 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         }
         super.setBold(b);
     }
-    
+
     /**
      * Prevent italic events if italic does not change.
      * TODO: GEF should manage this after GEF 0.13.4 is included.

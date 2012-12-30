@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,49 +45,50 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 
 /**
  * Manages a stacks of Commands to undo and redo. This DefaultUndoManager is
  * only temporarily a singleton until changes are made to GEF.
- * 
+ *
  * @author Bob Tarling
  */
 class DefaultUndoManager implements UndoManager {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(DefaultUndoManager.class);
+        Logger.getLogger(DefaultUndoManager.class.getName());
 
     /**
      * The number of undoable commands to store. When set to zero undo is
      * disabled entirely.
      */
     private int undoMax = 0;
-    
+
     private ArrayList<PropertyChangeListener> listeners =
         new ArrayList<PropertyChangeListener>();
-    
+
     /**
      * Set when a new user interaction begins
      */
     private boolean newInteraction = true;
-    
+
     /**
      * The project to which this undo manager relates
      */
     private final Project project;
-    
+
     /**
      * A description of the user interaction taking place.
      * Often this is the label of an Action.
      */
     private String newInteractionLabel;
-    
+
     private UndoStack undoStack = new UndoStack();
     private RedoStack redoStack = new RedoStack();
-    
+
     /**
      * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
      */
@@ -102,12 +103,12 @@ class DefaultUndoManager implements UndoManager {
         super();
         project = null;
     }
-    
+
     DefaultUndoManager(Project project) {
         super();
         this.project = project;
     }
-    
+
     /**
      * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
      */
@@ -115,12 +116,12 @@ class DefaultUndoManager implements UndoManager {
     public static UndoManager getInstance() {
         return INSTANCE;
     }
-    
+
     public synchronized Object execute(Command command) {
         addCommand(command);
         return command.execute();
     }
-    
+
     public synchronized void addCommand(Command command) {
 
         // TODO: Once the default constructor is deleted we only set dirty flag
@@ -129,11 +130,11 @@ class DefaultUndoManager implements UndoManager {
         } else {
             ProjectManager.getManager().setSaveEnabled(true);
         }
-        
+
         if (undoMax == 0) {
             return;
         }
-        
+
         if (!command.isUndoable()) {
             undoStack.clear();
             newInteraction = true;
@@ -153,7 +154,7 @@ class DefaultUndoManager implements UndoManager {
         }
         macroCommand.addCommand(command);
     }
-    
+
     public void setUndoMax(int max) {
         undoMax = max;
     }
@@ -167,52 +168,52 @@ class DefaultUndoManager implements UndoManager {
         }
         redoStack.push(command);
     }
-    
+
 
     public synchronized void redo() {
         final Interaction command = redoStack.pop();
         command.execute();
         undoStack.push(command);
     }
-    
+
     public synchronized void startInteraction(String label) {
-        LOG.debug("Starting interaction " + label);
+        LOG.log(Level.FINE, "Starting interaction {0}", label);
         this.newInteractionLabel = label;
         newInteraction = true;
     }
- 
+
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
-    
+
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }
-    
+
     private void fire(final String property, final Object value) {
         for (PropertyChangeListener listener : listeners) {
             listener.propertyChange(
                     new PropertyChangeEvent(this, property, "", value));
         }
     }
-    
+
     /**
      * An Interact is a Command the contains a list of sub-commands. It
      * represents a single user interaction and contains all the commands
      * executed as part of that interaction.
-     * 
+     *
      * @author Bob
      */
     class Interaction extends AbstractCommand {
-        
+
         private List<Command> commands = new ArrayList<Command>();
-        
+
         private String label;
-        
+
         Interaction(String lbl) {
             label = lbl;
         }
-        
+
         public void undo() {
             final ListIterator<Command> it =
                 commands.listIterator(commands.size());
@@ -220,7 +221,7 @@ class DefaultUndoManager implements UndoManager {
                 it.previous().undo();
             }
         }
-        
+
         public Object execute() {
             final Iterator<Command> it = commands.iterator();
             while (it.hasNext()) {
@@ -228,7 +229,7 @@ class DefaultUndoManager implements UndoManager {
             }
             return null;
         }
-        
+
         public boolean isUndoable() {
             final Iterator<Command> it = commands.iterator();
             while (it.hasNext()) {
@@ -239,7 +240,7 @@ class DefaultUndoManager implements UndoManager {
             }
             return true;
         }
-        
+
         public boolean isRedoable() {
             final Iterator<Command> it = commands.iterator();
             while (it.hasNext()) {
@@ -250,11 +251,11 @@ class DefaultUndoManager implements UndoManager {
             }
             return true;
         }
-        
+
         private void addCommand(Command command) {
             commands.add(command);
         }
-        
+
         // TODO: i18n
         private String getUndoLabel() {
             if (isUndoable()) {
@@ -263,7 +264,7 @@ class DefaultUndoManager implements UndoManager {
                 return "Can't Undo " + label;
             }
         }
-        
+
         // TODO: i18n
         private String getRedoLabel() {
             if (isRedoable()) {
@@ -272,19 +273,19 @@ class DefaultUndoManager implements UndoManager {
                 return "Can't Redo " + label;
             }
         }
-        
+
         List<Command> getCommands() {
             return new ArrayList<Command> (commands);
         }
     }
-    
+
     private abstract class InteractionStack extends Stack<Interaction> {
-        
+
         private String labelProperty;
         private String addedProperty;
         private String removedProperty;
         private String sizeProperty;
-        
+
         public InteractionStack(
                 String labelProp,
                 String addedProp,
@@ -295,7 +296,7 @@ class DefaultUndoManager implements UndoManager {
             removedProperty = removedProp;
             sizeProperty = sizeProp;
         }
-        
+
         public Interaction push(Interaction item) {
             super.push(item);
             fireLabel();
@@ -303,7 +304,7 @@ class DefaultUndoManager implements UndoManager {
             fire(sizeProperty, size());
             return item;
         }
-        
+
         public Interaction pop() {
             Interaction item = super.pop();
             fireLabel();
@@ -311,16 +312,16 @@ class DefaultUndoManager implements UndoManager {
             fire(sizeProperty, size());
             return item;
         }
-        
+
         private void fireLabel() {
             fire(labelProperty, getLabel());
         }
-        
+
         protected abstract String getLabel();
     }
-    
+
     private class UndoStack extends InteractionStack {
-        
+
         public UndoStack() {
             super(
                     "undoLabel",
@@ -328,7 +329,7 @@ class DefaultUndoManager implements UndoManager {
                     "undoRemoved",
                     "undoSize");
         }
-        
+
         public Interaction push(Interaction item) {
             super.push(item);
             if (item.isUndoable()) {
@@ -336,7 +337,7 @@ class DefaultUndoManager implements UndoManager {
             }
             return item;
         }
-        
+
         public Interaction pop() {
             Interaction item = super.pop();
             if (size() == 0 || !peek().isUndoable()) {
@@ -344,13 +345,13 @@ class DefaultUndoManager implements UndoManager {
             }
             return item;
         }
-        
+
         public void clear() {
             super.clear();
             fire("undoSize", size());
             fire("undoable", false);
         }
-        
+
         protected String getLabel() {
             if (empty()) {
                 return Translator.localize("action.undo");
@@ -359,18 +360,18 @@ class DefaultUndoManager implements UndoManager {
             }
         }
     }
-    
+
     private class RedoStack extends InteractionStack {
-        
+
         public RedoStack() {
             super(
-                    "redoLabel", 
-                    "redoAdded", 
-                    "redoRemoved", 
+                    "redoLabel",
+                    "redoAdded",
+                    "redoRemoved",
                     "redoSize");
         }
-        
-        
+
+
         public Interaction push(Interaction item) {
             super.push(item);
             if (item.isRedoable()) {
@@ -378,7 +379,7 @@ class DefaultUndoManager implements UndoManager {
             }
             return item;
         }
-        
+
         public Interaction pop() {
             Interaction item = super.pop();
             if (size() == 0 || !peek().isRedoable()) {
@@ -386,13 +387,13 @@ class DefaultUndoManager implements UndoManager {
             }
             return item;
         }
-        
+
         public void clear() {
             super.clear();
             fire("redoSize", size());
             fire("redoable", false);
         }
-        
+
         protected String getLabel() {
             if (empty()) {
                 return Translator.localize("action.redo");

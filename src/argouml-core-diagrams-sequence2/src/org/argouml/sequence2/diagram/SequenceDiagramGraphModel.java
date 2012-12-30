@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,9 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
@@ -60,31 +61,31 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphModel;
 
 /**
- * The sequence graph model is the bridge between the UML meta-model 
- * representation of the design and the graph model of GEF. 
+ * The sequence graph model is the bridge between the UML meta-model
+ * representation of the design and the graph model of GEF.
  * @author 5eichler@informatik.uni-hamburg.de
  * @author penyaskito
  */
 class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         VetoableChangeListener, PropertyChangeListener, MutableGraphModel {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(SequenceDiagramGraphModel.class);
-    
+        Logger.getLogger(SequenceDiagramGraphModel.class.getName());
+
     /**
      * The collaboration this sequence diagram belongs too.
      */
     private Object collaboration;
-    
+
     /**
      * The interaction that is shown on the sequence diagram.
      */
     private Object interaction;
-    
-    
+
+
     /**
      * Default constructor. Constructs a model and a collaboration in
      * the root of the current project.
@@ -93,7 +94,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         super();
         // TODO: Auto-generated constructor stub
     }
-    
+
     /**
      * @param element The Fig that we want his available ports.
      * @return The available ports for a given element
@@ -106,7 +107,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             ports.addAll(Model.getFacade().getReceivedMessages(element));
             ports.addAll(Model.getFacade().getSentMessages(element));
         }
-        // if is a message, it must return the sender 
+        // if is a message, it must return the sender
         // and the receiver of the message.
         else if (Model.getFacade().isAMessage(element)) {
             ports.add(Model.getFacade().getSender(element));
@@ -114,9 +115,9 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         }
         return ports;
     }
-    
+
     /**
-     * @param element 
+     * @param element
      * @return The outcoming edges.
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
@@ -130,9 +131,9 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         }
         return ports;
     }
-    
+
     /**
-     * @param element 
+     * @param element
      * @return The incoming edges.
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
@@ -146,7 +147,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         }
         return ports;
     }
-    
+
     /**
      * @param port
      * @return
@@ -155,7 +156,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
     public Object getOwner(Object port) {
         return port;
     }
-    
+
     /**
      * Gets the collaboration that is shown on the sequence diagram.<p>
      *
@@ -163,7 +164,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public Object getCollaboration() {
         if (collaboration == null) {
-            LOG.debug("The collaboration is null so creating a new collaboration");
+            LOG.log(Level.FINE, "The collaboration is null so creating a new collaboration");
             collaboration =
                 Model.getCollaborationsFactory().buildCollaboration(
                         ProjectManager.getManager().getCurrentProject()
@@ -178,7 +179,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      * @param c the collaboration
      */
     public void setCollaboration(Object c) {
-        LOG.debug("Setting the collaboration of sequence diagram to " + c);
+        LOG.log(Level.FINE, "Setting the collaboration of sequence diagram to {0}", c);
         collaboration = c;
         Collection interactions = Model.getFacade().getInteractions(c);
         if (!interactions.isEmpty()) {
@@ -195,12 +196,12 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             interaction =
                 Model.getCollaborationsFactory().buildInteraction(
                     collaboration);
-            LOG.debug("Interaction built.");
+            LOG.log(Level.FINE, "Interaction built.");
             Model.getPump().addModelEventListener(this, interaction);
         }
         return interaction;
     }
-    
+
     /**
      * In UML1.4 the sequence diagram is owned by a collaboration.
      * In UML2 it is owned by an Interaction (which might itself be owned by a
@@ -214,7 +215,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             return getInteraction();
         }
     }
-    
+
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
@@ -260,21 +261,21 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         } else {
             return false;
         }
-        
+
         // Both ends must be defined and nodes that are on the graph already.
         if (end0 == null || end1 == null) {
-            LOG.error("Edge rejected. Its ends are not attached to anything");
+            LOG.log(Level.SEVERE, "Edge rejected. Its ends are not attached to anything");
             return false;
         }
 
         if (!containsNode(end0) && !containsEdge(end0)) {
-            LOG.error("Edge rejected. Its source end is attached to "
+            LOG.log(Level.SEVERE, "Edge rejected. Its source end is attached to "
                     + end0
                     + " but this is not in the graph model");
             return false;
         }
         if (!containsNode(end1) && !containsEdge(end1)) {
-            LOG.error("Edge rejected. Its destination end is attached to "
+            LOG.log(Level.SEVERE, "Edge rejected. Its destination end is attached to "
                     + end1
                     + " but this is not in the graph model");
             return false;
@@ -294,11 +295,11 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         }
     }
 
-    
-    public void vetoableChange(PropertyChangeEvent pce) 
+
+    public void vetoableChange(PropertyChangeEvent pce)
         throws PropertyVetoException {
         // TODO: Auto-generated method stub
-        
+
     }
 
     /**
@@ -339,7 +340,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         Object actionType = args.get("action");
         return connectMessage(fromPort, toPort, actionType);
     }
-    
+
     /**
      * Creates a link based on the given from and toPort. The fromPort
      * should always point to a MessageCoordinates instance. The toPort
@@ -398,7 +399,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
                     Model.getCollaborationsFactory().buildAssociationRole(
                             fromPort, toPort);
             }
-    
+
             Object message =
                 Model.getCollaborationsFactory().buildMessage(
                     getInteraction(),
@@ -411,36 +412,36 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
                 .setSender(message, fromPort);
             Model.getCommonBehaviorHelper()
                 .setReceiver(message, toPort);
-    
+
             addEdge(message);
             edge = message;
         }
         if (edge == null) {
-            LOG.debug("Incorrect edge");
+            LOG.log(Level.FINE, "Incorrect edge");
         }
         return edge;
-    
+
     }
-    
+
     private Object createMessage2(Object fromPort, Object toPort, Object messageSort) {
         if (fromPort != null && toPort != null) {
-    
+
             Object message =
                 Model.getCollaborationsFactory().buildMessage(
                     fromPort,
                     toPort);
             Model.getCollaborationsHelper().setMessageSort(message, messageSort);
-    
+
             addEdge(message);
             return message;
         }
-        LOG.debug("Incorrect edge");
+        LOG.log(Level.FINE, "Incorrect edge");
         return null;
-    
+
     }
 
-    
-    
+
+
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,11 +40,12 @@ package org.argouml.cognitive.ui;
 
 import java.awt.BorderLayout;
 import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
@@ -65,7 +66,8 @@ public class WizDescription extends WizStep {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(WizDescription.class);
+    private static final Logger LOG =
+        Logger.getLogger(WizDescription.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -79,7 +81,7 @@ public class WizDescription extends WizStep {
      */
     public WizDescription() {
 	super();
-	LOG.info("making WizDescription");
+	LOG.log(Level.INFO, "making WizDescription");
 
 	description.setLineWrap(true);
 	description.setWrapStyleWord(true);

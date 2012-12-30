@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ import java.awt.event.MouseListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -61,7 +63,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -104,7 +105,8 @@ public class ToDoPane extends JPanel
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ToDoPane.class);
+    private static final Logger LOG =
+        Logger.getLogger(ToDoPane.class.getName());
 
     private static final int WARN_THRESHOLD = 50;
     private static final int ALARM_THRESHOLD = 100;
@@ -131,14 +133,14 @@ public class ToDoPane extends JPanel
     /**
      * Construct the ToDoPane.
      * @param splash Unused parameter for backwards compatibility.
-     * 
+     *
      * @deprecated for 0.31.7 by tfmorris.  Use 0-arg constructor.
      */
     @Deprecated
     public ToDoPane(@SuppressWarnings("unused") SplashScreen splash) {
         this();
     }
-    
+
     /**
      * Construct the ToDoPane.
      */
@@ -203,7 +205,7 @@ public class ToDoPane extends JPanel
     public List<ToDoPerspective> getPerspectiveList() {
         return perspectives;
     }
-    
+
     /**
      * @param pers the perspectives
      */
@@ -228,7 +230,7 @@ public class ToDoPane extends JPanel
         }
         updateTree();
     }
-    
+
     /**
      * @return the current perspectives
      */
@@ -300,13 +302,13 @@ public class ToDoPane extends JPanel
      * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
-        LOG.debug("ToDoPane valueChanged");
+        LOG.log(Level.FINE, "ToDoPane valueChanged");
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener - tfm
         Object sel = getSelectedObject();
         ProjectBrowser.getInstance().setToDoItem(sel);
-        LOG.debug("lastselection: " + lastSel);
-	LOG.debug("sel: " + sel);
+        LOG.log(Level.FINE, "lastselection: {0}", lastSel);
+        LOG.log(Level.FINE, "sel: {0}", sel);
         if (lastSel instanceof ToDoItem) {
 	    ((ToDoItem) lastSel).deselect();
 	}
@@ -321,28 +323,28 @@ public class ToDoPane extends JPanel
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
-    public void mousePressed(MouseEvent e) { 
+    public void mousePressed(MouseEvent e) {
         // Empty implementation.
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent e) {  
+    public void mouseReleased(MouseEvent e) {
         // Empty implementation.
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
-    public void mouseEntered(MouseEvent e) {  
+    public void mouseEntered(MouseEvent e) {
         // Empty implementation.
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
-    public void mouseExited(MouseEvent e) { 
+    public void mouseExited(MouseEvent e) {
         // Empty implementation.
     }
 
@@ -374,7 +376,7 @@ public class ToDoPane extends JPanel
      * This is necessary because event notification of ToDoListener events is
      * likely to be coming from the ToDo Validity Checker thread running in the
      * background.
-     * 
+     *
      * @param task a Runnable task who's run() method will be invoked
      */
     private void swingInvoke(Runnable task) {
@@ -384,7 +386,7 @@ public class ToDoPane extends JPanel
             SwingUtilities.invokeLater(task);
         }
     }
-    
+
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
@@ -410,7 +412,7 @@ public class ToDoPane extends JPanel
                 }
                 List<ToDoItem> items = tde.getToDoItemList();
                 for (ToDoItem todo : items) {
-                    if (todo.getPriority() 
+                    if (todo.getPriority()
                             >= ToDoItem.INTERRUPTIVE_PRIORITY) {
                         // keep nagging until the user solves the problem:
                         // This seems a nice way to nag:
@@ -422,7 +424,7 @@ public class ToDoPane extends JPanel
             }
         });
     }
-    
+
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
@@ -491,7 +493,7 @@ public class ToDoPane extends JPanel
         if (curPerspective == null) {
             tree.setVisible(false);
 	} else {
-            LOG.debug("ToDoPane setting tree model");
+            LOG.log(Level.FINE, "ToDoPane setting tree model");
             curPerspective.setRoot(root);
             tree.setShowsRootHandles(true);
             tree.setModel(curPerspective);
@@ -517,7 +519,7 @@ public class ToDoPane extends JPanel
      * @param path the path in the tree of the selected item
      */
     public static void mySingleClick(
-            @SuppressWarnings("unused") int row, 
+            @SuppressWarnings("unused") int row,
             @SuppressWarnings("unused") TreePath path) {
         clicksInToDoPane++;
     }
@@ -530,7 +532,7 @@ public class ToDoPane extends JPanel
      * @param path the path in the tree of the selected item
      */
     public void myDoubleClick(
-            @SuppressWarnings("unused") int row, 
+            @SuppressWarnings("unused") int row,
             @SuppressWarnings("unused") TreePath path) {
         dblClicksInToDoPane++;
         if (getSelectedObject() == null) {
@@ -543,7 +545,7 @@ public class ToDoPane extends JPanel
 
         //TODO: should fire its own event and ProjectBrowser
         //TODO: should register a listener
-        LOG.debug("2: " + getSelectedObject().toString());
+        LOG.log(Level.FINE, "2: {0}", getSelectedObject() );
     }
 
     /**

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,8 +52,9 @@ import java.util.StringTokenizer;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleLoader2;
@@ -62,42 +63,43 @@ import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
 
 /**
- * This is the profile loader that loads modules profiles
- * 
+ * This is the profile loader that loads modules profiles.
+ *
  * @author maurelio1234
  */
 public final class ProfileLoader {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ProfileLoader.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(ProfileLoader.class.getName());
+
     /**
      * The prefix in URL:s that are jars.
      */
     private static final String JAR_PREFIX = "jar:";
-    
+
     /**
      * The prefix in URL:s that are files.
      */
     private static final String FILE_PREFIX = "file:";
-    
+
     /**
-     * Looks for profiles in the jars in the directories used by the 
-     * ModuleLoader to load modules
+     * Looks for profiles in the jars in the directories used by the
+     * ModuleLoader to load modules.
      */
     public void doLoad() {
-        List<String> extDirs = 
+        List<String> extDirs =
             ModuleLoader2.getInstance().getExtensionLocations();
-        
+
         for (String extDir : extDirs) {
             huntForProfilesInDir(extDir);
         }
     }
 
     private void huntForProfilesInDir(String dir) {
-        LOG.info("Looking for Profiles in " + dir);
-        
+        LOG.log(Level.INFO, "Looking for Profiles in {0}", dir);
+
         File extensionDir = new File(dir);
         if (extensionDir.isDirectory()) {
             File[] files = extensionDir.listFiles(new JarFileFilter());
@@ -106,8 +108,9 @@ public final class ProfileLoader {
                 try {
                     jarfile = new JarFile(file);
                     if (jarfile != null) {
-                        LOG.info("Looking for Profiles in the Jar "
-                                + jarfile.getName());
+                        LOG.log(Level.INFO,
+                                "Looking for Profiles in the Jar {0}",
+                                jarfile.getName());
 
                         ClassLoader classloader = new URLClassLoader(
                                 new URL[] {file.toURI().toURL()});
@@ -115,7 +118,7 @@ public final class ProfileLoader {
                                 classloader);
                     }
                 } catch (IOException ioe) {
-                    LOG.debug("Cannot open Jar file " + file, ioe);
+                    LOG.log(Level.FINE, "Cannot open Jar file " + file, ioe);
                 }
             }
         }
@@ -125,7 +128,7 @@ public final class ProfileLoader {
     /**
      * Interprets the MANIFEST file in the JAR in order to load the declared
      * profile.
-     * 
+     *
      * @param file the file object referencing the Jar
      * @param manifest the manifest file of the Jar
      * @param classloader the classloader that loads the classes referenced by
@@ -163,12 +166,12 @@ public final class ProfileLoader {
                             ProfileFacade.getManager());
 
                     ProfileFacade.getManager().registerProfile(udp);
-                    LOG.debug("Registered Profile: " + udp.getDisplayName()
-                            + "...");
+                    LOG.log(Level.FINE,
+                            "Registered Profile: {0}", udp.getDisplayName());
                 } catch (ProfileException e) {
-                    LOG.error("Exception", e);
+                    LOG.log(Level.SEVERE, "Exception", e);
                 } catch (IOException e) {
-                    LOG.error("Exception", e);
+                    LOG.log(Level.SEVERE, "Exception", e);
                 }
             }
 
@@ -176,10 +179,10 @@ public final class ProfileLoader {
     }
 
     /**
-     * Resolves the dependencies for a Profile
-     * 
+     * Resolves the dependencies for a Profile.
+     *
      * @param attr a group of attributes in the MANIFEST file for this JAR
-     * 
+     *
      * @return the set of defined profiles
      */
     private Set<String> loadManifestDependenciesForProfile(Attributes attr) {
@@ -198,11 +201,11 @@ public final class ProfileLoader {
     }
 
     /**
-     * Loads the Java critics defined by a profile
-     * 
+     * Loads the Java critics defined by a profile.
+     *
      * @param attr the Manifest section of the profile
      * @param classloader the classloader of the Jar
-     * 
+     *
      * @return the set of defined critics
      */
     private Set<Critic> loadJavaCriticsForProfile(Attributes attr,
@@ -221,18 +224,19 @@ public final class ProfileLoader {
                     Critic critic = (Critic) cl.newInstance();
                     ret.add(critic);
                 } catch (ClassNotFoundException e) {
-                    LOG.error("Error loading class: " + entry, e);
+                    LOG.log(Level.SEVERE, "Error loading class: " + entry, e);
                 } catch (InstantiationException e) {
-                    LOG.error("Error instantianting class: " + entry, e);
+                    LOG.log(Level.SEVERE,
+                            "Error instantianting class: " + entry, e);
                 } catch (IllegalAccessException e) {
-                    LOG.error("Exception", e);
+                    LOG.log(Level.SEVERE, "Exception", e);
                 }
             }
         }
 
         return ret;
     }
-    
+
     /**
      * The file filter that selects Jar files.
      */
@@ -246,5 +250,5 @@ public final class ProfileLoader {
                     && pathname.getPath().toLowerCase().endsWith(".jar"));
         }
     }
-    
+
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,9 @@
 package org.argouml.activity2.diagram;
 
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -31,27 +32,28 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 class ActivityDiagramRenderer extends UmlDiagramRenderer {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ActivityDiagramRenderer.class);
+        Logger.getLogger(ActivityDiagramRenderer.class.getName());
 
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
                                  Map styleAttributes) {
         FigNode result = null;
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
-        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        Diagram diag = ((LayerPerspective) lay).getDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             result = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
-            LOG.warn("ActivityDiagramRenderer getFigNodeFor unexpected node " 
+            LOG.log(Level.WARNING,
+                    "ActivityDiagramRenderer getFigNodeFor unexpected node "
                     + node);
             return null;
         }
-        LOG.debug("ActivityDiagramRenderer getFigNodeFor " + result);
+        LOG.log(Level.FINE, "ActivityDiagramRenderer getFigNodeFor {0}", result);
         lay.add(result);
-        return result;       
+        return result;
     }
 
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
@@ -67,7 +69,7 @@ class ActivityDiagramRenderer extends UmlDiagramRenderer {
             newEdge = new FigActivityEdge(edge, settings);
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, settings);
-        } 
+        }
         addEdge(lay, newEdge, edge);
         return newEdge;
     }

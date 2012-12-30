@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,21 +54,20 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.batik.dom.GenericDOMImplementation;
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.gefext.DeferredBufferedImage;
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Editor;
@@ -80,7 +79,6 @@ import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.base.SavePNGAction;
 import org.tigris.gef.base.SavePSAction;
 import org.tigris.gef.base.SaveSVGAction;
-import org.tigris.gef.persistence.SvgWriter2D;
 import org.tigris.gef.persistence.export.PostscriptWriter;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Localizer;
@@ -100,7 +98,7 @@ import org.w3c.dom.Document;
 public final class SaveGraphicsManager {
 
     private static final int MIN_MARGIN = 15;
-    
+
     /**
      * The configuration key for the preferred graphics format.
      */
@@ -346,7 +344,7 @@ public final class SaveGraphicsManager {
         }
         return cmd;
     }
-    
+
 
     /**
      * @return the complete collection of SuffixFilters,
@@ -358,14 +356,14 @@ public final class SaveGraphicsManager {
         c.addAll(otherFilters);
         return c;
     }
-    
+
     /**
      * Adjust the drawing area so that instead of a tight bounding box, it
      * includes the canvas origin and some space around the lower and right
      * sides so that the elements will be roughly centered. Elements which are
      * off the top or left side of the canvas may still be clipped (ie if the
      * original drawing area had a negative x or y coordinate).
-     * 
+     *
      * @param area rectangle representing original drawing area
      * @return an expanded rectangle
      */
@@ -382,15 +380,15 @@ public final class SaveGraphicsManager {
         if (margin < MIN_MARGIN) {
             margin = MIN_MARGIN;
         }
-        return new Rectangle(0, 0, 
-                area.width + (2 * margin), 
+        return new Rectangle(0, 0,
+                area.width + (2 * margin),
                 area.height + (2 * margin));
     }
 }
 
 
 class SaveScaledEPSAction extends SaveEPSAction {
-    
+
     SaveScaledEPSAction(String name) {
         super(name);
     }
@@ -420,13 +418,13 @@ class SaveScaledEPSAction extends SaveEPSAction {
 /**
  * Write out a PNG image of the current diagram using a more memory efficient
  * scheme than GEF uses.
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  */
 class SavePNGAction2 extends SavePNGAction {
-    
-    private static final Logger LOG = Logger.getLogger(SavePNGAction2.class);
-    
+
+    private static final Logger LOG = Logger.getLogger(SavePNGAction2.class.getName());
+
     SavePNGAction2(String name) {
         super(name);
     }
@@ -434,7 +432,7 @@ class SavePNGAction2 extends SavePNGAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
         Editor ce = Globals.curEditor();
-        Rectangle drawingArea = 
+        Rectangle drawingArea =
             ce.getLayerManager().getActiveLayer().calcDrawingArea();
         // If the diagram is empty, GEF won't write anything, leaving us with
         // an empty (and invalid) file.  Handle this case ourselves to prevent
@@ -444,11 +442,11 @@ class SavePNGAction2 extends SavePNGAction {
             try {
                 saveGraphics(outputStream, ce, dummyArea);
             } catch (java.io.IOException e) {
-                LOG.error("Error while exporting Graphics:", e);
+                LOG.log(Level.SEVERE, "Error while exporting Graphics:", e);
             }
             return;
         }
-        
+
         // Anything else is handled the normal way
         super.actionPerformed(ae);
     }
@@ -458,40 +456,40 @@ class SavePNGAction2 extends SavePNGAction {
      * a PNG image.
      */
     @Override
-    protected void saveGraphics(OutputStream s, Editor ce, 
+    protected void saveGraphics(OutputStream s, Editor ce,
             Rectangle drawingArea)
         throws IOException {
 
-        Rectangle canvasArea = 
+        Rectangle canvasArea =
             SaveGraphicsManager.adjustDrawingArea(drawingArea);
-        
+
         // Create an image which will do deferred rendering of the GEF
-        // diagram on demand as data is pulled from it 
+        // diagram on demand as data is pulled from it
         RenderedImage i = new DeferredBufferedImage(canvasArea,
                 BufferedImage.TYPE_INT_ARGB, ce, scale);
 
-        LOG.debug("Created DeferredBufferedImage - drawingArea = "
-                + canvasArea + " , scale = " + scale);
-        
-        ImageIO.write(i, "png", s);
+        LOG.log(Level.FINE,
+                "Created DeferredBufferedImage - drawingArea = {0} , scale = {1}",
+                new Object[]{canvasArea, scale});
 
+        ImageIO.write(i, "png", s);
     }
-    
+
 
 }
 
 /**
- * Action to save a diagram as a GIF image in a supplied OutputStream. 
- * 
+ * Action to save a diagram as a GIF image in a supplied OutputStream.
+ *
  * TODO: This requires Java 6 in its current state, so don't use.
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  */
 class SaveGIFAction2 extends SaveGIFAction {
 
     /**
      * Creates a new SaveGIFAction
-     * 
+     *
      * @param name The name of the action
      */
     SaveGIFAction2(String name) {
@@ -504,20 +502,20 @@ class SaveGIFAction2 extends SaveGIFAction {
      * a GIF image.
      */
     @Override
-    protected void saveGraphics(OutputStream s, Editor ce, 
+    protected void saveGraphics(OutputStream s, Editor ce,
             Rectangle drawingArea) throws IOException {
 
-        Rectangle canvasArea = 
+        Rectangle canvasArea =
             SaveGraphicsManager.adjustDrawingArea(drawingArea);
-        
+
         RenderedImage i = new DeferredBufferedImage(canvasArea,
                 BufferedImage.TYPE_INT_ARGB, ce, scale);
 
         // NOTE: GEF's GIF writer uses Jeff Poskanzer's GIF encoder, but that
         // saves a copy of the entire image in an internal buffer before
-        // starting work, defeating the whole purpose of our incremental 
+        // starting work, defeating the whole purpose of our incremental
         // rendering.
-        
+
         // Java SE 6 has a native GIF writer, but it's not in Java 5.  One
         // is available in the JAI-ImageIO library, but we don't currently
         // bundle that and at 6+ MB it seems like a heavyweight solution, but
@@ -534,7 +532,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
 
     /**
      * Creates a new SaveSVGAction
-     * 
+     *
      * @param name
      *                The name of the action
      */
@@ -544,7 +542,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
 
     /**
      * Creates a new SaveSVGAction
-     * 
+     *
      * @param name
      *                The name of the action
      * @param icon
@@ -556,7 +554,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
 
     /**
      * Creates a new SaveSVGAction
-     * 
+     *
      * @param name
      *                The name of the action
      * @param localize
@@ -568,7 +566,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
 
     /**
      * Creates a new SaveSVGAction
-     * 
+     *
      * @param name
      *                The name of the action
      * @param icon
@@ -580,7 +578,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
-    protected void saveGraphics(OutputStream outStream, Editor ce, 
+    protected void saveGraphics(OutputStream outStream, Editor ce,
     		Rectangle drawingArea)
         throws IOException {
 
@@ -593,14 +591,14 @@ class SaveSVGAction2 extends SaveGraphicsAction {
             bounds.y = Math.min(bounds.y, fig.getY());
             // we actually are computing max x & max y, not width & height
             bounds.width = Math.max(bounds.width, fig.getX() + fig.getWidth());
-            bounds.height = Math.max(bounds.height, 
+            bounds.height = Math.max(bounds.height,
                     fig.getY() + fig.getHeight());
         }
-        
+
         // Convert max x/y to width/height
         bounds.width -= bounds.x;
         bounds.height -= bounds.y;
-        
+
         // Get a DOMImplementation
         DOMImplementation domImpl =
         GenericDOMImplementation.getDOMImplementation();

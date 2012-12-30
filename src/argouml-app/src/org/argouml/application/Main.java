@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,14 +45,13 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -60,10 +59,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -155,7 +150,7 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            LOG.info("ArgoUML Started.");
+            LOG.log(Level.INFO, "ArgoUML Started.");
 
             SimpleTimer st = new SimpleTimer();
             st.mark("begin");
@@ -243,20 +238,18 @@ public class Main {
             Thread postLoadThead = new Thread(pl);
             postLoadThead.start();
 
-            LOG.info("");
-            LOG.info("profile of load time ############");
+            LOG.log(Level.INFO, "\nprofile of load time ############");
             for (Enumeration i = st.result(); i.hasMoreElements();) {
-                LOG.info(i.nextElement());
+                LOG.log(Level.INFO, "{0}", i.nextElement());
             }
-            LOG.info("#################################");
-            LOG.info("");
+            LOG.log(Level.INFO, "#################################\n");
 
             st = null;
             ArgoFrame.getFrame().setCursor(
                     Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
             // Andreas: just temporary: a warning dialog for uml2...
-            if (showUml2warning 
+            if (showUml2warning
                     && Model.getFacade().getUmlVersion().startsWith("2")) {
                 JOptionPane.showMessageDialog( ArgoFrame.getFrame()
                         , "You are running an experimental version "
@@ -270,12 +263,8 @@ public class Main {
             ToolTipManager.sharedInstance().setDismissDelay(50000000);
         } catch (Throwable t) {
             try {
-                LOG.fatal("Fatal error on startup.  ArgoUML failed to start", 
-                        t);
+                LOG.log(Level.SEVERE, "Fatal error on startup.  ArgoUML failed to start", t);
             } finally {
-                System.out.println("Fatal error on startup.  "
-                        + "ArgoUML failed to start.");
-                t.printStackTrace();
                 System.exit(1);
             }
         }
@@ -338,7 +327,7 @@ public class Main {
      * Parse command line args. The assumption is that all options precede the
      * name of a project file to load. Sets static fields that can be referenced
      * later.
-     * 
+     *
      * @param args command line args
      */
     private static void parseCommandLine(String[] args) {
@@ -375,14 +364,14 @@ public class Main {
                     i++;
                 } else if (args[i].equalsIgnoreCase("-batch")) {
                     batch = true;
-                } else if (args[i].equalsIgnoreCase("-open") 
+                } else if (args[i].equalsIgnoreCase("-open")
                         && i + 1 < args.length) {
                     projectName = args[++i];
-                } else if (args[i].equalsIgnoreCase("-print") 
+                } else if (args[i].equalsIgnoreCase("-print")
                         && i + 1 < args.length) {
                     // TODO: Huge side effect.  Hoist out of parse - tfm
                     // let's load the project
-                    String projectToBePrinted = 
+                    String projectToBePrinted =
                         PersistenceManager.getInstance().fixExtension(
                                 args[++i]);
                     ProjectBrowser.getInstance().loadProject(
@@ -466,7 +455,7 @@ public class Main {
                 DEFAULT_MODEL_IMPLEMENTATION);
         Throwable ret = Model.initialise(className);
         if (ret != null) {
-            LOG.fatal("Model component not correctly initialized.", ret);
+            LOG.log(Level.SEVERE, "Model component not correctly initialized.", ret);
             System.err.println(className
                     + " is not a working Model implementation.");
             System.exit(1);
@@ -523,11 +512,10 @@ public class Main {
         if (!("".equals(s))) {
             File file = new File(s);
             if (file.exists()) {
-                LOG.info("Re-opening project " + s);
+                LOG.log(Level.INFO, "Re-opening project {0}", s);
                 return s;
             } else {
-                LOG.warn("Cannot re-open " + s
-                        + " because it does not exist");
+                LOG.log(Level.WARNING, "Cannot re-open {0} because it does not exist", s);
             }
         }
         return null;
@@ -714,12 +702,12 @@ public class Main {
     }
 
     /**
-     * Create the .argouml directory if it doesn't exist. 
-     * This is done here because it must be done before 
+     * Create the .argouml directory if it doesn't exist.
+     * This is done here because it must be done before
      * setting the log configuration.
      */
     static {
-        File argoDir = new File(System.getProperty("user.home") 
+        File argoDir = new File(System.getProperty("user.home")
                 + File.separator + ".argouml");
         if (!argoDir.exists()) {
             argoDir.mkdir();
@@ -740,9 +728,9 @@ public class Main {
      */
     static {
 
-        /*  
+        /*
          * Install the trap to "eat" SecurityExceptions.
-         * 
+         *
          * NOTE: This is temporary and will go away in a "future" release
          * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4714232
          */
@@ -762,38 +750,38 @@ public class Main {
          * {@link Argo} perform the initialization.
          */
 
-        // JavaWebStart properties for logs are : 
+        // JavaWebStart properties for logs are :
         // deployment.user.logdir & deployment.user.tmp
-        if (System.getProperty("log4j.configuration") == null) {
-            Properties props = new Properties();
-            InputStream stream = null;
-            try {
-                stream = Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream(DEFAULT_LOGGING_CONFIGURATION);
-
-                if (stream != null) {
-                    props.load(stream);
-                }
-            } catch (IOException io) {
-                io.printStackTrace();
-                System.exit(-1);
-            }
-
-            PropertyConfigurator.configure(props);
-
-            if (stream == null) {
-                BasicConfigurator.configure();
-                Logger.getRootLogger().getLoggerRepository().setThreshold(
-                        Level.ERROR); // default level is DEBUG
-                Logger.getRootLogger().error(
-                        "Failed to find valid log4j properties"
-                        + "in log4j.configuration"
-                        + "using default logging configuration");
-            }
-        }
+//        if (System.getProperty("log4j.configuration") == null) {
+//            Properties props = new Properties();
+//            InputStream stream = null;
+//            try {
+//                stream = Thread.currentThread().getContextClassLoader()
+//                        .getResourceAsStream(DEFAULT_LOGGING_CONFIGURATION);
+//
+//                if (stream != null) {
+//                    props.load(stream);
+//                }
+//            } catch (IOException io) {
+//                io.printStackTrace();
+//                System.exit(-1);
+//            }
+//
+//            PropertyConfigurator.configure(props);
+//
+//            if (stream == null) {
+//                BasicConfigurator.configure();
+//                Logger.getRootLogger().getLoggerRepository().setThreshold(
+//                        Level.ERROR); // default level is DEBUG
+//                Logger.getRootLogger().error(
+//                        "Failed to find valid log4j properties"
+//                        + "in log4j.configuration"
+//                        + "using default logging configuration");
+//            }
+//        }
 
         // initLogging();
-        LOG = Logger.getLogger(Main.class);
+        LOG = Logger.getLogger(Main.class.getName());
     }
 
 
@@ -858,7 +846,7 @@ public class Main {
         pb.setLocation(x, y);
         pb.setSize(w, h);
         pb.setExtendedState(Configuration.getBoolean(
-                Argo.KEY_SCREEN_MAXIMIZED, false) 
+                Argo.KEY_SCREEN_MAXIMIZED, false)
                 ? Frame.MAXIMIZED_BOTH : Frame.NORMAL);
 
         UIManager.put("Button.focusInputMap", new UIDefaults.LazyInputMap(
@@ -868,18 +856,18 @@ public class Main {
                     "SPACE", "pressed",
                     "released SPACE", "released"
                 })
-        );         
+        );
         return pb;
     }
 
     /**
      * Publish the version of the ArgoUML application. <p>
-     * 
-     * This function is intentionally public, 
-     * since applications built on ArgoUML, 
-     * that do not make use of Main.main(), 
-     * can call this function and then access ArgoUML's version 
-     * from the ApplicationVersion class. 
+     *
+     * This function is intentionally public,
+     * since applications built on ArgoUML,
+     * that do not make use of Main.main(),
+     * can call this function and then access ArgoUML's version
+     * from the ApplicationVersion class.
      */
     public static void initVersion() {
         ArgoVersion.init();
@@ -896,7 +884,7 @@ class PostLoad implements Runnable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(PostLoad.class);
+    private static final Logger LOG = Logger.getLogger(PostLoad.class.getName());
 
     /**
      * The list of actions to perform.
@@ -920,14 +908,14 @@ class PostLoad implements Runnable {
         try {
             Thread.sleep(1000);
         } catch (Exception ex) {
-            LOG.error("post load no sleep", ex);
+            LOG.log(Level.SEVERE, "post load no sleep", ex);
         }
         for (Runnable r : postLoadActions) {
             r.run();
             try {
                 Thread.sleep(100);
             } catch (Exception ex) {
-                LOG.error("post load no sleep2", ex);
+                LOG.log(Level.SEVERE, "post load no sleep2", ex);
             }
         }
     }
@@ -940,7 +928,7 @@ class LoadModules implements Runnable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(LoadModules.class);
+    private static final Logger LOG = Logger.getLogger(LoadModules.class.getName());
 
 
     private static final String[] OPTIONAL_INTERNAL_MODULES = {
@@ -957,8 +945,8 @@ class LoadModules implements Runnable {
                 ModuleLoader2.addClass(module);
             } catch (ClassNotFoundException e) {
                 /* We don't care if optional modules aren't found. */
-                LOG.debug("Module " + module + " not found");
-            }            
+                LOG.log(Level.FINE, "Module {0} not found", module);
+            }
         }
     }
 
@@ -967,7 +955,7 @@ class LoadModules implements Runnable {
      */
     public void run() {
         huntForInternalModules();
-        LOG.info("Module loading done");
+        LOG.log(Level.INFO, "Module loading done");
     }
 
 } /* end class LoadModules */

@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Rectangle;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -58,7 +59,8 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigInterface extends FigClassifierBox {
 
-    private static final Logger LOG = Logger.getLogger(FigInterface.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigInterface.class.getName());
 
     /**
      * Initialization common to multiple constructors.
@@ -71,12 +73,12 @@ public class FigInterface extends FigClassifierBox {
 
         getStereotypeFig().setKeyword("interface");
         getStereotypeFig().setVisible(true);
-        /* The next line is needed so that we have the right dimension 
-         * when drawing this Fig on the diagram by pressing down 
+        /* The next line is needed so that we have the right dimension
+         * when drawing this Fig on the diagram by pressing down
          * the mouse button, even before releasing the mouse button: */
         getNameFig().setTopMargin(
                 getStereotypeFig().getMinimumSize().height);
-        
+
         addFig(getBigPort());
         addFig(getNameFig());
         // stereotype fig covers the name fig:
@@ -95,24 +97,24 @@ public class FigInterface extends FigClassifierBox {
 
         setSuppressCalcBounds(false);
 
-        // Set the bounds of the figure to the total of the above 
+        // Set the bounds of the figure to the total of the above
         setBounds(getBounds());
         enableSizeChecking(true);
     }
 
     /**
      * Construct an Interface fig
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigInterface(Object owner, Rectangle bounds, 
+    public FigInterface(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
         initialize(bounds);
     }
-    
+
     @Override
     public Selection makeSelection() {
         return new SelectionInterface(this);
@@ -157,8 +159,9 @@ public class FigInterface extends FigClassifierBox {
                 Model.getCoreHelper().setNamespace(me, m);
             }
         } catch (Exception e) {
-            LOG.error("could not set package due to:" + e
-                    + "' at " + encloser, e);
+            LOG.log(Level.SEVERE,
+                    "could not set package at " + encloser,
+                    e);
         }
 
         // The next if-clause is important for the Deployment-diagram
@@ -196,13 +199,13 @@ public class FigInterface extends FigClassifierBox {
             // only saving grace is that we're called SO many times that on the
             // last time, things should be stable again and we'll get a good set
             // of elements for the final update.  We need a better mechanism.
-            
+
             // add the listeners to the newOwner
             listeners.add(new Object[] {newOwner, null});
-            
+
             // and its stereotypes
             // TODO: Aren't stereotypes handled elsewhere?
-            for (Object stereotype 
+            for (Object stereotype
                     : Model.getFacade().getStereotypes(newOwner)) {
                 listeners.add(new Object[] {stereotype, null});
             }
@@ -211,7 +214,7 @@ public class FigInterface extends FigClassifierBox {
             for (Object feat : Model.getFacade().getFeatures(newOwner)) {
                 listeners.add(new Object[] {feat, null});
                 // and the stereotypes of its features
-                for (Object stereotype 
+                for (Object stereotype
                         : Model.getFacade().getStereotypes(feat)) {
                     listeners.add(new Object[] {stereotype, null});
                 }
@@ -225,7 +228,7 @@ public class FigInterface extends FigClassifierBox {
                 }
             }
         }
-        
+
         // Update the listeners to match the desired set using the minimal
         // update facility
         updateElementListeners(listeners);

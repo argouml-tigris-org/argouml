@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -67,7 +69,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
@@ -82,7 +83,7 @@ import org.tigris.swidgets.Dialog;
 /**
  * The dialog that starts the generation of classes.
  */
-public class ClassGenerationDialog extends ArgoDialog 
+public class ClassGenerationDialog extends ArgoDialog
         implements ActionListener {
 
     private static final String SOURCE_LANGUAGE_TAG = "src_lang";
@@ -90,8 +91,8 @@ public class ClassGenerationDialog extends ArgoDialog
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ClassGenerationDialog.class);
+    private static final Logger LOG =
+        Logger.getLogger(ClassGenerationDialog.class.getName());
 
     private TableModelClassChecks classTableModel;
 
@@ -111,7 +112,7 @@ public class ClassGenerationDialog extends ArgoDialog
 
     /**
      * Constructor.
-     * 
+     *
      * @param nodes The UML elements, typically classifiers, to generate.
      */
     public ClassGenerationDialog(List<Object> nodes) {
@@ -122,7 +123,7 @@ public class ClassGenerationDialog extends ArgoDialog
      * Constructor.
      * <p>
      * TODO: Correct?
-     * 
+     *
      * @param nodes The UML elements, typically classifiers, to generate.
      * @param inModel <code>true</code> if the path is in the model.
      */
@@ -173,19 +174,19 @@ public class ClassGenerationDialog extends ArgoDialog
                 classTable.repaint();
             }
         });
-        
+
         JButton selectCurrentlySelectedButton = new JButton();
         nameButton(selectCurrentlySelectedButton, "button.select-currently-selected");
         selectCurrentlySelectedButton.addActionListener(new ActionListener() {
            /**
-            * Action performed after clicking the button 
+            * Action performed after clicking the button
             * @param e
             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
             */
            public void actionPerformed(ActionEvent e) {
                List classes = new ArrayList();
                Collection targets = TargetManager.getInstance().getTargets();
-               
+
                // TODO: Should be improved so that it's recognized whether there is something selected that can actually be generated
                if (targets.size() < 1) { // Nothing selected in the diagram
                    JOptionPane.showMessageDialog(null, Translator.localize("dialog.error.generator.nothing-selected"),
@@ -221,7 +222,7 @@ public class ClassGenerationDialog extends ArgoDialog
         contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Output Directory
-        outputDirectoryComboBox = 
+        outputDirectoryComboBox =
             new JComboBox(getClasspathEntries().toArray());
 
         JButton browseButton = new JButton();
@@ -367,7 +368,7 @@ public class ClassGenerationDialog extends ArgoDialog
                     }
                 } else {
                     // classify nodes by base path
-                    Map<String, Set<Object>> nodesPerPath = 
+                    Map<String, Set<Object>> nodesPerPath =
                         new HashMap<String, Set<Object>>();
                     for (Object node : nodes) {
                         if (!Model.getFacade().isAClassifier(node)) {
@@ -425,7 +426,7 @@ public class ClassGenerationDialog extends ArgoDialog
      * Save the source language in the model.
      * <p>
      * TODO: Support multiple languages now that we have UML 1.4 tagged values.
-     * 
+     *
      * @param node
      * @param language
      */
@@ -473,7 +474,7 @@ public class ClassGenerationDialog extends ArgoDialog
             } // else ignore
         } catch (Exception userPressedCancel) {
             // TODO: How does the pressed cancel become a java.lang.Exception?
-            LOG.info("user pressed cancel");
+            LOG.log(Level.INFO, "user pressed cancel");
         }
     }
 
@@ -501,7 +502,7 @@ public class ClassGenerationDialog extends ArgoDialog
 
         /**
          * Set the target.
-         * 
+         *
          * @param nodes list of classes
          */
         public void setTarget(List<Object> nodes) {
@@ -553,7 +554,7 @@ public class ClassGenerationDialog extends ArgoDialog
 
         /**
          * Return the set of elements which are selected for the given language.
-         * 
+         *
          * @param lang the language
          * @return a set of UML elements
          */
@@ -567,7 +568,7 @@ public class ClassGenerationDialog extends ArgoDialog
 
         /**
          * All checked classes.
-         * 
+         *
          * @return The union of all languages as a {@link Set}.
          */
         public Set<Object> getChecked() {
@@ -699,7 +700,7 @@ public class ClassGenerationDialog extends ArgoDialog
         /**
          * Sets or clears all checkmarks for the (next) language for all
          * classes.
-         * 
+         *
          * @param value If false then all checkmarks are cleared for all
          *            languages. If true then all are cleared, except for one
          *            language column, these are all set.
@@ -730,7 +731,7 @@ public class ClassGenerationDialog extends ArgoDialog
             }
             getOkButton().setEnabled(value);
         }
-        
+
         /**
          * Checks nodes
          * @param nodes These will be checked

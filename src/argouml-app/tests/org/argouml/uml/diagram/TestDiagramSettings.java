@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,22 +38,22 @@
 
 package org.argouml.uml.diagram;
 
-import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
-
 import junit.framework.TestCase;
+
+import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
 
 
 /**
  * Tests for the DiagramSettings.
  *
  * TODO: Test chaining of settings.
- * 
+ *
  * @author Tom Morris (based on TestProjectSettings by Michiel)
  */
 public class TestDiagramSettings extends TestCase {
 
     private DiagramSettings settings;
-    
+
     /**
      * Constructor.
      *
@@ -75,43 +75,43 @@ public class TestDiagramSettings extends TestCase {
     }
 
     /**
-     * Test the default stereotype view settings, including compatibility 
+     * Test the default stereotype view settings, including compatibility
      * methods.
      */
     public void testStereotypeView() {
         assertEquals("Default stereotype view incorrect",
-                StereotypeStyle.TEXTUAL, 
+                StereotypeStyle.TEXTUAL,
                 settings.getDefaultStereotypeView());
         assertEquals("Default stereotype view wrong",
-                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL, 
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL,
                 settings.getDefaultStereotypeViewInt());
         settings.setDefaultStereotypeView(
                 DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
         assertEquals("stereotype view setting incorrect",
-                StereotypeStyle.BIG_ICON, 
+                StereotypeStyle.BIG_ICON,
                 settings.getDefaultStereotypeView());
         assertEquals("stereotype view setting incorrect",
-                DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON, 
+                DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON,
                 settings.getDefaultStereotypeViewInt());
-        
+
         settings.setDefaultStereotypeView(StereotypeStyle.SMALL_ICON);
         assertEquals("stereotype view setting incorrect",
-                StereotypeStyle.SMALL_ICON, 
+                StereotypeStyle.SMALL_ICON,
                 settings.getDefaultStereotypeView());
         assertEquals("stereotype view setting incorrect",
-                DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON, 
+                DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON,
                 settings.getDefaultStereotypeViewInt());
 
         settings.setDefaultStereotypeView(StereotypeStyle.TEXTUAL);
         assertEquals("stereotype view setting incorrect",
-                StereotypeStyle.TEXTUAL, 
+                StereotypeStyle.TEXTUAL,
                 settings.getDefaultStereotypeView());
         assertEquals("stereotype view setting incorrect",
-                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL, 
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL,
                 settings.getDefaultStereotypeViewInt());
-}
+    }
 
-    
+
     public void testShowBidirectionalArrows() {
         assertFalse("BidirectionalArrows is not correct",
                 settings.isShowBidirectionalArrows());
@@ -122,7 +122,7 @@ public class TestDiagramSettings extends TestCase {
         assertFalse("BidirectionalArrows is not correct",
                 settings.isShowBidirectionalArrows());
     }
-    
+
     public void testShowBoldNames() {
         assertFalse("BoldNames is not correct",
                 settings.isShowBoldNames());
@@ -131,10 +131,10 @@ public class TestDiagramSettings extends TestCase {
                 settings.isShowBoldNames());
         settings.setShowBoldNames(false);
         assertFalse("BoldNames is not correct",
-                settings.isShowBoldNames());        
+                settings.isShowBoldNames());
     }
-    
-    
+
+
 
     public void testFont() {
         assertEquals("Font default is not correct",
@@ -148,13 +148,13 @@ public class TestDiagramSettings extends TestCase {
         assertEquals("Font size is not correct",
                 20, settings.getFontSize());
 
-        assertTrue("Bold font is incorrect", 
+        assertTrue("Bold font is incorrect",
                 settings.getFontBold().isBold());
 
-        assertTrue("Italic font is incorrect", 
+        assertTrue("Italic font is incorrect",
                 settings.getFontItalic().isItalic());
     }
-    
+
 
     /*
      * @see junit.framework.TestCase#setUp()

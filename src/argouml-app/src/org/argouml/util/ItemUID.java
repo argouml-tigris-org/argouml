@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,9 @@ package org.argouml.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -82,14 +83,14 @@ import org.argouml.model.Model;
  * could be used to remove the dependancy to the model component here, which
  * I find a bit unaesthetic. So far, not enough to write it (though it is not
  * much work).
- * 
+ *
  * @author Michael Stockman
  */
 public class ItemUID {
     /**
      * The logger.
      */
-    private static final Logger LOG = Logger.getLogger(ItemUID.class);
+    private static final Logger LOG = Logger.getLogger(ItemUID.class.getName());
 
     /**
      * Keeps a reference to the Class object of this class.
@@ -199,7 +200,7 @@ public class ItemUID {
 	        // Apparently this object had no getUUID
 	        return null;
 	    } catch (IllegalArgumentException iare) {
-	        LOG.error("getUUID for " + obj.getClass()
+                LOG.log(Level.SEVERE, "getUUID for " + obj.getClass()
 	                + " takes strange parameter: ",
 	                iare);
 	        return null;
@@ -208,7 +209,8 @@ public class ItemUID {
 	        // but we're not allowed to call it
 	        return null;
 	    } catch (InvocationTargetException tie) {
-	        LOG.error("getUUID for " + obj.getClass() + " threw: ",
+                LOG.log(Level.SEVERE,
+                        "getUUID for " + obj.getClass() + " threw: ",
 	                tie);
 	        return null;
 	    }
@@ -217,22 +219,25 @@ public class ItemUID {
 	    // but we're not allowed to call it
 	    return null;
 	} catch (InvocationTargetException tie) {
-	    LOG.error("getItemUID for " + obj.getClass() + " threw: ",
-		      tie);
+            LOG.log(Level.SEVERE,
+                    "getItemUID for " + obj.getClass() + " threw: ",
+                    tie);
 	    return null;
 	} catch (IllegalAccessException iace) {
 	    // Apparently it had a getItemUID,
 	    // but we're not allowed to call it
 	    return null;
 	} catch (IllegalArgumentException iare) {
-	    LOG.error("getItemUID for " + obj.getClass()
-		      + " takes strange parameter: ",
-		      iare);
+            LOG.log(Level.SEVERE,
+                    "getItemUID for " + obj.getClass()
+                    + " takes strange parameter: ",
+                    iare);
 	    return null;
 	} catch (ExceptionInInitializerError eiie) {
-	    LOG.error("getItemUID for " + obj.getClass()
-		      + " exception: ",
-		      eiie);
+            LOG.log(Level.SEVERE,
+                    "getItemUID for " + obj.getClass()
+                    + " exception: ",
+                    eiie);
 	    return null;
 	}
 
@@ -241,8 +246,9 @@ public class ItemUID {
 	}
 
 	if (!(rv instanceof ItemUID)) {
-	    LOG.error("getItemUID for " + obj.getClass()
-		      + " returns strange value: " + rv.getClass());
+            LOG.log(Level.SEVERE,
+                    "getItemUID for " + obj.getClass()
+                    + " returns strange value: " + rv.getClass());
 	    return null;
 	}
 
@@ -263,7 +269,7 @@ public class ItemUID {
 	if (Model.getFacade().isAUMLElement(obj)) {
 	    return null;
 	}
-	
+
 	if (obj instanceof IItemUID) {
 	    ItemUID uid = new ItemUID();
 	    ((IItemUID) obj).setItemUID(uid);
@@ -289,25 +295,27 @@ public class ItemUID {
 	    // but we're not allowed to call it
 	    return null;
 	} catch (InvocationTargetException tie) {
-	    LOG.error("setItemUID for " + obj.getClass() + " threw",
-		      tie);
+            LOG.log(Level.SEVERE,
+                    "setItemUID for " + obj.getClass() + " threw",
+                    tie);
 	    return null;
 	} catch (IllegalAccessException iace) {
 	    // Apparently it had a setItemUID,
 	    // but we're not allowed to call it
 	    return null;
 	} catch (IllegalArgumentException iare) {
-	    LOG.error("setItemUID for " + obj.getClass()
-		      + " takes strange parameter",
-		      iare);
+            LOG.log(Level.SEVERE,
+                    "setItemUID for " + obj.getClass()
+                    + " takes strange parameter",
+                    iare);
 	    return null;
 	} catch (ExceptionInInitializerError eiie) {
-	    LOG.error("setItemUID for " + obj.getClass() + " threw",
-		      eiie);
+            LOG.log(Level.SEVERE,
+                    "setItemUID for " + obj.getClass() + " threw",
+                    eiie);
 	    return null;
 	}
 
 	return mparam[0].toString();
     }
 }
-

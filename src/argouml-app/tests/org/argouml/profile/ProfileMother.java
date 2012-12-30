@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
 
 import org.argouml.FileHelper;
 import org.argouml.model.InvalidElementException;
@@ -70,8 +70,8 @@ import org.argouml.persistence.UmlFilePersister;
 import org.xml.sax.InputSource;
 
 /**
- * Based on the 
- * <a href="http://www.xpuniverse.com/2001/pdfs/Testing03.pdf">ObjectMother 
+ * Based on the
+ * <a href="http://www.xpuniverse.com/2001/pdfs/Testing03.pdf">ObjectMother
  * design pattern</a>, provides reusable facilities to create profiles.
  *
  * @author Luis Sergio Oliveira (euluis)
@@ -95,10 +95,11 @@ public class ProfileMother {
         void create(Object profileFromWhichDepends, Object dependentProfile);
     }
 
-    private static final Logger LOG = Logger.getLogger(ProfileMother.class);
+    private static final Logger LOG =
+        Logger.getLogger(ProfileMother.class.getName());
 
     /**
-     * "profile"
+     * "profile".
      */
     public static final String STEREOTYPE_NAME_PROFILE = "profile";
     /**
@@ -125,11 +126,11 @@ public class ProfileMother {
     public static final String TAG_DEFINITION_NAME_TD = "TagDef";
 
     /**
-     * Create a simple profile model with name 
+     * Create a simple profile model with name
      * {@link ProfileMother#DEFAULT_SIMPLE_PROFILE_NAME}
      * with a class named "foo" and with a stereotype named
      * {@link ProfileMother#STEREOTYPE_NAME_ST}.
-     * 
+     *
      * @return the profile model.
      */
     public Object createSimpleProfileModel() {
@@ -140,7 +141,7 @@ public class ProfileMother {
      * Create a simple profile model with name profileName,
      * with a class named "foo" and with a stereotype named
      * {@link ProfileMother#STEREOTYPE_NAME_ST}.
-     * 
+     *
      * @param profileName the name that the created profile shall have.
      * @return the profile model.
      */
@@ -150,10 +151,10 @@ public class ProfileMother {
 //        assert getFacade().getRootElements().size() == 0;
         Object model = getModelManagementFactory().createProfile();
         Object fooClass = Model.getCoreFactory().buildClass("foo", model);
-        Object stereotype = 
+        Object stereotype =
             getExtensionMechanismsFactory().buildStereotype(
                     fooClass,
-                    STEREOTYPE_NAME_ST, 
+                    STEREOTYPE_NAME_ST,
                     model);
         getCoreHelper().setName(model, profileName);
         getExtensionMechanismsFactory().buildTagDefinition(
@@ -185,7 +186,7 @@ public class ProfileMother {
                     getProfilePackages().iterator().next();
                 TestCase.assertTrue(getFacade().isAModel(umlProfileModel));
             } catch (ProfileException e) {
-                LOG.error("Exception", e);
+                LOG.log(Level.SEVERE, "Exception", e);
             }
         }
         if (umlProfileModel == null) {
@@ -198,7 +199,7 @@ public class ProfileMother {
 
     /**
      * Save the profile model into the given file.
-     * 
+     *
      * @param model the profile model.
      * @param file the file into which to save the profile model.
      * @throws IOException if IO goes wrong.
@@ -207,13 +208,13 @@ public class ProfileMother {
         FileOutputStream fileOut = new FileOutputStream(file);
 //        cleanAllExtentsBut(model); // TODO: why is this causing a crash?!?
         try {
-            XmiWriter xmiWriter = Model.getXmiWriter(model, fileOut, "x(" 
+            XmiWriter xmiWriter = Model.getXmiWriter(model, fileOut, "x("
                 + UmlFilePersister.PERSISTENCE_VERSION + ")");
             xmiWriter.write();
             fileOut.flush();
         } catch (Exception e) {
             String msg = "Exception while saving profile model.";
-            LOG.error(msg, e);
+            LOG.log(Level.SEVERE, msg, e);
             throw new IOException(msg);
         } finally {
             fileOut.close();
@@ -309,16 +310,16 @@ public class ProfileMother {
             new ProfileMother.DependencyCreator() {
                     public void create(Object profileFromWhichDepends,
                             Object dependentProfile) {
-                        Object theClass = 
+                        Object theClass =
                             Model.getCoreFactory().buildClass(
                                 "DasClazz",
                                 dependentProfile);
-                        Collection stereotypes = 
+                        Collection stereotypes =
                             getFacade().getStereotypes(profileFromWhichDepends);
                         assert stereotypes.size() >= 1 : "";
                         Object stereotype = stereotypes.iterator().next();
                         Model.getCoreHelper().addStereotype(
-                                theClass, 
+                                theClass,
                                 stereotype);
                     }
                 };
@@ -334,7 +335,7 @@ public class ProfileMother {
      * Creates two profiles with one depending of the other. Saves the two
      * profiles in different temporary directories and returns the associated
      * {@link File Files}, being that the second XMI file depends on the first.
-     * 
+     *
      * Ensures that both profiles aren't remembered by the model sub-system
      * by renaming them.
      *
@@ -345,7 +346,7 @@ public class ProfileMother {
      */
     public List<File> createUnloadedProfilePairWith2ndDependingOn1stViaXmi()
         throws IOException, UmlException {
-        
+
         List<File> profileFiles =
             createProfileFilePairWith2ndDependingOn1stViaXmi();
         File baseProfileFile = profileFiles.get(0);
@@ -376,9 +377,9 @@ public class ProfileMother {
      * @throws IOException if IO operations throw.
      */
     public static void replaceStringInFile(File file, String regex,
-            String replacement) 
+            String replacement)
         throws IOException {
-        
+
         StringBuffer fileContents = new StringBuffer();
         BufferedReader reader = null;
         String fileContents2 = null;

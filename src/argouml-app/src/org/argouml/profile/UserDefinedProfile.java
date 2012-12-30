@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2007,2010 Contributors - see below
+ * Copyright (c) 2007-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,10 +55,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.ToDoItem;
@@ -70,8 +71,8 @@ import org.argouml.profile.internal.ocl.InvalidOclException;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
- * Represents a profile defined by the user
- * 
+ * Represents a profile defined by the user.
+ *
  * @author maurelio1234
  */
 public class UserDefinedProfile extends Profile {
@@ -79,8 +80,8 @@ public class UserDefinedProfile extends Profile {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(UserDefinedProfile.class);
+    private static final Logger LOG =
+        Logger.getLogger(UserDefinedProfile.class.getName());
 
     private String displayName;
 
@@ -89,11 +90,11 @@ public class UserDefinedProfile extends Profile {
     private Collection profilePackages = null;
     private Object packageLock = new Object();
 
-    private UserDefinedFigNodeStrategy figNodeStrategy 
+    private UserDefinedFigNodeStrategy figNodeStrategy
         = new UserDefinedFigNodeStrategy();
 
     private ProfileReference reference;
-    
+
     private ProfileManager profileManager;
 
     private boolean criticsLoaded = false;
@@ -108,7 +109,7 @@ public class UserDefinedProfile extends Profile {
 
         /**
          * Adds a new descriptor to this strategy
-         * 
+         *
          * @param fnd
          */
         public void addDesrciptor(FigNodeDescriptor fnd) {
@@ -135,16 +136,17 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * The default constructor for this class
-     * 
+     *
      * @param file the file from where the model should be read
      * @param manager the profile manager which will be used to resolve
-     *        dependencies 
+     *        dependencies
      * @throws ProfileException if the profile could not be loaded
      */
     public UserDefinedProfile(File file, ProfileManager manager)
         throws ProfileException {
 
-        LOG.info("load " + file);
+        LOG.log(Level.INFO, "load {0}", file);
+
         displayName = file.getName();
         modelFile = file;
         try {
@@ -158,7 +160,7 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * The default constructor for this class
-     * 
+     *
      * @param file the file from where the model should be read
      * @throws ProfileException if the profile could not be loaded
      * @deprecated for 0.30 by euluis. Use
@@ -169,7 +171,7 @@ public class UserDefinedProfile extends Profile {
     public UserDefinedProfile(File file) throws ProfileException {
         this(file, getSomeProfileManager());
     }
-    
+
     private static class NullProfileManager implements ProfileManager {
 
         public void addSearchPathDirectory(String path) {
@@ -219,12 +221,12 @@ public class UserDefinedProfile extends Profile {
 
         public void removeSearchPathDirectory(String path) {
         }
-        
+
     }
 
     /**
      * A constructor that reads a file from an URL
-     * 
+     *
      * @param url the URL
      * @param manager the profile manager which will be used to resolve
      *        dependencies
@@ -233,14 +235,15 @@ public class UserDefinedProfile extends Profile {
     public UserDefinedProfile(URL url, ProfileManager manager)
         throws ProfileException {
 
-        LOG.info("load " + url);
+        LOG.log(Level.INFO, "load {0}", url);
+
         reference = new UserProfileReference(url.getPath(), url);
         profileManager = manager;
     }
 
     /**
      * A constructor that reads a file from an URL
-     * 
+     *
      * @param url the URL
      * @throws ProfileException if the profile could not be loaded
      * @deprecated for 0.30 by euluis. Use
@@ -253,10 +256,10 @@ public class UserDefinedProfile extends Profile {
     }
 
     /**
-     * A constructor that reads a file from an URL associated with some 
-     * profiles.  Designed for use with URLs which represent entries in a 
+     * A constructor that reads a file from an URL associated with some
+     * profiles.  Designed for use with URLs which represent entries in a
      * JAR or Zip file.
-     * 
+     *
      * @param dn the display name of the profile
      * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
@@ -269,7 +272,7 @@ public class UserDefinedProfile extends Profile {
             Set<String> dependencies, ProfileManager manager)
         throws ProfileException {
 
-        LOG.info("load " + url);
+        LOG.log(Level.INFO, "load {0}", url);
 
         this.displayName = dn;
         reference = new UserProfileReference(url.getPath(), url);
@@ -284,13 +287,13 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * A constructor that reads a file from an URL associated with some profiles
-     * 
+     *
      * @param dn the display name of the profile
      * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
      * @param dependencies the dependencies of this profile
      * @throws ProfileException if the model cannot be loaded
-     * 
+     *
      * @deprecated for 0.30 by euluis. Use
      * {@link UserDefinedProfile#UserDefinedProfile(
      * String, URL, Set, Set, ProfileManager)}
@@ -326,8 +329,9 @@ public class UserDefinedProfile extends Profile {
                                 .loadModel(reference);
                     }
                 } catch (ProfileException e1) {
-                    LOG.error("Exception loading profile "
-                            + reference.getPath(), e1);
+                    LOG.log(Level.SEVERE,
+                            "Exception loading profile "+ reference.getPath(),
+                            e1);
                     profilePackages = Collections.emptySet();
                     return;
                 }
@@ -336,8 +340,8 @@ public class UserDefinedProfile extends Profile {
             Collection packagesInProfile = filterPackages(profilePackages);
 
             for (Object obj : packagesInProfile) {
-                // if there is only one package in the model, 
-                // we should suppose it's the profile model, 
+                // if there is only one package in the model,
+                // we should suppose it's the profile model,
                 // if there is more than one, we take the ones
                 // marked as <<profile>>
                 if (Model.getFacade().isAModelElement(obj)
@@ -354,7 +358,7 @@ public class UserDefinedProfile extends Profile {
                                     .localize("misc.profile.unnamed");
                         }
                     }
-                    LOG.info("profile " + displayName);
+                    LOG.log(Level.INFO, "profile {0}", displayName);
 
                     loadDependentProfiles(obj);
                 }
@@ -374,9 +378,9 @@ public class UserDefinedProfile extends Profile {
 
 
     /**
-     * For ArgoUML UML 1.4 profiles dependencies are encoded as a list of 
+     * For ArgoUML UML 1.4 profiles dependencies are encoded as a list of
      * profile names in the TaggedValue named "Dependency" on the profile pkg.
-     * 
+     *
      * @param pkg profile package
      */
     private void loadDependentProfilesUml1(Object pkg) {
@@ -390,13 +394,13 @@ public class UserDefinedProfile extends Profile {
         while (st.hasMoreTokens()) {
             dependencyName = st.nextToken();
             if (dependencyName != null) {
-                LOG.debug("Adding dependency " + dependencyName);
+                LOG.log(Level.FINE, "Adding dependency {0}", dependencyName);
                 Profile profile = profileManager
                         .lookForRegisteredProfile(dependencyName);
                 if (profile != null) {
                     addProfileDependency(profile);
                 } else {
-                    LOG.warn("The profile \"" + displayName
+                    LOG.log(Level.WARNING, "The profile \"" + displayName
                             + "\" has a dependency named \"" + dependencyName
                             + "\" which isn't solvable.");
                 }
@@ -407,25 +411,25 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * Load FigNodes from profile packages.
-     * 
+     *
      * @param packagesInProfile
      */
     private void loadFigNodes(Collection packagesInProfile) {
         Collection allStereotypes = Model.getExtensionMechanismsHelper()
                 .getStereotypes(packagesInProfile);
         for (Object stereotype : allStereotypes) {
-            Collection tags = Model.getFacade().getTaggedValuesCollection(
-                    stereotype);
+            Collection tags = Model.getFacade().getTaggedValuesCollection(stereotype);
 
             for (Object tag : tags) {
                 String tagName = Model.getFacade().getTag(tag);
                 if (tagName == null) {
-                    LOG.debug("profile package with stereotype "
-                            + Model.getFacade().getName(stereotype)
-                            + " contains a null tag definition");
+                    LOG.log(Level.FINE,
+                            "profile package with stereotype {0} contains "
+                            + "a null tag definition",
+                            Model.getFacade().getName(stereotype));
                 } else if (tagName.toLowerCase().equals("figure")) {
-                    LOG.debug("AddFigNode "
-                            + Model.getFacade().getName(stereotype));
+                    LOG.log(Level.FINE, "AddFigNode {0}",
+                            Model.getFacade().getName(stereotype));
 
                     String value = Model.getFacade().getValueOfTag(tag);
                     File f = new File(value);
@@ -435,7 +439,7 @@ public class UserDefinedProfile extends Profile {
                                 .toString(), f);
                         figNodeStrategy.addDesrciptor(fnd);
                     } catch (IOException e) {
-                        LOG.error("Error loading FigNode", e);
+                        LOG.log(Level.SEVERE, "Error loading FigNode", e);
                     }
                 }
             }
@@ -445,23 +449,23 @@ public class UserDefinedProfile extends Profile {
     @Override
     public Set<Critic> getCritics() {
         if (!criticsLoaded ) {
-            Set<Critic> myCritics = super.getCritics();         
+            Set<Critic> myCritics = super.getCritics();
             myCritics.addAll(getAllCritiquesInModel());
-            this.setCritics(myCritics);        
+            this.setCritics(myCritics);
             criticsLoaded = true;
         }
         return super.getCritics();
     }
-    
+
     /**
      * @return the packages in the <code>profilePackages</code>
      */
     private Collection filterPackages(Collection packages) {
         Collection ret = new ArrayList();
-        
-        // TODO: All this profile loading/handling needs to 
+
+        // TODO: All this profile loading/handling needs to
         // move someplace in model subsystem probably
-        
+
         for (Object object : packages) {
             if (Model.getFacade().isAPackage(object)) {
                 ret.add(object);
@@ -481,7 +485,7 @@ public class UserDefinedProfile extends Profile {
 
         Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
         boolean i18nFound = false;
-        
+
         for (Object tag : tags) {
             if (Model.getFacade().getTag(tag).toLowerCase().equals("i18n")) {
                 i18nFound = true;
@@ -509,7 +513,7 @@ public class UserDefinedProfile extends Profile {
                 while (st.hasMoreTokens()) {
                     Decision decision = str2Decision(st.nextToken().trim()
                             .toLowerCase());
-                    
+
                     if (decision != null) {
                         supportedDecisions.add(decision);
                     }
@@ -523,7 +527,7 @@ public class UserDefinedProfile extends Profile {
                 while (st.hasMoreTokens()) {
                     String knowledge = str2KnowledgeType(st.nextToken().trim()
                             .toLowerCase());
-                    
+
                     if (knowledge != null) {
                         knowledgeTypes.add(knowledge);
                     }
@@ -536,14 +540,13 @@ public class UserDefinedProfile extends Profile {
 
         }
 
-        LOG.debug("OCL-Critic: " + ocl);
+        LOG.log(Level.FINE, "OCL-Critic: {0}", ocl);
 
         try {
             return new CrOCL(ocl, headline, description, priority,
                     supportedDecisions, knowledgeTypes, moreInfoURL);
         } catch (InvalidOclException e) {
-            LOG.error("Invalid OCL in XMI!", e);
-
+            LOG.log(Level.SEVERE, "Invalid OCL in XMI!", e);
             return null;
         }
 
@@ -551,7 +554,7 @@ public class UserDefinedProfile extends Profile {
 
     private String str2KnowledgeType(String token) {
         String knowledge = null;
-        
+
         if (token.equals("completeness")) {
             knowledge = Critic.KT_COMPLETENESS;
         }
@@ -590,7 +593,7 @@ public class UserDefinedProfile extends Profile {
 
     private int str2Priority(String prioStr) {
         int prio = ToDoItem.MED_PRIORITY;
-        
+
         if (prioStr.toLowerCase().equals("high")) {
             prio = ToDoItem.HIGH_PRIORITY;
         } else if (prioStr.toLowerCase().equals("med")) {
@@ -605,11 +608,11 @@ public class UserDefinedProfile extends Profile {
 
     private Decision str2Decision(String token) {
         Decision decision = null;
-        
+
         if (token.equals("behavior")) {
             decision = UMLDecision.BEHAVIOR;
         }
-        if (token.equals("containment")) {                        
+        if (token.equals("containment")) {
             decision = UMLDecision.CONTAINMENT;
         }
         if (token.equals("classselection")) {
@@ -633,7 +636,7 @@ public class UserDefinedProfile extends Profile {
         if (token.equals("modularity")) {
             decision = UMLDecision.MODULARITY;
         }
-        if (token.equals("naming")) {                       
+        if (token.equals("naming")) {
             decision = UMLDecision.NAMING;
         }
         if (token.equals("patterns")) {
@@ -706,7 +709,7 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * Returns null. This profile has no formatting strategy.
-     * 
+     *
      * @return null.
      */
     @Override
@@ -716,7 +719,7 @@ public class UserDefinedProfile extends Profile {
 
     /**
      * Returns null. This profile has no figure strategy.
-     * 
+     *
      * @return null.
      */
     @Override
@@ -745,7 +748,7 @@ public class UserDefinedProfile extends Profile {
         loadModel();
         return profilePackages;
     }
-    
+
     @Override
     public Collection getLoadedPackages() {
         if (profilePackages == null) {
@@ -754,7 +757,7 @@ public class UserDefinedProfile extends Profile {
             return Collections.unmodifiableCollection(profilePackages);
         }
     }
-    
+
     private FigNodeDescriptor loadImage(String stereotype, File f)
         throws IOException {
         FigNodeDescriptor descriptor = new FigNodeDescriptor();

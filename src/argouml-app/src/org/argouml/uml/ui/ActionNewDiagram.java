@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -57,16 +58,17 @@ import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * Abstract action to trigger creation of a new diagram. <p>
- * 
+ *
  * ArgoUML shall never create a diagram for a read-only modelelement.
  * <p>
  * TODO: Bobs says, can we merge ActionAddDiagram with this class?
- * 
+ *
  * @author michiel
  */
 public abstract class ActionNewDiagram extends UndoableAction {
 
-    private static final Logger LOG = Logger.getLogger(ActionNewDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionNewDiagram.class.getName());
 
     /**
      * The constructor.
@@ -76,7 +78,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
         super(Translator.localize(name),
                 ResourceLoaderWrapper.lookupIcon(name));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize(name));
     }
 
@@ -89,16 +91,16 @@ public abstract class ActionNewDiagram extends UndoableAction {
 
         // TODO: Get Project or other necessary context from source??
         // e.getSource();
-        
+
         // TODO: Since there may be multiple top level elements in
         // a project, this should be using the default Namespace (currently
-        // undefined) or something similar 
+        // undefined) or something similar
         Project p = ProjectManager.getManager().getCurrentProject();
         Object ns = findNamespace();
-        
+
         if (ns != null && isValidNamespace(ns)) {
             super.actionPerformed(e);
-            DiagramSettings settings = 
+            DiagramSettings settings =
                 p.getProjectSettings().getDefaultDiagramSettings();
             ArgoDiagram diagram = createDiagram(ns, settings);
             assert (diagram != null)
@@ -111,13 +113,13 @@ public abstract class ActionNewDiagram extends UndoableAction {
                     diagram.getNamespace());
             TargetManager.getInstance().setTarget(diagram);
         } else {
-            LOG.error("No valid namespace found");
+            LOG.log(Level.SEVERE, "No valid namespace found");
             throw new IllegalStateException("No valid namespace found");
         }
     }
 
     /**
-     * Find an alternative namespace for the diagram, only to be used 
+     * Find an alternative namespace for the diagram, only to be used
      * if the target is not suitable.
      *
      * @return the namespace or null
@@ -148,12 +150,12 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * @param settings the render settings for the diagram
      * @return the new diagram
      */
-    protected abstract ArgoDiagram createDiagram(Object namespace, 
+    protected abstract ArgoDiagram createDiagram(Object namespace,
             DiagramSettings settings);
 
     /**
      * Test if the given namespace is a valid namespace to add the diagram to.
-     * TODO: This method was created to facilitate the merge 
+     * TODO: This method was created to facilitate the merge
      * of this class with ActionAddDiagram.
      *
      * @param ns the namespace to check
@@ -165,13 +167,13 @@ public abstract class ActionNewDiagram extends UndoableAction {
 
     /**
      * Utility function to create a collaboration.
-     * 
+     *
      * @return a new collaboration
      * @param namespace the back-up namespace to put the collaboration in
      */
     protected static Object createCollaboration(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getFacade().isAUMLElement(target) 
+        if (Model.getFacade().isAUMLElement(target)
                 && Model.getModelManagementHelper().isReadOnly(target)) {
             target = namespace;
         }
@@ -200,7 +202,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
                 }
             }
             Model.getCoreHelper().setNamespace(collaboration, namespace);
-            Model.getCoreHelper().setName(collaboration, 
+            Model.getCoreHelper().setName(collaboration,
                     "unattachedCollaboration");
         }
         return collaboration;

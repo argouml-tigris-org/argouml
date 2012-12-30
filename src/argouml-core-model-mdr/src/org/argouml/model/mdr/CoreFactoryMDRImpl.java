@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009,2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,11 +44,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
@@ -122,23 +123,23 @@ import org.omg.uml.modelmanagement.UmlPackage;
  * Factory to create UML classes for the UML Foundation::Core package.
  * <p>
  * Feature, StructuralFeature, and PresentationElement do not have a create
- * method since they are called an "abstract metaclass" in the UML 
+ * method since they are called an "abstract metaclass" in the UML
  * specifications.
  * <p>
  * @since ARGO0.19.5
  * @author Ludovic Ma&icirc;tre
  * @author Tom Morris
  * <p>
- * Derived from NSUML implementation by: 
+ * Derived from NSUML implementation by:
  * @author Thierry Lach
  * @author Jaap Branderhorst
  */
 class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         CoreFactory {
 
-    private static final Logger LOG = Logger
-            .getLogger(CoreFactoryMDRImpl.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(CoreFactoryMDRImpl.class.getName());
+
     /**
      * The model implementation.
      */
@@ -146,7 +147,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *            To get other helpers and factories.
      */
@@ -157,7 +158,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private CorePackage getCorePackage() {
         return modelImpl.getUmlPackage().getCore();
     }
-    
+
     public Abstraction createAbstraction() {
         Abstraction myAbstraction = getCorePackage().getAbstraction()
                 .createAbstraction();
@@ -166,7 +167,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Abstraction buildAbstraction(String name, Object supplier, 
+    public Abstraction buildAbstraction(String name, Object supplier,
             Object client) {
         if (!(client instanceof Classifier)
                 || !(supplier instanceof Classifier)) {
@@ -191,7 +192,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         super.initialize(artifact);
         return artifact;
     }
-    
+
 
     @Deprecated
     public UmlAssociation createAssociation() {
@@ -292,7 +293,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public ElementResidence buildElementResidence(Object me, Object component) {
-        ElementResidence myElementResidence = 
+        ElementResidence myElementResidence =
             ((org.omg.uml.UmlPackage) ((ModelElement) me)
                 .refOutermostPackage()).getCore().getElementResidence()
                 .createElementResidence();
@@ -302,14 +303,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myElementResidence;
     }
 
-    
+
     public Enumeration createEnumeration() {
         Enumeration myEnumeration = getCorePackage().getEnumeration()
                 .createEnumeration();
         super.initialize(myEnumeration);
         return myEnumeration;
     }
-    
+
 
     public EnumerationLiteral createEnumerationLiteral() {
         EnumerationLiteral myEnumerationLiteral = getCorePackage()
@@ -327,7 +328,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return el;
     }
 
-    
+
     public Flow createFlow() {
         Flow myFlow = getCorePackage().getFlow().createFlow();
         super.initialize(myFlow);
@@ -402,12 +403,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         super.initialize(obj);
         return obj;
     }
-    
+
 
     public TemplateArgument createTemplateArgument() {
         return createTemplateArgument(modelImpl.getUmlPackage());
     }
-    
+
       private  TemplateArgument createTemplateArgument(
               org.omg.uml.UmlPackage extent) {
         TemplateArgument obj = extent.getCore().getTemplateArgument()
@@ -415,7 +416,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         super.initialize(obj);
         return obj;
     }
-        
+
 
     public TemplateParameter createTemplateParameter() {
         return createTemplateParameter(modelImpl.getUmlPackage());
@@ -438,7 +439,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Builds a default binary association with two default association ends.
-     * 
+     *
      * @param c1
      *            The first classifier to connect to
      * @param nav1
@@ -468,7 +469,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("one of "
                     + "the classifiers does not " + "belong to a namespace");
         }
-        
+
         // We'll put the association in the namespace of whichever end
         // is not navigable and is writeable.  If they both are, we'll use the
         // namepace of c1.
@@ -487,7 +488,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         assoc.setNamespace(ns);
         buildAssociationEnd(assoc, null, c1, null, null,
                 nav1, null, agg1, null, null, null);
-        buildAssociationEnd(assoc, null, c2, null, null, 
+        buildAssociationEnd(assoc, null, c2, null, null,
                 nav2, null, agg2, null, null, null);
         return assoc;
     }
@@ -496,7 +497,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public UmlAssociation buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
             Object aggregationKind2, Boolean unidirectional) {
-        
+
         if (unidirectional == null) {
             return buildAssociation(fromClassifier, aggregationKind1,
                     toClassifier, aggregationKind2, false);
@@ -574,7 +575,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         final Classifier classifier1 = (Classifier) end1;
         final Classifier classifier2 = (Classifier) end2;
         AssociationClass assocClass = createAssociationClass();
-        
+
         assocClass.setNamespace(classifier1.getNamespace());
         assocClass.setName("");
         assocClass.setAbstract(false);
@@ -583,7 +584,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         assocClass.setLeaf(false);
         assocClass.setSpecification(false);
         assocClass.setVisibility(VisibilityKindEnum.VK_PUBLIC);
-        
+
         buildAssociationEnd(
                 assocClass, null, classifier1, null, null, true, null, null,
                 null, null, null);
@@ -600,11 +601,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Object visibility) {
         if (aggregation != null
                 && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
-                && multiplicity != null 
+                && multiplicity != null
                 && (multiplicity[1] > 1 || multiplicity[1] == -1) ) {
             throw new IllegalArgumentException("aggregation is composite "
                     + "and multiplicity > 1");
-        }        
+        }
         AssociationEnd ae = buildAssociationEndInternal(assoc, name, type,
                 stereo, navigable, order, aggregation, scope, changeable,
                 visibility);
@@ -627,8 +628,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         if (aggregation != null
                 && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
-                && multi != null 
-                && compareMultiplicity(getMaxUpper((Multiplicity) multi), 1) 
+                && multi != null
+                && compareMultiplicity(getMaxUpper((Multiplicity) multi), 1)
                     > 0) {
             throw new IllegalArgumentException("aggregation is composite "
                     + "and multiplicity > 1");
@@ -722,10 +723,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     private static final int MULT_UNLIMITED = -1;
-    
+
     /**
      * Get the maximum value of a multiplicity
-     * 
+     *
      * @param m
      *            the Multiplicity
      * @return upper range
@@ -742,10 +743,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         return max;
     }
-    
+
     /**
      * Compare two multiplicities taking care of the value 'unlimited' (-1).
-     * 
+     *
      * @param mult1 first multiplicity
      * @param mult2 second multiplicity
      * @return 0 if equal, a positive integer (not necessarily 1) if mult1 is
@@ -790,7 +791,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         attr.setType((Classifier) theType);
         return attr;
     }
-    
+
     /**
      * Build a new attribute with no type
      * @return the new attribute
@@ -804,7 +805,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         attr.setTargetScope(ScopeKindEnum.SK_INSTANCE);
         return attr;
     }
-    
+
 
     public Attribute buildAttribute2(Object handle, Object type) {
         Attribute attr = buildAttribute2(type);
@@ -815,11 +816,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             AssociationEnd assend = (AssociationEnd) handle;
             assend.getQualifier().add(attr);
         } else {
-            throw new IllegalArgumentException();            
+            throw new IllegalArgumentException();
         }
         return attr;
     }
-    
+
 
     public UmlClass buildClass() {
         return buildClass((Object) null);
@@ -835,7 +836,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         cl.setSpecification(false);
         cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);
     }
-    
+
     public UmlClass buildClass(final Object owner) {
         ModelCommand command = new ModelCommand() {
             private UmlClass cl;
@@ -848,19 +849,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 initClass(cl);
                 return cl;
             }
-            
+
             public void undo() {
                 try {
                     cl.refDelete();
                 } catch (InvalidObjectException e) {
-                    LOG.warn("Object already deleted " + cl);
+                    LOG.log(Level.WARNING, "Object already deleted " + cl);
                 }
             }
-            
+
             public boolean isUndoable() {
                 return true;
             }
-            
+
             public boolean isRedoable() {
                 return false;
             }
@@ -877,7 +878,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return (org.omg.uml.UmlPackage) ((RefObject) element)
                 .refOutermostPackage();
     }
-    
+
     public UmlClass buildClass(String name) {
         UmlClass clazz = buildClass();
         clazz.setName(name);
@@ -974,23 +975,23 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public Permission buildPackageImport(Object client, Object supplier) {
-        if (!(client instanceof Namespace) 
+        if (!(client instanceof Namespace)
                 || !(supplier instanceof UmlPackage)) {
             throw new IllegalArgumentException("client is not a Namespace"
                     + " or supplier is not a Package");
         }
-        Permission per = buildPermissionInternal((ModelElement) client, 
+        Permission per = buildPermissionInternal((ModelElement) client,
                 (UmlPackage) supplier);
 
         // TODO: This should fetch the stereotype from our profile
-        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(per,
                 ModelManagementHelper.IMPORT_STEREOTYPE,
                 per.getNamespace());
         return per;
     }
 
-    
-    private Permission buildPermissionInternal(ModelElement client, 
+
+    private Permission buildPermissionInternal(ModelElement client,
             ModelElement supplier) {
         Permission permission = createPackageImport();
         permission.getSupplier().add(supplier);
@@ -1002,19 +1003,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         return permission;
     }
-    
-    
+
+
     public Permission buildPackageAccess(Object client, Object supplier) {
-        if (!(client instanceof Namespace) 
+        if (!(client instanceof Namespace)
                 || !(supplier instanceof UmlPackage)) {
             throw new IllegalArgumentException("client or "
                     + "supplier is not a Namespace");
         }
-        Permission per = buildPermissionInternal((ModelElement) client, 
+        Permission per = buildPermissionInternal((ModelElement) client,
                 (UmlPackage) supplier);
 
         // TODO: This should fetch the stereotype from our profile
-        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(per,
                 ModelManagementHelper.ACCESS_STEREOTYPE,
                 per.getNamespace());
         return per;
@@ -1041,7 +1042,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // not self.allParents->includes(self)
         for (Generalization gen : parent.getGeneralization()) {
             if (gen.getParent().equals(child)) {
-                throw new IllegalArgumentException("Generalization exists" 
+                throw new IllegalArgumentException("Generalization exists"
                         + " in opposite direction");
             }
         }
@@ -1053,10 +1054,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (parent.isLeaf()) {
             throw new IllegalArgumentException("parent is leaf");
         }
-        
+
         // TODO: This is well-formedness rule from UML1.4.2
         // 4.5.3.20 [1] A root cannot have any Generalizations.
-        // self.isRoot implies self.generalization->isEmpty        
+        // self.isRoot implies self.generalization->isEmpty
         if (child.isRoot()) {
             throw new IllegalArgumentException("child is root");
         }
@@ -1111,7 +1112,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Operation buildOperation2(Object cls, Object returnType, 
+    public Operation buildOperation2(Object cls, Object returnType,
             String name) {
         Operation oper = buildOperation(cls, returnType);
         if (oper != null) {
@@ -1122,7 +1123,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Constructs a default parameter.
-     * 
+     *
      * @return The newly created parameter.
      */
     private Parameter buildParameter(Classifier type,
@@ -1167,7 +1168,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Abstraction buildRealization(Object clnt, Object spplr, 
+    public Abstraction buildRealization(Object clnt, Object spplr,
             Object model) {
         ModelElement client = (ModelElement) clnt;
         ModelElement supplier = (ModelElement) spplr;
@@ -1199,7 +1200,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return ta;
     }
 
-    public TemplateArgument buildTemplateArgument(Object binding, 
+    public TemplateArgument buildTemplateArgument(Object binding,
             Object element) {
         if (!(binding instanceof Binding && element instanceof ModelElement)) {
             throw new IllegalArgumentException();
@@ -1209,7 +1210,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ta.setBinding((Binding) binding);
         return ta;
     }
-    
+
     public Object buildTemplateParameter(Object template, Object parameter,
             Object defaultElement) {
         if (!(template instanceof ModelElement)) {
@@ -1224,13 +1225,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     "Parameter must be a model element");
             }
         }
-        if (defaultElement != null 
+        if (defaultElement != null
                 && !(defaultElement instanceof ModelElement)) {
             throw new IllegalArgumentException(
                     "Default element must be a model element");
         }
 
-        TemplateParameter templateParam = 
+        TemplateParameter templateParam =
             createTemplateParameter(getExtent(template));
         templateParam.setParameter((ModelElement) parameter);
         if (defaultElement != null) {
@@ -1239,7 +1240,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         templateParam.setTemplate((ModelElement) template);
         return templateParam;
     }
-    
+
 
     public Usage buildUsage(Object client, Object supplier) {
         if (client == null || supplier == null) {
@@ -1261,7 +1262,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (((ModelElement) client).getNamespace() != null) {
             usage.setNamespace(((ModelElement) client).getNamespace());
         }
-        // TODO: Add standard stereotype?  Set is open ended, but 
+        // TODO: Add standard stereotype?  Set is open ended, but
         // predefined names include: call, create, instantiate, send
         return usage;
     }
@@ -1311,9 +1312,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         con.setBody((BooleanExpression) bexpr);
         return con;
     }
-    
 
-    public Binding buildBinding(Object client, Object supplier, 
+
+    public Binding buildBinding(Object client, Object supplier,
             List arguments) {
         Collection<Dependency> clientDeps = ((ModelElement) client)
                 .getClientDependency();
@@ -1323,11 +1324,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         "client is already client of another Binding");
             }
         }
-        
+
         // Check arguments against parameters for type and number
         // TODO: Perhaps move this to a critic instead? - tfm - 20070326
         if (arguments != null) {
-            List<TemplateParameter> params = 
+            List<TemplateParameter> params =
                 ((ModelElement) supplier).getTemplateParameter();
             if (params.size() != arguments.size()) {
                 throw new IllegalArgumentException(
@@ -1336,7 +1337,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Iterator<TemplateArgument> ita = arguments.iterator();
             for (TemplateParameter param : params) {
                 TemplateArgument ta = ita.next();
-                // TODO: Before allowing this, we should really check that 
+                // TODO: Before allowing this, we should really check that
                 // TemplateParameter.defaultElement is defined
                 if (ta == null || ta.getModelElement() == null) {
                     continue;
@@ -1348,7 +1349,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 }
             }
         }
-        
+
         Binding binding = createBinding();
         binding.getClient().add((ModelElement) client);
         binding.getSupplier().add((ModelElement) supplier);
@@ -1405,15 +1406,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * this element that would be in an illegal state after deletion of the
      * element. This method should not be called directly.
      * <p>
-     * 
+     *
      * In the case of an AssociationEnd these are the following elements:
      * <ul>
      * <li>Binary Associations that lose one of the AssociationEnds by this
      * deletion.
      * <li>LinkEnds associated with this AssociationEnd.
      * </ul>
-     * 
-     * 
+     *
+     *
      * @param elem
      * @see UmlFactoryMDRImpl#delete(Object)
      */
@@ -1490,12 +1491,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * element. Does not do an cascading delete for elements that are deleted by
      * the MDR method remove. This method should not be called directly.
      * <p>
-     * 
+     *
      * In the case of a classifier these are the following elements:
      * <ul>
      * <li>AssociationEnds that have this classifier as type
      * </ul>
-     * 
+     *
      * @param elem
      * @see UmlFactoryMDRImpl#delete(Object)
      */
@@ -1673,7 +1674,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * element. Does not do an cascading delete for elements that are deleted by
      * MDR automatically. This method should not be called directly.
      * <p>
-     * 
+     *
      * In the case of a modelelement these are the following elements:
      * <ul>
      * <li>Dependencies that have the modelelement as supplier or as a client
@@ -1681,7 +1682,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * <li>Behaviors, TemplateArguments, and ElementImports which require
      * this ModelElement
      * </ul>
-     * 
+     *
      * @param elem
      * @see UmlFactoryMDRImpl#delete(Object)
      */
@@ -1710,8 +1711,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
 
-        /* Do not delete behaviors here! 
-         * The behavior-context relation in the UML model 
+        /* Do not delete behaviors here!
+         * The behavior-context relation in the UML model
          * is an aggregate, not composition. See issue 4281. */
 
         ModelElement me = (ModelElement) elem;
@@ -1724,18 +1725,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         .getModelManagement()
                         .getAImportedElementElementImport()
                         .getElementImport(me));
-        
+
 
     }
 
     /**
      * A namespace deletes its owned elements.
-     * 
+     *
      * @param elem
      *            is the namespace.
      */
     void deleteNamespace(Object elem) {
-        LOG.debug("Deleting namespace " + elem);
+        LOG.log(Level.FINE, "Deleting namespace {0}", elem);
+
         if (!(elem instanceof Namespace)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
@@ -1746,7 +1748,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         for (ModelElement element : ownedElements) {
-            LOG.debug("Deleting ownedElement " + element);
+
+            LOG.log(Level.FINE, "Deleting ownedElement {0}", element);
+
             modelImpl.getUmlFactory().delete(element);
         }
     }
@@ -1843,7 +1847,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("elem: " + elem);
         }
     }
-    
+
     /**
      * @param elem
      *            the element to be deleted
@@ -1892,7 +1896,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Delete the given UML Primitive.
-     * 
+     *
      * @param elem the element to be deleted
      * @since UML 1.4
      */
@@ -1904,7 +1908,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Delete the given ProgrammingLanguageDataType.
-     * 
+     *
      * @param elem the element to be deleted
      * @since UML 1.4
      */
@@ -1919,7 +1923,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * Copies a class, and it's features. This may also require other
      * classifiers to be copied.
-     * 
+     *
      * @param source
      *            is the class to copy.
      * @param ns
@@ -1947,7 +1951,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     public Feature copyFeature(Object source, Object classifier) {
         if (!(source instanceof Feature && classifier instanceof Classifier)) {
-            throw new IllegalArgumentException("source: " + source 
+            throw new IllegalArgumentException("source: " + source
                     + ",classifier: " + classifier);
         }
 
@@ -1966,7 +1970,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             doCopyMethod((Method) source, method);
             f = method;
         } else if (source instanceof Reception) {
-            Reception reception = (Reception) 
+            Reception reception = (Reception)
                 modelImpl.getCommonBehaviorFactory().createReception();
             doCopyReception((Reception) source, reception);
             f = reception;
@@ -1982,7 +1986,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * Copies a datatype, and it's features. This may also require other
      * classifiers to be copied.
-     * 
+     *
      * @param source
      *            is the datatype to copy.
      * @param ns
@@ -2007,7 +2011,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * Copies an interface, and it's features. This may also require other
      * classifiers to be copied.
-     * 
+     *
      * @param source
      *            is the interface to copy.
      * @param ns
@@ -2030,7 +2034,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /**
-     * 
+     *
      * @param from
      *            The object which own the enumeration to copy
      * @param to
@@ -2064,7 +2068,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * 
+     *
      * @param source
      *            the source class
      * @param target
@@ -2091,9 +2095,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * have been added since this code was implemented for UML 1.3.
      */
     /**
-     * Used by the copy functions. Do not call this function directly. 
+     * Used by the copy functions. Do not call this function directly.
      * TODO: actions? instances? collaborations etc?
-     * 
+     *
      * @param source
      *            the source classifier
      * @param target
@@ -2121,7 +2125,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * 
+     *
      * @param source
      *            the source datatype
      * @param target
@@ -2140,9 +2144,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /**
-     * Used by the copy functions. Do not call this function directly. 
+     * Used by the copy functions. Do not call this function directly.
      * TODO: generalizations, specializations?
-     * 
+     *
      * @param source
      *            the source generalizable element
      * @param target
@@ -2166,7 +2170,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * 
+     *
      * @param source
      *            the source interface
      * @param target
@@ -2185,12 +2189,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     /**
-     * Used by the copy functions. Do not call this function directly. 
-     * TODO: template parameters, default type 
-     * TODO: constraining elements 
-     * TODO: flows, dependencies, comments, bindings, contexts ??? 
+     * Used by the copy functions. Do not call this function directly.
+     * TODO: template parameters, default type
+     * TODO: constraining elements
+     * TODO: flows, dependencies, comments, bindings, contexts ???
      * TODO: contents, residences ???
-     * 
+     *
      * @param source
      *            the source me
      * @param target
@@ -2229,7 +2233,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Used by the copy functions. Do not call this function directly.
-     * 
+     *
      * @param source
      *            the source namespace
      * @param target
@@ -2250,7 +2254,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Copy the meta-attributes of an Attribute to another.
-     * 
+     *
      * @param source the source attribute
      * @param target the new attribute to be adapted
      */
@@ -2266,7 +2270,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Copy the attributes of an Operation to another.
-     * 
+     *
      * @param source the source operation
      * @param target the new operation to be modified
      */
@@ -2276,13 +2280,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         target.setRoot(source.isRoot());
         target.setConcurrency(source.getConcurrency());
         target.setSpecification(source.getSpecification());
-    
+
         doCopyBehavioralFeature(source, target);
     }
 
     /**
      * Copy the attributes of one Method to another.
-     * 
+     *
      * @param source the method to copy attributes from
      * @param target the method to be adapted
      */
@@ -2290,7 +2294,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ProcedureExpression pe = source.getBody();
         ProcedureExpression oldPe = target.getBody();
         if (!equal(oldPe,pe)) {
-            target.setBody((ProcedureExpression) 
+            target.setBody((ProcedureExpression)
                     modelImpl.getDataTypesFactory().createProcedureExpression(
                             pe.getLanguage(), pe.getBody()));
             if (oldPe != null) {
@@ -2313,10 +2317,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return expr1.equals(expr2);
         }
     }
-    
+
     /**
      * Copy the attributes of one Reception to another.
-     * 
+     *
      * @param source the reception to copy attributes from
      * @param target the reception to be adapted
      */
@@ -2329,15 +2333,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         doCopyBehavioralFeature(source, target);
     }
-    
-    
+
+
     /**
      * Copy the attributes of one BehavioralFeature to another.
-     * 
+     *
      * @param source the BehavioralFeature to copy from
      * @param target the BehavioralFeature to b adapted
      */
-    void doCopyBehavioralFeature(BehavioralFeature source, 
+    void doCopyBehavioralFeature(BehavioralFeature source,
             BehavioralFeature target) {
         target.setQuery(source.isQuery());
         // copy raised signals:
@@ -2355,7 +2359,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     /**
      * Copy the attributes of one Feature to another.
-     * 
+     *
      * @param source the Feature to copy from
      * @param target the Feature to copy to
      */

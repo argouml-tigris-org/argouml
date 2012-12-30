@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,11 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
@@ -55,12 +56,12 @@ import org.argouml.ui.explorer.ExplorerPopup;
  * @author Bob Tarling
  */
 public class ActionCreateEdgeModelElement extends AbstractAction {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ExplorerPopup.class);
-    
-    private final Object metaType; 
-    private final Object source; 
+        Logger.getLogger(ExplorerPopup.class.getName());
+
+    private final Object metaType;
+    private final Object source;
     private final Object dest;
 
     /**
@@ -74,8 +75,8 @@ public class ActionCreateEdgeModelElement extends AbstractAction {
      *                          source relates to destination
      */
     public ActionCreateEdgeModelElement(
-            final Object theMetaType, 
-            final Object theSource, 
+            final Object theMetaType,
+            final Object theSource,
             final Object theDestination,
             final String relationshipDescr) {
         super(MessageFormat.format(
@@ -90,7 +91,7 @@ public class ActionCreateEdgeModelElement extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        Object rootModel = 
+        Object rootModel =
             ProjectManager.getManager().getCurrentProject().getModel();
         try {
             Model.getUmlFactory().buildConnection(
@@ -102,8 +103,7 @@ public class ActionCreateEdgeModelElement extends AbstractAction {
                 null,
                 rootModel);
         } catch (IllegalModelElementConnectionException e1) {
-            LOG.error("Exception", e1);
+            LOG.log(Level.SEVERE, "Exception", e1);
         }
     }
 }
-

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -63,7 +65,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -93,7 +94,8 @@ public class TabResults
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(TabResults.class);
+    private static final Logger LOG =
+        Logger.getLogger(TabResults.class.getName());
 
     private static int numJumpToRelated;
 
@@ -226,7 +228,7 @@ public class TabResults
         relatedLabel.setText(
             Translator.localize("dialog.tabresults.related-items"));
     }
-    
+
     /*
      * @see org.argouml.ui.AbstractArgoJPanel#spawn()
      */
@@ -327,7 +329,8 @@ public class TabResults
 	}
 
 	if (d != null) {
-            LOG.debug("go " + sel + " in " + d.getName());
+            LOG.log(Level.FINE,
+                    "go {0} in {1}", new Object[]{sel, d.getName()});
             TargetManager.getInstance().setTarget(d);
         }
 	if (Model.getFacade().isATaggedValue(sel)) {
@@ -379,7 +382,7 @@ public class TabResults
 	if (relatedShown) {
 	    int row = lse.getFirstIndex();
 	    Object sel = results.get(row);
-	    LOG.debug("selected " + sel);
+            LOG.log(Level.FINE, "selected {0}", sel);
 	    related.clear();
 	    Enumeration elems =
 		ChildGenRelated.getSingleton().gen(sel);

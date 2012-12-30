@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,16 +39,16 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.Component;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Logger;
-
 /**
- * This class is the main property panel, based on XML
+ * This class is the main property panel, based on XML.
  *
  * @author penyaskito
  */
@@ -57,7 +57,8 @@ class XmlPropertyPanel extends JPanel implements ListSelectionListener {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
+    private static final Logger LOG =
+        Logger.getLogger(XmlPropertyPanel.class.getName());
 
     private JList selectedList;
 
@@ -79,8 +80,8 @@ class XmlPropertyPanel extends JPanel implements ListSelectionListener {
         }
         return comp;
     }
-    
-    
+
+
 
     /**
      * If a RowSelector is removed then its selection listener
@@ -114,7 +115,7 @@ class XmlPropertyPanel extends JPanel implements ListSelectionListener {
     }
 
     public void removeNotify() {
-        LOG.info("The XML panel is being removed");
+        LOG.log(Level.INFO, "The XML panel is being removed");
         removeAll();
     }
 }

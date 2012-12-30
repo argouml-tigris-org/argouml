@@ -1,6 +1,6 @@
 // $Id$
 /***************************************************************************
- * Copyright (c) 2007,2011 Bogdan Pistol and other contributors
+ * Copyright (c) 2007-2012 Bogdan Pistol and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeListener;
@@ -52,14 +53,14 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * A list of model elements that when removed should not create delete
-     * events. See issue 
+     * events. See issue
 
      */
     private final List<Element> deleteEventIgnoreList =
         new ArrayList<Element>();
-    
+
     /**
-     * A listener attached to a UML element
+     * A listener attached to a UML element.
      */
     private class Listener {
 
@@ -125,14 +126,14 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     private Object mutex;
 
     private static final Logger LOG =
-            Logger.getLogger(ModelEventPumpEUMLImpl.class);
+            Logger.getLogger(ModelEventPumpEUMLImpl.class.getName());
 
     public static final int COMMAND_STACK_UPDATE =
             Notification.EVENT_TYPE_COUNT + 1;
 
     /**
      * Constructor.
-     * 
+     *
      * @param implementation
      *                The ModelImplementation.
      */
@@ -152,7 +153,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * Setter for the root container
-     * 
+     *
      * @param container
      */
     public void setRootContainer(Notifier container) {
@@ -165,7 +166,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        if (!(modelClass instanceof Class 
+        if (!(modelClass instanceof Class
                 && EObject.class.isAssignableFrom((Class) modelClass))) {
             throw new IllegalArgumentException(
                     "The model class must be instance of " //$NON-NLS-1$
@@ -177,13 +178,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelElement, String[] propertyNames) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding a listener " //$NON-NLS-1$
-                    + listener + " to " //$NON-NLS-1$
-                    + modelElement
-                    + " for " //$NON-NLS-1$
-                    + propertyNames);
-        }
+        LOG.log(Level.FINE,
+                "Adding a listener {0} to {1} for {2}", //$NON-NLS-1$
+                new Object[]{listener, modelElement, propertyNames});
         if (!(modelElement instanceof EObject)) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance " //$NON-NLS-1$
@@ -196,13 +193,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(UmlChangeListener listener,
             Object modelElement, String[] propertyNames) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding a listener " //$NON-NLS-1$
-                    + listener + " to " //$NON-NLS-1$
-                    + modelElement
-                    + " for " //$NON-NLS-1$
-                    + propertyNames);
-        }
+        LOG.log(Level.FINE,
+                "Adding a listener {0} to {1} for {2}", //$NON-NLS-1$
+                new Object[]{listener, modelElement, propertyNames});
         if (!(modelElement instanceof EObject)) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance " //$NON-NLS-1$
@@ -318,13 +311,13 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      *                The notification event
      */
     public void notifyChanged(Notification notification) {
-        
+
         if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
             return;
         }
-        
+
         final ENamedElement feature = (ENamedElement) notification.getFeature();
-        
+
         final String featureName =
             feature == null ? "" : feature.getName(); //$NON-NLS-1$
 
@@ -336,10 +329,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
 
         fireEvent(
-                notification.getNotifier(), 
-                notification.getOldValue(), 
-                notification.getNewValue(), 
-                notification.getEventType(), 
+                notification.getNotifier(),
+                notification.getOldValue(),
+                notification.getNewValue(),
+                notification.getEventType(),
                 featureName,
                 oppositeRef);
     }
@@ -350,20 +343,23 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      *                The notification event
      */
     void fireEvent(
-            Object notifier, 
-            Object oldValue, 
-            Object newValue, 
-            int eventType, 
+            Object notifier,
+            Object oldValue,
+            Object newValue,
+            int eventType,
             String featureName,
             EReference oppositeRef) {
 
-        LOG.debug("event  - Property: " //$NON-NLS-1$
-                + featureName 
-                + " Type : " + eventType  //$NON-NLS-1$
-                + " Old: " + oldValue //$NON-NLS-1$
-                + " New: " + newValue //$NON-NLS-1$
-                + " From: " + notifier); //$NON-NLS-1$
-        
+        LOG.log(Level.FINE,
+                "event  - Property: {0} Type : {1} Old: {2} " //$NON-NLS-1$
+                + "New: {3} From: {4}", //$NON-NLS-1$
+                new Object[] {
+                    featureName,
+                    eventType,
+                    oldValue,
+                    newValue,
+                    notifier});
+
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
                     List<EventListener> l) {
@@ -413,7 +409,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                                     getListeners(
                                         oldValue)));
                 } else {
-                    LOG.info("Not sending delete event - assume remove");
+                    LOG.log(Level.INFO,
+                            "Not sending delete event - assume remove");
                 }
                 events.add(new EventAndListeners(
                         new RemoveAssociationEvent(
@@ -496,16 +493,16 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
         }
     }
-    
-    
-    
+
+
+
     /**
      * Determine if we should create a delete event for the given property
      * when EMF tells us it has been removed. This is currently used to
      * work around the problem discussed in issue 5853.
-     * 
+     *
      * @param element
-     * @return true if 
+     * @return true if
      */
     private boolean isDeleteEventRequired(
             final Object element) {
@@ -517,11 +514,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
         return true;
     }
-    
+
     /**
      * Add Element to list which will cause the next delete event to
      * be ignored.
-     * 
+     *
      * @param property
      */
     void addElementForDeleteEventIgnore(Element element) {
@@ -576,7 +573,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void stopPumpingEvents() {
         rootContainerAdapter.setDeliverEvents(false);
     }
-    
+
     private String mapPropertyName(String name) {
         // TODO: map UML2 names to UML1.x names
         if (name.equals("ownedAttribute")) { //$NON-NLS-1$
@@ -589,7 +586,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public List getDebugInfo() {
         List info = new ArrayList();
         info.add("Event Listeners"); //$NON-NLS-1$
-        for (Iterator it = registerForElements.entrySet().iterator(); 
+        for (Iterator it = registerForElements.entrySet().iterator();
                 it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
 
@@ -597,9 +594,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             List modelElementNode = newDebugNode(item);
             info.add(modelElementNode);
             List listenerList = (List) entry.getValue();
-            
+
             Map<String, List<String>> map = new HashMap<String, List<String>>();
-            
+
             for (Iterator listIt = listenerList.iterator(); listIt.hasNext();) {
                 Listener listener = (Listener) listIt.next();
 
@@ -626,7 +623,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
         return info;
     }
-       
+
     private List<String> newDebugNode(String name) {
         List<String> list = new ArrayList<String>();
         list.add(name);

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,41 +38,43 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.MetaDataCache;
 import org.argouml.core.propertypanels.model.PanelData;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.PropPanelFactory;
 
 /**
- * 
+ *
  * @author penyaskito
  */
 public class XMLPropPanelFactory implements PropPanelFactory {
 
     private static final Logger LOG =
-        Logger.getLogger(XMLPropPanelFactory.class);
-    
+        Logger.getLogger(XMLPropPanelFactory.class.getName());
+
     /**
      * new cache
      */
     private final MetaDataCache metaDataCache = new MetaDataCache();
-    
+
     private static XMLPropPanelFactory instance;
-    
-    public static synchronized XMLPropPanelFactory getInstance() 
+
+    public static synchronized XMLPropPanelFactory getInstance()
         throws Exception {
         if (instance == null) {
             instance = new XMLPropPanelFactory();
         }
         return instance;
     }
-    
+
     private XMLPropPanelFactory() throws Exception {
     }
-    
+
     /**
      * Create the XML driven property panel for the given target
      */
@@ -86,17 +88,17 @@ public class XMLPropPanelFactory implements PropPanelFactory {
             return null;
         }
     }
-    
+
     private void build(JPanel panel, Object target) {
         // if we have anything or multiple elements selected,
         // we don't do anything
         // TODO: We need to support multiple selection.
-        // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552        
+        // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552
         panel.removeAll();
         if (target == null){
             return;
         }
-        
+
         try {
             // TODO: This references the concrete factory
             // We need a factories factory
@@ -104,12 +106,12 @@ public class XMLPropPanelFactory implements PropPanelFactory {
             builder.createGUI(target, panel);
         } catch (Exception e) {
             // TODO: Auto-generated catch block
-            LOG.error("Exception", e);
-        }        
+            LOG.log(Level.SEVERE, "Exception", e);
+        }
     }
-    
+
     public PanelData getPropertyPanelsData (Class<?> clazz) {
         return metaDataCache.get(clazz);
     }
-    
+
 }

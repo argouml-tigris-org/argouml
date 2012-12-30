@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,11 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.UseCaseDiagram;
@@ -75,12 +76,13 @@ import org.tigris.gef.presentation.FigNode;
  * Defines the toolbar, provides for its initialization and provides
  * constructors for a top level diagram and one within a defined
  * namespace.<p>
- * 
+ *
  * A use case diagram has as owner either a package or a classifier.
  */
 public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
 
-    private static final Logger LOG = Logger.getLogger(UMLUseCaseDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLUseCaseDiagram.class.getName());
 
     // Actions specific to the use case diagram toolbar
 
@@ -213,7 +215,7 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
     @Override
     public void setNamespace(Object handle) {
         if (!Model.getFacade().isANamespace(handle)) {
-            LOG.error(
+            LOG.log(Level.SEVERE,
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
@@ -221,7 +223,7 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
         Object m = handle;
         super.setNamespace(m);
 
-        UseCaseDiagramGraphModel gm = 
+        UseCaseDiagramGraphModel gm =
             (UseCaseDiagramGraphModel) getGraphModel();
         gm.setHomeModel(m);
         LayerPerspective lay =
@@ -234,7 +236,7 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
         // The renderer should be a singleton
 
     }
-    
+
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
@@ -461,19 +463,19 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
     public Collection getRelocationCandidates(Object root) {
         Collection c = new HashSet();
         c.add(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(root, 
+                .getAllModelElementsOfKindWithModel(root,
                         Model.getMetaTypes().getPackage()));
         c.add(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(root, 
+                .getAllModelElementsOfKindWithModel(root,
                         Model.getMetaTypes().getClassifier()));
         return c;
     }
 
-    public void encloserChanged(FigNode enclosed, 
+    public void encloserChanged(FigNode enclosed,
             FigNode oldEncloser, FigNode newEncloser) {
-        // Do nothing.        
+        // Do nothing.
     }
-    
+
     @Override
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isAActor(objectToAccept)) {
@@ -494,11 +496,11 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
         return false;
 
     }
-    
+
     @Override
     public DiagramElement drop(Object droppedObject, Point location) {
         DiagramElement figNode = null;
-       
+
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
         if (location != null) {
@@ -511,11 +513,11 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAActor(modelElement)) {
             figNode = new FigActor(modelElement, bounds, settings);
         } else if (Model.getFacade().isAUseCase(modelElement)) {
@@ -525,17 +527,18 @@ public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
         } else if (Model.getFacade().isAPackage(modelElement)) {
             if (!Model.getFacade().isAModel(modelElement)
                     && !Model.getFacade().isASubsystem(modelElement)) {
-                /* If we do not exclude a Model here, then dropping the 
-                 * Model on a UseCase diagram causes a package 
+                /* If we do not exclude a Model here, then dropping the
+                 * Model on a UseCase diagram causes a package
                  * to be drawn. */
                 figNode = new FigPackage(modelElement, bounds, settings);
             }
         }
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }

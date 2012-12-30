@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -56,22 +57,22 @@ import org.tigris.gef.presentation.FigEdge;
  * become an Association Class. The only difference from a basic edge is that
  * the completion action is extended to draw the extra associated node and edge
  * that are part of this composite figure.
- * 
+ *
  * @author Bob Tarling
  */
 public class ModeCreateAssociationClass extends ModeCreateAssociation {
 
     private static final long serialVersionUID = -8656139458297932182L;
-    
+
     private static final Logger LOG =
-        Logger.getLogger(ModeCreateAssociationClass.class);
+        Logger.getLogger(ModeCreateAssociationClass.class.getName());
 
     private static final int DISTANCE = 80;
-    
+
     public Object getMetaType() {
         return Model.getMetaTypes().getAssociationClass();
     }
-    
+
     @Override
     protected void endAttached(FigEdge fe) {
         Layer lay = editor.getLayerManager().getActiveLayer();
@@ -85,7 +86,7 @@ public class ModeCreateAssociationClass extends ModeCreateAssociation {
      * layer of the current editor. This is a convenience function which is used
      * when the pseudo-edge is added to a diagram via drag-and-drop or by using
      * the "Add to Diagram" menu item.
-     * 
+     *
      * @param editor
      *            the GEF editor
      * @param element
@@ -99,10 +100,10 @@ public class ModeCreateAssociationClass extends ModeCreateAssociation {
             buildParts(editor, thisFig, layer);
         }
     }
-    
+
     private static void buildParts(Editor editor, FigAssociationClass thisFig,
             Layer lay) {
-        
+
         thisFig.removePathItem(thisFig.getMiddleGroup());
 
         MutableGraphModel mutableGraphModel =
@@ -114,11 +115,11 @@ public class ModeCreateAssociationClass extends ModeCreateAssociation {
         Rectangle drawingArea =
             ProjectBrowser.getInstance()
                 .getEditorPane().getBounds();
-        // Perhaps something like the following would workd.  If not, then 
+        // Perhaps something like the following would workd.  If not, then
         // traverse up the component hierarchy to a MultEditorPane
-//        Rectangle drawingArea = 
+//        Rectangle drawingArea =
 //            Globals.curEditor().getJComponent().getVisibleRect();
-        
+
         thisFig.makeEdgePort();
         FigEdgePort tee = thisFig.getEdgePort();
         thisFig.calcBounds();
@@ -128,10 +129,11 @@ public class ModeCreateAssociationClass extends ModeCreateAssociation {
 
         DiagramSettings settings = ((ArgoDiagram) ((LayerPerspective) lay)
                 .getDiagram()).getDiagramSettings();
+
+        LOG.log(Level.INFO, "Creating Class box for association class");
         
-        LOG.info("Creating Class box for association class");
         FigClassAssociationClass figNode =
-            new FigClassAssociationClass(thisFig.getOwner(), 
+            new FigClassAssociationClass(thisFig.getOwner(),
             		new Rectangle(x, y, 0, 0),
             		settings);
         y = y - DISTANCE;

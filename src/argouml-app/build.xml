@@ -10,7 +10,6 @@
       Used for generating code.
 
 Building this requires:
-    infra
     model
 
   -->
@@ -62,9 +61,6 @@ Building this requires:
 
     <path id="src.compile.classpath">
       <fileset dir="lib">
-        <include name="*.jar"/>
-      </fileset>
-      <fileset dir="../argouml-core-infra/build/">
         <include name="*.jar"/>
       </fileset>
       <fileset dir="../argouml-core-model/build/">

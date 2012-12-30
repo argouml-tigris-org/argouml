@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -72,6 +72,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -82,7 +84,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -91,9 +92,9 @@ import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.<p>
- * See <a 
+ * See <a
  * href="http://java.sun.com/j2se/1.4.2/docs/guide/dragndrop/spec/dnd1.html">
- * dnd1</a> and <a 
+ * dnd1</a> and <a
  * href="http://java.sun.com/products/jfc/tsc/articles/dragndrop/index.html">
  * dnd2</a><p>
  *
@@ -101,11 +102,11 @@ import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
  * <a href="http://java.sun.com/j2se/1.3/docs/guide/swing/KeyBindChanges.html">
  * KeyBindChanges</a><p>
  *
- * The ghosted images code originates from <p><a 
+ * The ghosted images code originates from <p><a
  * href="http://www.javaworld.com/javaworld/javatips/jw-javatip114.html">
  * javatip114</a><p>
  *
- * Interesting may also be the following: <p><a 
+ * Interesting may also be the following: <p><a
  * href="http://forum.java.sun.com/thread.jspa?threadID=296255&start=30">
  * thread</a>
  *
@@ -121,7 +122,7 @@ public class DnDExplorerTree
      * Logger.
      */
     private static final Logger LOG =
-    	Logger.getLogger(DnDExplorerTree.class);
+        Logger.getLogger(DnDExplorerTree.class.getName());
 
     private static final String DIAGRAM_TO_CLIPBOARD_ACTION =
         "export Diagram as GIF";
@@ -130,10 +131,12 @@ public class DnDExplorerTree
      * Where, in the drag image, the mouse was clicked.
      */
     private Point	clickOffset = new Point();
+
     /**
      * The path being dragged.
      */
     private TreePath		sourcePath;
+
     /**
      * The 'drag image'.
      */
@@ -191,10 +194,10 @@ public class DnDExplorerTree
      * The typical response is to initiate a drag by invoking
      * DragSource.startDrag().
      * <p>
-     * 
+     *
      * TODO: find a way to show a different image when multiple elements are
      * dragged.
-     * 
+     *
      * @param dragGestureEvent
      *            the DragGestureEvent describing the gesture that has just
      *            occurred
@@ -211,10 +214,9 @@ public class DnDExplorerTree
         if (targets.size() < 1) {
             return;
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Drag: start transferring " + targets.size()
-                    + " targets.");
-        }
+
+        LOG.log(Level.FINE, "Drag: start transferring {0} targets.", targets.size());
+
         TransferableModelElements tf =
             new TransferableModelElements(targets);
 
@@ -295,16 +297,16 @@ public class DnDExplorerTree
     private boolean isValidDrag(TreePath destinationPath,
     		Transferable tf) {
         if (destinationPath == null) {
-            LOG.debug("No valid Drag: no destination found.");
+            LOG.log(Level.FINE, "No valid Drag: no destination found.");
             return false;
         }
         if (selectedTreePath.isDescendant(destinationPath)) {
-            LOG.debug("No valid Drag: move to descendent.");
+            LOG.log(Level.FINE, "No valid Drag: move to descendent.");
             return false;
         }
         if (!tf.isDataFlavorSupported(
                 TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-            LOG.debug("No valid Drag: flavor not supported.");
+            LOG.log(Level.FINE, "No valid Drag: flavor not supported.");
             return false;
         }
         Object dest =
@@ -318,13 +320,13 @@ public class DnDExplorerTree
 
         /* If the destination is not a NameSpace, then abort: */
         if (!Model.getFacade().isANamespace(dest)) {
-            LOG.debug("No valid Drag: not a namespace.");
+            LOG.log(Level.FINE, "No valid Drag: not a namespace.");
             return false;
         }
 
         /* We are sure "dest" is a Namespace now. */
         if (Model.getModelManagementHelper().isReadOnly(dest)) {
-            LOG.debug("No valid Drag: "
+            LOG.log(Level.FINE, "No valid Drag: "
                     + "this is not an editable UML element (profile?).");
             return false;
         }
@@ -333,20 +335,20 @@ public class DnDExplorerTree
 
         // TODO: Any Namespace can contain other elements.  Why don't we allow
         // this? - tfm
-        /* 
+        /*
          * MVW: These are the WFRs for DataType:
-         * [1] A DataType can only contain Operations, 
+         * [1] A DataType can only contain Operations,
          * which all must be queries.
          * self.allFeatures->forAll(f |
-         *  f.oclIsKindOf(Operation) and f.oclAsType(Operation).isQuery) 
+         *  f.oclIsKindOf(Operation) and f.oclAsType(Operation).isQuery)
          * [2] A DataType cannot contain any other ModelElements.
          *  self.allContents->isEmpty
          *  IMHO we should enforce these WFRs here.
          *  ... so it is still possible to copy or move query operations,
-         *  hence we should allow this. 
+         *  hence we should allow this.
          */
         if (Model.getFacade().isADataType(dest)) {
-            LOG.debug("No valid Drag: destination is a DataType.");
+            LOG.log(Level.FINE, "No valid Drag: destination is a DataType.");
             return false;
         }
 
@@ -362,14 +364,14 @@ public class DnDExplorerTree
             for (Object element : transfers) {
                 if (Model.getFacade().isAUMLElement(element)) {
                     if (!Model.getModelManagementHelper().isReadOnly(element)) {
-                        if (Model.getFacade().isAModelElement(dest) 
-                                && Model.getFacade().isANamespace(element) 
+                        if (Model.getFacade().isAModelElement(dest)
+                                && Model.getFacade().isANamespace(element)
                                 && Model.getCoreHelper().isValidNamespace(
                                         element, dest)) {
-                            LOG.debug("Valid Drag: namespace " + dest);
+                            LOG.log(Level.FINE, "Valid Drag: namespace {0}", dest);
                             return true;
                         }
-                        if (Model.getFacade().isAFeature(element) 
+                        if (Model.getFacade().isAFeature(element)
                                 && Model.getFacade().isAClassifier(dest)) {
                             return true;
                         }
@@ -378,17 +380,17 @@ public class DnDExplorerTree
                 if (element instanceof Relocatable) {
                     Relocatable d = (Relocatable) element;
                     if (d.isRelocationAllowed(dest)) {
-                        LOG.debug("Valid Drag: diagram " + dest);
+                        LOG.log(Level.FINE, "Valid Drag: diagram {0}", dest);
                         return true;
                     }
                 }
             }
         } catch (UnsupportedFlavorException e) {
-            LOG.debug(e);
+            LOG.log(Level.FINE, "", e);
         } catch (IOException e) {
-            LOG.debug(e);
+            LOG.log(Level.FINE, "", e);
         }
-        LOG.debug("No valid Drag: not a valid namespace.");
+        LOG.log(Level.FINE, "No valid Drag: not a valid namespace.");
         return false;
     }
 
@@ -577,7 +579,7 @@ public class DnDExplorerTree
          */
         public void dragEnter(
                 DropTargetDragEvent dropTargetDragEvent) {
-            LOG.debug("dragEnter");
+            LOG.log(Level.FINE, "dragEnter");
             if (!isDragAcceptable(dropTargetDragEvent)) {
                 dropTargetDragEvent.rejectDrag();
             } else {
@@ -590,7 +592,7 @@ public class DnDExplorerTree
          * @see java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
          */
         public void dragExit(DropTargetEvent dropTargetEvent) {
-            LOG.debug("dragExit");
+            LOG.log(Level.FINE, "dragExit");
             if (!DragSource.isDragImageSupported()) {
                 repaint(ghostRectangle.getBounds());
             }
@@ -609,7 +611,7 @@ public class DnDExplorerTree
                 return;
             }
             /* Many many of these events .. this slows things down: */
-//            LOG.debug("dragOver");
+//            LOG.log(Level.FINE, "dragOver");
 
             lastMouseLocation = pt;
 
@@ -703,7 +705,7 @@ public class DnDExplorerTree
 
             /* If the destination is not a NameSpace, then reject: */
             if (!Model.getFacade().isANamespace(dest)) {
-                if (LOG.isDebugEnabled()) {
+                if (LOG.isLoggable(Level.FINE)) {
                     String name;
                     if (Model.getFacade().isAUMLElement(dest)) {
                         name = Model.getFacade().getName(dest);
@@ -712,8 +714,8 @@ public class DnDExplorerTree
                     } else {
                         name = dest.toString();
                     }
-                    LOG.debug("No valid Drag: "
-                            + (Model.getFacade().isAUMLElement(dest) 
+                    LOG.log(Level.FINE, "No valid Drag: "
+                            + (Model.getFacade().isAUMLElement(dest)
                                     ? name + " not a namespace."
                                     :  " not a UML element."));
                 }
@@ -723,14 +725,14 @@ public class DnDExplorerTree
             /* We are sure "dest" is a Namespace now. */
 
             if (Model.getModelManagementHelper().isReadOnly(dest)) {
-                LOG.debug("No valid Drag: "
+                LOG.log(Level.FINE, "No valid Drag: "
                         + "not an editable UML element (profile?).");
                 return;
             }
 
             /* If the destination is a DataType, then reject: */
             if (Model.getFacade().isADataType(dest)) {
-                LOG.debug("No valid Drag: destination is a DataType.");
+                LOG.log(Level.FINE, "No valid Drag: destination is a DataType.");
                 dropTargetDragEvent.rejectDrag();
                 return;
             }
@@ -745,7 +747,7 @@ public class DnDExplorerTree
          * @see java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
          */
         public void drop(DropTargetDropEvent dropTargetDropEvent) {
-            LOG.debug("dropping ... ");
+            LOG.log(Level.FINE, "dropping ... ");
             /* Prevent hover timer from doing an unwanted
              * expandPath or collapsePath:
              */
@@ -764,9 +766,8 @@ public class DnDExplorerTree
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
                 TreePath destinationPath = getPathForLocation(loc.x, loc.y);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
-                }
+                
+                LOG.log(Level.FINE, "Drop location: x={0} y= {1}" , new Object[]{loc.x,loc.y});
 
                 if (!isValidDrag(destinationPath, tr)) {
                     dropTargetDropEvent.rejectDrop();
@@ -777,10 +778,9 @@ public class DnDExplorerTree
                 Collection modelElements =
                     (Collection) tr.getTransferData(
                         TransferableModelElements.UML_COLLECTION_FLAVOR);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("transfer data = " + modelElements);
-                }
                 
+                LOG.log(Level.FINE, "transfer data = {0}", modelElements);
+
                 Object dest =
                     ((DefaultMutableTreeNode) destinationPath
                         .getLastPathComponent()).getUserObject();
@@ -817,7 +817,7 @@ public class DnDExplorerTree
                         return;
                     }
                 }
-                
+
                 // TODO: Really should be Element/ModelElement, but we don't
                 // have a type which is portable for this
                 Collection<Object> newTargets = new ArrayList<Object>();
@@ -829,9 +829,9 @@ public class DnDExplorerTree
                                 continue;
                             }
                         }
-                        if (LOG.isDebugEnabled()) {
-                            LOG.debug((moveAction ? "move " : "copy ") + me);
-                        }
+                        
+                        LOG.log(Level.FINE,(moveAction ? "move " : "copy ") + me);
+                        
                         if (Model.getCoreHelper().isValidNamespace(me, dest)) {
                             if (moveAction) {
                                 Model.getCoreHelper().setNamespace(me, dest);
@@ -842,10 +842,10 @@ public class DnDExplorerTree
                                     newTargets.add(Model.getCopyHelper()
                                             .copy(me, dest));
                                 } catch (RuntimeException e) {
-                                    /* TODO: The copy function is not yet 
-                                     * completely implemented - so we will 
+                                    /* TODO: The copy function is not yet
+                                     * completely implemented - so we will
                                      * have some exceptions here and there.*/
-                                    LOG.error("Exception", e);
+                                    LOG.log(Level.SEVERE, "Exception", e);
                                 }
                             }
                         }
@@ -866,7 +866,7 @@ public class DnDExplorerTree
                                 }
                             }
                         }
-                        if (Model.getFacade().isAFeature(me) 
+                        if (Model.getFacade().isAFeature(me)
                                 && Model.getFacade().isAClassifier(dest)) {
                             if (moveAction) {
                                 Model.getCoreHelper().removeFeature(
@@ -884,17 +884,17 @@ public class DnDExplorerTree
                         .dropComplete(true);
                     TargetManager.getInstance().setTargets(newTargets);
                 } catch (java.lang.IllegalStateException ils) {
-                    LOG.debug("drop IllegalStateException");
+                    LOG.log(Level.FINE, "drop IllegalStateException");
                     dropTargetDropEvent.rejectDrop();
                 }
 
                 dropTargetDropEvent.getDropTargetContext()
                     .dropComplete(true);
             } catch (IOException io) {
-                LOG.debug("drop IOException");
+                LOG.log(Level.FINE, "drop IOException");
                 dropTargetDropEvent.rejectDrop();
             } catch (UnsupportedFlavorException ufe) {
-                LOG.debug("drop UnsupportedFlavorException");
+                LOG.log(Level.FINE, "drop UnsupportedFlavorException");
                 dropTargetDropEvent.rejectDrop();
             }
         }
@@ -968,5 +968,3 @@ public class DnDExplorerTree
      */
     private static final long serialVersionUID = 6207230394860016617L;
 }
-
-

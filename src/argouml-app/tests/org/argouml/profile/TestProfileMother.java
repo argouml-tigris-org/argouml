@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+
 import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
@@ -57,16 +60,13 @@ import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
 /**
  * Integration tests for the {@link ProfileMother} class.
  *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileMother extends TestCase {
-    
+
     private ProfileMother mother;
 
     @Override
@@ -74,12 +74,12 @@ public class TestProfileMother extends TestCase {
         InitializeModel.initializeDefault();
         mother = new ProfileMother();
     }
-    
+
     protected void tearDown() throws Exception {
         ProfileFacade.reset();
         super.tearDown();
     }
-    
+
     /**
      * Test the creation of a profile model.
      */
@@ -92,7 +92,7 @@ public class TestProfileMother extends TestCase {
             getFacade().getName(profileStereotypes.iterator().next()));
         Model.getUmlFactory().delete(model);
     }
-    
+
     /**
      * Test the creation of a simple profile model and check that specific
      * model elements are contained in it.
@@ -118,10 +118,10 @@ public class TestProfileMother extends TestCase {
             ProfileMother.STEREOTYPE_NAME_ST, "Class"));
         Model.getUmlFactory().delete(model);
     }
-    
+
     /**
      * Test saving a profile model.
-     * 
+     *
      * @throws Exception when saving the profile model fails
      */
     public void testSaveProfileModel() throws Exception {
@@ -132,7 +132,7 @@ public class TestProfileMother extends TestCase {
             + "doesn't exist.", file.exists());
         Model.getUmlFactory().delete(model);
     }
-    
+
     /**
      * Test the creation of a profile which depends on another profile.
      * Doesn't use the {@link ProfileMother#createXmiDependentProfile(File, ProfileMother.DependencyCreator, File, String)}
@@ -171,7 +171,7 @@ public class TestProfileMother extends TestCase {
         Model.getUmlFactory().deleteExtent(
                 simpleModelTopElements.iterator().next());
     }
-    
+
     /**
      * Test the creation of a profile which depends on another profile.
      * @throws IOException When saving the profile models fails.
@@ -203,7 +203,7 @@ public class TestProfileMother extends TestCase {
             profileFromWhichDependsFile, dependencyCreator,
             profilesDir, dependentProfileFilenamePrefix);
         // verifications
-        assertTrue("The file to where the file was supposed to be saved " 
+        assertTrue("The file to where the file was supposed to be saved "
             + "doesn't exist.", dependentProfileFile.exists());
         assertStringInLineOfFile("The name of the file which contains the profile "
             + "from which the dependent profile depends must occur in the "
@@ -241,7 +241,7 @@ public class TestProfileMother extends TestCase {
         throw new AssertionFailedError(failureMsg + " '" + str
             + "' not found in " + file.getName());
     }
-    
+
     /**
      * Test {@link ProfileMother#createProfileFilePairWith2ndDependingOn1stViaXmi()}.
      * @throws IOException when file IO goes wrong...

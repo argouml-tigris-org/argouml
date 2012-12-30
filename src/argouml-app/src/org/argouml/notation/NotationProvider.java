@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
@@ -57,12 +58,13 @@ import org.argouml.model.RemoveAssociationEvent;
  * by parsing the text.
  * Additionally, a help text for the parsing is provided,
  * so that the user knows the syntax.
- * 
+ *
  * @author Michiel van der Wulp
  */
 public abstract class NotationProvider implements PropertyChangeListener {
 
-    private static final Logger LOG = Logger.getLogger(NotationProvider.class);
+    private static final Logger LOG =
+        Logger.getLogger(NotationProvider.class.getName());
     private NotationRenderer renderer;
 
     /**
@@ -82,7 +84,7 @@ public abstract class NotationProvider implements PropertyChangeListener {
     /**
      * Parses the given text, and adapts the modelElement and
      * maybe related elements accordingly.
-     * 
+     *
      * @param modelElement the modelelement to adapt
      * @param text the string given by the user to be parsed
      * to adapt the model
@@ -91,54 +93,54 @@ public abstract class NotationProvider implements PropertyChangeListener {
 
     /**
      * Generate a string representation for the given model element.
-     * 
+     *
      * @param modelElement the base UML element
      * @param settings settings that control rendering of the text
      * @return the string written in the correct notation
      */
     public abstract String toString(Object modelElement,
             NotationSettings settings);
-    
+
     /**
-     * Initialize the appropriate model change listeners 
+     * Initialize the appropriate model change listeners
      * for the given modelelement to the given listener.
-     * Overrule this when you need more than 
+     * Overrule this when you need more than
      * listening to all events from the base modelelement.
-     * 
-     * @param modelElement the modelelement that we provide 
+     *
+     * @param modelElement the modelelement that we provide
      * notation for
      */
     public void initialiseListener(Object modelElement) {
         addElementListener(modelElement);
     }
-    
+
     /**
      * Clean out the listeners registered before.
      * <p>
-     * The default implementation is to remove all listeners 
+     * The default implementation is to remove all listeners
      * that were remembered by the utility functions below.
      */
     public void cleanListener() {
         removeAllElementListeners();
     }
-    
+
     /**
      * Update the set of listeners based on the given event. <p>
-     * 
-     * The default implementation just removes all listeners, and then 
-     * re-initializes completely - this is method 1. 
-     * A more efficient way would be to dissect 
+     *
+     * The default implementation just removes all listeners, and then
+     * re-initializes completely - this is method 1.
+     * A more efficient way would be to dissect
      * the propertyChangeEvent, and only adapt the listeners
      * that need to be adapted - this is method 2. <p>
-     * 
+     *
      * Method 2 is explained by the code below that is commented out.
      * Method 1 is the easiest to implement, since at every arrival of an event,
-     * we just remove all old listeners, and then inspect the current model, 
-     * and add listeners where we need them. I.e. the advantage is 
-     * that we only need to traverse the model structure in one location, i.e. 
+     * we just remove all old listeners, and then inspect the current model,
+     * and add listeners where we need them. I.e. the advantage is
+     * that we only need to traverse the model structure in one location, i.e.
      * the initialiseListener() method.
-     * 
-     * @param modelElement the modelelement that we provide 
+     *
+     * @param modelElement the modelelement that we provide
      * notation for
      * @param pce the received event, that we base the changes on
      */
@@ -148,16 +150,16 @@ public abstract class NotationProvider implements PropertyChangeListener {
         // && event.propertyName = "parameter"
         //     if event instanceof AddAssociationEvent
         //         Get the parameter instance from event.newValue
-        //         Call model to add listener on parameter on change 
+        //         Call model to add listener on parameter on change
         //             of "name", "type"
         //     else if event instanceof RemoveAssociationEvent
         //         Get the parameter instance from event.oldValue
-        //         Call model to remove listener on parameter on change 
+        //         Call model to remove listener on parameter on change
         //             of "name", "type"
         //     end if
-        // end if 
+        // end if
         if (Model.getUmlFactory().isRemoved(modelElement)) {
-            LOG.warn("Encountered deleted object during delete of " 
+            LOG.log(Level.WARNING, "Encountered deleted object during delete of "
                     + modelElement);
             return;
         }
@@ -168,19 +170,19 @@ public abstract class NotationProvider implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (renderer != null) {
             Object owner = renderer.getOwner(this);
-            if ((owner == evt.getSource()) 
+            if ((owner == evt.getSource())
                     && (evt instanceof DeleteInstanceEvent)) {
                 return;
             }
             if (owner != null) {
                 if (Model.getUmlFactory().isRemoved(owner)) {
-                    LOG.warn("Encountered deleted object during delete of " 
+                    LOG.log(Level.WARNING, "Encountered deleted object during delete of "
                             + owner);
                     return;
                 }
                 renderer.notationRenderingChanged(this,
                         toString(owner, renderer.getNotationSettings(this)));
-                if (evt instanceof AddAssociationEvent 
+                if (evt instanceof AddAssociationEvent
                         || evt instanceof RemoveAssociationEvent) {
                     initialiseListener(owner);
                 }
@@ -190,15 +192,15 @@ public abstract class NotationProvider implements PropertyChangeListener {
 
     /*
      * Add an element listener and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
      */
-    protected final void addElementListener(PropertyChangeListener listener, 
+    protected final void addElementListener(PropertyChangeListener listener,
             Object element) {
         if (Model.getUmlFactory().isRemoved(element)) {
-            LOG.warn("Encountered deleted object during delete of " + element);
+            LOG.log(Level.WARNING, "Encountered deleted object during delete of " + element);
             return;
         }
         Object[] entry = new Object[] {element, null};
@@ -206,25 +208,25 @@ public abstract class NotationProvider implements PropertyChangeListener {
             listeners.add(entry);
             Model.getPump().addModelEventListener(listener, element);
         } else {
-            LOG.warn("Attempted duplicate registration of event listener"
+            LOG.log(Level.WARNING, "Attempted duplicate registration of event listener"
                     + " - Element: " + element + " Listener: " + listener);
         }
     }
-    
+
     /**
-     * Utility function to add a listener for an array of property names 
+     * Utility function to add a listener for an array of property names
      * and remember the registration.
-     * 
+     *
      * @param element element to listen for changes on
      */
     public final void addElementListener(Object element) {
         addElementListener(this, element);
     }
-    
+
     /*
-     * Utility function to add a listener for a given property name 
+     * Utility function to add a listener for a given property name
      * and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -232,10 +234,10 @@ public abstract class NotationProvider implements PropertyChangeListener {
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
      *      Object, String)
      */
-    protected final void addElementListener(PropertyChangeListener listener, 
+    protected final void addElementListener(PropertyChangeListener listener,
             Object element, String property) {
         if (Model.getUmlFactory().isRemoved(element)) {
-            LOG.warn("Encountered deleted object during delete of " + element);
+            LOG.log(Level.WARNING, "Encountered deleted object during delete of " + element);
             return;
         }
         Object[] entry = new Object[] {element, property};
@@ -243,15 +245,15 @@ public abstract class NotationProvider implements PropertyChangeListener {
             listeners.add(entry);
             Model.getPump().addModelEventListener(listener, element, property);
         } else {
-            LOG.debug("Attempted duplicate registration of event listener"
-                    + " - Element: " + element + " Listener: " + listener);
+            LOG.log(Level.FINE, "Attempted duplicate registration of event listener"
+                    + " - Element: {0} Listener: {1}", new Object[]{element, listener});
         }
     }
-    
+
     /**
-     * Utility function to add a listener for an array of property names 
+     * Utility function to add a listener for an array of property names
      * and remember the registration.
-     * 
+     *
      * @param element element to listen for changes on
      * @param property name of property to listen for changes of
      */
@@ -260,9 +262,9 @@ public abstract class NotationProvider implements PropertyChangeListener {
     }
 
     /*
-     * Utility function to add a listener for an array of property names 
+     * Utility function to add a listener for an array of property names
      * and remember the registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @param property
@@ -270,10 +272,10 @@ public abstract class NotationProvider implements PropertyChangeListener {
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
      *      Object, String)
      */
-    protected final void addElementListener(PropertyChangeListener listener, 
+    protected final void addElementListener(PropertyChangeListener listener,
             Object element, String[] property) {
         if (Model.getUmlFactory().isRemoved(element)) {
-            LOG.warn("Encountered deleted object during delete of " + element);
+            LOG.log(Level.WARNING, "Encountered deleted object during delete of " + element);
             return;
         }
         Object[] entry = new Object[] {element, property};
@@ -281,51 +283,52 @@ public abstract class NotationProvider implements PropertyChangeListener {
             listeners.add(entry);
             Model.getPump().addModelEventListener(listener, element, property);
         } else {
-            LOG.debug("Attempted duplicate registration of event listener"
+            LOG.log(Level.FINE,
+                    "Attempted duplicate registration of event listener"
                     + " - Element: " + element + " Listener: " + listener);
         }
     }
-    
+
     /**
-     * Utility function to add a listener for an array of property names 
+     * Utility function to add a listener for an array of property names
      * and remember the registration.
-     * 
+     *
      * @param element element to listen for changes on
-     * @param property array of property names (Strings) 
+     * @param property array of property names (Strings)
      * to listen for changes of
      */
     public final void addElementListener(Object element, String[] property) {
         addElementListener(this, element, property);
     }
-    
+
     /*
-     * Utility function to remove an element listener 
+     * Utility function to remove an element listener
      * and adapt the remembered list of registration.
-     * 
+     *
      * @param element
      *            element to listen for changes on
      * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
      */
-    protected final void removeElementListener(PropertyChangeListener listener, 
+    protected final void removeElementListener(PropertyChangeListener listener,
             Object element) {
         listeners.remove(new Object[] {element, null});
         Model.getPump().removeModelEventListener(listener, element);
     }
-    
+
     /**
-     * Utility function to remove an element listener 
+     * Utility function to remove an element listener
      * and adapt the remembered list of registration.
-     * 
+     *
      * @param element element to listen for changes on
      */
     public final void removeElementListener(Object element) {
         removeElementListener(this, element);
     }
-    
+
     /*
-     * Utility function to unregister all listeners 
+     * Utility function to unregister all listeners
      * registered through addElementListener.
-     * 
+     *
      * @see #addElementListener(Object, String)
      */
     protected final void removeAllElementListeners(
@@ -347,9 +350,9 @@ public abstract class NotationProvider implements PropertyChangeListener {
         }
         listeners.clear();
     }
-    
+
     /**
-     * Utility function to unregister all listeners 
+     * Utility function to unregister all listeners
      * registered through addElementListener.
      */
     public final void removeAllElementListeners() {

@@ -5,8 +5,7 @@ Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.core.model.euml;singleton:=true
 Bundle-Version: 0.28.0.qualifier
 Bundle-Localization: plugin
-Require-Bundle: org.argouml.core.infra,
- org.argouml.core.model
+Require-Bundle: org.argouml.core.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: icons.full.ctool16,
  icons.full.dtool16,

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,28 +41,27 @@ package org.argouml.profile.internal.ocl;
 import java.io.PushbackReader;
 import java.io.StringReader;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
+//import java.util.logging.Logger;
 
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
 import tudresden.ocl.parser.node.Start;
 
 /**
- * Evaluates ocl expressions
+ * Evaluates ocl expressions.
  *
  * @author maurelio1234
  */
 public class DefaultOclEvaluator implements OclExpressionEvaluator {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger
-            .getLogger(DefaultOclEvaluator.class);
-    
+    // /**
+    //  * Logger.
+    //  */
+    // private static final Logger LOG =
+    //     Logger.getLogger(DefaultOclEvaluator.class.getName());
+
     private static OclExpressionEvaluator instance = null;
-    
+
     /**
      * @return unique instance
      */
@@ -72,16 +71,16 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
         }
         return instance;
     }
-    
+
     /*
      * @see org.argouml.profile.internal.ocl.OclExpressionEvaluator#evaluate(java.util.HashMap, org.argouml.profile.internal.ocl.ModelInterpreter, java.lang.String)
      */
     public Object evaluate(Map<String, Object> vt, ModelInterpreter mi,
             String ocl) throws InvalidOclException {
-        // XXX this seems to be a bug of the parser, 
+        // XXX this seems to be a bug of the parser,
         // it always requires a context
-        
-        //LOG.debug("OCL: " + ocl);
+
+        //LOG.log(Level.FINE, "OCL: " + ocl);
         if (ocl.contains("ore")) {
             // TODO: Convert this to some sensible logging
             System.out.println("VOILA!");
@@ -90,13 +89,13 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
                 "context X inv: " + ocl), 2));
         OclParser parser = new OclParser(lexer);
         Start tree = null;
-        
+
         try {
             tree = parser.parse();
         } catch (Exception e) {
             throw new InvalidOclException(ocl);
         }
-        
+
         EvaluateExpression ee = new EvaluateExpression(vt, mi);
         tree.apply(ee);
         return ee.getValue();

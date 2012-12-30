@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,8 @@ package org.argouml.cognitive.critics;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A Critic can be disabled for a certain amount of time by giving it
@@ -59,7 +59,8 @@ public class SnoozeOrder implements Serializable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(SnoozeOrder.class);
+    private static final Logger LOG =
+        Logger.getLogger(SnoozeOrder.class.getName());
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -141,7 +142,7 @@ public class SnoozeOrder implements Serializable {
 	long n = (getNow()).getTime();
 	snoozeUntil.setTime(n + interval);
 	snoozeAgain.setTime(n + interval + INITIAL_INTERVAL_MS);
-	LOG.info("Setting snooze order to: " + snoozeUntil.toString());
+	LOG.log(Level.INFO, "Setting snooze order to: {0}", snoozeUntil);
     }
 
     /**

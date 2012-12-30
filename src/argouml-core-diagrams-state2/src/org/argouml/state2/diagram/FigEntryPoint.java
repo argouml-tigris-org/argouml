@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2011 Contributors - see below
+ * Copyright (c) 2011-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,12 @@
 package org.argouml.state2.diagram;
 
 import java.awt.Rectangle;
+
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.di.GraphNode;
 import org.tigris.gef.presentation.Connector;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
 
 class FigEntryPoint extends FigCircleState implements Connector {
 

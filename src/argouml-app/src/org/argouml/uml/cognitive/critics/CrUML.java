@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
@@ -64,15 +66,16 @@ public class CrUML extends Critic {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(CrUML.class);
+    private static final Logger LOG =
+        Logger.getLogger(CrUML.class.getName());
 
    /**
     * By default looks for the localized strings at the <code>critics</code>
     * Resource, but critics defined elsewhere (out of ArgoUML main tree)
     * may override this parameter
-    */  
+    */
     private String localizationPrefix = "critics";
-    
+
     /**
      * The constructor for this class.
      */
@@ -82,7 +85,7 @@ public class CrUML extends Critic {
     /**
      * The constructor for this class overriding the default
      * localization resource.
-     * 
+     *
      * @param nonDefaultLocalizationPrefix the overriding localization resource
      */
     public CrUML(String nonDefaultLocalizationPrefix) {
@@ -91,7 +94,7 @@ public class CrUML extends Critic {
             setupHeadAndDesc();
         }
     }
-    
+
     /**
      * Set the resources for this critic based on the class name.
      *
@@ -101,10 +104,10 @@ public class CrUML extends Critic {
         super.setHeadline(getLocalizedString(key, "-head"));
         super.setDescription(getLocalizedString(key, "-desc"));
     }
-    
+
     /**
      * Returns a localized string for the current critic class.
-     * 
+     *
      * @param suffix the suffix of the key
      * @return the localized string
      */
@@ -114,7 +117,7 @@ public class CrUML extends Critic {
 
     /**
      * Returns a localized string for the given key and suffix.
-     * 
+     *
      * @param key the main key
      * @param suffix the suffix of the key
      * @return the localized string
@@ -122,19 +125,19 @@ public class CrUML extends Critic {
     protected String getLocalizedString(String key, String suffix) {
         return Translator.localize(localizationPrefix + "." + key + suffix);
     }
-    
+
     /**
      * Loads the localized wizard's instruction.
-     * 
+     *
      * @return the instructions
      */
     protected String getInstructions() {
         return getLocalizedString("-ins");
     }
-    
+
     /**
      * Loads the localized wizard's default suggestion.
-     * 
+     *
      * @return the default suggestion
      */
     protected String getDefaultSuggestion() {
@@ -143,14 +146,14 @@ public class CrUML extends Critic {
 
     /**
      * @see org.argouml.cognitive.Critic#setHeadline(java.lang.String)
-     * 
-     * Set up the locale specific text for the critic headline 
+     *
+     * Set up the locale specific text for the critic headline
      * (the one liner that appears in the to-do pane)
      * and the critic description (the detailed explanation that
      * appears in the to-do tab of the details pane).
-     * 
+     *
      * MVW: Maybe we can make it part of the constructor CrUML()?
-     * 
+     *
      * FIXME: why override if nobody uses?
      */
     //@Override
@@ -238,7 +241,7 @@ public class CrUML extends Critic {
 		    CriticOclEvaluator.getInstance().evalToString(off1, expr);
             } catch (ExpansionException e) {
                 // Really ought to have a CriticException to throw here.
-                LOG.error("Failed to evaluate critic expression", e);
+                LOG.log(Level.SEVERE, "Failed to evaluate critic expression", e);
             }
             if (expr.endsWith("") && evalStr.equals("")) {
                 evalStr = Translator.localize("misc.name.anon");
@@ -262,10 +265,10 @@ public class CrUML extends Critic {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	return new UMLToDoItem(this, dm, dsgr);
     }
-    
+
     /**
      * Get the name of the current class.
-     * 
+     *
      * @return the name of the current class without any leading packages
      */
     private final String getClassSimpleName() {

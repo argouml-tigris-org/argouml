@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,8 +42,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
@@ -62,13 +63,13 @@ import org.tigris.gef.presentation.FigPoly;
 public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
 
     private static final Logger LOG =
-	Logger.getLogger(ModeCreateGraphEdge.class);
-    
+        Logger.getLogger(ModeCreateGraphEdge.class.getName());
+
     /**
      * The Fig from which drawing starts, either a FigNode or a FigEdge
      */
     private Fig sourceFig;
-    
+
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
@@ -106,7 +107,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
             setSourceFigNode(edgePort);
             setStartPort(sourceFig.getOwner());
             setStartPortFig(edgePort);
-            
+
         } else if (underMouse instanceof FigNodeModelElement) {
             if (getSourceFigNode() == null) {
                 setSourceFigNode((FigNode) underMouse);
@@ -128,7 +129,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         createFig(me);
         me.consume();
     }
-    
+
     /*
      * @see org.tigris.gef.base.ModeCreatePolyEdge#mouseReleased(java.awt.event.MouseEvent)
      */
@@ -149,13 +150,13 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         }
         MutableGraphModel graphModel =
             (MutableGraphModel) editor.getGraphModel();
-        
+
         if (!isConnectionValid(sourceFig, destFig)) {
             destFig = null;
         } else {
-            LOG.info("Connection valid");
+            LOG.log(Level.INFO, "Connection valid");
         }
-        
+
         if (destFig instanceof FigEdgeModelElement
                 && !(destFig instanceof FigEdgeNote)) {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
@@ -181,14 +182,14 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
                 }
                 editor.damageAll();
                 p.setComplete(true);
-                
-                LOG.info("Connecting");
+
+                LOG.log(Level.INFO, "Connecting");
                 FigEdge fe = buildConnection(
                         graphModel,
                         getMetaType(),
-                        sourceFig, 
+                        sourceFig,
                         destFig);
-                
+
                 if (fe != null) {
                     editor.getSelectionManager().select(fe);
                 }
@@ -199,9 +200,9 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
                 if (fe instanceof MouseListener) {
                     ((MouseListener) fe).mouseReleased(me);
                 }
-                
+
                 endAttached(fe);
-                
+
                 done();
                 me.consume();
                 return;
@@ -219,14 +220,14 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         _lastY = y;
         me.consume();
     }
-    
+
     /**
      * Return the meta type of the element that this mode is designed to
      * create.
      * @return the meta type of the connection required.
      */
     protected abstract Object getMetaType();
-    
+
     /**
      * Called after the edge has been drawn from a source and dropped to a
      * destination. Return true if this drop is valid.
@@ -238,16 +239,16 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
      */
     protected boolean isConnectionValid(Fig source, Fig dest) {
 	return Model.getUmlFactory().isConnectionValid(
-		getMetaType(), 
-		source == null ? null : source.getOwner(), 
+		getMetaType(),
+		source == null ? null : source.getOwner(),
 		dest == null ? null : dest.getOwner(),
                 true);
     }
-    
+
     /**
      * Create an edge of the given type and connect it to the
      * given nodes.
-     * 
+     *
      * @param graphModel the GraphModel containing the objects
      * @param edgeType       the UML object type of the connection
      * @param fromElement    the Fig for the "from" element
@@ -260,10 +261,10 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
             Fig fromElement,
             Fig destFigNode) {
         Object modelElement = graphModel.connect(
-                fromElement.getOwner(), 
-                destFigNode.getOwner(), 
+                fromElement.getOwner(),
+                destFigNode.getOwner(),
                 edgeType);
-        
+
         setNewEdge(modelElement);
 
         // Calling connect() will add the edge to the GraphModel and
@@ -287,6 +288,6 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         } else {
             return null;
         }
-        
+
     }
 }

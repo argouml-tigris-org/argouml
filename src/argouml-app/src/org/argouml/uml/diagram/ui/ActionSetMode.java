@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,11 +40,12 @@ package org.argouml.uml.diagram.ui;
 
 import java.util.Hashtable;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.tigris.gef.base.SetModeAction;
@@ -55,8 +56,9 @@ import org.tigris.gef.base.SetModeAction;
  * @author Jeremy Jones
  */
 public class ActionSetMode extends SetModeAction {
-    
-    private static final Logger LOG = Logger.getLogger(ActionSetMode.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(ActionSetMode.class.getName());
 
     /**
      * The constructor.
@@ -159,7 +161,7 @@ public class ActionSetMode extends SetModeAction {
      * @param value the value of a new argument for the new mode
      * @param name the name of the command that is the tooltip text.
      */
-    public ActionSetMode(Class modeClass, String arg, Object value, 
+    public ActionSetMode(Class modeClass, String arg, Object value,
             String name) {
         super(modeClass, arg, value);
         putToolTip(name);
@@ -193,13 +195,13 @@ public class ActionSetMode extends SetModeAction {
     private void putToolTip(String key) {
         putValue(Action.SHORT_DESCRIPTION, Translator.localize(key));
     }
-    
+
     private void putIcon(String key) {
         ImageIcon icon = ResourceLoaderWrapper.lookupIcon(key);
         if (icon != null) {
             putValue(Action.SMALL_ICON, icon);
         } else {
-            LOG.debug("Failed to find icon for key " + key);
+            LOG.log(Level.FINE, "Failed to find icon for key {0}", key);
         }
     }
 }

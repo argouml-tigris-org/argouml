@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,9 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.presentation.Fig;
@@ -72,20 +73,21 @@ import org.tigris.gef.presentation.FigEdge;
  * other figs in the diagram. Using a displacement angle of 135 or -135 degrees
  * is a good way to help avoid the connected nodes.
  * </ul>
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  * @since 0.27.3
  */
 public class PathItemPlacement extends PathConv {
-    
-    private static final Logger LOG = Logger.getLogger(PathItemPlacement.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(PathItemPlacement.class.getName());
 
     private boolean useCollisionCheck = true;
-    
+
     private boolean useAngle = true;
 
     private double angle = 90; // default angle is 90 deg.
-    
+
     /**
      * the fig to be placed.
      */
@@ -100,7 +102,7 @@ public class PathItemPlacement extends PathConv {
      * Fixed delta offset from the computed percentage location.
      */
     private int pathOffset;
-    
+
     /**
      * Distance along the displacement vector (ie distance from the edge)
      */
@@ -111,18 +113,18 @@ public class PathItemPlacement extends PathConv {
      * as an XY offset.
      */
     private Point offset;
-    
+
     /**
      * Set true to keep items on same side (top or bottom) of path as
      * it rotates through vertical.
      */
     private final boolean swap = true;
-    
+
     /**
      * Construct a new path to coordinate conversion object which positions at a
      * percentage along a path with a given distance perpendicular to the path
      * at the anchor point.
-     * 
+     *
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
      * @param theItemFig the fig to be placed.
@@ -138,12 +140,12 @@ public class PathItemPlacement extends PathConv {
         this(pathFig, theItemFig, pathPercent, 0, 90, displacement);
     }
 
-    
+
     /**
      * Construct a new path to coordinate conversion object which positions
-     * an anchor point on the path at a percentage along a path with an offset, 
+     * an anchor point on the path at a percentage along a path with an offset,
      * and from the anchor point at a distance measured at a given angle.
-     * 
+     *
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
      * @param theItemFig the fig to be placed.
@@ -170,9 +172,9 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Construct a new path to coordinate conversion object which positions
-     * an anchor point on the path at a percentage along a path with an offset, 
+     * an anchor point on the path at a percentage along a path with an offset,
      * and from the anchor point at a distance measured in X, Y coordinates.
-     * 
+     *
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
      * @param theItemFig the fig to be placed.
@@ -191,7 +193,7 @@ public class PathItemPlacement extends PathConv {
         setAnchor(pathPercent, pathDelta);
         setAbsoluteOffset(absoluteOffset);
     }
-    
+
     /**
      * Returns the Fig that this PathItemPlacement places.
      * To get the Fig of the Edge which owns this fig, use use getPathFig()
@@ -207,9 +209,9 @@ public class PathItemPlacement extends PathConv {
      * Compute a position.  This strangely named method computes a
      * position using the current set of parameters and returns the result
      * by updating the provided Point.
-     * 
+     *
      * @param result Point in which to return result.  Not read as input.
-     * 
+     *
      * @see org.tigris.gef.base.PathConv#stuffPoint(java.awt.Point)
      */
     public void stuffPoint(Point result) {
@@ -218,13 +220,13 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Get the computed target position based on the current set of parameters.
-     * 
+     *
      * @return the computed position
      */
     public Point getPosition() {
         return getPosition(new Point());
     }
-    
+
     @Override
     public Point getPoint() {
         return getPosition();
@@ -233,7 +235,7 @@ public class PathItemPlacement extends PathConv {
     /**
      * Get the anchor position.  The represents the point along the path that
      * is used as the starting point for all other calculations.
-     * 
+     *
      * @return the anchor position represented by the current percentage and
      *         path offset parameters
      */
@@ -248,7 +250,7 @@ public class PathItemPlacement extends PathConv {
     /**
      * Compute distance along the path based on percentage and offset, clamped
      * to the length of the path.
-     * 
+     *
      * @return the distance
      */
     private int getPathDistance() {
@@ -258,13 +260,13 @@ public class PathItemPlacement extends PathConv {
         if (distance >= length) {
             distance = length - 1;
         }
-        return distance;  
+        return distance;
     }
-    
+
 
     /**
      * Get the computed position based on the current set of parameters.
-     * 
+     *
      * @param result Point in which to return result.  Not read as input, but it
      * <em>is</em> modified.
      * @return the updated point
@@ -280,7 +282,7 @@ public class PathItemPlacement extends PathConv {
             result.translate(offset.x, offset.y);
             return result;
         }
-        
+
         double slope = getSlope();
         result.setLocation(applyOffset(slope, vectorOffset, anchor));
 
@@ -312,7 +314,7 @@ public class PathItemPlacement extends PathConv {
                 }
                 // If we timed out, give it one more try on the other side
                 if (false /* count >= limit */) {
-                    LOG.debug("Retry limit exceeded.  Trying other side");
+                    LOG.log(Level.FINE, "Retry limit exceeded.  Trying other side");
                     result.setLocation(anchor);
                     // TODO: This works for 90 degree angles, but is suboptimal
                     // for other angles. It should reflect the angle, rather
@@ -321,14 +323,14 @@ public class PathItemPlacement extends PathConv {
                             applyOffset(slope, -vectorOffset, anchor));
                     count = 0;
                     scaledOffset = -scaledOffset;
-                    while (intersects(points, result, size) 
+                    while (intersects(points, result, size)
                             && count++ < limit) {
                         result.setLocation(
                                 applyOffset(slope, scaledOffset, anchor));
                         scaledOffset += increment;
                     }
                 }
-//                LOG.debug("Final point #" + count + " " + result
+//                LOG.log(Level.FINE, "Final point #" + count + " " + result
 //                        + " offset of " + scaledOffset);
             }
         }
@@ -339,7 +341,7 @@ public class PathItemPlacement extends PathConv {
      * Check for intersection between the segments of a poly line and a
      * rectangle.  Unlike FigEdge.intersects(), this only checks the main
      * path, not any associated path items (like ourselves).
-     * 
+     *
      * @param points set of points representing line segments
      * @param center position of center
      * @param size size of bounding box
@@ -350,8 +352,8 @@ public class PathItemPlacement extends PathConv {
         // Very screwy!  GEF sometimes uses center and sometimes upper left
         // TODO: GEF also positions text at the nominal baseline which is
         // well inside the bounding box and gives the overall size incorrectly
-        Rectangle r = new Rectangle(center.x - (size.width / 2), 
-                center.y - (size.height / 2), 
+        Rectangle r = new Rectangle(center.x - (size.width / 2),
+                center.y - (size.height / 2),
                 size.width, size.height);
         Line2D line = new Line2D.Double();
         for (int i = 0; i < points.length - 1; i++) {
@@ -365,7 +367,7 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Convenience method to set anchor percentage distance and offset.
-     * 
+     *
      * @param newPercent distance as a percent of total path 0<=percent<=100
      * @param newOffset offset in drawing coordinate system
      */
@@ -373,7 +375,7 @@ public class PathItemPlacement extends PathConv {
         setAnchorPercent(newPercent);
         setAnchorOffset(newOffset);
     }
-    
+
     /**
      * Set distance along path of anchor in integer percentages.
      * @param newPercent distance as a percent of total path 0<=percent<=100
@@ -381,34 +383,34 @@ public class PathItemPlacement extends PathConv {
     public void setAnchorPercent(int newPercent) {
         percent = newPercent;
     }
-    
+
     /**
      * Set offset along path to be applied to anchor after percentage based
      * location is calculated. Specified in units of the drawing coordinate
      * system.
-     * 
+     *
      * @param newOffset offset in drawing coordinate system
      */
     public void setAnchorOffset(int newOffset) {
         pathOffset = newOffset;
     }
-    
+
     /**
      * Set a fixed offset from the anchor point.
-     * @param newOffset a Point who's x & y coordinates will be used as a 
+     * @param newOffset a Point who's x & y coordinates will be used as a
      * displacement from anchor point
      */
     public void setAbsoluteOffset(Point newOffset) {
         offset = newOffset;
         useAngle = false;
     }
-    
+
     /**
      * Attempts to set a new location for the fig being controlled
-     * by this path item.  Takes the given Point which represents an x,y 
+     * by this path item.  Takes the given Point which represents an x,y
      * position, and calculates the most appropriate angle and displacement
      * to achieve this new position.  Used when the user drags a label
-     * on the diagram.  
+     * on the diagram.
      * @override
      * @param newPoint The new target location for the PathItem fig.
      * @see org.tigris.gef.base.PathConv#setPoint(java.awt.Point)
@@ -424,7 +426,7 @@ public class PathItemPlacement extends PathConv {
      * Compute an angle and distance which is equivalent to the given point.
      * This is a convenience method to help callers get coordinates in a form
      * that can be passed back in using {@link #setDisplacementVector(int, int)}
-     * 
+     *
      * @param point the desired target point
      * @return an array of two integers containing the angle and distance
      */
@@ -445,10 +447,10 @@ public class PathItemPlacement extends PathConv {
         int[] result = new int[] {angl, distance};
         return result;
     }
-    
+
     /**
      * Set the displacement vector to the given angle and distance.
-     * 
+     *
      * @param vectorAngle angle in degrees relative to the edge at the anchor
      *            point.
      * @param vectorDistance distance along vector in drawing coordinate units
@@ -457,22 +459,22 @@ public class PathItemPlacement extends PathConv {
         setDisplacementAngle(vectorAngle);
         setDisplacementDistance(vectorDistance);
     }
-    
+
     /**
      * Set the displacement vector to the given angle and distance.
-     * 
+     *
      * @param vectorAngle angle in degrees relative to the edge at the anchor
      *            point.
      * @param vectorDistance distance along vector in drawing coordinate units
      */
-    public void setDisplacementVector(double vectorAngle, 
+    public void setDisplacementVector(double vectorAngle,
             int vectorDistance) {
         setDisplacementAngle(vectorAngle);
         setDisplacementDistance(vectorDistance);
     }
-    
+
     /**
-     * @param offsetAngle the new angle for the displacement vector, 
+     * @param offsetAngle the new angle for the displacement vector,
      * specified in degrees relative to the edge at the anchor.
      */
     public void setDisplacementAngle(int offsetAngle) {
@@ -481,7 +483,7 @@ public class PathItemPlacement extends PathConv {
     }
 
     /**
-     * @param offsetAngle the new angle for the displacement vector, 
+     * @param offsetAngle the new angle for the displacement vector,
      * specified in degrees relative to the edge at the anchor.
      */
     public void setDisplacementAngle(double offsetAngle) {
@@ -497,13 +499,13 @@ public class PathItemPlacement extends PathConv {
         vectorOffset = newDistance;
         useAngle = true;
     }
-    
+
 
     /**
      * Don't know what this is supposed to do since GEF has no API spec for it,
      * but we don't implement it and it'll throw an
      * UnsupportedOperationException if you try to use it.
-     * 
+     *
      * @param newPoint ignored
      * @see org.tigris.gef.base.PathConv#setClosestPoint(java.awt.Point)
      */
@@ -524,7 +526,7 @@ public class PathItemPlacement extends PathConv {
 
         int pathLength = _pathFigure.getPerimeterLength();
         int pathDistance = getPathDistance();
-        
+
         // Two points for line segment used to compute slope of path here
         // NOTE that this is the average slope, not instantaneous, so it will
         // give screwy results near bends in the path
@@ -537,7 +539,7 @@ public class PathItemPlacement extends PathConv {
         }
         Point p1 = _pathFigure.pointAlongPerimeter(d1);
         Point p2 = _pathFigure.pointAlongPerimeter(d2);
-        
+
         double theta = getSlope(p1, p2);
         return theta;
     }
@@ -545,7 +547,7 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Compute the slope in radians of the line between two points.
-     * @param p1 first point 
+     * @param p1 first point
      * @param p2 second point
      * @return slope in radians in the range 0<=slope<=2PI
      */
@@ -578,7 +580,7 @@ public class PathItemPlacement extends PathConv {
             // Quadrant IV
             if (theta < 0) {
                 theta += Math.PI * 2;
-            } 
+            }
         }
         return theta;
     }
@@ -586,25 +588,25 @@ public class PathItemPlacement extends PathConv {
     /**
      * Apply an offset for a given distance along the normal vector computed
      * to the line specified by the two points.
-     * 
+     *
      * @param p1 point one of line to use in computing normal vector
      * @param p2 point two of line to use in computing normal vector
      * @param theOffset distance to displace fig along normal vector
      * @param anchor The start point to apply the offset from.  Not modified.
-     * @return A new computed point describing the location after the offset 
+     * @return A new computed point describing the location after the offset
      * has been applied to the anchor.
      */
-    private Point applyOffset(double theta, int theOffset, 
+    private Point applyOffset(double theta, int theOffset,
             Point anchor) {
-     
+
         Point result = new Point(anchor);
-        
+
         // Set the following for some backward compatibility with old algorithm
         final boolean aboveAndRight = false;
 
-//        LOG.debug("Slope = " + theta / Math.PI + "PI " 
+//        LOG.log(Level.FINE, "Slope = " + theta / Math.PI + "PI "
 //                + theta / Math.PI * 180.0);
-        
+
         // Add displacement angle to slope
         if (swap && theta > Math.PI / 2 && theta < Math.PI * 3 / 2) {
             theta = theta - angle;
@@ -623,7 +625,7 @@ public class PathItemPlacement extends PathConv {
         // Compute our deltas
         int dx = (int) (theOffset * Math.cos(theta));
         int dy = (int) (theOffset * Math.sin(theta));
-        
+
         // For backward compatibility everything is above and right
         // TODO: Do in polar domain?
         if (aboveAndRight) {
@@ -633,18 +635,18 @@ public class PathItemPlacement extends PathConv {
 
         result.x += dx;
         result.y += dy;
-        
-//        LOG.debug(result.x + ", " + result.y 
+
+//        LOG.log(Level.FINE,result.x + ", " + result.y
 //                + " theta = " + theta * 180 / Math.PI
 //                + " dx = " + dx + " dy = " + dy);
-        
+
         return result;
     }
-    
+
     /**
      * Paint the virtual connection from the edge to where the path item
      * is placed according to this path item placement algorithm.
-     * 
+     *
      * @param g the Graphics object
      * @see org.tigris.gef.base.PathConv#paint(java.awt.Graphics)
      */
@@ -659,18 +661,18 @@ public class PathItemPlacement extends PathConv {
         r.grow(2, 2);
         g.fillRoundRect(r.x, r.y, r.width, r.height, 8, 8);
         if (r.contains(p2)) {
-            p2 = getRectLineIntersection(r, p1, p2);     
+            p2 = getRectLineIntersection(r, p1, p2);
         }
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
-    
+
     /**
      * Finds the point where a rectangle and line intersect.
-     * Finds the intersection point between the border of a Rectangle r and 
-     * a line drawn between two Points pOut (outside the rectangle) and pIn 
+     * Finds the intersection point between the border of a Rectangle r and
+     * a line drawn between two Points pOut (outside the rectangle) and pIn
      * (inside the rectangle).
      * If the pIn is not inside the rectangle, or if any other problem occurs,
-     * pIn is returned. 
+     * pIn is returned.
      * @param r Rectangle to find the intersection of.
      * @param pOut Point outside the rectangle.
      * @param pIn Point inside the rectangle.
@@ -683,12 +685,12 @@ public class PathItemPlacement extends PathConv {
         if (m.intersectsLine(n)) {
             return intersection(m, n);
         }
-        n = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, 
+        n = new Line2D.Double(r.x + r.width, r.y, r.x + r.width,
                 r.y + r.height);
         if (m.intersectsLine(n)) {
             return intersection(m, n);
         }
-        n = new Line2D.Double(r.x, r.y + r.height, r.x + r.width, 
+        n = new Line2D.Double(r.x, r.y + r.height, r.x + r.width,
                 r.y + r.height);
         if (m.intersectsLine(n)) {
             return intersection(m, n);
@@ -698,13 +700,13 @@ public class PathItemPlacement extends PathConv {
             return intersection(m, n);
         }
         // Should never get here.  If we do, return the inner point.
-        LOG.warn("Could not find rectangle intersection, using inner point.");
+        LOG.log(Level.WARNING, "Could not find rectangle intersection, using inner point.");
         return pIn;
     }
-    
+
     /**
      * Finds the intersection point of two lines.
-     * It is surprising that this method isn't already available in the base 
+     * It is surprising that this method isn't already available in the base
      * Line2D class of Java.  If a stock method exists or is implemented in
      * future, feel free replace this code with it.
      * @param m First line.
@@ -712,28 +714,28 @@ public class PathItemPlacement extends PathConv {
      * @return Intersection point of first and second line.
      */
     private Point intersection(Line2D m, Line2D n) {
-        double d = (n.getY2() - n.getY1()) * (m.getX2() - m.getX1()) 
+        double d = (n.getY2() - n.getY1()) * (m.getX2() - m.getX1())
                 - (n.getX2() - n.getX1()) * (m.getY2() - m.getY1());
-        double a = (n.getX2() - n.getX1()) * (m.getY1() - n.getY1()) 
+        double a = (n.getX2() - n.getX1()) * (m.getY1() - n.getY1())
                 - (n.getY2() - n.getY1()) * (m.getX1() - n.getX1());
-        
+
         double as = a / d;
-        
+
         double x = m.getX1() + as * (m.getX2() - m.getX1());
         double y = m.getY1() + as * (m.getY2() - m.getY1());
         return new Point((int) x, (int) y);
     }
-    
+
     /**
      * Returns the value of the percent field - the position of the anchor
      * point as a percentage of the edge.
      * @important Used by PGML.tee.
-     * @return The value of the percent field. 
+     * @return The value of the percent field.
      */
     public int getPercent() {
         return percent;
     }
-    
+
     /**
      * Returns the value of the angle field converted to degrees.
      * The angle of the path item relative to the edge.
@@ -743,10 +745,10 @@ public class PathItemPlacement extends PathConv {
     public double getAngle() {
         return angle * 180 / Math.PI;
     }
-    
+
     /**
      * Returns the value of the vectorOffset field.
-     * The vectorOffset field is the distance away from the edge, along the 
+     * The vectorOffset field is the distance away from the edge, along the
      * path vector that the item Fig is placed.
      * @important Used by PGML.tee.
      * @return The value of the vectorOffset field.
@@ -755,5 +757,5 @@ public class PathItemPlacement extends PathConv {
         return vectorOffset;
     }
     /** End of methods used by PGML.tee */
-    
+
 }

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,12 +39,13 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
@@ -56,12 +57,13 @@ import org.argouml.ui.ProjectBrowser;
  * @see ActionOpenProject
  */
 public class ActionSaveProject extends AbstractAction {
-	
+
     private static final long serialVersionUID = -5579548202585774293L;
 	/**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionSaveProject.class.getName());
 
     /**
      * The constructor.
@@ -70,7 +72,7 @@ public class ActionSaveProject extends AbstractAction {
         super(Translator.localize("action.save-project"),
                 ResourceLoaderWrapper.lookupIcon("action.save-project"));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("action.save-project"));
         super.setEnabled(false);
     }
@@ -88,7 +90,7 @@ public class ActionSaveProject extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        LOG.info("Performing save action");
+        LOG.log(Level.INFO, "Performing save action");
         ProjectBrowser.getInstance().trySave(
                 ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
@@ -100,7 +102,7 @@ public class ActionSaveProject extends AbstractAction {
      * the user by highlighting the title bar with an asterisk. This method is
      * undoable.  This method is synchronized so that it can be used from any
      * thread without external synchronization.
-     * 
+     *
      * @param isEnabled new state for save command
      */
     @Override
@@ -108,19 +110,19 @@ public class ActionSaveProject extends AbstractAction {
         if (isEnabled == this.enabled) {
             return;
         }
-        if (LOG.isDebugEnabled()) {
+        if (LOG.isLoggable(Level.FINE)) {
             if (!enabled && isEnabled) {
                 Throwable throwable = new Throwable();
                 throwable.fillInStackTrace();
-                LOG.debug("Save action enabled by  ", throwable);
+                LOG.log(Level.FINE, "Save action enabled by  ", throwable);
             } else {
-                LOG.debug("Save state changed from " + enabled + " to "
+                LOG.log(Level.FINE, "Save state changed from " + enabled + " to "
                         + isEnabled);
             }
         }
         internalSetEnabled(isEnabled);
     }
-    
+
     /**
      * Set the enabled state of this action and displays the save indicator
      * @param isEnabled true to enable the action

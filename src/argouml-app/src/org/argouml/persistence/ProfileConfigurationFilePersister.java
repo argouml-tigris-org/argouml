@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,8 +51,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
@@ -75,9 +76,9 @@ import org.xml.sax.SAXException;
  * @author maurelio1234
  */
 public class ProfileConfigurationFilePersister extends MemberFilePersister {
-    
-    private static final Logger LOG = 
-        Logger.getLogger(ProfileConfigurationFilePersister.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(ProfileConfigurationFilePersister.class.getName());
 
     /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
@@ -90,14 +91,14 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         throws OpenException {
         load(project, new InputSource(inputStream));
     }
-    
+
     /*
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project, java.io.InputStream)
      */
     public void load(Project project, InputSource inputSource)
         throws OpenException {
         try {
-            ProfileConfigurationParser parser = 
+            ProfileConfigurationParser parser =
                 new ProfileConfigurationParser();
             parser.parse(inputSource);
             Collection<Profile> profiles = parser.getProfiles();
@@ -107,7 +108,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                 profiles.addAll(loadUnresolved(unresolved));
             }
 
-            ProfileConfiguration pc = new ProfileConfiguration(project, 
+            ProfileConfiguration pc = new ProfileConfiguration(project,
                     profiles);
             project.setProfileConfiguration(pc);
         } catch (Exception e) {
@@ -124,12 +125,12 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
      * profile isn't found by the profile manager.
      * <p>
      * TODO: work in progress, see issue 5039
-     * 
+     *
      * @param unresolved collection of unresolved filenames from the parser
      * @return collection of resolved profiles
      */
     private Collection<Profile> loadUnresolved(Collection<String> unresolved) {
-        Collection<Profile> profiles = new ArrayList<Profile>();        
+        Collection<Profile> profiles = new ArrayList<Profile>();
         ProfileManager profileManager = ProfileFacade.getManager();
         for (String filename : unresolved) {
             // TODO: work in progress, see issue 5039
@@ -143,12 +144,12 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     }
 
     /**
-     * Register a user defined profile in the profileManager, using the backup 
+     * Register a user defined profile in the profileManager, using the backup
      * XMI file from the project being loaded.
      * <p>
      * <em>NOTE:</em> This has the side effect of permanently registering the
      * profile which may not be what the user wants.
-     * 
+     *
      * @param fileName name of original XMI file that the author of the project
      *                used when creating the UserDefinedProfile.
      * @param xmi the contents of the XMI file.
@@ -160,12 +161,15 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         File profilesDirectory = getProfilesDirectory(profileManager);
         File profileFile = new File(profilesDirectory, fileName);
         OutputStreamWriter writer = new OutputStreamWriter(
-                new FileOutputStream(profileFile), 
+                new FileOutputStream(profileFile),
                 Argo.getEncoding());
         writer.write(xmi.toString());
         writer.close();
-        LOG.info("Wrote user defined profile \"" + profileFile 
-            + "\", with size " + xmi.length() + ".");
+
+        LOG.log(Level.INFO,
+                "Wrote user defined profile \"{0}\", with size {1}.",
+                new Object[]{profileFile, xmi.length()});
+
         if (isSomeProfileDirectoryConfigured(profileManager)) {
             profileManager.refreshRegisteredProfiles();
         } else {
@@ -177,7 +181,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
     private static File getProfilesDirectory(ProfileManager profileManager) {
         if (isSomeProfileDirectoryConfigured(profileManager)) {
-            List<String> directories = 
+            List<String> directories =
                 profileManager.getSearchPathDirectories();
             return new File(directories.get(0));
         } else {
@@ -198,7 +202,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
      */
     public void save(ProjectMember member, OutputStream stream)
 	throws SaveException {
-	
+
         PrintWriter w;
         try {
             w = new PrintWriter(new OutputStreamWriter(stream, "UTF-8"));
@@ -212,7 +216,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
     private void saveProjectMember(ProjectMember member, PrintWriter w)
 	throws SaveException {
-	
+
         try {
 	    if (member instanceof ProfileConfiguration) {
 		ProfileConfiguration pc = (ProfileConfiguration) member;
@@ -227,7 +231,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
 		for (Profile profile : pc.getProfiles()) {
                     if (profile instanceof UserDefinedProfile) {
-                        UserDefinedProfile uprofile = 
+                        UserDefinedProfile uprofile =
                             (UserDefinedProfile) profile;
                         w.println("\t\t<userDefined>");
                         w.println("\t\t\t<filename>"
@@ -254,9 +258,9 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	}
     }
 
-    private void printModelXMI(PrintWriter w, Collection profileModels) 
+    private void printModelXMI(PrintWriter w, Collection profileModels)
         throws UmlException {
-        
+
         // TODO: Why is this not executed?  Remove if not needed - tfm
         if (true) {
             return;
@@ -264,8 +268,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
         StringWriter myWriter = new StringWriter();
         for (Object model : profileModels) {
-            XmiWriter xmiWriter = Model.getXmiWriter(model, 
-                (OutputStream) null, //myWriter, 
+            XmiWriter xmiWriter = Model.getXmiWriter(model,
+                (OutputStream) null, //myWriter,
                 ApplicationVersion.getVersion() + "("
                     + UmlFilePersister.PERSISTENCE_VERSION + ")");
             xmiWriter.write();
@@ -280,20 +284,20 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     public void load(Project project, URL url) throws OpenException {
         load(project, new InputSource(url.toExternalForm()));
     }
-    
+
 }
 
 /**
  * Parser for Profile Configuration.
- * 
+ *
  * @author Tom Morris <tfmorris@gmail.com>
  */
 class ProfileConfigurationParser extends SAXParserBase {
 
-    private static final Logger LOG = Logger
-            .getLogger(ProfileConfigurationParser.class);
+    private static final Logger LOG =
+        Logger.getLogger(ProfileConfigurationParser.class.getName());
 
-    private ProfileConfigurationTokenTable tokens = 
+    private ProfileConfigurationTokenTable tokens =
         new ProfileConfigurationTokenTable();
 
     private Profile profile;
@@ -342,17 +346,17 @@ class ProfileConfigurationParser extends SAXParserBase {
                 break;
 
             default:
-                LOG.warn("WARNING: unknown tag:" + e.getName());
+                LOG.log(Level.WARNING, "WARNING: unknown tag:" + e.getName());
                 break;
             }
         } catch (Exception ex) {
-            LOG.error("Exception in startelement", ex);
+            LOG.log(Level.SEVERE, "Exception in startelement", ex);
         }
     }
 
     /**
      * Called by the XML implementation to signal the end of an XML entity.
-     * 
+     *
      * @param e The XML entity that ends.
      * @throws SAXException on any error
      */
@@ -378,7 +382,8 @@ class ProfileConfigurationParser extends SAXParserBase {
                 break;
 
             default:
-                LOG.warn("WARNING: unknown end tag:" + e.getName());
+                LOG.log(Level.WARNING,
+                        "WARNING: unknown end tag:" + e.getName());
                 break;
             }
         } catch (Exception ex) {
@@ -388,7 +393,7 @@ class ProfileConfigurationParser extends SAXParserBase {
 
     protected void handleProfileEnd(XMLElement e) {
         if (profiles.isEmpty()) {
-            LOG.warn("No profiles defined");
+            LOG.log(Level.WARNING, "No profiles defined");
         }
     }
 
@@ -397,9 +402,9 @@ class ProfileConfigurationParser extends SAXParserBase {
         profile = lookupProfile(name);
         if (profile != null) {
             profiles.add(profile);
-            LOG.debug("Found plugin profile " + name);
+            LOG.log(Level.FINE, "Found plugin profile {0}", name);
         } else {
-            LOG.error("Unabled to find plugin profile - " + name);
+            LOG.log(Level.SEVERE, "Unabled to find plugin profile - {0}", name);
         }
     }
 
@@ -425,7 +430,8 @@ class ProfileConfigurationParser extends SAXParserBase {
     protected void handleUserDefinedEnd(XMLElement e) {
         // <model> is not used in current implementation
         if (filename == null /* || model == null */) {
-            LOG.error("Got badly formed user defined profile entry " + e);
+            LOG.log(Level.SEVERE,
+                    "Got badly formed user defined profile entry " + e);
         }
         profile = getMatchingUserDefinedProfile(filename, ProfileFacade
                 .getManager());
@@ -434,17 +440,18 @@ class ProfileConfigurationParser extends SAXParserBase {
             unresolvedFilenames.add(filename);
         } else {
             profiles.add(profile);
-            LOG.debug("Loaded user defined profile - filename = " + filename);
+            LOG.log(Level.FINE,
+                    "Loaded user defined profile - filename = {0}", filename);
         }
 
     }
 
     private static Profile getMatchingUserDefinedProfile(String fileName,
             ProfileManager profileManager) {
-        for (Profile candidateProfile 
+        for (Profile candidateProfile
                 : profileManager.getRegisteredProfiles()) {
             if (candidateProfile instanceof UserDefinedProfile) {
-                UserDefinedProfile userProfile = 
+                UserDefinedProfile userProfile =
                     (UserDefinedProfile) candidateProfile;
                 if (userProfile.getModelFile() != null
                         && fileName
@@ -458,17 +465,17 @@ class ProfileConfigurationParser extends SAXParserBase {
 
     protected void handleFilenameEnd(XMLElement e) {
         filename = e.getText().trim();
-        LOG.debug("Got filename = " + filename);
+        LOG.log(Level.FINE, "Got filename = {0}", filename);
     }
 
     protected void handleModelEnd(XMLElement e) {
         model = e.getText().trim();
-        LOG.debug("Got model = " + model);
+        LOG.log(Level.FINE, "Got model = {0}", model);
     }
 
     /**
      * Token Table for Profile Configuration parser.
-     * 
+     *
      * @author Tom Morris
      */
     class ProfileConfigurationTokenTable extends XMLTokenTableBase {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,11 +43,12 @@ import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -76,9 +77,9 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
  * @author jaap.branderhorst@xs4all.nl
  */
 class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
-    
+
     private static final Logger LOG =
-        Logger.getLogger(UMLMutableLinkedList.class);
+        Logger.getLogger(UMLMutableLinkedList.class.getName());
 
     private boolean deletePossible = true;
 
@@ -185,8 +186,8 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      */
     protected UMLMutableLinkedList(UMLModelElementListModel dataModel) {
         this(dataModel,
-                dataModel.getAddAction(), 
-                dataModel.getNewAction(), 
+                dataModel.getAddAction(),
+                dataModel.getNewAction(),
                 dataModel.getRemoveAction());
     }
 
@@ -328,7 +329,9 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
             }
             if (popup.getComponentCount() > 0) {
                 initActions();
-                LOG.info("Showing popup at " + e.getX() + "," + e.getY());
+                LOG.log(Level.INFO,
+                        "Showing popup at " + e.getX() + "," + e.getY());
+
                 popup.show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -345,7 +348,9 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();
-                LOG.debug("Showing popup at " + e.getX() + "," + e.getY());
+                LOG.log(Level.FINE,
+                        "Showing popup at {0},{1}",
+                        new Object[]{e.getX(), e.getY()});
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -364,9 +369,9 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
 
     /**
      * Sets the popupMenu. <p>
-     * 
+     *
      * This allows to replace the complete default menu with a custom menu.
-     * If nobody is using this, then we better remove this functionality, and 
+     * If nobody is using this, then we better remove this functionality, and
      * just return a new menu all the time - that would simplify initializing
      * it.
      *
@@ -406,7 +411,8 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();
-                LOG.info("Showing popup at " + e.getX() + "," + e.getY());
+                LOG.log(Level.INFO,
+                        "Showing popup at " + e.getX() + "," + e.getY());
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -420,7 +426,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
     public void mouseEntered(MouseEvent e) {
         setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
     }
-    
+
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */

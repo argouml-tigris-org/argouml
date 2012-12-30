@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,40 +36,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.JFrame;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ExceptionDialog;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.reveng.Import;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.argouml.util.ArgoFrame;
-import org.argouml.ui.UndoableAction;
 
 
 /** Action to trigger importing from sources.
  * @stereotype singleton
  */
-public class ActionImportFromSources extends UndoableAction 
+public class ActionImportFromSources extends UndoableAction
         implements CommandLineInterface {
 
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ActionImportFromSources.class);
+        Logger.getLogger(ActionImportFromSources.class.getName());
 
     /**
      * The singleton.
@@ -85,7 +85,7 @@ public class ActionImportFromSources extends UndoableAction
         super(Translator.localize("action.import-sources"),
                 ResourceLoaderWrapper.lookupIcon("action.import-sources"));
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
+        putValue(Action.SHORT_DESCRIPTION,
                 Translator.localize("action.import-sources"));
     }
 
@@ -97,7 +97,8 @@ public class ActionImportFromSources extends UndoableAction
     	if (ImporterManager.getInstance().hasImporters()) {
             new Import(ArgoFrame.getFrame());
     	} else {
-    	    LOG.info("Import sources dialog not shown: no importers!");
+            LOG.log(Level.INFO,
+                    "Import sources dialog not shown: no importers!");
             ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getFrame(),
                 Translator.localize("dialog.title.problem"),
                 Translator.localize("dialog.import.no-importers.intro"),
@@ -116,36 +117,39 @@ public class ActionImportFromSources extends UndoableAction
 
     /**
      * Command line command for importing a directory or file.
-     * 
+     *
      * @param argument Formatted string (<importmodule>:<importpath>)
      * @return true if the command was performed successfully.
 */
     public boolean doCommand(String argument) {
         if (argument == null) {
-            LOG.error("An argument has to be provided.");
+            LOG.log(Level.SEVERE, "An argument has to be provided.");
             return false;
         }
         int index = argument.indexOf(':');
         if (index == -1 || argument.length() <= index) {
-            LOG.error("Argument must be <importmodule>:<importpath>");
+            LOG.log(Level.SEVERE,
+                    "Argument must be <importmodule>:<importpath>");
             return false;
         }
         Import imp = new Import(null);
         Collection languages = imp.getLanguages();
         if (languages == null || languages.isEmpty()) {
-            LOG.error("No importers available.");
+            LOG.log(Level.SEVERE, "No importers available.");
             return false;
         }
         String importerName = argument.substring(0, index);
         ImportInterface importer = imp.getImporter(importerName);
         if (importer == null) {
-            LOG.error("No import support for language " + importerName);
+            LOG.log(Level.SEVERE,
+                    "No import support for language " + importerName);
             return false;
         }
         imp.setCurrentModule(importer);
         File file = new File(argument.substring(index + 1));
         if (!file.exists()) {
-            LOG.error("The specified file/directory doesn't exist.");
+            LOG.log(Level.SEVERE,
+                    "The specified file/directory doesn't exist.");
             return false;
         }
         imp.setFiles(new File[]{file});

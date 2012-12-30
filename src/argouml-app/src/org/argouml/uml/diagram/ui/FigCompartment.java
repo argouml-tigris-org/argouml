@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,8 +44,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Defaults;
 import org.argouml.model.InvalidElementException;
@@ -58,30 +59,31 @@ import org.tigris.gef.presentation.FigRect;
 
 /**
  * Presentation logic for a UML List Compartment. <p>
- * 
- * The UML defines a Name Compartment, and a List Compartment. 
+ *
+ * The UML defines a Name Compartment, and a List Compartment.
  * This class implements the latter.<p>
- * 
+ *
  * A List Compartment is a boxed compartment,
  * containing vertically stacked figs,
  * which is common to e.g. an operations
  * compartment and an attributes compartment.<p>
- * 
- * The bigPort is filled with a border. All other figs contained 
+ *
+ * The bigPort is filled with a border. All other figs contained
  * in this group may not be filled.<p>
- * 
- * The size calculation done here supports vertically 
- * stacked sub-figs of this group and supports all 
+ *
+ * The size calculation done here supports vertically
+ * stacked sub-figs of this group and supports all
  * compartment specializations.
- * 
+ *
  * @author Bob Tarling
  */
 public abstract class FigCompartment extends ArgoFigGroup {
 
-    private static final Logger LOG = Logger.getLogger(FigCompartment.class);
+    private static final Logger LOG =
+        Logger.getLogger(FigCompartment.class.getName());
 
     private Fig bigPort;
-    
+
     private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
     /**
@@ -90,11 +92,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private Fig externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
 
     /**
-     * If true the last element will be editable when 
+     * If true the last element will be editable when
      * the populate method completes.
      */
     private boolean editOnRedraw;
-    
+
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigPort(X0, Y0, w, h);
         bigPort.setFilled(false);
@@ -102,10 +104,10 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
         addFig(bigPort);
     }
-    
+
     /**
      * Construct a new FigCompartment.
-     * 
+     *
      * @param owner owning UML element
      * @param bounds rectangle describing bounds of compartment
      * @param settings render settings
@@ -115,7 +117,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
         super(owner, settings);
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
     }
-    
+
     /**
      * If a boxed compartment is set to invisible then remove all its
      * children.
@@ -151,7 +153,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
         if (fig != getBigPort()
                 && !(fig instanceof CompartmentFigText)
                 && !(fig instanceof FigSeparator)) {
-            LOG.error("Illegal Fig added to a FigEditableCompartment");
+            LOG.log(Level.SEVERE, "Illegal Fig added to a FigEditableCompartment");
             throw new IllegalArgumentException(
                     "A FigEditableCompartment can only "
                     + "contain CompartmentFigTexts, "
@@ -160,7 +162,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
         super.addFig(fig);
     }
 
-    
+
 
     /**
      * @return the bigPort
@@ -190,9 +192,9 @@ public abstract class FigCompartment extends ArgoFigGroup {
         }
 
         minHeight += 2; // 2 Pixel padding after compartment
-        
+
         minHeight = Math.max(minHeight, MIN_HEIGHT);
-        
+
         return new Dimension(minWidth, minHeight);
     }
 
@@ -218,18 +220,18 @@ public abstract class FigCompartment extends ArgoFigGroup {
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }
-    
+
     /**
      * Create a new model element for the compartment.
      */
     protected void createModelElement() {
         Project project = getProject();
         Defaults defaults = project.getDefaults();
-        Object attr = 
+        Object attr =
             Model.getUmlFactory().buildNode(
-                    getCompartmentType(), 
-                    getOwner(), 
-                    null, 
+                    getCompartmentType(),
+                    getOwner(),
+                    null,
                     defaults);
         TargetManager.getInstance().setTarget(attr);
     }
@@ -253,35 +255,35 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     /**
-     * This operation shall return a name unique for this type of 
-     * compartment. Potential use: show at the top in the compartment 
-     * as described in the UML, or as an identification string for 
+     * This operation shall return a name unique for this type of
+     * compartment. Potential use: show at the top in the compartment
+     * as described in the UML, or as an identification string for
      * the compartment type. <p>
      * See UML 1.4.2 OMG, chapter 5.24.1.2: Compartment name.
-     * 
-     * @return the name of the compartment 
+     *
+     * @return the name of the compartment
      */
     public abstract String getName();
-    
+
     /**
      * Implemented in the subclass to indicate the primary type of model element
      * the compartment is designed to hold.
      * @return a model element type
      */
     public abstract Object getCompartmentType();
-    
+
     /**
-     * @return the collection of UML objects 
+     * @return the collection of UML objects
      *              on which this compartment is based
      */
     protected abstract Collection getUmlCollection();
 
     /**
-     * @return the type of the notationProvider 
-     *              used to handle the text in the compartment 
+     * @return the type of the notationProvider
+     *              used to handle the text in the compartment
      */
     protected abstract int getNotationType();
-    
+
     /**
      * Fills the Fig by adding all figs within.
      */
@@ -296,7 +298,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
         List<CompartmentFigText> figs = getElementFigs();
         // We remove all of them:
         for (Fig f : figs) {
-            removeFig(f);    
+            removeFig(f);
         }
 
         // We are going to add the ones still valid & new ones
@@ -306,11 +308,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
             int acounter = -1;
             for (Object umlObject : getUmlCollection()) {
                 comp = findCompartmentFig(figs, umlObject);
-                acounter++;                
+                acounter++;
 
                 // TODO: Some of these magic numbers probably assume a line
                 // width of 1.  Replace with appropriate constants/variables.
-                
+
                 // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
@@ -319,7 +321,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
                             ypos + 1 /*?LINE_WIDTH?*/ + acounter
                             * ROWHEIGHT,
                             0,
-                            ROWHEIGHT - 2 /*? 2*LINE_WIDTH? */), 
+                            ROWHEIGHT - 2 /*? 2*LINE_WIDTH? */),
                             getSettings());
                 } else {
                     /* This one is still usable, so let's retain it, */
@@ -329,7 +331,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
                 }
-                /* We need to set a new notationprovider, since 
+                /* We need to set a new notationprovider, since
                  * the Notation language may have been changed:  */
                 comp.initNotationProviders();
                 addFig(comp); // add it again (but now in the right sequence)
@@ -349,13 +351,13 @@ public abstract class FigCompartment extends ArgoFigGroup {
             // TODO: It would be better here to continue the loop and try to
             // build the rest of the compartment. Hence try/catch should be
             // internal to the loop.
-            LOG.debug("Attempted to populate a FigEditableCompartment" 
+            LOG.log(Level.FINE, "Attempted to populate a FigEditableCompartment"
                     + " using a deleted model element - aborting", e);
-        } 
+        }
 
         if (comp != null) {
             comp.setBotMargin(6); // the last one needs extra space below it
-            
+
             if (editOnRedraw) {
                 comp.startTextEditor(null);
                 editOnRedraw = false;
@@ -368,18 +370,18 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * will place the last element in edit mode the next time the component
      * draws (typically as the result of some event such as having a new item
      * added)
-     * 
+     *
      * @param editOnRedraw
      */
     public void setEditOnRedraw(final boolean editOnRedraw) {
         this.editOnRedraw = editOnRedraw;
     }
-    
-    
+
+
     /**
      * @return null
      * @deprecated for 0.27.3 by tfmorris.  Subclasses must implement
-     * {@link #createFigText(Object, Rectangle, DiagramSettings, 
+     * {@link #createFigText(Object, Rectangle, DiagramSettings,
      * NotationProvider)}
      * which will become abstract in the future when this deprecated method is
      * removed.
@@ -393,11 +395,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     /**
-     * Factory method to create a FigSingleLineTextWithNotation 
-     * which must be implemented by all subclasses. 
+     * Factory method to create a FigSingleLineTextWithNotation
+     * which must be implemented by all subclasses.
      * It will become abstract after the release of 0.28 to
      * enforce this requirement.
-     * 
+     *
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
@@ -405,13 +407,13 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @return a FigSingleLineText which can be used to display the text.
      */
     @SuppressWarnings("deprecation")
-    protected FigSingleLineTextWithNotation createFigText(Object owner, 
-            Rectangle bounds, 
-            @SuppressWarnings("unused") DiagramSettings settings, 
+    protected FigSingleLineTextWithNotation createFigText(Object owner,
+            Rectangle bounds,
+            @SuppressWarnings("unused") DiagramSettings settings,
             NotationProvider np) {
 
         // If this is not overridden it will revert to the old behavior
-        // All internal subclasses have been updated, but this if for 
+        // All internal subclasses have been updated, but this if for
         // compatibility of non-ArgoUML extensions.
         FigSingleLineTextWithNotation comp = createFigText(
                     bounds.x,
@@ -423,18 +425,18 @@ public abstract class FigCompartment extends ArgoFigGroup {
         comp.setOwner(owner);
         return comp;
     }
-    
+
     /**
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings the render settings
-     * @return a FigSingleLineText with notation provider 
+     * @return a FigSingleLineText with notation provider
      *                  which can be used to display the text
      */
-    abstract FigSingleLineTextWithNotation createFigText(Object owner, 
-            Rectangle bounds, 
+    abstract FigSingleLineTextWithNotation createFigText(Object owner,
+            Rectangle bounds,
             DiagramSettings settings);
-    
+
     /**
      * Returns the new size of the FigGroup (e.g. attributes or
      * operations) after calculation new bounds for all sub-figs,
@@ -459,10 +461,10 @@ public abstract class FigCompartment extends ArgoFigGroup {
                        int rowHeight) {
         return getMinimumSize();
     }
-    
+
     /* Find the compartment fig for this umlObject: */
     private CompartmentFigText findCompartmentFig(
-            List<CompartmentFigText> figs, 
+            List<CompartmentFigText> figs,
             Object umlObject) {
         for (CompartmentFigText fig : figs) {
             if (fig.getOwner() == umlObject) {
@@ -475,7 +477,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private List<CompartmentFigText> getElementFigs() {
         final List<CompartmentFigText> figs =
             new ArrayList<CompartmentFigText>(getFigs().size());
-        
+
         for (Object f : getFigs()) {
             if (f instanceof CompartmentFigText) {
                 figs.add((CompartmentFigText) f);
@@ -505,7 +507,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
     /**
      * Set new bounds for the external separator line (if it exists).
-     * 
+     *
      * @param r the new bounds
      */
     public void setExternalSeparatorFigBounds(Rectangle r) {
@@ -518,12 +520,12 @@ public abstract class FigCompartment extends ArgoFigGroup {
     public Fig getSeparatorFig() {
         return externalSeparatorFig;
     }
-    
+
     /**
      * Fig representing a horizontal line separator for compartment. <p>
-     * 
-     * This is a horizontal line, but implemented as a rectangle 
-     * filled with the line color, since using a FigLine would draw the line 
+     *
+     * This is a horizontal line, but implemented as a rectangle
+     * filled with the line color, since using a FigLine would draw the line
      * around the start and end coordinates with a line width > 1.
      */
     private static class FigSeparator extends FigRect {
@@ -545,20 +547,20 @@ public abstract class FigCompartment extends ArgoFigGroup {
             // Override superclass to do nothing.
             // Fill property cannot be changed.
         }
-        
+
         @Override
         public void setLineWidth(int width) {
             // Override superclass to do nothing.
             // Line width cannot be changed.
         }
-        
+
     }
-    
+
     /**
      * Fig representing a horizontal line separator for compartment. <p>
-     * 
-     * This is a horizontal line, but implemented as a rectangle 
-     * filled with the line color, since using a FigLine would draw the line 
+     *
+     * This is a horizontal line, but implemented as a rectangle
+     * filled with the line color, since using a FigLine would draw the line
      * around the start and end coordinates with a line width > 1.
      */
     private static class FigPort extends FigRect {
@@ -591,18 +593,18 @@ public abstract class FigCompartment extends ArgoFigGroup {
             // Override superclass to do nothing.
             // Line width property cannot be changed.
         }
-        
+
         /**
          * The hit method in GEF {Fig.hit(Rectangle)} does not register a hit
          * inside the Fig if the FIg is not filled. When not filled only a hit
          * on the border is registered.
-         * 
+         *
          * This override is a workaround until GEF is fixed.
-         * 
+         *
          * We require GEF to all a Fig to be set so that filled = true but
          * have fill color as null (transparent). That way the base
          * functionality will work for us.
-         * 
+         *
          * @param r
          *                the rectangular hit area
          * @return true if the hit rectangle strikes this fig

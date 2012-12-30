@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,12 +45,13 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
@@ -72,7 +73,8 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
  */
 public class DisplayTextTree extends JTree {
 
-    private static final Logger LOG = Logger.getLogger(DisplayTextTree.class);
+    private static final Logger LOG =
+        Logger.getLogger(DisplayTextTree.class.getName());
 
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
@@ -205,7 +207,7 @@ public class DisplayTextTree extends JTree {
             try {
                 Object me = Model.getFacade().getImportedElement(value);
                 String typeName = Model.getFacade().getUMLClassName(me);
-                String elemName = convertValueToText(me, selected, 
+                String elemName = convertValueToText(me, selected,
                         expanded, leaf, row,
                         hasFocus);
                 String alias = Model.getFacade().getAlias(value);
@@ -235,7 +237,7 @@ public class DisplayTextTree extends JTree {
         if (Model.getFacade().isAAppliedProfileElement(value)) {
             return Model.getFacade().getName(value);
         }
-        
+
         if (value instanceof ArgoDiagram) {
             return ((ArgoDiagram) value).getName();
         }
@@ -277,9 +279,9 @@ public class DisplayTextTree extends JTree {
                         Model.getFacade().getUMLClassName(value)
                     });
         }
-        Collection referenceValues = 
+        Collection referenceValues =
             Model.getFacade().getReferenceValue(value);
-        Collection dataValues = 
+        Collection dataValues =
             Model.getFacade().getDataValue(value);
         Iterator i;
         if (referenceValues.size() > 0) {
@@ -300,9 +302,9 @@ public class DisplayTextTree extends JTree {
 
     /**
      * Generate the text to represent a Transition.
-     * 
+     *
      * @param value a Transition UML object
-     * @return a representation of the Transition with trigger, guard 
+     * @return a representation of the Transition with trigger, guard
      * and effect
      */
     private String formatTransitionLabel(Object value) {
@@ -315,7 +317,7 @@ public class DisplayTextTree extends JTree {
                         NotationProviderFactory2.TYPE_TRANSITION,
                         value,
                         Notation.findNotation(settings.getNotationLanguage()));
-        String signature = notationProvider.toString(value, 
+        String signature = notationProvider.toString(value,
                 NotationSettings.getDefaultSettings());
         if (name != null && name.length() > 0) {
             name += ": " + signature;
@@ -330,17 +332,17 @@ public class DisplayTextTree extends JTree {
      * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Collection<Object> st) {
-        return NotationUtilityUml.generateStereotype(st, 
+        return NotationUtilityUml.generateStereotype(st,
                 getNotationSettings().isUseGuillemets());
     }
 
     /**
-     * Create a string representing the given modelelement. Normally this is 
-     * just the name, but if the element is not named, something like 
+     * Create a string representing the given modelelement. Normally this is
+     * just the name, but if the element is not named, something like
      * "anonymous Classifier" is returned with i18n applied.
-     * 
+     *
      * @param modelElement the given element
-     * @return a recognizable name for the element 
+     * @return a recognizable name for the element
      * (guaranteed with length > 0)
      */
     public static final String getModelElementDisplayName(Object modelElement) {
@@ -371,7 +373,7 @@ public class DisplayTextTree extends JTree {
 
         super.fireTreeExpanded(path);
 
-        LOG.debug("fireTreeExpanded");
+        LOG.log(Level.FINE, "fireTreeExpanded");
         if (reexpanding || path == null) {
             return;
         }
@@ -387,7 +389,7 @@ public class DisplayTextTree extends JTree {
 
         super.fireTreeCollapsed(path);
 
-        LOG.debug("fireTreeCollapsed");
+        LOG.log(Level.FINE, "fireTreeCollapsed");
         if (path == null || expandedPathsInModel == null) {
             return;
         }
@@ -400,7 +402,7 @@ public class DisplayTextTree extends JTree {
      */
     public void setModel(TreeModel newModel) {
 
-        LOG.debug("setModel");
+        LOG.log(Level.FINE, "setModel");
         Object r = newModel.getRoot();
         if (r != null) {
             super.setModel(newModel);
@@ -417,7 +419,7 @@ public class DisplayTextTree extends JTree {
      */
     protected List<TreePath> getExpandedPaths() {
 
-        LOG.debug("getExpandedPaths");
+        LOG.log(Level.FINE, "getExpandedPaths");
         TreeModel tm = getModel();
         List<TreePath> res = expandedPathsInModel.get(tm);
         if (res == null) {
@@ -435,7 +437,7 @@ public class DisplayTextTree extends JTree {
      */
     private void reexpand() {
 
-        LOG.debug("reexpand");
+        LOG.log(Level.FINE, "reexpand");
         if (expandedPathsInModel == null) {
             return;
         }

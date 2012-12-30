@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,15 +38,16 @@
 
 package org.argouml.util.logging;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Last chance exception handler for AWT thread to make sure things get logged.
  */
 public class AwtExceptionHandler {
-    
-    private static final Logger LOG = 
-        Logger.getLogger(AwtExceptionHandler.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(AwtExceptionHandler.class.getName());
 
     /**
      * DO NOT CHANGE THIS METHOD SIGNATURE.
@@ -54,7 +55,8 @@ public class AwtExceptionHandler {
      */
     public void handle(Throwable t) {
         try {
-            LOG.error("Last chance error handler in AWT thread caught", t);
+            LOG.log(Level.SEVERE,
+                    "Last chance error handler in AWT thread caught", t);
         } catch (Throwable t2) {
             // Ignore any nested exceptions. We don't want infinite loop.
         }
@@ -68,4 +70,3 @@ public class AwtExceptionHandler {
                 AwtExceptionHandler.class.getName());
     }
 }
-

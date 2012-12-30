@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,8 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -52,7 +54,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.model.CheckBoxData;
 import org.argouml.core.propertypanels.model.ControlData;
@@ -69,12 +70,13 @@ import org.tigris.toolbar.ToolBarFactory;
  * Creates the XML Property panels
  */
 class SwingUIFactory {
-    
-    private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
-    
+
+    private static final Logger LOG =
+        Logger.getLogger(SwingUIFactory.class.getName());
+
     public SwingUIFactory() {
     }
-    
+
     /**
      * @param target The model element selected
      * @return A Panel to be added to the main panel
@@ -84,19 +86,19 @@ class SwingUIFactory {
     public void createGUI (
             final Object target,
             final JPanel panel) throws Exception {
-        PanelData panelData = 
+        PanelData panelData =
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
               	target.getClass());
-        
+
         if (panelData == null) {
             panel.add(new JLabel(
         	    "There is no panel configured for " + target.getClass()));
-            LOG.error("No panel found for " + target.getClass());
+            LOG.log(Level.SEVERE, "No panel found for " + target.getClass());
             return;
         }
-        
+
         createLabel(target, panelData, panel);
-            
+
         for (ControlData prop : panelData.getProperties()) {
             try {
         	createControl (target, panel, prop);
@@ -105,7 +107,7 @@ class SwingUIFactory {
                     + prop.getControlType()
                     + " for property " + prop.getPropertyName()
                     + " on panel for " + target;
-                LOG.error(message, e);
+                LOG.log(Level.SEVERE, message, e);
                 try {
                     panel.add(new JLabel(message));
                 } catch (Exception ex) {
@@ -114,7 +116,7 @@ class SwingUIFactory {
             }
         }
     }
-    
+
     /**
      * Create a control on the given panel for the correct type and target
      * @param target
@@ -129,7 +131,7 @@ class SwingUIFactory {
         if ("text".equals(prop.getControlType())) {
             buildTextboxPanel(panel, target, prop);
         } else if ("combo".equals(prop.getControlType())) {
-            buildComboPanel(panel, target, prop);                
+            buildComboPanel(panel, target, prop);
         } else if ("checkgroup".equals(prop.getControlType())) {
             buildCheckGroup(panel, target, prop);
         } else if ("optionbox".equals(prop.getControlType())) {
@@ -159,7 +161,7 @@ class SwingUIFactory {
         tbf.setRollover(true);
         final JToolBar tb = tbf.createToolBar();
         final String label;
-        
+
         if (Model.getFacade().isAPseudostate(target)) {
         	// TODO: We need some way of driving this from panel xml rather
         	// than hard coded test
@@ -171,36 +173,36 @@ class SwingUIFactory {
     	tb.add(new JLabel(label, ResourceLoaderWrapper.lookupIconResource(label), JLabel.LEFT));
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
             tb.add(new NavigateUpAction(target));
-            
+
             if (panelData.isSiblingNavigation()) {
                 tb.add(new NavigatePreviousAction(target));
                 tb.add(new NavigateNextAction(target));
             }
-            
+
             tb.add(new ActionDeleteModelElements());
             // We only have this here until we have stereotypes
             // list on property panel
             tb.add(new ActionNewStereotype());
-            
+
             addCreateButtons(target, tb, panelData.getNewChildElements());
-            
+
             final Object parent =
         	Model.getFacade().getModelElementContainer(target);
             addCreateButtons(parent, tb, panelData.getNewSiblingElements());
         }
         panel.add(tb);
     }
-    
+
     /**
      * Create the actions to create new model elements and add the buttons to
-     * perform those actions to the given toolbar. 
+     * perform those actions to the given toolbar.
      * @param container The model element that will contain the newly created elements
      * @param tb The toolbar to contain the buttons.
      * @param metaTypes The list of model element types for which
      * actions/buttons are required
      */
     private void addCreateButtons(
-	    final Object container, 
+	    final Object container,
 	    final JToolBar tb,
 	    final Collection<Class<?>> metaTypes) {
         if (container != null) {
@@ -213,43 +215,43 @@ class SwingUIFactory {
             }
         }
     }
-    
+
     private void buildTextArea(
             final JPanel panel,
-            final Object target, 
+            final Object target,
             final ControlData prop) {
-        
+
         // TODO: Why do we need this as well as control? Why is it
         // instantiated when its not always needed.
         JPanel p = new JPanel();
-        
+
         JComponent control = null;
-        
+
         final String propertyName = prop.getPropertyName();
         final Class<?> type = prop.getType();
-        
-        final TitledBorder border = new TitledBorder(propertyName);        
+
+        final TitledBorder border = new TitledBorder(propertyName);
         p.setBorder(border);
 
         if ("initialValue".equals(propertyName)) {
             if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-                UMLExpressionModel model = 
+                UMLExpressionModel model =
                     new UMLInitialValueExpressionModel(target);
                 p  = new UMLExpressionPanel(model, propertyName);
             } else {
-        	UMLValueSpecificationModel model = 
+        	UMLValueSpecificationModel model =
                     new UMLValueSpecificationModel(target, "initialValue");
                 //p  = new UMLValueSpecificationPanel(model, propertyName);
         	p  = new UMLValueSpecificationPanelOptional(model, propertyName);
             }
             control = p;
         } else if ("defaultValue".equals(propertyName)) {
-            UMLExpressionModel model = 
+            UMLExpressionModel model =
                 new UMLDefaultValueExpressionModel(target);
             p  = new UMLExpressionPanel(model, propertyName);
             control = p;
         } else if ("specification".equals(propertyName)) {
-            UMLPlainTextDocument document = 
+            UMLPlainTextDocument document =
                 new UMLOperationSpecificationDocument(propertyName, target);
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
@@ -269,12 +271,12 @@ class SwingUIFactory {
             control = new JScrollPane(conditionArea);
         } else if ("script".equals(propertyName)) {
             UMLExpressionModel scriptModel =
-                new UMLScriptExpressionModel(target);            
+                new UMLScriptExpressionModel(target);
             p  = new UMLExpressionPanel(scriptModel, prop.getPropertyName());
             control = p;
         } else if ("recurrence".equals(propertyName)) {
             UMLExpressionModel recurrenceModel =
-                new UMLRecurrenceExpressionModel(target);            
+                new UMLRecurrenceExpressionModel(target);
             p  = new UMLExpressionPanel(recurrenceModel, propertyName);
             control = p;
         } else if ("expression".equals(propertyName)) {
@@ -290,7 +292,7 @@ class SwingUIFactory {
             p = new UMLExpressionPanel(model, propertyName);
             control = p;
         }
-        
+
         if (control != null) {
             if (control == p) {
                 // if the control is a panel, add it
@@ -301,13 +303,13 @@ class SwingUIFactory {
                 		control, target);
             }
         } else {
-            final GetterSetterManager getterSetter = 
+            final GetterSetterManager getterSetter =
             	GetterSetterManager.getGetterSetter(prop.getType());
-            
+
             if (getterSetter.contains(propertyName)) {
                 ExpressionModel model =
                 	new ExpressionModel(propertyName, prop.getTypes().get(0), target, getterSetter);
-                final JTextField languageField = 
+                final JTextField languageField =
                     new ExpressionLanguageField(model);
                 addControl(
                         panel,
@@ -321,20 +323,20 @@ class SwingUIFactory {
 
     private void buildSingleRow(JPanel panel, Object target,
             ControlData prop) {
-        
+
         final SingleListFactory factory = new SingleListFactory();
         final JComponent pane =
             factory.createComponent(target, prop.getPropertyName(), prop.getTypes());
-        
+
         if (pane != null) {
             addControl(panel, Translator.localize(prop.getLabel()), pane, target);
         }
     }
 
     private void buildList(
-            final JPanel panel, Object target, 
+            final JPanel panel, Object target,
             final ControlData prop) {
-        
+
         final ListFactory factory = new ListFactory();
         final JComponent list =
             factory.createComponent(target, prop.getPropertyName(), prop.getTypes());
@@ -348,11 +350,11 @@ class SwingUIFactory {
      * @param target The target of the panel
      * @param prop The XML data that contains the information
      *        of the options.
-     * @return a radio button panel with the options 
+     * @return a radio button panel with the options
      */
     private void buildOptionBox(JPanel panel, Object target,
             ControlData prop) {
-        
+
         final String propertyName = prop.getPropertyName();
 
         // TODO: consider a conditional feature in the xml panel def for this:
@@ -368,9 +370,9 @@ class SwingUIFactory {
 
         if (getterSetter.contains(propertyName)) {
             JPanel control = new RadioButtonPanel(
-                    target, 
-                    propertyName, 
-                    true, 
+                    target,
+                    propertyName,
+                    true,
                     getterSetter);
             addControl(panel, null, control, target);
         }
@@ -380,7 +382,7 @@ class SwingUIFactory {
      * @param target The target of the checkbox group
      * @param prop The XML data that contains the information
      *        of the checkboxes.
-     * @return a panel that contains the checkboxes 
+     * @return a panel that contains the checkboxes
      */
     private void buildCheckGroup(
 	    final JPanel panel,
@@ -388,13 +390,13 @@ class SwingUIFactory {
             final ControlData prop) {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        TitledBorder border = new TitledBorder(prop.getPropertyName());        
+        TitledBorder border = new TitledBorder(prop.getPropertyName());
         p.setBorder(border);
-        
-        if ("modifiers".equals(prop.getPropertyName())) {  
+
+        if ("modifiers".equals(prop.getPropertyName())) {
             for (CheckBoxData data : prop.getCheckboxes()) {
                 buildCheckBox(p, target, data);
-            }                            
+            }
         }
         addControl(panel, null, p, target);
     }
@@ -403,21 +405,21 @@ class SwingUIFactory {
             final JPanel panel,
             final Object target,
             final CheckBoxData prop) {
-        
+
         final String propertyName = prop.getPropertyName();
-        
+
         final GetterSetterManager getterSetter =
             GetterSetterManager.getGetterSetter(prop.getType());
 
         final String label = Translator.localize(prop.getLabel());
-        
+
         if (getterSetter.contains(propertyName)) {
         	final CheckBox cb =
         		new CheckBox(label, target, propertyName, getterSetter);
         	if (Model.getModelManagementHelper().isReadOnly(target)) {
         		cb.setEnabled(false);
         	}
-        	
+
             panel.add(cb);
         }
     }
@@ -427,22 +429,22 @@ class SwingUIFactory {
      * @param target The target of the panel
      * @param prop The XML data that contains the information
      *        of the combo.
-     * @return a combo panel 
+     * @return a combo panel
      */
     private void buildComboPanel(
             final JPanel panel,
             final Object target,
             final ControlData prop) {
-        
+
         JComponent comp = null;
-        
+
         final String propertyName = prop.getPropertyName();
         if ("namespace".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLModelElementNamespaceComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLSearchableComboBox(
                     model,
-                    model.getAction(), true);            
+                    model.getAction(), true);
             comp = new UMLComboBoxNavigator(
                     Translator.localize(
                     "label.namespace.navigate.tooltip"),
@@ -461,7 +463,7 @@ class SwingUIFactory {
             comp = new UMLComboBox(model);
         } else if ("base".equals(prop.getPropertyName())) {
             if (Model.getFacade().isAAssociationRole(target)) {
-                final UMLComboBoxModel model = 
+                final UMLComboBoxModel model =
                     new UMLAssociationRoleBaseComboBoxModel(propertyName, target);
                 final UMLComboBox combo = new UMLSearchableComboBox(
                         model,
@@ -473,30 +475,30 @@ class SwingUIFactory {
                 //
             }
         } else if ("powertype".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLGeneralizationPowertypeComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(
                     model);
             comp = combo;
-        } else if ("multiplicity".equals(prop.getPropertyName())) {            
+        } else if ("multiplicity".equals(prop.getPropertyName())) {
             final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel(propertyName, target);
             comp = mPanel;
         } else if ("activator".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLMessageActivatorComboBoxModel(propertyName, target);
             final JComboBox combo =
                 new UMLMessageActivatorComboBox(model, model.getAction());
             comp = combo;
         } else if ("operation".equals(prop.getPropertyName())) {
             if (Model.getFacade().isACallEvent(target)) {
-                UMLComboBoxModel model = 
+                UMLComboBoxModel model =
                     new UMLCallEventOperationComboBoxModel(propertyName, target);
                 UMLComboBox combo = new UMLComboBox(model);
                 comp = new UMLComboBoxNavigator(Translator.localize(
                         "label.operation.navigate.tooltip"),
                         combo);
             } else {
-                final UMLComboBoxModel model = 
+                final UMLComboBoxModel model =
                     new UMLCallActionOperationComboBoxModel(propertyName, target);
                 UMLComboBox combo =
                     new UMLComboBox(model);
@@ -505,21 +507,21 @@ class SwingUIFactory {
                         combo);
             }
         } else if ("classifier".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLComponentInstanceClassifierComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.component-instance.navigate.tooltip"),
                             combo);
         } else if ("representedClassifier".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLCollaborationRepresentedClassifierComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.represented-classifier.navigate.tooltip"),
                             combo);
         } else if ("representedOperation".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLCollaborationRepresentedOperationComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
@@ -528,10 +530,10 @@ class SwingUIFactory {
         } else if ("context".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model;
             if (Model.getFacade().isAActivityGraph(target)) {
-                model = 
+                model =
                     new UMLActivityGraphContextComboBoxModel(propertyName, target);
             } else {
-                model = 
+                model =
                     new UMLStateMachineContextComboBoxModel(propertyName, target);
             }
             UMLComboBox combo = new UMLComboBox(model);
@@ -540,14 +542,14 @@ class SwingUIFactory {
                     combo);
 
         } else if ("association".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLLinkAssociationComboBoxModel(propertyName, target);
             comp =  new UMLComboBoxNavigator(Translator.localize(
-                        "label.association.navigate.tooltip"),                
+                        "label.association.navigate.tooltip"),
                     new UMLSearchableComboBox(model,
                             model.getAction(), true));
         } else if ("participant".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLAssociationEndTypeComboBoxModel(propertyName, target);
             comp = new UMLComboBox(model,
                     true);
@@ -558,12 +560,12 @@ class SwingUIFactory {
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "tooltip.nav-submachine"), submachineBox);
         } else if ("referenceState".equals(prop.getPropertyName())) {
-            final UMLComboBoxModel model = 
+            final UMLComboBoxModel model =
                 new UMLStubStateComboBoxModel(propertyName, target);
             final UMLComboBox referencestateBox =
                 new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
-                    "tooltip.nav-stubstate"), referencestateBox);            
+                    "tooltip.nav-stubstate"), referencestateBox);
         } else if ("tagType".equals(prop.getPropertyName())) {
             UMLComboBoxModel model = new UMLMetaClassComboBoxModel(propertyName, target);
             final UMLComboBox typeComboBox = new UMLComboBox(model);
@@ -608,7 +610,7 @@ class SwingUIFactory {
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
         }
-        
+
         if (comp != null) {
             addControl(panel, Translator.localize(prop.getLabel()),
             		comp, target);
@@ -616,14 +618,14 @@ class SwingUIFactory {
     }
 
     /**
-     * @param panel a panel with a labelled text field 
+     * @param panel a panel with a labelled text field
      * @param target The target of the panel
      * @param prop The XML data that contains the information
      *        of the options.
      */
     private void buildTextboxPanel(JPanel panel, Object target,
             ControlData prop) {
-       
+
         UMLPlainTextDocument document = null;
         if ("name".equals(prop.getPropertyName())) {
             if (Model.getFacade().isATemplateParameter(target)) {
@@ -641,14 +643,14 @@ class SwingUIFactory {
             document =new UMLSynchStateBoundDocument(
         	    prop.getPropertyName(), target);
         }
-        
+
         if (document != null) {
             JTextField tfield = new UMLTextField(document);
             addControl(panel, Translator.localize(prop.getLabel()),
             		tfield, target);
         }
     }
-    
+
     private void addControl(
     		final JPanel panel,
     		final String text,

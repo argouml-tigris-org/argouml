@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -80,10 +81,10 @@ import org.tigris.gef.undo.UndoManager;
 /**
  * This class represents all Diagrams within ArgoUML.
  * It is based upon the GEF Diagram.<p>
- * 
- * It adds a namespace, and the capability 
+ *
+ * It adds a namespace, and the capability
  * to delete itself when its namespace is deleted. <p>
- * 
+ *
  * TODO: MVW: I am not sure of the following:<p>
  * The "namespace" of the diagram is e.g. used when creating new elements
  * that are shown on the diagram; they will have their namespace set
@@ -93,15 +94,15 @@ import org.tigris.gef.undo.UndoManager;
  * The "namespace" of the diagram is e.g. used to register a listener
  * to the UML model, to be notified if this element is removed;
  * which will imply that this diagram has to be deleted, too. <p>
- * 
+ *
  * Hence the namespace of e.g. a collaboration diagram should be the
  * represented classifier or, in case of a represented operation, the
  * classifier that owns this operation.
- * And the namespace of the statechart diagram should be 
+ * And the namespace of the statechart diagram should be
  * the namespace of its statemachine.
  */
-public abstract class ArgoDiagramImpl extends Diagram 
-    implements PropertyChangeListener, VetoableChangeListener, ArgoDiagram, 
+public abstract class ArgoDiagramImpl extends Diagram
+    implements PropertyChangeListener, VetoableChangeListener, ArgoDiagram,
     IItemUID {
 
     private ItemUID id;
@@ -112,10 +113,11 @@ public abstract class ArgoDiagramImpl extends Diagram
     private Project project;
 
     protected Object namespace;
-    
+
     private DiagramSettings settings;
 
-    private static final Logger LOG = Logger.getLogger(ArgoDiagramImpl.class);
+    private static final Logger LOG =
+        Logger.getLogger(ArgoDiagramImpl.class.getName());
 
     /**
      * Default constructor.  Used by PGML parser when diagram is first created.
@@ -128,11 +130,11 @@ public abstract class ArgoDiagramImpl extends Diagram
     @Deprecated
     public ArgoDiagramImpl() {
         super();
-                
+
         // TODO: What is this trying to do? It's never going to get called - tfm
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
-        
+
         constructorInit();
     }
 
@@ -141,7 +143,7 @@ public abstract class ArgoDiagramImpl extends Diagram
      * The constructor.
      *
      * @param diagramName the name of the diagram
-     * @deprecated for 0.27.2 by tfmorris. Use 
+     * @deprecated for 0.27.2 by tfmorris. Use
      * {@link #ArgoDiagramImpl(String, GraphModel, LayerPerspective)}.
      */
     @Deprecated
@@ -158,10 +160,10 @@ public abstract class ArgoDiagramImpl extends Diagram
      * Construct a new ArgoUML diagram.  This is the preferred form of the
      * constructor.  If you don't know the name yet, make one up (because that's
      * what the super classes constructors are going to do anyway).
-     * 
+     *
      * @param name the name of the new diagram
      * @param graphModel graph model to associate with diagram
-     * @param layer layer to associate with diagram 
+     * @param layer layer to associate with diagram
      * (use new LayerPerspective(name, graphModel)) if you need a default
      */
     public ArgoDiagramImpl(String name, GraphModel graphModel,
@@ -190,9 +192,9 @@ public abstract class ArgoDiagramImpl extends Diagram
         // for a global one
         if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
             UndoManager.setInstance(new DiagramUndoManager());
-            LOG.info("Setting Diagram undo manager");
+            LOG.log(Level.INFO, "Setting Diagram undo manager");
         } else {
-            LOG.info("Diagram undo manager already set");
+            LOG.log(Level.INFO, "Diagram undo manager already set");
         }
 
         // Register for notification of any global changes that would affect
@@ -204,7 +206,7 @@ public abstract class ArgoDiagramImpl extends Diagram
         // Listen for name changes so we can veto them if we don't like them
         addVetoableChangeListener(this);
     }
-    
+
 
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
@@ -306,12 +308,14 @@ public abstract class ArgoDiagramImpl extends Diagram
 
         return report.toString();
     }
-    
+
     private boolean repairFig(Fig f, StringBuffer report) {
-        LOG.info("Checking " + figDescription(f) + f.getOwner());
+        if (LOG.isLoggable(Level.INFO)) {
+            LOG.log(Level.INFO, "Checking " + figDescription(f) + f.getOwner());
+        }
         boolean faultFixed = false;
         String figDescription = null;
-        
+
         // 1. Make sure all Figs in the Diagrams layer refer back to
         // that layer.
         if (!getLayer().equals(f.getLayer())) {
@@ -445,7 +449,7 @@ public abstract class ArgoDiagramImpl extends Diagram
             // The fix
             f.removeFromDiagram();
         }
-        
+
         return faultFixed;
     }
 
@@ -516,7 +520,7 @@ public abstract class ArgoDiagramImpl extends Diagram
         firePropertyChange("remove", null, null);
         super.remove();
     }
-    
+
 
     public void setProject(Project p) {
         project = p;
@@ -525,9 +529,9 @@ public abstract class ArgoDiagramImpl extends Diagram
     public Project getProject() {
         return project;
     }
-    
+
     public abstract void encloserChanged(
-            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser); 
+            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser);
 	// Do nothing, override in subclass.
 
 
@@ -543,8 +547,7 @@ public abstract class ArgoDiagramImpl extends Diagram
 
     public void setNamespace(Object ns) {
         if (!Model.getFacade().isANamespace(ns)) {
-            LOG.error("Not a namespace");
-            LOG.error(ns);
+            LOG.log(Level.SEVERE, "Not a namespace {0}", ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
         if ((namespace != null) && (namespace != ns)) {
@@ -553,11 +556,11 @@ public abstract class ArgoDiagramImpl extends Diagram
         Object oldNs = namespace;
         namespace = ns;
         firePropertyChange(NAMESPACE_KEY, oldNs, ns);
-    
+
         // Add the diagram as a listener to the namespace so
         // that when the namespace is removed the diagram is deleted also.
-        /* Listening only to "remove" events does not work... 
-         * TODO: Check if this works now with new event pump - tfm 
+        /* Listening only to "remove" events does not work...
+         * TODO: Check if this works now with new event pump - tfm
          */
         Model.getPump().addModelEventListener(this, namespace, "remove");
     }
@@ -567,7 +570,7 @@ public abstract class ArgoDiagramImpl extends Diagram
         if (modelElement == null) {
             return;
         }
-        
+
         // If we're not provided a namespace then get it from the diagram or
         // the root
         if (ns == null) {
@@ -577,24 +580,24 @@ public abstract class ArgoDiagramImpl extends Diagram
         	ns = getProject().getRoot();
             }
         }
-        
+
         // If we haven't succeeded in getting a namespace then abort
         if (ns == null) {
             return;
         }
-        
+
         // If we're trying to set the namespace to the existing value
         // then don't do any more work.
         if (Model.getFacade().getNamespace(modelElement) == ns) {
             return;
         }
-        
+
         CoreHelper coreHelper = Model.getCoreHelper();
         ModelManagementHelper modelHelper = Model.getModelManagementHelper();
-        
+
         if (!modelHelper.isCyclicOwnership(ns, modelElement)
                 && coreHelper.isValidNamespace(modelElement, ns)) {
-            
+
             coreHelper.setModelElementContainer(modelElement, ns);
             /* TODO: move the associations to the correct owner (namespace)
              * i.e. issue 2151
@@ -609,7 +612,7 @@ public abstract class ArgoDiagramImpl extends Diagram
                 && "remove".equals(evt.getPropertyName())) {
 
             Model.getPump().removeModelEventListener(this, namespace, "remove");
-            
+
             if (getProject() != null) {
                 getProject().moveToTrash(this);
             }
@@ -624,15 +627,15 @@ public abstract class ArgoDiagramImpl extends Diagram
     public Iterator<Fig> getFigIterator() {
         return new EnumerationIterator(elements());
     }
-    
+
     public void setDiagramSettings(DiagramSettings newSettings) {
         settings = newSettings;
     }
-    
+
     public DiagramSettings getDiagramSettings() {
         return settings;
     }
-    
+
     /**
      * Handles a global change to the diagram font.
      * @param e the event
@@ -641,11 +644,11 @@ public abstract class ArgoDiagramImpl extends Diagram
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
         renderingChanged();
     }
-    
+
     /**
      * Rerender the entire diagram based on new global rendering settings.
      * <p>
-     * NOTE: Figs which define their own presentation listeners will get 
+     * NOTE: Figs which define their own presentation listeners will get
      * re-rendered twice
      */
     public void renderingChanged() {
@@ -655,18 +658,18 @@ public abstract class ArgoDiagramImpl extends Diagram
                 if (fig instanceof ArgoFig) {
                     ((ArgoFig) fig).renderingChanged();
                 } else {
-                    LOG.warn("Diagram " + getName() + " contains non-ArgoFig "
+                    LOG.log(Level.WARNING, "Diagram " + getName() + " contains non-ArgoFig "
                             + fig);
                 }
             } catch (InvalidElementException e) {
-                LOG.error("Tried to refresh deleted element ", e);
+                LOG.log(Level.SEVERE, "Tried to refresh deleted element ", e);
             }
         }
-        damage();        
+        damage();
     }
 
     public void notationChanged(ArgoNotationEvent e) {
-        renderingChanged();  
+        renderingChanged();
     }
 
     public void notationAdded(ArgoNotationEvent e) {
@@ -691,7 +694,7 @@ public abstract class ArgoDiagramImpl extends Diagram
      * Receive vetoable change event. GEF will call this method with the 'name'
      * property when it attempts to set the name. If this will be a duplicate
      * for the project, we can veto the requested change.
-     * 
+     *
      * @param evt the change event
      * @throws PropertyVetoException if the name is illegal. Usuallly this means
      *             a duplicate in the project.
@@ -699,14 +702,14 @@ public abstract class ArgoDiagramImpl extends Diagram
      */
     public void vetoableChange(PropertyChangeEvent evt)
         throws PropertyVetoException {
-        
+
         if ("name".equals(evt.getPropertyName())) {
             if (project != null) {
                 if (!project.isValidDiagramName((String) evt.getNewValue())) {
                     throw new PropertyVetoException("Invalid name", evt);
                 }
             }
-        }    
+        }
     }
-    
+
 }

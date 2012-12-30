@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,8 +38,6 @@
 
 package org.argouml.application.api;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.Level;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 
@@ -142,7 +140,7 @@ public final class Argo {
      */
     public static final ConfigurationKey KEY_SCREEN_MAXIMIZED =
         Configuration.makeKey("screen", "maximized");
-    
+
     /**
      * Key for southwest pane width.
      */
@@ -260,7 +258,7 @@ public final class Argo {
      */
     public static final ConfigurationKey KEY_INPUT_SOURCE_ENCODING =
 	Configuration.makeKey("import", "file", "encoding");
-    
+
     /**
      * Key to store setting of stripping diagrams on XMI import.
      */
@@ -290,13 +288,13 @@ public final class Argo {
         Configuration.makeKey("locale");
 
     /**
-     * Key for selecting the grid size and if it shows lines, dots or none. 
+     * Key for selecting the grid size and if it shows lines, dots or none.
      */
     public static final ConfigurationKey KEY_GRID =
         Configuration.makeKey("grid");
 
     /**
-     * Key for selecting the snap size. 
+     * Key for selecting the snap size.
      */
     public static final ConfigurationKey KEY_SNAP =
         Configuration.makeKey("snap");
@@ -316,7 +314,7 @@ public final class Argo {
      * console log. (unused)
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
-    
+
     /**
      * Name of the TagDefinition which is used as the type of tagged values
      * containing documentation for a model element.
@@ -354,7 +352,7 @@ public final class Argo {
     public static final String VERSION_TAG = "version";
 
     /**
-     * Alternate name for the TagDefinition which presumably was used at some 
+     * Alternate name for the TagDefinition which presumably was used at some
      * point in the past to contain documentation for a model element.  Only
      * used for backward compatibilty.
      * @deprecated for 0.25.1 by tfmorris - don't use for new code.
@@ -363,19 +361,19 @@ public final class Argo {
     public static final String DOCUMENTATION_TAG_ALT = "javadocs";
 
     /**
-     * The scope of the settings: this setting is stored 
+     * The scope of the settings: this setting is stored
      * in the userdirectory and valid for the application.
      */
     public static final int SCOPE_APPLICATION = 0;
 
     /**
-     * The scope of the setting: this setting is stored with the project, 
-     * i.e. in e.g. a zargo file. This setting will also apply 
-     * when the zargo file is opened by another user, 
-     * on another computer. 
+     * The scope of the setting: this setting is stored with the project,
+     * i.e. in e.g. a zargo file. This setting will also apply
+     * when the zargo file is opened by another user,
+     * on another computer.
      */
     public static final int SCOPE_PROJECT = 1;
-    
+
     /**
      * Don't let this class be instantiated.
      */
@@ -410,7 +408,8 @@ public final class Argo {
 
     static {
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
-            Category.getRoot().getLoggerRepository().setThreshold(Level.OFF);
+//            Category.getRoot().getLoggerRepository().setThreshold(Level.OFF);
+// TODO: Find the proper implementation in java.util.logging API	    
 	}
     }
 

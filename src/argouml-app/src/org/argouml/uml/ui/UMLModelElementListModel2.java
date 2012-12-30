@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,11 +43,12 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -73,9 +74,9 @@ import org.tigris.gef.presentation.Fig;
 public abstract class UMLModelElementListModel2 extends DefaultListModel
         implements TargetListener, PropertyChangeListener {
 
-    private static final Logger LOG = 
-        Logger.getLogger(UMLModelElementListModel2.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(UMLModelElementListModel2.class.getName());
+
     private String eventName = null;
     private Object listTarget = null;
 
@@ -93,7 +94,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * The type of model elements this list model is designed to hold.
      */
     private Object metaType;
-    
+
     /**
      * Indicates that drops onto this list should connect in the opposite
      * way to standard.
@@ -119,7 +120,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         super();
         eventName = name;
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -133,7 +134,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
         this.metaType = theMetaType;
         eventName = name;
     }
-    
+
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -145,15 +146,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      *              connection made and drop during dnd.
      */
     public UMLModelElementListModel2(
-	    String name, 
-	    Object theMetaType, 
+	    String name,
+	    Object theMetaType,
 	    boolean reverseTheDropConnection) {
         super();
         this.metaType = theMetaType;
         eventName = name;
         this.reverseDropConnection = reverseTheDropConnection;
     }
-    
+
     /**
      * Get the type of objects that this list model is designed to contain.
      * @return metaType the meta type.
@@ -161,7 +162,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     public Object getMetaType() {
 	return metaType;
     }
-    
+
     public boolean isReverseDropConnection() {
 	return reverseDropConnection;
     }
@@ -182,9 +183,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
 
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     * 
+     *
      * TODO: This should be reviewed to see if it can be improved with a view
-     * towards removing some of the overrriding methods used as workarounds for 
+     * towards removing some of the overrriding methods used as workarounds for
      * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(PropertyChangeEvent e) {
@@ -207,9 +208,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
                         addElement(o2);
                     }
                 } else {
-                    /* TODO: If this is an ordered list, then you have to 
+                    /* TODO: If this is an ordered list, then you have to
                         add in the right location! */
-                    addElement(o); 
+                    addElement(o);
                 }
             }
         } else if (e instanceof RemoveAssociationEvent) {
@@ -259,9 +260,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
              * could cause a deadlock. Instead catch the exception and
              * leave the model empty.
              */
-            LOG.debug("buildModelList threw exception for target " 
-                    + getTarget() + ": "
-                    + exception);
+            LOG.log(Level.FINE, "buildModelList threw exception for target "+ getTarget() + ": ",
+                    exception);
         } finally {
             buildingModel = false;
         }
@@ -356,14 +356,14 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * the model from the element listener list of the target. If the new target
      * is instanceof ModelElement, the model is added as element listener to the
      * new target. <p>
-     *      
-     * This function is called when the user changes the target. 
+     *
+     * This function is called when the user changes the target.
      * Hence, this shall not result in any UML model changes.
-     * Hence, we block firing list events completely by setting 
+     * Hence, we block firing list events completely by setting
      * buildingModel to true for the duration of this function. <p>
-     * 
+     *
      * This function looks a lot like the one in UMLComboBoxModel2.
-     * 
+     *
      * @param theNewTarget the new target
      */
     public void setTarget(Object theNewTarget) {
@@ -397,7 +397,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     /**
      * This function allows subclasses to listen to more modelelements.
      * The given target is guaranteed to be a UML modelelement.
-     * 
+     *
      * @param oldTarget the UML modelelement
      */
     protected void removeOtherModelEventListeners(Object oldTarget) {
@@ -407,7 +407,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     /**
      * This function allows subclasses to listen to more modelelements.
      * The given target is guaranteed to be a UML modelelement.
-     * 
+     *
      * @param newTarget the UML modelelement
      */
     protected void addOtherModelEventListeners(Object newTarget) {
@@ -558,7 +558,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     public boolean buildPopup(JPopupMenu popup, int index) {
         return false;
     }
-    
+
     protected boolean hasPopup() {
         return false;
     }

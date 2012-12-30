@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,23 +42,25 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
 /**
  * Test read compressed models, mainly to verify the correct reading of
  * AndroMDA profiles.
- * TODO: Move this test into argouml base when we will want to read also zip 
+ * TODO: Move this test into argouml base when we will want to read also zip
  * file.
- * 
+ *
  * @author lmaitre
  */
 public class TestReadCompressedFilesAndHref extends
         AbstractMDRModelImplementationTestCase {
 
-    private Logger LOG = Logger.getLogger(TestReadCompressedFilesAndHref.class);
-    
+    private static final Logger LOG =
+        Logger.getLogger(TestReadCompressedFilesAndHref.class.getName());
+
     private final String ISSUE5946_BASE_DIR = "/testmodels/AndroMDA-3.3/";
 
     public void testReadAndroMDAProfileIssue5946() {
@@ -93,10 +95,12 @@ public class TestReadCompressedFilesAndHref extends
             ISSUE5946_BASE_DIR + "zipped-uml14/",
             "testCompressedReadFileAndHrefIssue5946");
     }
-    
+
     void assertLoadModel(String modelPath, String profilesPath,
             String testName) {
-        LOG.info("Begin " + testName + "()");
+        
+        LOG.log(Level.INFO, "Begin " + testName + "()");
+        
         XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
         if (profilesPath != null) {
             String path = getClass().getResource(profilesPath).getPath();
@@ -114,7 +118,7 @@ public class TestReadCompressedFilesAndHref extends
         }
         assertTrue(modelPath + " model is loaded", true);
     }
-    
+
     private void setProfilePathSubdirs(XmiReaderImpl reader, File directory) {
         Collection<File> dirs = new ArrayList<File>();
         collectSubdirs(directory, dirs);
@@ -123,7 +127,7 @@ public class TestReadCompressedFilesAndHref extends
             reader.addSearchPath(dir.getAbsolutePath());
         }
     }
-    
+
     private void collectSubdirs(File file, Collection<File> subdirs) {
         subdirs.add(file);
         File[] files = file.listFiles();

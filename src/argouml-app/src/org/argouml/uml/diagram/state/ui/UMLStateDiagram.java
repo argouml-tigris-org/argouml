@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,10 +45,11 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
@@ -83,15 +84,16 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * The UML Statechart diagram. <p>
- * 
- * The correct name for this class would be 
+ *
+ * The correct name for this class would be
  * "UMLStatechartDiagram". See issue 2306.
  */
 public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 
     private static final long serialVersionUID = -1541136327444703151L;
 
-    private static final Logger LOG = Logger.getLogger(UMLStateDiagram.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLStateDiagram.class.getName());
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
@@ -132,8 +134,8 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
     /**
      * Constructor used by PGML parser to create a new diagram.  Use of
      * this constructor by other callers is deprecated.
-     * 
-     * @deprecated for 0.27.3 by tfmorris.  Use 
+     *
+     * @deprecated for 0.27.3 by tfmorris.  Use
      * {@link #UMLStateDiagram(String, Object)}
      */
     @Deprecated
@@ -148,7 +150,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 
     /**
      * Constructor.
-     * 
+     *
      * @param name the name of the diagram
      * @param machine the StateMachine for the new diagram
      */
@@ -168,10 +170,10 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         setup(namespace, machine);
     }
 
-   
+
     /**
      * Constructor.
-     * 
+     *
      * @param ns the NameSpace for the new diagram
      * @param machine the StateMachine for the new diagram
      * @deprecated for 0.27.3 by tfmorris. Use
@@ -207,7 +209,11 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
             int number = (Model.getFacade().getBehaviors(ns)) == null ? 0
                     : Model.getFacade().getBehaviors(ns).size();
             String name = nname + " " + (number++);
-            LOG.info("UMLStateDiagram constructor: String name = " + name);
+
+            LOG.log(Level.INFO,
+                    "UMLStateDiagram constructor: String name = {0}",
+                    name);
+
             try {
                 setName(name);
             } catch (PropertyVetoException pve) {
@@ -218,10 +224,10 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
     }
 
     /**
-     * From a given StateMachine, find the Namespace. 
+     * From a given StateMachine, find the Namespace.
      * Guaranteed to give a non-null result.
-     * 
-     * @param machine the given StateMachine. 
+     *
+     * @param machine the given StateMachine.
      *          If not a StateMachine: throws exception
      * @return the best possible namespace to be deducted
      */
@@ -230,12 +236,12 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
             throw new IllegalStateException(
                 "No StateMachine given to create a Statechart diagram");
         }
-        
+
         Object ns = Model.getFacade().getNamespace(machine);
         if (ns != null) {
             return ns;
         }
-        
+
         Object context = Model.getFacade().getContext(machine);
         if (Model.getFacade().isAClassifier(context)) {
             ns = context;
@@ -328,13 +334,13 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
-        /* Listen to machine deletion, 
+        /* Listen to machine deletion,
          * to delete the diagram. */
-        Model.getPump().addModelEventListener(this, theStateMachine, 
+        Model.getPump().addModelEventListener(this, theStateMachine,
                 new String[] {"remove", "namespace"});
     }
-    
-    
+
+
     // TODO: Needs to be tidied up after stable release. Graph model
     // should be created in constructor
     private StateDiagramGraphModel createGraphModel() {
@@ -353,7 +359,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         if ((evt.getSource() == theStateMachine)
                 && (evt instanceof DeleteInstanceEvent)
                 && "remove".equals(evt.getPropertyName())) {
-            Model.getPump().removeModelEventListener(this, 
+            Model.getPump().removeModelEventListener(this,
                     theStateMachine, new String[] {"remove", "namespace"});
             if (getProject() != null) {
                 getProject().moveToTrash(this);
@@ -361,10 +367,10 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
                 DiagramFactory.getInstance().removeDiagram(this);
             }
         }
-        if (evt.getSource() == theStateMachine 
+        if (evt.getSource() == theStateMachine
                 && "namespace".equals(evt.getPropertyName())) {
             Object newNamespace = evt.getNewValue();
-            if (newNamespace != null // this in case we are being deleted 
+            if (newNamespace != null // this in case we are being deleted
                     && getNamespace() != newNamespace) {
                 /* The namespace of the statemachine is changed! */
                 setNamespace(newNamespace);
@@ -400,9 +406,9 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        
+
         ArrayList actions = new ArrayList();
-        
+
         actions.add(getActionState());
         actions.add(getActionCompositeState());
         actions.add(getActionTransition());
@@ -422,7 +428,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         actions.add(getTriggerActions());
         actions.add(getActionGuard());
         actions.add(getEffectActions());
-        
+
         return actions.toArray();
     }
 
@@ -682,14 +688,14 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         }
         return actionGuard;
     }
-    
+
     protected Action getActionCallAction() {
         if (actionCallAction == null) {
             actionCallAction = ActionNewCallAction.getButtonInstance();
         }
         return actionCallAction;
     }
-    
+
     protected Action getActionCreateAction() {
         if (actionCreateAction == null) {
             actionCreateAction = ActionNewCreateAction.getButtonInstance();
@@ -710,17 +716,17 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         }
         return actionReturnAction;
     }
-    
+
     protected Action getActionSendAction() {
         if (actionSendAction == null) {
             actionSendAction = ActionNewSendAction.getButtonInstance();
         }
         return actionSendAction;
     }
-    
+
     protected Action getActionTerminateAction() {
         if (actionTerminateAction == null) {
-            actionTerminateAction = 
+            actionTerminateAction =
                 ActionNewTerminateAction.getButtonInstance();
         }
         return actionTerminateAction;
@@ -728,7 +734,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 
     protected Action getActionUninterpretedAction() {
         if (actionUninterpretedAction == null) {
-            actionUninterpretedAction = 
+            actionUninterpretedAction =
                 ActionNewUninterpretedAction.getButtonInstance();
         }
         return actionUninterpretedAction;
@@ -737,7 +743,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 
     protected Action getActionActionSequence() {
         if (actionActionSequence == null) {
-            actionActionSequence = 
+            actionActionSequence =
                 ActionNewActionSequence.getButtonInstance();
         }
         return actionActionSequence;
@@ -765,7 +771,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
     @SuppressWarnings("unchecked")
     public Collection getRelocationCandidates(Object root) {
         /* TODO: We may return something useful when the
-         * relocate() has been implemented, like 
+         * relocate() has been implemented, like
          * all StateMachines that are not ActivityGraphs. */
         Collection c =  new HashSet();
         c.add(getOwner());
@@ -779,9 +785,9 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         return false;
     }
 
-    public void encloserChanged(FigNode enclosed, 
+    public void encloserChanged(FigNode enclosed,
             FigNode oldEncloser, FigNode newEncloser) {
-        // Do nothing.        
+        // Do nothing.
     }
 
     @Override
@@ -796,10 +802,10 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
             return true;
         } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;
-        } 
+        }
         return false;
     }
-    
+
     @Override
     public DiagramElement drop(Object droppedObject, Point location) {
         FigNodeModelElement figNode = null;
@@ -830,7 +836,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
             Object kind = Model.getFacade().getKind(droppedObject);
             if (kind == null) {
-                LOG.warn("found a null type pseudostate");
+                LOG.log(Level.WARNING, "found a null type pseudostate");
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
@@ -849,41 +855,42 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
                 figNode = new FigJoinState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getShallowHistory())) {
-                figNode = new FigShallowHistoryState(droppedObject, bounds, 
+                figNode = new FigShallowHistoryState(droppedObject, bounds,
                         settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getDeepHistory())) {
-                figNode = new FigDeepHistoryState(droppedObject, bounds, 
+                figNode = new FigDeepHistoryState(droppedObject, bounds,
                         settings);
             } else {
-                LOG.warn("found a type not known");
+                LOG.log(Level.WARNING, "found a type not known");
             }
         }
-        
+
         if (figNode != null) {
             // if location is null here the position of the new figNode is set
             // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
             if (location != null) {
                 figNode.setLocation(location.x, location.y);
             }
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Dropped object {0} converted to {1}",
+                    new Object[]{droppedObject, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
-        
+
         return figNode;
     }
-    
+
 
     public DiagramElement createDiagramElement(
             final Object modelElement,
             final Rectangle bounds) {
-        
+
         FigNodeModelElement figNode = null;
-        
+
         DiagramSettings settings = getDiagramSettings();
-        
+
         if (Model.getFacade().isAActionState(modelElement)) {
             figNode = new FigActionState(modelElement, bounds, settings);
         } else if (Model.getFacade().isAFinalState(modelElement)) {
@@ -903,7 +910,7 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
         } else if (Model.getFacade().isAPseudostate(modelElement)) {
             Object kind = Model.getFacade().getKind(modelElement);
             if (kind == null) {
-                LOG.warn("found a null type pseudostate");
+                LOG.log(Level.WARNING, "found a null type pseudostate");
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
@@ -922,24 +929,25 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
                 figNode = new FigJoinState(modelElement, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getShallowHistory())) {
-                figNode = new FigShallowHistoryState(modelElement, bounds, 
+                figNode = new FigShallowHistoryState(modelElement, bounds,
                         settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getDeepHistory())) {
-                figNode = new FigDeepHistoryState(modelElement, bounds, 
+                figNode = new FigDeepHistoryState(modelElement, bounds,
                         settings);
             } else {
-                LOG.warn("found a type not known");
+                LOG.log(Level.WARNING, "found a type not known");
             }
         }
-        
+
         if (figNode != null) {
-            LOG.debug("Model element " + modelElement + " converted to " 
-                    + figNode);
+            LOG.log(Level.FINE,
+                    "Model element {0} converted to {1}",
+                    new Object[]{modelElement, figNode});
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.log(Level.FINE, "Dropped object NOT added {0}", figNode);
         }
         return figNode;
     }
-    
+
 }

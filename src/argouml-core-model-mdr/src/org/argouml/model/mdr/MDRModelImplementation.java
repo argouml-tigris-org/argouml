@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2005,2010 Contributors - see below
+ * Copyright (c) 2005-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
@@ -56,7 +58,6 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ActivityGraphsFactory;
 import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.AggregationKind;
@@ -95,7 +96,6 @@ import org.argouml.model.UseCasesHelper;
 import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.argouml.model.MessageSort;
 import org.netbeans.api.mdr.CreationFailedException;
 import org.netbeans.api.mdr.MDRManager;
 import org.netbeans.api.mdr.MDRepository;
@@ -112,7 +112,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(MDRModelImplementation.class);
+        Logger.getLogger(MDRModelImplementation.class.getName());
 
     private Facade theFacade;
 
@@ -123,7 +123,7 @@ public class MDRModelImplementation implements ModelImplementation {
     private ActivityGraphsHelper theActivityGraphsHelper;
 
     private CoreHelper theCoreHelper;
-    
+
     private MessageSort theMessageSort;
 
     private MetaTypes theMetaTypes = new MetaTypesMDRImpl();
@@ -187,54 +187,54 @@ public class MDRModelImplementation implements ModelImplementation {
      * Map of model elements to xmi.ids used to keep xmi.ids stable
      * across read/write cycles.
      */
-    private Map<String, XmiReference> objectToId = 
+    private Map<String, XmiReference> objectToId =
         Collections.synchronizedMap(new HashMap<String, XmiReference>());
-    
+
     /**
-     * Set of known public IDs of models that could be used to resolve URLs 
+     * Set of known public IDs of models that could be used to resolve URLs
      * from model element IDs.
      */
-    private Map<String, String> public2SystemIds = 
+    private Map<String, String> public2SystemIds =
         Collections.synchronizedMap(new HashMap<String, String>());
-    
+
     /**
      * Index of objects keyed by system ID, then xmi.id within that file
      */
-    private Map<String, Map<String, Object>> idToObject = 
+    private Map<String, Map<String, Object>> idToObject =
         Collections.synchronizedMap(new HashMap<String, Map<String, Object>>());
 
     private List<String> searchDirs = new ArrayList<String>();
-    
-    
+
+
     /**
-     * Set of extents and their read-only status. 
+     * Set of extents and their read-only status.
      */
-    private Map<UmlPackage, Extent> extents = 
+    private Map<UmlPackage, Extent> extents =
         new HashMap<UmlPackage, Extent>(10, (float) .5);
 
     private class Extent {
         int refCount = 0;
         boolean readOnly = false;
         String name;
-        
+
         Extent(String name, boolean readOnly) {
             this.name = name;
             this.readOnly = readOnly;
         }
-        
+
         int getRefCount() {
             return refCount;
         }
-        
+
         synchronized int decrementCount() {
             return refCount--;
         }
-        
+
         synchronized int incrementCount() {
             return refCount++;
         }
     }
-    
+
     /**
      * @return Returns the root UML Factory package for user model.
      * @deprecated for 0.26. Use RefObject.refOutermostPackage instead if at all
@@ -245,7 +245,7 @@ public class MDRModelImplementation implements ModelImplementation {
     public UmlPackage getUmlPackage() {
         synchronized (extents) {
             if (umlPackage == null) {
-                LOG.debug("umlPackage is null - no current extent");
+                LOG.log(Level.FINE, "umlPackage is null - no current extent");
             }
             return umlPackage;
         }
@@ -257,7 +257,7 @@ public class MDRModelImplementation implements ModelImplementation {
                 UmlPackage extent = (UmlPackage) getRepository().createExtent(
                         name, getMofPackage());
                 extents.put(extent, new Extent(name,readOnly));
-                
+
                 if (!readOnly) {
                     // TODO: This will need to change when we support multiple
                     // user models.
@@ -267,28 +267,24 @@ public class MDRModelImplementation implements ModelImplementation {
                         try {
                             deleteExtentUnchecked(umlPackage);
                         } catch (InvalidObjectException e) {
-                            LOG.debug("User model extent already deleted");
+                            LOG.log(Level.FINE, "User model extent already deleted");
                         }
                     }
                     umlPackage = extent;
                 }
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Created new " + (readOnly ? "readonly " : "")
-                            + "extent " + umlPackage);
-                    LOG.debug("All registered extents = "
-                            + Arrays.toString(repository.getExtentNames()));
-                }
+                LOG.log(Level.FINE, "Created new {0} extent {1}", new Object[]{(readOnly ? "readonly " : ""),umlPackage});
+                LOG.log(Level.FINE, "All registered extents = "+ Arrays.toString(repository.getExtentNames()));
                 return extent;
             }
         } catch (CreationFailedException e) {
-            LOG.error("Extent creation failed for " + name);
+            LOG.log(Level.SEVERE, "Extent creation failed for " + name);
             return null;
         }
     }
 
 
     /**
-     * Delete all extents except those for the UML metamodel and the 
+     * Delete all extents except those for the UML metamodel and the
      * meta-meta model (ie MOF).
      */
     private void cleanExtents() {
@@ -297,11 +293,11 @@ public class MDRModelImplementation implements ModelImplementation {
             if (!MOF_EXTENT_NAME.equals(n) && !"MOF".equals(n)) {
                 RefPackage extent = repository.getExtent(n);
                 extent.refDelete();
-                LOG.debug("Deleting extent " + n);
+                LOG.log(Level.FINE, "Deleting extent {0}", n);
             }
         }
     }
-    
+
     void deleteExtent(UmlPackage extent) {
         synchronized (extents) {
             if (umlPackage.equals(extent)) {
@@ -319,7 +315,7 @@ public class MDRModelImplementation implements ModelImplementation {
         synchronized (extents) {
             Extent e = extents.get(extent);
             if (e == null) {
-                LOG.warn("No listing for extent " + extent);
+                LOG.log(Level.WARNING, "No listing for extent " + extent);
                 extent.refDelete();
             } else {
                 if (e.decrementCount() == 0) {
@@ -327,14 +323,14 @@ public class MDRModelImplementation implements ModelImplementation {
                     String name = extents.remove(extent).name;
                     if (public2SystemIds.remove(name) == null) {
                         if (!"model extent".equals(name)) {
-                            LOG.warn("No system id found for extent "
+                            LOG.log(Level.WARNING, "No system id found for extent "
                                     + (name == null ? "" : name) + " : "
                                     + extent);
                         }
                     }
                     if (idToObject.remove(name) == null) {
                         if (!"model extent".equals(name)) {
-                            LOG.warn("No ID map found for extent "
+                            LOG.log(Level.WARNING, "No ID map found for extent "
                                     + (name == null ? "" : name) + " : "
                                     + extent);
                         }
@@ -347,26 +343,26 @@ public class MDRModelImplementation implements ModelImplementation {
             }
         }
     }
-    
+
     Collection<UmlPackage> getExtents() {
         return Collections.unmodifiableSet(extents.keySet());
     }
-    
+
     public UmlPackage getExtent(String name) {
         return (UmlPackage) repository.getExtent(name);
     }
-    
+
     boolean isReadOnly(Object extent) {
         synchronized (extents) {
             Extent result = extents.get(extent);
             if (result == null) {
-//                LOG.warn("Unable to find extent " + extent);
+//                LOG.log(Level.WARNING, "Unable to find extent " + extent);
                 return false;
-            } 
+            }
             return result.readOnly;
         }
     }
-    
+
     /**
      * @return MOF Package containing UML metamodel (M2).
      */
@@ -403,7 +399,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * the bootstrapping logic. Decorators must call
      * {@link #initializeFactories} on the new model after loading the default
      * extent.
-     * 
+     *
      * @param r the underlying repository implementation
      * @throws UmlException on any fatal error. Actual cause will be inclused as
      *             a nested exception
@@ -412,11 +408,11 @@ public class MDRModelImplementation implements ModelImplementation {
         repository = r;
         initializeM2();
     }
-    
+
     /**
      * Constructor.
      *
-     * @throws UmlException if construction fails.  Some possible nested 
+     * @throws UmlException if construction fails.  Some possible nested
      * exceptions include:
      * <ul>
      * <el>CreationFailedException - If the creation of the Extent fail</el>
@@ -432,13 +428,13 @@ public class MDRModelImplementation implements ModelImplementation {
         if (umlPackage == null) {
             throw new UmlException("Could not create UML extent");
         }
-        LOG.debug("MDR Init - created UML extent");
+        LOG.log(Level.FINE, "MDR Init - created UML extent");
 
         initializeFactories(umlPackage);
     }
 
     private static MDRepository getDefaultRepository() {
-        LOG.debug("Starting MDR system initialization");
+        LOG.log(Level.FINE, "Starting MDR system initialization");
 
         String storageImplementation =
             System.getProperty(
@@ -462,29 +458,29 @@ public class MDRModelImplementation implements ModelImplementation {
                 UUIDManager.getInstance().getNewUUID());
 
         // Connect to the repository
-        MDRepository defaultRepository = 
+        MDRepository defaultRepository =
             MDRManager.getDefault().getDefaultRepository();
-        LOG.debug("MDR Init - got default repository");
+        LOG.log(Level.FINE, "MDR Init - got default repository");
         return defaultRepository;
     }
 
 
     private void initializeM2() throws UmlException {
         mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
-        LOG.debug("MDR Init - tried to get MOF extent");
+        LOG.log(Level.FINE, "MDR Init - tried to get MOF extent");
 
         // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
 
             try {
-                mofExtent = 
+                mofExtent =
                     (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);
             } catch (CreationFailedException e) {
                 throw new UmlException(e);
             }
-            LOG.debug("MDR Init - created MOF extent");
+            LOG.log(Level.FINE, "MDR Init - created MOF extent");
             XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();
-            LOG.debug("MDR Init - created XMI reader");
+            LOG.log(Level.FINE, "MDR Init - created XMI reader");
             String metafacade =
                 System.getProperty("argouml.model.mdr.facade", METAMODEL_URL);
             URL resource = getClass().getResource(metafacade);
@@ -495,7 +491,7 @@ public class MDRModelImplementation implements ModelImplementation {
             } catch (MalformedXMIException e) {
                 throw new UmlException(e);
             }
-            LOG.debug("MDR Init - read UML metamodel");
+            LOG.log(Level.FINE, "MDR Init - read UML metamodel");
         }
 
         mofPackage = null;
@@ -518,11 +514,11 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     public void initializeFactories(UmlPackage up) {
         umlPackage = up;
-        
+
         // Create and start event pump first so it's available for all others
         theModelEventPump = new ModelEventPumpMDRImpl(this, repository);
         theModelEventPump.startPumpingEvents();
-        LOG.debug("MDR Init - event pump started");
+        LOG.log(Level.FINE, "MDR Init - event pump started");
 
         // DataTypes is next so it's available for Kinds, ModelManagement,
         // & Extensions
@@ -536,29 +532,29 @@ public class MDRModelImplementation implements ModelImplementation {
             new ExtensionMechanismsHelperMDRImpl(this);
         theExtensionMechanismsFactory =
             new ExtensionMechanismsFactoryMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Extension mechanism");
+        LOG.log(Level.FINE, "MDR Init - initialized package Extension mechanism");
 
         // Initialize remaining factories and helpers
         // (but defer heavyweight ones until needed)
         theCopyHelper = new CopyHelper(this);
         theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();
-        theCoreHelper = 
+        theCoreHelper =
             new UndoCoreHelperDecorator(new CoreHelperMDRImpl(this));
-        LOG.debug("MDR Init - initialized package Core helper");
+        LOG.log(Level.FINE, "MDR Init - initialized package Core helper");
         theModelManagementHelper = new ModelManagementHelperMDRImpl(this);
         theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package StateMachines");
+        LOG.log(Level.FINE, "MDR Init - initialized package StateMachines");
         theUseCasesFactory = new UseCasesFactoryMDRImpl(this);
         theUseCasesHelper = new UseCasesHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Use Cases");
+        LOG.log(Level.FINE, "MDR Init - initialized package Use Cases");
         theActivityGraphsFactory = new ActivityGraphsFactoryMDRImpl(this);
-        LOG.debug("MDR Init - initialized package Collaborations");
+        LOG.log(Level.FINE, "MDR Init - initialized package Collaborations");
         theCommonBehaviorFactory = new CommonBehaviorFactoryMDRImpl(this);
         theCommonBehaviorHelper = new CommonBehaviorHelperMDRImpl(this);
-        LOG.debug("MDR Init - initialized package CommonBehavior");
+        LOG.log(Level.FINE, "MDR Init - initialized package CommonBehavior");
         theStateMachinesFactory = new StateMachinesFactoryMDRImpl(this);
         theCoreFactory = new CoreFactoryMDRImpl(this);
-        LOG.debug("MDR Init - all packages initialized");
+        LOG.log(Level.FINE, "MDR Init - all packages initialized");
 
     }
 
@@ -575,14 +571,15 @@ public class MDRModelImplementation implements ModelImplementation {
                     UmlPackage oldPackage = umlPackage;
                     umlPackage = null;
                     deleteExtentUnchecked(oldPackage);
-                    LOG.debug("MDR Init - UML extent existed - "
-                            + "deleted it and all UML data");
+
+                    LOG.log(Level.FINE, "MDR Init - UML extent existed - deleted it and all UML data");
+
                 } catch (InvalidObjectException e) {
-                    LOG.debug("Got error deleting old default user extent");
+                    LOG.log(Level.FINE, "Got error deleting old default user extent");
                 }
             }
             umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);
-            LOG.debug("Created default extent");
+            LOG.log(Level.FINE, "Created default extent");
             return umlPackage;
         }
     }
@@ -702,7 +699,7 @@ public class MDRModelImplementation implements ModelImplementation {
     DataTypesFactoryMDRImpl getDataTypesFactoryInternal() {
         return theDataTypesFactory;
     }
-    
+
     /*
      * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
      */
@@ -854,7 +851,7 @@ public class MDRModelImplementation implements ModelImplementation {
         return theKindsObject;
     }
 
-    
+
     public XmiReader getXmiReader() throws UmlException {
         XmiReader reader = new XmiReaderImpl(this);
         return reader;
@@ -878,16 +875,16 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * Return map of maps keyed first by system id, then xmi.id with object as
      * value.
-     * 
+     *
      * @return the map
      */
     Map<String, Map<String, Object>> getIdToObject() {
         return idToObject;
     }
-    
+
     /**
      * Remove an element from indexes mapping it back to its original xmi.id.
-     * 
+     *
      * @param mofId MOF ID of element to be removed from indexes
      * @return false if no index entries were removed
      */
@@ -899,7 +896,7 @@ public class MDRModelImplementation implements ModelImplementation {
                 Object o = m.remove(xref.getXmiId());
                 if (o != null) {
                     if (!mofId.equals(((RefObject) o).refMofId())) {
-                        LOG.error("Internal index inconsistency for mof ID " 
+                        LOG.log(Level.SEVERE, "Internal index inconsistency for mof ID "
                                 + mofId + " (got " + ((RefObject) o).refMofId());
                     }
                     return true;
@@ -907,10 +904,10 @@ public class MDRModelImplementation implements ModelImplementation {
             }
         }
         // Elements created after file load won't have index entries
-        LOG.debug("Failed to remove index entries for mof ID " + mofId);
+        LOG.log(Level.FINE, "Failed to remove index entries for mof ID {0}", mofId);
         return false;
     }
-    
+
     /**
      * Return map of MOF ID to XmiReference (system id + xmi.id).
      *
