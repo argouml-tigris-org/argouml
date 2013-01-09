@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2012 Contributors - see below
+ * Copyright (c) 2009-2013 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -191,16 +191,19 @@ public class Agency extends Observable { //implements java.io.Serialization
             try {
                 crClass = Class.forName(crClassName);
             } catch (java.lang.ClassNotFoundException e) {
-                LOG.log(Level.SEVERE, "Error loading cr " + crClassName, e);
+                LOG.log(Level.SEVERE,
+                        "Error loading cr " + crClassName, e);
                 return;
             }
             try {
                 cr = (Critic) crClass.newInstance();
             } catch (java.lang.IllegalAccessException e) {
-                LOG.log(Level.SEVERE, "Error instancating cr " + crClassName, e);
+                LOG.log(Level.SEVERE,
+                        "Error instancating cr " + crClassName, e);
                 return;
             } catch (java.lang.InstantiationException e) {
-                LOG.log(Level.SEVERE, "Error instancating cr " + crClassName, e);
+                LOG.log(Level.SEVERE,
+                        "Error instancating cr " + crClassName, e);
                 return;
             }
             singletonCritics.put(crClassName, cr);
@@ -355,9 +358,10 @@ public class Agency extends Observable { //implements java.io.Serialization
                 try {
                     c.critique(dm, d);
                 } catch (Exception ex) {
-                    LOG.log(Level.SEVERE, "Disabling critique due to exception\n"
-			      + c + "\n" + dm,
-			      ex);
+                    LOG.log(Level.SEVERE,
+                            "Disabling critique due to exception\n"
+                            + c + "\n" + dm,
+                            ex);
                     c.setEnabled(false);
                 }
             }
