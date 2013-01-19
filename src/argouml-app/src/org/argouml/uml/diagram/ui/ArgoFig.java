@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2013 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ import java.awt.Color;
 import org.argouml.uml.diagram.DiagramSettings;
 
 /**
- * An interface that all ArgoUML Figs are required to implament. It provides a
+ * An interface that all ArgoUML Figs are required to implement. It provides a
  * single place to specify behaviors that we want all Figs to have since we
  * don't have access to the GEF class hierarchy (and it is made up of concrete
  * classes instead of interfaces.
