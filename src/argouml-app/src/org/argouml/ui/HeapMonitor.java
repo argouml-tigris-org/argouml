@@ -1,6 +1,6 @@
-/* $Id$
+/* $Id: HeapMonitor.java 19743 2011-10-04 02:47:51Z tfmorris $
  *****************************************************************************
- * Copyright (c) 2009,2011 Contributors - see below
+ * Copyright (c) 2009-2013 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -60,9 +61,15 @@ public class HeapMonitor extends JComponent implements ActionListener {
     private static final int WARN_THRESHOLD = 75;
     private static final int CRITICAL_THRESHOLD = 90;
     
-    private static final Color WARN_COLOR  = new Color(255, 190, 125);
+    private static final Color OK_COLOR = new Color(0, 200, 100);
+
+    private static final Color WARN_COLOR = new Color(255, 190, 125);
+
     private static final Color CRITICAL_COLOR = new Color(255, 70, 70);
-    private static final Color TOTAL_COLOR = new Color(255,255,0);
+
+    private static final Color CURRENT_USED_COLOR = new Color(0, 0, 0);
+
+    private static final Color CURRENT_HEAP_COLOR = new Color(255, 255, 0);
 
     private static final long M = 1024 * 1024;
     
@@ -91,40 +98,39 @@ public class HeapMonitor extends JComponent implements ActionListener {
     public void paint (Graphics g) {        
         Rectangle bounds = getBounds();
         int usedX = (int) (used * bounds.width / max);
-        int totalX = (int) (total * bounds.width / max);
+        int currentHeapX = (int) (total * bounds.width / max);
         int warnX = WARN_THRESHOLD * bounds.width / 100;
         int dangerX = CRITICAL_THRESHOLD * bounds.width / 100;
         
         Color savedColor = g.getColor();
-        
-        g.setColor(getBackground().darker());
-        g.fillRect(0, 0, Math.min(usedX, warnX), bounds.height);
-        
+        g.setColor(OK_COLOR);
+        g.fillRect(0, 0, warnX, bounds.height);
+
         g.setColor(WARN_COLOR);
-        g.fillRect(warnX, 0, 
-                Math.min(usedX - warnX, dangerX - warnX), 
-                bounds.height);
-        
+        g.fillRect(warnX, 0, dangerX - warnX, bounds.height);
+
         g.setColor(CRITICAL_COLOR);
-        g.fillRect(dangerX, 0, 
-                Math.min(usedX - dangerX, bounds.width - dangerX), 
-                bounds.height);
+        g.fillRect(dangerX, 0, bounds.width - dangerX, bounds.height);
+
+        // Thin bar to show current used
+        g.setColor(CURRENT_USED_COLOR);
+        g.fillRect(usedX - 2, 0, 2, bounds.height);
 
         // Thin bar to show current allocated heap size
-        g.setColor(TOTAL_COLOR);
-        g.fillRect(totalX-2, 0, 
-                Math.min(2, bounds.width-totalX), 
-                bounds.height);
+        g.setColor(CURRENT_HEAP_COLOR);
+        g.fillRect(currentHeapX - 2, 0, 2, bounds.height);
 
         g.setColor(getForeground());
 
         String s = MessageFormat.format("{0}M used of {1}M max",
                 new Object[] {(long) (used / M), (long) (max / M) });
+        
         int x = (bounds.width - g.getFontMetrics().stringWidth(s)) / 2;
         int y = (bounds.height + g.getFontMetrics().getHeight()) / 2;
         g.drawString(s, x, y);
         
         g.setColor(savedColor);
+       
     }
 
     /*
