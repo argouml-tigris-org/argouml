@@ -267,10 +267,14 @@ Property files to be searched (in argouml-build):
       <fileset dir="../argouml-app/build">
         <include name="*"/>
       </fileset>
+    </copy>
 
-      <!-- There are still some projects that use log4j
-           (argouml-csharp and argouml-sql).
-       -->
+
+    <!-- There are still some projects that use log4j
+         (argouml-csharp and argouml-sql).
+     -->
+    <ant dir="../argouml-core-infra" inheritAll="false" target="jar"/>
+    <copy todir="${argo.build.dir}">
       <fileset dir="../argouml-core-infra/build">
         <include name="*"/>
       </fileset>
