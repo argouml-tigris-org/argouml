@@ -267,6 +267,13 @@ Property files to be searched (in argouml-build):
       <fileset dir="../argouml-app/build">
         <include name="*"/>
       </fileset>
+
+      <!-- There are still some projects that use log4j
+           (argouml-csharp and argouml-sql).
+       -->
+      <fileset dir="../argouml-core-infra/build">
+        <include name="*"/>
+      </fileset>
     </copy>
 
     <delete failonerror="false">
