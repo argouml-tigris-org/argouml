@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    maurelio1234
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -84,34 +85,18 @@ public class CrOppEndVsAttr extends CrUML {
         if (!(Model.getFacade().isAClassifier(dm))) {
             return NO_PROBLEM;
         }
-        Object cls = /*(MClassifier)*/ dm;
+        Object cls = /*(Classifier)*/ dm;
         Collection<String> namesSeen = new ArrayList<String>();
-        Collection str = Model.getFacade().getFeatures(cls);
-
+        Collection features = Model.getFacade().getFeatures(cls);
 
         // warn about inherited name conflicts, different critic?
-        Iterator features = str.iterator();
-        while (features.hasNext()) {
-            Object o = features.next();
-
-            if (!(Model.getFacade().isAStructuralFeature(o))) {
-                continue;
+        for (Object feature : features) {
+            if (Model.getFacade().isAStructuralFeature(feature)) {
+                final String sfName = Model.getFacade().getName(feature);
+                if (sfName != null && !"".equals(sfName)) {
+                    namesSeen.add(sfName);
+                }
             }
-
-            Object sf = /*(MStructuralFeature)*/ o;
-
-            String sfName = Model.getFacade().getName(sf);
-            if ("".equals(sfName)) {
-                continue;
-            }
-
-            String nameStr = sfName;
-            if (nameStr.length() == 0) {
-                continue;
-            }
-
-            namesSeen.add(nameStr);
-
         }
 
         Collection assocEnds = Model.getFacade().getAssociationEnds(cls);
@@ -132,22 +117,16 @@ public class CrOppEndVsAttr extends CrUML {
                 continue;
             }
 
-            Iterator ascEnds = conn.iterator();
-            while (ascEnds.hasNext()) {
-                Object ae = /*(MAssociationEnd)*/ ascEnds.next();
+            for (Object ae : conn) {
                 if (Model.getFacade().getType(ae) == cls) {
                     continue;
                 }
-                String aeName = Model.getFacade().getName(ae);
-                if ("".equals(aeName)) {
-                    continue;
-                }
-                String aeNameStr = aeName;
-                if (aeNameStr == null || aeNameStr.length() == 0) {
+                final String aeName = Model.getFacade().getName(ae);
+                if (aeName==null || "".equals(aeName)) {
                     continue;
                 }
 
-                if (namesSeen.contains(aeNameStr)) {
+                if (namesSeen.contains(aeName)) {
                     return PROBLEM_FOUND;
                 }
             }
