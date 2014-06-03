@@ -141,10 +141,14 @@ public abstract class CheckKey {
      */
     @Test public void localizedKeyIsInOrigin() {
 	try {
-	    assertTrue("Key " + key + " is in use by the underlying application.",
+	    assertTrue("Key " + key
+                       + " should be added for " + currentLocale + ". "
+                       + "It exists in the root bundle.",
 		       rootLabels.getString(key) instanceof String);
 	} catch (MissingResourceException e) {
-	    fail("Key " + key + " does not exist in root bundle.");
+	    fail("Key " + key
+                 + " shouldn't exist for " + currentLocale + ". "
+                 + "It does not exist in the root bundle.");
 	}
     }
 
@@ -153,13 +157,14 @@ public abstract class CheckKey {
      */
     @Test public void keyIsLocalized() {
 	try {
-	    assertTrue("Key " + key + " localized for " + currentLocale + ".",
+	    assertTrue("Key " + key + " should be localized for "
+                       + currentLocale + ".",
 		       labels.getString(key) != rootLabels.getString(key));
 	} catch (MissingResourceException e) {};
     }
 
     /**
-     * Check that the strings has the same formatted values.
+     * Check that the strings use the same formatted values.
      */
     @Test public void checkMessageFormatValues() {
 	String i18nString = labels.getString(key);
@@ -174,18 +179,91 @@ public abstract class CheckKey {
 	    return;
 	}
 
+        int last = 0;
 	for (int i = 0; ; i++) {
 	    String match = ".*[{]" + i + "[},].*";
 	    boolean i18nFound = i18nString.matches(match);
 	    boolean rootFound = rootString.matches(match);
 
-	    assertTrue("Key " + key + " use value " + i
-		       + " to the same extent",
-		       i18nFound == rootFound);
+            if (rootFound) {
+                assertTrue("Key " + key
+                           + " for " + currentLocale
+                           + " should use formatted value " + i
+                           + " as the root bundle does.",
+                           i18nFound);
+            } else {
+                assertFalse("Key " + key
+                            + " for " + currentLocale
+                            + " should not use formatted value " + i
+                            + " as the root bundle does not.",
+                            i18nFound);
+            }
 
-	    if (!i18nFound && !rootFound) {
+            if (i18nFound || rootFound) {
+                last = i;
+            } else if (i > 3 + last) {
 		break;
 	    }
 	}
+    }
+
+    /**
+     * Check basic formatting.
+     */
+    @Test public void checkMessageFormatting() {
+	String i18nString = labels.getString(key);
+	String rootString;
+	try {
+	    rootString = rootLabels.getString(key);
+	} catch (MissingResourceException e) {
+	    return;
+	};
+
+	if (i18nString.equals(rootString)) {
+	    return;
+	}
+
+        // Starting with the same amount of whitespace.
+        for (int i = 0; ; i++) {
+            if (i18nString.length() < i) {
+                break;
+            }
+            if (rootString.length() < i) {
+                break;
+            }
+            char i18nChar = i18nString.charAt(i);
+            char rootChar = rootString.charAt(i);
+            if (Character.isWhitespace(i18nChar)
+                || Character.isWhitespace(rootChar)) {
+                assertEquals("Whitespace should match in the beginning for"
+                             + " key " + key
+                             + " for " + currentLocale,
+                             rootChar, i18nChar);
+            } else {
+                break;
+            }
+        }
+
+        // Ending with the same amount of whitespace.
+        for (int i = 1; ; i++) {
+            if (i18nString.length() < i) {
+                break;
+            }
+            if (rootString.length() < i) {
+                break;
+            }
+
+            char i18nChar = i18nString.charAt(i18nString.length() - i);
+            char rootChar = rootString.charAt(rootString.length() - i);
+            if (Character.isWhitespace(i18nChar)
+                || Character.isWhitespace(rootChar)) {
+                assertEquals("Whitespace should match at the end for"
+                             + " key " + key
+                             + " for " + currentLocale,
+                             rootChar, i18nChar);
+            } else {
+                break;
+            }
+        }
     }
 }
