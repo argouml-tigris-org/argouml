@@ -150,7 +150,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
-    private transient VetoableChangeSupport vetoSupport;
 
     private ProfileConfiguration profileConfiguration;
 
@@ -1134,7 +1133,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         version = null;
         historyFile = null;
         currentNamespace = null;
-        vetoSupport = null;
         activeDiagram = null;
         savedDiagramName = null;
 
@@ -1221,13 +1219,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     @Override
     public void addProjectListener(ProjectListener listener) {
-        System.out.println("ProjectListner added to " + this);
         projectListeners.add(listener);
     }
 
     @Override
     public void removeProjectListener(ProjectListener listener) {
-        System.out.println("ProjectListner removed from " + this);
         projectListeners.remove(listener);
     }
 }
