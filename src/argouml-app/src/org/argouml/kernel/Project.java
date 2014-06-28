@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010-2012 Contributors - see below
+ * Copyright (c) 2010-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -667,5 +667,18 @@ public interface Project {
      * @param isDirty true if the project should be marked as dirty
      */
     public void setDirty(boolean isDirty);
+    
+    /**
+     * Add a project listener for any class interested in addition and removal of diagrams
+     * from a  project
+     * @param listener
+     */
+    public void addProjectListener(ProjectListener listener);
 
+    /**
+     * Remove a project listener
+     * from a  project
+     * @param listener
+     */
+    public void removeProjectListener(ProjectListener listener);
 }

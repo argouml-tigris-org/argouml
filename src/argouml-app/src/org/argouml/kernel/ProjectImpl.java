@@ -89,6 +89,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private static final Logger LOG =
         Logger.getLogger(ProjectImpl.class.getName());
 
+    Set<ProjectListener> projectListeners = new HashSet<ProjectListener>();
+    
     /**
      * Default name for a project.
      */
@@ -757,6 +759,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         d.addPropertyChangeListener("name", new NamePCL());
         setSaveEnabled(true);
+        ProjectEvent event = new ProjectEvent(d);
+        for (ProjectListener listener : projectListeners) {
+            listener.diagramAdded(event);
+        }
+        
     }
 
     /**
@@ -784,6 +791,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     protected void removeDiagram(ArgoDiagram d) {
         diagrams.remove(d);
+        
         /* Remove the dependent
          * modelelements, such as the statemachine
          * for a statechartdiagram:
@@ -791,6 +799,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
         Object o = d.getDependentElement();
         if (o != null) {
             moveToTrash(o);
+        }
+        ProjectEvent event = new ProjectEvent(d);
+        for (ProjectListener listener : projectListeners) {
+            listener.diagramRemoved(event);
         }
     }
 
@@ -1205,5 +1217,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (profile != null) {
             getProfileConfiguration().addProfile(profile, m);
         }
+    }
+
+    @Override
+    public void addProjectListener(ProjectListener listener) {
+        System.out.println("ProjectListner added to " + this);
+        projectListeners.add(listener);
+    }
+
+    @Override
+    public void removeProjectListener(ProjectListener listener) {
+        System.out.println("ProjectListner removed from " + this);
+        projectListeners.remove(listener);
     }
 }
