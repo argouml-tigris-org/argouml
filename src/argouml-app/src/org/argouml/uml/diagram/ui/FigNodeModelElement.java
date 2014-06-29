@@ -107,6 +107,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.UndoableAction;
+import org.argouml.ui.cmd.RelationshipActionFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -609,11 +610,14 @@ public abstract class FigNodeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         ActionList popUpActions =
             new ActionList(super.getPopUpActions(me), isReadOnly());
+        
+        RelationshipActionFactory relationshipActions = new RelationshipActionFactory();
+        
+        final List<Action> actions = relationshipActions.createContextPopupActions(getOwner());
 
-        final List<Action> modulesActions =
-            ContextActionFactoryManager.getContextPopupActions();
+        actions.addAll(ContextActionFactoryManager.getContextPopupActions());
 
-        for (Action a : modulesActions) {
+        for (Action a : actions) {
             if (a instanceof List) {
                 JMenu m = new JMenu(a);
                 popUpActions.add(m);
