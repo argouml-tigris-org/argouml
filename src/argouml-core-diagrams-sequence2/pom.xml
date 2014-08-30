@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>argouml-core</artifactId>
-    <version>0.35.1-SNAPSHOT</version>
+    <version>0.35.1</version>
     <relativePath>../..</relativePath>
   </parent>
 
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>java-interfaces</artifactId>
-      <version>0.33.1</version>
+      <version>0.34</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>
