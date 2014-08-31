@@ -12,7 +12,7 @@
   </parent>
 
   <artifactId>test-i18n-properties</artifactId>
-  <version>0.35.1</version>
+  <version>0.35.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <properties>

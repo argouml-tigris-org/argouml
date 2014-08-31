@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>argouml-core</artifactId>
-    <version>0.35.1</version>
+    <version>0.35.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
 
