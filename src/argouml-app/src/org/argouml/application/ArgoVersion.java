@@ -57,8 +57,8 @@ final class ArgoVersion {
     /**
      * Version number.
      */
-    private static final String VERSION = "PRE-0.35.1";
-    private static final String STABLE_VERSION = "0.32";
+    private static final String VERSION = "PRE-0.35.2";
+    private static final String STABLE_VERSION = "0.34";
 
     /**
      * Make the version of ArgoUML public. 
