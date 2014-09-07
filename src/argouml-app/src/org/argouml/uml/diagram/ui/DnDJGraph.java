@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2012 Contributors - see below
+ * Copyright (c) 2009-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.argouml.kernel.Owned;
+import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramElement;
@@ -234,23 +235,27 @@ class DnDJGraph
 
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
-                /* TODO: Why not call UMLDiagram.doesAccept() first,
-                 * like in ClassDiagramRenderer?  */
-                final DiagramElement figNode = diagram.drop(i.next(), point);
+                Object node = i.next();
+                if (diagram.doesAccept(node)) {
+                    final DiagramElement figNode = diagram.drop(node, point);
 
-                if (figNode != null && figNode instanceof Owned) {
-                    Object owner = ((Owned) figNode).getOwner();
-                    if (!gm.getNodes().contains(owner)) {
-                        gm.getNodes().add(owner);
-                    }
+                    if (figNode != null && figNode instanceof Owned) {
+                        Object owner = ((Owned) figNode).getOwner();
+                        if (!gm.getNodes().contains(owner)) {
+                            gm.getNodes().add(owner);
+                        }
 
-                    layer.add((Fig) figNode);
-                    if (figNode instanceof FigNode && figNode instanceof Owned) {
-                        gm.addNodeRelatedEdges(((Owned) figNode).getOwner());
+                        layer.add((Fig) figNode);
+                        if (figNode instanceof FigNode && figNode instanceof Owned) {
+                            gm.addNodeRelatedEdges(((Owned) figNode).getOwner());
+                        }
+                        if (Model.getFacade().isAAssociationClass(node)) {
+                            ModeCreateAssociationClass.buildInActiveLayer(Globals
+                                    .curEditor(), node);
+                        }
                     }
                 }
             }
-
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
             LOG.log(Level.SEVERE, "Exception caught", e);

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -148,12 +149,14 @@ public class ClAttributeCompartment implements Clarifier {
 	final Object modelElement = fig.getOwner();
         if (Model.getUmlFactory().isContainmentValid(
                 Model.getMetaTypes().getAttribute(), modelElement)) {
-            FigCompartmentBox fcb = (FigCompartmentBox) fig;
-            FigCompartment fc =
-                fcb.getCompartment(Model.getMetaTypes().getAttribute());
-            Rectangle fr = fc.getBounds();
-            fig = null;
-            return fr.contains(x, y);
+            if (fig instanceof FigCompartmentBox) {
+                FigCompartmentBox fcb = (FigCompartmentBox) fig;
+                FigCompartment fc =
+                        fcb.getCompartment(Model.getMetaTypes().getAttribute());
+                Rectangle fr = fc.getBounds();
+                fig = null;
+                return fr.contains(x, y);
+            } // else it is a FigAssociationClass, then what?
         }
         return false;
     }
