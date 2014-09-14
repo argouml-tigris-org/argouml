@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
 import org.argouml.ui.Clarifier;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.tigris.gef.presentation.Fig;
@@ -86,6 +87,9 @@ public class ClAttributeCompartment implements Clarifier {
         final Object modelElement = fig.getOwner();
         if (Model.getUmlFactory().isContainmentValid(
                 Model.getMetaTypes().getAttribute(), modelElement)) {
+            if (fig instanceof FigAssociationClass) {
+                fig = ((FigAssociationClass) fig).getAssociationClass();
+            }
             FigCompartmentBox fcb = (FigCompartmentBox) fig;
             FigCompartment fc =
                 fcb.getCompartment(Model.getMetaTypes().getAttribute());
@@ -149,6 +153,9 @@ public class ClAttributeCompartment implements Clarifier {
 	final Object modelElement = fig.getOwner();
         if (Model.getUmlFactory().isContainmentValid(
                 Model.getMetaTypes().getAttribute(), modelElement)) {
+            if (fig instanceof FigAssociationClass) {
+                fig = ((FigAssociationClass) fig).getAssociationClass();
+            }
             if (fig instanceof FigCompartmentBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) fig;
                 FigCompartment fc =
@@ -156,7 +163,7 @@ public class ClAttributeCompartment implements Clarifier {
                 Rectangle fr = fc.getBounds();
                 fig = null;
                 return fr.contains(x, y);
-            } // else it is a FigAssociationClass, then what?
+            }
         }
         return false;
     }
