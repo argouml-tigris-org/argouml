@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2012 Contributors - see below
+ * Copyright (c) 2009-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -409,6 +409,10 @@ public class ExplorerPopup extends JPopupMenu {
                             new ActionCreateAssociation(
                                     Model.getMetaTypes().getAssociation(),
                                     targets)));
+                    if (targets.size() == 2) menuItems.add(new OrderedMenuItem(
+                            new ActionCreateAssociation(
+                                    Model.getMetaTypes().getAssociationClass(), 
+                                    targets)));
                 }
             }
         }
@@ -779,7 +783,7 @@ public class ExplorerPopup extends JPopupMenu {
 
 
     /**
-     * An action to create an association between 2 or more model elements.
+     * An action to create an associationRole between 2 or more model elements.
      *
      * @author Bob Tarling
      */
