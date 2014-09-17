@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2012 Contributors - see below
+ * Copyright (c) 2009-2014 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,8 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
+ *    Mohammadnaser Zandi
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -153,7 +155,7 @@ public class ToDoPane extends JPanel
 
         perspectives = new ArrayList<ToDoPerspective>();
 
-        countLabel = new JLabel(formatCountLabel(999));
+        countLabel = new JLabel(formatCountLabel(0));
         countLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
 
         JPanel toolbarPanel = new JPanel(new BorderLayout());
