@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************/
 
 package org.argouml.ui.cmd;
@@ -168,7 +169,7 @@ public class RelationshipActionFactory implements ContextActionFactory {
     }
     
     private ActionList getDependancyToActions(final Object element, ArgoDiagram diagram) {
-        ActionList al= new ActionList("Add Dependancies to ");
+        ActionList al= new ActionList("Add Dependencies to ");
         if (Model.getFacade().isAClass(element)) {
             
             Collection dependenciesTo = Model.getFacade().getClientDependencies(element);
@@ -179,7 +180,7 @@ public class RelationshipActionFactory implements ContextActionFactory {
                     Collection suppliers = Model.getFacade().getSuppliers(dependency);
                     for (Object supplier : suppliers) {
                         al.add(new AddUsageAction(
-                                "Add dependancy to "+ Model.getFacade().getName(supplier),
+                                "Add dependency to "+ Model.getFacade().getName(supplier),
                                 diagram, element, dependency, supplier));
                     }
                 }
@@ -189,7 +190,7 @@ public class RelationshipActionFactory implements ContextActionFactory {
     }
     
     private ActionList getDependancyFromActions(final Object element, ArgoDiagram diagram) {
-        ActionList al= new ActionList("Add Dependancies from ");
+        ActionList al= new ActionList("Add Dependencies from ");
         if (Model.getFacade().isAClass(element)) {
             
             Collection dependenciesFrom = Model.getFacade().getSupplierDependencies(element);
@@ -200,7 +201,7 @@ public class RelationshipActionFactory implements ContextActionFactory {
                     Collection clients = Model.getFacade().getClients(dependency);
                     for (Object client : clients) {
                         al.add(new AddUsageAction(
-                                "Add dependancy from "+ Model.getFacade().getName(client),
+                                "Add dependency from "+ Model.getFacade().getName(client),
                                 diagram, element, dependency, client));
                     }
                 }
@@ -211,15 +212,17 @@ public class RelationshipActionFactory implements ContextActionFactory {
     
     private ActionList getGeneralizationToActions(final Object element, ArgoDiagram diagram) {
         ActionList al= new ActionList("Add Generalizations to ");
-        Collection generalizations = Model.getFacade().getGeneralizations(element);
-        for (Object generalization : generalizations) {
-            
-            // Only show actions for associations not already on diagram
-            if (diagram.presentationFor(generalization) == null) {
-                Object general = Model.getFacade().getGeneral(generalization);
-                al.add(new AddGeneralAction(
-                        "Add Generalization to "+ Model.getFacade().getName(general),
-                        diagram, element, generalization, general));
+        if (Model.getFacade().isAGeneralizableElement(element)) {
+            Collection generalizations = Model.getFacade().getGeneralizations(element);
+            for (Object generalization : generalizations) {
+
+                // Only show actions for associations not already on diagram
+                if (diagram.presentationFor(generalization) == null) {
+                    Object general = Model.getFacade().getGeneral(generalization);
+                    al.add(new AddGeneralAction(
+                            "Add Generalization to "+ Model.getFacade().getName(general),
+                            diagram, element, generalization, general));
+                }
             }
         }
         return al;
@@ -227,15 +230,17 @@ public class RelationshipActionFactory implements ContextActionFactory {
     
     private ActionList getGeneralizationFromActions(final Object element, ArgoDiagram diagram) {
         ActionList al= new ActionList("Add Generalizations from ");
-        Collection specializations = Model.getFacade().getSpecializations(element);
-        for (Object specialization : specializations) {
-            
-            // Only show actions for associations not already on diagram
-            if (diagram.presentationFor(specialization) == null) {
-                Object specific = Model.getFacade().getSpecific(specialization);
-                al.add(new AddSpecialAction(
-                        "Add Specialization from "+ Model.getFacade().getName(specific),
-                        diagram, element, specialization, specific));
+        if (Model.getFacade().isAGeneralizableElement(element)) {
+            Collection specializations = Model.getFacade().getSpecializations(element);
+            for (Object specialization : specializations) {
+
+                // Only show actions for associations not already on diagram
+                if (diagram.presentationFor(specialization) == null) {
+                    Object specific = Model.getFacade().getSpecific(specialization);
+                    al.add(new AddSpecialAction(
+                            "Add Specialization from "+ Model.getFacade().getName(specific),
+                            diagram, element, specialization, specific));
+                }
             }
         }
         return al;
