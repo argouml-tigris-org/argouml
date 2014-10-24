@@ -50,6 +50,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -89,6 +90,9 @@ public class ClAttributeCompartment implements Clarifier {
                 Model.getMetaTypes().getAttribute(), modelElement)) {
             if (fig instanceof FigAssociationClass) {
                 fig = ((FigAssociationClass) fig).getAssociationClass();
+            }
+            if (fig instanceof FigEdgeAssociationClass) {
+                return; // why are we here?
             }
             FigCompartmentBox fcb = (FigCompartmentBox) fig;
             FigCompartment fc =
