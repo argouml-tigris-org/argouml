@@ -3969,8 +3969,8 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="ownedElement" type="Package,DataType,Enumeration" new="true" label="label.owned-elements"/>
     <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <attribute name="clientDependency" type="Dependency" />
-    <attribute name="supplierDependency" type="ModelElement" />    
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
     <attribute name="comment" type="Comment" />
