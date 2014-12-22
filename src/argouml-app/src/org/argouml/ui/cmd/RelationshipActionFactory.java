@@ -170,19 +170,17 @@ public class RelationshipActionFactory implements ContextActionFactory {
     
     private ActionList getDependancyToActions(final Object element, ArgoDiagram diagram) {
         ActionList al= new ActionList("Add Dependencies to ");
-        if (Model.getFacade().isAClass(element)) {
             
-            Collection dependenciesTo = Model.getFacade().getClientDependencies(element);
-            for (Object dependency : dependenciesTo) {
-                
-                // Only show actions for associations not already on diagram
-                if (diagram.presentationFor(dependency) == null) {
-                    Collection suppliers = Model.getFacade().getSuppliers(dependency);
-                    for (Object supplier : suppliers) {
-                        al.add(new AddUsageAction(
-                                "Add dependency to "+ Model.getFacade().getName(supplier),
-                                diagram, element, dependency, supplier));
-                    }
+        Collection dependenciesTo = Model.getFacade().getClientDependencies(element);
+        for (Object dependency : dependenciesTo) {
+            
+            // Only show actions for associations not already on diagram
+            if (diagram.presentationFor(dependency) == null) {
+                Collection suppliers = Model.getFacade().getSuppliers(dependency);
+                for (Object supplier : suppliers) {
+                    al.add(new AddUsageAction(
+                            "Add dependency to "+ Model.getFacade().getName(supplier),
+                            diagram, element, dependency, supplier));
                 }
             }
         }
@@ -191,19 +189,17 @@ public class RelationshipActionFactory implements ContextActionFactory {
     
     private ActionList getDependancyFromActions(final Object element, ArgoDiagram diagram) {
         ActionList al= new ActionList("Add Dependencies from ");
-        if (Model.getFacade().isAClass(element)) {
             
-            Collection dependenciesFrom = Model.getFacade().getSupplierDependencies(element);
-            for (Object dependency : dependenciesFrom) {
-                
-                // Only show actions for associations not already on diagram
-                if (diagram.presentationFor(dependency) == null) {
-                    Collection clients = Model.getFacade().getClients(dependency);
-                    for (Object client : clients) {
-                        al.add(new AddUsageAction(
-                                "Add dependency from "+ Model.getFacade().getName(client),
-                                diagram, element, dependency, client));
-                    }
+        Collection dependenciesFrom = Model.getFacade().getSupplierDependencies(element);
+        for (Object dependency : dependenciesFrom) {
+            
+            // Only show actions for associations not already on diagram
+            if (diagram.presentationFor(dependency) == null) {
+                Collection clients = Model.getFacade().getClients(dependency);
+                for (Object client : clients) {
+                    al.add(new AddUsageAction(
+                            "Add dependency from "+ Model.getFacade().getName(client),
+                            diagram, element, dependency, client));
                 }
             }
         }
