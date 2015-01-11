@@ -44,24 +44,37 @@ public class ModelUtil {
             for (Object classifier : Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier())) {
                 
                 Object namespace = Model.getFacade().getNamespace(classifier);
-                Set dependentNamespaces = new HashSet();
                 
-                for (Object dependency : Model.getFacade().getClientDependencies(classifier)) {
-                    for (Object dependentClass : Model.getFacade().getSuppliers(dependency)) {
-                        dependentNamespaces.add(Model.getFacade().getNamespace(dependentClass));
+                if (Model.getFacade().getNamespace(namespace) != null) {
+                    Set dependentNamespaces = new HashSet();
+                    
+                    for (Object dependency : Model.getFacade().getClientDependencies(classifier)) {
+                        for (Object dependentClass : Model.getFacade().getSuppliers(dependency)) {
+                            dependentNamespaces.add(Model.getFacade().getNamespace(dependentClass));
+                        }
                     }
-                }
-                for (Object generalization : Model.getFacade().getGeneralizations(classifier)) {
-                    Object superClass = Model.getFacade().getGeneral(generalization);
-                    dependentNamespaces.add(Model.getFacade().getNamespace(superClass));
-                }
-                for (Object associatedClassifier : Model.getFacade().getAssociatedClasses(classifier)) {
-                    dependentNamespaces.add(Model.getFacade().getNamespace(associatedClassifier));
-                }
-
-                for (Object dependentNamespace : dependentNamespaces) {
-                    if (Model.getCoreHelper().getDependencies(dependentNamespace, namespace).isEmpty()) {
-                        Model.getUmlFactory().buildConnection(Model.getMetaTypes().getDependency(), namespace, null, dependentNamespace, null, true, namespace);
+                    for (Object generalization : Model.getFacade().getGeneralizations(classifier)) {
+                        Object superClass = Model.getFacade().getGeneral(generalization);
+                        dependentNamespaces.add(Model.getFacade().getNamespace(superClass));
+                    }
+                    
+                    for (Object closeEnd : Model.getFacade().getAssociationEnds(classifier)) {
+                        Object assoc = Model.getFacade().getAssociation(closeEnd);
+                        for (Object assEnd : Model.getFacade().getOtherAssociationEnds(closeEnd)) {
+                            if (Model.getFacade().isNavigable(assEnd)) {
+                                Object associatedClassifier = Model.getFacade().getClassifier(assEnd);
+                                dependentNamespaces.add(Model.getFacade().getNamespace(associatedClassifier));
+                            }
+                        }
+                    }
+    
+                    for (Object dependentNamespace : dependentNamespaces) {
+                        
+                        if (Model.getFacade().getNamespace(dependentNamespace) != null
+                                && namespace != dependentNamespace
+                                && Model.getCoreHelper().getDependencies(dependentNamespace, namespace).isEmpty()) {
+                            Model.getUmlFactory().buildConnection(Model.getMetaTypes().getDependency(), namespace, null, dependentNamespace, null, true, namespace);
+                        }
                     }
                 }
             }
