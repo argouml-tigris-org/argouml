@@ -1,7 +1,7 @@
 /build
 /build-eclipse
 /build-eclipse-tests
-/Alittlebitofeverything2.zargo
+/Alittlebitofeverything2.zargo*
 /test.xmi
 /test.xmi~
 /testSaveProfileModel.xmi
