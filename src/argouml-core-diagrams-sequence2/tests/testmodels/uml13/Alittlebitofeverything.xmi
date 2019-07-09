@@ -1,0 +1,2326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmi.version="1.0">
+  <XMI.header>
+    <XMI.documentation>
+      <XMI.exporter>Novosoft UML Library</XMI.exporter>
+      <XMI.exporterVersion>0.4.19</XMI.exporterVersion>
+    </XMI.documentation>
+    <XMI.metamodel xmi.name="UML" xmi.version="1.3"/>
+  </XMI.header>
+  <XMI.content>
+    <Model_Management.Model xmi.id="xmi.1" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-8000">
+      <Foundation.Core.ModelElement.name>testing</Foundation.Core.ModelElement.name>
+      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+      <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+      <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+      <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+      <Foundation.Core.Namespace.ownedElement>
+        <Model_Management.Package xmi.id="xmi.2" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fff">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Namespace.ownedElement>
+            <Foundation.Core.Interface xmi.id="xmi.3" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fec">
+              <Foundation.Core.ModelElement.name>NameIf</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.supplierDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.4"/>
+              </Foundation.Core.ModelElement.supplierDependency>
+              <Foundation.Core.Classifier.feature>
+                <Foundation.Core.Operation xmi.id="xmi.5">
+                  <Foundation.Core.ModelElement.name>Operation</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.visibility xmi.value="public"/>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.BehavioralFeature.isQuery xmi.value="false"/>
+                  <Foundation.Core.Operation.isRoot xmi.value="false"/>
+                  <Foundation.Core.Operation.isLeaf xmi.value="false"/>
+                  <Foundation.Core.Operation.isAbstract xmi.value="false"/>
+                  <Foundation.Core.Feature.owner>
+                    <Foundation.Core.Classifier xmi.idref="xmi.3"/>
+                  </Foundation.Core.Feature.owner>
+                  <Foundation.Core.BehavioralFeature.parameter>
+                    <Foundation.Core.Parameter xmi.id="xmi.6">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Foundation.Core.Parameter.kind xmi.value="return"/>
+                      <Foundation.Core.Parameter.behavioralFeature>
+                        <Foundation.Core.BehavioralFeature xmi.idref="xmi.5"/>
+                      </Foundation.Core.Parameter.behavioralFeature>
+                    </Foundation.Core.Parameter>
+                  </Foundation.Core.BehavioralFeature.parameter>
+                </Foundation.Core.Operation>
+              </Foundation.Core.Classifier.feature>
+            </Foundation.Core.Interface>
+            <Foundation.Core.Class xmi.id="xmi.8" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7feb">
+              <Foundation.Core.ModelElement.name>Name</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.Class.isActive xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.clientDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.4"/>
+              </Foundation.Core.ModelElement.clientDependency>
+              <Foundation.Core.Classifier.feature>
+                <Foundation.Core.Operation xmi.id="xmi.9">
+                  <Foundation.Core.ModelElement.name>Operation</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.visibility xmi.value="public"/>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.BehavioralFeature.isQuery xmi.value="false"/>
+                  <Foundation.Core.Operation.isRoot xmi.value="false"/>
+                  <Foundation.Core.Operation.isLeaf xmi.value="false"/>
+                  <Foundation.Core.Operation.isAbstract xmi.value="false"/>
+                  <Foundation.Core.Feature.owner>
+                    <Foundation.Core.Classifier xmi.idref="xmi.8"/>
+                  </Foundation.Core.Feature.owner>
+                  <Foundation.Core.BehavioralFeature.parameter>
+                    <Foundation.Core.Parameter xmi.id="xmi.10">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Foundation.Core.Parameter.kind xmi.value="return"/>
+                      <Foundation.Core.Parameter.behavioralFeature>
+                        <Foundation.Core.BehavioralFeature xmi.idref="xmi.9"/>
+                      </Foundation.Core.Parameter.behavioralFeature>
+                    </Foundation.Core.Parameter>
+                  </Foundation.Core.BehavioralFeature.parameter>
+                </Foundation.Core.Operation>
+              </Foundation.Core.Classifier.feature>
+            </Foundation.Core.Class>
+            <Foundation.Core.Abstraction xmi.id="xmi.4" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fea">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Dependency.client>
+                <Foundation.Core.ModelElement xmi.idref="xmi.8"/>
+              </Foundation.Core.Dependency.client>
+              <Foundation.Core.Dependency.supplier>
+                <Foundation.Core.ModelElement xmi.idref="xmi.3"/>
+              </Foundation.Core.Dependency.supplier>
+            </Foundation.Core.Abstraction>
+            <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.11">
+              <Foundation.Core.ModelElement.name>realize</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+                <Foundation.Core.ModelElement xmi.idref="xmi.4"/>
+              </Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+            </Foundation.Extension_Mechanisms.Stereotype>
+            <Foundation.Core.Interface xmi.id="xmi.12" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe9">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.supplierDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.13"/>
+              </Foundation.Core.ModelElement.supplierDependency>
+            </Foundation.Core.Interface>
+            <Foundation.Core.Class xmi.id="xmi.14" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe8">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.Class.isActive xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.clientDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.13"/>
+              </Foundation.Core.ModelElement.clientDependency>
+            </Foundation.Core.Class>
+            <Foundation.Core.Abstraction xmi.id="xmi.13" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe7">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Dependency.client>
+                <Foundation.Core.ModelElement xmi.idref="xmi.14"/>
+              </Foundation.Core.Dependency.client>
+              <Foundation.Core.Dependency.supplier>
+                <Foundation.Core.ModelElement xmi.idref="xmi.12"/>
+              </Foundation.Core.Dependency.supplier>
+            </Foundation.Core.Abstraction>
+            <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.15">
+              <Foundation.Core.ModelElement.name>realize</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.2"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+                <Foundation.Core.ModelElement xmi.idref="xmi.13"/>
+              </Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+            </Foundation.Extension_Mechanisms.Stereotype>
+          </Foundation.Core.Namespace.ownedElement>
+        </Model_Management.Package>
+        <Foundation.Core.Class xmi.id="xmi.16" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ffe">
+          <Foundation.Core.ModelElement.name>Little</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.GeneralizableElement.generalization>
+            <Foundation.Core.Generalization xmi.idref="xmi.17"/>
+          </Foundation.Core.GeneralizableElement.generalization>
+          <Foundation.Core.Namespace.ownedElement>
+            <Behavioral_Elements.State_Machines.StateMachine xmi.id="xmi.18" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fdc">
+              <Foundation.Core.ModelElement.name>LittleStateMachine</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.16"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.State_Machines.StateMachine.context>
+                <Foundation.Core.ModelElement xmi.idref="xmi.16"/>
+              </Behavioral_Elements.State_Machines.StateMachine.context>
+              <Behavioral_Elements.State_Machines.StateMachine.top>
+                <Behavioral_Elements.State_Machines.CompositeState xmi.id="xmi.19">
+                  <Foundation.Core.ModelElement.name>state_machine_top</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.State.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.State.stateMachine>
+                  <Behavioral_Elements.State_Machines.CompositeState.subvertex>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.20" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fdb">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="initial"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.21"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                    <Behavioral_Elements.State_Machines.State xmi.id="xmi.22" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fda">
+                      <Foundation.Core.ModelElement.name>s2</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.23"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.21"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.24"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.State>
+                    <Behavioral_Elements.State_Machines.State xmi.id="xmi.25" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd8">
+                      <Foundation.Core.ModelElement.name>s3</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.26"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.23"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.27"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.State>
+                    <Behavioral_Elements.State_Machines.CompositeState xmi.id="xmi.28" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd6">
+                      <Foundation.Core.ModelElement.name>s1</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.27"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.29"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.30"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.31"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.CompositeState>
+                    <Behavioral_Elements.State_Machines.FinalState xmi.id="xmi.32" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd4">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.29"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.FinalState>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.33" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd2">
+                      <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="branch"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.31"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.34"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.26"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.35" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fcf">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="join"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.24"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.34"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.30"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.36"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.37" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fcb">
+                      <Foundation.Core.ModelElement.name>s3</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="shallowHistory"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.36"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.38" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc9">
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="deepHistory"/>
+                      <Foundation.Core.ModelElement.comment>
+                        <Foundation.Core.Comment xmi.idref="xmi.39"/>
+                      </Foundation.Core.ModelElement.comment>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.19"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                  </Behavioral_Elements.State_Machines.CompositeState.subvertex>
+                </Behavioral_Elements.State_Machines.CompositeState>
+              </Behavioral_Elements.State_Machines.StateMachine.top>
+              <Behavioral_Elements.State_Machines.StateMachine.transitions>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.21" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd9">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.20"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.22"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.23" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd7">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.22"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.25"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.27" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd5">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.28"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.25"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.29" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd3">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.28"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.32"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.26" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd1">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.25"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.33"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.31" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fd0">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.33"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.28"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.34" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fce">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.33"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.35"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.30" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fcd">
+                  <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.28"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.35"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.24" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fcc">
+                  <Foundation.Core.ModelElement.name>s4</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.35"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.22"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.36" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fca">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.18"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.37"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.35"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+              </Behavioral_Elements.State_Machines.StateMachine.transitions>
+            </Behavioral_Elements.State_Machines.StateMachine>
+            <Foundation.Core.Comment xmi.id="xmi.39" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc8">
+              <Foundation.Core.ModelElement.name>comment</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.16"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Comment.annotatedElement>
+                <Foundation.Core.ModelElement xmi.idref="xmi.38"/>
+              </Foundation.Core.Comment.annotatedElement>
+            </Foundation.Core.Comment>
+          </Foundation.Core.Namespace.ownedElement>
+        </Foundation.Core.Class>
+        <Foundation.Core.Class xmi.id="xmi.40" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ffb">
+          <Foundation.Core.ModelElement.name>Bit of</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="true"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.GeneralizableElement.specialization>
+            <Foundation.Core.Generalization xmi.idref="xmi.41"/>
+          </Foundation.Core.GeneralizableElement.specialization>
+          <Foundation.Core.Namespace.ownedElement>
+            <Behavioral_Elements.Activity_Graphs.ActivityGraph xmi.id="xmi.42" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc7">
+              <Foundation.Core.ModelElement.name>Bit ofActivityGraph</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.40"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.State_Machines.StateMachine.context>
+                <Foundation.Core.ModelElement xmi.idref="xmi.40"/>
+              </Behavioral_Elements.State_Machines.StateMachine.context>
+              <Behavioral_Elements.State_Machines.StateMachine.top>
+                <Behavioral_Elements.State_Machines.CompositeState xmi.id="xmi.43">
+                  <Foundation.Core.ModelElement.name>activities_top</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.State.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.42"/>
+                  </Behavioral_Elements.State_Machines.State.stateMachine>
+                  <Behavioral_Elements.State_Machines.CompositeState.subvertex>
+                    <Behavioral_Elements.Activity_Graphs.ActionState xmi.id="xmi.44" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc6">
+                      <Foundation.Core.ModelElement.name>h3</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.Activity_Graphs.ActionState.isDynamic xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.43"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.45"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                    </Behavioral_Elements.Activity_Graphs.ActionState>
+                    <Behavioral_Elements.Activity_Graphs.ActionState xmi.id="xmi.46" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc5">
+                      <Foundation.Core.ModelElement.name>h2</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.Activity_Graphs.ActionState.isDynamic xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.43"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.47"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.45"/>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.48"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.Activity_Graphs.ActionState>
+                    <Behavioral_Elements.State_Machines.Pseudostate xmi.id="xmi.49" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc3">
+                      <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.Pseudostate.kind xmi.value="initial"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.43"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.50"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                    </Behavioral_Elements.State_Machines.Pseudostate>
+                    <Behavioral_Elements.Activity_Graphs.ActionState xmi.id="xmi.51" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc2">
+                      <Foundation.Core.ModelElement.name>h1</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.Activity_Graphs.ActionState.isDynamic xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.43"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.48"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.outgoing>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.50"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.Activity_Graphs.ActionState>
+                    <Behavioral_Elements.State_Machines.FinalState xmi.id="xmi.52" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc0">
+                      <Foundation.Core.ModelElement.name>finalen</Foundation.Core.ModelElement.name>
+                      <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                      <Behavioral_Elements.State_Machines.StateVertex.container>
+                        <Behavioral_Elements.State_Machines.CompositeState xmi.idref="xmi.43"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.container>
+                      <Behavioral_Elements.State_Machines.StateVertex.incoming>
+                        <Behavioral_Elements.State_Machines.Transition xmi.idref="xmi.47"/>
+                      </Behavioral_Elements.State_Machines.StateVertex.incoming>
+                    </Behavioral_Elements.State_Machines.FinalState>
+                  </Behavioral_Elements.State_Machines.CompositeState.subvertex>
+                </Behavioral_Elements.State_Machines.CompositeState>
+              </Behavioral_Elements.State_Machines.StateMachine.top>
+              <Behavioral_Elements.State_Machines.StateMachine.transitions>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.45" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc4">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.42"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.44"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.46"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.50" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fc1">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.42"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.49"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.51"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.47" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fbf">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.42"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.46"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.52"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+                <Behavioral_Elements.State_Machines.Transition xmi.id="xmi.48" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fbe">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.State_Machines.Transition.stateMachine>
+                    <Behavioral_Elements.State_Machines.StateMachine xmi.idref="xmi.42"/>
+                  </Behavioral_Elements.State_Machines.Transition.stateMachine>
+                  <Behavioral_Elements.State_Machines.Transition.source>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.51"/>
+                  </Behavioral_Elements.State_Machines.Transition.source>
+                  <Behavioral_Elements.State_Machines.Transition.target>
+                    <Behavioral_Elements.State_Machines.StateVertex xmi.idref="xmi.46"/>
+                  </Behavioral_Elements.State_Machines.Transition.target>
+                </Behavioral_Elements.State_Machines.Transition>
+              </Behavioral_Elements.State_Machines.StateMachine.transitions>
+            </Behavioral_Elements.Activity_Graphs.ActivityGraph>
+          </Foundation.Core.Namespace.ownedElement>
+        </Foundation.Core.Class>
+        <Foundation.Core.Association xmi.id="xmi.53" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ffa">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Association.connection>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.54">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.aggregation xmi.value="composite"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.id="xmi.55">
+                  <Foundation.Data_Types.Multiplicity.range>
+                    <Foundation.Data_Types.MultiplicityRange xmi.id="xmi.56">
+                      <Foundation.Data_Types.MultiplicityRange.lower>1</Foundation.Data_Types.MultiplicityRange.lower>
+                      <Foundation.Data_Types.MultiplicityRange.upper>1</Foundation.Data_Types.MultiplicityRange.upper>
+                    </Foundation.Data_Types.MultiplicityRange>
+                  </Foundation.Data_Types.Multiplicity.range>
+                </Foundation.Data_Types.Multiplicity>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.53"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.16"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.57">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.53"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.40"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+          </Foundation.Core.Association.connection>
+        </Foundation.Core.Association>
+        <Foundation.Core.Class xmi.id="xmi.58" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff7">
+          <Foundation.Core.ModelElement.name>Everything</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.ModelElement.comment>
+            <Foundation.Core.Comment xmi.idref="xmi.59"/>
+          </Foundation.Core.ModelElement.comment>
+          <Foundation.Core.GeneralizableElement.generalization>
+            <Foundation.Core.Generalization xmi.idref="xmi.41"/>
+          </Foundation.Core.GeneralizableElement.generalization>
+        </Foundation.Core.Class>
+        <Foundation.Core.Generalization xmi.id="xmi.41" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff6">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Generalization.child>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.58"/>
+          </Foundation.Core.Generalization.child>
+          <Foundation.Core.Generalization.parent>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.40"/>
+          </Foundation.Core.Generalization.parent>
+        </Foundation.Core.Generalization>
+        <Foundation.Core.Class xmi.id="xmi.60" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff5">
+          <Foundation.Core.ModelElement.name>A</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.GeneralizableElement.specialization>
+            <Foundation.Core.Generalization xmi.idref="xmi.17"/>
+          </Foundation.Core.GeneralizableElement.specialization>
+        </Foundation.Core.Class>
+        <Foundation.Core.Generalization xmi.id="xmi.17" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff4">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Generalization.child>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.16"/>
+          </Foundation.Core.Generalization.child>
+          <Foundation.Core.Generalization.parent>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.60"/>
+          </Foundation.Core.Generalization.parent>
+        </Foundation.Core.Generalization>
+        <Foundation.Core.Class xmi.id="xmi.61" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff3">
+          <Foundation.Core.ModelElement.name>Simple</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Classifier.feature>
+            <Foundation.Core.Attribute xmi.id="xmi.62">
+              <Foundation.Core.ModelElement.name>attr1</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.Attribute.initialValue>
+                <Foundation.Data_Types.Expression xmi.id="xmi.63">
+                  <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                </Foundation.Data_Types.Expression>
+              </Foundation.Core.Attribute.initialValue>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.61"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.StructuralFeature.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.64"/>
+              </Foundation.Core.StructuralFeature.type>
+            </Foundation.Core.Attribute>
+            <Foundation.Core.Attribute xmi.id="xmi.65">
+              <Foundation.Core.ModelElement.name>attr2</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.visibility xmi.value="public"/>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.Feature.ownerScope xmi.value="classifier"/>
+              <Foundation.Core.Attribute.initialValue>
+                <Foundation.Data_Types.Expression xmi.id="xmi.66">
+                  <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                </Foundation.Data_Types.Expression>
+              </Foundation.Core.Attribute.initialValue>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.61"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.StructuralFeature.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.67"/>
+              </Foundation.Core.StructuralFeature.type>
+            </Foundation.Core.Attribute>
+            <Foundation.Core.Operation xmi.id="xmi.68">
+              <Foundation.Core.ModelElement.name>Operation</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.visibility xmi.value="public"/>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.BehavioralFeature.isQuery xmi.value="false"/>
+              <Foundation.Core.Operation.isRoot xmi.value="false"/>
+              <Foundation.Core.Operation.isLeaf xmi.value="false"/>
+              <Foundation.Core.Operation.isAbstract xmi.value="false"/>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.61"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.BehavioralFeature.parameter>
+                <Foundation.Core.Parameter xmi.id="xmi.69">
+                  <Foundation.Core.ModelElement.name>return</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.Parameter.defaultValue>
+                    <Foundation.Data_Types.Expression xmi.id="xmi.70">
+                      <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                    </Foundation.Data_Types.Expression>
+                  </Foundation.Core.Parameter.defaultValue>
+                  <Foundation.Core.Parameter.kind xmi.value="return"/>
+                  <Foundation.Core.Parameter.behavioralFeature>
+                    <Foundation.Core.BehavioralFeature xmi.idref="xmi.68"/>
+                  </Foundation.Core.Parameter.behavioralFeature>
+                  <Foundation.Core.Parameter.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.71"/>
+                  </Foundation.Core.Parameter.type>
+                </Foundation.Core.Parameter>
+                <Foundation.Core.Parameter xmi.id="xmi.72">
+                  <Foundation.Core.ModelElement.name>arg1</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.Parameter.defaultValue>
+                    <Foundation.Data_Types.Expression xmi.id="xmi.73">
+                      <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                    </Foundation.Data_Types.Expression>
+                  </Foundation.Core.Parameter.defaultValue>
+                  <Foundation.Core.Parameter.kind xmi.value="inout"/>
+                  <Foundation.Core.Parameter.behavioralFeature>
+                    <Foundation.Core.BehavioralFeature xmi.idref="xmi.68"/>
+                  </Foundation.Core.Parameter.behavioralFeature>
+                  <Foundation.Core.Parameter.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.74"/>
+                  </Foundation.Core.Parameter.type>
+                </Foundation.Core.Parameter>
+              </Foundation.Core.BehavioralFeature.parameter>
+            </Foundation.Core.Operation>
+          </Foundation.Core.Classifier.feature>
+        </Foundation.Core.Class>
+        <Foundation.Core.Association xmi.id="xmi.75" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff2">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Association.connection>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.76">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.aggregation xmi.value="aggregate"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.id="xmi.77">
+                  <Foundation.Data_Types.Multiplicity.range>
+                    <Foundation.Data_Types.MultiplicityRange xmi.id="xmi.78">
+                      <Foundation.Data_Types.MultiplicityRange.lower>0</Foundation.Data_Types.MultiplicityRange.lower>
+                      <Foundation.Data_Types.MultiplicityRange.upper>1</Foundation.Data_Types.MultiplicityRange.upper>
+                    </Foundation.Data_Types.MultiplicityRange>
+                  </Foundation.Data_Types.Multiplicity.range>
+                </Foundation.Data_Types.Multiplicity>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.75"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.61"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.79">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.id="xmi.80">
+                  <Foundation.Data_Types.Multiplicity.range>
+                    <Foundation.Data_Types.MultiplicityRange xmi.id="xmi.81">
+                      <Foundation.Data_Types.MultiplicityRange.lower>1</Foundation.Data_Types.MultiplicityRange.lower>
+                      <Foundation.Data_Types.MultiplicityRange.upper>-1</Foundation.Data_Types.MultiplicityRange.upper>
+                    </Foundation.Data_Types.MultiplicityRange>
+                  </Foundation.Data_Types.Multiplicity.range>
+                </Foundation.Data_Types.Multiplicity>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.75"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.60"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+          </Foundation.Core.Association.connection>
+        </Foundation.Core.Association>
+        <Foundation.Core.Class xmi.id="xmi.82" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff1">
+          <Foundation.Core.ModelElement.name>Model</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.Class.isActive xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Classifier.feature>
+            <Foundation.Core.Attribute xmi.id="xmi.83">
+              <Foundation.Core.ModelElement.name>attr</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.visibility xmi.value="private"/>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.Attribute.initialValue>
+                <Foundation.Data_Types.Expression xmi.id="xmi.84">
+                  <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                </Foundation.Data_Types.Expression>
+              </Foundation.Core.Attribute.initialValue>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.82"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.StructuralFeature.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.85"/>
+              </Foundation.Core.StructuralFeature.type>
+            </Foundation.Core.Attribute>
+            <Foundation.Core.Operation xmi.id="xmi.86">
+              <Foundation.Core.ModelElement.name>Oper1</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.visibility xmi.value="public"/>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.BehavioralFeature.isQuery xmi.value="false"/>
+              <Foundation.Core.Operation.isRoot xmi.value="false"/>
+              <Foundation.Core.Operation.isLeaf xmi.value="false"/>
+              <Foundation.Core.Operation.isAbstract xmi.value="false"/>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.82"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.BehavioralFeature.parameter>
+                <Foundation.Core.Parameter xmi.id="xmi.87">
+                  <Foundation.Core.ModelElement.name>return</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.Parameter.defaultValue>
+                    <Foundation.Data_Types.Expression xmi.id="xmi.88">
+                      <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                    </Foundation.Data_Types.Expression>
+                  </Foundation.Core.Parameter.defaultValue>
+                  <Foundation.Core.Parameter.kind xmi.value="return"/>
+                  <Foundation.Core.Parameter.behavioralFeature>
+                    <Foundation.Core.BehavioralFeature xmi.idref="xmi.86"/>
+                  </Foundation.Core.Parameter.behavioralFeature>
+                  <Foundation.Core.Parameter.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.85"/>
+                  </Foundation.Core.Parameter.type>
+                </Foundation.Core.Parameter>
+              </Foundation.Core.BehavioralFeature.parameter>
+            </Foundation.Core.Operation>
+            <Foundation.Core.Operation xmi.id="xmi.89">
+              <Foundation.Core.ModelElement.name>Oper2</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.visibility xmi.value="private"/>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.Feature.ownerScope xmi.value="classifier"/>
+              <Foundation.Core.BehavioralFeature.isQuery xmi.value="false"/>
+              <Foundation.Core.Operation.concurrency xmi.value="guarded"/>
+              <Foundation.Core.Operation.isRoot xmi.value="false"/>
+              <Foundation.Core.Operation.isLeaf xmi.value="false"/>
+              <Foundation.Core.Operation.isAbstract xmi.value="false"/>
+              <Foundation.Core.Feature.owner>
+                <Foundation.Core.Classifier xmi.idref="xmi.82"/>
+              </Foundation.Core.Feature.owner>
+              <Foundation.Core.BehavioralFeature.parameter>
+                <Foundation.Core.Parameter xmi.id="xmi.90">
+                  <Foundation.Core.ModelElement.name>return</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.Parameter.kind xmi.value="return"/>
+                  <Foundation.Core.Parameter.behavioralFeature>
+                    <Foundation.Core.BehavioralFeature xmi.idref="xmi.89"/>
+                  </Foundation.Core.Parameter.behavioralFeature>
+                  <Foundation.Core.Parameter.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.91"/>
+                  </Foundation.Core.Parameter.type>
+                </Foundation.Core.Parameter>
+                <Foundation.Core.Parameter xmi.id="xmi.92">
+                  <Foundation.Core.ModelElement.name>argument</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.Parameter.defaultValue>
+                    <Foundation.Data_Types.Expression xmi.id="xmi.93">
+                      <Foundation.Data_Types.Expression.language>Java</Foundation.Data_Types.Expression.language>
+                    </Foundation.Data_Types.Expression>
+                  </Foundation.Core.Parameter.defaultValue>
+                  <Foundation.Core.Parameter.kind xmi.value="inout"/>
+                  <Foundation.Core.Parameter.behavioralFeature>
+                    <Foundation.Core.BehavioralFeature xmi.idref="xmi.89"/>
+                  </Foundation.Core.Parameter.behavioralFeature>
+                  <Foundation.Core.Parameter.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.85"/>
+                  </Foundation.Core.Parameter.type>
+                </Foundation.Core.Parameter>
+              </Foundation.Core.BehavioralFeature.parameter>
+            </Foundation.Core.Operation>
+          </Foundation.Core.Classifier.feature>
+        </Foundation.Core.Class>
+        <Foundation.Core.Association xmi.id="xmi.94" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7ff0">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Association.connection>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.95">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.94"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.61"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.96">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.94"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.82"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+          </Foundation.Core.Association.connection>
+        </Foundation.Core.Association>
+        <Foundation.Core.DataType xmi.id="xmi.85">
+          <Foundation.Core.ModelElement.name>int</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Core.DataType>
+        <Foundation.Core.DataType xmi.id="xmi.91">
+          <Foundation.Core.ModelElement.name>void</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Core.DataType>
+        <Model_Management.Package xmi.id="xmi.97">
+          <Foundation.Core.ModelElement.name>java</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Namespace.ownedElement>
+            <Model_Management.Package xmi.id="xmi.98">
+              <Foundation.Core.ModelElement.name>util</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.97"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Namespace.ownedElement>
+                <Foundation.Core.Class xmi.id="xmi.64">
+                  <Foundation.Core.ModelElement.name>Vector</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+                  <Foundation.Core.Class.isActive xmi.value="false"/>
+                  <Foundation.Core.ModelElement.namespace>
+                    <Foundation.Core.Namespace xmi.idref="xmi.98"/>
+                  </Foundation.Core.ModelElement.namespace>
+                </Foundation.Core.Class>
+                <Foundation.Core.Interface xmi.id="xmi.67">
+                  <Foundation.Core.ModelElement.name>Iterator</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+                  <Foundation.Core.ModelElement.namespace>
+                    <Foundation.Core.Namespace xmi.idref="xmi.98"/>
+                  </Foundation.Core.ModelElement.namespace>
+                </Foundation.Core.Interface>
+                <Foundation.Core.Interface xmi.id="xmi.71">
+                  <Foundation.Core.ModelElement.name>Collection</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+                  <Foundation.Core.ModelElement.namespace>
+                    <Foundation.Core.Namespace xmi.idref="xmi.98"/>
+                  </Foundation.Core.ModelElement.namespace>
+                </Foundation.Core.Interface>
+              </Foundation.Core.Namespace.ownedElement>
+            </Model_Management.Package>
+            <Model_Management.Package xmi.id="xmi.99">
+              <Foundation.Core.ModelElement.name>lang</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.97"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Namespace.ownedElement>
+                <Foundation.Core.Class xmi.id="xmi.74">
+                  <Foundation.Core.ModelElement.name>Object</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+                  <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+                  <Foundation.Core.Class.isActive xmi.value="false"/>
+                  <Foundation.Core.ModelElement.namespace>
+                    <Foundation.Core.Namespace xmi.idref="xmi.99"/>
+                  </Foundation.Core.ModelElement.namespace>
+                </Foundation.Core.Class>
+              </Foundation.Core.Namespace.ownedElement>
+            </Model_Management.Package>
+          </Foundation.Core.Namespace.ownedElement>
+        </Model_Management.Package>
+        <Foundation.Core.Comment xmi.id="xmi.59" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fed">
+          <Foundation.Core.ModelElement.name>Yes!</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Comment.annotatedElement>
+            <Foundation.Core.ModelElement xmi.idref="xmi.58"/>
+          </Foundation.Core.Comment.annotatedElement>
+        </Foundation.Core.Comment>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.100">
+          <Foundation.Core.ModelElement.name>singleton</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Classifier</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+            <Foundation.Core.ModelElement xmi.idref="xmi.8"/>
+          </Foundation.Extension_Mechanisms.Stereotype.extendedElement>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Behavioral_Elements.Use_Cases.Actor xmi.id="xmi.101" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe6">
+          <Foundation.Core.ModelElement.name>John Wayne</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Behavioral_Elements.Use_Cases.Actor>
+        <Behavioral_Elements.Use_Cases.UseCase xmi.id="xmi.102" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe5">
+          <Foundation.Core.ModelElement.name>UC1</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.GeneralizableElement.specialization>
+            <Foundation.Core.Generalization xmi.idref="xmi.103"/>
+          </Foundation.Core.GeneralizableElement.specialization>
+          <Behavioral_Elements.Use_Cases.UseCase.extend2>
+            <Behavioral_Elements.Use_Cases.Extend xmi.idref="xmi.104"/>
+          </Behavioral_Elements.Use_Cases.UseCase.extend2>
+        </Behavioral_Elements.Use_Cases.UseCase>
+        <Foundation.Core.Association xmi.id="xmi.105" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe4">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Association.connection>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.106">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.105"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.101"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.107">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.105"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.102"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+          </Foundation.Core.Association.connection>
+        </Foundation.Core.Association>
+        <Behavioral_Elements.Use_Cases.UseCase xmi.id="xmi.108" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe3">
+          <Foundation.Core.ModelElement.name>UC2</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.GeneralizableElement.generalization>
+            <Foundation.Core.Generalization xmi.idref="xmi.103"/>
+          </Foundation.Core.GeneralizableElement.generalization>
+          <Behavioral_Elements.Use_Cases.UseCase.include>
+            <Behavioral_Elements.Use_Cases.Include xmi.idref="xmi.109"/>
+          </Behavioral_Elements.Use_Cases.UseCase.include>
+        </Behavioral_Elements.Use_Cases.UseCase>
+        <Foundation.Core.Generalization xmi.id="xmi.103" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe2">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Generalization.child>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.108"/>
+          </Foundation.Core.Generalization.child>
+          <Foundation.Core.Generalization.parent>
+            <Foundation.Core.GeneralizableElement xmi.idref="xmi.102"/>
+          </Foundation.Core.Generalization.parent>
+        </Foundation.Core.Generalization>
+        <Behavioral_Elements.Use_Cases.UseCase xmi.id="xmi.110" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe1">
+          <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Behavioral_Elements.Use_Cases.UseCase.extend>
+            <Behavioral_Elements.Use_Cases.Extend xmi.idref="xmi.104"/>
+          </Behavioral_Elements.Use_Cases.UseCase.extend>
+          <Behavioral_Elements.Use_Cases.UseCase.include2>
+            <Behavioral_Elements.Use_Cases.Include xmi.idref="xmi.109"/>
+          </Behavioral_Elements.Use_Cases.UseCase.include2>
+          <Behavioral_Elements.Use_Cases.UseCase.extensionPoint>
+            <Behavioral_Elements.Use_Cases.ExtensionPoint xmi.idref="xmi.111"/>
+          </Behavioral_Elements.Use_Cases.UseCase.extensionPoint>
+        </Behavioral_Elements.Use_Cases.UseCase>
+        <Behavioral_Elements.Use_Cases.ExtensionPoint xmi.id="xmi.112">
+          <Foundation.Core.ModelElement.name>newEP</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Behavioral_Elements.Use_Cases.ExtensionPoint.location>loc</Behavioral_Elements.Use_Cases.ExtensionPoint.location>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Behavioral_Elements.Use_Cases.ExtensionPoint>
+        <Behavioral_Elements.Use_Cases.Extend xmi.id="xmi.104" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fe0">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Behavioral_Elements.Use_Cases.Extend.base>
+            <Behavioral_Elements.Use_Cases.UseCase xmi.idref="xmi.102"/>
+          </Behavioral_Elements.Use_Cases.Extend.base>
+          <Behavioral_Elements.Use_Cases.Extend.extension>
+            <Behavioral_Elements.Use_Cases.UseCase xmi.idref="xmi.110"/>
+          </Behavioral_Elements.Use_Cases.Extend.extension>
+        </Behavioral_Elements.Use_Cases.Extend>
+        <Behavioral_Elements.Use_Cases.Include xmi.id="xmi.109" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fdf">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Behavioral_Elements.Use_Cases.Include.addition>
+            <Behavioral_Elements.Use_Cases.UseCase xmi.idref="xmi.108"/>
+          </Behavioral_Elements.Use_Cases.Include.addition>
+          <Behavioral_Elements.Use_Cases.Include.base>
+            <Behavioral_Elements.Use_Cases.UseCase xmi.idref="xmi.110"/>
+          </Behavioral_Elements.Use_Cases.Include.base>
+        </Behavioral_Elements.Use_Cases.Include>
+        <Behavioral_Elements.Use_Cases.Actor xmi.id="xmi.113" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fde">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Behavioral_Elements.Use_Cases.Actor>
+        <Foundation.Core.Association xmi.id="xmi.114" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fdd">
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Association.connection>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.115">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.114"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.113"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+            <Foundation.Core.AssociationEnd xmi.id="xmi.116">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+              <Foundation.Core.AssociationEnd.multiplicity>
+                <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+              </Foundation.Core.AssociationEnd.multiplicity>
+              <Foundation.Core.AssociationEnd.association>
+                <Foundation.Core.Association xmi.idref="xmi.114"/>
+              </Foundation.Core.AssociationEnd.association>
+              <Foundation.Core.AssociationEnd.type>
+                <Foundation.Core.Classifier xmi.idref="xmi.110"/>
+              </Foundation.Core.AssociationEnd.type>
+            </Foundation.Core.AssociationEnd>
+          </Foundation.Core.Association.connection>
+        </Foundation.Core.Association>
+        <Behavioral_Elements.Use_Cases.ExtensionPoint xmi.id="xmi.111">
+          <Foundation.Core.ModelElement.name>A point</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Behavioral_Elements.Use_Cases.ExtensionPoint.location>loc</Behavioral_Elements.Use_Cases.ExtensionPoint.location>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Behavioral_Elements.Use_Cases.ExtensionPoint.useCase>
+            <Behavioral_Elements.Use_Cases.UseCase xmi.idref="xmi.110"/>
+          </Behavioral_Elements.Use_Cases.ExtensionPoint.useCase>
+        </Behavioral_Elements.Use_Cases.ExtensionPoint>
+        <Behavioral_Elements.Collaborations.Collaboration xmi.id="xmi.117" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fbd">
+          <Foundation.Core.ModelElement.name>Collaboration</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+          <Foundation.Core.Namespace.ownedElement>
+            <Behavioral_Elements.Collaborations.ClassifierRole xmi.id="xmi.118" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fbc">
+              <Foundation.Core.ModelElement.name>j1</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Collaborations.ClassifierRole.message2>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.119"/>
+              </Behavioral_Elements.Collaborations.ClassifierRole.message2>
+            </Behavioral_Elements.Collaborations.ClassifierRole>
+            <Behavioral_Elements.Collaborations.ClassifierRole xmi.id="xmi.120" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fbb">
+              <Foundation.Core.ModelElement.name>/j2</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Collaborations.ClassifierRole.message2>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.121"/>
+              </Behavioral_Elements.Collaborations.ClassifierRole.message2>
+              <Behavioral_Elements.Collaborations.ClassifierRole.message1>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.119"/>
+              </Behavioral_Elements.Collaborations.ClassifierRole.message1>
+            </Behavioral_Elements.Collaborations.ClassifierRole>
+            <Behavioral_Elements.Collaborations.AssociationRole xmi.id="xmi.122" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fba">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Collaborations.AssociationRole.message>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.119"/>
+              </Behavioral_Elements.Collaborations.AssociationRole.message>
+              <Foundation.Core.Association.connection>
+                <Behavioral_Elements.Collaborations.AssociationEndRole xmi.id="xmi.123">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.122"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.118"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Behavioral_Elements.Collaborations.AssociationEndRole>
+                <Behavioral_Elements.Collaborations.AssociationEndRole xmi.id="xmi.124">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.122"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.120"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Behavioral_Elements.Collaborations.AssociationEndRole>
+              </Foundation.Core.Association.connection>
+            </Behavioral_Elements.Collaborations.AssociationRole>
+            <Behavioral_Elements.Collaborations.ClassifierRole xmi.id="xmi.125" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb8">
+              <Foundation.Core.ModelElement.name>j3</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Collaborations.ClassifierRole.message1>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.121"/>
+              </Behavioral_Elements.Collaborations.ClassifierRole.message1>
+            </Behavioral_Elements.Collaborations.ClassifierRole>
+            <Behavioral_Elements.Collaborations.AssociationRole xmi.id="xmi.126" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb7">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Collaborations.AssociationRole.message>
+                <Behavioral_Elements.Collaborations.Message xmi.idref="xmi.121"/>
+              </Behavioral_Elements.Collaborations.AssociationRole.message>
+              <Foundation.Core.Association.connection>
+                <Behavioral_Elements.Collaborations.AssociationEndRole xmi.id="xmi.127">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.126"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.120"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Behavioral_Elements.Collaborations.AssociationEndRole>
+                <Behavioral_Elements.Collaborations.AssociationEndRole xmi.id="xmi.128">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.126"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.125"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Behavioral_Elements.Collaborations.AssociationEndRole>
+              </Foundation.Core.Association.connection>
+            </Behavioral_Elements.Collaborations.AssociationRole>
+            <Foundation.Core.Node xmi.id="xmi.129" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb5">
+              <Foundation.Core.ModelElement.name>p1</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+            </Foundation.Core.Node>
+            <Behavioral_Elements.Common_Behavior.NodeInstance xmi.id="xmi.130" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb4">
+              <Foundation.Core.ModelElement.name>p2</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.131"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+            </Behavioral_Elements.Common_Behavior.NodeInstance>
+            <Foundation.Core.Component xmi.id="xmi.132" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb3">
+              <Foundation.Core.ModelElement.name>p3</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+            </Foundation.Core.Component>
+            <Behavioral_Elements.Common_Behavior.ComponentInstance xmi.id="xmi.133" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb2">
+              <Foundation.Core.ModelElement.name>p4</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+            </Behavioral_Elements.Common_Behavior.ComponentInstance>
+            <Foundation.Core.Class xmi.id="xmi.134" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb1">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.Class.isActive xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+            </Foundation.Core.Class>
+            <Foundation.Core.Interface xmi.id="xmi.135" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb0">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.supplierDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.136"/>
+              </Foundation.Core.ModelElement.supplierDependency>
+            </Foundation.Core.Interface>
+            <Foundation.Core.Class xmi.id="xmi.137" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7faf">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.Class.isActive xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.ModelElement.clientDependency>
+                <Foundation.Core.Dependency xmi.idref="xmi.136"/>
+              </Foundation.Core.ModelElement.clientDependency>
+            </Foundation.Core.Class>
+            <Foundation.Core.Dependency xmi.id="xmi.136" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fae">
+              <Foundation.Core.ModelElement.name>hhh</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Dependency.client>
+                <Foundation.Core.ModelElement xmi.idref="xmi.137"/>
+              </Foundation.Core.Dependency.client>
+              <Foundation.Core.Dependency.supplier>
+                <Foundation.Core.ModelElement xmi.idref="xmi.135"/>
+              </Foundation.Core.Dependency.supplier>
+            </Foundation.Core.Dependency>
+            <Behavioral_Elements.Common_Behavior.NodeInstance xmi.id="xmi.138" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fad">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.139"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+            </Behavioral_Elements.Common_Behavior.NodeInstance>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.140" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fac">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.139">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.138"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.140"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.131">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.130"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.140"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Foundation.Core.Node xmi.id="xmi.141" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fab">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+            </Foundation.Core.Node>
+            <Foundation.Core.Association xmi.id="xmi.142" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7faa">
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+              <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Foundation.Core.Association.connection>
+                <Foundation.Core.AssociationEnd xmi.id="xmi.143">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+                  <Foundation.Core.AssociationEnd.multiplicity>
+                    <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+                  </Foundation.Core.AssociationEnd.multiplicity>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.142"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.141"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Foundation.Core.AssociationEnd>
+                <Foundation.Core.AssociationEnd xmi.id="xmi.144">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Foundation.Core.AssociationEnd.isNavigable xmi.value="true"/>
+                  <Foundation.Core.AssociationEnd.multiplicity>
+                    <Foundation.Data_Types.Multiplicity xmi.idref="xmi.55"/>
+                  </Foundation.Core.AssociationEnd.multiplicity>
+                  <Foundation.Core.AssociationEnd.association>
+                    <Foundation.Core.Association xmi.idref="xmi.142"/>
+                  </Foundation.Core.AssociationEnd.association>
+                  <Foundation.Core.AssociationEnd.type>
+                    <Foundation.Core.Classifier xmi.idref="xmi.129"/>
+                  </Foundation.Core.AssociationEnd.type>
+                </Foundation.Core.AssociationEnd>
+              </Foundation.Core.Association.connection>
+            </Foundation.Core.Association>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.145" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa9">
+              <Foundation.Core.ModelElement.name>o1</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.146"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.147"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.148" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa8">
+              <Foundation.Core.ModelElement.name>o2</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.149"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.150"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.151"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.152"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.153"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.154"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.155"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.156"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.157"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.158"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.159"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.160"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.161"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.162"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.147"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.163"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.164"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.165"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.166" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa7">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.147"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.146">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.145"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.166"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.149">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.166"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.147" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa6">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.145"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.166"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.167"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.167">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.147"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.CallAction>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.168" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa5">
+              <Foundation.Core.ModelElement.name>o3</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.classifier>
+                <Foundation.Core.Classifier xmi.idref="xmi.82"/>
+              </Behavioral_Elements.Common_Behavior.Instance.classifier>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.169"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.170"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.171"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.163"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.158"/>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.160"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.172" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa4">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.158"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.150">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.172"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.169">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.172"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.158" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa3">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.172"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.173"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.173">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.158"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.CallAction>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.174" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa2">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.163"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.170">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.174"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.151">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.174"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.163" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa1">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.174"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.175"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.ReturnAction xmi.id="xmi.175">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="true"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.163"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.ReturnAction>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.176" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fa0">
+              <Foundation.Core.ModelElement.name>o4</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.177"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.178"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.164"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.159"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.179" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9f">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.159"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.152">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.179"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.177">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.176"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.179"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.159" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9e">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.176"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.179"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.180"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.180">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.159"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.CallAction>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.181" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9d">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.164"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.178">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.176"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.181"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.153">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.181"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.164" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9c">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.176"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.181"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.182"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.ReturnAction xmi.id="xmi.182">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="true"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.164"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.ReturnAction>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.183" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9b">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.160"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.154">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.183"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.171">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.183"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.160" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f9a">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.168"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.183"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.184"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.DestroyAction xmi.id="xmi.184">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.160"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.DestroyAction>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.185" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f99">
+              <Foundation.Core.ModelElement.name>o5</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.186"/>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.187"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.165"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus3>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.161"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.188" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f98">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.161"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.155">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.188"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.186">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.185"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.188"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.161" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f97">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.185"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.188"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.189"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.CreateAction xmi.id="xmi.189">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.161"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.CreateAction>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.190" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f96">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.165"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.187">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.185"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.190"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.156">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.190"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.165" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f95">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.185"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.190"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.191"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.ReturnAction xmi.id="xmi.191">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="true"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.165"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.ReturnAction>
+            <Behavioral_Elements.Common_Behavior.Object xmi.id="xmi.192" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f93">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.idref="xmi.193"/>
+              </Behavioral_Elements.Common_Behavior.Instance.linkEnd>
+              <Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.162"/>
+              </Behavioral_Elements.Common_Behavior.Instance.stimulus2>
+            </Behavioral_Elements.Common_Behavior.Object>
+            <Behavioral_Elements.Common_Behavior.Link xmi.id="xmi.194" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f92">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Link.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.162"/>
+              </Behavioral_Elements.Common_Behavior.Link.stimulus>
+              <Behavioral_Elements.Common_Behavior.Link.connection>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.157">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.194"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+                <Behavioral_Elements.Common_Behavior.LinkEnd xmi.id="xmi.193">
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                    <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.192"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.instance>
+                  <Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                    <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.194"/>
+                  </Behavioral_Elements.Common_Behavior.LinkEnd.link>
+                </Behavioral_Elements.Common_Behavior.LinkEnd>
+              </Behavioral_Elements.Common_Behavior.Link.connection>
+            </Behavioral_Elements.Common_Behavior.Link>
+            <Behavioral_Elements.Common_Behavior.Stimulus xmi.id="xmi.162" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7f91">
+              <Foundation.Core.ModelElement.name></Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Stimulus.sender>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.148"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.sender>
+              <Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+                <Behavioral_Elements.Common_Behavior.Instance xmi.idref="xmi.192"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.receiver>
+              <Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+                <Behavioral_Elements.Common_Behavior.Link xmi.idref="xmi.194"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.communicationLink>
+              <Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+                <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.195"/>
+              </Behavioral_Elements.Common_Behavior.Stimulus.dispatchAction>
+            </Behavioral_Elements.Common_Behavior.Stimulus>
+            <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.195">
+              <Foundation.Core.ModelElement.name>new action</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+              <Foundation.Core.ModelElement.namespace>
+                <Foundation.Core.Namespace xmi.idref="xmi.117"/>
+              </Foundation.Core.ModelElement.namespace>
+              <Behavioral_Elements.Common_Behavior.Action.stimulus>
+                <Behavioral_Elements.Common_Behavior.Stimulus xmi.idref="xmi.162"/>
+              </Behavioral_Elements.Common_Behavior.Action.stimulus>
+            </Behavioral_Elements.Common_Behavior.CallAction>
+          </Foundation.Core.Namespace.ownedElement>
+          <Behavioral_Elements.Collaborations.Collaboration.interaction>
+            <Behavioral_Elements.Collaborations.Interaction xmi.id="xmi.196">
+              <Foundation.Core.ModelElement.name>default Interaction</Foundation.Core.ModelElement.name>
+              <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+              <Behavioral_Elements.Collaborations.Interaction.context>
+                <Behavioral_Elements.Collaborations.Collaboration xmi.idref="xmi.117"/>
+              </Behavioral_Elements.Collaborations.Interaction.context>
+              <Behavioral_Elements.Collaborations.Interaction.message>
+                <Behavioral_Elements.Collaborations.Message xmi.id="xmi.119" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb9">
+                  <Foundation.Core.ModelElement.name>1 happening first</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Collaborations.Message.interaction>
+                    <Behavioral_Elements.Collaborations.Interaction xmi.idref="xmi.196"/>
+                  </Behavioral_Elements.Collaborations.Message.interaction>
+                  <Behavioral_Elements.Collaborations.Message.sender>
+                    <Behavioral_Elements.Collaborations.ClassifierRole xmi.idref="xmi.118"/>
+                  </Behavioral_Elements.Collaborations.Message.sender>
+                  <Behavioral_Elements.Collaborations.Message.receiver>
+                    <Behavioral_Elements.Collaborations.ClassifierRole xmi.idref="xmi.120"/>
+                  </Behavioral_Elements.Collaborations.Message.receiver>
+                  <Behavioral_Elements.Collaborations.Message.communicationConnection>
+                    <Behavioral_Elements.Collaborations.AssociationRole xmi.idref="xmi.122"/>
+                  </Behavioral_Elements.Collaborations.Message.communicationConnection>
+                  <Behavioral_Elements.Collaborations.Message.action>
+                    <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.197"/>
+                  </Behavioral_Elements.Collaborations.Message.action>
+                </Behavioral_Elements.Collaborations.Message>
+                <Behavioral_Elements.Collaborations.Message xmi.id="xmi.121" xmi.uuid="127-0-0-1-73a5d3:eef59cabcb:-7fb6">
+                  <Foundation.Core.ModelElement.name>2 happending then</Foundation.Core.ModelElement.name>
+                  <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+                  <Behavioral_Elements.Collaborations.Message.interaction>
+                    <Behavioral_Elements.Collaborations.Interaction xmi.idref="xmi.196"/>
+                  </Behavioral_Elements.Collaborations.Message.interaction>
+                  <Behavioral_Elements.Collaborations.Message.sender>
+                    <Behavioral_Elements.Collaborations.ClassifierRole xmi.idref="xmi.120"/>
+                  </Behavioral_Elements.Collaborations.Message.sender>
+                  <Behavioral_Elements.Collaborations.Message.receiver>
+                    <Behavioral_Elements.Collaborations.ClassifierRole xmi.idref="xmi.125"/>
+                  </Behavioral_Elements.Collaborations.Message.receiver>
+                  <Behavioral_Elements.Collaborations.Message.communicationConnection>
+                    <Behavioral_Elements.Collaborations.AssociationRole xmi.idref="xmi.126"/>
+                  </Behavioral_Elements.Collaborations.Message.communicationConnection>
+                  <Behavioral_Elements.Collaborations.Message.action>
+                    <Behavioral_Elements.Common_Behavior.Action xmi.idref="xmi.198"/>
+                  </Behavioral_Elements.Collaborations.Message.action>
+                </Behavioral_Elements.Collaborations.Message>
+              </Behavioral_Elements.Collaborations.Interaction.message>
+            </Behavioral_Elements.Collaborations.Interaction>
+          </Behavioral_Elements.Collaborations.Collaboration.interaction>
+        </Behavioral_Elements.Collaborations.Collaboration>
+        <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.197">
+          <Foundation.Core.ModelElement.name>action1</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Behavioral_Elements.Common_Behavior.CallAction>
+        <Behavioral_Elements.Common_Behavior.CallAction xmi.id="xmi.198">
+          <Foundation.Core.ModelElement.name>action2</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Behavioral_Elements.Common_Behavior.Action.isAsynchronous xmi.value="false"/>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Behavioral_Elements.Common_Behavior.CallAction>
+      </Foundation.Core.Namespace.ownedElement>
+    </Model_Management.Model>
+  </XMI.content>
+</XMI>
