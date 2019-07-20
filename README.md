@@ -12,9 +12,9 @@ Started in January 1998. Converted to Subversion in 2006. Converted to git in 20
 
 ## Contributing
 
-Short summary on how to contribute to the project using github:
+Short summary on how to contribute to the project using github and gerrithub:
 
-* One pull request per issue or per change;
-* Pull requests towards the master branch;
-* No merge commits;
-* Clean up "fix" commits before creating the pull request;
+* Push changes towards master to gerrithub.
+* One change per issue.
+* Code clean-up in separate changes (gerrithub will make each commit into a change).
+* Use repo, see <http://argouml.tigris.org/wiki/Working_with_git%2C_github%2C_gerrit%2C_gerrithub_and_repo>
