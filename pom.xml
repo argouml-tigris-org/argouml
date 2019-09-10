@@ -12,7 +12,7 @@
     <groupId>org.argouml</groupId>
     <artifactId>parentpom</artifactId>
     <version>0.35.5-SNAPSHOT</version>
-    <relativePath>tools/maven/parentpom.xml</relativePath>
+    <relativePath>../parentpom/pom.xml</relativePath>
   </parent>
 
   <artifactId>argouml-core</artifactId>
