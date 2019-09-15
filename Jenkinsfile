@@ -20,7 +20,7 @@ pipeline {
   agent {
       docker {
         image 'maven:3-ibmjava-8'
-        args '-v maven-repo:/.m2'
+        args '-v maven-repo:/.m2 -v maven-repo:/root/.m2'
       }
   }
   environment {
@@ -29,25 +29,29 @@ pipeline {
   stages {
     stage('compile') {
       steps {
-        gerritReview labels: [:], message: """Build starts.
+        gerritReview labels: [Verified:0], message: """Build starts.
 
 Build has two steps:
 1. Compile (corresponding to mvn compile).
 2. Run tests (corresponding to mvn test).
 
 If these are all successful, it is scored as Verified."""
-        withMaven() {
-          sh 'mvn -B compile'
+        timeout(time:1, unit: 'HOURS') {
+          withMaven() {
+            sh 'mvn -B compile'
+          }
         }
-        gerritReview labels: [:], message: "Compile done."
+        gerritReview labels: [:], message: "Compiled without error."
       }
     }
     stage('test') {
       steps {
-        withMaven() {
-          sh 'mvn -B test'
+        timeout(time:1, unit: 'HOURS') {
+          withMaven() {
+            sh 'mvn -B test'
+          }
         }
-        gerritReview labels: [:], message: "Run tests done."
+        gerritReview labels: [:], message: "Tests run without error."
       }
     }
   }
