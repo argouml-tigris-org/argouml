@@ -16,6 +16,24 @@
       "revId": "72d9ef6878813ec506f53ab9f208dc8f2be985f9",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfd41889_9b867fe3",
+        "filename": "tools/maven/parentpom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2019-09-28T08:30:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0aa8e13_cabd6556",
+      "revId": "72d9ef6878813ec506f53ab9f208dc8f2be985f9",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
