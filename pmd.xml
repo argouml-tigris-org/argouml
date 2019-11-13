@@ -1,163 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2019-11-13T00:33:43.908">
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ActivityGraphsHelperMDRImpl.java">
-<violation beginline="134" endline="136" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ActivityGraphsHelperMDRImpl" method="findStateByName" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreFactoryMDRImpl.java">
-<violation beginline="2065" endline="2067" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreFactoryMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'source'.
-</violation>
-<violation beginline="2065" endline="2067" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreFactoryMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'target'.
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java">
-<violation beginline="1460" endline="1462" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="isValidNamespace" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="1469" endline="1471" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="isValidNamespace" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="1512" endline="1537" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'gen'.
-</violation>
-<violation beginline="1512" endline="1537" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'ns'.
-</violation>
-<violation beginline="1539" endline="1554" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'ns'.
-</violation>
-<violation beginline="1885" endline="1905" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="internalGetAllRealizedInterfaces" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2069" endline="2073" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="removeQualifier" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2129" endline="2132" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="removeTemplateArgument" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2145" endline="2149" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="removeTemplateParameter" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2434" endline="2438" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="addQualifier" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2521" endline="2525" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="addTemplateArgument" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2546" endline="2550" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="addTemplateParameter" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2559" endline="2563" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="addTemplateParameter" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-<violation beginline="2623" endline="2623" begincolumn="9" endcolumn="15" rule="UnnecessaryReturn" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="setAggregation" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UnnecessaryReturn" priority="3">
-Avoid unnecessary return statements
-</violation>
-<violation beginline="2670" endline="2674" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="setAssociation" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/DataTypesHelperMDRImpl.java">
-<violation beginline="65" endline="65" begincolumn="36" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="DataTypesHelperMDRImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+<pmd version="4.3" timestamp="2019-11-13T00:59:43.830">
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/ActivityGraphsHelperEUMLImpl.java">
+<violation beginline="26" endline="26" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="ActivityGraphsHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ExtensionMechanismsHelperMDRImpl.java">
-<violation beginline="76" endline="76" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="ExtensionMechanismsHelperMDRImpl" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'LOG'.
-</violation>
-<violation beginline="491" endline="494" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ExtensionMechanismsHelperMDRImpl" method="setType" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/FacadeMDRImpl.java">
-<violation beginline="4718" endline="4718" begincolumn="30" endcolumn="38" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="FacadeMDRImpl" method="getProxy" variable="metaTypes" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
-Avoid unused local variables such as 'metaTypes'.
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/KindsMDRImpl.java">
-<violation beginline="67" endline="67" begincolumn="36" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="KindsMDRImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/CollaborationsHelperEUMLImpl.java">
+<violation beginline="28" endline="28" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CollaborationsHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/MDRModelImplementation.java">
-<violation beginline="325" endline="329" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="MDRModelImplementation" method="deleteExtentUnchecked" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorFactoryEUMLImpl.java">
+<violation beginline="29" endline="29" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CommonBehaviorFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
 </violation>
-<violation beginline="332" endline="336" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="MDRModelImplementation" method="deleteExtentUnchecked" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorHelperEUMLImpl.java">
+<violation beginline="28" endline="28" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CommonBehaviorHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/CoreFactoryEUMLImpl.java">
+<violation beginline="276" endline="350" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CoreFactoryEUMLImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
+Avoid unused method parameters such as 'scope'.
+</violation>
+<violation beginline="394" endline="396" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.euml" class="CoreFactoryEUMLImpl" method="buildAssociationEndInternal" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ModelEventPumpMDRImpl.java">
-<violation beginline="118" endline="118" begincolumn="39" endcolumn="56" rule="BooleanInstantiation" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#BooleanInstantiation" priority="2">
-Avoid instantiating Boolean objects; reference Boolean.TRUE or Boolean.FALSE or call Boolean.valueOf() instead.
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesFactoryEUMLImpl.java">
+<violation beginline="32" endline="32" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="DataTypesFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
 </violation>
-<violation beginline="420" endline="428" begincolumn="55" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" method="plannedChange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="135" endline="135" begincolumn="24" endcolumn="46" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="DataTypesFactoryEUMLImpl" method="stringToBound" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
+Avoid unused private methods such as 'stringToBound(String)'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesHelperEUMLImpl.java">
+<violation beginline="43" endline="43" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="DataTypesHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
+</violation>
+<violation beginline="258" endline="260" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="DataTypesHelperEUMLImpl" method="modifyValueSpecification" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="512" endline="512" begincolumn="21" endcolumn="25" rule="UnconditionalIfStatement" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" method="fire" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UnconditionalIfStatement" priority="3">
-Do not use if statements that are always true or always false
-</violation>
-<violation beginline="521" endline="521" begincolumn="17" endcolumn="21" rule="UnconditionalIfStatement" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" method="fire" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UnconditionalIfStatement" priority="3">
-Do not use if statements that are always true or always false
-</violation>
-<violation beginline="861" endline="865" begincolumn="21" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" method="mapPropertyName" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="307" endline="309" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="DataTypesHelperEUMLImpl" method="getValueSpecificationValues" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="875" endline="879" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'className'.
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/EUMLModelImplementation.java">
+<violation beginline="155" endline="155" begincolumn="30" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="EUMLModelImplementation" variable="theCommandStack" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'theCommandStack'.
 </violation>
-<violation beginline="1088" endline="1092" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="Registry" method="lookupRemoveItem" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/FacadeEUMLImpl.java">
+<violation beginline="325" endline="336" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.euml" class="FacadeEUMLImpl" method="getBody" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UmlFactoryMDRImpl.java">
-<violation beginline="1103" endline="1105" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="UmlFactoryMDRImpl" method="isConnectionWellformed" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/MetaTypesEUMLImpl.java">
+<violation beginline="125" endline="125" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="MetaTypesEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelEventPumpEUMLImpl.java">
+<violation beginline="113" endline="113" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="ModelEventPumpEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelManagementHelperEUMLImpl.java">
+<violation beginline="63" endline="65" begincolumn="47" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="ModelManagementHelperEUMLImpl" method="getAllContents" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+Avoid empty if statements
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesFactoryEUMLImpl.java">
+<violation beginline="36" endline="36" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="StateMachinesFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'modelImpl'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesHelperEUMLImpl.java">
+<violation beginline="268" endline="272" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="StateMachinesHelperEUMLImpl" method="setContainer" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+Avoid empty if statements
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/UmlFactoryEUMLImpl.java">
+<violation beginline="558" endline="560" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.euml" class="UmlFactoryEUMLImpl" method="isConnectionWellformed" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UseCasesHelperMDRImpl.java">
-<violation beginline="354" endline="358" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="UseCasesHelperMDRImpl" method="addExtensionPoint" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReaderImpl.java">
-<violation beginline="306" endline="309" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReaderImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiReaderEUMLImpl.java">
+<violation beginline="127" endline="129" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.euml" class="XmiReaderEUMLImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
-<violation beginline="366" endline="368" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReaderImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+<violation beginline="129" endline="131" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.euml" class="XmiReaderEUMLImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
-<violation beginline="376" endline="394" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiReaderImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
-Avoid unused method parameters such as 'systemId'.
-</violation>
-<violation beginline="491" endline="491" begincolumn="25" endcolumn="76" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiReaderImpl" method="chainedTransform" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
-Avoid unused private methods such as 'chainedTransform(String,InputSource)'.
+<violation beginline="195" endline="195" begincolumn="21" endcolumn="38" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="XmiReaderEUMLImpl" method="isUML2" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
+Avoid unused private methods such as 'isUML2(Resource)'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReferenceResolverImpl.java">
-<violation beginline="432" endline="434" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="toURL" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="557" endline="574" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="findModelUrlOnClasspath" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
-These nested if statements could be combined
-</violation>
-</file>
-<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiWriterMDRImpl.java">
-<violation beginline="72" endline="72" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiWriterMDRImpl" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'LOG'.
-</violation>
-<violation beginline="81" endline="81" begincolumn="20" endcolumn="25" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiWriterMDRImpl" variable="writer" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'writer'.
-</violation>
-<violation beginline="89" endline="89" begincolumn="32" endcolumn="49" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiWriterMDRImpl" variable="xmiExtensionWriter" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'xmiExtensionWriter'.
-</violation>
-<violation beginline="91" endline="91" begincolumn="33" endcolumn="38" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiWriterMDRImpl" variable="TARGET" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
-Avoid unused private fields such as 'TARGET'.
+<file name="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiWriterEUMLImpl.java">
+<violation beginline="55" endline="71" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="XmiWriterEUMLImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
+Avoid unused constructor parameters such as 'version'.
 </violation>
 </file>
 </pmd>
