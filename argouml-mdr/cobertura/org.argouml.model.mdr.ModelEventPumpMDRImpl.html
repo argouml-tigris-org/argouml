@@ -230,26 +230,26 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Logger.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;106</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;13</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        Logger.getLogger(ModelEventPumpMDRImpl.<span class="keyword">class</span>.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;107</td>  <td class="nbHitsCovered">&nbsp;14</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;108</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        Logger.getLogger(ModelEventPumpMDRImpl.<span class="keyword">class</span>.getName());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;109</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;3</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> VETO_READONLY_CHANGES = <span class="keyword">true</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;110</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">boolean</span> VETO_READONLY_CHANGES = <span class="keyword">true</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;111</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;112</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> MDRModelImplementation modelImpl;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;113</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;114</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Object registrationMutex = <span class="keyword">new</span> Byte[0];</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;114</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Object registrationMutex = <span class="keyword">new</span> Byte[0];</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;115</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> MDRepository repository;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;117</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;118</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Boolean eventCountMutex = <span class="keyword">new</span> Boolean(<span class="keyword">false</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;119</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">int</span> pendingEvents = 0;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;118</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Boolean eventCountMutex = <span class="keyword">new</span> Boolean(<span class="keyword">false</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;119</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">int</span> pendingEvents = 0;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;121</td>  <td class="nbHits">&nbsp;</td>
@@ -262,8 +262,8 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Map of Element/attribute tuples and the listeners they have registered.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;125</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Registry&lt;PropertyChangeListener&gt; elements =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;127</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">new</span> Registry&lt;PropertyChangeListener&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;126</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Registry&lt;PropertyChangeListener&gt; elements =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;127</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">new</span> Registry&lt;PropertyChangeListener&gt;();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;128</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;129</td>  <td class="nbHits">&nbsp;</td>
@@ -272,8 +272,8 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Map of Class/attribute tuples and the listeners they have registered.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;131</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Registry&lt;PropertyChangeListener&gt; listenedClasses =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;133</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">new</span> Registry&lt;PropertyChangeListener&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;132</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Registry&lt;PropertyChangeListener&gt; listenedClasses =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;133</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">new</span> Registry&lt;PropertyChangeListener&gt;();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;134</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;135</td>  <td class="nbHits">&nbsp;</td>
@@ -330,12 +330,12 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ModelEventPumpMDRImpl(MDRModelImplementation implementation,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            MDRepository repo) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">super</span>();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;164</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        modelImpl = implementation;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;165</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        repository = repo;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        subtypeMap = buildTypeMap(modelImpl.getModelPackage());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        propertyNameMap = buildPropertyNameMap(modelImpl.getModelPackage());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;163</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">super</span>();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;164</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        modelImpl = implementation;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;165</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        repository = repo;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;166</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        subtypeMap = buildTypeMap(modelImpl.getModelPackage());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;167</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        propertyNameMap = buildPropertyNameMap(modelImpl.getModelPackage());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;168</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;169</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;170</td>  <td class="nbHits">&nbsp;</td>
@@ -538,8 +538,8 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> change(MDRChangeEvent mdrEvent) {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsCovered"><a title="Line 282: Conditional coverage 100 % (2/2).">&nbsp;11645</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 282: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (eventThread == <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;283</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;            eventThread = Thread.currentThread();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;282</td>  <td class="nbHitsCovered"><a title="Line 282: Conditional coverage 100 % (2/2).">&nbsp;13486</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 282: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (eventThread == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;283</td>  <td class="nbHitsCovered">&nbsp;32</td>  <td class="src"><pre class="src">&nbsp;            eventThread = Thread.currentThread();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;284</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
@@ -548,29 +548,29 @@
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// TODO: This should be done after all events are delivered, but leave</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;287</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// it here for now to avoid last minute synchronization problems</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsCovered">&nbsp;11645</td>  <td class="src"><pre class="src">&nbsp;        decrementEvents();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsCovered">&nbsp;13486</td>  <td class="src"><pre class="src">&nbsp;        decrementEvents();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;289</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;290</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Quick exit if it's a transaction event</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;291</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// (we get a lot of them and they are all ignored)</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered"><a title="Line 292: Conditional coverage 100 % (2/2).">&nbsp;11645</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 292: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> TransactionEvent) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsCovered">&nbsp;568</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsCovered"><a title="Line 292: Conditional coverage 100 % (2/2).">&nbsp;13486</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 292: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> TransactionEvent) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsCovered">&nbsp;649</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;294</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;295</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;296</td>  <td class="nbHitsCovered">&nbsp;11078</td>  <td class="src"><pre class="src">&nbsp;        List&lt;UmlChangeEvent&gt; events = <span class="keyword">new</span> ArrayList&lt;UmlChangeEvent&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;296</td>  <td class="nbHitsCovered">&nbsp;12838</td>  <td class="src"><pre class="src">&nbsp;        List&lt;UmlChangeEvent&gt; events = <span class="keyword">new</span> ArrayList&lt;UmlChangeEvent&gt;();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered"><a title="Line 298: Conditional coverage 100 % (2/2).">&nbsp;11080</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 298: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> AttributeEvent) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;            AttributeEvent ae = (AttributeEvent) mdrEvent;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;112</td>  <td class="src"><pre class="src">&nbsp;            events.add(<span class="keyword">new</span> AttributeChangeEvent(ae.getSource(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;                    ae.getAttributeName(), ae.getOldElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;                    ae.getNewElement(), mdrEvent));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;303</td>  <td class="nbHitsCovered"><a title="Line 303: Conditional coverage 100 % (2/2).">&nbsp;56</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 303: Conditional coverage 100 % (2/2).">        } <span class="keyword">else</span> <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> InstanceEvent</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsUncovered"><a title="Line 304: Conditional coverage 50 % (1/2).">&nbsp;5256</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 304: Conditional coverage 50 % (1/2).">                &amp;&amp; mdrEvent.isOfType(InstanceEvent.EVENT_INSTANCE_DELETE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;298</td>  <td class="nbHitsCovered"><a title="Line 298: Conditional coverage 100 % (2/2).">&nbsp;12840</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 298: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> AttributeEvent) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;299</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;            AttributeEvent ae = (AttributeEvent) mdrEvent;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;300</td>  <td class="nbHitsCovered">&nbsp;126</td>  <td class="src"><pre class="src">&nbsp;            events.add(<span class="keyword">new</span> AttributeChangeEvent(ae.getSource(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;301</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;                    ae.getAttributeName(), ae.getOldElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;302</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;                    ae.getNewElement(), mdrEvent));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;303</td>  <td class="nbHitsCovered"><a title="Line 303: Conditional coverage 100 % (2/2).">&nbsp;63</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 303: Conditional coverage 100 % (2/2).">        } <span class="keyword">else</span> <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> InstanceEvent</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;304</td>  <td class="nbHitsUncovered"><a title="Line 304: Conditional coverage 50 % (1/2).">&nbsp;6058</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 304: Conditional coverage 50 % (1/2).">                &amp;&amp; mdrEvent.isOfType(InstanceEvent.EVENT_INSTANCE_DELETE)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;305</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            InstanceEvent ie = (InstanceEvent) mdrEvent;</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;306</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            events.add(<span class="keyword">new</span> DeleteInstanceEvent(ie.getSource(),</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;307</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="string">"remove"</span>, <span class="keyword">null</span>, <span class="keyword">null</span>, mdrEvent));</span></pre></td></tr>
@@ -579,41 +579,41 @@
 <tr>  <td class="numLineCover">&nbsp;309</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            String mofid = ((InstanceEvent)mdrEvent).getInstance().refMofId();</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;310</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            modelImpl.removeElement(mofid);</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;311</td>  <td class="nbHitsUncovered"><a title="Line 311: Conditional coverage 100 % (2/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 311: Conditional coverage 100 % (2/2).">        } <span class="keyword">else</span> <span class="keyword">if</span> (mdrEvent <span class="keyword">instanceof</span> AssociationEvent) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;5578</td>  <td class="src"><pre class="src">&nbsp;            AssociationEvent ae = (AssociationEvent) mdrEvent;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;313</td>  <td class="nbHitsCovered"><a title="Line 313: Conditional coverage 100 % (2/2).">&nbsp;5578</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 313: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;314</td>  <td class="nbHitsCovered">&nbsp;11084</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;315</td>  <td class="nbHitsCovered">&nbsp;5542</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;316</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        mapPropertyName(ae.getEndName()),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;317</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;318</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;319</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;320</td>  <td class="nbHitsCovered">&nbsp;2836</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;312</td>  <td class="nbHitsCovered">&nbsp;6503</td>  <td class="src"><pre class="src">&nbsp;            AssociationEvent ae = (AssociationEvent) mdrEvent;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;313</td>  <td class="nbHitsCovered"><a title="Line 313: Conditional coverage 100 % (2/2).">&nbsp;6503</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 313: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;314</td>  <td class="nbHitsCovered">&nbsp;12934</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;315</td>  <td class="nbHitsCovered">&nbsp;6467</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;316</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        mapPropertyName(ae.getEndName()),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;317</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;318</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;319</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;320</td>  <td class="nbHitsCovered">&nbsp;3761</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;321</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// Create a change event for the corresponding property</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;322</td>  <td class="nbHitsCovered">&nbsp;11086</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;323</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;324</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        mapPropertyName(ae.getEndName()),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;325</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;326</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;327</td>  <td class="nbHitsCovered">&nbsp;2836</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;322</td>  <td class="nbHitsCovered">&nbsp;12936</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;323</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;324</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        mapPropertyName(ae.getEndName()),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;325</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;326</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;327</td>  <td class="nbHitsCovered">&nbsp;3761</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;328</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// Create an event for the other end of the association</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;5612</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;330</td>  <td class="nbHitsCovered">&nbsp;5543</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;5714</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;334</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;335</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;6544</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;330</td>  <td class="nbHitsCovered">&nbsp;6468</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;6639</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;334</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;335</td>  <td class="nbHitsCovered">&nbsp;35</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;336</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// and a change event for that end</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;337</td>  <td class="nbHitsCovered">&nbsp;135</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;66</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;341</td>  <td class="nbHitsCovered">&nbsp;66</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;342</td>  <td class="nbHitsCovered">&nbsp;27</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;343</td>  <td class="nbHitsUncovered"><a title="Line 343: Conditional coverage 50 % (1/2).">&nbsp;27</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 343: Conditional coverage 50 % (1/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;337</td>  <td class="nbHitsCovered">&nbsp;149</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;73</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;341</td>  <td class="nbHitsCovered">&nbsp;73</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;342</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;343</td>  <td class="nbHitsUncovered"><a title="Line 343: Conditional coverage 50 % (1/2).">&nbsp;34</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 343: Conditional coverage 50 % (1/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;344</td>  <td class="nbHitsCovered">&nbsp;72</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> RemoveAssociationEvent(</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;345</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(),</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;346</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                        mapPropertyName(ae.getEndName()),</pre></td></tr>
@@ -653,33 +653,33 @@
 <tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;39</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;5584</td>  <td class="src"><pre class="src">&nbsp;            String name = mdrEvent.getClass().getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;6412</td>  <td class="src"><pre class="src">&nbsp;            String name = mdrEvent.getClass().getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Cut down on debugging noise</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;381</td>  <td class="nbHitsCovered"><a title="Line 381: Conditional coverage 100 % (2/2).">&nbsp;5586</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 381: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (!name.endsWith(<span class="string">"CreateInstanceEvent"</span>)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;198</td>  <td class="src"><pre class="src">&nbsp;                LOG.log(Level.FINE, <span class="string">"Ignoring MDR event "</span> + mdrEvent);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;381</td>  <td class="nbHitsCovered"><a title="Line 381: Conditional coverage 100 % (2/2).">&nbsp;6414</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 381: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (!name.endsWith(<span class="string">"CreateInstanceEvent"</span>)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;382</td>  <td class="nbHitsCovered">&nbsp;224</td>  <td class="src"><pre class="src">&nbsp;                LOG.log(Level.FINE, <span class="string">"Ignoring MDR event "</span> + mdrEvent);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;383</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;384</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered"><a title="Line 386: Conditional coverage 100 % (2/2).">&nbsp;8621</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 386: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (UmlChangeEvent event : events) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;387</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;            fire(event);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered"><a title="Line 386: Conditional coverage 100 % (2/2).">&nbsp;10340</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 386: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (UmlChangeEvent event : events) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;387</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;            fire(event);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Unregister deleted instances after all events have been delivered</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;389</td>  <td class="nbHitsUncovered"><a title="Line 389: Conditional coverage 50 % (1/2).">&nbsp;320</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 389: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (event <span class="keyword">instanceof</span> DeleteInstanceEvent) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;389</td>  <td class="nbHitsUncovered"><a title="Line 389: Conditional coverage 50 % (1/2).">&nbsp;355</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 389: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (event <span class="keyword">instanceof</span> DeleteInstanceEvent) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                elements.unregister(<span class="keyword">null</span>, ((RefBaseObject) event.getSource())</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;391</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        .refMofId(), <span class="keyword">null</span>);</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;392</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;393</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;394</td>  <td class="nbHitsCovered">&nbsp;5708</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;394</td>  <td class="nbHitsCovered">&nbsp;6550</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> isReadOnly(RefBaseObject object) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;397</td>  <td class="nbHitsCovered">&nbsp;125665</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.isReadOnly(object.refOutermostPackage());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;397</td>  <td class="nbHitsCovered">&nbsp;143211</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.isReadOnly(object.refOutermostPackage());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;398</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;399</td>  <td class="nbHits">&nbsp;</td>
@@ -698,11 +698,11 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;406</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">if</span> (VETO_READONLY_CHANGES) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered"><a title="Line 407: Conditional coverage 100 % (2/2).">&nbsp;268335</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 407: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (e <span class="keyword">instanceof</span> InstanceEvent) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsUncovered"><a title="Line 408: Conditional coverage 50 % (1/2).">&nbsp;125609</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 408: Conditional coverage 50 % (1/2).">                <span class="keyword">if</span> (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsCovered">&nbsp;163523</td>  <td class="src"><pre class="src">&nbsp;                    RefBaseObject element = (RefBaseObject) ((InstanceEvent) e)</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;410</td>  <td class="nbHitsCovered">&nbsp;125609</td>  <td class="src"><pre class="src">&nbsp;                            .getSource();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsUncovered"><a title="Line 411: Conditional coverage 50 % (1/2).">&nbsp;125609</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 411: Conditional coverage 50 % (1/2).">                    <span class="keyword">if</span> (isReadOnly(element)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;407</td>  <td class="nbHitsCovered"><a title="Line 407: Conditional coverage 100 % (2/2).">&nbsp;305760</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 407: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (e <span class="keyword">instanceof</span> InstanceEvent) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;408</td>  <td class="nbHitsUncovered"><a title="Line 408: Conditional coverage 50 % (1/2).">&nbsp;143148</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 408: Conditional coverage 50 % (1/2).">                <span class="keyword">if</span> (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;409</td>  <td class="nbHitsCovered">&nbsp;198601</td>  <td class="src"><pre class="src">&nbsp;                    RefBaseObject element = (RefBaseObject) ((InstanceEvent) e)</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;410</td>  <td class="nbHitsCovered">&nbsp;143148</td>  <td class="src"><pre class="src">&nbsp;                            .getSource();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;411</td>  <td class="nbHitsUncovered"><a title="Line 411: Conditional coverage 50 % (1/2).">&nbsp;143148</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 411: Conditional coverage 50 % (1/2).">                    <span class="keyword">if</span> (isReadOnly(element)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;412</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="keyword">throw</span> <span class="keyword">new</span> VetoChangeException(e.getSource(), <span class="keyword">null</span>);</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;413</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    }</pre></td></tr>
@@ -713,7 +713,7 @@
 <tr>  <td class="numLine">&nbsp;418</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;419</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                }</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;420</td>  <td class="nbHitsCovered"><a title="Line 420: Conditional coverage 100 % (2/2).">&nbsp;142726</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 420: Conditional coverage 100 % (2/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> AssociationEvent) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;420</td>  <td class="nbHitsCovered"><a title="Line 420: Conditional coverage 100 % (2/2).">&nbsp;162612</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 420: Conditional coverage 100 % (2/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> AssociationEvent) {</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;421</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// TODO: association changes are too hard to check easily</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;422</td>  <td class="nbHits">&nbsp;</td>
@@ -728,10 +728,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">//                    throw new VetoChangeException(element, element);</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;427</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">//                }</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered"><a title="Line 428: Conditional coverage 100 % (2/2).">&nbsp;5328</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 428: Conditional coverage 100 % (2/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> AttributeEvent) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsCovered">&nbsp;77</td>  <td class="src"><pre class="src">&nbsp;                RefObject element = (RefObject) ((AttributeEvent) e)</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;                        .getSource();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsUncovered"><a title="Line 431: Conditional coverage 50 % (1/2).">&nbsp;56</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 431: Conditional coverage 50 % (1/2).">                <span class="keyword">if</span> (isReadOnly(element)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;428</td>  <td class="nbHitsCovered"><a title="Line 428: Conditional coverage 100 % (2/2).">&nbsp;6039</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 428: Conditional coverage 100 % (2/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> AttributeEvent) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;429</td>  <td class="nbHitsCovered">&nbsp;91</td>  <td class="src"><pre class="src">&nbsp;                RefObject element = (RefObject) ((AttributeEvent) e)</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;430</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;                        .getSource();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;431</td>  <td class="nbHitsUncovered"><a title="Line 431: Conditional coverage 50 % (1/2).">&nbsp;63</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 431: Conditional coverage 50 % (1/2).">                <span class="keyword">if</span> (isReadOnly(element)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;432</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    <span class="keyword">throw</span> <span class="keyword">new</span> VetoChangeException(element, element);</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;433</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
@@ -741,8 +741,8 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;436</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;437</td>  <td class="nbHitsCovered">&nbsp;349545</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (eventCountMutex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;438</td>  <td class="nbHitsCovered">&nbsp;268335</td>  <td class="src"><pre class="src">&nbsp;            pendingEvents++;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;437</td>  <td class="nbHitsCovered">&nbsp;424395</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (eventCountMutex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;438</td>  <td class="nbHitsCovered">&nbsp;305760</td>  <td class="src"><pre class="src">&nbsp;            pendingEvents++;</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;439</td>  <td class="nbHitsCovered">&nbsp;187125</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;440</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
@@ -768,7 +768,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">//            }</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;451</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">//        }</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;452</td>  <td class="nbHitsCovered">&nbsp;268335</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;452</td>  <td class="nbHitsCovered">&nbsp;305760</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;453</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;454</td>  <td class="nbHits">&nbsp;</td>
@@ -801,14 +801,14 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> decrementEvents() {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;469</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;470</td>  <td class="nbHitsCovered">&nbsp;17771</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (eventCountMutex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;471</td>  <td class="nbHitsCovered">&nbsp;11974</td>  <td class="src"><pre class="src">&nbsp;            pendingEvents--;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;472</td>  <td class="nbHitsCovered"><a title="Line 472: Conditional coverage 100 % (2/2).">&nbsp;11974</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 472: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (pendingEvents &lt;= 0) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;473</td>  <td class="nbHitsCovered">&nbsp;172</td>  <td class="src"><pre class="src">&nbsp;                eventCountMutex.notifyAll();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;470</td>  <td class="nbHitsCovered">&nbsp;21453</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (eventCountMutex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;471</td>  <td class="nbHitsCovered">&nbsp;13815</td>  <td class="src"><pre class="src">&nbsp;            pendingEvents--;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;472</td>  <td class="nbHitsCovered"><a title="Line 472: Conditional coverage 100 % (2/2).">&nbsp;13815</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 472: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (pendingEvents &lt;= 0) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;473</td>  <td class="nbHitsCovered">&nbsp;190</td>  <td class="src"><pre class="src">&nbsp;                eventCountMutex.notifyAll();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;474</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;475</td>  <td class="nbHitsCovered">&nbsp;6177</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;476</td>  <td class="nbHitsCovered">&nbsp;11976</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;476</td>  <td class="nbHitsCovered">&nbsp;13817</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;477</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;478</td>  <td class="nbHits">&nbsp;</td>
@@ -819,29 +819,29 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> fire(UmlChangeEvent event) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;482</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;        String mofId = ((RefBaseObject) event.getSource()).refMofId();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;483</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;        String className  = getClassName(event.getSource());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;482</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;        String mofId = ((RefBaseObject) event.getSource()).refMofId();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;483</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;        String className  = getClassName(event.getSource());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;484</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;485</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Any given listener is only called once even if it is</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;486</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// registered for multiple relevant matches</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;        Set&lt;PropertyChangeListener&gt; listeners =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;488</td>  <td class="nbHitsCovered">&nbsp;129</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> HashSet&lt;PropertyChangeListener&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;489</td>  <td class="nbHitsCovered">&nbsp;449</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (registrationMutex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;640</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(elements.getMatches(mofId, event</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;491</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;        Set&lt;PropertyChangeListener&gt; listeners =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;488</td>  <td class="nbHitsCovered">&nbsp;164</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> HashSet&lt;PropertyChangeListener&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;489</td>  <td class="nbHitsCovered">&nbsp;519</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (registrationMutex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;710</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(elements.getMatches(mofId, event</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;491</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;492</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;493</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// This will include all subtypes registered</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;494</td>  <td class="nbHitsCovered">&nbsp;640</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(listenedClasses.getMatches(className, event</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;494</td>  <td class="nbHitsCovered">&nbsp;710</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(listenedClasses.getMatches(className, event</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;496</td>  <td class="nbHitsCovered">&nbsp;191</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;497</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50 % (1/2).">&nbsp;320</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50 % (1/2).">&nbsp;355</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;499</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            LOG.log(Level.FINE, <span class="string">"Firing "</span></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;500</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + modelImpl.getMetaTypes().getName(event)</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;501</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + <span class="string">" source "</span></span></pre></td></tr>
@@ -855,7 +855,7 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;509</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;510</td>  <td class="nbHitsUncovered"><a title="Line 510: Conditional coverage 50 % (1/2).">&nbsp;320</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 510: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (!listeners.isEmpty()) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;510</td>  <td class="nbHitsUncovered"><a title="Line 510: Conditional coverage 50 % (1/2).">&nbsp;355</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 510: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (!listeners.isEmpty()) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;511</td>  <td class="nbHitsUncovered"><a title="Line 511: Conditional coverage 0 % (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 511: Conditional coverage 0 % (0/2).">            <span class="keyword">for</span> (PropertyChangeListener pcl : listeners) {</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;512</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (<span class="keyword">false</span> <span class="comment">/*(LOG.isDebugEnabled()*/</span>) {</pre></td></tr>
@@ -897,7 +897,7 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;532</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;533</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;533</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;534</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;535</td>  <td class="nbHits">&nbsp;</td>
@@ -1074,7 +1074,7 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;660</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> String getClassName(Object elementOrClass) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;661</td>  <td class="nbHitsCovered">&nbsp;320</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.getMetaTypes().getName(elementOrClass);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;661</td>  <td class="nbHitsCovered">&nbsp;355</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.getMetaTypes().getName(elementOrClass);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;662</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;663</td>  <td class="nbHits">&nbsp;</td>
@@ -1087,9 +1087,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;667</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> startPumpingEvents() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;668</td>  <td class="nbHitsCovered">&nbsp;304</td>  <td class="src"><pre class="src">&nbsp;        LOG.log(Level.FINE, <span class="string">"Start pumping events"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;669</td>  <td class="nbHitsCovered">&nbsp;304</td>  <td class="src"><pre class="src">&nbsp;        repository.addListener(<span class="keyword">this</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;670</td>  <td class="nbHitsCovered">&nbsp;304</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;668</td>  <td class="nbHitsCovered">&nbsp;342</td>  <td class="src"><pre class="src">&nbsp;        LOG.log(Level.FINE, <span class="string">"Start pumping events"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;669</td>  <td class="nbHitsCovered">&nbsp;342</td>  <td class="src"><pre class="src">&nbsp;        repository.addListener(<span class="keyword">this</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;670</td>  <td class="nbHitsCovered">&nbsp;342</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;671</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;672</td>  <td class="nbHits">&nbsp;</td>
@@ -1100,9 +1100,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;675</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">void</span> stopPumpingEvents() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;676</td>  <td class="nbHitsCovered">&nbsp;256</td>  <td class="src"><pre class="src">&nbsp;        LOG.log(Level.FINE, <span class="string">"Stop pumping events"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;677</td>  <td class="nbHitsCovered">&nbsp;256</td>  <td class="src"><pre class="src">&nbsp;        repository.removeListener(<span class="keyword">this</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;678</td>  <td class="nbHitsCovered">&nbsp;256</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;676</td>  <td class="nbHitsCovered">&nbsp;288</td>  <td class="src"><pre class="src">&nbsp;        LOG.log(Level.FINE, <span class="string">"Stop pumping events"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;677</td>  <td class="nbHitsCovered">&nbsp;288</td>  <td class="src"><pre class="src">&nbsp;        repository.removeListener(<span class="keyword">this</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;678</td>  <td class="nbHitsCovered">&nbsp;288</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;679</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;680</td>  <td class="nbHits">&nbsp;</td>
@@ -1150,18 +1150,18 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;706</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> String otherAssocEnd(AssociationEvent ae) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;707</td>  <td class="nbHitsCovered">&nbsp;5838</td>  <td class="src"><pre class="src">&nbsp;        RefAssociation ra = (RefAssociation) ae.getSource();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;708</td>  <td class="nbHitsCovered">&nbsp;5838</td>  <td class="src"><pre class="src">&nbsp;        Association a = (Association) ra.refMetaObject();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;709</td>  <td class="nbHitsCovered">&nbsp;135</td>  <td class="src"><pre class="src">&nbsp;        AssociationEnd aend = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;707</td>  <td class="nbHitsCovered">&nbsp;6770</td>  <td class="src"><pre class="src">&nbsp;        RefAssociation ra = (RefAssociation) ae.getSource();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;708</td>  <td class="nbHitsCovered">&nbsp;6770</td>  <td class="src"><pre class="src">&nbsp;        Association a = (Association) ra.refMetaObject();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;709</td>  <td class="nbHitsCovered">&nbsp;149</td>  <td class="src"><pre class="src">&nbsp;        AssociationEnd aend = <span class="keyword">null</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;710</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;711</td>  <td class="nbHitsCovered">&nbsp;135</td>  <td class="src"><pre class="src">&nbsp;            aend = (AssociationEnd) a.lookupElementExtended(ae.getEndName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;712</td>  <td class="nbHitsCovered">&nbsp;55</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (NameNotFoundException e) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;711</td>  <td class="nbHitsCovered">&nbsp;149</td>  <td class="src"><pre class="src">&nbsp;            aend = (AssociationEnd) a.lookupElementExtended(ae.getEndName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;712</td>  <td class="nbHitsCovered">&nbsp;69</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (NameNotFoundException e) {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;713</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            LOG.log(Level.SEVERE, <span class="string">"Failed to find other end of association : "</span></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;714</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + ae.getSource() + <span class="string">" -&gt; "</span> + ae.getEndName());</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;715</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;716</td>  <td class="nbHitsCovered">&nbsp;80</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;717</td>  <td class="nbHitsCovered">&nbsp;135</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> aend.otherEnd().getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;717</td>  <td class="nbHitsCovered">&nbsp;149</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> aend.otherEnd().getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;718</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;719</td>  <td class="nbHits">&nbsp;</td>
@@ -1192,15 +1192,15 @@
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// TODO: We don't want to do this once we have dropped UML1.3</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;732</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Map UML 1.4 names to UML 1.3 equivalents</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;733</td>  <td class="nbHitsCovered"><a title="Line 733: Conditional coverage 100 % (2/2).">&nbsp;11540</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 733: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (<span class="string">"typedParameter"</span>.equals(name)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;734</td>  <td class="nbHitsCovered">&nbsp;222</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="string">"parameter"</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;733</td>  <td class="nbHitsCovered"><a title="Line 733: Conditional coverage 100 % (2/2).">&nbsp;13390</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 733: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (<span class="string">"typedParameter"</span>.equals(name)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;734</td>  <td class="nbHitsCovered">&nbsp;272</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="string">"parameter"</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;735</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;736</td>  <td class="nbHitsCovered"><a title="Line 736: Conditional coverage 100 % (2/2).">&nbsp;11318</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 736: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (<span class="string">"typedFeature"</span>.equals(name)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;737</td>  <td class="nbHitsCovered">&nbsp;264</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="string">"feature"</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;736</td>  <td class="nbHitsCovered"><a title="Line 736: Conditional coverage 100 % (2/2).">&nbsp;13118</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 736: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (<span class="string">"typedFeature"</span>.equals(name)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;737</td>  <td class="nbHitsCovered">&nbsp;318</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">return</span> <span class="string">"feature"</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;738</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;739</td>  <td class="nbHitsCovered">&nbsp;11054</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> name;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;739</td>  <td class="nbHitsCovered">&nbsp;12800</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> name;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;740</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;741</td>  <td class="nbHits">&nbsp;</td>
@@ -1257,16 +1257,16 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;775</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map&lt;String, Collection&lt;String&gt;&gt; buildTypeMap(ModelPackage extent) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;776</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, Collection&lt;String&gt;&gt; names =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;777</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">new</span> HashMap&lt;String, Collection&lt;String&gt;&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;778</td>  <td class="nbHitsCovered"><a title="Line 778: Conditional coverage 100 % (2/2).">&nbsp;2226</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 778: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Object metaclass : extent.getMofClass().refAllOfClass()) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;779</td>  <td class="nbHitsCovered">&nbsp;5760</td>  <td class="src"><pre class="src">&nbsp;            ModelElement element = (ModelElement) metaclass;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;780</td>  <td class="nbHitsCovered">&nbsp;5760</td>  <td class="src"><pre class="src">&nbsp;            String name = element.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;781</td>  <td class="nbHitsUncovered"><a title="Line 781: Conditional coverage 50 % (1/2).">&nbsp;5760</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 781: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (names.containsKey(name)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;776</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, Collection&lt;String&gt;&gt; names =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;777</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">new</span> HashMap&lt;String, Collection&lt;String&gt;&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;778</td>  <td class="nbHitsCovered"><a title="Line 778: Conditional coverage 100 % (2/2).">&nbsp;2958</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 778: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Object metaclass : extent.getMofClass().refAllOfClass()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;779</td>  <td class="nbHitsCovered">&nbsp;6480</td>  <td class="src"><pre class="src">&nbsp;            ModelElement element = (ModelElement) metaclass;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;780</td>  <td class="nbHitsCovered">&nbsp;6480</td>  <td class="src"><pre class="src">&nbsp;            String name = element.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;781</td>  <td class="nbHitsUncovered"><a title="Line 781: Conditional coverage 50 % (1/2).">&nbsp;6480</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 781: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (names.containsKey(name)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;782</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                LOG.log(Level.SEVERE,</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;783</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="string">"Found duplicate class '"</span> + name + <span class="string">"' in metamodel"</span>);</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;784</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            } <span class="keyword">else</span> {</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;785</td>  <td class="nbHitsCovered">&nbsp;5760</td>  <td class="src"><pre class="src">&nbsp;                names.put(name, getSubtypes(extent, element));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;785</td>  <td class="nbHitsCovered">&nbsp;6480</td>  <td class="src"><pre class="src">&nbsp;                names.put(name, getSubtypes(extent, element));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;786</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// LOG.log(Level.FINE, " Class " + name + " has subtypes : "</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;787</td>  <td class="nbHits">&nbsp;</td>
@@ -1274,7 +1274,7 @@
 <tr>  <td class="numLine">&nbsp;788</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;789</td>  <td class="nbHitsCovered">&nbsp;3600</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;790</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> names;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;790</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> names;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;791</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;792</td>  <td class="nbHits">&nbsp;</td>
@@ -1293,18 +1293,18 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Collection&lt;String&gt; getSubtypes(ModelPackage extent,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;799</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            ModelElement me) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;800</td>  <td class="nbHitsCovered">&nbsp;25872</td>  <td class="src"><pre class="src">&nbsp;        Collection&lt;String&gt; allSubtypes = <span class="keyword">new</span> HashSet&lt;String&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;801</td>  <td class="nbHitsUncovered"><a title="Line 801: Conditional coverage 50 % (1/2).">&nbsp;25872</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 801: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (me <span class="keyword">instanceof</span> GeneralizableElement) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;802</td>  <td class="nbHitsCovered">&nbsp;25872</td>  <td class="src"><pre class="src">&nbsp;            GeneralizableElement ge = (GeneralizableElement) me;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;803</td>  <td class="nbHitsCovered">&nbsp;35574</td>  <td class="src"><pre class="src">&nbsp;            Collection&lt;ModelElement&gt; subtypes = extent.getGeneralizes()</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;804</td>  <td class="nbHitsCovered">&nbsp;25872</td>  <td class="src"><pre class="src">&nbsp;                    .getSubtype(ge);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;805</td>  <td class="nbHitsCovered"><a title="Line 805: Conditional coverage 100 % (2/2).">&nbsp;43116</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 805: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (ModelElement st : subtypes) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;806</td>  <td class="nbHitsCovered">&nbsp;20112</td>  <td class="src"><pre class="src">&nbsp;                allSubtypes.add(st.getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;807</td>  <td class="nbHitsCovered">&nbsp;20112</td>  <td class="src"><pre class="src">&nbsp;                allSubtypes.addAll(getSubtypes(extent, st));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;800</td>  <td class="nbHitsCovered">&nbsp;29106</td>  <td class="src"><pre class="src">&nbsp;        Collection&lt;String&gt; allSubtypes = <span class="keyword">new</span> HashSet&lt;String&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;801</td>  <td class="nbHitsUncovered"><a title="Line 801: Conditional coverage 50 % (1/2).">&nbsp;29106</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 801: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (me <span class="keyword">instanceof</span> GeneralizableElement) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;802</td>  <td class="nbHitsCovered">&nbsp;29106</td>  <td class="src"><pre class="src">&nbsp;            GeneralizableElement ge = (GeneralizableElement) me;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;803</td>  <td class="nbHitsCovered">&nbsp;42042</td>  <td class="src"><pre class="src">&nbsp;            Collection&lt;ModelElement&gt; subtypes = extent.getGeneralizes()</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;804</td>  <td class="nbHitsCovered">&nbsp;29106</td>  <td class="src"><pre class="src">&nbsp;                    .getSubtype(ge);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;805</td>  <td class="nbHitsCovered"><a title="Line 805: Conditional coverage 100 % (2/2).">&nbsp;52098</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 805: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (ModelElement st : subtypes) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;806</td>  <td class="nbHitsCovered">&nbsp;22626</td>  <td class="src"><pre class="src">&nbsp;                allSubtypes.add(st.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;807</td>  <td class="nbHitsCovered">&nbsp;22626</td>  <td class="src"><pre class="src">&nbsp;                allSubtypes.addAll(getSubtypes(extent, st));</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;808</td>  <td class="nbHitsCovered">&nbsp;12570</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;809</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;810</td>  <td class="nbHitsCovered">&nbsp;25872</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> allSubtypes;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;810</td>  <td class="nbHitsCovered">&nbsp;29106</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> allSubtypes;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;811</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;812</td>  <td class="nbHits">&nbsp;</td>
@@ -1321,19 +1321,19 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> Map&lt;String, Collection&lt;String&gt;&gt; buildPropertyNameMap(</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;818</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            ModelPackage extent) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;819</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, Collection&lt;String&gt;&gt; names =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;820</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> HashMap&lt;String, Collection&lt;String&gt;&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;821</td>  <td class="nbHitsCovered"><a title="Line 821: Conditional coverage 100 % (2/2).">&nbsp;3066</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 821: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Reference reference : (Collection&lt;Reference&gt;) extent</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;822</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;                .getReference().refAllOfClass()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;823</td>  <td class="nbHitsCovered">&nbsp;7920</td>  <td class="src"><pre class="src">&nbsp;            mapAssociationEnd(names, reference.getExposedEnd());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;824</td>  <td class="nbHitsCovered">&nbsp;7920</td>  <td class="src"><pre class="src">&nbsp;            mapAssociationEnd(names, reference.getReferencedEnd());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;819</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, Collection&lt;String&gt;&gt; names =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;820</td>  <td class="nbHitsCovered">&nbsp;24</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> HashMap&lt;String, Collection&lt;String&gt;&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;821</td>  <td class="nbHitsCovered"><a title="Line 821: Conditional coverage 100 % (2/2).">&nbsp;4068</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 821: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Reference reference : (Collection&lt;Reference&gt;) extent</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;822</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;                .getReference().refAllOfClass()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;823</td>  <td class="nbHitsCovered">&nbsp;8910</td>  <td class="src"><pre class="src">&nbsp;            mapAssociationEnd(names, reference.getExposedEnd());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;824</td>  <td class="nbHitsCovered">&nbsp;8910</td>  <td class="src"><pre class="src">&nbsp;            mapAssociationEnd(names, reference.getReferencedEnd());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;825</td>  <td class="nbHitsCovered">&nbsp;4950</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;826</td>  <td class="nbHitsCovered"><a title="Line 826: Conditional coverage 100 % (2/2).">&nbsp;1446</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 826: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Attribute attribute : (Collection&lt;Attribute&gt;) extent</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;827</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;                .getAttribute().refAllOfClass()) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;828</td>  <td class="nbHitsCovered">&nbsp;7200</td>  <td class="src"><pre class="src">&nbsp;            mapPropertyName(names, attribute.getContainer(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;829</td>  <td class="nbHitsCovered">&nbsp;3600</td>  <td class="src"><pre class="src">&nbsp;                    attribute.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;826</td>  <td class="nbHitsCovered"><a title="Line 826: Conditional coverage 100 % (2/2).">&nbsp;1908</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 826: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (Attribute attribute : (Collection&lt;Attribute&gt;) extent</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;827</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;                .getAttribute().refAllOfClass()) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;828</td>  <td class="nbHitsCovered">&nbsp;8100</td>  <td class="src"><pre class="src">&nbsp;            mapPropertyName(names, attribute.getContainer(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;829</td>  <td class="nbHitsCovered">&nbsp;4050</td>  <td class="src"><pre class="src">&nbsp;                    attribute.getName());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;830</td>  <td class="nbHitsCovered">&nbsp;2250</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;831</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> names;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;831</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> names;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;832</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;833</td>  <td class="nbHits">&nbsp;</td>
@@ -1342,29 +1342,29 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> mapAssociationEnd(Map&lt;String, Collection&lt;String&gt;&gt; names,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;835</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            AssociationEnd end) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;836</td>  <td class="nbHitsCovered">&nbsp;15840</td>  <td class="src"><pre class="src">&nbsp;        ModelElement type = end.otherEnd().getType();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;837</td>  <td class="nbHitsCovered">&nbsp;15840</td>  <td class="src"><pre class="src">&nbsp;        mapPropertyName(names, type, end.getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;838</td>  <td class="nbHitsCovered">&nbsp;15840</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;836</td>  <td class="nbHitsCovered">&nbsp;17820</td>  <td class="src"><pre class="src">&nbsp;        ModelElement type = end.otherEnd().getType();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;837</td>  <td class="nbHitsCovered">&nbsp;17820</td>  <td class="src"><pre class="src">&nbsp;        mapPropertyName(names, type, end.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;838</td>  <td class="nbHitsCovered">&nbsp;17820</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;839</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;840</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> mapPropertyName(Map&lt;String, Collection&lt;String&gt;&gt; names,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;841</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            ModelElement type, String propertyName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;842</td>  <td class="nbHitsCovered">&nbsp;19440</td>  <td class="src"><pre class="src">&nbsp;        String typeName = type.getName();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;843</td>  <td class="nbHitsCovered">&nbsp;19440</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> added = mapPropertyName(names, typeName, propertyName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;842</td>  <td class="nbHitsCovered">&nbsp;21870</td>  <td class="src"><pre class="src">&nbsp;        String typeName = type.getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;843</td>  <td class="nbHitsCovered">&nbsp;21870</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> added = mapPropertyName(names, typeName, propertyName);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;844</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;845</td>  <td class="nbHitsCovered">&nbsp;19440</td>  <td class="src"><pre class="src">&nbsp;        Collection&lt;String&gt; subtypes = subtypeMap.get(typeName);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;846</td>  <td class="nbHitsUncovered"><a title="Line 846: Conditional coverage 50 % (1/2).">&nbsp;19440</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 846: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (subtypes != <span class="keyword">null</span>) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;847</td>  <td class="nbHitsCovered"><a title="Line 847: Conditional coverage 100 % (2/2).">&nbsp;103266</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 847: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (String subtype : subtypes) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;848</td>  <td class="nbHitsCovered">&nbsp;204096</td>  <td class="src"><pre class="src">&nbsp;                added &amp;= mapPropertyName(names, subtype, propertyName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;845</td>  <td class="nbHitsCovered">&nbsp;21870</td>  <td class="src"><pre class="src">&nbsp;        Collection&lt;String&gt; subtypes = subtypeMap.get(typeName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;846</td>  <td class="nbHitsUncovered"><a title="Line 846: Conditional coverage 50 % (1/2).">&nbsp;21870</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 846: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (subtypes != <span class="keyword">null</span>) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;847</td>  <td class="nbHitsCovered"><a title="Line 847: Conditional coverage 100 % (2/2).">&nbsp;133638</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 847: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (String subtype : subtypes) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;848</td>  <td class="nbHitsCovered">&nbsp;229608</td>  <td class="src"><pre class="src">&nbsp;                added &amp;= mapPropertyName(names, subtype, propertyName);</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;849</td>  <td class="nbHitsCovered">&nbsp;127560</td>  <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;850</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;851</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;852</td>  <td class="nbHitsCovered">&nbsp;19440</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> added;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;852</td>  <td class="nbHitsCovered">&nbsp;21870</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> added;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;853</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;854</td>  <td class="nbHits">&nbsp;</td>
@@ -1373,12 +1373,12 @@
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> mapPropertyName(Map&lt;String, Collection&lt;String&gt;&gt; names,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;856</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            String typeName, String propertyName) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;857</td>  <td class="nbHitsCovered"><a title="Line 857: Conditional coverage 100 % (2/2).">&nbsp;223536</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 857: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (!names.containsKey(typeName)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;858</td>  <td class="nbHitsCovered">&nbsp;5712</td>  <td class="src"><pre class="src">&nbsp;            names.put(typeName, <span class="keyword">new</span> HashSet&lt;String&gt;());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;857</td>  <td class="nbHitsCovered"><a title="Line 857: Conditional coverage 100 % (2/2).">&nbsp;251478</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 857: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (!names.containsKey(typeName)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;858</td>  <td class="nbHitsCovered">&nbsp;6426</td>  <td class="src"><pre class="src">&nbsp;            names.put(typeName, <span class="keyword">new</span> HashSet&lt;String&gt;());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;859</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;860</td>  <td class="nbHitsCovered">&nbsp;223536</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> added = names.get(typeName).add(propertyName);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;861</td>  <td class="nbHitsCovered"><a title="Line 861: Conditional coverage 100 % (2/2).">&nbsp;223536</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 861: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (!added) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;860</td>  <td class="nbHitsCovered">&nbsp;251478</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">boolean</span> added = names.get(typeName).add(propertyName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;861</td>  <td class="nbHitsCovered"><a title="Line 861: Conditional coverage 100 % (2/2).">&nbsp;251478</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 861: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (!added) {</a></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;862</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Because we map both ends of an association we'll see many</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;863</td>  <td class="nbHits">&nbsp;</td>
@@ -1387,10 +1387,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">//                LOG.log(Level.FINE, "Duplicate property name found - {0}:{1}", new Object[]{typeName, propertyName});</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;865</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;866</td>  <td class="nbHitsCovered">&nbsp;166848</td>  <td class="src"><pre class="src">&nbsp;            LOG.log(Level.FINE, <span class="string">"Added property name - {0}:{1}"</span>, <span class="keyword">new</span> Object[]{typeName, propertyName});</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;866</td>  <td class="nbHitsCovered">&nbsp;187704</td>  <td class="src"><pre class="src">&nbsp;            LOG.log(Level.FINE, <span class="string">"Added property name - {0}:{1}"</span>, <span class="keyword">new</span> Object[]{typeName, propertyName});</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;867</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;868</td>  <td class="nbHitsCovered">&nbsp;223536</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> added;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;868</td>  <td class="nbHitsCovered">&nbsp;251478</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> added;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;869</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;870</td>  <td class="nbHits">&nbsp;</td>
@@ -1574,7 +1574,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="keyword">class</span> Registry&lt;T&gt; {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;989</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;990</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = Logger.getLogger(Registry.<span class="keyword">class</span>.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;990</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOG = Logger.getLogger(Registry.<span class="keyword">class</span>.getName());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;991</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;992</td>  <td class="nbHits">&nbsp;</td>
@@ -1587,10 +1587,10 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Construct a new registry for the given type of object.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;996</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;997</td>  <td class="nbHitsCovered">&nbsp;104</td>  <td class="src"><pre class="src">&nbsp;    Registry() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;998</td>  <td class="nbHitsCovered">&nbsp;143</td>  <td class="src"><pre class="src">&nbsp;        registry = Collections</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;999</td>  <td class="nbHitsCovered">&nbsp;104</td>  <td class="src"><pre class="src">&nbsp;                .synchronizedMap(<span class="keyword">new</span> HashMap&lt;String, Map&lt;String, List&lt;T&gt;&gt;&gt;());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1000</td>  <td class="nbHitsCovered">&nbsp;104</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;997</td>  <td class="nbHitsCovered">&nbsp;117</td>  <td class="src"><pre class="src">&nbsp;    Registry() {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;998</td>  <td class="nbHitsCovered">&nbsp;169</td>  <td class="src"><pre class="src">&nbsp;        registry = Collections</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;999</td>  <td class="nbHitsCovered">&nbsp;117</td>  <td class="src"><pre class="src">&nbsp;                .synchronizedMap(<span class="keyword">new</span> HashMap&lt;String, Map&lt;String, List&lt;T&gt;&gt;&gt;());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1000</td>  <td class="nbHitsCovered">&nbsp;117</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1001</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1002</td>  <td class="nbHits">&nbsp;</td>
@@ -1627,10 +1627,10 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1018</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Lookup primary key, creating new entry if needed</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1019</td>  <td class="nbHitsCovered">&nbsp;88</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1020</td>  <td class="nbHitsCovered"><a title="Line 1020: Conditional coverage 100 % (2/2).">&nbsp;88</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1020: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (entry == <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1021</td>  <td class="nbHitsCovered">&nbsp;32</td>  <td class="src"><pre class="src">&nbsp;            entry = <span class="keyword">new</span> HashMap&lt;String, List&lt;T&gt;&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1022</td>  <td class="nbHitsCovered">&nbsp;32</td>  <td class="src"><pre class="src">&nbsp;            registry.put(key, entry);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1019</td>  <td class="nbHitsCovered">&nbsp;99</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1020</td>  <td class="nbHitsCovered"><a title="Line 1020: Conditional coverage 100 % (2/2).">&nbsp;99</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1020: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (entry == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1021</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;            entry = <span class="keyword">new</span> HashMap&lt;String, List&lt;T&gt;&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1022</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;            registry.put(key, entry);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1023</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1024</td>  <td class="nbHits">&nbsp;</td>
@@ -1639,33 +1639,33 @@
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// If there are no subkeys, register using our special value</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1026</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// to indicate that this is a primary key only registration</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1027</td>  <td class="nbHitsUncovered"><a title="Line 1027: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">&nbsp;88</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1027: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">        <span class="keyword">if</span> (subkeys == <span class="keyword">null</span> || subkeys.length &lt; 1) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1028</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;            subkeys =</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1029</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> String[] {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1030</td>  <td class="nbHitsCovered">&nbsp;21</td>  <td class="src"><pre class="src">&nbsp;                    <span class="string">""</span>,</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1027</td>  <td class="nbHitsUncovered"><a title="Line 1027: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">&nbsp;99</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1027: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">        <span class="keyword">if</span> (subkeys == <span class="keyword">null</span> || subkeys.length &lt; 1) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1028</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;            subkeys =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1029</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> String[] {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1030</td>  <td class="nbHitsCovered">&nbsp;28</td>  <td class="src"><pre class="src">&nbsp;                    <span class="string">""</span>,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1031</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                };</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1032</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1033</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1034</td>  <td class="nbHitsCovered"><a title="Line 1034: Conditional coverage 100 % (2/2).">&nbsp;176</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1034: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; subkeys.length; i++) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1035</td>  <td class="nbHitsCovered">&nbsp;88</td>  <td class="src"><pre class="src">&nbsp;            List&lt;T&gt; list = entry.get(subkeys[i]);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1036</td>  <td class="nbHitsCovered"><a title="Line 1036: Conditional coverage 100 % (2/2).">&nbsp;88</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1036: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (list == <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1037</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;                list = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1038</td>  <td class="nbHitsCovered">&nbsp;56</td>  <td class="src"><pre class="src">&nbsp;                entry.put(subkeys[i], list);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1034</td>  <td class="nbHitsCovered"><a title="Line 1034: Conditional coverage 100 % (2/2).">&nbsp;198</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1034: Conditional coverage 100 % (2/2).">        <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; subkeys.length; i++) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1035</td>  <td class="nbHitsCovered">&nbsp;99</td>  <td class="src"><pre class="src">&nbsp;            List&lt;T&gt; list = entry.get(subkeys[i]);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1036</td>  <td class="nbHitsCovered"><a title="Line 1036: Conditional coverage 100 % (2/2).">&nbsp;99</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1036: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (list == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1037</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;                list = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1038</td>  <td class="nbHitsCovered">&nbsp;63</td>  <td class="src"><pre class="src">&nbsp;                entry.put(subkeys[i], list);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1039</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1040</td>  <td class="nbHitsUncovered"><a title="Line 1040: Conditional coverage 50 % (1/2).">&nbsp;88</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1040: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (!list.contains(item)) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1041</td>  <td class="nbHitsCovered">&nbsp;88</td>  <td class="src"><pre class="src">&nbsp;                list.add(item);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1042</td>  <td class="nbHitsCovered">&nbsp;33</td>  <td class="src"><pre class="src">&nbsp;            } <span class="keyword">else</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1040</td>  <td class="nbHitsUncovered"><a title="Line 1040: Conditional coverage 50 % (1/2).">&nbsp;99</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1040: Conditional coverage 50 % (1/2).">            <span class="keyword">if</span> (!list.contains(item)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1041</td>  <td class="nbHitsCovered">&nbsp;99</td>  <td class="src"><pre class="src">&nbsp;                list.add(item);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1042</td>  <td class="nbHitsCovered">&nbsp;44</td>  <td class="src"><pre class="src">&nbsp;            } <span class="keyword">else</span> {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1043</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                LOG.log(Level.FINE, <span class="string">"Duplicate registration attempt for {0}: {1} Listener: {2}"</span>,</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1044</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="keyword">new</span> Object[]{key,subkeys,item});</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1045</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1046</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1047</td>  <td class="nbHitsCovered">&nbsp;88</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1047</td>  <td class="nbHitsCovered">&nbsp;99</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1048</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1049</td>  <td class="nbHits">&nbsp;</td>
@@ -1688,45 +1688,45 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1058</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">void</span> unregister(T item, String key, String[] subkeys) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1059</td>  <td class="nbHitsCovered">&nbsp;64</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1060</td>  <td class="nbHitsUncovered"><a title="Line 1060: Conditional coverage 50 % (1/2).">&nbsp;64</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1060: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (entry == <span class="keyword">null</span>) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1059</td>  <td class="nbHitsCovered">&nbsp;72</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1060</td>  <td class="nbHitsUncovered"><a title="Line 1060: Conditional coverage 50 % (1/2).">&nbsp;72</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1060: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (entry == <span class="keyword">null</span>) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1061</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1062</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1063</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1064</td>  <td class="nbHitsUncovered"><a title="Line 1064: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">&nbsp;64</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1064: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">        <span class="keyword">if</span> (subkeys != <span class="keyword">null</span> &amp;&amp; subkeys.length &gt; 0) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1065</td>  <td class="nbHitsCovered"><a title="Line 1065: Conditional coverage 100 % (2/2).">&nbsp;32</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1065: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; subkeys.length; i++) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1066</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                lookupRemoveItem(entry, subkeys[i], item);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1064</td>  <td class="nbHitsUncovered"><a title="Line 1064: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">&nbsp;72</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1064: Conditional coverage 75 % (3/4) [each condition: 100 %, 50 %].">        <span class="keyword">if</span> (subkeys != <span class="keyword">null</span> &amp;&amp; subkeys.length &gt; 0) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1065</td>  <td class="nbHitsCovered"><a title="Line 1065: Conditional coverage 100 % (2/2).">&nbsp;36</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1065: Conditional coverage 100 % (2/2).">            <span class="keyword">for</span> (<span class="keyword">int</span> i = 0; i &lt; subkeys.length; i++) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1066</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;                lookupRemoveItem(entry, subkeys[i], item);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1067</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1068</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1069</td>  <td class="nbHitsCovered"><a title="Line 1069: Conditional coverage 100 % (2/2).">&nbsp;48</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1069: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (item == <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1070</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;                registry.remove(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1071</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;            } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1072</td>  <td class="nbHitsCovered">&nbsp;32</td>  <td class="src"><pre class="src">&nbsp;                lookupRemoveItem(entry, <span class="string">""</span>, item);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1068</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1069</td>  <td class="nbHitsCovered"><a title="Line 1069: Conditional coverage 100 % (2/2).">&nbsp;54</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1069: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (item == <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1070</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;                registry.remove(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1071</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;            } <span class="keyword">else</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1072</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                lookupRemoveItem(entry, <span class="string">""</span>, item);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1073</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1074</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1075</td>  <td class="nbHitsCovered">&nbsp;64</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1075</td>  <td class="nbHitsCovered">&nbsp;72</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1076</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1077</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> lookupRemoveItem(Map&lt;String, List&lt;T&gt;&gt; map, String key,</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1078</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            T item) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1079</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; list = map.get(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1080</td>  <td class="nbHitsUncovered"><a title="Line 1080: Conditional coverage 50 % (1/2).">&nbsp;48</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1080: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (list == <span class="keyword">null</span>) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1079</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; list = map.get(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1080</td>  <td class="nbHitsUncovered"><a title="Line 1080: Conditional coverage 50 % (1/2).">&nbsp;54</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1080: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (list == <span class="keyword">null</span>) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1081</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1082</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1083</td>  <td class="nbHitsUncovered"><a title="Line 1083: Conditional coverage 50 % (1/2).">&nbsp;48</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1083: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (item == <span class="keyword">null</span>) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1083</td>  <td class="nbHitsUncovered"><a title="Line 1083: Conditional coverage 50 % (1/2).">&nbsp;54</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1083: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (item == <span class="keyword">null</span>) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1084</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            map.remove(key);</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1085</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span>;</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1086</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1087</td>  <td class="nbHitsUncovered"><a title="Line 1087: Conditional coverage 50 % (1/2).">&nbsp;48</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1087: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1087</td>  <td class="nbHitsUncovered"><a title="Line 1087: Conditional coverage 50 % (1/2).">&nbsp;54</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1087: Conditional coverage 50 % (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1088</td>  <td class="nbHitsUncovered"><a title="Line 1088: Conditional coverage 0 % (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 1088: Conditional coverage 0 % (0/2).">            <span class="keyword">if</span> (!list.contains(item)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1089</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                LOG.log(Level.FINE,</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1090</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        <span class="string">"Attempt to unregister non-existant registration {0} Listener: {1}"</span>,</span></pre></td></tr>
@@ -1735,15 +1735,15 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1093</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1094</td>  <td class="nbHitsCovered"><a title="Line 1094: Conditional coverage 100 % (2/2).">&nbsp;80</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1094: Conditional coverage 100 % (2/2).">        <span class="keyword">while</span> (list.contains(item)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1095</td>  <td class="nbHitsCovered">&nbsp;32</td>  <td class="src"><pre class="src">&nbsp;            list.remove(item);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1094</td>  <td class="nbHitsCovered"><a title="Line 1094: Conditional coverage 100 % (2/2).">&nbsp;90</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1094: Conditional coverage 100 % (2/2).">        <span class="keyword">while</span> (list.contains(item)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1095</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;            list.remove(item);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1096</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1097</td>  <td class="nbHitsCovered"><a title="Line 1097: Conditional coverage 100 % (2/2).">&nbsp;48</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1097: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (list.isEmpty()) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1098</td>  <td class="nbHitsCovered">&nbsp;16</td>  <td class="src"><pre class="src">&nbsp;            map.remove(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1097</td>  <td class="nbHitsCovered"><a title="Line 1097: Conditional coverage 100 % (2/2).">&nbsp;54</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1097: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (list.isEmpty()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1098</td>  <td class="nbHitsCovered">&nbsp;18</td>  <td class="src"><pre class="src">&nbsp;            map.remove(key);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1099</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1100</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1100</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1101</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1102</td>  <td class="nbHits">&nbsp;</td>
@@ -1764,20 +1764,20 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1110</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    Collection&lt;T&gt; getMatches(String key, String subkey) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1111</td>  <td class="nbHitsCovered">&nbsp;768</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; results = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1112</td>  <td class="nbHitsCovered">&nbsp;768</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1113</td>  <td class="nbHitsCovered"><a title="Line 1113: Conditional coverage 100 % (2/2).">&nbsp;768</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1113: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (entry != <span class="keyword">null</span>) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1114</td>  <td class="nbHitsCovered"><a title="Line 1114: Conditional coverage 100 % (2/2).">&nbsp;104</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1114: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (entry.containsKey(subkey)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1115</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;                results.addAll(entry.get(subkey));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1111</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; results = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1112</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1113</td>  <td class="nbHitsCovered"><a title="Line 1113: Conditional coverage 100 % (2/2).">&nbsp;854</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1113: Conditional coverage 100 % (2/2).">        <span class="keyword">if</span> (entry != <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1114</td>  <td class="nbHitsCovered"><a title="Line 1114: Conditional coverage 100 % (2/2).">&nbsp;117</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1114: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (entry.containsKey(subkey)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1115</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;                results.addAll(entry.get(subkey));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1116</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1117</td>  <td class="nbHitsCovered"><a title="Line 1117: Conditional coverage 100 % (2/2).">&nbsp;104</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1117: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (entry.containsKey(<span class="string">""</span>)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1118</td>  <td class="nbHitsCovered">&nbsp;48</td>  <td class="src"><pre class="src">&nbsp;                results.addAll(entry.get(<span class="string">""</span>));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1117</td>  <td class="nbHitsCovered"><a title="Line 1117: Conditional coverage 100 % (2/2).">&nbsp;117</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1117: Conditional coverage 100 % (2/2).">            <span class="keyword">if</span> (entry.containsKey(<span class="string">""</span>)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1118</td>  <td class="nbHitsCovered">&nbsp;54</td>  <td class="src"><pre class="src">&nbsp;                results.addAll(entry.get(<span class="string">""</span>));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1119</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1121</td>  <td class="nbHitsCovered">&nbsp;768</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> results;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1121</td>  <td class="nbHitsCovered">&nbsp;854</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> results;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1123</td>  <td class="nbHits">&nbsp;</td>
@@ -1786,6 +1786,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 2019-11-13 07:18.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 2019-11-13 23:17.</div>
 </body>
 </html>
