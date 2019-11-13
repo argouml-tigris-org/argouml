@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="35" tokens="129">
+<file line="28" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigEntryPoint.java"/>
+<file line="28" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigExitPoint.java"/>
+<codefragment>
+<![CDATA[
+    public FigEntryPoint(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+
+    public GraphNode getGraphNode() {
+        return node;
+    }
+
+    public void setGraphNode(GraphNode node) {
+        this.node = (FigVertex) node;
+    }
+    
+
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+        // TODO: Note copy/paste code in FigExitPoint - where is this code
+        // better placed in GEF?
+        LayerPerspective lp = (LayerPerspective) getLayer();
+        if (lp == null) {
+            return;
+        }
+        
+        super.setEnclosingFig(encloser);
+        FigVertex vertex = ((FigVertex) encloser);
+        
+        if (vertex != null) {
+            vertex.addConnector(this);
+        } else {
+            FigVertex previousVertex = (FigVertex) getGraphNode();
+            if (previousVertex != null)
+                previousVertex.removeConnector(this);
+        }
+    }
+}
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>
