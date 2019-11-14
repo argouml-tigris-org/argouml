@@ -40,6 +40,11 @@ The group of core argouml projects.
 This project is the virtual project that includes all core subprojects.
   </description>
 
+  <properties>
+    <!-- Used in parent to deploy site on github. -->
+    <github.site.repositoryName>argouml</github.site.repositoryName>
+  </properties>
+
   <scm>
     <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</connection>
     <developerConnection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</developerConnection>
