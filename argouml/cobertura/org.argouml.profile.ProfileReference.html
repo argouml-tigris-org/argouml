@@ -115,7 +115,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment"> * @author Luis Sergio Oliveira (euluis)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;49</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment"> */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;50</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> ProfileReference {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;50</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;<span class="keyword">public</span> <span class="keyword">class</span> ProfileReference {</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;51</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;52</td>  <td class="nbHits">&nbsp;</td>
@@ -138,14 +138,14 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param publicReference see {@link #getPublicReference()}.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;61</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;825</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProfileReference(String thePath, URL publicReference) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;825</td>  <td class="src"><pre class="src">&nbsp;        File file = <span class="keyword">new</span> File(thePath);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;825</td>  <td class="src"><pre class="src">&nbsp;        File fileFromPublicReference = <span class="keyword">new</span> File(publicReference.getPath());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsUncovered"><a title="Line 65: Conditional coverage 75 % (3/4) [each condition: 50 %, 100 %].">&nbsp;825</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 65: Conditional coverage 75 % (3/4) [each condition: 50 %, 100 %].">        <span class="keyword">assert</span> file.getName().equals(fileFromPublicReference.getName()) </a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;4</td>  <td class="src"><pre class="src">&nbsp;            : <span class="string">"File name in path and in publicReference are different."</span>;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;811</td>  <td class="src"><pre class="src">&nbsp;        path = thePath;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;68</td>  <td class="nbHitsCovered">&nbsp;811</td>  <td class="src"><pre class="src">&nbsp;        url = publicReference;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;69</td>  <td class="nbHitsCovered">&nbsp;811</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;62</td>  <td class="nbHitsCovered">&nbsp;845</td>  <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> ProfileReference(String thePath, URL publicReference) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;63</td>  <td class="nbHitsCovered">&nbsp;845</td>  <td class="src"><pre class="src">&nbsp;        File file = <span class="keyword">new</span> File(thePath);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;64</td>  <td class="nbHitsCovered">&nbsp;845</td>  <td class="src"><pre class="src">&nbsp;        File fileFromPublicReference = <span class="keyword">new</span> File(publicReference.getPath());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;65</td>  <td class="nbHitsUncovered"><a title="Line 65: Conditional coverage 75 % (3/4) [each condition: 50 %, 100 %].">&nbsp;845</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 65: Conditional coverage 75 % (3/4) [each condition: 50 %, 100 %].">        <span class="keyword">assert</span> file.getName().equals(fileFromPublicReference.getName()) </a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;66</td>  <td class="nbHitsCovered">&nbsp;8</td>  <td class="src"><pre class="src">&nbsp;            : <span class="string">"File name in path and in publicReference are different."</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;67</td>  <td class="nbHitsCovered">&nbsp;827</td>  <td class="src"><pre class="src">&nbsp;        path = thePath;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;68</td>  <td class="nbHitsCovered">&nbsp;827</td>  <td class="src"><pre class="src">&nbsp;        url = publicReference;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;69</td>  <td class="nbHitsCovered">&nbsp;827</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;70</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;71</td>  <td class="nbHits">&nbsp;</td>
@@ -158,7 +158,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;75</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> String getPath() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;826</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> path;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;76</td>  <td class="nbHitsCovered">&nbsp;832</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> path;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;77</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;78</td>  <td class="nbHits">&nbsp;</td>
@@ -179,7 +179,7 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;86</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> URL getPublicReference() {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;87</td>  <td class="nbHitsCovered">&nbsp;436</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> url;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;87</td>  <td class="nbHitsCovered">&nbsp;442</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> url;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;88</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;89</td>  <td class="nbHits">&nbsp;</td>
@@ -188,6 +188,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 2019-11-13 07:50.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 2019-11-14 07:52.</div>
 </body>
 </html>
