@@ -57,20 +57,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.UMLStateDiagram.java">org/argouml/state2/diagram/UMLStateDiagram.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigEntryPoint.java">org/argouml/state2/diagram/FigEntryPoint.java</a>
                 </td>
                 <td>
@@ -99,6 +85,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.UMLStateDiagram.java">org/argouml/state2/diagram/UMLStateDiagram.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.StateDiagramModule.java">org/argouml/state2/StateDiagramModule.java</a>
                 </td>
                 <td>
@@ -113,7 +113,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramFactory.java">org/argouml/state2/diagram/StateDiagramFactory.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramGraphModel.java">org/argouml/state2/diagram/StateDiagramGraphModel.java</a>
                 </td>
                 <td>
                   0
@@ -127,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramGraphModel.java">org/argouml/state2/diagram/StateDiagramGraphModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramFactory.java">org/argouml/state2/diagram/StateDiagramFactory.java</a>
                 </td>
                 <td>
                   0
