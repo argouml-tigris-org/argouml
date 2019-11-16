@@ -57,6 +57,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.ModelManagementHelperEUMLImpl.java">org/argouml/model/euml/ModelManagementHelperEUMLImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.StateMachinesFactoryEUMLImpl.java">org/argouml/model/euml/StateMachinesFactoryEUMLImpl.java</a>
                 </td>
                 <td>
@@ -78,20 +92,6 @@
                 </td>
                 <td>
                   2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.ModelManagementHelperEUMLImpl.java">org/argouml/model/euml/ModelManagementHelperEUMLImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  4
                 </td>
                 <td>
                   0
@@ -141,6 +141,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.CommandStackImpl.java">org/argouml/model/euml/CommandStackImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.CopyHelperEUMLImpl.java">org/argouml/model/euml/CopyHelperEUMLImpl.java</a>
                 </td>
                 <td>
@@ -155,7 +169,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.CommandStackImpl.java">org/argouml/model/euml/CommandStackImpl.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.DataTypesHelperEUMLImpl.java">org/argouml/model/euml/DataTypesHelperEUMLImpl.java</a>
                 </td>
                 <td>
                   0
@@ -176,20 +190,6 @@
                 </td>
                 <td>
                   2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.DataTypesHelperEUMLImpl.java">org/argouml/model/euml/DataTypesHelperEUMLImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
                 </td>
                 <td>
                   0
@@ -225,20 +225,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.ScopeKindEUMLImpl.java">org/argouml/model/euml/ScopeKindEUMLImpl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.ExtensionMechanismsFactoryEUMLImpl.java">org/argouml/model/euml/ExtensionMechanismsFactoryEUMLImpl.java</a>
                 </td>
                 <td>
@@ -253,7 +239,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.DirectionKindEUMLImpl.java">org/argouml/model/euml/DirectionKindEUMLImpl.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.ScopeKindEUMLImpl.java">org/argouml/model/euml/ScopeKindEUMLImpl.java</a>
                 </td>
                 <td>
                   0
@@ -267,13 +253,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.CommonBehaviorHelperEUMLImpl.java">org/argouml/model/euml/CommonBehaviorHelperEUMLImpl.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.DirectionKindEUMLImpl.java">org/argouml/model/euml/DirectionKindEUMLImpl.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  5
+                  1
                 </td>
                 <td>
                   0
@@ -302,6 +288,20 @@
                 </td>
                 <td>
                   8
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-euml/checkstyle.html#org.argouml.model.euml.CommonBehaviorHelperEUMLImpl.java">org/argouml/model/euml/CommonBehaviorHelperEUMLImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
                 </td>
                 <td>
                   0
