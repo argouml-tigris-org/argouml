@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="20" tokens="139">
-<file line="26" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
-<file line="27" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedPentagon.java"/>
+<file line="26" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
+<file line="27" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedPentagon.java"/>
 <codefragment>
 <![CDATA[
     public FigNamedConcavePentagon(
@@ -29,8 +29,8 @@
 </codefragment>
 </duplication>
 <duplication lines="34" tokens="120">
-<file line="75" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseNode.java"/>
-<file line="55" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigComposite.java"/>
+<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseNode.java"/>
+<file line="55" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigComposite.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -71,8 +71,8 @@
 </codefragment>
 </duplication>
 <duplication lines="7" tokens="101">
-<file line="32" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigAcceptEventPoly.java"/>
-<file line="44" path="/home/linus/project/argouml/github-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
+<file line="32" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigAcceptEventPoly.java"/>
+<file line="44" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
 <codefragment>
 <![CDATA[
         xs[0] = x;         ys[0] = y;
