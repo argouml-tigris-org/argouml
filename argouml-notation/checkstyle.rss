@@ -29,20 +29,6 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.NotationModule.java">org/argouml/notation2/NotationModule.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.NotationManager.java">org/argouml/notation2/NotationManager.java</a>
                 </td>
                 <td>
@@ -50,6 +36,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.NotationModule.java">org/argouml/notation2/NotationModule.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -99,13 +99,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.UmlNotationLanguage.java">org/argouml/notation2/UmlNotationLanguage.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.UmlNotationTextEvent.java">org/argouml/notation2/UmlNotationTextEvent.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  0
+                  4
                 </td>
                 <td>
                   0
@@ -127,13 +127,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.UmlNotationTextEvent.java">org/argouml/notation2/UmlNotationTextEvent.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-notation/checkstyle.html#org.argouml.notation2.UmlNotationLanguage.java">org/argouml/notation2/UmlNotationLanguage.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  4
+                  0
                 </td>
                 <td>
                   0
