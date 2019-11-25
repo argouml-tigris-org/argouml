@@ -606,21 +606,21 @@
   <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;328</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// Create an event for the other end of the association</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;262</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;329</td>  <td class="nbHitsCovered">&nbsp;266</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AddAssociationEvent(</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;330</td>  <td class="nbHitsCovered">&nbsp;228</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;331</td>  <td class="nbHitsCovered">&nbsp;228</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;334</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;332</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;333</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;334</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;335</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;336</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="comment">// and a change event for that end</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;337</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;341</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;337</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;                events.add(<span class="keyword">new</span> AttributeChangeEvent(</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;338</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getFixedElement(),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;339</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        otherAssocEnd(ae),</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;340</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getOldElement(), <span class="comment">// will always be null</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;341</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;                        ae.getNewElement(),</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;342</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        mdrEvent));</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;343</td>  <td class="nbHitsUncovered"><a title="Line 343: Conditional coverage 0% (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 343: Conditional coverage 0% (0/2).">            } <span class="keyword">else</span> <span class="keyword">if</span> (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</a></span></pre></td></tr>
@@ -667,7 +667,7 @@
 <tr>  <td class="numLineCover">&nbsp;376</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                LOG.log(Level.SEVERE, <span class="string">"Unknown association event type "</span> + ae.getType());</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;377</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;34</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;378</td>  <td class="nbHitsCovered">&nbsp;38</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;379</td>  <td class="nbHitsCovered">&nbsp;250</td>  <td class="src"><pre class="src">&nbsp;            String name = mdrEvent.getClass().getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;380</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Cut down on debugging noise</span></pre></td></tr>
@@ -679,17 +679,17 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;385</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered"><a title="Line 386: Conditional coverage 100% (2/2).">&nbsp;298</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 386: Conditional coverage 100% (2/2).">        <span class="keyword">for</span> (UmlChangeEvent event : events) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;387</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;            fire(event);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;386</td>  <td class="nbHitsCovered"><a title="Line 386: Conditional coverage 100% (2/2).">&nbsp;302</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 386: Conditional coverage 100% (2/2).">        <span class="keyword">for</span> (UmlChangeEvent event : events) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;387</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;            fire(event);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;388</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// Unregister deleted instances after all events have been delivered</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;389</td>  <td class="nbHitsUncovered"><a title="Line 389: Conditional coverage 50% (1/2).">&nbsp;150</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 389: Conditional coverage 50% (1/2).">            <span class="keyword">if</span> (event <span class="keyword">instanceof</span> DeleteInstanceEvent) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;389</td>  <td class="nbHitsUncovered"><a title="Line 389: Conditional coverage 50% (1/2).">&nbsp;166</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 389: Conditional coverage 50% (1/2).">            <span class="keyword">if</span> (event <span class="keyword">instanceof</span> DeleteInstanceEvent) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;390</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                elements.unregister(<span class="keyword">null</span>, ((RefBaseObject) event.getSource())</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;391</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        .refMofId(), <span class="keyword">null</span>);</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;392</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;393</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;394</td>  <td class="nbHitsCovered">&nbsp;298</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;393</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;394</td>  <td class="nbHitsCovered">&nbsp;302</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;395</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;396</td>  <td class="nbHits">&nbsp;</td>
@@ -834,30 +834,30 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;481</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> fire(UmlChangeEvent event) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;482</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        String mofId = ((RefBaseObject) event.getSource()).refMofId();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;483</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        String className  = getClassName(event.getSource());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;482</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        String mofId = ((RefBaseObject) event.getSource()).refMofId();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;483</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        String className  = getClassName(event.getSource());</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;484</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;485</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Any given listener is only called once even if it is</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;486</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// registered for multiple relevant matches</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        Set&lt;PropertyChangeListener&gt; listeners =</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;487</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        Set&lt;PropertyChangeListener&gt; listeners =</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;488</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="keyword">new</span> HashSet&lt;PropertyChangeListener&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;489</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (registrationMutex) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;300</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(elements.getMatches(mofId, event</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;491</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;489</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">synchronized</span> (registrationMutex) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;490</td>  <td class="nbHitsCovered">&nbsp;332</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(elements.getMatches(mofId, event</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;491</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;492</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;493</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="comment">// This will include all subtypes registered</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;494</td>  <td class="nbHitsCovered">&nbsp;300</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(listenedClasses.getMatches(className, event</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;496</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;494</td>  <td class="nbHitsCovered">&nbsp;332</td>  <td class="src"><pre class="src">&nbsp;            listeners.addAll(listenedClasses.getMatches(className, event</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;495</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;                    .getPropertyName()));</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;496</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;497</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50% (1/2).">&nbsp;150</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;498</td>  <td class="nbHitsUncovered"><a title="Line 498: Conditional coverage 50% (1/2).">&nbsp;166</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 498: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> (LOG.isLoggable(Level.FINE)) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;499</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            LOG.log(Level.FINE, <span class="string">"Firing "</span></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;500</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + modelImpl.getMetaTypes().getName(event)</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;501</td>  <td class="nbHits">&nbsp;</td>
@@ -872,7 +872,7 @@
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;509</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;510</td>  <td class="nbHitsUncovered"><a title="Line 510: Conditional coverage 50% (1/2).">&nbsp;150</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 510: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> (!listeners.isEmpty()) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;510</td>  <td class="nbHitsUncovered"><a title="Line 510: Conditional coverage 50% (1/2).">&nbsp;166</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 510: Conditional coverage 50% (1/2).">        <span class="keyword">if</span> (!listeners.isEmpty()) {</a></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;511</td>  <td class="nbHitsUncovered"><a title="Line 511: Conditional coverage 0% (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 511: Conditional coverage 0% (0/2).">            <span class="keyword">for</span> (PropertyChangeListener pcl : listeners) {</a></span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;512</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                <span class="keyword">if</span> (<span class="keyword">false</span> <span class="comment">/*(LOG.isDebugEnabled()*/</span>) {</pre></td></tr>
@@ -914,7 +914,7 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;532</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;533</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;533</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;534</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;535</td>  <td class="nbHits">&nbsp;</td>
@@ -1109,7 +1109,7 @@
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;660</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> String getClassName(Object elementOrClass) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;661</td>  <td class="nbHitsCovered">&nbsp;150</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.getMetaTypes().getName(elementOrClass);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;661</td>  <td class="nbHitsCovered">&nbsp;166</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> modelImpl.getMetaTypes().getName(elementOrClass);</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;662</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;663</td>  <td class="nbHits">&nbsp;</td>
@@ -1185,18 +1185,18 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;706</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> String otherAssocEnd(AssociationEvent ae) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;707</td>  <td class="nbHitsCovered">&nbsp;262</td>  <td class="src"><pre class="src">&nbsp;        RefAssociation ra = (RefAssociation) ae.getSource();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;708</td>  <td class="nbHitsCovered">&nbsp;262</td>  <td class="src"><pre class="src">&nbsp;        Association a = (Association) ra.refMetaObject();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;709</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;        AssociationEnd aend = <span class="keyword">null</span>;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;707</td>  <td class="nbHitsCovered">&nbsp;266</td>  <td class="src"><pre class="src">&nbsp;        RefAssociation ra = (RefAssociation) ae.getSource();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;708</td>  <td class="nbHitsCovered">&nbsp;266</td>  <td class="src"><pre class="src">&nbsp;        Association a = (Association) ra.refMetaObject();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;709</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;        AssociationEnd aend = <span class="keyword">null</span>;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;710</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;711</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;            aend = (AssociationEnd) a.lookupElementExtended(ae.getEndName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;711</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;            aend = (AssociationEnd) a.lookupElementExtended(ae.getEndName());</pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;712</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (NameNotFoundException e) {</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;713</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            LOG.log(Level.SEVERE, <span class="string">"Failed to find other end of association : "</span></span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;714</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    + ae.getSource() + <span class="string">" -&gt; "</span> + ae.getEndName());</span></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;715</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">return</span> <span class="keyword">null</span>;</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;716</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;717</td>  <td class="nbHitsCovered">&nbsp;68</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> aend.otherEnd().getName();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;716</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;717</td>  <td class="nbHitsCovered">&nbsp;76</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> aend.otherEnd().getName();</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;718</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;719</td>  <td class="nbHits">&nbsp;</td>
@@ -1816,9 +1816,9 @@
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1110</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    Collection&lt;T&gt; getMatches(String key, String subkey) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1111</td>  <td class="nbHitsCovered">&nbsp;316</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; results = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1112</td>  <td class="nbHitsCovered">&nbsp;316</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1113</td>  <td class="nbHitsCovered"><a title="Line 1113: Conditional coverage 100% (2/2).">&nbsp;316</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1113: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (entry != <span class="keyword">null</span>) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1111</td>  <td class="nbHitsCovered">&nbsp;348</td>  <td class="src"><pre class="src">&nbsp;        List&lt;T&gt; results = <span class="keyword">new</span> ArrayList&lt;T&gt;();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1112</td>  <td class="nbHitsCovered">&nbsp;348</td>  <td class="src"><pre class="src">&nbsp;        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1113</td>  <td class="nbHitsCovered"><a title="Line 1113: Conditional coverage 100% (2/2).">&nbsp;348</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1113: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (entry != <span class="keyword">null</span>) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1114</td>  <td class="nbHitsCovered"><a title="Line 1114: Conditional coverage 100% (2/2).">&nbsp;13</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 1114: Conditional coverage 100% (2/2).">            <span class="keyword">if</span> (entry.containsKey(subkey)) {</a></pre></td></tr>
 <tr>  <td class="numLineCover">&nbsp;1115</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;                results.addAll(entry.get(subkey));</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1116</td>  <td class="nbHits">&nbsp;</td>
@@ -1829,7 +1829,7 @@
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1120</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;1121</td>  <td class="nbHitsCovered">&nbsp;316</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> results;</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;1121</td>  <td class="nbHitsCovered">&nbsp;348</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">return</span> results;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1122</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;1123</td>  <td class="nbHits">&nbsp;</td>
@@ -1838,6 +1838,6 @@
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 11/25/19 9:46 PM.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 11/25/19 11:54 PM.</div>
 </body>
 </html>
