@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2019-11-22T22:52:45.058">
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/ActivityGraphsHelperEUMLImpl.java">
+<pmd version="4.3" timestamp="2019-11-25T21:52:18.024">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/ActivityGraphsHelperEUMLImpl.java">
 <violation beginline="26" endline="26" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="ActivityGraphsHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/CollaborationsHelperEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/CollaborationsHelperEUMLImpl.java">
 <violation beginline="28" endline="28" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CollaborationsHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorFactoryEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorFactoryEUMLImpl.java">
 <violation beginline="29" endline="29" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CommonBehaviorFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorHelperEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/CommonBehaviorHelperEUMLImpl.java">
 <violation beginline="28" endline="28" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CommonBehaviorHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/CoreFactoryEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/CoreFactoryEUMLImpl.java">
 <violation beginline="276" endline="350" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="CoreFactoryEUMLImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'scope'.
 </violation>
@@ -28,7 +28,7 @@ Avoid unused method parameters such as 'scope'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesFactoryEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesFactoryEUMLImpl.java">
 <violation beginline="32" endline="32" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="DataTypesFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
@@ -36,7 +36,7 @@ Avoid unused private fields such as 'modelImpl'.
 Avoid unused private methods such as 'stringToBound(String)'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesHelperEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/DataTypesHelperEUMLImpl.java">
 <violation beginline="43" endline="43" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="DataTypesHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
@@ -47,47 +47,47 @@ Avoid empty if statements
 Avoid empty if statements
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/EUMLModelImplementation.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/EUMLModelImplementation.java">
 <violation beginline="155" endline="155" begincolumn="30" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="EUMLModelImplementation" variable="theCommandStack" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'theCommandStack'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/FacadeEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/FacadeEUMLImpl.java">
 <violation beginline="325" endline="336" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.euml" class="FacadeEUMLImpl" method="getBody" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/MetaTypesEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/MetaTypesEUMLImpl.java">
 <violation beginline="125" endline="125" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="MetaTypesEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelEventPumpEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelEventPumpEUMLImpl.java">
 <violation beginline="113" endline="113" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="ModelEventPumpEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelManagementHelperEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/ModelManagementHelperEUMLImpl.java">
 <violation beginline="63" endline="65" begincolumn="47" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="ModelManagementHelperEUMLImpl" method="getAllContents" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesFactoryEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesFactoryEUMLImpl.java">
 <violation beginline="36" endline="36" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="StateMachinesFactoryEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesHelperEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/StateMachinesHelperEUMLImpl.java">
 <violation beginline="268" endline="272" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.euml" class="StateMachinesHelperEUMLImpl" method="setContainer" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/UmlFactoryEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/UmlFactoryEUMLImpl.java">
 <violation beginline="558" endline="560" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.euml" class="UmlFactoryEUMLImpl" method="isConnectionWellformed" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiReaderEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiReaderEUMLImpl.java">
 <violation beginline="127" endline="129" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.euml" class="XmiReaderEUMLImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -98,7 +98,7 @@ Avoid empty catch blocks
 Avoid unused private methods such as 'isUML2(Resource)'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiWriterEUMLImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-euml/src/org/argouml/model/euml/XmiWriterEUMLImpl.java">
 <violation beginline="55" endline="71" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="XmiWriterEUMLImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused constructor parameters such as 'version'.
 </violation>
