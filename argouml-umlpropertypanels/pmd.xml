@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2019-11-25T23:23:33.960">
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java">
+<pmd version="4.3" timestamp="2019-11-26T01:32:35.316">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java">
 <violation beginline="68" endline="129" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.model" class="GetterSetterManagerImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'type'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/CheckBox.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/CheckBox.java">
 <violation beginline="84" endline="84" begincolumn="20" endcolumn="55" rule="UnusedPrivateMethod" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="CheckBox" method="propertyToLabel" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateMethod" priority="3">
 Avoid unused private methods such as 'propertyToLabel(String)'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionBodyField.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionBodyField.java">
 <violation beginline="74" endline="76" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="ExpressionBodyField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionLanguageField.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionLanguageField.java">
 <violation beginline="68" endline="70" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="ExpressionLanguageField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/LabelledLayout.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/LabelledLayout.java">
 <violation beginline="320" endline="322" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="LabelledLayout" method="layoutSection" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -28,7 +28,7 @@ These nested if statements could be combined
 Avoid unused private methods such as 'getPreferredWidth(Component)'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/SwingUIFactory.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/SwingUIFactory.java">
 <violation beginline="362" endline="366" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="SwingUIFactory" method="buildOptionBox" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -36,7 +36,7 @@ These nested if statements could be combined
 Avoid empty if statements
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLCallActionOperationComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLCallActionOperationComboBoxModel.java">
 <violation beginline="111" endline="113" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLCallActionOperationComboBoxModel" method="buildModelList" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -50,22 +50,22 @@ These nested if statements could be combined
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLCallEventOperationComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLCallEventOperationComboBoxModel.java">
 <violation beginline="144" endline="147" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLCallEventOperationComboBoxModel$SetAction" method="actionPerformed" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLComboBoxModel.java">
 <violation beginline="575" endline="583" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLComboBoxModel" method="removeElement" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLComponentInstanceClassifierComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLComponentInstanceClassifierComboBoxModel.java">
 <violation beginline="111" endline="111" begincolumn="20" endcolumn="25" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLComponentInstanceClassifierComboBoxModel$ActionSet" method="actionPerformed" variable="target" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
 Avoid unused local variables such as 'target'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLEditableComboBox.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLEditableComboBox.java">
 <violation beginline="159" endline="161" begincolumn="27" endcolumn="25" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLEditableComboBox$UMLComboBoxEditor$UMLImagePanel" method="changedUpdate" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -85,7 +85,7 @@ Avoid unused constructor parameters such as 'selectAction'.
 Overriding method merely calls super
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionBodyField.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionBodyField.java">
 <violation beginline="59" endline="59" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLExpressionBodyField" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
@@ -96,7 +96,7 @@ Avoid unused private fields such as 'notifyModel'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionLanguageField.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionLanguageField.java">
 <violation beginline="55" endline="55" begincolumn="21" endcolumn="31" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLExpressionLanguageField" variable="notifyModel" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'notifyModel'.
 </violation>
@@ -104,22 +104,22 @@ Avoid unused private fields such as 'notifyModel'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java">
 <violation beginline="165" endline="168" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLExpressionModel" method="getLanguage" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLLinkedList.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLLinkedList.java">
 <violation beginline="193" endline="196" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLLinkedList" method="showPopup" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLMessageActivatorComboBox.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLMessageActivatorComboBox.java">
 <violation beginline="65" endline="69" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLMessageActivatorComboBox" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused constructor parameters such as 'action'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLMethodSpecificationComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLMethodSpecificationComboBoxModel.java">
 <violation beginline="32" endline="38" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLMethodSpecificationComboBoxModel" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused constructor parameters such as 'propertyName'.
 </violation>
@@ -130,37 +130,37 @@ These nested if statements could be combined
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLModelElementListModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLModelElementListModel.java">
 <violation beginline="91" endline="91" begincolumn="23" endcolumn="30" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLModelElementListModel" variable="instance" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'instance'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLModelElementNamespaceComboBoxModel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLModelElementNamespaceComboBoxModel.java">
 <violation beginline="78" endline="85" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLModelElementNamespaceComboBoxModel" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused constructor parameters such as 'propertyName'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLPlainTextDocument.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLPlainTextDocument.java">
 <violation beginline="82" endline="82" begincolumn="21" endcolumn="27" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLPlainTextDocument" variable="editing" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'editing'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLSynchStateBoundDocument.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLSynchStateBoundDocument.java">
 <violation beginline="101" endline="103" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLSynchStateBoundDocument" method="insertString" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationPanel.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationPanel.java">
 <violation beginline="64" endline="64" begincolumn="45" endcolumn="54" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLValueSpecificationPanel" variable="valueField" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'valueField'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldLiteralString.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldLiteralString.java">
 <violation beginline="71" endline="73" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLValueSpecificationValueFieldLiteralString" method="updateFields" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldOpaqueExpression.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldOpaqueExpression.java">
 <violation beginline="158" endline="160" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.core.propertypanels.ui" class="UMLValueSpecificationValueFieldOpaqueExpression" method="updateFields" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -168,7 +168,7 @@ These nested if statements could be combined
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldOpaqueExpressionDialog.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldOpaqueExpressionDialog.java">
 <violation beginline="58" endline="58" begincolumn="17" endcolumn="32" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UMLValueSpecificationValueFieldOpaqueExpressionDialog" variable="currentIndexCall" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'currentIndexCall'.
 </violation>
@@ -176,7 +176,7 @@ Avoid unused private fields such as 'currentIndexCall'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UmlControl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UmlControl.java">
 <violation beginline="57" endline="57" begincolumn="34" endcolumn="35" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.ui" class="UmlControl" method="createSingleButtonPanel" variable="tb" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
 Avoid unused local variables such as 'tb'.
 </violation>

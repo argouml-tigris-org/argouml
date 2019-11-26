@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="50" tokens="233">
-<file line="126" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/OldScrollList.java"/>
-<file line="114" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ScrollListImpl.java"/>
+<file line="126" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/OldScrollList.java"/>
+<file line="114" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ScrollListImpl.java"/>
 <codefragment>
 <![CDATA[
     public OldScrollList(JList alist) {
@@ -59,8 +59,8 @@
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="169">
-<file line="98" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
-<file line="73" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
+<file line="98" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<file line="73" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
 <codefragment>
 <![CDATA[
     public UMLExpressionModel(Object target, String name) {
@@ -98,8 +98,8 @@
 </codefragment>
 </duplication>
 <duplication lines="39" tokens="166">
-<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterDefaultElementComboBoxModel.java"/>
-<file line="74" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterParameterComboBoxModel.java"/>
+<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterDefaultElementComboBoxModel.java"/>
+<file line="74" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterParameterComboBoxModel.java"/>
 <codefragment>
 <![CDATA[
         super(target, propertyName, true); // Allow null
@@ -145,8 +145,8 @@
 </codefragment>
 </duplication>
 <duplication lines="47" tokens="151">
-<file line="257" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
-<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
+<file line="257" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
 <codefragment>
 <![CDATA[
 	startListeningForModelChanges();
@@ -200,8 +200,8 @@
 </codefragment>
 </duplication>
 <duplication lines="39" tokens="140">
-<file line="2090" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
-<file line="2344" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="2090" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="2344" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
 <codefragment>
 <![CDATA[
             return Model.getFacade().getClassifiers(modelElement);
@@ -247,8 +247,8 @@
 </codefragment>
 </duplication>
 <duplication lines="37" tokens="139">
-<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionModel.java"/>
-<file line="180" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionModel.java"/>
+<file line="180" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
 <codefragment>
 <![CDATA[
         return Model.getDataTypesHelper().getBody(expression);
@@ -292,8 +292,8 @@
 </codefragment>
 </duplication>
 <duplication lines="22" tokens="118">
-<file line="473" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
-<file line="494" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="473" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="494" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
 <codefragment>
 <![CDATA[
     public void mousePressed(MouseEvent e) {
@@ -322,8 +322,8 @@
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="109">
-<file line="2294" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
-<file line="151" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStereotypeBaseClassListModel.java"/>
+<file line="2294" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="151" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStereotypeBaseClassListModel.java"/>
 <codefragment>
 <![CDATA[
             }
@@ -354,8 +354,8 @@
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="106">
-<file line="1596" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
-<file line="1729" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="1596" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="1729" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
 <codefragment>
 <![CDATA[
             return Model.getMetaTypes().getReception();
@@ -393,8 +393,8 @@
 </codefragment>
 </duplication>
 <duplication lines="18" tokens="105">
-<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
-<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
+<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
+<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
 <codefragment>
 <![CDATA[
     public UMLActivityGraphContextComboBoxModel(String propertyName, final Object target) {
@@ -419,8 +419,8 @@
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="103">
-<file line="791" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
-<file line="882" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="791" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="882" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
 <codefragment>
 <![CDATA[
                     ResourceLoaderWrapper.lookupIconResource("MoveDown"));
@@ -453,8 +453,8 @@
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="102">
-<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionBodyField.java"/>
-<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionBodyField.java"/>
+<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionBodyField.java"/>
+<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionBodyField.java"/>
 <codefragment>
 <![CDATA[
         String oldText = getText();
@@ -492,8 +492,8 @@
 </codefragment>
 </duplication>
 <duplication lines="22" tokens="101">
-<file line="132" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
-<file line="127" path="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
+<file line="132" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
+<file line="127" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
 <codefragment>
 <![CDATA[
         protected ActionSetContext() {
