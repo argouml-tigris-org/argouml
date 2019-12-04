@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="419" tokens="1218">
-<file line="148" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
-<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
+<file line="148" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
+<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
 <codefragment>
 <![CDATA[
     public UMLModelElementListModel2(
@@ -428,8 +428,8 @@
 </codefragment>
 </duplication>
 <duplication lines="125" tokens="469">
-<file line="1430" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
-<file line="2167" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
+<file line="1430" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
+<file line="2167" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -561,8 +561,8 @@
 </codefragment>
 </duplication>
 <duplication lines="122" tokens="352">
-<file line="547" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
-<file line="628" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
+<file line="547" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
+<file line="628" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -691,8 +691,8 @@
 </codefragment>
 </duplication>
 <duplication lines="66" tokens="339">
-<file line="56" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/MenuBar14.java"/>
-<file line="56" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/MenuBar2.java"/>
+<file line="56" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/MenuBar14.java"/>
+<file line="56" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/MenuBar2.java"/>
 <codefragment>
 <![CDATA[
 public class MenuBar14 extends GenericArgoMenuBar {
@@ -765,8 +765,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="57" tokens="267">
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/ComponentInstanceNotationUml.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/NodeInstanceNotationUml.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/ComponentInstanceNotationUml.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/NodeInstanceNotationUml.java"/>
 <codefragment>
 <![CDATA[
         super(componentInstance);
@@ -830,8 +830,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="99" tokens="265">
-<file line="100" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
-<file line="100" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
+<file line="100" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
+<file line="100" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
 <codefragment>
 <![CDATA[
         FigForkState figClone = (FigForkState) super.clone();
@@ -937,8 +937,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="53" tokens="242">
-<file line="382" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabProps.java"/>
-<file line="482" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabStyle.java"/>
+<file line="382" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabProps.java"/>
+<file line="482" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabStyle.java"/>
 <codefragment>
 <![CDATA[
         repaint();
@@ -998,8 +998,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="50" tokens="228">
-<file line="125" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/java/ModelElementNameNotationJava.java"/>
-<file line="321" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
+<file line="125" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/java/ModelElementNameNotationJava.java"/>
+<file line="321" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
 <codefragment>
 <![CDATA[
                 } else if (".".equals(token)) {
@@ -1056,8 +1056,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="34" tokens="226">
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddDataType.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddEnumeration.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddDataType.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddEnumeration.java"/>
 <codefragment>
 <![CDATA[
         putValue(Action.NAME, Translator.localize("button.new-datatype"));
@@ -1098,8 +1098,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="66" tokens="222">
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
 <codefragment>
 <![CDATA[
     public CrInstanceWithoutClassifier() {
@@ -1172,8 +1172,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="68" tokens="221">
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
 <codefragment>
 <![CDATA[
     public CrNodeInstanceInsideElement() {
@@ -1248,8 +1248,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="67" tokens="218">
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
 <codefragment>
 <![CDATA[
     public CrObjectWithoutClassifier() {
@@ -1323,8 +1323,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="39" tokens="212">
-<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepConfirm.java"/>
-<file line="73" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
+<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepConfirm.java"/>
+<file line="73" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
 <codefragment>
 <![CDATA[
 	instructions.setWrapStyleWord(true);
@@ -1370,8 +1370,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="22" tokens="211">
-<file line="839" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
-<file line="909" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
+<file line="839" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
+<file line="909" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
 <codefragment>
 <![CDATA[
             figNode = new FigFinalState(modelElement, bounds, settings);
@@ -1400,12 +1400,12 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="64" tokens="205">
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
 <codefragment>
 <![CDATA[
     public CrNodeInsideElement() {
@@ -1476,9 +1476,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="37" tokens="203">
-<file line="690" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/DetailsPane.java"/>
-<file line="399" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabProps.java"/>
-<file line="503" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabStyle.java"/>
+<file line="690" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/DetailsPane.java"/>
+<file line="399" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabProps.java"/>
+<file line="503" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabStyle.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -1522,8 +1522,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="38" tokens="200">
-<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByOffender.java"/>
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByOffender.java"/>
+<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByOffender.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByOffender.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemsChanged");
@@ -1568,9 +1568,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="65" tokens="199">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
 <codefragment>
 <![CDATA[
     public CrComponentWithoutNode() {
@@ -1642,15 +1642,15 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="64" tokens="191">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
 <codefragment>
 <![CDATA[
     public CrComponentWithoutNode() {
@@ -1721,9 +1721,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="63" tokens="191">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrCompInstanceWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentInstanceWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongLinkEnds.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrCompInstanceWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentInstanceWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongLinkEnds.java"/>
 <codefragment>
 <![CDATA[
     public CrCompInstanceWithoutNode() {
@@ -1793,8 +1793,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="43" tokens="189">
-<file line="225" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigClassifierBox.java"/>
-<file line="191" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigInterface.java"/>
+<file line="225" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigClassifierBox.java"/>
+<file line="191" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigInterface.java"/>
 <codefragment>
 <![CDATA[
         if (isCompartmentVisible(Model.getMetaTypes().getAttribute())) {
@@ -1844,8 +1844,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="35" tokens="186">
-<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInvalidForkTriggerOrGuard.java"/>
-<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInvalidJoinTriggerOrGuard.java"/>
+<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInvalidForkTriggerOrGuard.java"/>
+<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInvalidJoinTriggerOrGuard.java"/>
 <codefragment>
 <![CDATA[
                         Model.getPseudostateKind().getFork())) {
@@ -1887,8 +1887,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="33" tokens="183">
-<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPoster.java"/>
-<file line="119" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPoster.java"/>
+<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPoster.java"/>
+<file line="119" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPoster.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemsChanged");
@@ -1928,8 +1928,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="32" tokens="175">
-<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPriority.java"/>
-<file line="115" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPriority.java"/>
+<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPriority.java"/>
+<file line="115" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByPriority.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemChanged");
@@ -1968,16 +1968,16 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="60" tokens="175">
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrClassWithoutComponent.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrClassWithoutComponent.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
 <codefragment>
 <![CDATA[
     public CrClassWithoutComponent() {
@@ -2044,8 +2044,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="45" tokens="172">
-<file line="112" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClAttributeCompartment.java"/>
-<file line="92" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClClassName.java"/>
+<file line="112" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClAttributeCompartment.java"/>
+<file line="92" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClClassName.java"/>
 <codefragment>
 <![CDATA[
 	    int right = fr.x + fr.width - 6;
@@ -2097,19 +2097,19 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="60" tokens="172">
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrClassWithoutComponent.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrCompInstanceWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongLinkEnds.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrClassWithoutComponent.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrCompInstanceWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrComponentWithoutNode.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInstanceWithoutClassifier.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrInterfaceWithoutComponent.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInsideElement.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceInsideElement.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNodeInstanceWithoutClassifier.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutClassifier.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrObjectWithoutComponent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongDepEnds.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrWrongLinkEnds.java"/>
 <codefragment>
 <![CDATA[
     public CrClassWithoutComponent() {
@@ -2176,9 +2176,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="44" tokens="168">
-<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClAttributeCompartment.java"/>
-<file line="93" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClClassName.java"/>
-<file line="110" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClOperationCompartment.java"/>
+<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClAttributeCompartment.java"/>
+<file line="93" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClClassName.java"/>
+<file line="110" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/ClOperationCompartment.java"/>
 <codefragment>
 <![CDATA[
 	    g.setColor(Color.red);
@@ -2229,8 +2229,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="30" tokens="167">
-<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
-<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
+<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
+<file line="70" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
 <codefragment>
 <![CDATA[
 	instructions.setText(instr);
@@ -2267,8 +2267,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="29" tokens="163">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByDecision.java"/>
-<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByDecision.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByDecision.java"/>
+<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByDecision.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemChanged");
@@ -2304,8 +2304,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="29" tokens="163">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByType.java"/>
-<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByType.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByType.java"/>
+<file line="113" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByType.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemsChanged");
@@ -2341,8 +2341,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="38" tokens="161">
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
-<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
+<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
 <codefragment>
 <![CDATA[
                 	        Model.getPseudostateKind().getInitial())) {
@@ -2387,8 +2387,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="27" tokens="156">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByGoal.java"/>
-<file line="111" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByGoal.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByGoal.java"/>
+<file line="111" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/ToDoByGoal.java"/>
 <codefragment>
 <![CDATA[
         LOG.log(Level.FINE, "toDoItemsChanged");
@@ -2422,8 +2422,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="57" tokens="155">
-<file line="433" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
-<file line="503" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
+<file line="433" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/UMLActivityDiagram.java"/>
+<file line="503" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/UMLStateDiagram.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -2487,9 +2487,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="27" tokens="153">
-<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
-<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
-<file line="79" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepManyTextFields.java"/>
+<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
+<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
+<file line="79" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepManyTextFields.java"/>
 <codefragment>
 <![CDATA[
 	instructions.setWrapStyleWord(true);
@@ -2523,8 +2523,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="23" tokens="153">
-<file line="1065" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
-<file line="712" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/TransitionNotationUml.java"/>
+<file line="1065" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
+<file line="712" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/TransitionNotationUml.java"/>
 <codefragment>
 <![CDATA[
     static String generateParameter(Object parameter) {
@@ -2554,8 +2554,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="20" tokens="153">
-<file line="311" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/persistence/PGMLStackParser.java"/>
-<file line="194" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/UmlDiagramRenderer.java"/>
+<file line="311" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/persistence/PGMLStackParser.java"/>
+<file line="194" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/UmlDiagramRenderer.java"/>
 <codefragment>
 <![CDATA[
             final String value = entry.getValue();
@@ -2582,8 +2582,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="153">
-<file line="162" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigDataType.java"/>
-<file line="132" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigInterface.java"/>
+<file line="162" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigDataType.java"/>
+<file line="132" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigInterface.java"/>
 <codefragment>
 <![CDATA[
         if (!(Model.getFacade().isAUMLElement(getOwner()))) {
@@ -2621,8 +2621,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="152">
-<file line="500" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
-<file line="524" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
+<file line="500" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
+<file line="524" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
 <codefragment>
 <![CDATA[
         List<ToDoItem> items = tdList.elementListForOffender(getOwner());
@@ -2653,8 +2653,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="93" tokens="151">
-<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
 <codefragment>
 <![CDATA[
         figClone.head = (FigCircle) it.next();
@@ -2754,8 +2754,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="49" tokens="151">
-<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/reveng/ConfigPanelExtension.java"/>
-<file line="736" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/reveng/Import.java"/>
+<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/reveng/ConfigPanelExtension.java"/>
+<file line="736" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/reveng/Import.java"/>
 <codefragment>
 <![CDATA[
         configPanel.add(listLabel,
@@ -2811,8 +2811,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="39" tokens="149">
-<file line="249" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/collaboration/CollabDiagramGraphModel.java"/>
-<file line="252" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/DeploymentDiagramGraphModel.java"/>
+<file line="249" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/collaboration/CollabDiagramGraphModel.java"/>
+<file line="252" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/DeploymentDiagramGraphModel.java"/>
 <codefragment>
 <![CDATA[
 	    end1 = suppliers.iterator().next();
@@ -2858,9 +2858,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="87" tokens="149">
-<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
 <codefragment>
 <![CDATA[
         figClone.head = (FigCircle) it.next();
@@ -2954,9 +2954,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="33" tokens="149">
-<file line="345" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabStereotype.java"/>
-<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
-<file line="213" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
+<file line="345" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabStereotype.java"/>
+<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
+<file line="213" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
 <codefragment>
 <![CDATA[
             } else if (e instanceof AddAssociationEvent) {
@@ -2996,9 +2996,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="49" tokens="148">
-<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
-<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
-<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
+<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
+<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
+<file line="61" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
 <codefragment>
 <![CDATA[
     public ArgoFigCircle(int x, int y, int w, int h) {
@@ -3054,8 +3054,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="87" tokens="147">
-<file line="158" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
-<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
+<file line="158" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
+<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3149,8 +3149,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="27" tokens="146">
-<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/ButtonActionNewEffect.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/ButtonActionNewEvent.java"/>
+<file line="64" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/ButtonActionNewEffect.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/ButtonActionNewEvent.java"/>
 <codefragment>
 <![CDATA[
         putValue(SMALL_ICON, icon);
@@ -3184,8 +3184,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="81" tokens="143">
-<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
-<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
+<file line="156" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
+<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
 <codefragment>
 <![CDATA[
         figClone.h = (FigText) it.next();
@@ -3273,9 +3273,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="85" tokens="141">
-<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
-<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
+<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3367,9 +3367,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="84" tokens="140">
-<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
-<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
+<file line="116" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
 <codefragment>
 <![CDATA[
         figClone.head = (FigCircle) it.next();
@@ -3460,8 +3460,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="139">
-<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
 <codefragment>
 <![CDATA[
         }
@@ -3494,9 +3494,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="49" tokens="138">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
 <codefragment>
 <![CDATA[
     public ArgoFigInk(int x, int y) {
@@ -3552,9 +3552,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="137">
-<file line="822" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="822" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3585,10 +3585,10 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="75" tokens="135">
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
-<file line="168" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
-<file line="147" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
+<file line="168" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
+<file line="147" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3670,8 +3670,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="20" tokens="134">
-<file line="582" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/AbstractMessageNotationUml.java"/>
-<file line="619" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/AbstractMessageNotationUml.java"/>
+<file line="582" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/AbstractMessageNotationUml.java"/>
+<file line="619" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/AbstractMessageNotationUml.java"/>
 <codefragment>
 <![CDATA[
                     mustBeSeq = true;
@@ -3698,8 +3698,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="17" tokens="134">
-<file line="254" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAggregation.java"/>
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionMultiplicity.java"/>
+<file line="254" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAggregation.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionMultiplicity.java"/>
 <codefragment>
 <![CDATA[
     public void oldActionPerformed(ActionEvent ae) {
@@ -3723,8 +3723,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="68" tokens="133">
-<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
-<file line="302" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigObjectFlowState.java"/>
+<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
+<file line="302" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigObjectFlowState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3799,8 +3799,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="31" tokens="133">
-<file line="252" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/DeploymentDiagramGraphModel.java"/>
-<file line="202" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/StateDiagramGraphModel.java"/>
+<file line="252" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/DeploymentDiagramGraphModel.java"/>
+<file line="202" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/StateDiagramGraphModel.java"/>
 <codefragment>
 <![CDATA[
                     Model.getCommonBehaviorHelper().getDestination(edge);
@@ -3838,8 +3838,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="68" tokens="132">
-<file line="195" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
-<file line="226" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
+<file line="195" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
+<file line="226" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
 <codefragment>
 <![CDATA[
         firePropChange("bounds", oldBounds, getBounds());
@@ -3914,8 +3914,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="76" tokens="132">
-<file line="227" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
-<file line="117" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/FigObject.java"/>
+<file line="227" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
+<file line="117" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/FigObject.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -3998,8 +3998,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="79" tokens="132">
-<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
-<file line="146" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
+<file line="137" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
+<file line="146" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4085,8 +4085,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="67" tokens="131">
-<file line="302" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigObjectFlowState.java"/>
-<file line="227" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
+<file line="302" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigObjectFlowState.java"/>
+<file line="227" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/collaboration/ui/FigClassifierRole.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4160,8 +4160,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="67" tokens="131">
-<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
-<file line="117" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/FigObject.java"/>
+<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/activity/ui/FigActionState.java"/>
+<file line="117" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/FigObject.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4235,8 +4235,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="29" tokens="131">
-<file line="249" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/collaboration/CollabDiagramGraphModel.java"/>
-<file line="202" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/StateDiagramGraphModel.java"/>
+<file line="249" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/collaboration/CollabDiagramGraphModel.java"/>
+<file line="202" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/StateDiagramGraphModel.java"/>
 <codefragment>
 <![CDATA[
 	    end1 = suppliers.iterator().next();
@@ -4272,8 +4272,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="34" tokens="130">
-<file line="72" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrAssocNameConflict.java"/>
-<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNameConflict.java"/>
+<file line="72" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrAssocNameConflict.java"/>
+<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNameConflict.java"/>
 <codefragment>
 <![CDATA[
         setKnowledgeTypes(Critic.KT_SYNTAX);
@@ -4314,10 +4314,10 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="74" tokens="130">
-<file line="129" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
-<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
+<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4398,8 +4398,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="22" tokens="128">
-<file line="314" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java"/>
-<file line="399" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/OperationNotationUml.java"/>
+<file line="314" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/AttributeNotationUml.java"/>
+<file line="399" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/OperationNotationUml.java"/>
 <codefragment>
 <![CDATA[
                     StringBuilder propname = new StringBuilder();
@@ -4428,8 +4428,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="22" tokens="128">
-<file line="985" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
-<file line="1007" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
+<file line="985" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
+<file line="1007" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
 <codefragment>
 <![CDATA[
         List<ToDoItem> items = tdList.elementListForOffender(getOwner());
@@ -4458,13 +4458,13 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="48" tokens="125">
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
-<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigLine.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
-<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
+<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigLine.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
+<file line="62" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
 <codefragment>
 <![CDATA[
         super(x, y, w, h);
@@ -4519,8 +4519,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="37" tokens="124">
-<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
-<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
+<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
+<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
 <codefragment>
 <![CDATA[
                             Model.getPseudostateKind().getDeepHistory())) {
@@ -4564,9 +4564,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="37" tokens="123">
-<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
-<file line="143" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
-<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
+<file line="145" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
+<file line="143" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
+<file line="144" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
 <codefragment>
 <![CDATA[
                             Model.getPseudostateKind().getDeepHistory())) {
@@ -4610,8 +4610,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="21" tokens="123">
-<file line="212" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigEdgeNote.java"/>
-<file line="239" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigEdgeNote.java"/>
+<file line="212" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigEdgeNote.java"/>
+<file line="239" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigEdgeNote.java"/>
 <codefragment>
 <![CDATA[
     public void setDestFigNode(FigNode fn) {
@@ -4639,14 +4639,14 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="45" tokens="123">
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
-<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
-<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigLine.java"/>
-<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
-<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
-<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
-<file line="109" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/ArgoFigText.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigCircle.java"/>
+<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigInk.java"/>
+<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigLine.java"/>
+<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigPoly.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRRect.java"/>
+<file line="63" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigRect.java"/>
+<file line="67" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/gefext/ArgoFigSpline.java"/>
+<file line="109" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/ArgoFigText.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4698,8 +4698,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="68" tokens="123">
-<file line="157" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
-<file line="217" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
+<file line="157" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
+<file line="217" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4774,8 +4774,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="55" tokens="123">
-<file line="225" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/UMLDeploymentDiagram.java"/>
-<file line="286" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/use_case/ui/UMLUseCaseDiagram.java"/>
+<file line="225" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/UMLDeploymentDiagram.java"/>
+<file line="286" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/use_case/ui/UMLUseCaseDiagram.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -4837,8 +4837,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="123">
-<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/ActionImportXMI.java"/>
-<file line="95" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/ActionOpenProject.java"/>
+<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/ActionImportXMI.java"/>
+<file line="95" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/ActionOpenProject.java"/>
 <codefragment>
 <![CDATA[
         ProjectBrowser pb = ProjectBrowser.getInstance();
@@ -4869,9 +4869,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="38" tokens="123">
-<file line="305" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabStereotype.java"/>
-<file line="441" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
-<file line="438" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
+<file line="305" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabStereotype.java"/>
+<file line="441" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLModelElementListModel2.java"/>
+<file line="438" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/UMLStereotypeListModel.java"/>
 <codefragment>
 <![CDATA[
                 if ((e.getNewValue() != null && e.getOldValue() == null) 
@@ -4916,9 +4916,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="68" tokens="122">
-<file line="123" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
-<file line="123" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
-<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
+<file line="123" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
+<file line="123" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
+<file line="216" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
 <codefragment>
 <![CDATA[
         firePropChange("bounds", oldBounds, getBounds());
@@ -4993,8 +4993,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="23" tokens="121">
-<file line="105" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
-<file line="93" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
+<file line="105" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
+<file line="93" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
 <codefragment>
 <![CDATA[
 	gb.setConstraints(image, c);
@@ -5024,9 +5024,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="67" tokens="121">
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
-<file line="157" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigForkState.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJoinState.java"/>
+<file line="157" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSynchState.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -5100,11 +5100,11 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="71" tokens="121">
-<file line="129" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
-<file line="168" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
-<file line="147" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
-<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
-<file line="217" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
+<file line="129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigBranchState.java"/>
+<file line="168" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigHistoryState.java"/>
+<file line="147" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigInitialState.java"/>
+<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigJunctionState.java"/>
+<file line="217" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -5182,8 +5182,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="43" tokens="121">
-<file line="442" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/UMLDeploymentDiagram.java"/>
-<file line="381" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/use_case/ui/UMLUseCaseDiagram.java"/>
+<file line="442" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/UMLDeploymentDiagram.java"/>
+<file line="381" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/use_case/ui/UMLUseCaseDiagram.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -5233,8 +5233,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="29" tokens="119">
-<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddClientDependencyAction.java"/>
-<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddSupplierDependencyAction.java"/>
+<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddClientDependencyAction.java"/>
+<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddSupplierDependencyAction.java"/>
 <codefragment>
 <![CDATA[
             if (oldSet.containsAll(Model.getFacade().getSuppliers(dependency))) {
@@ -5270,8 +5270,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="28" tokens="118">
-<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/ActionNew.java"/>
-<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/ActionNewProfile.java"/>
+<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/ActionNew.java"/>
+<file line="69" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/ActionNewProfile.java"/>
 <codefragment>
 <![CDATA[
                 Translator.localize("action.new"));
@@ -5306,8 +5306,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="15" tokens="117">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
-<file line="138" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
+<file line="138" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
 <codefragment>
 <![CDATA[
         ActionList al= new ActionList("Add Associations from ");
@@ -5329,9 +5329,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="33" tokens="117">
-<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
-<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
-<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
+<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleDeepHistoryStates.java"/>
+<file line="106" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
+<file line="108" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
 <codefragment>
 <![CDATA[
                             Model.getPseudostateKind().getDeepHistory())) {
@@ -5371,8 +5371,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="14" tokens="117">
-<file line="367" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
-<file line="398" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="367" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="398" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
 <codefragment>
 <![CDATA[
         int h = oldBounds.height + hInc;
@@ -5393,8 +5393,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="19" tokens="115">
-<file line="454" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/profile/internal/ocl/EvaluateExpression.java"/>
-<file line="789" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/profile/internal/ocl/EvaluateExpression.java"/>
+<file line="454" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/profile/internal/ocl/EvaluateExpression.java"/>
+<file line="789" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/profile/internal/ocl/EvaluateExpression.java"/>
 <codefragment>
 <![CDATA[
         inAFeaturePrimaryExpression(node);
@@ -5420,8 +5420,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="21" tokens="115">
-<file line="87" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigCompositeState.java"/>
-<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSimpleState.java"/>
+<file line="87" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigCompositeState.java"/>
+<file line="75" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSimpleState.java"/>
 <codefragment>
 <![CDATA[
     private void initFigs() {
@@ -5449,8 +5449,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="49" tokens="115">
-<file line="171" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSimpleState.java"/>
-<file line="268" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSubmachineState.java"/>
+<file line="171" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSimpleState.java"/>
+<file line="268" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigSubmachineState.java"/>
 <codefragment>
 <![CDATA[
         divider.setLineColor(col);
@@ -5506,8 +5506,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="20" tokens="114">
-<file line="105" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
-<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepConfirm.java"/>
+<file line="105" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
+<file line="89" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepConfirm.java"/>
 <codefragment>
 <![CDATA[
 	gb.setConstraints(image, c);
@@ -5534,8 +5534,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="23" tokens="114">
-<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
-<file line="369" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="369" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
 <codefragment>
 <![CDATA[
         dividerline.setShape(x, y, x + w , y);
@@ -5565,9 +5565,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="19" tokens="114">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementAbstract.java"/>
-<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementLeaf.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementRoot.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementAbstract.java"/>
+<file line="66" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementLeaf.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionSetGeneralizableElementRoot.java"/>
 <codefragment>
 <![CDATA[
     protected ActionSetGeneralizableElementAbstract() {
@@ -5593,9 +5593,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="41" tokens="113">
-<file line="102" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/persistence/OldZargoFilePersister.java"/>
-<file line="140" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/persistence/UmlFilePersister.java"/>
-<file line="109" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/persistence/XmiFilePersister.java"/>
+<file line="102" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/persistence/OldZargoFilePersister.java"/>
+<file line="140" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/persistence/UmlFilePersister.java"/>
+<file line="109" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/persistence/XmiFilePersister.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -5643,8 +5643,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="112">
-<file line="87" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionComponent.java"/>
-<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionComponentInstance.java"/>
+<file line="87" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionComponent.java"/>
+<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionComponentInstance.java"/>
 <codefragment>
 <![CDATA[
     public SelectionComponent(Fig f) {
@@ -5677,8 +5677,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="17" tokens="112">
-<file line="115" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/ui/SettingsTabNotation.java"/>
-<file line="120" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/SettingsTabDiagramAppearance.java"/>
+<file line="115" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/ui/SettingsTabNotation.java"/>
+<file line="120" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/SettingsTabDiagramAppearance.java"/>
 <codefragment>
 <![CDATA[
         topPanel.setLayout(new BorderLayout());
@@ -5702,8 +5702,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="18" tokens="111">
-<file line="332" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/UmlDiagramRenderer.java"/>
-<file line="962" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/UMLClassDiagram.java"/>
+<file line="332" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/UmlDiagramRenderer.java"/>
+<file line="962" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/UMLClassDiagram.java"/>
 <codefragment>
 <![CDATA[
     protected FigNode getNodePresentationFor(Layer lay, Object modelElement) {
@@ -5728,8 +5728,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="16" tokens="111">
-<file line="418" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
-<file line="682" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
+<file line="418" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigEdgeModelElement.java"/>
+<file line="682" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeModelElement.java"/>
 <codefragment>
 <![CDATA[
         Collection<Object> elements = new ArrayList<Object>();
@@ -5752,10 +5752,10 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="20" tokens="110">
-<file line="83" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
-<file line="72" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
-<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepManyTextFields.java"/>
-<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
+<file line="83" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepChoice.java"/>
+<file line="72" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepCue.java"/>
+<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepManyTextFields.java"/>
+<file line="71" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/cognitive/ui/WizStepTextField.java"/>
 <codefragment>
 <![CDATA[
 	instructions.setEditable(false);
@@ -5782,8 +5782,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="15" tokens="110">
-<file line="1111" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
-<file line="734" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/TransitionNotationUml.java"/>
+<file line="1111" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
+<file line="734" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/TransitionNotationUml.java"/>
 <codefragment>
 <![CDATA[
     private static String generateKind(Object /*Parameter etc.*/ kind) {
@@ -5805,9 +5805,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="64" tokens="110">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/JasonsBigTheme.java"/>
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/JasonsHugeTheme.java"/>
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/JasonsTheme.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/JasonsBigTheme.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/JasonsHugeTheme.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/JasonsTheme.java"/>
 <codefragment>
 <![CDATA[
     public String getName() { return "Large Fonts"; }
@@ -5878,8 +5878,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="110">
-<file line="120" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/StylePanelFigClass.java"/>
-<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/StylePanelFigAssociationClass.java"/>
+<file line="120" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/StylePanelFigClass.java"/>
+<file line="196" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/StylePanelFigAssociationClass.java"/>
 <codefragment>
 <![CDATA[
     }
@@ -5912,8 +5912,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="27" tokens="110">
-<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAddMessage.java"/>
-<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddOperation.java"/>
+<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAddMessage.java"/>
+<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddOperation.java"/>
 <codefragment>
 <![CDATA[
             targetFollower  = new ActionAddMessage();
@@ -5947,8 +5947,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="21" tokens="109">
-<file line="200" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/EnumerationLiteralNotationUml.java"/>
-<file line="301" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
+<file line="200" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/EnumerationLiteralNotationUml.java"/>
+<file line="301" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/providers/uml/NotationUtilityUml.java"/>
 <codefragment>
 <![CDATA[
             st = new MyTokenizer(text, "<<,\u00AB,\u00BB,>>");
@@ -5976,8 +5976,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="11" tokens="109">
-<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
-<file line="400" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
+<file line="400" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/state/ui/FigConcurrentRegion.java"/>
 <codefragment>
 <![CDATA[
         dividerline.setShape(x, y, x + w , y);
@@ -5995,8 +5995,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="21" tokens="107">
-<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigAssociationClass.java"/>
-<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
+<file line="124" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigAssociationClass.java"/>
+<file line="336" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/FigNodeAssociation.java"/>
 <codefragment>
 <![CDATA[
         if (edges != null) {
@@ -6024,8 +6024,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="36" tokens="107">
-<file line="352" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ClassDiagramGraphModel.java"/>
-<file line="282" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/use_case/UseCaseDiagramGraphModel.java"/>
+<file line="352" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ClassDiagramGraphModel.java"/>
+<file line="282" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/use_case/UseCaseDiagramGraphModel.java"/>
 <codefragment>
 <![CDATA[
         } else {
@@ -6068,9 +6068,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="27" tokens="107">
-<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAddMessage.java"/>
-<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddAttribute.java"/>
-<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddOperation.java"/>
+<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/ui/ActionAddMessage.java"/>
+<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddAttribute.java"/>
+<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/foundation/core/ActionAddOperation.java"/>
 <codefragment>
 <![CDATA[
             targetFollower  = new ActionAddMessage();
@@ -6104,8 +6104,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="106">
-<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionNodeInstance.java"/>
-<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionObject.java"/>
+<file line="80" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionNodeInstance.java"/>
+<file line="81" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/deployment/ui/SelectionObject.java"/>
 <codefragment>
 <![CDATA[
     public SelectionNodeInstance(Fig f) { super(f); }
@@ -6136,8 +6136,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="16" tokens="105">
-<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/notation/ui/SettingsTabNotation.java"/>
-<file line="96" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/SettingsTabUser.java"/>
+<file line="118" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/notation/ui/SettingsTabNotation.java"/>
+<file line="96" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/SettingsTabUser.java"/>
 <codefragment>
 <![CDATA[
             JPanel warning = new JPanel();
@@ -6160,9 +6160,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="15" tokens="105">
-<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
-<file line="107" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
-<file line="138" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
+<file line="76" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
+<file line="107" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
+<file line="138" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/cmd/RelationshipActionFactory.java"/>
 <codefragment>
 <![CDATA[
         ActionList al= new ActionList("Add Associations from ");
@@ -6184,8 +6184,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="39" tokens="105">
-<file line="122" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoIncomingTransitions.java"/>
-<file line="121" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOutgoingTransitions.java"/>
+<file line="122" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoIncomingTransitions.java"/>
+<file line="121" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOutgoingTransitions.java"/>
 <codefragment>
 <![CDATA[
             if (!isSomeSubvertexOf(sourceState, dm) && isSomeSubvertexOf(targetState, dm)) {
@@ -6231,8 +6231,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="19" tokens="104">
-<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
-<file line="91" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
+<file line="88" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleInitialStates.java"/>
+<file line="91" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMultipleShallowHistoryStates.java"/>
 <codefragment>
 <![CDATA[
                 Model.getPseudostateKind().getInitial())) {
@@ -6258,8 +6258,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="28" tokens="104">
-<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoInstanceVariables.java"/>
-<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOperations.java"/>
+<file line="82" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoInstanceVariables.java"/>
+<file line="77" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOperations.java"/>
 <codefragment>
 <![CDATA[
 	if (!(Model.getFacade().isAClass(dm))) {
@@ -6294,8 +6294,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="104">
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoIncomingTransitions.java"/>
-<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOutgoingTransitions.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoIncomingTransitions.java"/>
+<file line="65" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNoOutgoingTransitions.java"/>
 <codefragment>
 <![CDATA[
 	addTrigger("incoming");
@@ -6328,8 +6328,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="14" tokens="102">
-<file line="126" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/SettingsTabProfile.java"/>
-<file line="94" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/SettingsTabUser.java"/>
+<file line="126" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/SettingsTabProfile.java"/>
+<file line="94" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/SettingsTabUser.java"/>
 <codefragment>
 <![CDATA[
         setLayout(new BorderLayout());
@@ -6350,8 +6350,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="17" tokens="101">
-<file line="163" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/CollectionsModelInterpreter.java"/>
-<file line="240" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/CollectionsModelInterpreter.java"/>
+<file line="163" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/CollectionsModelInterpreter.java"/>
+<file line="240" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/profile/internal/ocl/uml14/CollectionsModelInterpreter.java"/>
 <codefragment>
 <![CDATA[
                 } else if (feature.toString().trim().equals("exists")) {
@@ -6375,8 +6375,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="15" tokens="101">
-<file line="49" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/JasonsHugeTheme.java"/>
-<file line="49" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/ui/JasonsTheme.java"/>
+<file line="49" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/JasonsHugeTheme.java"/>
+<file line="49" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/ui/JasonsTheme.java"/>
 <codefragment>
 <![CDATA[
 public class JasonsHugeTheme extends MetalTheme {
@@ -6398,8 +6398,8 @@ public class JasonsHugeTheme extends MetalTheme {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="101">
-<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMissingClassName.java"/>
-<file line="97" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMissingStateName.java"/>
+<file line="78" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMissingClassName.java"/>
+<file line="97" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrMissingStateName.java"/>
 <codefragment>
 <![CDATA[
 	String myName = Model.getFacade().getName(e);
@@ -6432,8 +6432,8 @@ public class JasonsHugeTheme extends MetalTheme {
 </codefragment>
 </duplication>
 <duplication lines="29" tokens="101">
-<file line="122" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrAssocNameConflict.java"/>
-<file line="127" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNameConflict.java"/>
+<file line="122" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrAssocNameConflict.java"/>
+<file line="127" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/cognitive/critics/CrNameConflict.java"/>
 <codefragment>
 <![CDATA[
                 }
@@ -6469,8 +6469,8 @@ public class JasonsHugeTheme extends MetalTheme {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="100">
-<file line="701" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabConstraints.java"/>
-<file line="729" path="/var/jenkins_home/workspace/thub-organization_argouml_master@3/src/argouml-app/src/org/argouml/uml/ui/TabConstraints.java"/>
+<file line="701" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabConstraints.java"/>
+<file line="729" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/ui/TabConstraints.java"/>
 <codefragment>
 <![CDATA[
         protected void fireConstraintDataChanged(
