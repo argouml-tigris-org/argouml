@@ -39,6 +39,7 @@
 package org.argouml.persistence;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 
@@ -122,15 +123,16 @@ public class TestZargoFilePersister extends TestCase {
      *
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
+     * @throws URISyntaxException if the url cannot be converted.
+     *    (This shouldn't happen.)
      */
     private Project doLoad(String filename) 
-        throws OpenException, InterruptedException {
+        throws OpenException, InterruptedException, URISyntaxException {
         URL url = TestZargoFilePersister.class.getResource(filename);
         assertTrue("Unintended failure: resource to be tested is not found: "
                 + filename + ", converted to URL: " + url, url != null);
         ZargoFilePersister persister = new ZargoFilePersister();
-        String name = url.getFile();
-        Project p = persister.doLoad(new File(name));
+        Project p = persister.doLoad(new File(url.toURI()));
         return p;
     }
 
@@ -224,9 +226,10 @@ public class TestZargoFilePersister extends TestCase {
      *                 if there was an error opening the project
      * @throws InterruptedException
      *                 if interrupted - should never occur in test environment
+     * @throws URISyntaxException on internal error.
      */
     public void testLoadLinkedProfile() throws OpenException,
-            InterruptedException {
+            InterruptedException, URISyntaxException {
      
         // Load a project which contains links to it
         Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");

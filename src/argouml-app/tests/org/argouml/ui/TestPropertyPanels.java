@@ -197,7 +197,7 @@ public class TestPropertyPanels extends TestCase {
             return suite;
         }
 
-        File testfile = new File(url.getFile());
+        File testfile = new File(url.toURI());
 
         AbstractFilePersister persister =
             PersistenceManager.getInstance().getPersisterFromFileName(

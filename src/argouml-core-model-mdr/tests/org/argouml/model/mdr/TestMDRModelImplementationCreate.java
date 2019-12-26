@@ -41,6 +41,7 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 
@@ -75,9 +76,11 @@ public class TestMDRModelImplementationCreate extends TestCase {
      *             if model subsystem initialization fails.
      * @throws FileNotFoundException
      *             If the test XMI file can't be found.
+     * @throws URISyntaxException if a created url cannot be converted.
+     *         (This shouldn't happen)
      */
     public void testMDRModelImplementation() throws UmlException,
-            FileNotFoundException {
+            FileNotFoundException, URISyntaxException {
         MDRModelImplementation mi = new MDRModelImplementation();
         assertNotNull(mi.getFacade());
         Model m = (Model) mi.getModelManagementFactory().createModel();
@@ -96,7 +99,7 @@ public class TestMDRModelImplementationCreate extends TestCase {
         URL modelUrl = getClass().getClassLoader().getResource(
                 "testmodels/test.xmi");
         assertNotNull(modelUrl);
-        File fileModel = new File(modelUrl.getPath());
+        File fileModel = new File(modelUrl.toURI());
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
         Collection modelElements = xmiReader.parse(source, false);

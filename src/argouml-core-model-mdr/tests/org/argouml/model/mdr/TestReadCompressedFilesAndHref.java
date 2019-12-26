@@ -40,6 +40,9 @@
 package org.argouml.model.mdr;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -63,7 +66,8 @@ public class TestReadCompressedFilesAndHref extends
 
     private final String ISSUE5946_BASE_DIR = "/testmodels/AndroMDA-3.3/";
 
-    public void testReadAndroMDAProfileIssue5946() {
+    public void testReadAndroMDAProfileIssue5946()
+            throws URISyntaxException {
         assertLoadModel(ISSUE5946_BASE_DIR + "unzipped-uml14"
             + "/andromda-profile-datatype-3.3.xml", null,
             "testReadAndroMDAProfileIssue5946");
@@ -76,7 +80,8 @@ public class TestReadCompressedFilesAndHref extends
 //            null, "testReadCompressedAndroMDAProfileFileIssue5946");
     }
 
-    public void testReadFileAndHrefIssue5946() {
+    public void testReadFileAndHrefIssue5946()
+            throws URISyntaxException {
         assertLoadModel(ISSUE5946_BASE_DIR + "timetracker2.xmi",
             ISSUE5946_BASE_DIR + "unzipped-uml14/",
             "testReadFileAndHrefIssue5946");
@@ -89,32 +94,48 @@ public class TestReadCompressedFilesAndHref extends
      * <li>reading compressed profiles;</li>
      * <li>reading profiles within the directory tree recursively.</li>
      * </ul>
+     * @throws URISyntaxException on an error in the test.
      */
-    public void testReadCompressedFileAndHrefIssue5946() {
+    public void testReadCompressedFileAndHrefIssue5946()
+            throws URISyntaxException {
         assertLoadModel(ISSUE5946_BASE_DIR + "timetracker.xmi",
             ISSUE5946_BASE_DIR + "zipped-uml14/",
             "testCompressedReadFileAndHrefIssue5946");
     }
 
+    /**
+     * Perform the load and asserts.
+     *
+     * @param modelPath
+     * @param profilesPath
+     * @param testName
+     * @throws URISyntaxException if the created URL cannot be converted.
+     *         (This shouldn't happen)
+     */
     void assertLoadModel(String modelPath, String profilesPath,
-            String testName) {
+            String testName) throws URISyntaxException {
         
         LOG.log(Level.INFO, "Begin " + testName + "()");
         
         XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
         if (profilesPath != null) {
-            String path = getClass().getResource(profilesPath).getPath();
-            File file = new File(path);
+            File file = new File(getClass().getResource(profilesPath).toURI());
             setProfilePathSubdirs(reader, file);
         }
         try {
-            InputSource inputSource = new InputSource(
-                getClass().getResource(modelPath).toExternalForm());
+            InputSource inputSource;
+            try {
+                inputSource = new InputSource(
+                        URLDecoder.decode(
+                                getClass().getResource(modelPath).toExternalForm(),
+                                "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new AssertionError("Model Path", e);
+            }
             inputSource.setPublicId(new File(modelPath).getName());
             reader.parse(inputSource, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception while loading model: " + e.getMessage());
+        } catch (org.argouml.model.UmlException e) {
+            throw new AssertionError("Parse input", e);
         }
         assertTrue(modelPath + " model is loaded", true);
     }

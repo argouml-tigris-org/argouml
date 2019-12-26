@@ -39,6 +39,7 @@
 package org.argouml.persistence;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import junit.framework.Test;
@@ -116,16 +117,17 @@ public class TestDiagramUpdateAtLoad extends TestCase {
      *
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
+     * @throws URISyntaxException when the created url cannot be converted.
+     *         (This shouldn't happen)
      */
     private Project doLoad(String filename) 
-        throws OpenException, InterruptedException {
+        throws OpenException, InterruptedException, URISyntaxException {
         assertTrue(ModuleLoader2.isEnabled("ArgoUML-Sequence"));
         URL url = getClass().getResource(filename);
         assertNotNull("Resource to be tested is not found: " + filename, url);
 
         ZargoFilePersister persister = new ZargoFilePersister();
-        String name = url.getFile();
-        Project p = persister.doLoad(new File(name));
+        Project p = persister.doLoad(new File(url.toURI()));
         return p;
     }
 
