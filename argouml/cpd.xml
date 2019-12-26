@@ -3460,8 +3460,8 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="26" tokens="139">
-<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1041" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1136" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
 <codefragment>
 <![CDATA[
         }
@@ -3552,9 +3552,9 @@ public class MenuBar14 extends GenericArgoMenuBar {
 </codefragment>
 </duplication>
 <duplication lines="24" tokens="137">
-<file line="822" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1034" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
-<file line="1129" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="829" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1041" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
+<file line="1136" path="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/uml/diagram/static_structure/ui/FigPackage.java"/>
 <codefragment>
 <![CDATA[
     }
