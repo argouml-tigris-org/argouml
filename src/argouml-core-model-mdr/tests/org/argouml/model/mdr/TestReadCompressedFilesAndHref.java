@@ -40,6 +40,8 @@
 package org.argouml.model.mdr;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
@@ -103,18 +105,30 @@ public class TestReadCompressedFilesAndHref extends
         
         XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
         if (profilesPath != null) {
-            String path = getClass().getResource(profilesPath).getPath();
+            String path;
+            try {
+                path = URLDecoder.decode(
+                        getClass().getResource(profilesPath).getPath(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new AssertionError("Class file name", e);
+            }
             File file = new File(path);
             setProfilePathSubdirs(reader, file);
         }
         try {
-            InputSource inputSource = new InputSource(
-                getClass().getResource(modelPath).toExternalForm());
+            InputSource inputSource;
+            try {
+                inputSource = new InputSource(
+                        URLDecoder.decode(
+                                getClass().getResource(modelPath).toExternalForm(),
+                                "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                throw new AssertionError("Model Path", e);
+            }
             inputSource.setPublicId(new File(modelPath).getName());
             reader.parse(inputSource, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception while loading model: " + e.getMessage());
+        } catch (org.argouml.model.UmlException e) {
+            throw new AssertionError("Parse input", e);
         }
         assertTrue(modelPath + " model is loaded", true);
     }

@@ -41,7 +41,9 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -96,7 +98,12 @@ public class TestMDRModelImplementationCreate extends TestCase {
         URL modelUrl = getClass().getClassLoader().getResource(
                 "testmodels/test.xmi");
         assertNotNull(modelUrl);
-        File fileModel = new File(modelUrl.getPath());
+        File fileModel;
+        try {
+            fileModel = new File(URLDecoder.decode(modelUrl.getPath(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("Model path", e);
+        }
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
         Collection modelElements = xmiReader.parse(source, false);
