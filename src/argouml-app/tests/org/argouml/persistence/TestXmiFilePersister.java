@@ -204,14 +204,13 @@ public class TestXmiFilePersister extends TestCase {
         URL url = TestZargoFilePersister.class.getResource(filename);
         assertTrue("Unintended failure: resource to be tested is not found: "
                 + filename + ", converted to URL: " + url, url != null);
-        String name = url.getFile();
 
         XmiFilePersister persister = new XmiFilePersister();
 
         Project project = ProjectManager.getManager().makeEmptyProject();
         ProjectManager.getManager().setCurrentProject(project);
 
-        persister.doLoad(new File(name));
+        persister.doLoad(new File(url.toURI()));
 
         ProjectManager.getManager().removeProject(project);
     }
@@ -226,7 +225,6 @@ public class TestXmiFilePersister extends TestCase {
         URL url = TestZargoFilePersister.class.getResource(filename);
         assertTrue("Unintended failure: resource to be tested is not found: "
                 + filename + ", converted to URL: " + url, url != null);
-        String name = url.getFile();
 
         XmiFilePersister persister = new XmiFilePersister();
 
@@ -234,16 +232,17 @@ public class TestXmiFilePersister extends TestCase {
         ProjectManager.getManager().setCurrentProject(project);
 
         try {
-            persister.doLoad(new File(name));
+            persister.doLoad(new File(url.toURI()));
             fail("Expected exception not thrown");
         } catch (OpenException e) {
             // Success - expected exception
-            if (e.getCause() instanceof XmiReferenceException) {
+            final Throwable cause = e.getCause();
+            if (cause instanceof XmiReferenceException) {
                 XmiReferenceException xre = 
-                    (XmiReferenceException) e.getCause();
+                    (XmiReferenceException) cause;
                 assertTrue(xre.getReference().contains("bad-reference"));
             } else {
-                fail("Unexpected exception cause");
+                throw new AssertionError("Unexpected exception cause", cause);
             }
         } finally {
             ProjectManager.getManager().removeProject(project);
