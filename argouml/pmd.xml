@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2019-12-25T17:49:38.025">
+<pmd version="4.3" timestamp="2019-12-25T23:41:47.424">
 <file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-app/src/org/argouml/application/api/Argo.java">
 <violation beginline="410" endline="413" begincolumn="64" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.application.api" class="Argo" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
