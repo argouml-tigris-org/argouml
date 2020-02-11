@@ -44,7 +44,7 @@ Build has two steps:
 If these are all successful, it is scored as Verified."""
         timeout(time:1, unit: 'HOURS') {
           withMaven() {
-            sh 'mvn -B compile'
+            sh '$MVN_CMD -B compile'
           }
         }
         gerritReview labels: [:], message: "Compiled without error."
@@ -54,7 +54,7 @@ If these are all successful, it is scored as Verified."""
       steps {
         timeout(time:1, unit: 'HOURS') {
           withMaven() {
-            sh 'mvn -B test'
+            sh '$MVN_CMD -B test'
           }
         }
         gerritReview labels: [:], message: "Tests run without error."
