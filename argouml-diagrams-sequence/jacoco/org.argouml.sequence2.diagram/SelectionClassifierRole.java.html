@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SelectionClassifierRole.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2.diagram</a> &gt; <span class="el_source">SelectionClassifierRole.java</span></div><h1>SelectionClassifierRole.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2.diagram;
+
+import java.awt.Polygon;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.swing.Icon;
+
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
+
+/**
+ * A custom select object to handle the special requirements of reshaping a
+ * classifier role.
+ * 
+ * @author Bob Tarling
+ */
+class SelectionClassifierRole extends SelectionNodeClarifiers2 {
+
+    /**
+     * The constructor.
+     * 
+     * @param f
+     *                the fig
+     */
+    public SelectionClassifierRole(Fig f) {
+<span class="nc" id="L67">       super(f);</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * Makes sure that dragging on the CR keeps them all aligned and resizing
+     * doesn't force FigMessages overlaying.
+     * 
+     * @param mX
+     *                New X position (aka current mouse X position)
+     * @param mY
+     *                New Y position (aka current mouse Y position)
+     * @param anX
+     *                Old X position
+     * @param anY
+     *                Old Y position
+     * @param hand
+     *                The handle being dragged
+     */
+    @Override
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (!getContent().isResizable()) {</span>
+<span class="nc" id="L89">            return;</span>
+        }
+
+<span class="nc" id="L92">        final List&lt;Fig&gt; figs = getContent().getLayer().getContents();</span>
+
+<span class="nc" id="L94">        int minimumHeight = 0;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (workOnFig instanceof FigClassifierRole</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                    &amp;&amp; workOnFig.getMinimumSize().height &gt; minimumHeight) {</span>
+<span class="nc" id="L98">                minimumHeight = workOnFig.getMinimumSize().height;</span>
+            }
+<span class="nc" id="L100">        }</span>
+
+<span class="nc" id="L102">        int deltaY = mY - getContent().getY();</span>
+        
+        // vertical resizing
+<span class="nc bnc" id="L105" title="All 3 branches missed.">        switch (hand.index) {</span>
+        case Handle.NORTHWEST:
+        case Handle.NORTH:
+        case Handle.NORTHEAST:
+<span class="nc" id="L109">            int newHeight = getContent().getHeight() - deltaY;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (newHeight &lt; minimumHeight) {</span>
+<span class="nc" id="L111">                newHeight = minimumHeight;</span>
+<span class="nc" id="L112">                deltaY = getContent().getHeight() - newHeight;</span>
+            }
+            
+<span class="nc" id="L115">            final HashMap&lt;Fig, Polygon&gt; polygonsByFig =</span>
+            	new HashMap&lt;Fig, Polygon&gt;();
+            
+            // There is a bug in GEF where positioning nodes can affect
+            // edge positions. We need to do 3 iterations to protect
+            // against that.
+            
+            // 1. Remember current message paths
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                if (workOnFig instanceof FigMessage &amp;&amp; </span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                		!((FigMessage) workOnFig).isSelfMessage()) {</span>
+<span class="nc" id="L126">                    polygonsByFig.put(</span>
+                    		workOnFig,
+<span class="nc" id="L128">                    		((FigMessage) workOnFig).getPolygon());</span>
+                }
+<span class="nc" id="L130">            }</span>
+
+            // 2. Reposition and resize nodes
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                if (workOnFig instanceof FigClassifierRole) {</span>
+<span class="nc" id="L135">                    workOnFig.setHeight(newHeight);</span>
+<span class="nc" id="L136">                    workOnFig.translate(0, deltaY);</span>
+                }
+<span class="nc" id="L138">            }</span>
+
+            // 3. Now reposition messages based on their original position
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (workOnFig instanceof FigMessage) {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                	if (((FigMessage) workOnFig).isSelfMessage()) {</span>
+<span class="nc" id="L144">                		((FigMessageSpline) ((FigMessage) workOnFig).getFig())</span>
+<span class="nc" id="L145">                				.translateFig(0, deltaY);</span>
+                	} else {
+<span class="nc" id="L147">                		polygonsByFig.get(workOnFig).translate(0, deltaY);</span>
+<span class="nc" id="L148">                		((FigMessage) workOnFig).setPolygon(</span>
+<span class="nc" id="L149">                				polygonsByFig.get(workOnFig));</span>
+                	}
+                }
+<span class="nc" id="L152">            }</span>
+<span class="nc" id="L153">            break;</span>
+        case Handle.SOUTH:
+        case Handle.SOUTHEAST:
+        case Handle.SOUTHWEST:
+<span class="nc" id="L157">            newHeight = deltaY;</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (newHeight &lt; minimumHeight) {</span>
+<span class="nc" id="L159">                newHeight = minimumHeight;</span>
+            }
+<span class="nc bnc" id="L161" title="All 2 branches missed.">            for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">                if (workOnFig instanceof FigClassifierRole) {</span>
+<span class="nc" id="L163">                    workOnFig.setHeight(newHeight);</span>
+                }
+<span class="nc" id="L165">            }</span>
+        default:
+        }
+
+<span class="nc" id="L169">        final Fig workOnFig = getContent();</span>
+        
+<span class="nc" id="L171">        int oldCenterX = 0;</span>
+<span class="nc" id="L172">        int newCenterX = 0;</span>
+        // Compute the initial center position of the CR
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (workOnFig instanceof FigClassifierRole) {</span>
+<span class="nc" id="L175">        	FigClassifierRole f = (FigClassifierRole) workOnFig;</span>
+<span class="nc" id="L176">        	oldCenterX = f.getWidth() / 2 + f.getX();</span>
+        }
+        
+        // horizontal resizing
+<span class="nc bnc" id="L180" title="All 3 branches missed.">        switch (hand.index) {</span>
+        case Handle.NORTHWEST:
+        case Handle.SOUTHWEST:
+<span class="nc" id="L183">            workOnFig.setWidth(workOnFig.getX() - mX + workOnFig.getWidth());</span>
+<span class="nc" id="L184">            workOnFig.setX(mX);</span>
+<span class="nc" id="L185">            break;</span>
+        case Handle.NORTHEAST:
+        case Handle.SOUTHEAST:
+<span class="nc" id="L188">            workOnFig.setWidth(mX - workOnFig.getX());</span>
+<span class="nc" id="L189">            break;</span>
+        default:
+        }
+
+        // Compute the final center position of the CR
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (workOnFig instanceof FigClassifierRole) {</span>
+<span class="nc" id="L195">        	FigClassifierRole f = (FigClassifierRole) workOnFig;</span>
+<span class="nc" id="L196">        	newCenterX = f.getWidth() / 2 + f.getX();</span>
+        }
+        
+        // Self messages act differently so it is needed to move them separetly.
+        // Only self messages of selected CR should be horizontally translated.
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        for (Fig fig : figs) {</span>
+<span class="nc bnc" id="L202" title="All 4 branches missed.">        	if (fig instanceof FigMessage &amp;&amp; ((FigMessage) fig).isSelfMessage()</span>
+<span class="nc" id="L203">        			&amp;&amp; Model.getCoreHelper().getDestination(fig.getOwner()).</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        					equals(workOnFig.getOwner())) {</span>
+<span class="nc" id="L205">        		((FigMessageSpline) ((FigMessage) fig).getFig())</span>
+<span class="nc" id="L206">	        			.translateFig(newCenterX - oldCenterX, 0);</span>
+        	}
+<span class="nc" id="L208">		}</span>
+        
+<span class="nc" id="L210">    }</span>
+
+    @Override
+    protected Object getNewNode(int index) {
+<span class="nc" id="L214">        return null;</span>
+    }
+
+    @Override
+    protected Icon[] getIcons() {
+<span class="nc" id="L219">        return null;</span>
+    }
+
+    @Override
+    protected String getInstructions(int index) {
+<span class="nc" id="L224">        return null;</span>
+    }
+
+    @Override
+    protected Object getNewEdgeType(int index) {
+<span class="nc" id="L229">        return null;</span>
+    }
+
+    @Override
+    protected Object getNewNodeType(int index) {
+<span class="nc" id="L234">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

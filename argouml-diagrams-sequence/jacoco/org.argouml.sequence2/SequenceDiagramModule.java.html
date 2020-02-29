@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SequenceDiagramModule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2</a> &gt; <span class="el_source">SequenceDiagramModule.java</span></div><h1>SequenceDiagramModule.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.providers.uml.SDMessageNotationUml;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.sequence2.diagram.SequenceDiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.argouml.uml.diagram.DiagramFactoryInterface2;
+import org.argouml.uml.ui.PropPanelFactoryManager;
+
+/**
+ * The Sequence Diagram Module description.
+ *
+ * @see org.argouml.moduleloader.ModuleInterface
+ * @author penyaskito
+ */
+<span class="fc" id="L62">public class SequenceDiagramModule implements ModuleInterface {</span>
+
+<span class="fc" id="L64">    private static final Logger LOG =</span>
+<span class="fc" id="L65">        Logger.getLogger(SequenceDiagramModule.class.getName());</span>
+
+    private SequenceDiagramPropPanelFactory propPanelFactory;
+
+    public boolean enable() {
+
+<span class="fc" id="L71">        propPanelFactory =</span>
+            new SequenceDiagramPropPanelFactory();
+<span class="fc" id="L73">        PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);</span>
+        // TODO: Remove the casting to DiagramFactoryInterface2
+        // as soon as DiagramFactoryInterface is removed.
+<span class="fc" id="L76">        DiagramFactory.getInstance().registerDiagramFactory(</span>
+                DiagramType.Sequence,
+                (DiagramFactoryInterface2) new SequenceDiagramFactory());
+
+<span class="fc" id="L80">        NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();</span>
+<span class="fc" id="L81">        NotationName nn = Notation.findNotation(Notation.DEFAULT_NOTATION);</span>
+<span class="fc" id="L82">        npf.addNotationProvider(NotationProviderFactory2.TYPE_SD_MESSAGE,</span>
+                nn, SDMessageNotationUml.class);
+
+        PersistenceManager persistanceManager =
+<span class="fc" id="L86">            PersistenceManager.getInstance();</span>
+
+        // Translate any old style sequence diagrams
+<span class="fc" id="L89">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram&quot;,
+                &quot;org.argouml.sequence2.diagram.UMLSequenceDiagram&quot;);
+<span class="fc" id="L92">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigCreateActionMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L95">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigDestroyActionMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L98">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigDeleteActionMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L101">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigCallActionMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L104">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigReturnActionMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L107">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence.ui.FigClassifierRole&quot;,
+                &quot;org.argouml.sequence2.diagram.FigClassifierRole&quot;);
+
+        // Translate any sequence diagrams create with any previous svn
+        // work in progress
+<span class="fc" id="L113">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram&quot;,
+                &quot;org.argouml.sequence2.diagram.UMLSequenceDiagram&quot;);
+<span class="fc" id="L116">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence2.ui.FigMessage&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessage&quot;);
+<span class="fc" id="L119">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence2.ui.FigClassifierRole&quot;,
+                &quot;org.argouml.sequence2.diagram.FigClassifierRole&quot;);
+<span class="fc" id="L122">        persistanceManager.addTranslation(</span>
+                &quot;org.argouml.uml.diagram.sequence2.ui.FigMessageSpline&quot;,
+                &quot;org.argouml.sequence2.diagram.FigMessageSpline&quot;);
+<span class="fc" id="L125">        LOG.log(Level.INFO, &quot;SequenceDiagram Module enabled.&quot;);</span>
+<span class="fc" id="L126">        return true;</span>
+    }
+
+    public boolean disable() {
+
+<span class="nc" id="L131">        PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);</span>
+
+        // TODO: Remove the casting to DiagramFactoryInterface2
+        // as soon as DiagramFactoryInterface is removed.
+<span class="nc" id="L135">        DiagramFactory.getInstance().registerDiagramFactory(</span>
+                DiagramType.Sequence, (DiagramFactoryInterface2) null);
+
+<span class="nc" id="L138">        LOG.log(Level.INFO, &quot;SequenceDiagram Module disabled.&quot;);</span>
+<span class="nc" id="L139">        return true;</span>
+    }
+
+    public String getName() {
+<span class="fc" id="L143">        return &quot;ArgoUML-Sequence&quot;;</span>
+    }
+
+    public String getInfo(int type) {
+<span class="pc bpc" id="L147" title="3 of 5 branches missed.">        switch (type) {</span>
+        case DESCRIPTION:
+<span class="nc" id="L149">            return &quot;The new sequence diagram implementation&quot;;</span>
+        case AUTHOR:
+<span class="nc" id="L151">            return &quot;Christian L\u00f3pez Esp\u00ednola&quot;;</span>
+        case VERSION:
+<span class="fc" id="L153">            return &quot;0.28&quot;;</span>
+        case DOWNLOADSITE:
+<span class="fc" id="L155">            return &quot;http://argouml-sequence.tigris.org&quot;;</span>
+        default:
+<span class="nc" id="L157">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

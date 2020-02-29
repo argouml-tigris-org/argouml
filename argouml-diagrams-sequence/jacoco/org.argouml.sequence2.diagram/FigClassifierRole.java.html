@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigClassifierRole.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2.diagram</a> &gt; <span class="el_source">FigClassifierRole.java</span></div><h1>FigClassifierRole.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2.diagram;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigEmptyRect;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigRect;
+
+/**
+ * The Fig that represents a Classifier Role
+ * @author penyaskito
+ */
+public class FigClassifierRole extends FigNodeModelElement {
+
+    /**
+     * This is an empty rectangle placed above HeadFig. It creates a space
+     * between where the classifierRole would normally start and where it
+     * starts as the result of a create message.
+     */
+    private FigEmptyRect emptyFig;
+    /**
+     * This is the box head of the classifierRole containing the notation
+     * and stereotypes.
+     */
+    private FigHead headFig;
+    /**
+     * This is the dashed lifeline under FigHead that contain the activation
+     * blocks.
+     */
+    private FigLifeLine lifeLineFig;
+    
+    // TODO: Do we need this? Is this the same as emptyFig.getHeight()?
+<span class="fc" id="L84">    private int offset = 0;</span>
+    
+    /**
+     * The minimum height of the classifier role.
+     */
+    private int minimumHeight;
+
+    /**
+     * Construct a use case figure with the given owner, bounds, and rendering 
+     * settings.  This constructor is used by the PGML parser.
+     * 
+     * @param owner owning model element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigClassifierRole(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L101">        super(owner, bounds, settings);</span>
+<span class="fc" id="L102">        initialize();</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (bounds != null) {</span>
+<span class="fc" id="L104">            setLocation(bounds.x, bounds.y);</span>
+        }
+<span class="fc" id="L106">    }</span>
+    
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L110">        return new FigClassifierRolePort();</span>
+    }
+
+    /**
+     * Initialization which is common to multiple constructors.
+     */
+    private void initialize() {
+<span class="fc" id="L117">        emptyFig = new FigEmptyRect(getX(), getY(), getWidth(), offset);</span>
+<span class="fc" id="L118">        emptyFig.setLineWidth(0);</span>
+        
+<span class="fc" id="L120">        headFig = new FigHead(getOwner(), getSettings(), getStereotypeFig(),</span>
+<span class="fc" id="L121">                getNameFig());</span>
+<span class="fc" id="L122">        headFig.setBounds(getX(), getY() + offset,</span>
+<span class="fc" id="L123">                getWidth(), headFig.getHeight());</span>
+        
+<span class="fc" id="L125">        lifeLineFig = new FigLifeLine(getOwner(), new Rectangle(headFig.getX(),</span>
+<span class="fc" id="L126">                getY() + offset + headFig.getHeight() - getLineWidth(), 0, 0),</span>
+<span class="fc" id="L127">                getSettings());</span>
+        
+<span class="fc" id="L129">        addFig(getBigPort());        </span>
+<span class="fc" id="L130">        getBigPort().setVisible(false);</span>
+
+        // TODO: Move magic number 10 to descriptive constant
+<span class="fc" id="L133">        minimumHeight = headFig.getMinimumHeight() + 10;</span>
+        
+<span class="fc" id="L135">        addFig(emptyFig);        </span>
+<span class="fc" id="L136">        addFig(lifeLineFig);</span>
+<span class="fc" id="L137">        addFig(headFig);</span>
+        
+<span class="fc" id="L139">        createActivations();</span>
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * The NotationProvider for the ClassifierRole. &lt;p&gt;
+     * 
+     * The syntax is for UML is:
+     * &lt;pre&gt;
+     * baselist := [base] [, base]*
+     * classifierRole := [name] [/ role] [: baselist]
+     * &lt;/pre&gt;&lt;/p&gt;
+     * 
+     * The &lt;code&gt;name&lt;/code&gt; is the Instance name, not used currently.
+     * See ClassifierRoleNotationUml for details.&lt;p&gt;
+     *
+     * This syntax is compatible with the UML 1.4 specification.
+     * @return TYPE_CLASSIFIERROLE
+     */
+    @Override
+    protected int getNotationProviderType() {
+<span class="fc" id="L159">        return NotationProviderFactory2.TYPE_CLASSIFIERROLE;</span>
+    }
+
+    @Override
+    protected void setBoundsImpl(
+            final int x, final int y,
+            final int w, final int h) {
+        
+<span class="fc" id="L167">        final Rectangle oldBounds = getBounds();</span>
+<span class="fc" id="L168">        final int ww = Math.max(w, headFig.getMinimumSize().width);</span>
+        
+<span class="fc" id="L170">        emptyFig.setBounds(x, y, ww, offset);</span>
+<span class="fc" id="L171">        headFig.setBounds(x, y + offset, ww, headFig.getMinimumHeight());</span>
+<span class="fc" id="L172">        lifeLineFig.setBounds(x, </span>
+<span class="fc" id="L173">                y + offset + headFig.getHeight() - lifeLineFig.getLineWidth(), </span>
+<span class="fc" id="L174">                ww, h - offset - headFig.getHeight());</span>
+<span class="fc" id="L175">        getBigPort().setBounds(x, y, ww, h);</span>
+
+<span class="fc" id="L177">        _x = x;</span>
+<span class="fc" id="L178">        _y = y;</span>
+<span class="fc" id="L179">        _w = w;</span>
+<span class="fc" id="L180">        _h = h;</span>
+        
+        //TODO: I suspect this isn't needed call isn't needed but don't remove
+        // till out of alpha/beta stage
+<span class="fc" id="L184">        updateEdges();</span>
+        //
+        
+<span class="fc" id="L187">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L188">    }</span>
+    
+    /*
+     * This method is overridden in order to ignore change of the y coordinate
+     * during dragging.
+     *
+     * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
+     */
+    public void superTranslate(int dx, int dy) {
+<span class="nc" id="L197">        super.superTranslate(dx, 0);</span>
+<span class="nc" id="L198">    }</span>
+     
+    /**
+     * Updates the head offset, looking for the create messages. 
+     */
+    private void updateHeadOffset() {
+<span class="fc" id="L204">        FigMessage createMessage = getFirstCreateFigMessage();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (createMessage != null) {</span>
+<span class="fc" id="L206">            int y = createMessage.getFirstPoint().y;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">            if (y &gt; 0) {</span>
+<span class="fc" id="L208">                offset = y - (getY() + headFig.getHeight() / 2);</span>
+            }
+<span class="fc" id="L210">        } else {</span>
+<span class="fc" id="L211">            offset = 0;</span>
+        }       
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Gets the first create message received by the classifier role
+     * @return a figmessage.
+     */
+    private FigMessage getFirstCreateFigMessage() {
+<span class="fc" id="L220">        List&lt;FigMessage&gt; messages = getFigMessages();</span>
+<span class="fc" id="L221">        FigMessage createMessage = null;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        for (FigMessage message : messages) {</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">            if (message.getDestFigNode().equals(this)</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">                    &amp;&amp; message.isCreateMessage()) {</span>
+                
+<span class="fc" id="L226">                createMessage = message;</span>
+<span class="fc" id="L227">                break;</span>
+            }
+<span class="nc" id="L229">        }        </span>
+<span class="fc" id="L230">        return createMessage;</span>
+    }
+    
+    /**
+     * Gets the minimum size of the Fig.&lt;p&gt;
+     * 
+     * The width is restricted by the notation making sure that the full
+     * classifier role description is displayed.&lt;p&gt;
+     * 
+     * The minimum height is restricted so that the all attached message will
+     * remain in the same position relative to the Fig. If no messages are
+     * attached then the minimum height will ensure box is shown plus at least
+     * 10 pixels of the lifeline.
+     * 
+     * @return dimensions of the minimum size
+     */
+    public Dimension getMinimumSize() {       
+         /**
+          * TODO: minimum height should not be calculated every time, but only 
+          * when an FigMessage has been added or removed.
+          * Currently doing that doesn't work because of an unknown problem. 
+          * How to test: create only two CRs and a create message between them. 
+          * Then move the create message to the bottom!
+          * Until that is fixed the workaround is to call updateMinimumHeight()
+          * every time the minimum size is needed
+          */
+<span class="fc" id="L256">        updateMinimumHeight();</span>
+        
+<span class="fc" id="L258">        return new Dimension(headFig.getMinimumWidth(), minimumHeight);</span>
+    }
+    
+    /**
+     * Updates the minimum height of the classifier role when a FigMessage
+     * is added or removed.
+     */
+    private void updateMinimumHeight() {
+<span class="fc" id="L266">        int yMax = getY();</span>
+<span class="fc" id="L267">        List&lt;FigEdge&gt; figsEdges = getFigEdges();</span>
+<span class="fc" id="L268">        FigMessage createMessage = getFirstCreateFigMessage();</span>
+        
+        // TODO: Is this next line safe? What happens if there is just one
+        // comment edge or a comment edge and a single message?
+<span class="pc bpc" id="L272" title="3 of 4 branches missed.">        if (figsEdges.size() == 1 &amp;&amp; createMessage != null) {</span>
+            // TODO: Move magic number 10 to descriptive constant
+<span class="nc" id="L274">            minimumHeight = headFig.getMinimumSize().height + offset + 10;</span>
+        } else {
+<span class="pc bpc" id="L276" title="1 of 2 branches missed.">            for (Fig fig : figsEdges) {</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">                if ( fig instanceof FigMessage</span>
+                        // we need the edge to be complete
+<span class="nc bnc" id="L279" title="All 2 branches missed.">                        &amp;&amp; ((FigMessage) fig).getDestFigNode() != null</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                        &amp;&amp; ((FigMessage) fig).getSourceFigNode() != null</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                        &amp;&amp; ((FigMessage) fig).getY() &gt; yMax) {</span>
+<span class="nc" id="L282">                    yMax = ((FigMessage) fig).getY();</span>
+                }
+<span class="nc" id="L284">            }</span>
+            // TODO: Move magic number 10 to descriptive constant
+<span class="fc" id="L286">            minimumHeight = yMax - getY() + 10;</span>
+        }
+<span class="fc" id="L288">    }</span>
+    
+    /**
+     * Override ancestor behaviour by always calling setBounds even if the
+     * size hasn't changed. Without this override the Package bounds draw
+     * incorrectly. This is not the best fix but is a workaround until the
+     * true cause is known. See issue 6135.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    protected void updateBounds() {
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">        if (!isCheckSize()) {</span>
+<span class="nc" id="L300">            return;</span>
+        }
+<span class="fc" id="L302">        Rectangle bbox = getBounds();</span>
+<span class="fc" id="L303">        Dimension minSize = getMinimumSize();</span>
+<span class="fc" id="L304">        bbox.width = Math.max(bbox.width, minSize.width);</span>
+<span class="fc" id="L305">        bbox.height = Math.max(bbox.height, minSize.height);</span>
+<span class="fc" id="L306">        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);</span>
+<span class="fc" id="L307">    }</span>
+    
+    @Override
+    public void removeFigEdge(FigEdge edge) {
+<span class="fc" id="L311">        super.removeFigEdge(edge);</span>
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        if (edge instanceof FigMessage) {</span>
+<span class="fc" id="L314">            final FigMessage figMessage = (FigMessage) edge;</span>
+<span class="fc" id="L315">            positionHead(figMessage);</span>
+<span class="fc" id="L316">            createActivations();</span>
+        }
+<span class="fc" id="L318">    }</span>
+    
+    @Override
+    public void addFigEdge(FigEdge edge) {
+<span class="fc" id="L322">        super.addFigEdge(edge);</span>
+        
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        if (edge instanceof FigMessage) {</span>
+<span class="fc" id="L325">            FigMessage mess = (FigMessage) edge;</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">            if (mess.isSelfMessage()) {</span>
+<span class="nc" id="L327">                mess.convertToArc();</span>
+            }
+<span class="fc" id="L329">            positionHead(mess);</span>
+        }        
+<span class="fc" id="L331">    }</span>
+    
+    /**
+     * Position the head at the top of the lifeline so that it is at the top
+     * of the FigClassifierRole or where the create message enters the
+     * FigClassifierRole
+     */
+    void positionHead(final FigMessage message) {
+        // if the added edge is a Create Message it will affect the position
+        // of the ClassifierRole so it should be repositioned
+<span class="fc bfc" id="L341" title="All 2 branches covered.">        if (message.isCreateMessage()</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                &amp;&amp; equals(message.getDestFigNode())</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">                &amp;&amp; !equals(message.getSourceFigNode())) {</span>
+<span class="fc" id="L344">            updateHeadOffset();</span>
+<span class="fc" id="L345">            setBounds(getX(), getY(), getWidth(), getHeight());</span>
+        }
+<span class="fc" id="L347">    }</span>
+    
+    /**
+     * Return an ordered list of message edges that are complete (ie the user
+     * has finished drawing). Messages are ordered from top to bottom.
+     * @return A list with all the messages that are complete
+     */
+    public List&lt;FigMessage&gt; getFigMessages() {
+<span class="fc" id="L355">        final List&lt;FigMessage&gt; completeMessages = new ArrayList&lt;FigMessage&gt;(10);</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">        for (Object o : getFigEdges()) {</span>
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">            if (o instanceof FigMessage) {</span>
+<span class="fc" id="L358">                final FigMessage fm = (FigMessage) o;</span>
+<span class="pc bpc" id="L359" title="1 of 2 branches missed.">                if (fm.getPoints().length &gt; 1</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">                        &amp;&amp; fm.getDestFigNode() != null</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">                        &amp;&amp; fm.getSourceFigNode() != null) {</span>
+<span class="fc" id="L362">                    completeMessages.add(fm);</span>
+                }
+            }
+<span class="fc" id="L365">        }</span>
+<span class="fc" id="L366">        Collections.sort(completeMessages, new FigMessageComparator());</span>
+<span class="fc" id="L367">        return completeMessages;</span>
+    }
+    
+    void createActivations() {
+<span class="fc" id="L371">        lifeLineFig.createActivations(getFigMessages());</span>
+<span class="fc" id="L372">        forceRepaintShadow();</span>
+<span class="fc" id="L373">    }</span>
+    
+    @Override
+    public void setFillColor(Color color) {
+<span class="fc" id="L377">        headFig.setFillColor(color);</span>
+<span class="fc" id="L378">        lifeLineFig.setFillColor(color);</span>
+<span class="fc" id="L379">    }</span>
+    
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L383">        return headFig.getFillColor();</span>
+    }
+    
+    @Override
+    public void setFilled(boolean filled) {
+<span class="fc" id="L388">        headFig.setFilled(filled);</span>
+<span class="fc" id="L389">    }</span>
+    
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L393">        headFig.setLineWidth(w);</span>
+<span class="fc" id="L394">        getBigPort().setLineWidth(0);</span>
+<span class="fc" id="L395">    }</span>
+    
+    /**
+     * This class represents the port of the FigClassifierRole.
+     * It has the logic for locating the messages. 
+     *
+     * @author penyaskito
+     */
+    class FigClassifierRolePort extends FigRect {
+        
+        /**
+         * 
+         */
+<span class="fc" id="L408">        FigClassifierRolePort() {</span>
+<span class="fc" id="L409">            super(0, 0, 0, 0, null, null);</span>
+<span class="fc" id="L410">            setLineWidth(0);</span>
+<span class="fc" id="L411">        }</span>
+        
+        @Override
+        public Point getClosestPoint(Point anotherPt) {
+<span class="fc" id="L415">            int width = FigActivation.DEFAULT_WIDTH;</span>
+<span class="fc" id="L416">            int y = anotherPt.y;</span>
+             
+            // the initial x is the left side of the activation
+<span class="fc" id="L419">            int x = getX() + getWidth() / 2 - width / 2; </span>
+            // put the x at the right side of the activation if needed
+<span class="fc bfc" id="L421" title="All 2 branches covered.">            if (anotherPt.x &gt; x + width) {</span>
+<span class="fc" id="L422">                x = x + width;</span>
+            } 
+            // if the y coordinate is before the classifier role y,
+            // we place the start in the corner of the fighead.
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">            if (y &lt; getY()) {</span>
+<span class="nc" id="L427">                y = getY();</span>
+<span class="nc" id="L428">                x = Geometry.ptClosestTo(headFig.getBounds(), anotherPt).x;</span>
+            }
+            // if the y coordinate is inside the head,
+            // the x must be in the border of the headFig.
+<span class="fc bfc" id="L432" title="All 2 branches covered.">            else if (y &lt; lifeLineFig.getY()) {</span>
+<span class="fc" id="L433">                x = Geometry.ptClosestTo(headFig.getBounds(), anotherPt).x; </span>
+            }
+            // else if the y coordinate is outside of the classifier role,
+            // we fix the y in the max y of the classifier role.
+            // FIXME: We should increase the height of the classifier role, 
+            // don't???
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">            else if (y &gt; getY() + getHeight()) {</span>
+<span class="nc" id="L440">                y = headFig.getY() + FigClassifierRole.this.getHeight();</span>
+            }
+<span class="fc" id="L442">            return new Point(x, y);</span>
+        }
+    }
+    
+    public Selection makeSelection() {
+<span class="nc" id="L447">        return new SelectionClassifierRole(this);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2.diagram</a> &gt; <span class="el_source">FigMessage.java</span></div><h1>FigMessage.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2.diagram;
+
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JSeparator;
+
+import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.SDNotationSettings;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigTextGroup;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.ArrowHead;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.ArrowHeadTriangle;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * The Fig that represents a message between classifier roles.
+ * @author penyaskito
+ */
+public class FigMessage extends FigEdgeModelElement {
+
+    private static final long serialVersionUID = -2961220746360335159L;
+
+<span class="fc" id="L85">    private static final Logger LOG =</span>
+<span class="fc" id="L86">        Logger.getLogger(FigEdgeModelElement.class.getName());</span>
+
+    private FigTextGroup textGroup;
+
+    /**
+     * The action owned by the message
+     */
+<span class="fc" id="L93">    private Object action = null;</span>
+
+    private SDNotationSettings notationSettings;
+<span class="fc" id="L96">    private boolean t[] = {</span>
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    };
+
+    /**
+     * Construct a fig owned by the given UML element with the provided render
+     * settings.
+     * @param edge owning UML element
+     * @param settings rendering settings
+     */
+    public FigMessage(Object edge, DiagramSettings settings) {
+<span class="fc" id="L114">        super(edge, settings);</span>
+<span class="fc" id="L115">        textGroup = new FigTextGroup(edge, settings);</span>
+<span class="fc" id="L116">        initialize();</span>
+<span class="fc" id="L117">        action = Model.getFacade().getAction(getOwner());</span>
+<span class="fc" id="L118">        updateArrow();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (action != null) {</span>
+<span class="fc" id="L120">            addElementListener(action, &quot;isAsynchronous&quot;);</span>
+        }
+<span class="fc" id="L122">        t[1] = Model.getFacade().isASynchCallMessage(getOwner());</span>
+<span class="fc" id="L123">        t[2] = Model.getFacade().isAASynchCallMessage(getOwner());</span>
+<span class="fc" id="L124">        t[3] = Model.getFacade().isACreateMessage(getOwner());</span>
+<span class="fc" id="L125">        t[4] = Model.getFacade().isADeleteMessage(getOwner());</span>
+<span class="fc" id="L126">        t[5] = Model.getFacade().isAReplyMessage(getOwner());</span>
+<span class="fc" id="L127">        t[6] = Model.getFacade().isAASynchSignalMessage(getOwner());</span>
+<span class="fc" id="L128">    }</span>
+
+    private void initialize() {
+<span class="fc" id="L131">        textGroup.addFig(getNameFig());</span>
+<span class="fc" id="L132">        textGroup.addFig(getStereotypeFig());</span>
+<span class="fc" id="L133">        addPathItem(textGroup, new PathItemPlacement(this, textGroup, 50, 10));</span>
+<span class="fc" id="L134">        notationSettings = new SDNotationSettings();</span>
+<span class="fc" id="L135">    }</span>
+
+    @Override
+    protected int getNotationProviderType() {
+        /* Use a different notation as Messages on a collaboration diagram: */
+<span class="fc" id="L140">        return NotationProviderFactory2.TYPE_SD_MESSAGE;</span>
+    }
+
+    /* This next argument may be used to switch off
+     * the generation of sequence numbers - this is
+     * still to be implemented.
+     * They are less desired in sequence diagrams,
+     * since they do not add any information.
+     * In collaboration diagrams they are needed,
+     * and they are still optional in sequence diagrams. */
+    @Override
+    protected void initNotationProviders(Object own) {
+<span class="nc" id="L152">        super.initNotationProviders(own);</span>
+<span class="nc" id="L153">        notationSettings.setShowSequenceNumbers(false);</span>
+<span class="nc" id="L154">    }</span>
+
+    @Override
+    protected void textEditStarted(FigText ft) {
+        /* This is a temporary hack until the notation provider
+         * for a SD Message will be able to parse successfully when the sequence
+         * number is missing.
+         * Remove this method completely then.*/
+<span class="nc" id="L162">        notationSettings.setShowSequenceNumbers(true);</span>
+<span class="nc" id="L163">        super.textEditStarted(ft);</span>
+<span class="nc" id="L164">        notationSettings.setShowSequenceNumbers(false);</span>
+<span class="nc" id="L165">    }</span>
+
+    protected SDNotationSettings getNotationSettings() {
+<span class="nc" id="L168">        return notationSettings;</span>
+    }
+
+    boolean isSynchCallMessage() {
+<span class="fc" id="L172">    	return t[1];</span>
+    }
+
+    boolean isASynchCallMessage() {
+<span class="nc" id="L176">        return t[2];</span>
+    }
+
+    boolean isCreateMessage() {
+<span class="fc" id="L180">    	return t[3];</span>
+    }
+
+    boolean isDeleteMessage() {
+<span class="fc" id="L184">    	return t[4];</span>
+    }
+
+    boolean isReplyMessage() {
+<span class="fc" id="L188">    	return t[5];</span>
+    }
+
+    boolean isASynchSignalMessage() {
+<span class="nc" id="L192">        return t[6];</span>
+    }
+
+    /**
+     * Updates the arrow head and the arrow line according
+     * to the action type..
+     */
+    private void updateArrow() {
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        if (getOwner() == null) {</span>
+<span class="fc" id="L201">            return;</span>
+        }
+<span class="fc" id="L203">        getFig().setDashed(isReplyMessage());</span>
+<span class="fc" id="L204">        final Object act = getAction();</span>
+        final ArrowHead arrowHead;
+<span class="pc bpc" id="L206" title="1 of 4 branches missed.">        if (act != null &amp;&amp; Model.getFacade().isAsynchronous(getAction())) {</span>
+<span class="fc" id="L207">            arrowHead = new ArrowHeadGreater();</span>
+        } else {
+<span class="fc" id="L209">            arrowHead = new ArrowHeadTriangle();</span>
+<span class="fc" id="L210">            getFig().setFillColor(getLineColor());</span>
+        }
+<span class="fc" id="L212">        setDestArrowHead(arrowHead);</span>
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Gets the action attached to the message.
+     * @return the action
+     */
+    private Object getAction() {
+<span class="fc" id="L220">        return action;</span>
+    }
+
+    /**
+     * @param me the MouseEvent that triggered the popup menu request
+     * @return a Vector containing a combination of these 4 types: Action,
+     *         JMenu, JMenuItem, JSeparator.
+     */
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L230">        Vector popUpActions = super.getPopUpActions(me);</span>
+
+        // Operations ...
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (Model.getFacade().isACallAction(getAction())) {</span>
+<span class="nc" id="L234">            ArgoJMenu opMenu = buildOperationMenu();</span>
+<span class="nc" id="L235">            int index = popUpActions.size() - getPopupAddOffset() - 1;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (index &lt; 0) {</span>
+<span class="nc" id="L237">                index = 0;</span>
+            }
+<span class="nc" id="L239">            popUpActions.add(index, new JSeparator());</span>
+<span class="nc" id="L240">            popUpActions.add(index, opMenu);</span>
+        }
+
+<span class="nc" id="L243">        return popUpActions;</span>
+    }
+
+    protected ArgoJMenu buildOperationMenu() {
+<span class="nc" id="L247">        ArgoJMenu opMenu = new ArgoJMenu(&quot;Operation&quot;);</span>
+<span class="nc" id="L248">        Iterator&lt;Object&gt; iter = getReceiverOperations().iterator();</span>
+<span class="nc" id="L249">        opMenu.setEnabled(iter.hasNext());</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L251">            Object op = iter.next();</span>
+<span class="nc" id="L252">            NotationProvider np = null;</span>
+            try {
+<span class="nc" id="L254">                String s = getNotationSettings().getNotationLanguage();</span>
+<span class="nc" id="L255">                np = NotationProviderFactory2.getInstance()</span>
+<span class="nc" id="L256">                    .getNotationProvider(</span>
+                        NotationProviderFactory2.TYPE_OPERATION,
+                        op,
+<span class="nc" id="L259">                        Notation.findNotation(s));</span>
+<span class="nc" id="L260">            } catch (Exception e) {</span>
+                //TODO: add logging, but this will never happen and is handled
+<span class="nc" id="L262">                np = null;</span>
+<span class="nc" id="L263">            }</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">            String label = (np != null)</span>
+<span class="nc" id="L265">                ? np.toString(op, getNotationSettings())</span>
+<span class="nc" id="L266">                : Model.getFacade().getName(op);</span>
+<span class="nc" id="L267">            opMenu.add(new ActionSetOperation(getAction(), op, label));</span>
+<span class="nc" id="L268">        }</span>
+<span class="nc" id="L269">        return opMenu;</span>
+    }
+
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L274">        return new SelectionMessage(this);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setFig(Fig f) {
+<span class="fc" id="L281">        super.setFig(f);</span>
+<span class="fc" id="L282">        updateArrow();</span>
+<span class="fc" id="L283">    }</span>
+
+    int getFinalY() {
+<span class="fc" id="L286">	int finalY = 0;</span>
+<span class="fc" id="L287">        Point[] points = getFig().getPoints();</span>
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">        if (points.length &gt; 0) {</span>
+<span class="fc" id="L289">            finalY = points[points.length - 1].y;</span>
+        }
+<span class="fc" id="L291">        return finalY;</span>
+    }
+
+    int getStartY() {
+<span class="nc" id="L295">	int finalY = 0;</span>
+<span class="nc" id="L296">        Point[] points = getFig().getPoints();</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (points.length &gt; 0) {</span>
+<span class="nc" id="L298">            finalY = points[0].y;</span>
+        }
+<span class="nc" id="L300">        return finalY;</span>
+    }
+
+
+    /**
+     * Checks if the message source and dest are the same.
+     * @return true if they are the same, otherwise false.
+     */
+    boolean isSelfMessage() {
+        // If possible we determine this by checking the destination
+        // and source Figs are the same. If this is not possible
+        // because the edge is not yet connected then we check the
+        // model.
+<span class="pc bpc" id="L313" title="2 of 4 branches missed.">        if (getDestPortFig() == null || getSourcePortFig() == null) {</span>
+<span class="nc" id="L314">            return getDestination().equals(getSource());</span>
+        } else {
+<span class="fc" id="L316">            return (getDestPortFig().equals(getSourcePortFig()));</span>
+        }
+    }
+
+    /**
+     * Converts the message into a spline.
+     * This is needed for self-referencing messages.
+     */
+    public void convertToArc() {
+<span class="nc bnc" id="L325" title="All 2 branches missed.">        if (getPoints().length &gt; 0) {</span>
+<span class="nc" id="L326">            FigMessageSpline spline = new FigMessageSpline(getPoint(0));</span>
+<span class="nc" id="L327">            spline.setDashed(isReplyMessage());</span>
+<span class="nc" id="L328">            super.setFig(spline);</span>
+<span class="nc" id="L329">            computeRoute();</span>
+        }
+<span class="nc" id="L331">    }</span>
+
+    @Override
+    public void computeRouteImpl() {
+<span class="fc" id="L335">	super.computeRouteImpl();</span>
+<span class="fc" id="L336">	updateActivations();</span>
+<span class="fc" id="L337">    }</span>
+
+    public void calcBounds() {
+<span class="fc" id="L340">        final FigPoly fp = (FigPoly) getFig();</span>
+<span class="fc" id="L341">        final FigNode node = getSourceFigNode();</span>
+<span class="pc bpc" id="L342" title="3 of 6 branches missed.">        if (node != null &amp;&amp; isSelfMessage() &amp;&amp; fp.isComplete()) {</span>
+            // TODO: calcBounds is called by SelectionManager when the Fig is
+            // dragged. This code is needed to reposition any self message
+            // as they are become detached from their classifier role
+            // (see issue 5562). The cause of the detachment is not yet
+            // understood.
+            // Unfortunately calcBounds is called from several other places
+            // so the code here is not optimal but is the best workaround until
+            // ArgoUML can provide its own replacement SelectionManager for
+            // sequence diagram requirements
+            // See - http://gef.tigris.org/issues/show_bug.cgi?id=344
+<span class="nc" id="L353">            final int x =</span>
+<span class="nc" id="L354">                node.getX()</span>
+<span class="nc" id="L355">                + (node.getWidth() + FigActivation.DEFAULT_WIDTH) / 2;</span>
+<span class="nc" id="L356">            final Point startPoint = new Point(x, getYs()[0]);</span>
+<span class="nc" id="L357">            final FigMessageSpline spline = new FigMessageSpline(startPoint);</span>
+<span class="nc" id="L358">            spline.setComplete(true);</span>
+<span class="nc" id="L359">            spline.setDashed(isReplyMessage());</span>
+<span class="nc" id="L360">            super.setFig(spline);</span>
+        }
+<span class="fc" id="L362">        super.calcBounds();</span>
+<span class="fc" id="L363">    }</span>
+
+    private synchronized void updateActivations() {
+	// we update the activations...
+<span class="fc" id="L367">	FigClassifierRole source = (FigClassifierRole) getSourceFigNode();</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">	if (source != null) {</span>
+<span class="fc" id="L369">	    source.createActivations();</span>
+	}
+
+	// for performance, we check if this is a selfmessage
+	// if it is, we have just updated the activations
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">	if (!isSelfMessage()) {</span>
+<span class="fc" id="L375">	    FigClassifierRole dest = (FigClassifierRole) getDestFigNode();</span>
+<span class="pc bpc" id="L376" title="1 of 2 branches missed.">	    if (dest != null) {</span>
+<span class="fc" id="L377">		dest.createActivations();</span>
+	    }
+	}
+<span class="fc" id="L380">    }</span>
+
+    @Override
+    public void setLineColor(Color c) {
+<span class="fc" id="L384">    	super.setLineColor(c);</span>
+<span class="fc" id="L385">    	getDestArrowHead().setFillColor(c);</span>
+<span class="fc" id="L386">    }</span>
+
+    @Override
+    public void deleteFromModel() {
+<span class="nc" id="L390">    	((FigClassifierRole) getSourceFigNode()).createActivations();</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">    	if (!isSelfMessage()) {</span>
+<span class="nc" id="L392">    	    ((FigClassifierRole) getDestFigNode()).createActivations();</span>
+    	}
+<span class="nc" id="L394">    	super.deleteFromModel();</span>
+<span class="nc" id="L395">    }</span>
+
+    /**
+     * The default behaviour from FigEdgeModelElement is not correct
+     * here. See issue 5005. TODO: We must determine what to do here but for
+     * now doing nothing is better. I'm not sure why the super method would
+     * not work as I would expect that to do nothing if the ends are already
+     * correct.
+     * @return true at all times for now
+     */
+    @Override
+    protected boolean determineFigNodes() {
+<span class="nc" id="L407">        return true;</span>
+    }
+
+    @Override
+    public void translate(int dx, int dy) {
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        if (isSelfMessage()) {</span>
+<span class="nc" id="L413">            ((FigMessageSpline) getFig()).translateFig(dx, dy);</span>
+        }
+<span class="nc" id="L415">        super.translate(dx, dy);</span>
+<span class="nc" id="L416">    }</span>
+
+    /**
+     * {@inheritDoc}
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateLayout(org.argouml.model.UmlChangeEvent)
+     */
+    @Override
+    public void updateLayout(UmlChangeEvent event) {
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        if (&quot;isAsynchronous&quot;.equals(event.getPropertyName())) {</span>
+<span class="nc" id="L425">            updateArrow();</span>
+        }
+<span class="nc" id="L427">        super.updateLayout(event);</span>
+<span class="nc" id="L428">    }</span>
+
+    /*
+     * Overridden purely to keep our superclass from removing the listener
+     * that we just added.
+     *
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void updateListeners(Object oldOwner, Object newOwner ) {
+<span class="nc" id="L438">        action = Model.getFacade().getAction(newOwner);</span>
+<span class="nc" id="L439">        Set&lt;Object[]&gt; listeners = new HashSet&lt;Object[]&gt;();</span>
+<span class="nc" id="L440">        Object action = getAction();</span>
+<span class="nc" id="L441">        listeners.add(new Object[] {getOwner(), &quot;remove&quot;});</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">        if (action != null) {</span>
+<span class="nc" id="L443">            listeners.add(new Object[] {action, &quot;isAsynchronous&quot;});</span>
+        }
+        try {
+<span class="nc" id="L446">            updateElementListeners(listeners);</span>
+<span class="nc" id="L447">        } catch (Exception e) {</span>
+            // This call seems not very robust. Yet to determine cause.
+<span class="nc" id="L449">            LOG.log(Level.SEVERE, &quot;Exception caught&quot;, e);</span>
+<span class="nc" id="L450">        }</span>
+<span class="nc" id="L451">    }</span>
+
+    private Collection&lt;Object&gt; getReceiverOperations() {
+<span class="nc" id="L454">        ArrayList&lt;Object&gt; opList = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L455">        Object action = getAction();</span>
+<span class="nc" id="L456">	    Object receiver = Model.getFacade().getReceiver(getOwner());</span>
+<span class="nc bnc" id="L457" title="All 4 branches missed.">        if (action != null &amp;&amp; receiver != null) {</span>
+            //TODO: What can we do with other kind of actions?
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if (Model.getFacade().isACallAction(action)) {</span>
+                Iterator bases =
+<span class="nc" id="L461">                    Model.getFacade().getBases(receiver).iterator();</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">                while (bases.hasNext()) {</span>
+<span class="nc" id="L463">                    Object base = bases.next();</span>
+<span class="nc" id="L464">                    opList.addAll(Model.getFacade().getOperations(base));</span>
+<span class="nc" id="L465">                }</span>
+            }
+        }
+<span class="nc" id="L468">        return opList;</span>
+    }
+    /**
+     * Determines the activator of this message based on the message position
+     * in relation to other messages.
+     * &lt;p&gt;Currently this only manages return messages. Any other message type
+     * returns with no action taking place.
+     * &lt;p&gt;The activator is set to the first call or create message found above
+     * this message.
+     * @return the activator that has been applied to the message.
+     */
+    public Object determineActivator() {
+<span class="nc" id="L480">        final FigClassifierRole fcr = (FigClassifierRole) getSourceFigNode();</span>
+<span class="nc" id="L481">        final List&lt;FigMessage&gt; messageFigs = fcr.getFigMessages();</span>
+<span class="nc" id="L482">        final Iterator&lt;FigMessage&gt; it = messageFigs.iterator();</span>
+<span class="nc" id="L483">        Object activator = null;</span>
+<span class="nc bnc" id="L484" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L485">            FigMessage messageFig = it.next();</span>
+<span class="nc bnc" id="L486" title="All 4 branches missed.">            if ((messageFig.isCreateMessage() || messageFig.isSynchCallMessage())</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">                    &amp;&amp; messageFig.getDestFigNode() == fcr) {</span>
+<span class="nc" id="L488">                activator = messageFig.getOwner();</span>
+<span class="nc bnc" id="L489" title="All 2 branches missed.">            } else if (messageFig == this) {</span>
+<span class="nc" id="L490">                Model.getCollaborationsHelper().setActivator(</span>
+<span class="nc" id="L491">                        getOwner(), activator);</span>
+<span class="nc" id="L492">                return activator;</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">            } else if (messageFig.isReplyMessage()) {</span>
+<span class="nc" id="L494">                activator = null;</span>
+            }
+<span class="nc" id="L496">        }</span>
+<span class="nc" id="L497">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
