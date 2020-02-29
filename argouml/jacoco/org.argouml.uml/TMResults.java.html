@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TMResults.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml</a> &gt; <span class="el_source">TMResults.java</span></div><h1>TMResults.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml;
+
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
+
+/**
+ * TMResults (Table Model Results) implements a default table model
+ * which is used by Find and Goto Operations in order to display search
+ * results. It defines a default table model with columns and can
+ * resolve found objects to strings.
+ */
+public class TMResults extends AbstractTableModel {
+
+    private List rowObjects;
+    private List&lt;UMLDiagram&gt; diagrams;
+    private boolean showInDiagramColumn;
+
+    /**
+     * The constructor.
+     *
+     */
+<span class="nc" id="L66">    public TMResults() {</span>
+<span class="nc" id="L67">        showInDiagramColumn = true;</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param showTheInDiagramColumn true if the &quot;In Diagram&quot; column
+     *                               should be shown
+     */
+<span class="nc" id="L76">    public TMResults(boolean showTheInDiagramColumn) {</span>
+<span class="nc" id="L77">        showInDiagramColumn = showTheInDiagramColumn;</span>
+<span class="nc" id="L78">    }</span>
+
+    /**
+     * @param results the row objects
+     * @param theDiagrams the diagrams
+     */
+    public void setTarget(List results, List theDiagrams) {
+<span class="nc" id="L85">        rowObjects = results;</span>
+<span class="nc" id="L86">        diagrams = theDiagrams;</span>
+<span class="nc" id="L87">        fireTableStructureChanged();</span>
+<span class="nc" id="L88">    }</span>
+    
+    ////////////////
+    // TableModel implementation
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
+    public int getColumnCount() {
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        return showInDiagramColumn ? 4 : 3;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
+    public int getRowCount() {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (rowObjects == null) {</span>
+<span class="nc" id="L105">            return 0;</span>
+        }
+<span class="nc" id="L107">        return rowObjects.size();</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
+    public String getColumnName(int c) {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (c == 0) {</span>
+<span class="nc" id="L115">            return Translator.localize(&quot;dialog.find.column-name.type&quot;);</span>
+        }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (c == 1) {</span>
+<span class="nc" id="L118">            return Translator.localize(&quot;dialog.find.column-name.name&quot;);</span>
+        }
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (c == 2) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            return Translator.localize(showInDiagramColumn</span>
+                    ? &quot;dialog.find.column-name.in-diagram&quot;
+                    : &quot;dialog.find.column-name.description&quot;);
+        }
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (c == 3) {</span>
+<span class="nc" id="L126">            return Translator.localize(&quot;dialog.find.column-name.description&quot;);</span>
+        }
+<span class="nc" id="L128">        return &quot;XXX&quot;;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
+    public Class getColumnClass(int c) {
+<span class="nc" id="L135">        return String.class;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
+    public boolean isCellEditable(int row, int col) {
+<span class="nc" id="L142">        return false;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
+    public Object getValueAt(int row, int col) {
+<span class="nc bnc" id="L149" title="All 4 branches missed.">        if (row &lt; 0 || row &gt;= rowObjects.size()) {</span>
+<span class="nc" id="L150">            return &quot;bad row!&quot;;</span>
+        }
+<span class="nc bnc" id="L152" title="All 6 branches missed.">        if (col &lt; 0 || col &gt;= (showInDiagramColumn ? 4 : 3)) {</span>
+<span class="nc" id="L153">            return &quot;bad col!&quot;;</span>
+        }
+<span class="nc" id="L155">        Object rowObj = rowObjects.get(row);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (rowObj instanceof Diagram) {</span>
+<span class="nc" id="L157">            Diagram d = (Diagram) rowObj;</span>
+<span class="nc bnc" id="L158" title="All 5 branches missed.">            switch (col) {</span>
+	    case 0 : // the name of this type of diagram
+<span class="nc bnc" id="L160" title="All 2 branches missed.">		if (d instanceof UMLDiagram) {</span>
+<span class="nc" id="L161">                    return ((UMLDiagram) d).getLabelName();</span>
+                }
+<span class="nc" id="L163">		return null;</span>
+	    case 1 : // the name of this instance of diagram
+<span class="nc" id="L165">		return d.getName();</span>
+	    case 2 : // &quot;N/A&quot; or &quot;x nodes and x edges&quot;
+<span class="nc bnc" id="L167" title="All 2 branches missed.">		return showInDiagramColumn</span>
+<span class="nc" id="L168">		    ? Translator.localize(&quot;dialog.find.not-applicable&quot;)</span>
+<span class="nc" id="L169">                    : countNodesAndEdges(d);</span>
+	    case 3 : // &quot;x nodes and x edges&quot;
+<span class="nc" id="L171">		return countNodesAndEdges(d);</span>
+	    default:
+            }
+        }
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(rowObj)) {</span>
+<span class="nc" id="L176">            Diagram d = null;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (diagrams != null) {</span>
+<span class="nc" id="L178">                d = diagrams.get(row);</span>
+            }
+<span class="nc bnc" id="L180" title="All 5 branches missed.">            switch (col) {</span>
+	    case 0 : // the name of this type of ModelElement
+<span class="nc" id="L182">		return Model.getFacade().getUMLClassName(rowObj);</span>
+	    case 1 : // the name of this instance of ModelElement
+<span class="nc" id="L184">		return Model.getFacade().getName(rowObj);</span>
+	    case 2 : // the name of the parent diagram instance
+<span class="nc bnc" id="L186" title="All 2 branches missed.">		return (d == null)</span>
+<span class="nc" id="L187">		    ? Translator.localize(&quot;dialog.find.not-applicable&quot;)</span>
+<span class="nc" id="L188">                    : d.getName();</span>
+	    case 3 : // TODO: implement this - show some documentation?
+<span class="nc" id="L190">		return &quot;docs&quot;;</span>
+	    default:
+            }
+        }
+<span class="nc bnc" id="L194" title="All 5 branches missed.">        switch (col) {</span>
+	case 0 : // the name of this type of Object
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (rowObj == null) {</span>
+<span class="nc" id="L197">                return &quot;&quot;;</span>
+            }
+<span class="nc" id="L199">	    String clsName = rowObj.getClass().getName();</span>
+<span class="nc" id="L200">	    int lastDot = clsName.lastIndexOf(&quot;.&quot;);</span>
+<span class="nc" id="L201">	    return clsName.substring(lastDot + 1);</span>
+	case 1 :
+<span class="nc" id="L203">	    return &quot;&quot;;</span>
+	case 2 :
+<span class="nc" id="L205">	    return &quot;??&quot;;</span>
+	case 3 :
+<span class="nc" id="L207">	    return &quot;docs&quot;;</span>
+	default:
+        }
+<span class="nc" id="L210">        return &quot;unknown!&quot;;</span>
+    }
+
+    /**
+     * @param d the diagram to count the nodes and edges of
+     * @return a string which says it all
+     */
+    private Object countNodesAndEdges(Diagram d) {
+<span class="nc" id="L218">        int numNodes = d.getNodes().size();</span>
+<span class="nc" id="L219">        int numEdges = d.getEdges().size();</span>
+<span class="nc" id="L220">        Object[] msgArgs = {Integer.valueOf(numNodes),</span>
+<span class="nc" id="L221">                            Integer.valueOf(numEdges),</span>
+	};
+<span class="nc" id="L223">        return Translator.messageFormat(&quot;dialog.nodes-and-edges&quot;, msgArgs);</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+<span class="nc" id="L231">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1444599676429024575L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

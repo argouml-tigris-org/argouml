@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PerspectiveConfigurator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">PerspectiveConfigurator.java</span></div><h1>PerspectiveConfigurator.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.SpacerPanel;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
+import org.argouml.util.ArgoDialog;
+
+/**
+ * The &quot;Configure Perspectives&quot; dialog.&lt;p&gt;
+ *
+ * This class implements the following features:&lt;p&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;- saving perspectives to the user profile.
+ * &lt;li&gt;- adding new perspectives.
+ * &lt;li&gt;- deleting perspectives.
+ * &lt;li&gt;- renaming perspectives.
+ * &lt;li&gt;- duplicating existing perspectives.
+ * &lt;li&gt;- reordering perspectives.
+ * &lt;li&gt;- selecting any number and combination of rules for a perspective.
+ * &lt;/ul&gt;&lt;p&gt;
+ *
+ * This dialog behaves almost exactly as described in
+ * http://java.sun.com/products/jlf/at/book/Idioms6.html#57371
+ *
+ * @since 21 December 2003.
+ * @author  alexb
+ */
+public class PerspectiveConfigurator extends ArgoDialog {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L104">    private static final Logger LOG =</span>
+<span class="nc" id="L105">        Logger.getLogger(PerspectiveConfigurator.class.getName());</span>
+
+    /**
+     * Insets in pixels.
+     */
+    private static final int INSET_PX = 3;
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    private JPanel  configPanelNorth;
+    private JPanel  configPanelSouth;
+    private JSplitPane splitPane;
+    private JTextField renameTextField;
+    private JButton newPerspectiveButton;
+    private JButton removePerspectiveButton;
+    private JButton duplicatePerspectiveButton;
+    private JButton moveUpButton, moveDownButton;
+    private JButton addRuleButton;
+    private JButton removeRuleButton;
+    private JButton resetToDefaultButton;
+
+    private JList   perspectiveList;
+    private JList   perspectiveRulesList;
+    private JList   ruleLibraryList;
+    private DefaultListModel perspectiveListModel;       // at the top
+    private DefaultListModel perspectiveRulesListModel;  // right bottom
+    private DefaultListModel ruleLibraryListModel;       // left bottom
+
+    private JLabel persLabel;
+    private JLabel ruleLibLabel;
+    private JLabel rulesLabel;
+
+    /**
+     * Creates a new instance of PerspectiveDesignerDialog.
+     */
+    public PerspectiveConfigurator() {
+<span class="nc" id="L142">        super(Translator.localize(&quot;dialog.title.configure-perspectives&quot;),</span>
+	      ArgoDialog.OK_CANCEL_OPTION,
+	      true); // the dialog is modal
+
+<span class="nc" id="L146">        configPanelNorth = new JPanel();</span>
+<span class="nc" id="L147">        configPanelSouth = new JPanel();</span>
+
+<span class="nc" id="L149">        makeLists();</span>
+
+<span class="nc" id="L151">        makeButtons();</span>
+
+<span class="nc" id="L153">        makeLayout();</span>
+<span class="nc" id="L154">        updateRuleLabel();</span>
+
+<span class="nc" id="L156">        makeListeners();</span>
+
+<span class="nc" id="L158">        loadPerspectives();</span>
+<span class="nc" id="L159">        loadLibrary();</span>
+        //sortJListModel(ruleLibraryList);
+
+<span class="nc" id="L162">        splitPane =</span>
+            new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                    configPanelNorth, configPanelSouth);
+<span class="nc" id="L165">        splitPane.setContinuousLayout(true);</span>
+
+<span class="nc" id="L167">        setContent(splitPane);</span>
+<span class="nc" id="L168">    }</span>
+
+    /**
+     * Make the lists on the dialog box and fill them.
+     */
+    private void makeLists() {
+<span class="nc" id="L174">        renameTextField = new JTextField();</span>
+
+<span class="nc" id="L176">        perspectiveListModel = new DefaultListModel();</span>
+<span class="nc" id="L177">        perspectiveList = new JList(perspectiveListModel);</span>
+<span class="nc" id="L178">        perspectiveRulesListModel = new DefaultListModel();</span>
+<span class="nc" id="L179">        perspectiveRulesList = new JList(perspectiveRulesListModel);</span>
+<span class="nc" id="L180">        ruleLibraryListModel = new DefaultListModel();</span>
+<span class="nc" id="L181">        ruleLibraryList = new JList(ruleLibraryListModel);</span>
+
+<span class="nc" id="L183">        perspectiveList.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L185">        perspectiveRulesList.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L187">        ruleLibraryList.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+
+<span class="nc" id="L190">        perspectiveList.setSelectionMode(</span>
+                ListSelectionModel.SINGLE_SELECTION);
+<span class="nc" id="L192">        perspectiveRulesList.setSelectionMode(</span>
+                ListSelectionModel.SINGLE_SELECTION);
+<span class="nc" id="L194">        ruleLibraryList.setSelectionMode(</span>
+                ListSelectionModel.SINGLE_SELECTION);
+<span class="nc" id="L196">    }</span>
+
+    /**
+     * Make the buttons on the dialog box with localized strings and mnemonics.
+     */
+    private void makeButtons() {
+<span class="nc" id="L202">        newPerspectiveButton = new JButton();</span>
+<span class="nc" id="L203">        nameButton(newPerspectiveButton, &quot;button.new&quot;);</span>
+<span class="nc" id="L204">        newPerspectiveButton.setToolTipText(</span>
+<span class="nc" id="L205">                Translator.localize(&quot;button.new.tooltip&quot;));</span>
+
+<span class="nc" id="L207">        removePerspectiveButton = new JButton();</span>
+<span class="nc" id="L208">        nameButton(removePerspectiveButton, &quot;button.remove&quot;);</span>
+<span class="nc" id="L209">        removePerspectiveButton.setToolTipText(</span>
+<span class="nc" id="L210">                Translator.localize(&quot;button.remove.tooltip&quot;));</span>
+
+<span class="nc" id="L212">        duplicatePerspectiveButton = new JButton();</span>
+<span class="nc" id="L213">        nameButton(duplicatePerspectiveButton, &quot;button.duplicate&quot;);</span>
+<span class="nc" id="L214">        duplicatePerspectiveButton.setToolTipText(</span>
+<span class="nc" id="L215">                Translator.localize(&quot;button.duplicate.tooltip&quot;));</span>
+
+<span class="nc" id="L217">        moveUpButton = new JButton();</span>
+<span class="nc" id="L218">        nameButton(moveUpButton, &quot;button.move-up&quot;);</span>
+<span class="nc" id="L219">        moveUpButton.setToolTipText(</span>
+<span class="nc" id="L220">                Translator.localize(&quot;button.move-up.tooltip&quot;));</span>
+
+<span class="nc" id="L222">        moveDownButton = new JButton();</span>
+<span class="nc" id="L223">        nameButton(moveDownButton, &quot;button.move-down&quot;);</span>
+<span class="nc" id="L224">        moveDownButton.setToolTipText(</span>
+<span class="nc" id="L225">                Translator.localize(&quot;button.move-down.tooltip&quot;));</span>
+
+<span class="nc" id="L227">        addRuleButton = new JButton(&quot;&gt;&gt;&quot;);</span>
+<span class="nc" id="L228">        addRuleButton.setToolTipText(Translator.localize(&quot;button.add-rule&quot;));</span>
+<span class="nc" id="L229">        removeRuleButton = new JButton(&quot;&lt;&lt;&quot;);</span>
+<span class="nc" id="L230">        removeRuleButton.setToolTipText(Translator.localize(</span>
+                &quot;button.remove-rule&quot;));
+
+<span class="nc" id="L233">        resetToDefaultButton = new JButton();</span>
+<span class="nc" id="L234">        nameButton(resetToDefaultButton, &quot;button.restore-defaults&quot;);</span>
+<span class="nc" id="L235">        resetToDefaultButton.setToolTipText(</span>
+<span class="nc" id="L236">                Translator.localize(&quot;button.restore-defaults.tooltip&quot;));</span>
+
+        //disable the buttons for now, since no selection has been made yet
+<span class="nc" id="L239">        removePerspectiveButton.setEnabled(false);</span>
+<span class="nc" id="L240">        duplicatePerspectiveButton.setEnabled(false);</span>
+<span class="nc" id="L241">        moveUpButton.setEnabled(false);</span>
+<span class="nc" id="L242">        moveDownButton.setEnabled(false);</span>
+<span class="nc" id="L243">        addRuleButton.setEnabled(false);</span>
+<span class="nc" id="L244">        removeRuleButton.setEnabled(false);</span>
+<span class="nc" id="L245">        renameTextField.setEnabled(false);</span>
+<span class="nc" id="L246">    }</span>
+
+    /**
+     * Make the layout for the dialog box.
+     */
+    private void makeLayout() {
+<span class="nc" id="L252">        GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L253">        configPanelNorth.setLayout(gb);</span>
+<span class="nc" id="L254">        configPanelSouth.setLayout(gb);</span>
+<span class="nc" id="L255">        GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L256">        c.ipadx = 3;</span>
+<span class="nc" id="L257">        c.ipady = 3;</span>
+
+<span class="nc" id="L259">        persLabel = new JLabel(); // the text will be set later</span>
+<span class="nc" id="L260">        persLabel.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L262">        c.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L263">        c.gridx = 0;</span>
+<span class="nc" id="L264">        c.gridy = 0;</span>
+<span class="nc" id="L265">        c.gridwidth = 3;</span>
+<span class="nc" id="L266">        c.weightx = 1.0;  c.weighty = 0.0;</span>
+<span class="nc" id="L267">        gb.setConstraints(persLabel, c);</span>
+<span class="nc" id="L268">        configPanelNorth.add(persLabel);</span>
+
+<span class="nc" id="L270">        JPanel persPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L271">        JScrollPane persScroll =</span>
+            new JScrollPane(perspectiveList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+<span class="nc" id="L275">        persPanel.add(renameTextField, BorderLayout.NORTH);</span>
+<span class="nc" id="L276">        persPanel.add(persScroll, BorderLayout.CENTER);</span>
+<span class="nc" id="L277">        c.gridx = 0;</span>
+<span class="nc" id="L278">        c.gridy = 1;</span>
+<span class="nc" id="L279">        c.gridwidth = 4;</span>
+<span class="nc" id="L280">        c.weightx = 1.0;  c.weighty = 1.0;</span>
+<span class="nc" id="L281">        gb.setConstraints(persPanel, c);</span>
+<span class="nc" id="L282">        configPanelNorth.add(persPanel);</span>
+
+<span class="nc" id="L284">        JPanel persButtons = new JPanel(new GridLayout(6, 1, 0, 5));</span>
+<span class="nc" id="L285">        persButtons.add(newPerspectiveButton);</span>
+<span class="nc" id="L286">        persButtons.add(removePerspectiveButton);</span>
+<span class="nc" id="L287">        persButtons.add(duplicatePerspectiveButton);</span>
+<span class="nc" id="L288">        persButtons.add(moveUpButton);</span>
+<span class="nc" id="L289">        persButtons.add(moveDownButton);</span>
+<span class="nc" id="L290">        persButtons.add(resetToDefaultButton);</span>
+<span class="nc" id="L291">        JPanel persButtonWrapper =</span>
+	    new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+<span class="nc" id="L293">        persButtonWrapper.add(persButtons);</span>
+<span class="nc" id="L294">        c.gridx = 4;</span>
+<span class="nc" id="L295">        c.gridy = 1;</span>
+<span class="nc" id="L296">        c.gridwidth = 1;</span>
+<span class="nc" id="L297">        c.weightx = 0.0;  c.weighty = 0.0;</span>
+<span class="nc" id="L298">        c.ipadx = 0;      c.ipady = 0;</span>
+<span class="nc" id="L299">        c.insets = new Insets(0, 5, 0, 0);</span>
+<span class="nc" id="L300">        gb.setConstraints(persButtonWrapper, c);</span>
+<span class="nc" id="L301">        configPanelNorth.add(persButtonWrapper);</span>
+
+<span class="nc" id="L303">        ruleLibLabel = new JLabel(); // the text will be set later</span>
+<span class="nc" id="L304">        ruleLibLabel.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L306">        c.gridx = 0;</span>
+<span class="nc" id="L307">        c.gridy = 3;</span>
+<span class="nc" id="L308">        c.gridwidth = 1;</span>
+<span class="nc" id="L309">        c.weightx = 1.0;</span>
+<span class="nc" id="L310">        c.weighty = 0.0;</span>
+<span class="nc" id="L311">        c.ipadx = 3;</span>
+<span class="nc" id="L312">        c.ipady = 3;</span>
+<span class="nc" id="L313">        c.insets = new Insets(10, 0, 0, 0);</span>
+<span class="nc" id="L314">        gb.setConstraints(ruleLibLabel, c);</span>
+<span class="nc" id="L315">        configPanelSouth.add(ruleLibLabel);</span>
+
+<span class="nc" id="L317">        addRuleButton.setMargin(new Insets(2, 15, 2, 15));</span>
+<span class="nc" id="L318">        removeRuleButton.setMargin(new Insets(2, 15, 2, 15));</span>
+<span class="nc" id="L319">        JPanel xferButtons = new JPanel();</span>
+<span class="nc" id="L320">        xferButtons.setLayout(new BoxLayout(xferButtons, BoxLayout.Y_AXIS));</span>
+<span class="nc" id="L321">        xferButtons.add(addRuleButton);</span>
+<span class="nc" id="L322">        xferButtons.add(new SpacerPanel());</span>
+<span class="nc" id="L323">        xferButtons.add(removeRuleButton);</span>
+<span class="nc" id="L324">        c.gridx = 2;</span>
+<span class="nc" id="L325">        c.gridy = 4;</span>
+<span class="nc" id="L326">        c.weightx = 0.0;</span>
+<span class="nc" id="L327">        c.weighty = 0.0;</span>
+<span class="nc" id="L328">        c.insets = new Insets(0, 3, 0, 5);</span>
+<span class="nc" id="L329">        gb.setConstraints(xferButtons, c);</span>
+<span class="nc" id="L330">        configPanelSouth.add(xferButtons);</span>
+
+<span class="nc" id="L332">        rulesLabel = new JLabel(); // the text will be set later</span>
+<span class="nc" id="L333">        rulesLabel.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L335">        c.gridx = 3;</span>
+<span class="nc" id="L336">        c.gridy = 3;</span>
+<span class="nc" id="L337">        c.gridwidth = 1;</span>
+<span class="nc" id="L338">        c.weightx = 1.0;</span>
+<span class="nc" id="L339">        c.insets = new Insets(10, 0, 0, 0);</span>
+<span class="nc" id="L340">        gb.setConstraints(rulesLabel, c);</span>
+<span class="nc" id="L341">        configPanelSouth.add(rulesLabel);</span>
+
+<span class="nc" id="L343">        c.gridx = 0;</span>
+<span class="nc" id="L344">        c.gridy = 4;</span>
+<span class="nc" id="L345">        c.weighty = 1.0;</span>
+<span class="nc" id="L346">        c.gridwidth = 2;</span>
+<span class="nc" id="L347">        c.gridheight = 2;</span>
+<span class="nc" id="L348">        c.insets = new Insets(0, 0, 0, 0);</span>
+<span class="nc" id="L349">        JScrollPane ruleLibScroll =</span>
+	    new JScrollPane(ruleLibraryList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+<span class="nc" id="L353">        gb.setConstraints(ruleLibScroll, c);</span>
+<span class="nc" id="L354">        configPanelSouth.add(ruleLibScroll);</span>
+
+<span class="nc" id="L356">        c.gridx = 3;</span>
+<span class="nc" id="L357">        c.gridy = 4;</span>
+<span class="nc" id="L358">        c.gridwidth = 2;</span>
+<span class="nc" id="L359">        c.gridheight = 2;</span>
+<span class="nc" id="L360">        JScrollPane rulesScroll =</span>
+            new JScrollPane(perspectiveRulesList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+<span class="nc" id="L364">        gb.setConstraints(rulesScroll, c);</span>
+<span class="nc" id="L365">        configPanelSouth.add(rulesScroll);</span>
+<span class="nc" id="L366">    }</span>
+
+    /**
+     * Add action listeners to the buttons and lists.
+     */
+    private void makeListeners() {
+<span class="nc" id="L372">        renameTextField.addActionListener(new RenameListener());</span>
+<span class="nc" id="L373">        renameTextField.getDocument().addDocumentListener(</span>
+                new RenameDocumentListener());
+
+
+<span class="nc" id="L377">        newPerspectiveButton.addActionListener(new NewPerspectiveListener());</span>
+<span class="nc" id="L378">        removePerspectiveButton.addActionListener(</span>
+                new RemovePerspectiveListener());
+<span class="nc" id="L380">        duplicatePerspectiveButton.addActionListener(</span>
+                new DuplicatePerspectiveListener());
+<span class="nc" id="L382">        moveUpButton.addActionListener(new MoveUpListener());</span>
+<span class="nc" id="L383">        moveDownButton.addActionListener(new MoveDownListener());</span>
+<span class="nc" id="L384">        addRuleButton.addActionListener(new RuleListener());</span>
+<span class="nc" id="L385">        removeRuleButton.addActionListener(new RuleListener());</span>
+<span class="nc" id="L386">        resetToDefaultButton.addActionListener(new ResetListener());</span>
+
+<span class="nc" id="L388">        perspectiveList.addListSelectionListener(</span>
+                new PerspectiveListSelectionListener());
+<span class="nc" id="L390">        perspectiveRulesList.addListSelectionListener(</span>
+                new RulesListSelectionListener());
+<span class="nc" id="L392">        perspectiveRulesList.addMouseListener(new RuleListMouseListener());</span>
+<span class="nc" id="L393">        ruleLibraryList.addListSelectionListener(</span>
+                new LibraryListSelectionListener());
+<span class="nc" id="L395">        ruleLibraryList.addMouseListener(new RuleListMouseListener());</span>
+
+<span class="nc" id="L397">        getOkButton().addActionListener(new OkListener());</span>
+<span class="nc" id="L398">    }</span>
+
+    /**
+     * Load all the existing rules from the perspective manager
+     * for presentation. These will be presented as the library of rules
+     * the user may pick from.
+     */
+    private void loadLibrary() {
+<span class="nc" id="L406">        List&lt;PerspectiveRule&gt; rulesLib = new ArrayList&lt;PerspectiveRule&gt;();</span>
+<span class="nc" id="L407">        rulesLib.addAll(PerspectiveManager.getInstance().getRules());</span>
+<span class="nc" id="L408">        Collections.sort(rulesLib, new Comparator&lt;PerspectiveRule&gt;() {</span>
+            public int compare(PerspectiveRule o1, PerspectiveRule o2) {
+<span class="nc" id="L410">                return o1.toString().compareTo(o2.toString());</span>
+            }
+        });
+        // remove the ones already selected (if a perspective is selected)
+<span class="nc" id="L414">        ExplorerPerspective selPers =</span>
+<span class="nc" id="L415">            (ExplorerPerspective) perspectiveList.getSelectedValue();</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">        if (selPers != null) {</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">            for (PerspectiveRule persRule : selPers.getList()) {</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                for (PerspectiveRule libRule : rulesLib) {</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                    if (libRule.toString().equals(persRule.toString())) {</span>
+<span class="nc" id="L420">                        rulesLib.remove(libRule);</span>
+<span class="nc" id="L421">                        break;</span>
+                    }
+<span class="nc" id="L423">                }</span>
+<span class="nc" id="L424">            }</span>
+        }
+        // add them
+<span class="nc" id="L427">        ruleLibraryListModel.clear();</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        for (PerspectiveRule rule : rulesLib) {</span>
+<span class="nc" id="L429">            ruleLibraryListModel.addElement(rule);</span>
+<span class="nc" id="L430">        }</span>
+<span class="nc" id="L431">        updateLibLabel();</span>
+<span class="nc" id="L432">    }</span>
+
+    /**
+     * Load the perspectives from the perspective manager for presentation.
+     */
+    private void loadPerspectives() {
+        List&lt;ExplorerPerspective&gt; perspectives =
+<span class="nc" id="L439">            PerspectiveManager.getInstance().getPerspectives();</span>
+
+        // must add an editable list of new ExplorerPerspective's
+        // to the list model so that the original ones are not changed
+        // in the case of a cancel action by the user.
+<span class="nc bnc" id="L444" title="All 2 branches missed.">        for (ExplorerPerspective perspective : perspectives) {</span>
+<span class="nc" id="L445">            List&lt;PerspectiveRule&gt; rules = perspective.getList();</span>
+
+<span class="nc" id="L447">            ExplorerPerspective editablePerspective =</span>
+<span class="nc" id="L448">                new ExplorerPerspective(perspective.toString());</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">            for (PerspectiveRule rule : rules) {</span>
+<span class="nc" id="L450">                editablePerspective.addRule(rule);</span>
+<span class="nc" id="L451">            }</span>
+
+<span class="nc" id="L453">            perspectiveListModel.addElement(editablePerspective);</span>
+<span class="nc" id="L454">        }</span>
+
+<span class="nc" id="L456">        updatePersLabel();</span>
+<span class="nc" id="L457">    }</span>
+
+    /**
+     * Update the label above the list of perspectives with count.
+     */
+    private void updatePersLabel() {
+<span class="nc" id="L463">        persLabel.setText(Translator.localize(&quot;label.perspectives&quot;)</span>
+<span class="nc" id="L464">                + &quot; (&quot; + perspectiveListModel.size() + &quot;)&quot;);</span>
+<span class="nc" id="L465">    }</span>
+
+    /**
+     * Update the label above the library of rules list with count.
+     */
+    private void updateLibLabel() {
+        // update the label (which shows the number of rules)
+<span class="nc" id="L472">        ruleLibLabel.setText(Translator.localize(&quot;label.rules-library&quot;)</span>
+<span class="nc" id="L473">                + &quot; (&quot; + ruleLibraryListModel.size() + &quot;)&quot;);</span>
+<span class="nc" id="L474">    }</span>
+
+    /**
+     * Update the label above the library of rules list with count.
+     */
+    private void updateRuleLabel() {
+        // update the label (which shows the number of rules)
+<span class="nc" id="L481">        rulesLabel.setText(Translator.localize(&quot;label.selected-rules&quot;)</span>
+<span class="nc" id="L482">                + &quot; (&quot; + perspectiveRulesListModel.size() + &quot;)&quot;);</span>
+<span class="nc" id="L483">    }</span>
+
+    /**
+     * @param list the JList to be sorted
+     */
+    private void sortJListModel(JList list) {
+<span class="nc" id="L489">        DefaultListModel model = (DefaultListModel) list.getModel();</span>
+<span class="nc" id="L490">        List all = new ArrayList();</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">        for (int i = 0; i &lt; model.getSize(); i++) {</span>
+<span class="nc" id="L492">            all.add(model.getElementAt(i));</span>
+        }
+<span class="nc" id="L494">        model.clear();</span>
+<span class="nc" id="L495">        Collections.sort(all, new Comparator() {</span>
+            public int compare(Object o1, Object o2) {
+<span class="nc" id="L497">                return o1.toString().compareTo(o2.toString());</span>
+            }
+        });
+<span class="nc bnc" id="L500" title="All 2 branches missed.">        for (Object obj : all) {</span>
+<span class="nc" id="L501">            model.addElement(obj);</span>
+<span class="nc" id="L502">        }</span>
+<span class="nc" id="L503">    }</span>
+
+    /**
+     * Handles pressing the OK button. &lt;p&gt;
+     *
+     * Updates the perspectives in the explorer,
+     * saves the user perspectives and exits.
+     */
+<span class="nc" id="L511">    class OkListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L514">            PerspectiveManager.getInstance().removeAllPerspectives();</span>
+
+<span class="nc bnc" id="L516" title="All 2 branches missed.">            for (int i = 0; i &lt; perspectiveListModel.size(); i++) {</span>
+<span class="nc" id="L517">                ExplorerPerspective perspective =</span>
+<span class="nc" id="L518">                    (ExplorerPerspective) perspectiveListModel.get(i);</span>
+<span class="nc" id="L519">                PerspectiveManager.getInstance().addPerspective(perspective);</span>
+            }
+
+<span class="nc" id="L522">            PerspectiveManager.getInstance().saveUserPerspectives();</span>
+<span class="nc" id="L523">        }</span>
+    }
+
+    /**
+     * Handles pressing the Reset-To-Default button. &lt;p&gt;
+     *
+     * Resets all perspectives to the build-in defaults.
+     */
+<span class="nc" id="L531">    class ResetListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+
+            Collection&lt;ExplorerPerspective&gt; c =
+<span class="nc" id="L535">                PerspectiveManager.getInstance().getDefaultPerspectives();</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">            if (c.size() &gt; 0) {</span>
+<span class="nc" id="L537">                perspectiveListModel.removeAllElements();</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">                for (ExplorerPerspective p : c) {</span>
+<span class="nc" id="L539">                    perspectiveListModel.addElement(p);</span>
+<span class="nc" id="L540">                }</span>
+<span class="nc" id="L541">                updatePersLabel();</span>
+            }
+<span class="nc" id="L543">        }</span>
+    }
+
+    /**
+     * Handles pressing the &quot;New&quot; button.
+     */
+<span class="nc" id="L549">    class NewPerspectiveListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L551">            Object[] msgArgs = {</span>
+<span class="nc" id="L552">                Integer.valueOf((perspectiveList.getModel().getSize() + 1)),</span>
+	    };
+<span class="nc" id="L554">	    ExplorerPerspective newPers =</span>
+<span class="nc" id="L555">		new ExplorerPerspective(Translator.messageFormat(</span>
+                    &quot;dialog.perspective.explorer-perspective&quot;, msgArgs));
+<span class="nc" id="L557">	    perspectiveListModel.insertElementAt(newPers, 0);</span>
+<span class="nc" id="L558">	    perspectiveList.setSelectedValue(newPers, true);</span>
+<span class="nc" id="L559">	    perspectiveRulesListModel.clear();</span>
+<span class="nc" id="L560">	    updatePersLabel();</span>
+<span class="nc" id="L561">	    updateRuleLabel();</span>
+<span class="nc" id="L562">        }</span>
+    }
+
+    /**
+     * Handles pressing the &quot;Remove&quot; button.
+     */
+<span class="nc" id="L568">    class RemovePerspectiveListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L570">            Object sel = perspectiveList.getSelectedValue();</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">            if (perspectiveListModel.getSize() &gt; 1) {</span>
+<span class="nc" id="L572">                perspectiveListModel.removeElement(sel);</span>
+            }
+<span class="nc" id="L574">            perspectiveList.setSelectedIndex(0);</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">            if (perspectiveListModel.getSize() == 1) {</span>
+<span class="nc" id="L576">                removePerspectiveButton.setEnabled(false);</span>
+	    }
+<span class="nc" id="L578">            updatePersLabel();</span>
+<span class="nc" id="L579">        }</span>
+    }
+
+    /**
+     * Handles pressing the Duplicate button.
+     */
+<span class="nc" id="L585">    class DuplicatePerspectiveListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L587">            Object sel = perspectiveList.getSelectedValue();</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">            if (sel != null) {</span>
+<span class="nc" id="L589">                Object[] msgArgs = {sel.toString() };</span>
+<span class="nc" id="L590">                ExplorerPerspective newPers =</span>
+<span class="nc" id="L591">                    ((ExplorerPerspective) sel).makeNamedClone(Translator</span>
+<span class="nc" id="L592">                        .messageFormat(&quot;dialog.perspective.copy-of&quot;, msgArgs));</span>
+<span class="nc" id="L593">                perspectiveListModel.insertElementAt(newPers, 0);</span>
+<span class="nc" id="L594">                perspectiveList.setSelectedValue(newPers, true);</span>
+            }
+<span class="nc" id="L596">            updatePersLabel();</span>
+<span class="nc" id="L597">        }</span>
+    }
+
+    /**
+     * Handles pressing the &quot;&gt;&gt;&quot; or &quot;&lt;&lt;&quot; buttons.
+     */
+<span class="nc" id="L603">    class RuleListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L606">            Object src = e.getSource();</span>
+<span class="nc bnc" id="L607" title="All 2 branches missed.">            if (perspectiveList.getSelectedValue() == null) {</span>
+<span class="nc" id="L608">                return;</span>
+            }
+<span class="nc bnc" id="L610" title="All 2 branches missed.">            if (src == addRuleButton) {</span>
+<span class="nc" id="L611">                doAddRule();</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">            } else if (src == removeRuleButton) {</span>
+<span class="nc" id="L613">                doRemoveRule();</span>
+            }
+<span class="nc" id="L615">        }</span>
+    }
+
+    /**
+     * Handles double-clicking on the library list or on the ruleslist.
+     * This triggers the same functions as &quot;&gt;&gt;&quot; or &quot;&lt;&lt;&quot;.
+     */
+<span class="nc" id="L622">    class RuleListMouseListener extends MouseAdapter {</span>
+        public void mouseClicked(MouseEvent me) {
+<span class="nc" id="L624">            Object src = me.getSource();</span>
+<span class="nc bnc" id="L625" title="All 2 branches missed.">            if (me.getClickCount() != 2</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">		|| perspectiveList.getSelectedValue() == null) {</span>
+<span class="nc" id="L627">		return;</span>
+	    }
+
+<span class="nc bnc" id="L630" title="All 4 branches missed.">            if (src == ruleLibraryList &amp;&amp; addRuleButton.isEnabled()) {</span>
+<span class="nc" id="L631">                doAddRule();</span>
+	    }
+<span class="nc bnc" id="L633" title="All 4 branches missed.">            if (src == perspectiveRulesList &amp;&amp; removeRuleButton.isEnabled()) {</span>
+<span class="nc" id="L634">                doRemoveRule();</span>
+	    }
+<span class="nc" id="L636">        }</span>
+    }
+
+    /**
+     * Add the currently selected rule from the library to the rules list
+     * for the current perspective.
+     */
+    private void doAddRule() {
+<span class="nc" id="L644">        Object sel = ruleLibraryList.getSelectedValue();</span>
+<span class="nc" id="L645">        int selLibNr = ruleLibraryList.getSelectedIndex();</span>
+        try {
+<span class="nc" id="L647">            PerspectiveRule newRule =</span>
+<span class="nc" id="L648">                (PerspectiveRule) sel.getClass().newInstance();</span>
+
+<span class="nc" id="L650">            perspectiveRulesListModel.insertElementAt(newRule, 0);</span>
+<span class="nc" id="L651">            ((ExplorerPerspective) perspectiveList.getSelectedValue())</span>
+<span class="nc" id="L652">                .addRule(newRule);</span>
+<span class="nc" id="L653">            sortJListModel(perspectiveRulesList);</span>
+<span class="nc" id="L654">            perspectiveRulesList.setSelectedValue(newRule, true);</span>
+            // remove the rule from the library list
+<span class="nc" id="L656">            loadLibrary();</span>
+            // set the newly selected item in the library list
+<span class="nc bnc" id="L658" title="All 2 branches missed.">            if (!(ruleLibraryListModel.size() &gt; selLibNr)) {</span>
+<span class="nc" id="L659">                selLibNr = ruleLibraryListModel.size() - 1;</span>
+            }
+<span class="nc" id="L661">            ruleLibraryList.setSelectedIndex(selLibNr);</span>
+<span class="nc" id="L662">            updateRuleLabel();</span>
+<span class="nc" id="L663">        } catch (Exception e) {</span>
+<span class="nc" id="L664">            LOG.log(Level.SEVERE, &quot;problem adding rule&quot;, e);</span>
+<span class="nc" id="L665">        }</span>
+<span class="nc" id="L666">    }</span>
+
+    /**
+     * Remove the currently selected rule from the rules list
+     * for the current perspective.
+     */
+    private void doRemoveRule() {
+<span class="nc" id="L673">        int selLibNr = ruleLibraryList.getSelectedIndex();</span>
+<span class="nc" id="L674">        PerspectiveRule sel =</span>
+<span class="nc" id="L675">	    (PerspectiveRule) perspectiveRulesList.getSelectedValue();</span>
+<span class="nc" id="L676">        int selectedItem = perspectiveRulesList.getSelectedIndex();</span>
+<span class="nc" id="L677">	Object selPers = perspectiveList.getSelectedValue();</span>
+
+<span class="nc" id="L679">        perspectiveRulesListModel.removeElement(sel);</span>
+<span class="nc" id="L680">        ((ExplorerPerspective) selPers).removeRule(sel);</span>
+
+<span class="nc bnc" id="L682" title="All 2 branches missed.">        if (perspectiveRulesListModel.getSize() &gt; selectedItem) {</span>
+<span class="nc" id="L683">            perspectiveRulesList.setSelectedIndex(selectedItem);</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">        } else if (perspectiveRulesListModel.getSize() &gt; 0) {</span>
+<span class="nc" id="L685">            perspectiveRulesList.setSelectedIndex(</span>
+<span class="nc" id="L686">                    perspectiveRulesListModel.getSize() - 1);</span>
+        }
+<span class="nc" id="L688">        loadLibrary();</span>
+        // set the newly selected item in the library list
+<span class="nc" id="L690">        ruleLibraryList.setSelectedIndex(selLibNr);</span>
+<span class="nc" id="L691">        updateRuleLabel();</span>
+<span class="nc" id="L692">    }</span>
+
+    /**
+     * Handles pressing the move up button.
+     */
+<span class="nc" id="L697">    class MoveUpListener implements ActionListener {</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L702">            int sel = perspectiveList.getSelectedIndex();</span>
+<span class="nc bnc" id="L703" title="All 2 branches missed.">            if (sel &gt; 0) {</span>
+<span class="nc" id="L704">                Object selObj = perspectiveListModel.get(sel);</span>
+<span class="nc" id="L705">                Object prevObj = perspectiveListModel.get(sel - 1);</span>
+<span class="nc" id="L706">                perspectiveListModel.set(sel, prevObj);</span>
+<span class="nc" id="L707">                perspectiveListModel.set(sel - 1, selObj);</span>
+<span class="nc" id="L708">                perspectiveList.setSelectedIndex(sel - 1);</span>
+<span class="nc" id="L709">                perspectiveList.ensureIndexIsVisible(sel - 1);</span>
+            }
+<span class="nc" id="L711">        }</span>
+    }
+
+    /**
+     * Handles pressing the move down button.
+     */
+<span class="nc" id="L717">    class MoveDownListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L719">            int sel = perspectiveList.getSelectedIndex();</span>
+<span class="nc bnc" id="L720" title="All 2 branches missed.">            if (sel &lt; (perspectiveListModel.getSize() - 1)) {</span>
+<span class="nc" id="L721">                Object selObj = perspectiveListModel.get(sel);</span>
+<span class="nc" id="L722">                Object nextObj = perspectiveListModel.get(sel + 1);</span>
+<span class="nc" id="L723">                perspectiveListModel.set(sel, nextObj);</span>
+<span class="nc" id="L724">                perspectiveListModel.set(sel + 1, selObj);</span>
+<span class="nc" id="L725">                perspectiveList.setSelectedIndex(sel + 1);</span>
+<span class="nc" id="L726">                perspectiveList.ensureIndexIsVisible(sel + 1);</span>
+            }
+<span class="nc" id="L728">        }</span>
+    }
+
+    /**
+     * Handles confirming a changed text in the text-entry field
+     * (e.g. pressing Enter) for the perspective name.
+     */
+<span class="nc" id="L735">    class RenameListener implements ActionListener {</span>
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L737">            int sel = perspectiveList.getSelectedIndex();</span>
+<span class="nc" id="L738">            Object selPers = perspectiveList.getSelectedValue();</span>
+<span class="nc" id="L739">            String newName = renameTextField.getText();</span>
+<span class="nc bnc" id="L740" title="All 4 branches missed.">            if (sel &gt;= 0 &amp;&amp; newName.length() &gt; 0) {</span>
+<span class="nc" id="L741">                ((ExplorerPerspective) selPers).setName(newName);</span>
+<span class="nc" id="L742">                perspectiveListModel.set(sel, selPers);</span>
+                /* TODO: Replace the functioncall in the next line
+                 * by .requestFocusInWindow() once
+                 * we do not support Java 1.3 any more.
+                 */
+<span class="nc" id="L747">                perspectiveList.requestFocus();</span>
+            }
+<span class="nc" id="L749">        }</span>
+    }
+
+    /**
+     * Handles changes in the text in the text-entry field
+     * for the perspective name.
+     */
+<span class="nc" id="L756">    class RenameDocumentListener implements DocumentListener {</span>
+        public void insertUpdate(DocumentEvent e) {
+<span class="nc" id="L758">            update();</span>
+<span class="nc" id="L759">        }</span>
+        public void removeUpdate(DocumentEvent e) {
+<span class="nc" id="L761">            update();</span>
+<span class="nc" id="L762">        }</span>
+        public void changedUpdate(DocumentEvent e) {
+<span class="nc" id="L764">            update();</span>
+<span class="nc" id="L765">        }</span>
+        private void update() {
+<span class="nc" id="L767">            int sel = perspectiveList.getSelectedIndex();</span>
+<span class="nc" id="L768">            Object selPers = perspectiveList.getSelectedValue();</span>
+<span class="nc" id="L769">            String newName = renameTextField.getText();</span>
+<span class="nc bnc" id="L770" title="All 4 branches missed.">            if (sel &gt;= 0 &amp;&amp; newName.length() &gt; 0) {</span>
+<span class="nc" id="L771">                ((ExplorerPerspective) selPers).setName(newName);</span>
+<span class="nc" id="L772">                perspectiveListModel.set(sel, selPers);</span>
+            }
+<span class="nc" id="L774">        }</span>
+
+    }
+
+    /**
+     * Handles selection changes in the perspective list.
+     */
+<span class="nc" id="L781">    class PerspectiveListSelectionListener implements ListSelectionListener {</span>
+        /*
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L786" title="All 2 branches missed.">            if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L787">                return;</span>
+            }
+
+<span class="nc" id="L790">            Object selPers = perspectiveList.getSelectedValue();</span>
+<span class="nc" id="L791">            loadLibrary();</span>
+<span class="nc" id="L792">            Object selRule = ruleLibraryList.getSelectedValue();</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">            renameTextField.setEnabled(selPers != null);</span>
+<span class="nc bnc" id="L794" title="All 2 branches missed.">            removePerspectiveButton.setEnabled(selPers != null);</span>
+<span class="nc bnc" id="L795" title="All 2 branches missed.">            duplicatePerspectiveButton.setEnabled(selPers != null);</span>
+<span class="nc bnc" id="L796" title="All 2 branches missed.">            moveUpButton.setEnabled(perspectiveList.getSelectedIndex() &gt; 0);</span>
+<span class="nc bnc" id="L797" title="All 2 branches missed.">            moveDownButton.setEnabled((selPers != null)</span>
+<span class="nc" id="L798">                    &amp;&amp; (perspectiveList.getSelectedIndex()</span>
+<span class="nc bnc" id="L799" title="All 2 branches missed.">                            &lt; (perspectiveList.getModel().getSize() - 1)));</span>
+
+<span class="nc bnc" id="L801" title="All 2 branches missed.">            if (selPers == null) {</span>
+<span class="nc" id="L802">                return;</span>
+            }
+<span class="nc" id="L804">            renameTextField.setText(selPers.toString());</span>
+
+<span class="nc" id="L806">            ExplorerPerspective pers = (ExplorerPerspective) selPers;</span>
+<span class="nc" id="L807">            perspectiveRulesListModel.clear();</span>
+
+<span class="nc bnc" id="L809" title="All 2 branches missed.">            for (PerspectiveRule rule : pers.getList()) {</span>
+<span class="nc" id="L810">                perspectiveRulesListModel.insertElementAt(rule, 0);</span>
+<span class="nc" id="L811">            }</span>
+<span class="nc" id="L812">            sortJListModel(perspectiveRulesList);</span>
+<span class="nc bnc" id="L813" title="All 4 branches missed.">            addRuleButton.setEnabled(selPers != null &amp;&amp; selRule != null);</span>
+<span class="nc" id="L814">            updateRuleLabel();</span>
+<span class="nc" id="L815">        }</span>
+    }
+
+    /**
+     * Handles selection changes in the rules list.
+     */
+<span class="nc" id="L821">    class RulesListSelectionListener implements ListSelectionListener {</span>
+        /*
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L826" title="All 2 branches missed.">            if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L827">                return;</span>
+            }
+
+<span class="nc" id="L830">            Object selPers = null;</span>
+<span class="nc bnc" id="L831" title="All 2 branches missed.">            if (perspectiveListModel.size() &gt; 0) {</span>
+<span class="nc" id="L832">                selPers = perspectiveList.getSelectedValue();</span>
+            }
+
+<span class="nc" id="L835">            Object selRule = null;</span>
+<span class="nc bnc" id="L836" title="All 2 branches missed.">            if (perspectiveRulesListModel.size() &gt; 0) {</span>
+<span class="nc" id="L837">                selRule = perspectiveRulesList.getSelectedValue();</span>
+            }
+
+<span class="nc bnc" id="L840" title="All 4 branches missed.">            removeRuleButton.setEnabled(selPers != null &amp;&amp; selRule != null);</span>
+<span class="nc" id="L841">        }</span>
+    }
+
+    /**
+     * Handles selection changes in the library list.
+     *
+     */
+<span class="nc" id="L848">    class LibraryListSelectionListener implements ListSelectionListener {</span>
+        /*
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L853" title="All 2 branches missed.">            if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L854">                return;</span>
+            }
+
+<span class="nc" id="L857">            Object selPers = perspectiveList.getSelectedValue();</span>
+<span class="nc" id="L858">            Object selRule = ruleLibraryList.getSelectedValue();</span>
+<span class="nc bnc" id="L859" title="All 4 branches missed.">            addRuleButton.setEnabled(selPers != null &amp;&amp; selRule != null);</span>
+<span class="nc" id="L860">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

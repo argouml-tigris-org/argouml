@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrOCL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal.ocl</a> &gt; <span class="el_source">CrOCL.java</span></div><h1>CrOCL.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal.ocl;
+
+import java.util.List;
+import java.util.Set;
+
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.critics.CrUML;
+
+/**
+ * Represents an critics defined as an OCL expression in a profile
+ * 
+ * @author maurelio1234
+ */
+public class CrOCL extends CrUML {
+
+    /**
+     * the OCL Interpreter
+     */
+<span class="fc" id="L61">    private OclInterpreter interpreter = null;</span>
+
+    /**
+     * the OCL string
+     */
+<span class="fc" id="L66">    private String ocl = null;</span>
+
+    /**
+     * the design materials to be criticized
+     */
+    private Set&lt;Object&gt; designMaterials;
+    
+    /**
+     * Creates a new OCL critic
+     * 
+     * @param oclConstraint ocl expression
+     * @param headline headline
+     * @param description description
+     * @param moreInfoURL the info url
+     * @param knowledgeTypes the knowledge types
+     * @param supportedDecisions the decisions
+     * @param priority the priority
+     * @throws InvalidOclException if the ocl is not valid
+     * 
+     * TODO: Do these need to be Lists or can they be simple Collections?
+     */
+    public CrOCL(String oclConstraint, String headline, String description,
+            Integer priority, List&lt;Decision&gt; supportedDecisions,
+            List&lt;String&gt; knowledgeTypes, String moreInfoURL)
+<span class="fc" id="L90">        throws InvalidOclException {</span>
+<span class="fc" id="L91">        interpreter = </span>
+            new OclInterpreter(oclConstraint, new Uml14ModelInterpreter());
+<span class="fc" id="L93">        this.ocl = oclConstraint;</span>
+        
+<span class="fc" id="L95">        addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);</span>
+<span class="fc" id="L96">        setPriority(ToDoItem.HIGH_PRIORITY);</span>
+
+<span class="fc" id="L98">        List&lt;String&gt; triggers = interpreter.getTriggers();</span>
+<span class="fc" id="L99">        designMaterials = interpreter.getCriticizedDesignMaterials();</span>
+        
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (String string : triggers) {</span>
+<span class="fc" id="L102">            addTrigger(string);</span>
+<span class="fc" id="L103">        }</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (headline == null) {</span>
+<span class="fc" id="L106">            super.setHeadline(&quot;OCL Expression&quot;);</span>
+        } else {
+<span class="fc" id="L108">            super.setHeadline(headline);</span>
+        }
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (description == null) {</span>
+<span class="fc" id="L112">            super.setDescription(&quot;&quot;);</span>
+        } else {
+<span class="fc" id="L114">            super.setDescription(description);</span>
+        }
+
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (priority == null) {</span>
+<span class="fc" id="L118">            setPriority(ToDoItem.HIGH_PRIORITY);</span>
+        } else {
+<span class="fc" id="L120">            setPriority(priority);</span>
+        }
+
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (supportedDecisions != null) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            for (Decision d : supportedDecisions) {</span>
+<span class="nc" id="L125">                addSupportedDecision(d);</span>
+<span class="nc" id="L126">            }</span>
+        }
+
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (knowledgeTypes != null) {</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            for (String k : knowledgeTypes) {</span>
+<span class="nc" id="L131">                addKnowledgeType(k);</span>
+<span class="nc" id="L132">            }</span>
+        }
+
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (moreInfoURL != null) {</span>
+<span class="fc" id="L136">            setMoreInfoURL(moreInfoURL);</span>
+        }
+<span class="fc" id="L138">    }</span>
+    
+
+    /*
+     * @see org.argouml.cognitive.Critic#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L146">        return designMaterials;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
+     *      org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (!interpreter.applicable(dm)) {</span>
+<span class="fc" id="L156">            return NO_PROBLEM;</span>
+        } else {
+<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (interpreter.check(dm)) {</span>
+<span class="fc" id="L159">                return NO_PROBLEM;</span>
+            } else {
+<span class="fc" id="L161">                return PROBLEM_FOUND;</span>
+            }
+        }
+    }
+
+    /**
+     * @return the ocl constraint
+     */
+    public String getOCL() {
+<span class="nc" id="L170">        return ocl;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

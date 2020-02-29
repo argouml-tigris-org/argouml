@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ExceptionDialog.java</span></div><h1>ExceptionDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import org.argouml.i18n.Translator;
+import org.argouml.util.osdep.StartBrowser;
+
+/**
+ * A window that displays an exception to the user if we can't handle it
+ * in any other way.
+ * 
+ * TODO: This has been partly converted to be a generic error dialog 
+ * rather than something specific to exceptions.  This should be renamed
+ * when that process is complete.
+ */
+<span class="nc bnc" id="L73" title="All 2 branches missed.">public class ExceptionDialog extends JDialog implements ActionListener {</span>
+
+    private JButton closeButton;
+    private JButton copyButton;
+    private JLabel northLabel;
+    private JEditorPane textArea;
+
+    /**
+     * Construct an exception dialog for the given frame and throwable.
+     *
+     * @param f the &lt;code&gt;Frame&lt;/code&gt; from which the dialog is displayed
+     * @param e the exception
+     */
+    public ExceptionDialog(Frame f, Throwable e) {
+<span class="nc" id="L87">        this(f, Translator.localize(&quot;dialog.exception.unknown.error&quot;), e);</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Construct an exception dialog with the given parameters.
+     *
+     * @param f the &lt;code&gt;Frame&lt;/code&gt; from which the dialog is displayed
+     * @param message the message
+     * @param e the exception
+     */
+    public ExceptionDialog(Frame f, String message, Throwable e) {
+<span class="nc" id="L98">        this(f, message, e, false);</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * Construct an exception dialog with the given parameters.
+     *
+     * @param f   the &lt;code&gt;Frame&lt;/code&gt; from which the dialog is displayed
+     * @param message
+     *            the message
+     * @param e   the exception
+     * @param highlightCause
+     *            give priority to Throwable.cause in display. Use this if the
+     *            main exception is mostly boilerplate and the really useful
+     *            information is in the enclosed cause.
+     */
+    public ExceptionDialog(Frame f, String message, Throwable e,
+            boolean highlightCause) {
+<span class="nc" id="L115">        this(f, Translator.localize(&quot;dialog.exception.title&quot;), </span>
+<span class="nc" id="L116">                Translator.localize(&quot;dialog.exception.message&quot;), </span>
+<span class="nc" id="L117">                formatException(message, e, highlightCause));</span>
+<span class="nc" id="L118">    }</span>
+
+    public static String formatException(String message, Throwable e,
+            boolean highlightCause) {
+<span class="nc" id="L122">        StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L123">        PrintWriter pw = new PrintWriter(sw);</span>
+
+<span class="nc bnc" id="L125" title="All 4 branches missed.">        if (highlightCause &amp;&amp; e.getCause() != null) {</span>
+
+            // This text is for the developers.
+            // It doesn't need to be localized.
+<span class="nc" id="L129">            pw.print(message );</span>
+<span class="nc" id="L130">            pw.print(&quot;&lt;hr&gt;System Info:&lt;p&gt;&quot; + SystemInfoDialog.getInfo());</span>
+<span class="nc" id="L131">            pw.print(&quot;&lt;p&gt;&lt;hr&gt;Error occurred at : &quot; + new Date());</span>
+<span class="nc" id="L132">            pw.print(&quot;&lt;p&gt;  Cause : &quot;);</span>
+<span class="nc" id="L133">            e.getCause().printStackTrace(pw);</span>
+<span class="nc" id="L134">            pw.print(&quot;-------&lt;p&gt;Full exception : &quot;);</span>
+        }
+<span class="nc" id="L136">        e.printStackTrace(pw);</span>
+<span class="nc" id="L137">        return sw.toString();</span>
+    }
+
+    
+    /**
+     * Construct an exception dialog with given title, introduction, and detail
+     * message.
+     * 
+     * @param f
+     *            the &lt;code&gt;Frame&lt;/code&gt; from which the dialog is displayed
+     * @param title
+     *            string to use as title of dialog box
+     * @param intro
+     *            introductory text (summary of error)
+     * @param message
+     *            the message
+     */
+    public ExceptionDialog(Frame f, String title, String intro, 
+            String message) {
+<span class="nc" id="L156">        super(f);</span>
+<span class="nc" id="L157">        setResizable(true);</span>
+<span class="nc" id="L158">        setModal(false);</span>
+<span class="nc" id="L159">        setTitle(title);</span>
+
+<span class="nc" id="L161">        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="nc" id="L162">        getContentPane().setLayout(new BorderLayout(0, 0));</span>
+
+        // the introducing label
+<span class="nc" id="L165">        northLabel =</span>
+            new JLabel(intro);
+<span class="nc" id="L167">        northLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</span>
+<span class="nc" id="L168">        getContentPane().add(northLabel, BorderLayout.NORTH);</span>
+
+        // the text box containing the problem messages
+        // TODO: This should be hidden by default, but accessible on 
+        // via a &quot;details&quot; button or tab to provide more info to the user.
+<span class="nc" id="L173">        textArea = new JEditorPane();</span>
+<span class="nc" id="L174">        textArea.setContentType(&quot;text/html&quot;);</span>
+<span class="nc" id="L175">        textArea.setEditable(false);</span>
+<span class="nc" id="L176">        textArea.addHyperlinkListener(new HyperlinkListener() {</span>
+            public void hyperlinkUpdate(HyperlinkEvent hle) {
+<span class="nc" id="L178">                linkEvent(hle);</span>
+<span class="nc" id="L179">            }</span>
+        });
+
+        // These shouldn't really be &lt;br&gt; instead of &lt;p&gt; elements, but
+        // the lines all get run together when pasted into a browser window.
+<span class="nc" id="L184">        textArea.setText(message.replaceAll(&quot;\n&quot;, &quot;&lt;p&gt;&quot;));</span>
+<span class="nc" id="L185">        textArea.setCaretPosition(0);</span>
+
+<span class="nc" id="L187">        JPanel centerPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L188">        centerPanel.add(new JScrollPane(textArea));</span>
+<span class="nc" id="L189">        centerPanel.setPreferredSize(new Dimension(500, 200));</span>
+<span class="nc" id="L190">        getContentPane().add(centerPanel);</span>
+
+<span class="nc" id="L192">        copyButton =</span>
+<span class="nc" id="L193">            new JButton(Translator.localize(&quot;button.copy-to-clipboard&quot;));</span>
+<span class="nc" id="L194">        copyButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent evt) {
+<span class="nc" id="L196">                copyActionPerformed(evt);</span>
+<span class="nc" id="L197">            }</span>
+        });
+
+<span class="nc" id="L200">        closeButton = new JButton(Translator.localize(&quot;button.close&quot;));</span>
+<span class="nc" id="L201">        closeButton.addActionListener(this);</span>
+<span class="nc" id="L202">        JPanel bottomPanel = new JPanel();</span>
+
+<span class="nc" id="L204">        bottomPanel.add(copyButton);</span>
+<span class="nc" id="L205">        bottomPanel.add(closeButton);</span>
+<span class="nc" id="L206">        getContentPane().add(bottomPanel, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L208">        addWindowListener(new WindowAdapter() {</span>
+            public void windowClosing(WindowEvent evt) {
+<span class="nc" id="L210">                disposeDialog();</span>
+<span class="nc" id="L211">            }</span>
+        });
+
+<span class="nc" id="L214">        pack();</span>
+<span class="nc" id="L215">        Dimension contentPaneSize = getContentPane().getSize();</span>
+<span class="nc" id="L216">        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,</span>
+                scrSize.height / 2 - contentPaneSize.height / 2);
+<span class="nc" id="L218">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L224">        disposeDialog();</span>
+<span class="nc" id="L225">    }</span>
+
+    /**
+     * Copy the textpane's contents to the clipboard.
+     *
+     * @param e the actionEvent
+     */
+    private void copyActionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L233" title="All 4 branches missed.">        assert e.getSource() == copyButton;</span>
+<span class="nc" id="L234">        textArea.setSelectionStart(0);</span>
+<span class="nc" id="L235">        textArea.setSelectionEnd(textArea.getText().length());</span>
+<span class="nc" id="L236">        textArea.copy();</span>
+<span class="nc" id="L237">        textArea.setSelectionEnd(0);</span>
+<span class="nc" id="L238">    }</span>
+
+    /**
+     * Dispose this dialog.
+     */
+    private void disposeDialog() {
+<span class="nc" id="L244">        setVisible(false);</span>
+<span class="nc" id="L245">        dispose();</span>
+<span class="nc" id="L246">    }</span>
+
+    /**
+     * Handle link activation for our hyperlink.
+     *
+     * @param e the event
+     */
+    private void linkEvent(HyperlinkEvent e) {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {</span>
+<span class="nc" id="L255">            StartBrowser.openUrl(e.getURL());</span>
+        }
+<span class="nc" id="L257">    }</span>
+
+     /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2773182347529547418L;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

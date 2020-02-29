@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionAddDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">ActionAddDiagram.java</span></div><h1>ActionAddDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
+
+/**
+ * Abstract class that is the parent of all actions adding diagrams to ArgoUML.
+ * The children of this class should implement createDiagram to do any specific
+ * actions for creating a diagram and isValidNamespace that checks if some
+ * namespace is valid to add the diagram to. &lt;p&gt;
+ *
+ * ArgoUML shall never create a diagram for a read-only modelelement.&lt;p&gt;
+ *
+ * TODO: This class should be merged with ActionNewDiagram.
+ *
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public abstract class ActionAddDiagram extends UndoableAction {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L75">    private static final Logger LOG =</span>
+<span class="fc" id="L76">        Logger.getLogger(ActionAddDiagram.class.getName());</span>
+
+    /**
+     * Constructor for ActionAddDiagram.
+     *
+     * @param s the name for this action
+     */
+    public ActionAddDiagram(String s) {
+<span class="fc" id="L84">        super(Translator.localize(s),</span>
+<span class="fc" id="L85">                ResourceLoaderWrapper.lookupIcon(s));</span>
+        // Set the tooltip string:
+<span class="fc" id="L87">        putValue(Action.SHORT_DESCRIPTION,</span>
+<span class="fc" id="L88">                Translator.localize(s));</span>
+<span class="fc" id="L89">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // TODO: The project should be bound to the action when it is created?
+<span class="nc" id="L97">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L98">        Object ns = findNamespace();</span>
+
+<span class="nc bnc" id="L100" title="All 4 branches missed.">        if (ns != null &amp;&amp; isValidNamespace(ns)) {</span>
+<span class="nc" id="L101">            super.actionPerformed(e);</span>
+<span class="nc" id="L102">            DiagramSettings settings =</span>
+<span class="nc" id="L103">                p.getProjectSettings().getDefaultDiagramSettings();</span>
+            // TODO: We should really be passing the default settings to
+            // the diagram factory so they get set at creation time
+<span class="nc" id="L106">            ArgoDiagram diagram = createDiagram(ns, settings);</span>
+
+<span class="nc" id="L108">            p.addMember(diagram);</span>
+            //TODO: make the explorer listen to project member property
+            //changes...  to eliminate coupling on gui.
+<span class="nc" id="L111">            ExplorerEventAdaptor.getInstance().modelElementAdded(ns);</span>
+<span class="nc" id="L112">            TargetManager.getInstance().setTarget(diagram);</span>
+<span class="nc" id="L113">        } else {</span>
+<span class="nc" id="L114">            LOG.log(Level.SEVERE, &quot;No valid namespace found&quot;);</span>
+<span class="nc" id="L115">            throw new IllegalStateException(&quot;No valid namespace found&quot;);</span>
+        }
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * Find the right namespace for the diagram.
+     *
+     * @return the namespace or null
+     */
+    protected Object findNamespace() {
+<span class="nc" id="L125">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L126">        Object target = TargetManager.getInstance().getModelTarget();</span>
+<span class="nc" id="L127">        Object ns = null;</span>
+<span class="nc bnc" id="L128" title="All 4 branches missed.">        if (target == null || !Model.getFacade().isAModelElement(target)</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                || Model.getModelManagementHelper().isReadOnly(target)) {</span>
+            // get the first editable extent (which is OK unless there is more
+            // than one editable extent)
+<span class="nc" id="L132">            target = null;</span>
+<span class="nc" id="L133">            Iterator iter = p.getRoots().iterator();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
+<span class="nc" id="L135">                Object o = iter.next();</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">                if (!Model.getModelManagementHelper().isReadOnly(o)) {</span>
+<span class="nc" id="L137">                    target = o;</span>
+<span class="nc" id="L138">                    break;</span>
+                }
+<span class="nc" id="L140">            }</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (target == null) {</span>
+                // no way, we have to give up
+<span class="nc" id="L143">                return null;</span>
+            }
+        }
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (Model.getFacade().isANamespace(target)) {</span>
+<span class="nc" id="L147">            ns = target;</span>
+        } else {
+<span class="nc" id="L149">            Object owner = null;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            if (Model.getFacade().isAOperation(target)) {</span>
+<span class="nc" id="L151">                owner = Model.getFacade().getOwner(target);</span>
+<span class="nc bnc" id="L152" title="All 4 branches missed.">                if (owner != null &amp;&amp; Model.getFacade().isANamespace(owner)) {</span>
+<span class="nc" id="L153">                    ns = owner;</span>
+                }
+            }
+<span class="nc bnc" id="L156" title="All 4 branches missed.">            if (ns == null &amp;&amp; Model.getFacade().isAModelElement(target)) {</span>
+<span class="nc" id="L157">                owner = Model.getFacade().getNamespace(target);</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">                if (owner != null &amp;&amp; Model.getFacade().isANamespace(owner)) {</span>
+<span class="nc" id="L159">                    ns = owner;</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L164">            ns = p.getRoot();</span>
+        }
+<span class="nc" id="L166">        return ns;</span>
+    }
+
+    /**
+     * Test if the given namespace is a valid namespace to add the diagram to.
+     *
+     * @param ns the namespace to check
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if valid.
+     */
+    public abstract boolean isValidNamespace(Object ns);
+
+    /**
+     * Creates the diagram. Classes derived from this class should implement any
+     * specific behaviour to create the diagram.
+     *
+     * @param ns The namespace the UMLDiagram should get.
+     * @return UMLDiagram
+     * @deprecated for 0.27.3 by tfmorris. Subclasses should override
+     *             {@link #createDiagram(Object, DiagramSettings)}.  This method
+     *             is no longer abstract, so implementing classes may remove it.
+     */
+    @Deprecated
+    public ArgoDiagram createDiagram(@SuppressWarnings(&quot;unused&quot;) Object ns) {
+        // Do nothing during the deprecation period, then it can be removed.
+<span class="nc" id="L190">        return null;</span>
+    }
+
+    /**
+     * Create a new diagram. To be implemented by subclasses. It will become
+     * abstract after 0.28 to enforce this requirement.
+     *
+     * @param owner owner of the diagram. May be a namespace, statemachine, or
+     *            collaboration depending on the type of diagram.
+     * @param settings default rendering settings for all figs in the new
+     *            diagram
+     * @return newly created diagram
+     */
+    public ArgoDiagram createDiagram(Object owner, DiagramSettings settings) {
+<span class="fc" id="L204">        ArgoDiagram d = createDiagram(owner);</span>
+<span class="fc" id="L205">        d.setDiagramSettings(settings);</span>
+<span class="fc" id="L206">        return d;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

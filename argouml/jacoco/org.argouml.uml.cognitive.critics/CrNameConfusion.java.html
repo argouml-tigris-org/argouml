@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrNameConfusion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrNameConfusion.java</span></div><h1>CrNameConfusion.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.UMLToDoItem;
+
+/**
+ * Well-formedness rule [1] for Namespace. See section 2.5.3.26 of
+ * UML 1.4 spec.  Rule [2] is checked by CrAssocNameConflict.
+ */
+public class CrNameConfusion extends CrUML {
+
+    /** 
+     * The serialVersionUID 
+     */
+    private static final long serialVersionUID = -6659510145586121263L;
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L71">    public CrNameConfusion() {</span>
+<span class="fc" id="L72">        setupHeadAndDesc();</span>
+<span class="fc" id="L73">	addSupportedDecision(UMLDecision.NAMING);</span>
+<span class="fc" id="L74">	setKnowledgeTypes(Critic.KT_PRESENTATION);</span>
+<span class="fc" id="L75">	setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+<span class="fc" id="L76">	addTrigger(&quot;name&quot;);</span>
+<span class="fc" id="L77">    }</span>
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     *      java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">	if (!(Model.getFacade().isAModelElement(dm)) </span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                || Model.getFacade().isAAssociation(dm)</span>
+                // UML 1.4 spec is ambiguous - English says no Association or 
+                // Generalization, but OCL only includes Association
+//                || Model.getFacade().isAGeneralization(dm)
+	) {
+<span class="nc" id="L91">	    return NO_PROBLEM;</span>
+	}
+<span class="nc" id="L93">	Object me = dm;</span>
+<span class="nc" id="L94">	ListSet offs = computeOffenders(me);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">	if (offs.size() &gt; 1) {</span>
+<span class="nc" id="L96">	    return PROBLEM_FOUND;</span>
+	}
+<span class="nc" id="L98">	return NO_PROBLEM;</span>
+    }
+
+    /**
+     * @param dm the given modelelement
+     * @return the ListSet of offenders
+     */
+    public ListSet computeOffenders(Object dm) {
+<span class="nc" id="L106">	Object ns = Model.getFacade().getNamespace(dm);</span>
+<span class="nc" id="L107">	ListSet res = new ListSet(dm);</span>
+<span class="nc" id="L108">	String n = Model.getFacade().getName(dm);</span>
+<span class="nc bnc" id="L109" title="All 4 branches missed.">	if (n == null || n.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L110">	    return res;</span>
+	}
+<span class="nc" id="L112">	String dmNameStr = n;</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">	if (dmNameStr == null || dmNameStr.length() == 0) {</span>
+<span class="nc" id="L114">	    return res;</span>
+	}
+<span class="nc" id="L116">	String stripped2 = strip(dmNameStr);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">	if (ns == null) {</span>
+<span class="nc" id="L118">	    return res;</span>
+	}
+<span class="nc" id="L120">	Collection oes = Model.getFacade().getOwnedElements(ns);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">	if (oes == null) {</span>
+<span class="nc" id="L122">	    return res;</span>
+	}
+<span class="nc" id="L124">	Iterator elems = oes.iterator();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">	while (elems.hasNext()) {</span>
+<span class="nc" id="L126">	    Object me2 = elems.next();</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">	    if (me2 == dm || Model.getFacade().isAAssociation(me2)) {</span>
+<span class="nc" id="L128">	        continue;</span>
+	    }
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (!Model.getFacade().isANamedElement(me2)) {</span>
+<span class="nc" id="L131">                continue;</span>
+            }
+<span class="nc" id="L133">	    String meName = Model.getFacade().getName(me2);</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">	    if (meName == null || meName.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L135">	        continue;</span>
+	    }
+<span class="nc" id="L137">	    String compareName = meName;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">	    if (confusable(stripped2, strip(compareName))</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">                &amp;&amp; !dmNameStr.equals(compareName)) {</span>
+<span class="nc" id="L140">		res.add(me2);</span>
+	    }
+<span class="nc" id="L142">	}</span>
+<span class="nc" id="L143">	return res;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
+     */
+    @Override
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+<span class="nc" id="L152">	Object me = dm;</span>
+<span class="nc" id="L153">	ListSet offs = computeOffenders(me);</span>
+<span class="nc" id="L154">	return new UMLToDoItem(this, offs, dsgr);</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#stillValid(
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">	if (!isActive()) {</span>
+<span class="nc" id="L164">	    return false;</span>
+	}
+<span class="nc" id="L166">	ListSet offs = i.getOffenders();</span>
+<span class="nc" id="L167">	Object dm = offs.get(0);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">	if (!predicate(dm, dsgr)) {</span>
+<span class="nc" id="L169">	    return false;</span>
+	}
+<span class="nc" id="L171">	ListSet newOffs = computeOffenders(dm);</span>
+<span class="nc" id="L172">	boolean res = offs.equals(newOffs);</span>
+<span class="nc" id="L173">	return res;</span>
+    }
+
+    /**
+     * @param stripped1 given string 1
+     * @param stripped2 given string 2
+     * @return true if the both given strings are confusingly similar
+     */
+    public boolean confusable(String stripped1, String stripped2) {
+<span class="nc" id="L182">	int countDiffs = countDiffs(stripped1, stripped2);</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">	return countDiffs &lt;= 1;</span>
+    }
+
+    /**
+     * @param s1 given string 1
+     * @param s2 given string 2
+     * @return positive int, representing the number of different chars, or
+     *         if the lengths differ more than 2, this length difference
+     */
+    public int countDiffs(String s1, String s2) {
+<span class="nc" id="L193">	int len = Math.min(s1.length(), s2.length());</span>
+<span class="nc" id="L194">	int count = Math.abs(s1.length() - s2.length());</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">	if (count &gt; 2) {</span>
+<span class="nc" id="L196">	    return count;</span>
+	}
+<span class="nc bnc" id="L198" title="All 2 branches missed.">	for (int i = 0; i &lt; len; i++) {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">	    if (s1.charAt(i) != s2.charAt(i)) {</span>
+<span class="nc" id="L200">	        count++;</span>
+	    }
+	}
+<span class="nc" id="L203">	return count;</span>
+    }
+
+    /**
+     * @param s the given string
+     * @return the string s with all non-letters/digits stripped off
+     */
+    public String strip(String s) {
+<span class="nc" id="L211">	StringBuffer res = new StringBuffer(s.length());</span>
+<span class="nc" id="L212">	int len = s.length();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">	for (int i = 0; i &lt; len; i++) {</span>
+<span class="nc" id="L214">	    char c = s.charAt(i);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">	    if (Character.isLetterOrDigit(c)) {</span>
+<span class="nc" id="L216">	        res.append(Character.toLowerCase(c));</span>
+<span class="nc bnc" id="L217" title="All 6 branches missed.">	    } else if (c == ']' &amp;&amp; i &gt; 1 &amp;&amp; s.charAt(i - 1) == '[') {</span>
+<span class="nc" id="L218">		res.append(&quot;[]&quot;);</span>
+	    }
+	}
+<span class="nc" id="L221">	return res.toString();</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
+    @Override
+    public Icon getClarifier() {
+<span class="nc" id="L229">	return ClClassName.getTheInstance();</span>
+    }
+
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *      org.argouml.cognitive.ui.Wizard)
+     */
+    @Override
+    public void initWizard(Wizard w) {
+<span class="nc bnc" id="L239" title="All 2 branches missed.">	if (w instanceof WizManyNames) {</span>
+<span class="nc" id="L240">	    ToDoItem item = (ToDoItem) w.getToDoItem();</span>
+<span class="nc" id="L241">	    ((WizManyNames) w).setModelElements(item.getOffenders());</span>
+	}
+<span class="nc" id="L243">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+<span class="nc" id="L250">	return WizManyNames.class;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L258">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L259">        ret.add(Model.getMetaTypes().getClassifier());</span>
+<span class="fc" id="L260">        ret.add(Model.getMetaTypes().getState());</span>
+<span class="fc" id="L261">        return ret;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

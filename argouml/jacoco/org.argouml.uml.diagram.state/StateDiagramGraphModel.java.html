@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateDiagramGraphModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state</a> &gt; <span class="el_source">StateDiagramGraphModel.java</span></div><h1>StateDiagramGraphModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.state;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * This class defines a bridge between the UML meta-model representation of the
+ * design and the GraphModel interface used by GEF. This class handles UML
+ * Statemachine Diagrams, and is also used for Activity diagrams.
+ */
+<span class="fc" id="L63">public class StateDiagramGraphModel extends UMLMutableGraphSupport implements</span>
+        VetoableChangeListener {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L69">    private static final Logger LOG =</span>
+<span class="fc" id="L70">        Logger.getLogger(StateDiagramGraphModel.class.getName());</span>
+
+
+    /**
+     * The statemachine we are diagramming.
+     */
+    private Object machine;
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * @return the statemachine of this diagram
+     */
+    public Object getMachine() {
+<span class="fc" id="L85">        return machine;</span>
+    }
+
+    /**
+     * @param sm   the statemachine of this diagram
+     */
+    public void setMachine(Object sm) {
+
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (!Model.getFacade().isAStateMachine(sm)) {</span>
+<span class="nc" id="L94">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (sm != null) {</span>
+<span class="fc" id="L98">            machine = sm;</span>
+        }
+<span class="fc" id="L100">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // GraphModel implementation
+
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
+     */
+    public List getPorts(Object nodeOrEdge) {
+<span class="nc" id="L110">        List res = new ArrayList();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (Model.getFacade().isAState(nodeOrEdge)) {</span>
+<span class="nc" id="L112">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (Model.getFacade().isAPseudostate(nodeOrEdge)) {</span>
+<span class="nc" id="L115">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc" id="L117">        return res;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
+     */
+    public Object getOwner(Object port) {
+<span class="nc" id="L124">        return port;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
+     */
+    public List getInEdges(Object port) {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (Model.getFacade().isAStateVertex(port)) {</span>
+<span class="nc" id="L132">            return new ArrayList(Model.getFacade().getIncomings(port));</span>
+        }
+<span class="nc" id="L134">        LOG.log(Level.FINE, &quot;TODO: getInEdges of MState&quot;);</span>
+<span class="nc" id="L135">        return Collections.EMPTY_LIST;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
+     */
+    public List getOutEdges(Object port) {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (Model.getFacade().isAStateVertex(port)) {</span>
+<span class="nc" id="L143">            return new ArrayList(Model.getFacade().getOutgoings(port));</span>
+        }
+<span class="nc" id="L145">        LOG.log(Level.FINE, &quot;TODO: getOutEdges of MState&quot;);</span>
+<span class="nc" id="L146">        return Collections.EMPTY_LIST;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
+    public boolean canAddNode(Object node) {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (node == null</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">                || !Model.getFacade().isAModelElement(node)</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                || containsNode(node)) {</span>
+<span class="nc" id="L159">            return false;</span>
+        }
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (Model.getFacade().isAComment(node)) {</span>
+<span class="nc" id="L163">            return true;</span>
+        }
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (Model.getFacade().isAStateVertex(node)</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                || Model.getFacade().isAPartition(node)) {</span>
+            /*
+             * The next solves issue 3665: Do not allow addition of an element
+             * to a statemachine that is contained by a statemachine other than
+             * the one represented by this diagram.
+             */
+            Object nodeMachine =
+<span class="nc" id="L174">                Model.getStateMachinesHelper().getStateMachine(node);</span>
+<span class="nc bnc" id="L175" title="All 4 branches missed.">            if (nodeMachine == null || nodeMachine == getMachine()) {</span>
+<span class="nc" id="L176">                return true;</span>
+            }
+        }
+
+<span class="nc" id="L180">        return false;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
+    public boolean canAddEdge(Object edge) {
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        if (super.canAddEdge(edge)) {</span>
+<span class="nc" id="L188">            return true;</span>
+        }
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (edge == null) {</span>
+<span class="nc" id="L191">            return false;</span>
+        }
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (containsEdge(edge)) {</span>
+<span class="nc" id="L194">            return false;</span>
+        }
+
+<span class="nc" id="L197">        Object end0 = null;</span>
+<span class="nc" id="L198">        Object end1 = null;</span>
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (Model.getFacade().isATransition(edge)) {</span>
+<span class="nc" id="L201">            end0 = Model.getFacade().getSource(edge);</span>
+<span class="nc" id="L202">            end1 = Model.getFacade().getTarget(edge);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        } else if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L204">            end0 = ((CommentEdge) edge).getSource();</span>
+<span class="nc" id="L205">            end1 = ((CommentEdge) edge).getDestination();</span>
+        } else {
+<span class="nc" id="L207">            return false;</span>
+        }
+
+        // Both ends must be defined and nodes that are on the graph already.
+<span class="nc bnc" id="L211" title="All 4 branches missed.">        if (end0 == null || end1 == null) {</span>
+<span class="nc" id="L212">            LOG.log(Level.SEVERE,</span>
+                    &quot;Edge rejected. Its ends are not attached to anything&quot;);
+<span class="nc" id="L214">            return false;</span>
+        }
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        if (!containsNode(end0)</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                &amp;&amp; !containsEdge(end0)) {</span>
+<span class="nc" id="L219">            LOG.log(Level.SEVERE,</span>
+                    &quot;Edge rejected. Its source end is attached to &quot;
+                    + end0
+                    + &quot; but this is not in the graph model&quot;);
+<span class="nc" id="L223">            return false;</span>
+        }
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (!containsNode(end1)</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                &amp;&amp; !containsEdge(end1)) {</span>
+<span class="nc" id="L227">            LOG.log(Level.SEVERE,</span>
+                    &quot;Edge rejected. Its destination end is attached to &quot;
+                    + end1
+                    + &quot; but this is not in the graph model&quot;);
+<span class="nc" id="L231">            return false;</span>
+        }
+
+<span class="nc" id="L234">        return true;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
+     */
+    public void addNode(Object node) {
+<span class="nc" id="L241">        LOG.log(Level.FINE,</span>
+                &quot;adding statechart/activity diagram node: {0}&quot;,
+                node);
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (!canAddNode(node)) {</span>
+<span class="nc" id="L246">            return;</span>
+        }
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        if (containsNode(node)) {</span>
+<span class="nc" id="L249">            return;</span>
+        }
+
+<span class="nc" id="L252">        getNodes().add(node);</span>
+
+        // Don't do it for comment.
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (Model.getFacade().isAStateVertex(node)) {</span>
+<span class="nc" id="L256">            final Object stateMachine = getMachine();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L258">                Object top = Model.getStateMachinesHelper().getTop(stateMachine);</span>
+<span class="nc" id="L259">                Model.getStateMachinesHelper().addSubvertex(top, node);</span>
+<span class="nc" id="L260">            } else {</span>
+                final List regions =
+<span class="nc" id="L262">                    Model.getStateMachinesHelper().getRegions(stateMachine);</span>
+                final Object region;
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                if (regions.isEmpty()) {</span>
+<span class="nc" id="L265">                    region = Model.getUmlFactory().buildNode(</span>
+<span class="nc" id="L266">                            Model.getMetaTypes().getRegion(), stateMachine);</span>
+                } else {
+<span class="nc" id="L268">                    region = regions.get(0);</span>
+                }
+<span class="nc" id="L270">                Model.getStateMachinesHelper().setContainer(node, region);</span>
+            }
+        }
+
+<span class="nc" id="L274">        fireNodeAdded(node);</span>
+<span class="nc" id="L275">    }</span>
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
+     */
+    public void addEdge(Object edge) {
+<span class="nc" id="L281">        LOG.log(Level.FINE, &quot;adding statechart/activity diagram edge!!!!!!&quot;);</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        if (edge == null) {</span>
+<span class="nc" id="L283">            throw new IllegalArgumentException(&quot;Cannot add a null edge&quot;);</span>
+        }
+
+<span class="nc bnc" id="L286" title="All 4 branches missed.">        if (getDestPort(edge) == null || getSourcePort(edge) == null) {</span>
+<span class="nc" id="L287">            throw new IllegalArgumentException(</span>
+                    &quot;The source and dest port should be provided on an edge&quot;);
+        }
+
+<span class="nc" id="L291">        LOG.log(Level.INFO,</span>
+                &quot;Adding an edge of type {0} to class diagram.&quot;,
+<span class="nc" id="L293">                edge.getClass().getName());</span>
+
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (!canAddEdge(edge)) {</span>
+<span class="nc" id="L296">            LOG.log(Level.INFO, &quot;Attempt to add edge rejected&quot;);</span>
+<span class="nc" id="L297">            return;</span>
+        }
+
+<span class="nc" id="L300">        getEdges().add(edge);</span>
+
+<span class="nc" id="L302">        fireEdgeAdded(edge);</span>
+<span class="nc" id="L303">    }</span>
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
+    public void addNodeRelatedEdges(Object node) {
+<span class="nc" id="L309">        super.addNodeRelatedEdges(node);</span>
+
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (Model.getFacade().isAStateVertex(node)) {</span>
+<span class="nc" id="L312">            Collection transen =</span>
+<span class="nc" id="L313">                new ArrayList(Model.getFacade().getOutgoings(node));</span>
+<span class="nc" id="L314">            transen.addAll(Model.getFacade().getIncomings(node));</span>
+<span class="nc" id="L315">            Iterator iter = transen.iterator();</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
+<span class="nc" id="L317">                Object dep = /* (MTransition) */iter.next();</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">                if (canAddEdge(dep)) {</span>
+<span class="nc" id="L319">                    addEdge(dep);</span>
+                }
+<span class="nc" id="L321">            }</span>
+        }
+<span class="nc" id="L323">    }</span>
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public boolean canConnect(Object fromPort, Object toPort) {
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        if (!(Model.getFacade().isAStateVertex(fromPort))) {</span>
+<span class="nc" id="L331">            LOG.log(Level.SEVERE, &quot;internal error not from sv&quot;);</span>
+<span class="nc" id="L332">            return false;</span>
+        }
+<span class="nc bnc" id="L334" title="All 2 branches missed.">        if (!(Model.getFacade().isAStateVertex(toPort))) {</span>
+<span class="nc" id="L335">            LOG.log(Level.SEVERE, &quot;internal error not to sv&quot;);</span>
+<span class="nc" id="L336">            return false;</span>
+        }
+
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        if (Model.getFacade().isAFinalState(fromPort)) {</span>
+<span class="nc" id="L340">            return false;</span>
+        }
+<span class="nc bnc" id="L342" title="All 2 branches missed.">        if (Model.getFacade().isAPseudostate(toPort)) {</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            if ((Model.getPseudostateKind().getInitial()).equals(</span>
+<span class="nc" id="L344">                    Model.getFacade().getKind(toPort))) {</span>
+<span class="nc" id="L345">                return false;</span>
+            }
+        }
+<span class="nc" id="L348">        return true;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object,
+     *      java.lang.Object, java.lang.Class)
+     */
+    public Object connect(Object fromPort, Object toPort,
+                          Object edgeClass) {
+
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (Model.getFacade().isAFinalState(fromPort)) {</span>
+<span class="nc" id="L359">            return null;</span>
+        }
+
+<span class="nc bnc" id="L362" title="All 2 branches missed.">        if (Model.getFacade().isAPseudostate(toPort)</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">                &amp;&amp; Model.getPseudostateKind().getInitial().equals(</span>
+<span class="nc" id="L364">                        Model.getFacade().getKind(toPort))) {</span>
+<span class="nc" id="L365">            return null;</span>
+        }
+
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (Model.getMetaTypes().getTransition().equals(edgeClass)) {</span>
+<span class="nc" id="L369">            Object tr = null;</span>
+            tr =
+<span class="nc" id="L371">                Model.getStateMachinesFactory()</span>
+<span class="nc" id="L372">                    .buildTransition(fromPort, toPort);</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">            if (canAddEdge(tr)) {</span>
+<span class="nc" id="L374">                addEdge(tr);</span>
+            } else {
+<span class="nc" id="L376">                ProjectManager.getManager().getCurrentProject().moveToTrash(tr);</span>
+<span class="nc" id="L377">                tr = null;</span>
+            }
+<span class="nc" id="L379">            return tr;</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        } else if (edgeClass == CommentEdge.class) {</span>
+            try {
+<span class="nc" id="L382">                Object connection =</span>
+<span class="nc" id="L383">                    buildConnection(</span>
+                            edgeClass, fromPort, null, toPort, null, null,
+<span class="nc" id="L385">                            ProjectManager.getManager().getCurrentProject()</span>
+<span class="nc" id="L386">                            .getModel());</span>
+<span class="nc" id="L387">                addEdge(connection);</span>
+<span class="nc" id="L388">                return connection;</span>
+<span class="nc" id="L389">            } catch (Exception ex) {</span>
+<span class="nc" id="L390">                LOG.log(Level.SEVERE, &quot;buildConnection() failed&quot;, ex);</span>
+            }
+<span class="nc" id="L392">            return null;</span>
+        } else {
+<span class="nc" id="L394">            LOG.log(Level.FINE,</span>
+                    &quot;wrong kind of edge in StateDiagram connect3 {0}&quot;,
+                    edgeClass);
+<span class="nc" id="L397">            return null;</span>
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // VetoableChangeListener implementation
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent pce) {
+        //throws PropertyVetoException
+
+<span class="nc bnc" id="L410" title="All 2 branches missed.">        if (&quot;ownedElement&quot;.equals(pce.getPropertyName())) {</span>
+<span class="nc" id="L411">            Collection oldOwned = (Collection) pce.getOldValue();</span>
+<span class="nc" id="L412">            Object eo = /* (MElementImport) */pce.getNewValue();</span>
+<span class="nc" id="L413">            Object me = Model.getFacade().getModelElement(eo);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (oldOwned.contains(eo)) {</span>
+<span class="nc" id="L415">                LOG.log(Level.FINE, &quot;model removed {0}&quot;, me);</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">                if (Model.getFacade().isAState(me)) {</span>
+<span class="nc" id="L417">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                if (Model.getFacade().isAPseudostate(me)) {</span>
+<span class="nc" id="L420">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                if (Model.getFacade().isATransition(me)) {</span>
+<span class="nc" id="L423">                    removeEdge(me);</span>
+                }
+            } else {
+<span class="nc" id="L426">                LOG.log(Level.FINE, &quot;model added {0}&quot;, me);</span>
+            }
+        }
+<span class="nc" id="L429">    }</span>
+
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = -8056507319026044174L;
+
+    /**
+     * @param newNode
+     *            this is the new node that one of the ends is dragged to.
+     * @param oldNode
+     *            this is the existing node that is already connected.
+     * @param edge
+     *            this is the edge that is being dragged/rerouted
+     * @return true if a transition is being rerouted between two states.
+     */
+    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
+            Object edge) {
+        // prevent no changes...
+<span class="nc bnc" id="L448" title="All 2 branches missed.">        if (newNode == oldNode) {</span>
+<span class="nc" id="L449">            return false;</span>
+        }
+
+        // check parameter types:
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        if (!(Model.getFacade().isAState(newNode)</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">              || Model.getFacade().isAState(oldNode)</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">              || Model.getFacade().isATransition(edge))) {</span>
+<span class="nc" id="L456">            return false;</span>
+        }
+
+        // it's not allowed to move a transition
+        // so that it will go from a composite to its substate
+        // nor vice versa. See issue 2865.
+<span class="nc" id="L462">        Object otherSideNode = Model.getFacade().getSource(edge);</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">        if (otherSideNode == oldNode) {</span>
+<span class="nc" id="L464">            otherSideNode = Model.getFacade().getTarget(edge);</span>
+        }
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        if (Model.getFacade().isACompositeState(newNode)</span>
+<span class="nc" id="L467">                &amp;&amp; Model.getStateMachinesHelper().getAllSubStates(newNode)</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">                                                    .contains(otherSideNode)) {</span>
+<span class="nc" id="L469">            return false;</span>
+        }
+
+<span class="nc" id="L472">        return true;</span>
+    }
+
+    /**
+     * Reroutes the connection to the old node to be connected to the new node.
+     *
+     * @param newNode
+     *            this is the new node that one of the ends is dragged to.
+     * @param oldNode
+     *            this is the existing node that is already connected.
+     * @param edge
+     *            this is the edge that is being dragged/rerouted
+     * @param isSource
+     *            tells us which end is being rerouted.
+     */
+    public void changeConnectedNode(Object newNode, Object oldNode,
+            Object edge, boolean isSource) {
+
+<span class="nc bnc" id="L490" title="All 2 branches missed.">        if (isSource) {</span>
+<span class="nc" id="L491">            Model.getStateMachinesHelper().setSource(edge, newNode);</span>
+        } else {
+<span class="nc" id="L493">            Model.getCommonBehaviorHelper().setTarget(edge, newNode);</span>
+        }
+
+<span class="nc" id="L496">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#isRemoveFromDiagramAllowed(Collection)
+     */
+    public boolean isRemoveFromDiagramAllowed(Collection figs) {
+        /* If nothing is selected, then not allowed to remove it. */
+<span class="nc bnc" id="L503" title="All 2 branches missed.">        if (figs.isEmpty()) {</span>
+<span class="nc" id="L504">            return false;</span>
+        }
+<span class="nc" id="L506">        Iterator i = figs.iterator();</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L508">            Object obj = i.next();</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">            if (!(obj instanceof Fig)) {</span>
+<span class="nc" id="L510">                return false;</span>
+            }
+<span class="nc" id="L512">            Object uml = ((Fig) obj).getOwner();</span>
+            /* If a UML object is found, you can not remove selected elms. */
+<span class="nc bnc" id="L514" title="All 2 branches missed.">            if (uml != null) {</span>
+<span class="nc" id="L515">                return false;</span>
+            }
+<span class="nc" id="L517">        }</span>
+        /* If only Figs without owner are selected, then you can remove them! */
+<span class="nc" id="L519">        return true;</span>
+    }
+
+
+} /* end class StateDiagramGraphModel */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

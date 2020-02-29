@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigSimpleState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigSimpleState.java</span></div><h1>FigSimpleState.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Iterator;
+
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display graphics for a UML MState in a diagram.
+ *
+ * @author ics 125b silverbullet team
+ */
+public class FigSimpleState extends FigState {
+
+    private FigRect cover;
+    private FigLine divider;
+
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigSimpleState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+<span class="fc" id="L71">        super(owner, bounds, settings);</span>
+<span class="fc" id="L72">        initializeSimpleState();</span>
+<span class="fc" id="L73">    }</span>
+
+    private void initializeSimpleState() {
+<span class="fc" id="L76">        cover =</span>
+<span class="fc" id="L77">            new FigRRect(getInitialX(), getInitialY(),</span>
+<span class="fc" id="L78">                         getInitialWidth(), getInitialHeight(),</span>
+                         LINE_COLOR, FILL_COLOR);
+
+<span class="fc" id="L81">        getBigPort().setLineWidth(0);</span>
+
+<span class="fc" id="L83">        divider =</span>
+<span class="fc" id="L84">            new FigLine(getInitialX(),</span>
+<span class="fc" id="L85">                        getInitialY() + 2 + getNameFig().getBounds().height + 1,</span>
+<span class="fc" id="L86">                        getInitialWidth() - 1,</span>
+<span class="fc" id="L87">                        getInitialY() + 2 + getNameFig().getBounds().height + 1,</span>
+                        LINE_COLOR);
+
+        // add Figs to the FigNode in back-to-front order
+<span class="fc" id="L91">        addFig(getBigPort());</span>
+<span class="fc" id="L92">        addFig(cover);</span>
+<span class="fc" id="L93">        addFig(getNameFig());</span>
+<span class="fc" id="L94">        addFig(divider);</span>
+<span class="fc" id="L95">        addFig(getInternal());</span>
+
+        //setBlinkPorts(false); //make port invisble unless mouse enters
+<span class="fc" id="L98">        Rectangle r = getBounds();</span>
+<span class="fc" id="L99">        setBounds(r.x, r.y, r.width, r.height);</span>
+<span class="fc" id="L100">    }</span>
+
+    @Override
+    public Object clone() {
+<span class="fc" id="L104">	FigSimpleState figClone = (FigSimpleState) super.clone();</span>
+<span class="fc" id="L105">	Iterator it = figClone.getFigs().iterator();</span>
+<span class="fc" id="L106">	figClone.setBigPort((FigRRect) it.next());</span>
+<span class="fc" id="L107">	figClone.cover = (FigRect) it.next();</span>
+<span class="fc" id="L108">	figClone.setNameFig((FigText) it.next());</span>
+<span class="fc" id="L109">	figClone.divider = (FigLine) it.next();</span>
+<span class="fc" id="L110">	figClone.setInternal((FigText) it.next());</span>
+<span class="fc" id="L111">	return figClone;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    @Override
+    public Dimension getMinimumSize() {
+<span class="nc" id="L119">	Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="nc" id="L120">	Dimension internalDim = getInternal().getMinimumSize();</span>
+
+<span class="nc" id="L122">	int h = SPACE_TOP + nameDim.height</span>
+            + SPACE_MIDDLE + internalDim.height
+            + SPACE_BOTTOM;
+<span class="nc" id="L125">	int w = Math.max(nameDim.width + 2 * MARGIN,</span>
+                internalDim.width + 2 * MARGIN);
+<span class="nc" id="L127">	return new Dimension(w, h);</span>
+    }
+
+    /**
+     * Override setBounds to keep shapes looking right.
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">	if (getNameFig() == null) {</span>
+<span class="nc" id="L137">	    return;</span>
+	}
+<span class="fc" id="L139">	Rectangle oldBounds = getBounds();</span>
+<span class="fc" id="L140">	Dimension nameDim = getNameFig().getMinimumSize();</span>
+
+<span class="fc" id="L142">	getNameFig().setBounds(x + MARGIN,</span>
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
+                nameDim.height);
+<span class="fc" id="L146">	divider.setShape(x,</span>
+                y + DIVIDER_Y + nameDim.height,
+                x + w - 1,
+                y + DIVIDER_Y + nameDim.height);
+
+<span class="fc" id="L151">	getInternal().setBounds(</span>
+                x + MARGIN,
+	        y + SPACE_TOP + nameDim.height + SPACE_MIDDLE,
+	        w - 2 * MARGIN,
+	        h - SPACE_TOP - nameDim.height - SPACE_MIDDLE - SPACE_BOTTOM);
+
+<span class="fc" id="L157">	getBigPort().setBounds(x, y, w, h);</span>
+<span class="fc" id="L158">	cover.setBounds(x, y, w, h);</span>
+
+<span class="fc" id="L160">	calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="fc" id="L161">	updateEdges();</span>
+<span class="fc" id="L162">	firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L163">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+<span class="fc" id="L170">        cover.setLineColor(col);</span>
+<span class="fc" id="L171">        divider.setLineColor(col);</span>
+<span class="fc" id="L172">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L179">        return cover.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    @Override
+    public void setFillColor(Color col) {
+<span class="fc" id="L187">        cover.setFillColor(col);</span>
+<span class="fc" id="L188">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L195">        return cover.getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L203">        cover.setFilled(f);</span>
+<span class="fc" id="L204">        getBigPort().setFilled(f);</span>
+<span class="fc" id="L205">    }</span>
+
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L210">        return cover.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L218">        cover.setLineWidth(w);</span>
+<span class="fc" id="L219">        divider.setLineWidth(w);</span>
+<span class="fc" id="L220">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="nc" id="L227">        return cover.getLineWidth();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
+     */
+    @Override
+    protected int getInitialHeight() {
+<span class="fc" id="L235">        return 40;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
+     */
+    @Override
+    protected int getInitialWidth() {
+<span class="fc" id="L243">        return 70;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
+     */
+    @Override
+    protected int getInitialX() {
+<span class="fc" id="L251">        return 0;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
+     */
+    @Override
+    protected int getInitialY() {
+<span class="fc" id="L259">        return 0;</span>
+    }
+
+} 
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

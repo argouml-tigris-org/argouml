@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComponentInstanceNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">ComponentInstanceNotationUml.java</span></div><h1>ComponentInstanceNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ComponentInstanceNotation;
+
+/**
+ * UML notation for a component instance.
+ * 
+ * @author Michiel van der Wulp
+ */
+public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param componentInstance the UML componentInstance
+     */
+    public ComponentInstanceNotationUml(Object componentInstance) {
+<span class="fc" id="L62">        super(componentInstance);</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Parse a line of the form: &quot;name : base-component&quot;.
+     * &lt;p&gt;
+     * The base-component part is a comma separated list of Components. &lt;p&gt;
+     * 
+     * Note that stereotypes are not supported.
+     *
+     * {@inheritDoc}
+     */
+    public void parse(Object modelElement, String text) {
+        // strip any trailing semi-colons
+<span class="nc" id="L76">        String s = text.trim();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (s.length() == 0) {</span>
+<span class="nc" id="L78">            return;</span>
+        }
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (s.charAt(s.length() - 1) == ';') {</span>
+<span class="nc" id="L81">            s = s.substring(0, s.length() - 2);</span>
+        }
+
+<span class="nc" id="L84">        String name = &quot;&quot;;</span>
+<span class="nc" id="L85">        String bases = &quot;&quot;;</span>
+<span class="nc" id="L86">        StringTokenizer tokenizer = null;</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (s.indexOf(&quot;:&quot;, 0) &gt; -1) {</span>
+<span class="nc" id="L89">            name = s.substring(0, s.indexOf(&quot;:&quot;)).trim();</span>
+<span class="nc" id="L90">            bases = s.substring(s.indexOf(&quot;:&quot;) + 1).trim();</span>
+        } else {
+<span class="nc" id="L92">            name = s;</span>
+        }
+
+<span class="nc" id="L95">        tokenizer = new StringTokenizer(bases, &quot;,&quot;);</span>
+
+<span class="nc" id="L97">        List&lt;Object&gt; classifiers = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L98">        Object ns = Model.getFacade().getNamespace(modelElement);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (ns != null) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            while (tokenizer.hasMoreElements()) {</span>
+<span class="nc" id="L101">                String newBase = tokenizer.nextToken();</span>
+<span class="nc" id="L102">                Object cls = Model.getFacade().lookupIn(ns, newBase.trim());</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                if (cls != null) {</span>
+<span class="nc" id="L104">                    classifiers.add(cls);</span>
+                }
+<span class="nc" id="L106">            }</span>
+        }
+
+<span class="nc" id="L109">        Model.getCommonBehaviorHelper().setClassifiers(modelElement,</span>
+                classifiers);
+<span class="nc" id="L111">        Model.getCoreHelper().setName(modelElement, name);</span>
+<span class="nc" id="L112">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="nc" id="L118">        return &quot;parsing.help.fig-componentinstance&quot;;</span>
+    }
+
+    private String toString(Object modelElement) {
+<span class="fc" id="L122">        String nameStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (Model.getFacade().getName(modelElement) != null) {</span>
+<span class="fc" id="L124">            nameStr = Model.getFacade().getName(modelElement).trim();</span>
+        }
+
+        // construct bases string (comma separated)
+<span class="fc" id="L128">        StringBuilder baseStr = NotationUtilityUml.formatNameList(</span>
+<span class="fc" id="L129">                Model.getFacade().getClassifiers(modelElement));</span>
+<span class="pc bpc" id="L130" title="3 of 4 branches missed.">        if ((nameStr.length() == 0) &amp;&amp; (baseStr.length() == 0)) {</span>
+<span class="nc" id="L131">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L133">        baseStr = new StringBuilder(baseStr.toString().trim());</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (baseStr.length() &lt; 1) {</span>
+<span class="fc" id="L135">            return nameStr.trim();</span>
+        }
+<span class="nc" id="L137">        return nameStr.trim() + &quot; : &quot; + baseStr.toString();</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L142">        return toString(modelElement);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

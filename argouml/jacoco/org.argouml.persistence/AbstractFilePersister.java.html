@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractFilePersister.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">AbstractFilePersister.java</span></div><h1>AbstractFilePersister.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.event.EventListenerList;
+import javax.swing.filechooser.FileFilter;
+
+import org.argouml.configuration.Configuration;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressListener;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.util.ThreadUtils;
+
+/**
+ * To persist to and from zargo (zipped file) storage.
+ *
+ * @author Bob Tarling
+ */
+<span class="fc" id="L71">public abstract class AbstractFilePersister extends FileFilter</span>
+        implements ProjectFilePersister {
+
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(AbstractFilePersister.class.getName());</span>
+
+    /**
+     * Map of persisters by target class.
+     */
+    private static Map&lt;Class, Class&lt;? extends MemberFilePersister&gt;&gt;
+<span class="fc" id="L81">    persistersByClass =</span>
+        new HashMap&lt;Class, Class&lt;? extends MemberFilePersister&gt;&gt;();
+
+    /**
+     * Map of persisters by tag / file extension.
+     */
+    private static Map&lt;String, Class&lt;? extends MemberFilePersister&gt;&gt;
+<span class="fc" id="L88">    persistersByTag =</span>
+        new HashMap&lt;String, Class&lt;? extends MemberFilePersister&gt;&gt;();
+
+    static {
+<span class="fc" id="L92">        registerPersister(ProjectMemberDiagram.class, &quot;pgml&quot;,</span>
+                DiagramMemberFilePersister.class);
+<span class="fc" id="L94">        registerPersister(ProfileConfiguration.class, &quot;profile&quot;,</span>
+                ProfileConfigurationFilePersister.class);
+<span class="fc" id="L96">        registerPersister(ProjectMemberTodoList.class, &quot;todo&quot;,</span>
+                TodoListMemberFilePersister.class);
+<span class="fc" id="L98">        registerPersister(ProjectMemberModel.class, &quot;xmi&quot;,</span>
+                ModelMemberFilePersister.class);
+<span class="fc" id="L100">    }</span>
+
+<span class="fc" id="L102">    private EventListenerList listenerList = new EventListenerList();</span>
+
+    // This can be made public to allow others to extend their own persisters
+    private static boolean registerPersister(Class target, String tag,
+            Class&lt;? extends MemberFilePersister&gt; persister) {
+<span class="fc" id="L107">        persistersByClass.put(target, persister);</span>
+<span class="fc" id="L108">        persistersByTag.put(tag, persister);</span>
+<span class="fc" id="L109">        return true;</span>
+    }
+
+    /**
+     * Create a temporary copy of the existing file.
+     *
+     * @param file the file to copy.
+     * @return the temp file or null if none copied.
+     * @throws FileNotFoundException if file not found
+     * @throws IOException if error reading or writing
+     */
+    protected File createTempFile(File file)
+        throws FileNotFoundException, IOException {
+<span class="fc" id="L122">        File tempFile = new File(file.getAbsolutePath() + &quot;#&quot;);</span>
+
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (tempFile.exists()) {</span>
+<span class="nc" id="L125">            tempFile.delete();</span>
+        }
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (file.exists()) {</span>
+<span class="fc" id="L129">            copyFile(file, tempFile);</span>
+        }
+
+<span class="fc" id="L132">        return tempFile;</span>
+    }
+
+    /**
+     * Saving in a safe way means: Retain the previous project
+     * file even when the save operation causes an
+     * exception in the middle.
+     * Also create a backup file after saving.
+     *
+     * See issue 6012 - our method of saving in a safe way does not
+     * work on a SharePoint drive.
+     * Hence we can configure ArgoUML to save unsafe, too...
+     *
+     * @return true if we should be careful
+     */
+    protected boolean useSafeSaves() {
+<span class="fc" id="L148">        boolean result = Configuration.getBoolean(</span>
+                        PersistenceManager.USE_SAFE_SAVES, true);
+
+        /* make sure this setting exists in the configuration file
+         * to facilitate changing: */
+<span class="fc" id="L153">        Configuration.setBoolean(PersistenceManager.USE_SAFE_SAVES, result);</span>
+
+<span class="fc" id="L155">        return result;</span>
+    }
+
+    /**
+     * Copies one file src to another, raising file exceptions
+     * if there are some problems.
+     *
+     * @param dest The destination file.
+     * @param src The source file.
+     * @return The destination file after successful copying.
+     * @throws IOException if there is some problems with the files.
+     * @throws FileNotFoundException if any of the files cannot be found.
+     */
+    protected File copyFile(File src, File dest)
+        throws FileNotFoundException, IOException {
+
+<span class="fc" id="L171">        FileInputStream fis  = new FileInputStream(src);</span>
+<span class="fc" id="L172">        FileOutputStream fos = new FileOutputStream(dest);</span>
+<span class="fc" id="L173">        byte[] buf = new byte[1024];</span>
+<span class="fc" id="L174">        int i = 0;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        while ((i = fis.read(buf)) != -1) {</span>
+<span class="fc" id="L176">            fos.write(buf, 0, i);</span>
+        }
+<span class="fc" id="L178">        fis.close();</span>
+<span class="fc" id="L179">        fos.close();</span>
+
+<span class="fc" id="L181">        dest.setLastModified(src.lastModified());</span>
+
+<span class="fc" id="L183">        return dest;</span>
+    }
+
+
+
+    ////////////////////////////////////////////////////////////////
+    // FileFilter API
+
+    /*
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
+    public boolean accept(File f) {
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (f == null) {</span>
+<span class="nc" id="L196">	    return false;</span>
+	}
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">        if (f.isDirectory()) {</span>
+<span class="nc" id="L199">	    return true;</span>
+	}
+<span class="fc" id="L201">        String s = getExtension(f);</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        if (s != null) {</span>
+	    // this check for files without extension...
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">            if (s.equalsIgnoreCase(getExtension())) {</span>
+<span class="fc" id="L205">		return true;</span>
+	    }
+	}
+<span class="nc" id="L208">        return false;</span>
+    }
+
+    /**
+     * The extension valid for this type of file.
+     * (Just the chars, not the dot: e.g. &quot;zargo&quot;.)
+     *
+     * @return the extension valid for this type of file
+     */
+    public abstract String getExtension();
+
+    /**
+     * Just the description, not the extension between &quot;()&quot;.
+     *
+     * @return the description valid for this type of file
+     */
+    protected abstract String getDesc();
+
+    private static String getExtension(File f) {
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        if (f == null) {</span>
+<span class="nc" id="L228">	    return null;</span>
+	}
+<span class="fc" id="L230">        return getExtension(f.getName());</span>
+    }
+
+    private static String getExtension(String filename) {
+<span class="fc" id="L234">        int i = filename.lastIndexOf('.');</span>
+<span class="pc bpc" id="L235" title="2 of 4 branches missed.">        if (i &gt; 0 &amp;&amp; i &lt; filename.length() - 1) {</span>
+<span class="fc" id="L236">            return filename.substring(i + 1).toLowerCase();</span>
+        }
+<span class="nc" id="L238">        return null;</span>
+    }
+
+    /**
+     * Given the full filename this returns true if that filename contains the
+     * expected extension for the is persister.
+     *
+     * @param filename The filename to test.
+     * @return true if the filename is valid for this persister
+     */
+    public boolean isFileExtensionApplicable(String filename) {
+<span class="fc" id="L249">        return filename.toLowerCase().endsWith(&quot;.&quot; + getExtension());</span>
+    }
+
+    /*
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
+    public String getDescription() {
+<span class="fc" id="L256">        return getDesc() + &quot; (*.&quot; + getExtension() + &quot;)&quot;;</span>
+    }
+
+    /**
+     * Save a project to file.&lt;p&gt;
+     * This first archives the existing file, then calls
+     * doSave(...) to do the actual saving.&lt;p&gt;
+     * Should doSave(...) throw an exception then it is
+     * caught here and any rollback handled before rethrowing
+     * the exception.
+     *
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
+     *
+     * @see org.argouml.persistence.ProjectFilePersister#save(
+     * org.argouml.kernel.Project, java.io.File)
+     */
+    public final void save(Project project, File file) throws SaveException,
+    InterruptedException {
+<span class="fc" id="L277">        preSave(project, file);</span>
+<span class="fc" id="L278">        doSave(project, file);</span>
+<span class="fc" id="L279">        postSave(project, file);</span>
+<span class="fc" id="L280">    }</span>
+
+    /**
+     * Handle archiving of previous file or any other common
+     * requirements before saving a model to a file.
+     *
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
+     */
+    private void preSave(Project project, File file) throws SaveException {
+<span class="pc bpc" id="L291" title="3 of 4 branches missed.">        if (project == null &amp;&amp; file == null) {</span>
+<span class="nc" id="L292">            throw new SaveException(&quot;No project nor file given&quot;);</span>
+        }
+<span class="fc" id="L294">    }</span>
+
+    /**
+     * Handle archiving on completion of a save such as renaming
+     * the temporary save file to the real filename.
+     *
+     * @param project The project being saved.
+     * @param file The file to which the save is taking place.
+     * @throws SaveException when anything goes wrong
+     */
+    private void postSave(Project project, File file) throws SaveException {
+<span class="pc bpc" id="L305" title="3 of 4 branches missed.">        if (project == null &amp;&amp; file == null) {</span>
+<span class="nc" id="L306">            throw new SaveException(&quot;No project nor file given&quot;);</span>
+        }
+<span class="fc" id="L308">    }</span>
+
+    /**
+     * Implement in your concrete class to save a project to a
+     * file.&lt;p&gt;
+     * There is no need to worry about archiving or restoring
+     * archive on failure, that is handled by the rest of the
+     * framework.&lt;p&gt;
+     *
+     * @param project the project to save
+     * @param file The file to write.
+     * @throws SaveException when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
+     *
+     * @see org.argouml.persistence.AbstractFilePersister#save(
+     * org.argouml.kernel.Project, java.io.File)
+     */
+    protected abstract void doSave(Project project, File file)
+        throws SaveException, InterruptedException;
+
+    /**
+     * Some persisters only provide load functionality for discontinued formats
+     * but no save.
+     * This method returns true by default. Those Peristers that do not provide
+     * save must override this.
+     * @return true if this persister is able to save
+     */
+    public boolean isSaveEnabled() {
+<span class="nc" id="L336">        return true;</span>
+    }
+
+    /**
+     * Some persisters only provide save functionality for deprecated formats.
+     * Other persisters with the same extension will manage loading.
+     * This method returns true by default. Those Peristers that do not provide
+     * load must override this.
+     * @return true if this persister is able to load
+     */
+    public boolean isLoadEnabled() {
+<span class="nc" id="L347">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
+     */
+    public abstract Project doLoad(File file)
+    	throws OpenException, InterruptedException;
+
+
+
+    /**
+     * Add any object interested in listening to persistence progress.
+     *
+     * @param listener the interested listener.
+     */
+    public void addProgressListener(ProgressListener listener) {
+<span class="nc" id="L364">        listenerList.add(ProgressListener.class, listener);</span>
+<span class="nc" id="L365">    }</span>
+
+    /**
+     * Remove any object no longer interested in listening to persistence
+     * progress.
+     *
+     * @param listener the listener to remove.
+     */
+    public void removeProgressListener(ProgressListener listener) {
+<span class="nc" id="L374">        listenerList.remove(ProgressListener.class, listener);</span>
+<span class="nc" id="L375">    }</span>
+
+    /**
+     * Returns true if a FileChooser should visualize an icon for the
+     * persister.
+     *
+     * @return true if the persister is associated to an icon
+     */
+    public abstract boolean hasAnIcon();
+
+
+    /**
+     * Get a MemberFilePersister based on a given ProjectMember.
+     *
+     * @param pm the project member
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
+<span class="fc" id="L393">        Class&lt;? extends MemberFilePersister&gt; persister = null;</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        if (persistersByClass.containsKey(pm)) {</span>
+<span class="nc" id="L395">            persister = persistersByClass.get(pm);</span>
+        } else {
+            /*
+             * TODO: Not sure we need to do this, but just to be safe for now.
+             */
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">            for (Class clazz : persistersByClass.keySet()) {</span>
+<span class="fc bfc" id="L401" title="All 2 branches covered.">                if (clazz.isAssignableFrom(pm.getClass())) {</span>
+<span class="fc" id="L402">                    persister = persistersByClass.get(clazz);</span>
+<span class="fc" id="L403">                    break;</span>
+                }
+<span class="fc" id="L405">            }</span>
+        }
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">        if (persister != null) {</span>
+<span class="fc" id="L408">            return newPersister(persister);</span>
+        }
+<span class="nc" id="L410">        return null;</span>
+    }
+
+
+    /**
+     * Get a MemberFilePersister based on a given tag.
+     *
+     * @param tag The tag.
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(String tag) {
+<span class="fc" id="L421">        Class&lt;? extends MemberFilePersister&gt; persister =</span>
+<span class="fc" id="L422">            persistersByTag.get(tag);</span>
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">        if (persister != null) {</span>
+<span class="fc" id="L424">            return newPersister(persister);</span>
+        }
+<span class="nc" id="L426">        return null;</span>
+    }
+
+    private static MemberFilePersister newPersister(
+            Class&lt;? extends MemberFilePersister&gt; clazz) {
+        try {
+<span class="fc" id="L432">            return clazz.newInstance();</span>
+<span class="nc" id="L433">        } catch (InstantiationException e) {</span>
+<span class="nc" id="L434">            LOG.log(Level.SEVERE, &quot;Exception instantiating file persister &quot; + clazz, e);</span>
+<span class="nc" id="L435">            return null;</span>
+<span class="nc" id="L436">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L437">            LOG.log(Level.SEVERE, &quot;Exception instantiating file persister &quot; + clazz, e);</span>
+<span class="nc" id="L438">            return null;</span>
+        }
+    }
+
+    // TODO: Document
+<span class="fc" id="L443">    class ProgressMgr implements ProgressListener {</span>
+
+        /**
+         * The percentage completeness of phases complete.
+         * Does not include part-completed phases.
+         */
+        private int percentPhasesComplete;
+
+        /**
+         * The sections complete of a load or save.
+         */
+        private int phasesCompleted;
+
+        /**
+         * The number of equals phases the progress will measure.
+         * It is assumed each phase will be of equal time.
+         * There is one phase for each upgrade from a previous
+         * version and one pahse for the final load.
+         */
+        private int numberOfPhases;
+
+        public void setPercentPhasesComplete(int aPercentPhasesComplete) {
+<span class="nc" id="L465">            this.percentPhasesComplete = aPercentPhasesComplete;</span>
+<span class="nc" id="L466">        }</span>
+
+        public void setPhasesCompleted(int aPhasesCompleted) {
+<span class="nc" id="L469">            this.phasesCompleted = aPhasesCompleted;</span>
+<span class="nc" id="L470">        }</span>
+
+        public void setNumberOfPhases(int aNumberOfPhases) {
+<span class="fc" id="L473">            this.numberOfPhases = aNumberOfPhases;</span>
+<span class="fc" id="L474">        }</span>
+
+        public int getNumberOfPhases() {
+<span class="fc" id="L477">            return this.numberOfPhases;</span>
+        }
+
+        protected void nextPhase() throws InterruptedException {
+<span class="fc" id="L481">            ThreadUtils.checkIfInterrupted();</span>
+<span class="fc" id="L482">            ++phasesCompleted;</span>
+<span class="fc" id="L483">            percentPhasesComplete =</span>
+                (phasesCompleted * 100) / numberOfPhases;
+<span class="fc" id="L485">            fireProgressEvent(percentPhasesComplete);</span>
+<span class="fc" id="L486">        }</span>
+
+        /**
+         * Called when a ProgressEvent is fired.
+         *
+         * @see org.argouml.taskmgmt.ProgressListener#progress(org.argouml.taskmgmt.ProgressEvent)
+         * @throws InterruptedException     if thread is interrupted
+         */
+        public void progress(ProgressEvent event) throws InterruptedException {
+<span class="nc" id="L495">            ThreadUtils.checkIfInterrupted();</span>
+<span class="nc" id="L496">            int percentPhasesLeft = 100 - percentPhasesComplete;</span>
+<span class="nc" id="L497">            long position = event.getPosition();</span>
+<span class="nc" id="L498">            long length = event.getLength();</span>
+<span class="nc" id="L499">            long proportion = (position * percentPhasesLeft) / length;</span>
+<span class="nc" id="L500">            fireProgressEvent(percentPhasesComplete + proportion);</span>
+<span class="nc" id="L501">        }</span>
+
+        /**
+         * Inform listeners of any progress notifications.
+         * @param percent the current percentage progress.
+         * @throws InterruptedException     if thread is interrupted
+         */
+        protected void fireProgressEvent(long percent)
+            throws InterruptedException {
+<span class="fc" id="L510">            ProgressEvent event = null;</span>
+            // Guaranteed to return a non-null array
+<span class="fc" id="L512">            Object[] listeners = listenerList.getListenerList();</span>
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="pc bpc" id="L515" title="1 of 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">                if (listeners[i] == ProgressListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L518" title="All 2 branches missed.">                    if (event == null) {</span>
+<span class="nc" id="L519">                        event = new ProgressEvent(this, percent, 100);</span>
+                    }
+<span class="nc" id="L521">                    ((ProgressListener) listeners[i + 1]).progress(event);</span>
+                }
+            }
+<span class="fc" id="L524">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

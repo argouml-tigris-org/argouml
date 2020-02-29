@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PredicateStringMatch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">PredicateStringMatch.java</span></div><h1>PredicateStringMatch.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+import java.util.StringTokenizer;
+
+/**
+ * Predicate to match strings/substrings.  It only supports simple
+ * wildcard processing, not full regex style matching.
+ */
+public class PredicateStringMatch implements Predicate {
+
+<span class="nc" id="L49">    public static int MAX_PATS = 10;</span>
+
+    private String patterns[];
+
+    private int patternCount;
+
+<span class="nc" id="L55">    protected PredicateStringMatch(String matchPatterns[], int count) {</span>
+<span class="nc" id="L56">        patterns = matchPatterns;</span>
+<span class="nc" id="L57">        patternCount = count;</span>
+<span class="nc" id="L58">    }</span>
+
+    public static Predicate create(String pattern) {
+<span class="nc" id="L61">        pattern = pattern.trim();</span>
+<span class="nc bnc" id="L62" title="All 4 branches missed.">        if (&quot;*&quot;.equals(pattern) || &quot;&quot;.equals(pattern)) {</span>
+<span class="nc" id="L63">            return PredicateTrue.getInstance();</span>
+        }
+<span class="nc" id="L65">        String pats[] = new String[MAX_PATS];</span>
+<span class="nc" id="L66">        int count = 0;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (pattern.startsWith(&quot;*&quot;)) {</span>
+<span class="nc" id="L68">            pats[count++] = &quot;&quot;;</span>
+        }
+<span class="nc" id="L70">        StringTokenizer st = new StringTokenizer(pattern, &quot;*&quot;);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        while (st.hasMoreElements()) {</span>
+<span class="nc" id="L72">            String token = st.nextToken();</span>
+<span class="nc" id="L73">            pats[count++] = token;</span>
+<span class="nc" id="L74">        }</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (pattern.endsWith(&quot;*&quot;)) {</span>
+<span class="nc" id="L76">            pats[count++] = &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (count == 0) {</span>
+<span class="nc" id="L79">            return PredicateTrue.getInstance();</span>
+        }
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (count == 1) {</span>
+<span class="nc" id="L82">            return new PredicateEquals(pats[0]);</span>
+        }
+<span class="nc" id="L84">        return new PredicateStringMatch(pats, count);</span>
+    }
+
+    public boolean evaluate(Object o) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L89">            return false;</span>
+        }
+<span class="nc" id="L91">        String target = o.toString();</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (!target.startsWith(patterns[0])) {</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (!target.endsWith(patterns[patternCount - 1])) {</span>
+<span class="nc" id="L96">            return false;</span>
+        }
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        for (String pattern : patterns) {</span>
+<span class="nc" id="L99">            int index = (target + &quot;*&quot;).indexOf(pattern);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (index == -1) {</span>
+<span class="nc" id="L101">                return false;</span>
+            }
+<span class="nc" id="L103">            target = target.substring(index + pattern.length());</span>
+        }
+<span class="nc" id="L105">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportClasspathDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng.ui</a> &gt; <span class="el_source">ImportClasspathDialog.java</span></div><h1>ImportClasspathDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.argouml.i18n.Translator;
+import org.argouml.uml.reveng.SettingsTypes.PathListSelection;
+import org.tigris.gef.base.Globals;
+
+/**
+ * Panel to collect a list of paths for an importer. &lt;em&gt;NOTE:&lt;/em&gt; Although
+ * this class is public it is &lt;em&gt;only&lt;/em&gt; intended for use by the package
+ * org.argouml.reveng.
+ * &lt;p&gt;
+ * This was originally included in Import.java and was called
+ * ImportClasspathDialog.
+ */
+public class ImportClasspathDialog extends JPanel {
+
+    private JList paths;
+
+    private DefaultListModel pathsModel;
+
+    private JButton addButton;
+
+    private JButton removeButton;
+
+    private JFileChooser chooser;
+    
+    private PathListSelection setting;
+
+
+    /**
+     * Construct a panel which provides controls for populating a list of 
+     * paths.  This can be used for a Java classpath, C++ include path, etc.
+     * 
+     * @param pathListSetting the settings object for this pathlist
+     */
+    public ImportClasspathDialog(PathListSelection pathListSetting) {
+<span class="nc" id="L92">        super();</span>
+<span class="nc" id="L93">        setting = pathListSetting;</span>
+<span class="nc" id="L94">        setToolTipText(setting.getDescription());</span>
+        
+<span class="nc" id="L96">        setLayout(new BorderLayout(0, 0));</span>
+
+<span class="nc" id="L98">        JLabel label = new JLabel(setting.getLabel());</span>
+<span class="nc" id="L99">        add(label, BorderLayout.NORTH);</span>
+
+<span class="nc" id="L101">        pathsModel = new DefaultListModel();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        for (String path : setting.getDefaultPathList()) {</span>
+<span class="nc" id="L103">            pathsModel.addElement(path);</span>
+<span class="nc" id="L104">        }</span>
+        
+<span class="nc" id="L106">        paths = new JList(pathsModel);</span>
+<span class="nc" id="L107">        paths.setVisibleRowCount(5);</span>
+<span class="nc" id="L108">        paths.setToolTipText(setting.getDescription());</span>
+<span class="nc" id="L109">        JScrollPane listScroller = new JScrollPane(paths);</span>
+<span class="nc" id="L110">        add(listScroller, BorderLayout.CENTER);</span>
+
+        // panel for controls
+<span class="nc" id="L113">        JPanel controlsPanel = new JPanel();</span>
+<span class="nc" id="L114">        controlsPanel.setLayout(new GridLayout(0, 2, 50, 0));</span>
+        
+<span class="nc" id="L116">        addButton = new JButton(Translator.localize(&quot;button.add&quot;));</span>
+<span class="nc" id="L117">        controlsPanel.add(addButton);</span>
+<span class="nc" id="L118">        addButton.addActionListener(new AddListener());</span>
+        
+<span class="nc" id="L120">        removeButton = new JButton(Translator.localize(&quot;button.remove&quot;));</span>
+<span class="nc" id="L121">        controlsPanel.add(removeButton);</span>
+<span class="nc" id="L122">        removeButton.addActionListener(new RemoveListener());</span>
+        
+        // TODO: Add Up/Down buttons to control the ordering of items
+        
+<span class="nc" id="L126">        add(controlsPanel, BorderLayout.SOUTH);</span>
+<span class="nc" id="L127">    }</span>
+
+
+    private void updatePathList() {
+<span class="nc" id="L131">        List&lt;String&gt; pathList = new ArrayList&lt;String&gt;();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        for (int i = 0; i &lt; pathsModel.size(); i++) {</span>
+<span class="nc" id="L133">            String path = (String) pathsModel.getElementAt(i);</span>
+<span class="nc" id="L134">            pathList.add(path);</span>
+        }
+<span class="nc" id="L136">        setting.setPathList(pathList);</span>
+<span class="nc" id="L137">    }</span>
+
+<span class="nc" id="L139">    class RemoveListener implements ActionListener {</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            //This method can be called only if
+            //there's a valid selection
+            //so go ahead and remove whatever's selected.
+<span class="nc" id="L147">            int index = paths.getSelectedIndex();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (index &lt; 0) {</span>
+<span class="nc" id="L149">                return;</span>
+            }
+<span class="nc" id="L151">            pathsModel.remove(index);</span>
+<span class="nc" id="L152">            updatePathList();</span>
+
+<span class="nc" id="L154">            int size = pathsModel.getSize();</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            if (size == 0) { //nothings left, disable firing.</span>
+<span class="nc" id="L157">                removeButton.setEnabled(false);</span>
+
+            } else { //Select an index.
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                if (index == pathsModel.getSize()) {</span>
+                    //removed item in last position
+<span class="nc" id="L162">                    index--;</span>
+                }
+
+<span class="nc" id="L165">                paths.setSelectedIndex(index);</span>
+<span class="nc" id="L166">                paths.ensureIndexIsVisible(index);</span>
+            }
+<span class="nc" id="L168">        }</span>
+
+    }
+
+
+<span class="nc" id="L173">    class AddListener implements ActionListener {</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            if (chooser == null ) {</span>
+<span class="nc" id="L180">                chooser = new JFileChooser(Globals.getLastDirectory()); </span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                if (chooser == null) {</span>
+<span class="nc" id="L182">                    chooser = new JFileChooser();</span>
+                }
+
+<span class="nc" id="L185">                chooser.setFileSelectionMode(</span>
+                        JFileChooser.FILES_AND_DIRECTORIES);
+<span class="nc" id="L187">                chooser.setMultiSelectionEnabled(true);</span>
+<span class="nc" id="L188">                chooser.addActionListener(new ActionListener() {</span>
+                    public void actionPerformed(ActionEvent e1) {
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                        if (e1.getActionCommand().equals(</span>
+                                JFileChooser.APPROVE_SELECTION)) {
+<span class="nc" id="L192">                            File[] files = chooser.getSelectedFiles();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                            for (File theFile : files) {</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                                if (theFile != null) {</span>
+<span class="nc" id="L195">                                    pathsModel.addElement(theFile.toString());</span>
+                                }
+                            }
+<span class="nc" id="L198">                            updatePathList();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                        } else if (e1.getActionCommand().equals(</span>
+                                JFileChooser.CANCEL_SELECTION)) {
+                            // Just quit
+                        }
+
+<span class="nc" id="L204">                    }</span>
+                });
+            }
+
+<span class="nc" id="L208">            chooser.showOpenDialog(new Frame());</span>
+<span class="nc" id="L209">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

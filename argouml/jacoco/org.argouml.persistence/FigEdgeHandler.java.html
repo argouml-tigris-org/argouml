@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigEdgeHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">FigEdgeHandler.java</span></div><h1>FigEdgeHandler.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.persistence;
+
+import java.util.StringTokenizer;
+
+import org.tigris.gef.persistence.pgml.PGMLStackParser;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigPoly;
+import org.xml.sax.SAXException;
+
+/**
+ * The handler for elements that represent FigEdge objects.
+ * This extends the base GEF class to allow comment edges to connect
+ * to nodes inside other edges.
+ * @author Bob Tarling
+ */
+class FigEdgeHandler
+    extends org.tigris.gef.persistence.pgml.FigEdgeHandler {
+
+    /**
+     * @param parser
+     * @param theEdge
+     */
+    public FigEdgeHandler(PGMLStackParser parser, FigEdge theEdge) {
+<span class="fc" id="L64">        super(parser, theEdge);</span>
+<span class="fc" id="L65">    }</span>
+    /**
+     * Incorporates a contained element into this FigEdge object.&lt;p&gt;
+     *
+     * Three types of contained elements are supported: FigLine or FigPoly
+     * become the Fig associated with this FigEdge; String valued elements
+     * (i.e., &lt;em&gt;private&lt;/em&gt; elements) are themselves parsed to determin the
+     * source and destination PortFig's for this FigEdge.
+     *
+     * @see org.tigris.gef.persistence.pgml.Container#addObject(java.lang.Object)
+     */
+    public void addObject(Object o) throws SAXException {
+<span class="fc" id="L77">        FigEdge edge = getFigEdge();</span>
+<span class="pc bpc" id="L78" title="1 of 4 branches missed.">        if (o instanceof FigLine || o instanceof FigPoly) {</span>
+<span class="fc" id="L79">            edge.setFig((Fig) o);</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (o instanceof FigPoly) {</span>
+<span class="fc" id="L81">                ((FigPoly) o).setComplete(true);</span>
+            }
+<span class="fc" id="L83">            edge.calcBounds();</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (edge instanceof FigEdgePoly) {</span>
+<span class="fc" id="L85">                ((FigEdgePoly) edge).setInitiallyLaidOut(true);</span>
+            }
+<span class="fc" id="L87">            edge.updateAnnotationPositions();</span>
+        }
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (o instanceof String) {</span>
+<span class="fc" id="L91">            PGMLStackParser parser = getPGMLStackParser();</span>
+//            Fig spf = null;
+//            Fig dpf = null;
+//            FigNode sfn = null;
+//            FigNode dfn = null;
+<span class="fc" id="L96">            String body = (String) o;</span>
+<span class="fc" id="L97">            StringTokenizer st2 = new StringTokenizer(body, &quot;=\&quot;' \t\n&quot;);</span>
+<span class="fc" id="L98">            String sourcePortFig = null;</span>
+<span class="fc" id="L99">            String destPortFig = null;</span>
+<span class="fc" id="L100">            String sourceFigNode = null;</span>
+<span class="fc" id="L101">            String destFigNode = null;</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">            while (st2.hasMoreElements()) {</span>
+<span class="fc" id="L103">                String attribute = st2.nextToken();</span>
+<span class="fc" id="L104">                String value = st2.nextToken();</span>
+                
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                if (attribute.equals(&quot;sourcePortFig&quot;)) {</span>
+<span class="fc" id="L107">                    sourcePortFig = value;</span>
+                }
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                if (attribute.equals(&quot;destPortFig&quot;)) {</span>
+<span class="fc" id="L111">                    destPortFig = value;</span>
+                }
+
+<span class="fc bfc" id="L114" title="All 2 branches covered.">                if (attribute.equals(&quot;sourceFigNode&quot;)) {</span>
+<span class="fc" id="L115">                    sourceFigNode = value;</span>
+                }
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                if (attribute.equals(&quot;destFigNode&quot;)) {</span>
+<span class="fc" id="L119">                    destFigNode = value;</span>
+                }
+<span class="fc" id="L121">            }</span>
+            
+<span class="fc" id="L123">            ((org.argouml.persistence.PGMLStackParser) parser).addFigEdge(</span>
+                    edge, 
+                    sourcePortFig, 
+                    destPortFig, 
+                    sourceFigNode, 
+                    destFigNode);
+        }
+<span class="fc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

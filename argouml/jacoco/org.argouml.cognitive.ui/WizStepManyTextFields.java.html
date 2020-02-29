@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizStepManyTextFields.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">WizStepManyTextFields.java</span></div><h1>WizStepManyTextFields.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.swingext.SpacerPanel;
+
+
+/**
+ * A non-modal wizard step that shows instructions and prompts
+ * the user to enter a series of strings in textfields.
+ *
+ * @see org.argouml.cognitive.Critic
+ * @see org.argouml.cognitive.critics.Wizard
+ */
+
+public class WizStepManyTextFields extends WizStep {
+<span class="nc" id="L65">    private JTextArea instructions = new JTextArea();</span>
+<span class="nc" id="L66">    private List&lt;JTextField&gt; fields = new ArrayList&lt;JTextField&gt;();</span>
+
+    /**
+     * The constructor.
+     *
+     * @param w the wizard
+     * @param instr  the instructions
+     * @param strings the strings
+     */
+<span class="nc" id="L75">    public WizStepManyTextFields(Wizard w, String instr, List strings) {</span>
+	// store wizard?
+<span class="nc" id="L77">	instructions.setText(instr);</span>
+<span class="nc" id="L78">	instructions.setWrapStyleWord(true);</span>
+<span class="nc" id="L79">        instructions.setLineWrap(true);</span>
+<span class="nc" id="L80">	instructions.setEditable(false);</span>
+<span class="nc" id="L81">	instructions.setBorder(null);</span>
+<span class="nc" id="L82">	instructions.setBackground(getMainPanel().getBackground());</span>
+
+
+<span class="nc" id="L85">	getMainPanel().setBorder(new EtchedBorder());</span>
+
+<span class="nc" id="L87">	GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L88">	getMainPanel().setLayout(gb);</span>
+
+<span class="nc" id="L90">	GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L91">	c.ipadx = 3; c.ipady = 3;</span>
+<span class="nc" id="L92">	c.weightx = 0.0; c.weighty = 0.0;</span>
+<span class="nc" id="L93">	c.anchor = GridBagConstraints.EAST;</span>
+
+<span class="nc" id="L95">	JLabel image = new JLabel(&quot;&quot;);</span>
+	//image.setMargin(new Insets(0, 0, 0, 0));
+<span class="nc" id="L97">	image.setIcon(getWizardIcon());</span>
+<span class="nc" id="L98">	image.setBorder(null);</span>
+<span class="nc" id="L99">	c.gridx = 0;</span>
+<span class="nc" id="L100">	c.gridheight = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L101">	c.gridy = 0;</span>
+<span class="nc" id="L102">	c.anchor = GridBagConstraints.NORTH;</span>
+<span class="nc" id="L103">	gb.setConstraints(image, c);</span>
+<span class="nc" id="L104">	getMainPanel().add(image);</span>
+
+<span class="nc" id="L106">	c.weightx = 0.0;</span>
+<span class="nc" id="L107">	c.gridx = 2;</span>
+<span class="nc" id="L108">	c.gridheight = 1;</span>
+<span class="nc" id="L109">	c.gridwidth = 3;</span>
+<span class="nc" id="L110">	c.gridy = 0;</span>
+<span class="nc" id="L111">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L112">	gb.setConstraints(instructions, c);</span>
+<span class="nc" id="L113">	getMainPanel().add(instructions);</span>
+
+<span class="nc" id="L115">	c.gridx = 1;</span>
+<span class="nc" id="L116">	c.gridy = 1;</span>
+<span class="nc" id="L117">	c.weightx = 0.0;</span>
+<span class="nc" id="L118">	c.gridwidth = 1;</span>
+<span class="nc" id="L119">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L120">	SpacerPanel spacer = new SpacerPanel();</span>
+<span class="nc" id="L121">	gb.setConstraints(spacer, c);</span>
+<span class="nc" id="L122">	getMainPanel().add(spacer);</span>
+
+<span class="nc" id="L124">	c.gridx = 2;</span>
+<span class="nc" id="L125">	c.weightx = 1.0;</span>
+<span class="nc" id="L126">	c.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L127">	c.gridwidth = 1;</span>
+<span class="nc" id="L128">	int size = strings.size();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">	for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L130">	    c.gridy = 2 + i;</span>
+<span class="nc" id="L131">	    String s = (String) strings.get(i);</span>
+<span class="nc" id="L132">	    JTextField tf = new JTextField(s, 50);</span>
+<span class="nc" id="L133">	    tf.setMinimumSize(new Dimension(200, 20));</span>
+<span class="nc" id="L134">	    tf.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L135">	    fields.add(tf);</span>
+<span class="nc" id="L136">	    gb.setConstraints(tf, c);</span>
+<span class="nc" id="L137">	    getMainPanel().add(tf);</span>
+	}
+
+<span class="nc" id="L140">	c.gridx = 1;</span>
+<span class="nc" id="L141">	c.gridy = 3 + strings.size();</span>
+<span class="nc" id="L142">	c.weightx = 0.0;</span>
+<span class="nc" id="L143">	c.gridwidth = 1;</span>
+<span class="nc" id="L144">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L145">	SpacerPanel spacer2 = new SpacerPanel();</span>
+<span class="nc" id="L146">	gb.setConstraints(spacer2, c);</span>
+<span class="nc" id="L147">	getMainPanel().add(spacer2);</span>
+
+<span class="nc" id="L149">    }</span>
+
+
+    /**
+     * @return the strings
+     */
+    public List&lt;String&gt; getStringList() {
+<span class="nc" id="L156">        List&lt;String&gt; result = new ArrayList&lt;String&gt;(fields.size());</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        for (JTextField tf : fields) {</span>
+<span class="nc" id="L158">            result.add(tf.getText());</span>
+<span class="nc" id="L159">        }</span>
+<span class="nc" id="L160">        return result;</span>
+    }
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5154002407806917092L;
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

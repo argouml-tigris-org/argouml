@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabToDo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">TabToDo.java</span></div><h1>TabToDo.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.BorderLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+import javax.swing.Action;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.configuration.Configuration;
+import org.argouml.swingext.LeftArrowIcon;
+import org.argouml.ui.TabToDoTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.swidgets.BorderSplitPane;
+import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.Vertical;
+import org.tigris.toolbar.ToolBarFactory;
+
+/**
+ * The ToDo Tab.
+ *
+ */
+public class TabToDo extends AbstractArgoJPanel 
+    implements TabToDoTarget, ComponentListener {
+    
+    private static int numHushes;
+
+<span class="fc" id="L72">    private static final Action actionNewToDoItem = new ActionNewToDoItem();</span>
+<span class="fc" id="L73">    private static final ToDoItemAction actionResolve = new ActionResolve();</span>
+<span class="fc" id="L74">    private static final ToDoItemAction actionSnooze = new ActionSnooze();</span>
+
+<span class="fc" id="L76">    private WizDescription description = new WizDescription();</span>
+    private JPanel lastPanel;
+    private BorderSplitPane splitPane;
+    private Object target;
+
+    /**
+     * Increment the number of times we've been &quot;snoozed&quot; (or hushed).
+     */
+    public static void incrementNumHushes() {
+<span class="nc" id="L85">        numHushes++;</span>
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Construct a ToDo tab for the property panel.
+     */
+    public TabToDo() {
+<span class="fc" id="L92">        super(&quot;tab.todo-item&quot;);</span>
+<span class="fc" id="L93">        setIcon(new LeftArrowIcon());</span>
+
+<span class="fc" id="L95">        String position =</span>
+<span class="fc" id="L96">	    Configuration.getString(Configuration.makeKey(&quot;layout&quot;,</span>
+							  &quot;tabtodo&quot;));
+<span class="fc" id="L98">        setOrientation(</span>
+<span class="pc bpc" id="L99" title="2 of 4 branches missed.">            ((position.equals(&quot;West&quot;) || position.equals(&quot;East&quot;))</span>
+<span class="pc" id="L100">             ? Vertical.getInstance() : Horizontal.getInstance()));</span>
+
+<span class="fc" id="L102">        setLayout(new BorderLayout());</span>
+
+<span class="fc" id="L104">        Object[] actions = {actionNewToDoItem, actionResolve, actionSnooze };</span>
+<span class="fc" id="L105">        ToolBarFactory factory = new ToolBarFactory(actions);</span>
+<span class="fc" id="L106">        factory.setRollover(true);</span>
+<span class="fc" id="L107">        factory.setFloatable(false);</span>
+<span class="fc" id="L108">        factory.setOrientation(SwingConstants.VERTICAL);</span>
+<span class="fc" id="L109">        JToolBar toolBar = factory.createToolBar();</span>
+<span class="fc" id="L110">        toolBar.setName(getTitle());</span>
+<span class="fc" id="L111">        add(toolBar, BorderLayout.WEST);</span>
+
+<span class="fc" id="L113">        splitPane = new BorderSplitPane();</span>
+<span class="fc" id="L114">        add(splitPane, BorderLayout.CENTER);</span>
+<span class="fc" id="L115">        setTarget(null);</span>
+        
+<span class="fc" id="L117">        addComponentListener(this);</span>
+        
+        // TODO: Register listener for target ToDo item changes
+        // and for new showStep() requests
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Show the description of a todo item.
+     */
+    public void showDescription() {
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (lastPanel != null) {</span>
+<span class="fc" id="L128">            splitPane.remove(lastPanel);</span>
+        }
+<span class="fc" id="L130">        splitPane.add(description, BorderSplitPane.CENTER);</span>
+<span class="fc" id="L131">        lastPanel = description;</span>
+<span class="fc" id="L132">        validate();</span>
+<span class="fc" id="L133">        repaint();</span>
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * @param tdp the todo pane
+     */
+    public void setTree(ToDoPane tdp) {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (getOrientation().equals(Horizontal.getInstance())) {</span>
+<span class="nc" id="L141">            splitPane.add(tdp, BorderSplitPane.WEST);</span>
+        } else {
+<span class="nc" id="L143">            splitPane.add(tdp, BorderSplitPane.NORTH);</span>
+        }
+<span class="nc" id="L145">    }</span>
+
+    /**
+     * @param ws the panel to be shown
+     */
+    public void showStep(JPanel ws) {
+        // TODO: This should listen for new target events 
+        // fired by WizStep.updateTabToDo so that we
+        // can decouple it from the ProjectBrowser.
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (lastPanel != null) {</span>
+<span class="nc" id="L155">            splitPane.remove(lastPanel);</span>
+	}
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (ws != null) {</span>
+<span class="nc" id="L158">            splitPane.add(ws, BorderSplitPane.CENTER);</span>
+<span class="nc" id="L159">            lastPanel = ws;</span>
+        } else {
+<span class="nc" id="L161">            splitPane.add(description, BorderSplitPane.CENTER);</span>
+<span class="nc" id="L162">            lastPanel = description;</span>
+        }
+<span class="nc" id="L164">        validate();</span>
+<span class="nc" id="L165">        repaint();</span>
+<span class="nc" id="L166">    }</span>
+
+    /**
+     * Sets the target of the TabToDo.
+     *
+     * @param item the new target
+     */
+    public void setTarget(Object item) {
+<span class="fc" id="L174">        target = item;</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (isVisible()) {</span>
+<span class="fc" id="L176">            setTargetInternal(item);</span>
+        }
+        
+        // Request that we be made visible if we're not?
+        // topLevelTabbedPane.setSelectedComponent(t);
+<span class="fc" id="L181">    }</span>
+
+    private void setTargetInternal(Object item) {
+        // the target of description will always be set directly by tabtodo
+<span class="fc" id="L185">        description.setTarget(item);</span>
+<span class="fc" id="L186">        Wizard w = null;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (item instanceof ToDoItem) {</span>
+<span class="nc" id="L188">            w = ((ToDoItem) item).getWizard();</span>
+        }
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        if (w != null) {</span>
+<span class="nc" id="L191">            showStep(w.getCurrentPanel());</span>
+        } else {
+<span class="fc" id="L193">            showDescription();</span>
+        }
+<span class="fc" id="L195">        updateActionsEnabled(item);</span>
+<span class="fc" id="L196">    }</span>
+
+   /**
+    * Returns the target of the TabToDo.
+    *
+    * @return The current target of the TabToDo
+    */
+    public Object getTarget() {
+<span class="nc" id="L204">        return target;</span>
+    }
+
+
+    /**
+     * Set the target again to what it was before.
+     */
+    public void refresh() {
+<span class="nc" id="L212">        setTarget(TargetManager.getInstance().getTarget());</span>
+<span class="nc" id="L213">    }</span>
+
+    /**
+     * Update the &quot;enabled&quot; state of the resolve and snooze actions.
+     * 
+     * @param item  the target of the TabToDo class
+     */
+    protected static void updateActionsEnabled(Object item) {
+<span class="fc" id="L221">        actionResolve.setEnabled(actionResolve.isEnabled());</span>
+<span class="fc" id="L222">        actionResolve.updateEnabled(item);</span>
+<span class="fc" id="L223">        actionSnooze.setEnabled(actionSnooze.isEnabled());</span>
+<span class="fc" id="L224">        actionSnooze.updateEnabled(item);</span>
+<span class="fc" id="L225">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *          TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L232">	setTarget(e.getNewTarget());</span>
+<span class="nc" id="L233">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *          TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+	// how to handle empty target lists?
+	// probably the wizstep should only show an empty pane in that case
+<span class="nc" id="L242">	setTarget(e.getNewTarget());</span>
+<span class="nc" id="L243">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L249">	setTarget(e.getNewTarget());</span>
+<span class="nc" id="L250">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4819730646847978729L;
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+<span class="nc" id="L262">        setTargetInternal(target);</span>
+<span class="nc" id="L263">    }</span>
+    
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+<span class="fc" id="L270">        setTargetInternal(null);</span>
+<span class="fc" id="L271">    }</span>
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L275">    }</span>
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L279">    }</span>
+
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

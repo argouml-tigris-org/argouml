@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProgressMonitorWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ProgressMonitorWindow.java</span></div><h1>ProgressMonitorWindow.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.Frame;
+
+import javax.swing.JDialog;
+import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.argouml.i18n.Translator;
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.util.ArgoFrame;
+
+/**
+ * Manages a ProgressMonitor dialog.
+ * 
+ * NOTE: Users of this class should use the type of the interface
+ * {@link org.argouml.taskmgmt.ProgressMonitor} wherever possible to
+ * maintain GUI independence.
+ * 
+ * @author andrea_nironi@tigris.org
+ * 
+ * TODO: Bob says: I don't like the naming of this class. Its confusing that
+ * its called ...Window and yet it is not a window. Lets rename once we have
+ * it hidden.
+ */
+class ProgressMonitorWindow implements
+        org.argouml.taskmgmt.ProgressMonitor {
+    
+    private ProgressMonitor pbar;
+
+    /**
+     * initializes a ProgressMonitor
+     * 
+     * @param parent	the Component to be set as parent
+     * @param title     the (internationalized) title of the ProgressMonitor
+     */
+<span class="nc" id="L76">    public ProgressMonitorWindow(Frame parent, String title) {</span>
+<span class="nc" id="L77">        pbar = new ProgressMonitor(parent, </span>
+                title,
+                null, 0, 100);
+<span class="nc" id="L80">        pbar.setMillisToDecideToPopup(250);</span>
+<span class="nc" id="L81">        pbar.setMillisToPopup(500);</span>
+<span class="nc" id="L82">        parent.repaint();</span>
+<span class="nc" id="L83">        updateProgress(5);</span>
+        
+<span class="nc" id="L85">    }</span>
+    
+    /**
+     * initializes a ProgressMonitor
+     * 
+     * @param parent    the Component to be set as parent
+     * @param progressMonitor     the ProgressMonitor
+     */
+    public ProgressMonitorWindow(
+            final Frame parent,
+<span class="nc" id="L95">            final ProgressMonitor progressMonitor) {</span>
+<span class="nc" id="L96">        pbar = progressMonitor;</span>
+<span class="nc" id="L97">        pbar.setMillisToDecideToPopup(250);</span>
+<span class="nc" id="L98">        pbar.setMillisToPopup(500);</span>
+<span class="nc" id="L99">        parent.repaint();</span>
+<span class="nc" id="L100">        updateProgress(5);</span>
+<span class="nc" id="L101">    }</span>
+    
+    /*
+     * Report a progress to the ProgressMonitor window.
+     * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
+     */
+    public void progress(final ProgressEvent event) {
+<span class="nc" id="L108">        final int progress = (int) event.getPosition();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (pbar != null) {</span>
+            // File load/save gets done on a background thread, so we'll 
+            // probably have to queue this to the Swing event thread
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (!SwingUtilities.isEventDispatchThread()) {</span>
+<span class="nc" id="L113">                SwingUtilities.invokeLater(new Runnable() {</span>
+                    public void run() {
+<span class="nc" id="L115">                        updateProgress(progress);                        </span>
+<span class="nc" id="L116">                    }</span>
+                });
+            } else {
+<span class="nc" id="L119">                updateProgress(progress);</span>
+            }
+        }
+<span class="nc" id="L122">    }</span>
+    
+    /*
+     * Report a progress to the ProgressMonitor window.
+     * @see org.argouml.application.api.ProgressMonitor#updateProgress(int)
+     */
+    public void updateProgress(final int progress) {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (pbar != null) {</span>
+<span class="nc" id="L130">            pbar.setProgress(progress);</span>
+<span class="nc" id="L131">            Object[] args = new Object[] {String.valueOf(progress)};</span>
+<span class="nc" id="L132">            pbar.setNote(Translator.localize(&quot;dialog.progress.note&quot;, args));</span>
+        }
+<span class="nc" id="L134">    }</span>
+
+    
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#isCanceled()
+     */
+    public boolean isCanceled() {
+<span class="nc bnc" id="L141" title="All 4 branches missed.">        return (pbar != null) &amp;&amp; pbar.isCanceled();</span>
+    }
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#close()
+     */
+    public void close() {
+        // Queue to event thread to prevent race during close
+<span class="nc" id="L149">        SwingUtilities.invokeLater(new Runnable() {</span>
+            public void run() {
+<span class="nc" id="L151">                pbar.close();</span>
+<span class="nc" id="L152">                pbar = null; </span>
+<span class="nc" id="L153">            }</span>
+        });
+
+<span class="nc" id="L156">    }</span>
+    
+    // these settings are needed to make the ProgressMonitor pop up early
+    static {
+<span class="nc" id="L160">        UIManager.put(&quot;ProgressBar.repaintInterval&quot;, Integer.valueOf(150));</span>
+<span class="nc" id="L161">        UIManager.put(&quot;ProgressBar.cycleTime&quot;, Integer.valueOf(1050));        </span>
+<span class="nc" id="L162">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void notifyMessage(final String title, final String introduction, 
+            final String message) {
+<span class="nc" id="L169">        final String messageString = introduction + &quot; : &quot; + message; </span>
+<span class="nc" id="L170">        pbar.setNote(messageString);</span>
+<span class="nc" id="L171">        SwingUtilities.invokeLater(new Runnable() {</span>
+            public void run() {
+<span class="nc" id="L173">                JDialog dialog =</span>
+                    new ExceptionDialog(
+<span class="nc" id="L175">                            ArgoFrame.getFrame(),</span>
+                            title,
+                            introduction,
+                            message);
+<span class="nc" id="L179">                dialog.setVisible(true);</span>
+<span class="nc" id="L180">            }</span>
+        });
+<span class="nc" id="L182">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
+     */
+    public void notifyNullAction() {
+        // ignored
+<span class="nc" id="L189">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#setMaximumProgress(int)
+     */
+    public void setMaximumProgress(int max) {
+<span class="nc" id="L195">        pbar.setMaximum(max);</span>
+<span class="nc" id="L196">    }</span>
+
+    public void updateSubTask(String action) {
+        // TODO: concatenate? - tfm
+        // overwrite for now
+<span class="nc" id="L201">        pbar.setNote(action);</span>
+<span class="nc" id="L202">    }</span>
+
+    public void updateMainTask(String name) {
+<span class="nc" id="L205">        pbar.setNote(name);</span>
+<span class="nc" id="L206">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

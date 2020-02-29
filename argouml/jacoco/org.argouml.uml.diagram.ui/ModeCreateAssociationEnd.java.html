@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModeCreateAssociationEnd.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ModeCreateAssociationEnd.java</span></div><h1>ModeCreateAssociationEnd.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.model.IllegalModelElementConnectionException;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * A Mode to interpret user input while creating an association end.
+ * The association end can connect an existing association to an existing
+ * classifier.
+ * If the association is an n-ary association (diamond shape node) then
+ * the edge is simply added.
+ * If the association is a binary association edge then that edge is
+ * transformed into a n-ary association.
+ *
+ * @author Bob Tarling
+ */
+<span class="nc" id="L66">public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7249069222789301797L;
+    
+    public Object getMetaType() {
+<span class="nc" id="L74">        return Model.getMetaTypes().getAssociationEnd();</span>
+    }
+    
+    /**
+     * Create an edge of the given type and connect it to the
+     * given nodes.
+     *
+     * @param graphModel     the graph model in which to create the connection
+     *                       element
+     * @param edgeType       the UML object type of the connection
+     * @param sourceFig      the FigNode for the source element
+     * @param destFig        the FigNode for the destination element
+     * @return The FigEdge representing the newly created model element
+     */
+    @Override
+    protected FigEdge buildConnection(
+            MutableGraphModel graphModel,
+            Object edgeType,
+            Fig sourceFig,
+            Fig destFig) {
+        try {
+            // The source of an association end should not
+            // be the classifier. If it is the user has drawn the wrong way
+            // round so we swap here.
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            if (sourceFig instanceof FigClassifierBox) {</span>
+<span class="nc" id="L99">                final Fig tempFig = sourceFig;</span>
+<span class="nc" id="L100">                sourceFig = destFig;</span>
+<span class="nc" id="L101">                destFig = tempFig;</span>
+            }
+            
+            Object associationEnd = 
+<span class="nc" id="L105">                Model.getUmlFactory().buildConnection(</span>
+                    edgeType,
+<span class="nc" id="L107">                    sourceFig.getOwner(),</span>
+                    null,
+<span class="nc" id="L109">                    destFig.getOwner(),</span>
+                    null,
+                    null,
+                    null);
+            
+<span class="nc" id="L114">            final FigNode sourceFigNode = convertToFigNode(sourceFig);</span>
+<span class="nc" id="L115">            final FigNode destFigNode = convertToFigNode(destFig);</span>
+            
+<span class="nc" id="L117">            graphModel.addEdge(associationEnd);</span>
+            
+<span class="nc" id="L119">            setNewEdge(associationEnd);</span>
+            
+            // Calling connect() will add the edge to the GraphModel and
+            // any LayerPersectives on that GraphModel will get a
+            // edgeAdded event and will add an appropriate FigEdge
+            // (determined by the GraphEdgeRenderer).
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (getNewEdge() != null) {</span>
+<span class="nc" id="L127">                sourceFigNode.damage();</span>
+<span class="nc" id="L128">                destFigNode.damage();</span>
+<span class="nc" id="L129">                Layer lay = editor.getLayerManager().getActiveLayer();</span>
+<span class="nc" id="L130">                FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());</span>
+<span class="nc" id="L131">                _newItem.setLineColor(Color.black);</span>
+<span class="nc" id="L132">                fe.setFig(_newItem);</span>
+<span class="nc" id="L133">                fe.setSourcePortFig(sourceFigNode);</span>
+<span class="nc" id="L134">                fe.setSourceFigNode(sourceFigNode);</span>
+<span class="nc" id="L135">                fe.setDestPortFig(destFigNode);</span>
+<span class="nc" id="L136">                fe.setDestFigNode(destFigNode);</span>
+                
+<span class="nc" id="L138">                fe.computeRoute();</span>
+
+<span class="nc" id="L140">                return fe;</span>
+            } else {
+<span class="nc" id="L142">                return null;</span>
+            }
+<span class="nc" id="L144">        } catch (IllegalModelElementConnectionException e) {</span>
+            // We have already confirmed the connection is valid
+<span class="nc" id="L146">            return null;</span>
+        }
+    }
+    
+    /**
+     * If the selected Fig is a FigAssociation (an edge) then
+     * convert it to a FigNodeAssociation.
+     * @param fig the select end Fig
+     * @return the fig converted to a FigNode
+     */
+    private FigNode convertToFigNode(Fig fig) {
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (fig instanceof FigEdgePort) {</span>
+<span class="nc" id="L158">            fig = fig.getGroup();</span>
+        }
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (!(fig instanceof FigAssociation)) {</span>
+<span class="nc" id="L161">            return (FigNode) fig;</span>
+        }
+<span class="nc" id="L163">        final FigAssociation figAssociation = (FigAssociation) fig;</span>
+<span class="nc" id="L164">        final int x = figAssociation.getEdgePort().getX();</span>
+<span class="nc" id="L165">        final int y = figAssociation.getEdgePort().getY();</span>
+<span class="nc" id="L166">        final Object association = fig.getOwner();</span>
+<span class="nc" id="L167">        final FigNode originalEdgePort = figAssociation.getEdgePort();</span>
+        
+<span class="nc" id="L169">        FigClassAssociationClass associationClassBox = null;</span>
+<span class="nc" id="L170">        FigEdgeAssociationClass associationClassLink = null;</span>
+        
+<span class="nc" id="L172">        final LayerPerspective lay = </span>
+<span class="nc" id="L173">            (LayerPerspective) editor.getLayerManager().getActiveLayer();</span>
+        
+        // Detach any edges (such as comment edges) already attached
+        // to the FigAssociation before the FigAssociation is removed.
+        // They'll later be re-attached to the new FigNodeAssociation
+<span class="nc" id="L178">        final Collection&lt;FigEdge&gt; existingEdges =</span>
+<span class="nc" id="L179">            originalEdgePort.getFigEdges();</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        for (FigEdge edge : existingEdges) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (edge instanceof FigEdgeAssociationClass) {</span>
+                // If there are bits of an association class then
+                // remember their location and path.
+<span class="nc" id="L184">                associationClassLink = (FigEdgeAssociationClass) edge;</span>
+<span class="nc" id="L185">                FigNode figNode = edge.getSourceFigNode();</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                if (figNode instanceof FigEdgePort) {</span>
+<span class="nc" id="L187">                    figNode = edge.getDestFigNode();</span>
+                }
+<span class="nc" id="L189">                associationClassBox = (FigClassAssociationClass) figNode;</span>
+<span class="nc" id="L190">                originalEdgePort.removeFigEdge(edge);</span>
+<span class="nc" id="L191">                lay.remove(edge);</span>
+<span class="nc" id="L192">                lay.remove(associationClassBox);</span>
+<span class="nc" id="L193">            } else {</span>
+<span class="nc" id="L194">                originalEdgePort.removeFigEdge(edge);</span>
+            }
+<span class="nc" id="L196">        }</span>
+        
+<span class="nc" id="L198">        List associationFigs = lay.presentationsFor(association);</span>
+        
+<span class="nc" id="L200">        figAssociation.removeFromDiagram();</span>
+<span class="nc" id="L201">        associationFigs = lay.presentationsFor(association);</span>
+        
+        // Create the new FigNodeAssociation and locate it.
+<span class="nc" id="L204">        final MutableGraphModel gm =</span>
+<span class="nc" id="L205">            (MutableGraphModel) editor.getGraphModel();</span>
+<span class="nc" id="L206">        gm.addNode(association);</span>
+<span class="nc" id="L207">        associationFigs = lay.presentationsFor(association);</span>
+<span class="nc" id="L208">        associationFigs.remove(figAssociation);</span>
+<span class="nc" id="L209">        associationFigs = lay.presentationsFor(association);</span>
+        
+<span class="nc" id="L211">        final FigNodeAssociation figNode = </span>
+<span class="nc" id="L212">            (FigNodeAssociation) associationFigs.get(0);</span>
+        
+<span class="nc" id="L214">        figNode.setLocation(</span>
+<span class="nc" id="L215">                x - figNode.getWidth() / 2,</span>
+<span class="nc" id="L216">                y - figNode.getHeight() / 2);</span>
+<span class="nc" id="L217">        editor.add(figNode);</span>
+<span class="nc" id="L218">        editor.getSelectionManager().deselectAll();</span>
+        
+        // Add the association ends to the graph model
+        final Collection&lt;Object&gt; associationEnds =
+<span class="nc" id="L222">            Model.getFacade().getConnections(association);</span>
+        
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        for (Object associationEnd : associationEnds) {</span>
+<span class="nc" id="L225">            gm.addEdge(associationEnd);</span>
+<span class="nc" id="L226">        }</span>
+        
+        // Add the edges (such as comment edges) that were on the old
+        // FigAssociation to our new FigNodeAssociation and make sure they are
+        // positioned correctly.
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        for (FigEdge edge : existingEdges) {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">            if (edge.getDestFigNode() == originalEdgePort) {</span>
+<span class="nc" id="L233">                edge.setDestFigNode(figNode);</span>
+<span class="nc" id="L234">                edge.setDestPortFig(figNode);</span>
+            }
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (edge.getSourceFigNode() == originalEdgePort) {</span>
+<span class="nc" id="L237">                edge.setSourceFigNode(figNode);</span>
+<span class="nc" id="L238">                edge.setSourcePortFig(figNode);</span>
+            }
+<span class="nc" id="L240">        }</span>
+<span class="nc" id="L241">        figNode.updateEdges();</span>
+        
+<span class="nc bnc" id="L243" title="All 2 branches missed.">        if (associationClassBox != null) {</span>
+<span class="nc" id="L244">            associationFigs = lay.presentationsFor(association);</span>
+            
+<span class="nc" id="L246">            lay.add(associationClassBox);</span>
+<span class="nc" id="L247">            associationClassLink.setSourceFigNode(figNode);</span>
+<span class="nc" id="L248">            lay.add(associationClassLink);</span>
+            
+<span class="nc" id="L250">            associationFigs = lay.presentationsFor(association);</span>
+        }
+
+<span class="nc" id="L253">        return figNode;</span>
+    }
+    
+    /*
+     * If we're drawing to an edge then only allow if the start is a comment
+     * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isConnectionValid(org.tigris.gef.presentation.Fig, org.tigris.gef.presentation.Fig)
+     */
+    @Override
+    protected final boolean isConnectionValid(Fig source, Fig dest) {
+<span class="nc" id="L262">        return super.isConnectionValid(source, dest);</span>
+    }
+    
+    
+} /* end class ModeCreateAssociation */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

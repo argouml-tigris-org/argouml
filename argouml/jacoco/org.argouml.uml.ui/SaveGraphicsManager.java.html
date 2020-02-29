@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaveGraphicsManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">SaveGraphicsManager.java</span></div><h1>SaveGraphicsManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
+
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.gefext.DeferredBufferedImage;
+import org.argouml.i18n.Translator;
+import org.argouml.util.FileFilters;
+import org.argouml.util.SuffixFilter;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.SaveEPSAction;
+import org.tigris.gef.base.SaveGIFAction;
+import org.tigris.gef.base.SaveGraphicsAction;
+import org.tigris.gef.base.SavePNGAction;
+import org.tigris.gef.base.SavePSAction;
+import org.tigris.gef.base.SaveSVGAction;
+import org.tigris.gef.persistence.export.PostscriptWriter;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.util.Localizer;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
+
+
+/**
+ * This class has some similar functions like PersistenceManager. &lt;p&gt;
+ *
+ * It centralizes all knowledge about the different graphical formats.
+ * This class is the only one that is supposed to know
+ * the complete list of supported graphics formats.
+ *
+ * @author mvw@tigris.org
+ */
+public final class SaveGraphicsManager {
+
+    private static final int MIN_MARGIN = 15;
+
+    /**
+     * The configuration key for the preferred graphics format.
+     */
+<span class="nc" id="L105">    public static final ConfigurationKey KEY_DEFAULT_GRAPHICS_FILTER =</span>
+<span class="nc" id="L106">        Configuration.makeKey(&quot;graphics&quot;, &quot;default&quot;, &quot;filter&quot;);</span>
+
+    /**
+     * The configuration key for the &quot;save graphics&quot; file location.
+     */
+<span class="nc" id="L111">    public static final ConfigurationKey KEY_SAVE_GRAPHICS_PATH =</span>
+<span class="nc" id="L112">        Configuration.makeKey(&quot;graphics&quot;, &quot;save&quot;, &quot;path&quot;);</span>
+
+    /**
+     * The configuration key for the &quot;save all graphics&quot; file location.
+     */
+<span class="nc" id="L117">    public static final ConfigurationKey KEY_SAVEALL_GRAPHICS_PATH =</span>
+<span class="nc" id="L118">        Configuration.makeKey(&quot;graphics&quot;, &quot;save-all&quot;, &quot;path&quot;);</span>
+
+    /**
+     * The configuration key for the export graphics resolution.
+     */
+<span class="nc" id="L123">    public static final ConfigurationKey KEY_GRAPHICS_RESOLUTION =</span>
+<span class="nc" id="L124">        Configuration.makeKey(&quot;graphics&quot;, &quot;export&quot;, &quot;resolution&quot;);</span>
+
+    /**
+     * The default file format.
+     */
+    private SuffixFilter defaultFilter;
+
+    /**
+     * The list of other file formats.
+     */
+<span class="nc" id="L134">    private List&lt;SuffixFilter&gt; otherFilters = new ArrayList&lt;SuffixFilter&gt;();</span>
+
+    /**
+     * The singleton instance.
+     */
+<span class="nc" id="L139">    private static SaveGraphicsManager instance = new SaveGraphicsManager();</span>
+
+    /**
+     * The constructor.
+     */
+<span class="nc" id="L144">    private SaveGraphicsManager() {</span>
+<span class="nc" id="L145">        defaultFilter = FileFilters.PNG_FILTER;</span>
+<span class="nc" id="L146">        otherFilters.add(FileFilters.GIF_FILTER);</span>
+<span class="nc" id="L147">        otherFilters.add(FileFilters.SVG_FILTER);</span>
+<span class="nc" id="L148">        otherFilters.add(FileFilters.PS_FILTER);</span>
+<span class="nc" id="L149">        otherFilters.add(FileFilters.EPS_FILTER);</span>
+<span class="nc" id="L150">        setDefaultFilterBySuffix(Configuration.getString(</span>
+                KEY_DEFAULT_GRAPHICS_FILTER,
+<span class="nc" id="L152">                defaultFilter.getSuffix()));</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * @param suffix the extension of the new default file-format
+     */
+    public void setDefaultFilterBySuffix(String suffix) {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        for (SuffixFilter sf : otherFilters) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            if (sf.getSuffix().equalsIgnoreCase(suffix)) {</span>
+<span class="nc" id="L161">                setDefaultFilter(sf);</span>
+<span class="nc" id="L162">                break;</span>
+            }
+<span class="nc" id="L164">        }</span>
+<span class="nc" id="L165">    }</span>
+
+    /**
+     * @param f the new default file-format
+     */
+    public void setDefaultFilter(SuffixFilter f) {
+<span class="nc" id="L171">        otherFilters.remove(f);</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (!otherFilters.contains(defaultFilter)) {</span>
+<span class="nc" id="L173">            otherFilters.add(defaultFilter);</span>
+        }
+<span class="nc" id="L175">        defaultFilter = f;</span>
+<span class="nc" id="L176">        Configuration.setString(</span>
+                KEY_DEFAULT_GRAPHICS_FILTER,
+<span class="nc" id="L178">                f.getSuffix());</span>
+
+<span class="nc" id="L180">        Collections.sort(otherFilters, new Comparator&lt;SuffixFilter&gt;() {</span>
+            public int compare(SuffixFilter arg0, SuffixFilter arg1) {
+<span class="nc" id="L182">                return arg0.getSuffix().compareToIgnoreCase(</span>
+<span class="nc" id="L183">                        arg1.getSuffix());</span>
+            }
+        });
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * @return returns the singleton
+     */
+    public static SaveGraphicsManager getInstance() {
+<span class="nc" id="L192">        return instance;</span>
+    }
+
+    /**
+     * This function allows to add new filters. This can be done e.g.
+     * by modules.&lt;p&gt;
+     *
+     * @param f the filter
+     */
+    public void register(SuffixFilter f) {
+<span class="nc" id="L202">        otherFilters.add(f);</span>
+<span class="nc" id="L203">    }</span>
+
+    /**
+     * @param chooser the filechooser of which the filters will be set
+     * @param defaultName default filename to show when chooser is displayed
+     */
+    public void setFileChooserFilters(
+            JFileChooser chooser, String defaultName) {
+<span class="nc" id="L211">        chooser.addChoosableFileFilter(defaultFilter);</span>
+<span class="nc" id="L212">        Iterator iter = otherFilters.iterator();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L214">            chooser.addChoosableFileFilter((SuffixFilter) iter.next());</span>
+        }
+<span class="nc" id="L216">        chooser.setFileFilter(defaultFilter);</span>
+<span class="nc" id="L217">        String fileName = defaultName + &quot;.&quot; + defaultFilter.getSuffix();</span>
+<span class="nc" id="L218">        chooser.setSelectedFile(new File(fileName));</span>
+<span class="nc" id="L219">        chooser.addPropertyChangeListener(</span>
+                JFileChooser.FILE_FILTER_CHANGED_PROPERTY,
+                new FileFilterChangedListener(chooser, defaultName));
+<span class="nc" id="L222">    }</span>
+
+    /**
+     * This class listens to changes in the selected filefilter.
+     * If the user changes the filefilter
+     * (e.g. he changes from *.gif to *.png),
+     * then the filename field got emptied before I introduced this class.
+     * Now, a new filename is made up, based on
+     * the diagram name + the new extension (suffix).
+     *
+     * @author mvw@tigris.org
+     */
+    static class FileFilterChangedListener implements PropertyChangeListener {
+        private JFileChooser chooser;
+        private String defaultName;
+
+        /**
+         * Constructor.
+         * @param c
+         * @param name
+         */
+<span class="nc" id="L243">        public FileFilterChangedListener(JFileChooser c, String name) {</span>
+<span class="nc" id="L244">            chooser = c;</span>
+<span class="nc" id="L245">            defaultName = name;</span>
+<span class="nc" id="L246">        }</span>
+
+        /*
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc" id="L252">            SuffixFilter filter = (SuffixFilter) evt.getNewValue();</span>
+<span class="nc" id="L253">            String fileName = defaultName + &quot;.&quot; + filter.getSuffix();</span>
+            /* The next line does not work: */
+            // chooser.setSelectedFile(new File(fileName));
+            /* So, let's do it the hard way: */
+<span class="nc" id="L257">            SwingUtilities.invokeLater(new Anonymous1(fileName));</span>
+<span class="nc" id="L258">        }</span>
+
+        class Anonymous1 implements Runnable {
+            private String fileName;
+            /**
+             * Constructor.
+             *
+             * @param fn The filename.
+             */
+<span class="nc" id="L267">            Anonymous1(String fn) {</span>
+<span class="nc" id="L268">                fileName = fn;</span>
+<span class="nc" id="L269">            }</span>
+
+            /*
+             * @see java.lang.Runnable#run()
+             */
+            public void run() {
+<span class="nc" id="L275">                chooser.setSelectedFile(new File(fileName));</span>
+<span class="nc" id="L276">            }</span>
+        }
+    }
+
+    /**
+     * @param name the filename
+     * @return the filter
+     */
+    public SuffixFilter getFilterFromFileName(String name) {
+<span class="nc" id="L285">        if (name.toLowerCase()</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            .endsWith(&quot;.&quot; + defaultFilter.getSuffix())) {</span>
+<span class="nc" id="L287">            return defaultFilter;</span>
+        }
+<span class="nc" id="L289">        Iterator iter = otherFilters.iterator();</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L291">            SuffixFilter filter = (SuffixFilter) iter.next();</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">            if (name.toLowerCase().endsWith(&quot;.&quot; + filter.getSuffix())) {</span>
+<span class="nc" id="L293">                return filter;</span>
+            }
+<span class="nc" id="L295">        }</span>
+<span class="nc" id="L296">        return null;</span>
+    }
+
+    /**
+     * @return the extension of the default filter
+     *         (just the text, not the &quot;.&quot;)
+     */
+    public String getDefaultSuffix() {
+<span class="nc" id="L304">        return defaultFilter.getSuffix();</span>
+    }
+
+    /**
+     * @param in the input file or path name which may or may not
+     *           have a recognised extension
+     * @return the amended file or pathname, guaranteed to have
+     *         a recognised extension
+     */
+    public String fixExtension(String in) {
+<span class="nc bnc" id="L314" title="All 2 branches missed.">        if (getFilterFromFileName(in) == null) {</span>
+<span class="nc" id="L315">            in += &quot;.&quot; + getDefaultSuffix();</span>
+        }
+<span class="nc" id="L317">        return in;</span>
+    }
+
+
+    /**
+     * @param suffix the suffix (extension) of the filename,
+     *               which corresponds to the graphics format to be used
+     * @return the action that will do the save
+     */
+    public SaveGraphicsAction getSaveActionBySuffix(String suffix) {
+<span class="nc" id="L327">        SaveGraphicsAction cmd = null;</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {</span>
+<span class="nc" id="L329">            cmd = new SavePSAction(Translator.localize(&quot;action.save-ps&quot;));</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        } else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {</span>
+<span class="nc" id="L331">            cmd = new SaveScaledEPSAction(</span>
+<span class="nc" id="L332">                    Translator.localize(&quot;action.save-eps&quot;));</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">        } else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {</span>
+<span class="nc" id="L334">            cmd = new SavePNGAction2(Translator.localize(&quot;action.save-png&quot;));</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        } else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {</span>
+<span class="nc" id="L336">            cmd = new SaveGIFAction(Translator.localize(&quot;action.save-gif&quot;));</span>
+            // TODO: The following can be used when we drop Java 5 support or
+            // when an ImageIO GIF writer plugin is bundled
+//            cmd = new SaveGIFAction2(Translator.localize(&quot;action.save-gif&quot;));
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {</span>
+            // TODO: Use the SVGWriter2D implementation
+//            cmd = new SaveSVGAction2(Translator.localize(&quot;action.save-svg&quot;));
+<span class="nc" id="L343">            cmd = new SaveSVGAction(Translator.localize(&quot;action.save-svg&quot;));</span>
+        }
+<span class="nc" id="L345">        return cmd;</span>
+    }
+
+
+    /**
+     * @return the complete collection of SuffixFilters,
+     *         the first one is the default one
+     */
+    public List&lt;SuffixFilter&gt; getSettingsList() {
+<span class="nc" id="L354">        List&lt;SuffixFilter&gt; c = new ArrayList&lt;SuffixFilter&gt;();</span>
+<span class="nc" id="L355">        c.add(defaultFilter);</span>
+<span class="nc" id="L356">        c.addAll(otherFilters);</span>
+<span class="nc" id="L357">        return c;</span>
+    }
+
+    /**
+     * Adjust the drawing area so that instead of a tight bounding box, it
+     * includes the canvas origin and some space around the lower and right
+     * sides so that the elements will be roughly centered. Elements which are
+     * off the top or left side of the canvas may still be clipped (ie if the
+     * original drawing area had a negative x or y coordinate).
+     *
+     * @param area rectangle representing original drawing area
+     * @return an expanded rectangle
+     */
+    static Rectangle adjustDrawingArea(Rectangle area) {
+<span class="nc" id="L371">        int xMargin = area.x;</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">        if (xMargin &lt; 0) {</span>
+<span class="nc" id="L373">            xMargin = 0;</span>
+        }
+<span class="nc" id="L375">        int yMargin = area.y;</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        if (yMargin &lt; 0) {</span>
+<span class="nc" id="L377">            yMargin = 0;</span>
+        }
+<span class="nc" id="L379">        int margin = Math.max(xMargin, yMargin);</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (margin &lt; MIN_MARGIN) {</span>
+<span class="nc" id="L381">            margin = MIN_MARGIN;</span>
+        }
+<span class="nc" id="L383">        return new Rectangle(0, 0,</span>
+                area.width + (2 * margin),
+                area.height + (2 * margin));
+    }
+}
+
+
+class SaveScaledEPSAction extends SaveEPSAction {
+
+    SaveScaledEPSAction(String name) {
+<span class="nc" id="L393">        super(name);</span>
+<span class="nc" id="L394">    }</span>
+
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce,
+                                Rectangle drawingArea)
+        throws IOException {
+
+<span class="nc" id="L401">        double editorScale = ce.getScale();</span>
+<span class="nc" id="L402">        int x = (int) (drawingArea.x * editorScale);</span>
+<span class="nc" id="L403">        int y = (int) (drawingArea.y * editorScale);</span>
+<span class="nc" id="L404">        int h = (int) (drawingArea.height * editorScale);</span>
+<span class="nc" id="L405">        int w = (int) (drawingArea.width * editorScale);</span>
+<span class="nc" id="L406">        drawingArea = new Rectangle(x, y, w, h);</span>
+
+<span class="nc" id="L408">        PostscriptWriter ps = new PostscriptWriter(s, drawingArea);</span>
+
+<span class="nc" id="L410">        ps.scale(editorScale, editorScale);</span>
+
+<span class="nc" id="L412">        ce.print(ps);</span>
+<span class="nc" id="L413">        ps.dispose();</span>
+<span class="nc" id="L414">    }</span>
+
+}
+
+/**
+ * Write out a PNG image of the current diagram using a more memory efficient
+ * scheme than GEF uses.
+ *
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+class SavePNGAction2 extends SavePNGAction {
+
+<span class="nc" id="L426">    private static final Logger LOG = Logger.getLogger(SavePNGAction2.class.getName());</span>
+
+    SavePNGAction2(String name) {
+<span class="nc" id="L429">        super(name);</span>
+<span class="nc" id="L430">    }</span>
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L434">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L435">        Rectangle drawingArea =</span>
+<span class="nc" id="L436">            ce.getLayerManager().getActiveLayer().calcDrawingArea();</span>
+        // If the diagram is empty, GEF won't write anything, leaving us with
+        // an empty (and invalid) file.  Handle this case ourselves to prevent
+        // this from happening.
+<span class="nc bnc" id="L440" title="All 4 branches missed.">        if (drawingArea.width &lt;= 0 || drawingArea.height &lt;= 0) {</span>
+<span class="nc" id="L441">            Rectangle dummyArea = new Rectangle(0, 0, 50, 50);</span>
+            try {
+<span class="nc" id="L443">                saveGraphics(outputStream, ce, dummyArea);</span>
+<span class="nc" id="L444">            } catch (java.io.IOException e) {</span>
+<span class="nc" id="L445">                LOG.log(Level.SEVERE, &quot;Error while exporting Graphics:&quot;, e);</span>
+<span class="nc" id="L446">            }</span>
+<span class="nc" id="L447">            return;</span>
+        }
+
+        // Anything else is handled the normal way
+<span class="nc" id="L451">        super.actionPerformed(ae);</span>
+<span class="nc" id="L452">    }</span>
+
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a PNG image.
+     */
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea)
+        throws IOException {
+
+<span class="nc" id="L463">        Rectangle canvasArea =</span>
+<span class="nc" id="L464">            SaveGraphicsManager.adjustDrawingArea(drawingArea);</span>
+
+        // Create an image which will do deferred rendering of the GEF
+        // diagram on demand as data is pulled from it
+<span class="nc" id="L468">        RenderedImage i = new DeferredBufferedImage(canvasArea,</span>
+                BufferedImage.TYPE_INT_ARGB, ce, scale);
+
+<span class="nc" id="L471">        LOG.log(Level.FINE,</span>
+                &quot;Created DeferredBufferedImage - drawingArea = {0} , scale = {1}&quot;,
+<span class="nc" id="L473">                new Object[]{canvasArea, scale});</span>
+
+<span class="nc" id="L475">        ImageIO.write(i, &quot;png&quot;, s);</span>
+<span class="nc" id="L476">    }</span>
+
+
+}
+
+/**
+ * Action to save a diagram as a GIF image in a supplied OutputStream.
+ *
+ * TODO: This requires Java 6 in its current state, so don't use.
+ *
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+class SaveGIFAction2 extends SaveGIFAction {
+
+    /**
+     * Creates a new SaveGIFAction
+     *
+     * @param name The name of the action
+     */
+    SaveGIFAction2(String name) {
+<span class="nc" id="L496">        super(name);</span>
+<span class="nc" id="L497">    }</span>
+
+
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a GIF image.
+     */
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce,
+            Rectangle drawingArea) throws IOException {
+
+<span class="nc" id="L508">        Rectangle canvasArea =</span>
+<span class="nc" id="L509">            SaveGraphicsManager.adjustDrawingArea(drawingArea);</span>
+
+<span class="nc" id="L511">        RenderedImage i = new DeferredBufferedImage(canvasArea,</span>
+                BufferedImage.TYPE_INT_ARGB, ce, scale);
+
+        // NOTE: GEF's GIF writer uses Jeff Poskanzer's GIF encoder, but that
+        // saves a copy of the entire image in an internal buffer before
+        // starting work, defeating the whole purpose of our incremental
+        // rendering.
+
+        // Java SE 6 has a native GIF writer, but it's not in Java 5.  One
+        // is available in the JAI-ImageIO library, but we don't currently
+        // bundle that and at 6+ MB it seems like a heavyweight solution, but
+        // I don't have time to produce a stripped down version right now - tfm
+        // https://jai-imageio.dev.java.net/
+
+<span class="nc" id="L525">        ImageIO.write(i, &quot;gif&quot;, s);</span>
+
+<span class="nc" id="L527">    }</span>
+
+}
+
+class SaveSVGAction2 extends SaveGraphicsAction {
+
+    /**
+     * Creates a new SaveSVGAction
+     *
+     * @param name
+     *                The name of the action
+     */
+    public SaveSVGAction2(String name) {
+<span class="nc" id="L540">        this(name, false);</span>
+<span class="nc" id="L541">    }</span>
+
+    /**
+     * Creates a new SaveSVGAction
+     *
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     */
+    public SaveSVGAction2(String name, Icon icon) {
+<span class="nc" id="L552">        this(name, icon, false);</span>
+<span class="nc" id="L553">    }</span>
+
+    /**
+     * Creates a new SaveSVGAction
+     *
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
+     */
+    public SaveSVGAction2(String name, boolean localize) {
+<span class="nc bnc" id="L564" title="All 2 branches missed.">        super(localize ? Localizer.localize(&quot;GefBase&quot;, name) : name);</span>
+<span class="nc" id="L565">    }</span>
+
+    /**
+     * Creates a new SaveSVGAction
+     *
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
+     */
+    public SaveSVGAction2(String name, Icon icon, boolean localize) {
+<span class="nc bnc" id="L578" title="All 2 branches missed.">        super(localize ? Localizer.localize(&quot;GefBase&quot;, name) : name, icon);</span>
+<span class="nc" id="L579">    }</span>
+
+    protected void saveGraphics(OutputStream outStream, Editor ce,
+    		Rectangle drawingArea)
+        throws IOException {
+
+//        LayerPerspective layer = DiagramUtils.getActiveDiagram().getLayer();
+<span class="nc" id="L586">        Layer layer = ce.getLayerManager().getActiveLayer();</span>
+
+<span class="nc" id="L588">        Rectangle bounds = new Rectangle();</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        for (Fig fig : layer.getContents()) {</span>
+<span class="nc" id="L590">            bounds.x = Math.min(bounds.x, fig.getX());</span>
+<span class="nc" id="L591">            bounds.y = Math.min(bounds.y, fig.getY());</span>
+            // we actually are computing max x &amp; max y, not width &amp; height
+<span class="nc" id="L593">            bounds.width = Math.max(bounds.width, fig.getX() + fig.getWidth());</span>
+<span class="nc" id="L594">            bounds.height = Math.max(bounds.height,</span>
+<span class="nc" id="L595">                    fig.getY() + fig.getHeight());</span>
+<span class="nc" id="L596">        }</span>
+
+        // Convert max x/y to width/height
+<span class="nc" id="L599">        bounds.width -= bounds.x;</span>
+<span class="nc" id="L600">        bounds.height -= bounds.y;</span>
+
+        // Get a DOMImplementation
+        DOMImplementation domImpl =
+<span class="nc" id="L604">        GenericDOMImplementation.getDOMImplementation();</span>
+        // Create an instance of org.w3c.dom.Document
+<span class="nc" id="L606">        Document document = domImpl.createDocument(null, &quot;svg&quot;, null);</span>
+        // Create an instance of the SVG Generator
+<span class="nc" id="L608">        SVGGraphics2D svgGenerator = new SVGGraphics2D(document);</span>
+
+<span class="nc" id="L610">        ce.print(svgGenerator);</span>
+
+//            for (Fig f : layer.getContents()) {
+//                // ignore clipping
+//                String url = null;
+//                String clazz = null;
+//                Object owner = f.getOwner();
+//                if (Model.getFacade().isAUMLElement(owner)) {
+//                    clazz = Model.getMetaTypes().getName(owner);
+//                    // TODO: toLower?
+//                    if (Model.getFacade().isAModelElement(owner)) {
+//                        String name = Model.getFacade().getName(owner);
+//                        if (name == null) {
+//                            name = &quot;&quot;;
+//                        }
+//                        url = &quot;http://argoeclipse.tigris.org&quot; + &quot;#&quot; + name;
+//                    }
+//                }
+////                writer.beginFig(f, clazz, url);
+//                f.paint(writer);
+//  //              writer.endFig();
+//            }
+            // Finally, stream out SVG to the standard output using UTF-8
+            // character to byte encoding
+<span class="nc" id="L634">        boolean useCSS = true; // we want to use CSS style attribute</span>
+<span class="nc" id="L635">        Writer out = new OutputStreamWriter(outStream, &quot;UTF-8&quot;);</span>
+<span class="nc" id="L636">        svgGenerator.stream(out, useCSS);</span>
+<span class="nc" id="L637">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

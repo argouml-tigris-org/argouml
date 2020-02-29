@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabConstraints.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabConstraints.java</span></div><h1>TabConstraints.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+import javax.swing.JToolBar;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.model.Model;
+import org.argouml.ocl.ArgoFacade;
+import org.argouml.ocl.OCLUtil;
+import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBarManager;
+
+import tudresden.ocl.OclException;
+import tudresden.ocl.OclTree;
+import tudresden.ocl.check.OclTypeException;
+import tudresden.ocl.gui.ConstraintRepresentation;
+import tudresden.ocl.gui.EditingUtilities;
+import tudresden.ocl.gui.OCLEditor;
+import tudresden.ocl.gui.OCLEditorModel;
+import tudresden.ocl.gui.events.ConstraintChangeEvent;
+import tudresden.ocl.gui.events.ConstraintChangeListener;
+import tudresden.ocl.parser.OclParserException;
+import tudresden.ocl.parser.analysis.DepthFirstAdapter;
+import tudresden.ocl.parser.node.AConstraintBody;
+import tudresden.ocl.parser.node.TName;
+
+/**
+  * Tab for OCL constraint editing.
+  *
+  * @author v1.0: Falk Finger
+  * @author v2.0: Steffen Zschaler
+  */
+public class TabConstraints extends AbstractArgoJPanel
+    implements TabModelTarget, ComponentListener {
+
+<span class="fc" id="L88">    private static final Logger LOG =</span>
+<span class="fc" id="L89">        Logger.getLogger(TabConstraints.class.getName());</span>
+
+    /**
+     * The actual editor pane.
+     */
+    private OCLEditor mOcleEditor;
+
+    /**
+     * The current target element.
+     */
+    private Object mMmeiTarget;
+
+    /**
+     * The constructor.
+     */
+    public TabConstraints() {
+<span class="fc" id="L105">        super(&quot;tab.constraints&quot;);</span>
+
+<span class="fc" id="L107">        setIcon(new UpArrowIcon());</span>
+<span class="fc" id="L108">        setLayout(new BorderLayout(0, 0));</span>
+
+<span class="fc" id="L110">        mOcleEditor = new OCLEditor();</span>
+<span class="fc" id="L111">        mOcleEditor.setOptionMask(OCLEditor.OPTIONMASK_TYPECHECK</span>
+                   /*|  //removed to workaround problems with autosplit
+                     OCLEditor.OPTIONMASK_AUTOSPLIT*/);
+<span class="fc" id="L114">        mOcleEditor.setDoAutoSplit(false);</span>
+<span class="fc" id="L115">        setToolbarRollover(true);</span>
+<span class="fc" id="L116">        setToolbarFloatable(false);</span>
+<span class="fc" id="L117">        getOclToolbar().setName(&quot;misc.toolbar.constraints&quot;);</span>
+
+<span class="fc" id="L119">        add(mOcleEditor);</span>
+
+<span class="fc" id="L121">        addComponentListener(this);</span>
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * Set the toolbar rollover style.
+     *
+     * @param enable If true then button borders do not become visible
+     * until mouse rolls over button.
+     */
+    private void setToolbarRollover(boolean enable) {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (!ToolBarManager.alwaysUseStandardRollover()) {</span>
+<span class="nc" id="L132">            getOclToolbar().putClientProperty(</span>
+                    &quot;JToolBar.isRollover&quot;, Boolean.TRUE);
+        }
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * Set the toolbar floating style.
+     *
+     * @param enable If true then the toolbar can be floated and docked
+     */
+    private void setToolbarFloatable(boolean enable) {
+<span class="fc" id="L143">        getOclToolbar().setFloatable(false);</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Get a reference to the toolbar object contained in the
+     * OCLEditor component.  This is currently a nasty hack. We really
+     * require an interface method on OCLEditor (Bob Tarling 8 Feb
+     * 2003).
+     *
+     * @return The toolbar
+     */
+    private JToolBar getOclToolbar() {
+<span class="fc" id="L155">        return (JToolBar) mOcleEditor.getComponent(0);</span>
+    }
+
+    //TabModelTarget interface methods
+
+    /**
+     * Should this tab be activated for the current target element?&lt;p&gt;
+     *
+     * Argo only supports constraints for Classes and Features
+     * (eg. Attributes and Operations) currently.
+     *
+     * {@inheritDoc}
+     */
+    public boolean shouldBeEnabled(Object target) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        return (Model.getFacade().isAClass(target)</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">                || Model.getFacade().isAFeature(target));</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L178">        return mMmeiTarget;</span>
+    }
+
+    /**
+     * Refresh the tab because the target has changed.
+     */
+    public void refresh() {
+<span class="nc" id="L185">        setTarget(mMmeiTarget);</span>
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * Set the target element to be displayed in this tab. Only model elements
+     * will be accepted by the constraint tab.
+     *
+     * {@inheritDoc}
+     */
+    public void setTarget(Object oTarget) {
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        oTarget =</span>
+<span class="pc" id="L196">	    (oTarget instanceof Fig) ? ((Fig) oTarget).getOwner() : oTarget;</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">        if (!(Model.getFacade().isAModelElement(oTarget))) {</span>
+<span class="nc" id="L198">            mMmeiTarget = null;</span>
+<span class="nc" id="L199">            return;</span>
+        }
+
+<span class="fc" id="L202">        mMmeiTarget = oTarget;</span>
+
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L205">            setTargetInternal(mMmeiTarget);</span>
+        }
+<span class="fc" id="L207">    }</span>
+
+    private void setTargetInternal(Object oTarget) {
+        // Set editor's model
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (oTarget != null) {</span>
+<span class="nc" id="L212">            mOcleEditor.setModel(new ConstraintModel(oTarget));</span>
+        }
+<span class="nc" id="L214">    }</span>
+
+    /**
+     * Adapter to provide information and a manipulation interface for a
+     * target element's set of constraints to the constraint editor.
+     */
+    private static class ConstraintModel implements OCLEditorModel {
+
+        /**
+         * The target element being edited.
+         */
+        private Object theMMmeiTarget;
+
+        /**
+         * A list of all the constraints in m_nmeiTarget. This is necessary to
+         * induce a consistent order on the constraints.
+         */
+        private ArrayList theMAlConstraints;
+
+        /**
+         * List of listeners.
+         */
+<span class="nc" id="L236">        private EventListenerList theMEllListeners = new EventListenerList();</span>
+
+        /**
+         * Construct a new ConstraintModel.
+         */
+        public ConstraintModel(Object mmeiTarget) {
+<span class="nc" id="L242">            super();</span>
+
+<span class="nc" id="L244">            theMMmeiTarget = mmeiTarget;</span>
+
+<span class="nc" id="L246">            theMAlConstraints =</span>
+<span class="nc" id="L247">		new ArrayList(Model.getFacade().getConstraints(theMMmeiTarget));</span>
+<span class="nc" id="L248">        }</span>
+
+        /**
+         * Return the number of constraints in this model.
+         */
+        public int getConstraintCount() {
+<span class="nc" id="L254">            return theMAlConstraints.size();</span>
+        }
+
+        /**
+         * Return the constraint with the specified index.
+         *
+         * @param nIdx the index of the constraint to be returned.
+         *             0 &lt;= nIdx &lt; {@link #getConstraintCount}
+         */
+        public ConstraintRepresentation getConstraintAt(int nIdx) {
+<span class="nc" id="L264">            return representationFor(nIdx);</span>
+        }
+
+        /**
+         * Remove the specified constraint from the model.
+         *
+         * @param nIdx the index of the constraint to be removed.
+         *             0 &lt;= nIdx &lt; {@link #getConstraintCount}
+         */
+        public void removeConstraintAt(int nIdx) {
+<span class="nc bnc" id="L274" title="All 4 branches missed.">            if ((nIdx &lt; 0) || (nIdx &gt; theMAlConstraints.size())) {</span>
+<span class="nc" id="L275">                return;</span>
+            }
+
+<span class="nc" id="L278">            Object mc = theMAlConstraints.remove(nIdx);</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">            if (mc != null) {</span>
+<span class="nc" id="L281">                Model.getCoreHelper().removeConstraint(theMMmeiTarget, mc);</span>
+            }
+
+<span class="nc" id="L284">            fireConstraintRemoved(mc, nIdx);</span>
+<span class="nc" id="L285">        }</span>
+
+        /**
+         * Add a fresh constraint to the model.&lt;p&gt;
+         *
+         * There are 2 restrictions on what can be parsed, given
+         * the current OCL grammar:
+         * &lt;ol&gt;
+         *   &lt;li&gt;Class names must have a capital first letter.
+         *   &lt;li&gt;Feature name must have a lower case first letter.
+         * &lt;/ol&gt;
+         */
+        public void addConstraint() {
+
+            // check ocl parsing constraints
+<span class="nc" id="L300">            Object mmeContext = OCLUtil</span>
+<span class="nc" id="L301">                    .getInnerMostEnclosingNamespace(theMMmeiTarget);</span>
+<span class="nc" id="L302">            String contextName = Model.getFacade().getName(mmeContext);</span>
+<span class="nc" id="L303">            String targetName = Model.getFacade().getName(theMMmeiTarget);</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            if ((contextName == null</span>
+<span class="nc bnc" id="L305" title="All 4 branches missed.">		 || contextName.equals (&quot;&quot;))</span>
+		||  // this is to fix issue #2056
+                (targetName == null
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		 || targetName.equals (&quot;&quot;))</span>
+		||   // this is to fix issue #2056
+<span class="nc bnc" id="L310" title="All 2 branches missed.">                !Character.isUpperCase(contextName.charAt(0))</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">		|| (Model.getFacade().isAClass (theMMmeiTarget)</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		    &amp;&amp; !Character.isUpperCase(targetName.charAt(0)))</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">		|| (Model.getFacade().isAFeature(theMMmeiTarget)</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		    &amp;&amp; !Character.isLowerCase(targetName.charAt(0)))) {</span>
+                // TODO: I18n
+<span class="nc" id="L316">                JOptionPane.showMessageDialog(</span>
+		    null,
+                    &quot;The OCL Toolkit requires that:\n\n&quot;
+		    + &quot;Class names have a capital first letter and\n&quot;
+		    + &quot;Attribute or Operation names have &quot;
+		    + &quot;a lower case first letter.&quot;,
+                    &quot;Require Correct name convention:&quot;,
+                    JOptionPane.ERROR_MESSAGE);
+                // do not create a constraint:
+<span class="nc" id="L325">                return;</span>
+            }
+
+            // null elements represent new constraints, which will be
+            // added to the target the first time any actual editing
+            // takes place.  This is done to ensure syntactical
+            // correctness of constraints stored with the target.
+<span class="nc" id="L332">            theMAlConstraints.add(null);</span>
+
+<span class="nc" id="L334">            fireConstraintAdded();</span>
+<span class="nc" id="L335">        }</span>
+
+        // TODO: - please add some javadoc - ugly classname also
+        private class CR implements ConstraintRepresentation {
+            /**
+             * The constraint being represented.
+             */
+            private Object theMMcConstraint;
+
+            /**
+             * The constraint's index in the list of
+             * constraints. Necessary only for new constraints, where
+             * m_mcConstraint is still &lt;tt&gt;null&lt;/tt&gt;.
+             */
+<span class="nc" id="L349">            private int theMNIdx = -1;</span>
+
+<span class="nc" id="L351">            public CR(Object mcConstraint, int nIdx) {</span>
+<span class="nc" id="L352">                super();</span>
+
+<span class="nc" id="L354">                theMMcConstraint = mcConstraint;</span>
+<span class="nc" id="L355">                theMNIdx = nIdx;</span>
+<span class="nc" id="L356">            }</span>
+
+            public CR(int nIdx) {
+<span class="nc" id="L359">                this(null, nIdx);</span>
+<span class="nc" id="L360">            }</span>
+
+            /**
+             * Get the name of the constraint.
+             */
+            public String getName() {
+<span class="nc bnc" id="L366" title="All 2 branches missed.">                if (theMMcConstraint == null) {</span>
+<span class="nc" id="L367">                    return &quot;newConstraint&quot;;</span>
+                }
+<span class="nc" id="L369">                return Model.getFacade().getName(theMMcConstraint);</span>
+            }
+
+            /**
+             * Get the constraint's body.
+             */
+            public String getData() {
+<span class="nc bnc" id="L376" title="All 2 branches missed.">                if (theMMcConstraint == null) {</span>
+<span class="nc" id="L377">                    return OCLUtil.getContextString(theMMmeiTarget);</span>
+                }
+<span class="nc" id="L379">                return (String) Model.getFacade().getBody(</span>
+<span class="nc" id="L380">                        Model.getFacade().getBody(theMMcConstraint));</span>
+            }
+
+            /**
+             * Set the constraint's body text. For the exceptions the
+             * detailed message must be human readable.
+             *
+             * @param sData the new body of the constraint
+             *
+             * @exception IllegalStateException if the constraint is
+             *            not in a state to accept body changes.
+             * @exception OclParserException if the specified constraint is not
+             *     syntactically correct.
+             * @exception OclTypeException if the specified constraint
+             *            does not adhere by OCL type rules.
+             */
+            public void setData(String sData, EditingUtilities euHelper)
+		throws OclParserException, OclTypeException {
+                // Parse and check specified constraint.
+<span class="nc" id="L399">                OclTree tree = null;</span>
+
+                try {
+<span class="nc" id="L402">                    Object mmeContext = OCLUtil</span>
+<span class="nc" id="L403">                            .getInnerMostEnclosingNamespace(theMMmeiTarget);</span>
+
+                    try {
+<span class="nc" id="L406">                        tree =</span>
+<span class="nc" id="L407">			    euHelper.parseAndCheckConstraint(</span>
+				sData,
+				new ArgoFacade(mmeContext));
+<span class="nc" id="L410">                    } catch (IOException ioe) {</span>
+                        // Ignored: Highly unlikely, and what would we
+                        // do anyway?  log it
+<span class="nc" id="L413">                        LOG.log(Level.SEVERE, &quot;problem parsing And Checking Constraints&quot;,</span>
+				   ioe);
+<span class="nc" id="L415">                        return;</span>
+<span class="nc" id="L416">                    }</span>
+
+                    // Split constraint body, if user wants us to
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                    if (euHelper.getDoAutoSplit()) {</span>
+<span class="nc" id="L420">                        List lConstraints = euHelper.splitConstraint(tree);</span>
+
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                        if (lConstraints.size() &gt; 0) {</span>
+<span class="nc" id="L423">                            removeConstraintAt(theMNIdx);</span>
+
+<span class="nc" id="L425">                            for (Iterator i = lConstraints.iterator();</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">				 i.hasNext();) {</span>
+<span class="nc" id="L427">                                OclTree ocltCurrent = (OclTree) i.next();</span>
+
+                                Object mc =
+<span class="nc" id="L430">                                    Model.getCoreFactory()</span>
+<span class="nc" id="L431">				        .createConstraint();</span>
+<span class="nc" id="L432">                                Model.getCoreHelper().setName(mc, ocltCurrent</span>
+<span class="nc" id="L433">                                    .getConstraintName());</span>
+<span class="nc" id="L434">                                Model.getCoreHelper().setBody(mc,</span>
+<span class="nc" id="L435">                                        Model.getDataTypesFactory()</span>
+<span class="nc" id="L436">                                        	.createBooleanExpression(</span>
+                                        	        &quot;OCL&quot;,
+                                        	        ocltCurrent
+<span class="nc" id="L439">                                        	        .getExpression()));</span>
+<span class="nc" id="L440">                                Model.getCoreHelper().addConstraint(</span>
+<span class="nc" id="L441">                                        theMMmeiTarget,</span>
+                                        mc);
+
+                                // the constraint _must_ be owned by a namespace
+<span class="nc bnc" id="L445" title="All 2 branches missed.">                                if (Model.getFacade().getNamespace(</span>
+<span class="nc" id="L446">                                        theMMmeiTarget)</span>
+                                        != null) {
+<span class="nc" id="L448">                                    Model.getCoreHelper().addOwnedElement(</span>
+<span class="nc" id="L449">                                            Model.getFacade().getNamespace(</span>
+<span class="nc" id="L450">                                                    theMMmeiTarget),</span>
+                                            mc);
+<span class="nc bnc" id="L452" title="All 2 branches missed.">                                } else if (Model.getFacade().getNamespace(</span>
+                                        mmeContext) != null) {
+<span class="nc" id="L454">                                    Model.getCoreHelper().addOwnedElement(</span>
+<span class="nc" id="L455">                                            Model.getFacade().getNamespace(</span>
+                                                    mmeContext),
+                                            theMMcConstraint);
+                                }
+
+<span class="nc" id="L460">                                theMAlConstraints.add(mc);</span>
+<span class="nc" id="L461">                                fireConstraintAdded();</span>
+<span class="nc" id="L462">                            }</span>
+
+<span class="nc" id="L464">                            return;</span>
+                        }
+                    }
+
+                    // Store constraint body
+<span class="nc" id="L469">                    Object mcOld = null;</span>
+
+<span class="nc bnc" id="L471" title="All 2 branches missed.">                    if (theMMcConstraint == null) {</span>
+                        // New constraint, first time setData is called
+<span class="nc" id="L473">                        theMMcConstraint =</span>
+<span class="nc" id="L474">                            Model.getCoreFactory().createConstraint();</span>
+
+<span class="nc" id="L476">                        Model.getCoreHelper().setName(</span>
+                                theMMcConstraint,
+                                &quot;newConstraint&quot;);
+<span class="nc" id="L479">                        Model.getCoreHelper().setBody(</span>
+                                theMMcConstraint,
+<span class="nc" id="L481">                                Model.getDataTypesFactory()</span>
+<span class="nc" id="L482">                                	.createBooleanExpression(&quot;OCL&quot;, sData));</span>
+
+<span class="nc" id="L484">                        Model.getCoreHelper().addConstraint(theMMmeiTarget,</span>
+                                theMMcConstraint);
+
+                        // the constraint _must_ be owned by a namespace
+                        Object targetNamespace =
+<span class="nc" id="L489">                            Model.getFacade().getNamespace(theMMmeiTarget);</span>
+                        Object contextNamespace =
+<span class="nc" id="L491">                            Model.getFacade().getNamespace(mmeContext);</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">                        if (targetNamespace != null) {</span>
+<span class="nc" id="L493">                            Model.getCoreHelper().addOwnedElement(</span>
+                                    targetNamespace,
+                                    theMMcConstraint);
+<span class="nc bnc" id="L496" title="All 2 branches missed.">                        } else if (contextNamespace != null) {</span>
+<span class="nc" id="L497">                            Model.getCoreHelper().addOwnedElement(</span>
+                                    contextNamespace,
+                                    theMMcConstraint);
+                        }
+
+<span class="nc" id="L502">                        theMAlConstraints.set(theMNIdx, theMMcConstraint);</span>
+<span class="nc" id="L503">                    } else {</span>
+<span class="nc" id="L504">                        mcOld = Model.getCoreFactory().createConstraint();</span>
+<span class="nc" id="L505">                        Model.getCoreHelper().setName(</span>
+                                mcOld,
+<span class="nc" id="L507">                                Model.getFacade().getName(theMMcConstraint));</span>
+<span class="nc" id="L508">                        Model.getCoreHelper().setBody(</span>
+                                mcOld,
+<span class="nc" id="L510">                                Model.getDataTypesFactory()</span>
+<span class="nc" id="L511">                                	.createBooleanExpression(&quot;OCL&quot;,</span>
+<span class="nc" id="L512">                                	        (String) Model.getFacade()</span>
+<span class="nc" id="L513">                                	        	.getBody(</span>
+<span class="nc" id="L514">                                                Model.getFacade().getBody(</span>
+                                                        theMMcConstraint))));
+<span class="nc" id="L516">                        Model.getCoreHelper().setBody(theMMcConstraint,</span>
+<span class="nc" id="L517">                                Model.getDataTypesFactory()</span>
+<span class="nc" id="L518">                                	.createBooleanExpression(&quot;OCL&quot;, sData));</span>
+                    }
+
+<span class="nc" id="L521">                    fireConstraintDataChanged(theMNIdx, mcOld,</span>
+                            theMMcConstraint);
+
+<span class="nc" id="L524">                } catch (OclTypeException pe) {</span>
+<span class="nc" id="L525">                    LOG.log(Level.WARNING, &quot;There was some sort of OCL Type problem&quot;, pe);</span>
+<span class="nc" id="L526">                    throw pe;</span>
+<span class="nc" id="L527">                } catch (OclParserException pe1) {</span>
+<span class="nc" id="L528">                    LOG.log(Level.WARNING, &quot;Could not parse the constraint&quot;, pe1);</span>
+<span class="nc" id="L529">                    throw pe1;</span>
+<span class="nc" id="L530">                } catch (OclException oclExc) {</span>
+                    // a runtime exception that occurs when some
+                    // internal test fails
+<span class="nc" id="L533">                    LOG.log(Level.WARNING, &quot;There was some unidentified problem&quot;);</span>
+<span class="nc" id="L534">                    throw oclExc;</span>
+<span class="nc" id="L535">                }</span>
+<span class="nc" id="L536">            }</span>
+
+            /**
+             * Set the constraint's name.
+             */
+            public void setName(
+                final String sName,
+                final EditingUtilities euHelper) {
+<span class="nc bnc" id="L544" title="All 2 branches missed.">                if (theMMcConstraint != null) {</span>
+                    // Check name for consistency with spec
+<span class="nc bnc" id="L546" title="All 2 branches missed.">                    if (!euHelper.isValidConstraintName(sName)) {</span>
+<span class="nc" id="L547">                        throw new IllegalArgumentException(</span>
+                                &quot;Please specify a valid name.&quot;);
+                    }
+
+                    // Set name
+                    Object mcOld =
+<span class="nc" id="L553">                        Model.getCoreFactory().createConstraint();</span>
+<span class="nc" id="L554">                    Model.getCoreHelper().setName(mcOld,</span>
+<span class="nc" id="L555">                            Model.getFacade().getName(theMMcConstraint));</span>
+                    Object constraintBody =
+<span class="nc" id="L557">                        Model.getFacade().getBody(theMMcConstraint);</span>
+<span class="nc" id="L558">                    Model.getCoreHelper().setBody(mcOld,</span>
+<span class="nc" id="L559">                            Model.getDataTypesFactory()</span>
+<span class="nc" id="L560">                                .createBooleanExpression(</span>
+                                        &quot;OCL&quot;,
+<span class="nc" id="L562">                                        (String) Model.getFacade().getBody(</span>
+                                                constraintBody)));
+
+<span class="nc" id="L565">                    Model.getCoreHelper().setName(theMMcConstraint, sName);</span>
+
+<span class="nc" id="L567">                    fireConstraintNameChanged(theMNIdx, mcOld,</span>
+                            theMMcConstraint);
+
+                    // Also set name in constraint body -- Added 03/14/2001
+                    try {
+<span class="nc" id="L572">                        OclTree tree = null;</span>
+<span class="nc" id="L573">                        Object mmeContext = OCLUtil</span>
+<span class="nc" id="L574">                                .getInnerMostEnclosingNamespace(theMMmeiTarget);</span>
+
+                        constraintBody =
+<span class="nc" id="L577">                            Model.getFacade().getBody(theMMcConstraint);</span>
+<span class="nc" id="L578">                        tree =</span>
+<span class="nc" id="L579">                            euHelper.parseAndCheckConstraint(</span>
+<span class="nc" id="L580">                                (String) Model.getFacade().getBody(</span>
+                                        constraintBody),
+                                new ArgoFacade(mmeContext));
+
+<span class="nc bnc" id="L584" title="All 2 branches missed.">                        if (tree != null) {</span>
+<span class="nc" id="L585">                            tree.apply(new DepthFirstAdapter() {</span>
+<span class="nc" id="L586">                                private int nameID = 0;</span>
+                                public void caseAConstraintBody(
+                                        AConstraintBody node) {
+                                    // replace name
+<span class="nc bnc" id="L590" title="All 2 branches missed.">                                    if (nameID == 0) {</span>
+<span class="nc" id="L591">                                        node.setName(new TName(sName));</span>
+                                    } else {
+<span class="nc" id="L593">                                        node.setName(new TName(</span>
+                                                sName + &quot;_&quot; + nameID));
+                                    }
+<span class="nc" id="L596">                                    nameID++;</span>
+<span class="nc" id="L597">				}</span>
+                            });
+
+<span class="nc" id="L600">                            setData(tree.getExpression(), euHelper);</span>
+                        }
+<span class="nc" id="L602">                    } catch (Throwable t) {</span>
+                        // OK, so that didn't work out... Just ignore
+                        // any problems and don't set the name in the
+                        // constraint body better had log it.
+<span class="nc" id="L606">                        LOG.log(Level.SEVERE, &quot;some unidentified problem&quot;, t);</span>
+<span class="nc" id="L607">                    }</span>
+<span class="nc" id="L608">                } else {</span>
+<span class="nc" id="L609">                    throw new IllegalStateException(</span>
+                        &quot;Please define and submit a constraint body first.&quot;);
+                }
+<span class="nc" id="L612">            }</span>
+        }
+
+        /**
+         * Create a representation adapter for the given constraint.
+         */
+        private CR representationFor(int nIdx) {
+<span class="nc bnc" id="L619" title="All 4 branches missed.">            if ((nIdx &lt; 0) || (nIdx &gt;= theMAlConstraints.size())) {</span>
+<span class="nc" id="L620">                return null;</span>
+            }
+
+<span class="nc" id="L623">            Object mc = theMAlConstraints.get(nIdx);</span>
+
+<span class="nc bnc" id="L625" title="All 2 branches missed.">            if (mc != null) {</span>
+<span class="nc" id="L626">                return new CR(mc, nIdx);</span>
+            }
+<span class="nc" id="L628">            return new CR(nIdx);</span>
+        }
+
+        /**
+         * Add a listener to be informed of changes in the model.
+         *
+         * @param ccl the new listener
+         */
+        public void addConstraintChangeListener(ConstraintChangeListener ccl) {
+<span class="nc" id="L637">            theMEllListeners.add(ConstraintChangeListener.class, ccl);</span>
+<span class="nc" id="L638">        }</span>
+
+        /**
+         * Remove a listener to be informed of changes in the model.
+         *
+         * @param ccl the listener to be removed
+         */
+        public void removeConstraintChangeListener(
+                ConstraintChangeListener ccl) {
+<span class="nc" id="L647">            theMEllListeners.remove(ConstraintChangeListener.class, ccl);</span>
+<span class="nc" id="L648">        }</span>
+
+        protected void fireConstraintRemoved(
+                Object mc, int nIdx) {
+            // Guaranteed to return a non-null array
+<span class="nc" id="L653">            Object[] listeners = theMEllListeners.getListenerList();</span>
+
+<span class="nc" id="L655">            ConstraintChangeEvent cce = null;</span>
+
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="nc bnc" id="L659" title="All 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">                if (listeners[i] == ConstraintChangeListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L662" title="All 2 branches missed.">                    if (cce == null) {</span>
+<span class="nc" id="L663">                        cce = new ConstraintChangeEvent(</span>
+                            this,
+                            nIdx,
+                            new CR(mc, nIdx),
+                            null);
+                    }
+<span class="nc" id="L669">                    ((ConstraintChangeListener) listeners[i + 1])</span>
+<span class="nc" id="L670">                        .constraintRemoved(cce);</span>
+                }
+            }
+<span class="nc" id="L673">        }</span>
+
+        protected void fireConstraintAdded() {
+            // Guaranteed to return a non-null array
+<span class="nc" id="L677">            Object[] listeners = theMEllListeners.getListenerList();</span>
+
+<span class="nc" id="L679">            ConstraintChangeEvent cce = null;</span>
+
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="nc bnc" id="L683" title="All 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">                if (listeners[i] == ConstraintChangeListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L686" title="All 2 branches missed.">                    if (cce == null) {</span>
+<span class="nc" id="L687">                        int nIdx = theMAlConstraints.size() - 1;</span>
+<span class="nc" id="L688">                        cce =</span>
+                            new ConstraintChangeEvent(
+                                    this,
+                                    nIdx,
+                                    null,
+<span class="nc" id="L693">                                    representationFor(nIdx));</span>
+                    }
+<span class="nc" id="L695">                    ((ConstraintChangeListener) listeners[i + 1])</span>
+<span class="nc" id="L696">                        .constraintAdded(cce);</span>
+                }
+            }
+<span class="nc" id="L699">        }</span>
+
+        protected void fireConstraintDataChanged(
+                         int nIdx,
+                         Object mcOld,
+                         Object mcNew) {
+            // Guaranteed to return a non-null array
+<span class="nc" id="L706">            Object[] listeners = theMEllListeners.getListenerList();</span>
+
+<span class="nc" id="L708">            ConstraintChangeEvent cce = null;</span>
+
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="nc bnc" id="L712" title="All 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L713" title="All 2 branches missed.">                if (listeners[i] == ConstraintChangeListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L715" title="All 2 branches missed.">                    if (cce == null) {</span>
+<span class="nc" id="L716">                        cce = new ConstraintChangeEvent(</span>
+                            this,
+                            nIdx,
+                            new CR(mcOld, nIdx),
+                            new CR(mcNew, nIdx));
+                    }
+
+<span class="nc" id="L723">                    ((ConstraintChangeListener) listeners[i + 1])</span>
+<span class="nc" id="L724">                        .constraintDataChanged(cce);</span>
+                }
+            }
+<span class="nc" id="L727">        }</span>
+
+        protected void fireConstraintNameChanged(
+                         int nIdx,
+                         Object mcOld,
+                         Object mcNew) {
+            // Guaranteed to return a non-null array
+<span class="nc" id="L734">            Object[] listeners = theMEllListeners.getListenerList();</span>
+
+<span class="nc" id="L736">            ConstraintChangeEvent cce = null;</span>
+
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="nc bnc" id="L740" title="All 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L741" title="All 2 branches missed.">                if (listeners[i] == ConstraintChangeListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L743" title="All 2 branches missed.">                    if (cce == null) {</span>
+<span class="nc" id="L744">                        cce = new ConstraintChangeEvent(</span>
+                            this,
+                            nIdx,
+                            new CR(mcOld, nIdx),
+                            new CR(mcNew, nIdx));
+                    }
+
+<span class="nc" id="L751">                    ((ConstraintChangeListener) listeners[i + 1])</span>
+<span class="nc" id="L752">                        .constraintNameChanged(cce);</span>
+                }
+            }
+<span class="nc" id="L755">        }</span>
+    }
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO: Why is this ignored? - tfm - 20070110
+<span class="nc" id="L764">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L771">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L772">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="fc" id="L779">        setTarget(e.getNewTarget());</span>
+<span class="fc" id="L780">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+<span class="nc" id="L787">        setTargetInternal(mMmeiTarget);</span>
+<span class="nc" id="L788">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // We have no model event listeners, so no need to do anything
+<span class="fc" id="L795">    }</span>
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L799">    }</span>
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L803">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

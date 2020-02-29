@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassdiagramLayouter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.layout</a> &gt; <span class="el_source">ClassdiagramLayouter.java</span></div><h1>ClassdiagramLayouter.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996,2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.layout;
+
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.layout.LayoutedObject;
+import org.argouml.uml.diagram.layout.Layouter;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * This class implements a layout algorithm for class diagrams.&lt;p&gt;
+ *
+ * The layout process is performed in a row by row way. The position of the
+ * nodes in a row are set using the sequence given by the &lt;em&gt;natural order
+ * &lt;/em&gt; of the nodes.&lt;p&gt;
+ *
+ * The resulting layout sequence:
+ * &lt;ol&gt;
+ * &lt;li&gt;Standalone (i.e. without links) nodes first, followed by linked nodes
+ * &lt;li&gt;Ordered by node-typ: package, interface, class, &lt;em&gt;other&lt;/em&gt;
+ * &lt;li&gt;Increasing level in link-hierarchy - root elements first
+ * &lt;li&gt;Decreasing amount of weighted links
+ * &lt;li&gt;Ascending name of model object
+ * &lt;/ol&gt;
+ *
+ * @see ClassdiagramNode#compareTo(Object)
+ *
+ */
+public class ClassdiagramLayouter implements Layouter {
+    // TODO: make the &quot;magic numbers&quot; configurable
+    /**
+     * This class keeps all the nodes in one row together and provides basic
+     * functionality for them.
+     *
+     * @author David Gunkel
+     */
+    private class NodeRow implements Iterable&lt;ClassdiagramNode&gt; {
+        /**
+         * Keeps all nodes of this row.
+         */
+<span class="nc" id="L88">        private List&lt;ClassdiagramNode&gt; nodes =</span>
+                new ArrayList&lt;ClassdiagramNode&gt;();
+
+        /**
+         * The row number of this row.
+         */
+        private int rowNumber;
+
+        /**
+         * Construct an empty NodeRow with the given row number.
+         *
+         * @param aRowNumber The row number of this row.
+         */
+<span class="nc" id="L101">        public NodeRow(int aRowNumber) {</span>
+<span class="nc" id="L102">            rowNumber = aRowNumber;</span>
+<span class="nc" id="L103">        }</span>
+
+        /**
+         * Add a node to this NodeRow.
+         *
+         * @param node The node to be added
+         */
+        public void addNode(ClassdiagramNode node) {
+<span class="nc" id="L111">            node.setRank(rowNumber);</span>
+<span class="nc" id="L112">            node.setColumn(nodes.size());</span>
+<span class="nc" id="L113">            nodes.add(node);</span>
+<span class="nc" id="L114">        }</span>
+
+        /**
+         * Splittable are packages and standalone-nodes. A split is performed,
+         * if the maximum width is reached or when a type change occurs (from
+         * package to not-package, from standalone to not-standalone).
+	 *
+         * &lt;ul&gt;
+         * &lt;li&gt;packages
+         * &lt;li&gt;After standalone
+         * &lt;/ul&gt;
+	 *
+         * Split this row into two, if
+         * &lt;ul&gt;
+         * &lt;li&gt;at least one standalone node is available
+         * &lt;li&gt;and the given maximum row width is exceeded
+         * &lt;li&gt;or a non-standalone element is detected.
+         * &lt;/ul&gt;
+	 *
+         * Return the new NodeRow or null if this row is not split.
+         *
+         * @param maxWidth
+         *            The maximum allowed row width
+         * @param gap
+         *            The horizontal gab between two nodes
+         * @return NodeRow
+         */
+        public NodeRow doSplit(int maxWidth, int gap) {
+<span class="nc" id="L142">            TreeSet&lt;ClassdiagramNode&gt; ts = new TreeSet&lt;ClassdiagramNode&gt;(nodes);</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">            if (ts.size() &lt; 2) {</span>
+<span class="nc" id="L144">                return null;</span>
+            }
+<span class="nc" id="L146">            ClassdiagramNode firstNode = ts.first();</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            if (!firstNode.isStandalone()) {</span>
+<span class="nc" id="L148">                return null;</span>
+            }
+<span class="nc" id="L150">            ClassdiagramNode lastNode = ts.last();</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">            if (firstNode.isStandalone() &amp;&amp; lastNode.isStandalone()</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                    &amp;&amp; (firstNode.isPackage() == lastNode.isPackage())</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                    &amp;&amp; getWidth(gap) &lt;= maxWidth) {</span>
+<span class="nc" id="L154">                return null;</span>
+            }
+<span class="nc" id="L156">            boolean hasPackage = firstNode.isPackage();</span>
+
+<span class="nc" id="L158">            NodeRow newRow = new NodeRow(rowNumber + 1);</span>
+<span class="nc" id="L159">            ClassdiagramNode split = null;</span>
+<span class="nc" id="L160">            int width = 0;</span>
+<span class="nc" id="L161">            int count = 0;</span>
+<span class="nc" id="L162">            for (Iterator&lt;ClassdiagramNode&gt; iter = ts.iterator();</span>
+<span class="nc bnc" id="L163" title="All 6 branches missed.">                    iter.hasNext() &amp;&amp; (width &lt; maxWidth || count &lt; 2);) {</span>
+<span class="nc" id="L164">                ClassdiagramNode node = iter.next();</span>
+                // split =
+                //     (split == null || split.isStandalone()) ? node : split;
+<span class="nc bnc" id="L167" title="All 4 branches missed.">                split =</span>
+                    (split == null
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                            || (hasPackage &amp;&amp; split.isPackage() == hasPackage)</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                            || split.isStandalone())</span>
+                    ? node
+                    : split;
+<span class="nc" id="L173">                width += node.getSize().width + gap;</span>
+<span class="nc" id="L174">                count++;</span>
+<span class="nc" id="L175">            }</span>
+<span class="nc" id="L176">            nodes = new ArrayList&lt;ClassdiagramNode&gt;(ts.headSet(split));</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            for (ClassdiagramNode n : ts.tailSet(split)) {</span>
+<span class="nc" id="L178">                newRow.addNode(n);</span>
+<span class="nc" id="L179">            }</span>
+<span class="nc" id="L180">            LOG.log(Level.FINE,</span>
+                    &quot;Row split. This row width: {0} next row(s) width: {1}&quot;,
+<span class="nc" id="L182">                    new Object[]{getWidth(gap), newRow.getWidth(gap)});</span>
+<span class="nc" id="L183">            return newRow;</span>
+        }
+
+        /**
+         * @return Returns the nodes.
+         */
+        public List&lt;ClassdiagramNode&gt; getNodeList() {
+<span class="nc" id="L190">            return nodes;</span>
+        }
+
+        /**
+         * @return Returns the rowNumber.
+         */
+        public int getRowNumber() {
+<span class="nc" id="L197">            return rowNumber;</span>
+        }
+
+
+        /**
+         * Get the width for this row using the given horizontal gap between
+         * nodes.
+         *
+         * @param gap The horizontal gap between nodes.
+         * @return The width of this row
+         */
+        public int getWidth(int gap) {
+<span class="nc" id="L209">            int result = 0;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            for (ClassdiagramNode node : nodes) {</span>
+<span class="nc" id="L211">                result += node.getSize().width + gap;</span>
+<span class="nc" id="L212">            }</span>
+
+<span class="nc" id="L214">            LOG.log(Level.FINE,</span>
+                    &quot;Width of row {0}: {1}&quot;,
+<span class="nc" id="L216">                    new Object[]{ rowNumber, result});</span>
+
+<span class="nc" id="L218">            return result;</span>
+        }
+
+        /**
+         * Set the row number of this row.
+         *
+         * @param rowNum The rowNumber to set.
+         */
+        public void setRowNumber(int rowNum) {
+<span class="nc" id="L227">            this.rowNumber = rowNum;</span>
+<span class="nc" id="L228">            adjustRowNodes();</span>
+<span class="nc" id="L229">        }</span>
+
+        /**
+         * Adjust the properties for all nodes in this row: rank,
+         * column, offset for edges.
+         */
+        private void adjustRowNodes() {
+<span class="nc" id="L236">            int col = 0;</span>
+<span class="nc" id="L237">            int numNodesWithDownlinks = 0;</span>
+<span class="nc" id="L238">            List&lt;ClassdiagramNode&gt; list = new ArrayList&lt;ClassdiagramNode&gt;();</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            for (ClassdiagramNode node : this ) {</span>
+<span class="nc" id="L240">                node.setRank(rowNumber);</span>
+<span class="nc" id="L241">                node.setColumn(col++);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">                if (!node.getDownNodes().isEmpty()) {</span>
+<span class="nc" id="L243">                    numNodesWithDownlinks++;</span>
+<span class="nc" id="L244">                    list.add(node);</span>
+                }
+<span class="nc" id="L246">            }</span>
+<span class="nc" id="L247">            int offset = -numNodesWithDownlinks * E_GAP / 2;</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            for (ClassdiagramNode node : list ) {</span>
+<span class="nc" id="L249">                node.setEdgeOffset(offset);</span>
+<span class="nc" id="L250">                offset += E_GAP;</span>
+<span class="nc" id="L251">            }</span>
+<span class="nc" id="L252">        }</span>
+
+        /**
+         * @return an Iterator for the nodes of this row, sorted by their
+         *         natural order.
+         * @see java.lang.Iterable#iterator()
+         */
+        public Iterator&lt;ClassdiagramNode&gt; iterator() {
+<span class="nc" id="L260">            return (new TreeSet&lt;ClassdiagramNode&gt;(nodes)).iterator();</span>
+        }
+    }
+
+    /**
+     * Gap to be left between edges.
+     */
+    private static final int E_GAP = 5;
+
+    /**
+     * Horizontal gap between nodes.
+     */
+    private static final int H_GAP = 80;
+
+<span class="nc" id="L274">    private static final Logger LOG =</span>
+<span class="nc" id="L275">        Logger.getLogger(ClassdiagramLayouter.class.getName());</span>
+
+    /**
+     * The maximum row width.
+     */
+    // TODO: this should be a configurable property
+    private static final int MAX_ROW_WIDTH = 1200;
+
+    /**
+     * Vertical gap between nodes.
+     */
+    private static final int V_GAP = 80;
+
+    /**
+     * The diagram that is being laid out.
+     */
+    private ArgoDiagram diagram;
+
+    /**
+     * HashMap with figures as key and Nodes as elements.
+     */
+<span class="nc" id="L296">    private HashMap&lt;Fig, ClassdiagramNode&gt; figNodes =</span>
+            new HashMap&lt;Fig, ClassdiagramNode&gt;();
+
+    /**
+     * layoutedClassNodes is a convenience which holds a subset of
+     * layoutedObjects (only ClassNodes).
+     */
+<span class="nc" id="L303">    private List&lt;ClassdiagramNode&gt; layoutedClassNodes =</span>
+            new ArrayList&lt;ClassdiagramNode&gt;();
+
+    /**
+     * Holds all edges - subset of layoutedObjects.
+     */
+<span class="nc" id="L309">    private List&lt;ClassdiagramEdge&gt; layoutedEdges =</span>
+            new ArrayList&lt;ClassdiagramEdge&gt;();
+
+    /**
+     * List of objects to lay out.
+     */
+<span class="nc" id="L315">    private List&lt;LayoutedObject&gt; layoutedObjects =</span>
+            new ArrayList&lt;LayoutedObject&gt;();
+
+    /**
+     * List of NodeRows in the diagram.
+     */
+<span class="nc" id="L321">    private List&lt;NodeRow&gt; nodeRows = new ArrayList&lt;NodeRow&gt;();</span>
+
+    /**
+     * Base X position to use a starting point for next node.
+     */
+    private int xPos;
+
+    /**
+     * Base Y position for the row currently being laid out.
+     */
+    private int yPos;
+
+    /**
+     * Constructor for the layouter. Takes a diagram as input to extract all
+     * LayoutedObjects, which will be layouted.
+     *
+     * @param theDiagram The diagram to layout.
+     */
+<span class="nc" id="L339">    public ClassdiagramLayouter(ArgoDiagram theDiagram) {</span>
+<span class="nc" id="L340">        diagram = theDiagram;</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        for (Fig fig : diagram.getLayer().getContents()) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            if (fig.getEnclosingFig() == null) {</span>
+<span class="nc" id="L343">                add(ClassdiagramModelElementFactory.SINGLETON.getInstance(fig));</span>
+            }
+<span class="nc" id="L345">        }</span>
+<span class="nc" id="L346">    }</span>
+
+    /**
+     * Add an object to layout.
+     *
+     * @param obj represents the object to layout.
+     */
+    public void add(LayoutedObject obj) {
+        // TODO: check for duplicates (is this possible???)
+<span class="nc" id="L355">        layoutedObjects.add(obj);</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">        if (obj instanceof ClassdiagramNode) {</span>
+<span class="nc" id="L357">            layoutedClassNodes.add((ClassdiagramNode) obj);</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        } else if (obj instanceof ClassdiagramEdge) {</span>
+<span class="nc" id="L359">            layoutedEdges.add((ClassdiagramEdge) obj);</span>
+        }
+<span class="nc" id="L361">    }</span>
+
+    /**
+     * Get the horizontal gap between nodes.
+     *
+     * @return The horizontal gap between nodes.
+     */
+    private int getHGap() {
+<span class="nc" id="L369">        return H_GAP;</span>
+    }
+
+    /**
+     * Return the minimum diagram size after the layout process.
+     *
+     * @return The minimum diagram size after the layout process.
+     */
+    public Dimension getMinimumDiagramSize() {
+<span class="nc" id="L378">        int width = 0, height = 0;</span>
+<span class="nc" id="L379">        int hGap2 = getHGap() / 2;</span>
+<span class="nc" id="L380">        int vGap2 = getVGap() / 2;</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        for (ClassdiagramNode node : layoutedClassNodes) {</span>
+<span class="nc" id="L382">            width =</span>
+<span class="nc" id="L383">		Math.max(width,</span>
+<span class="nc" id="L384">			 node.getLocation().x</span>
+<span class="nc" id="L385">			 + (int) node.getSize().getWidth() + hGap2);</span>
+<span class="nc" id="L386">            height =</span>
+<span class="nc" id="L387">		Math.max(height,</span>
+<span class="nc" id="L388">			 node.getLocation().y</span>
+<span class="nc" id="L389">			 + (int) node.getSize().getHeight() + vGap2);</span>
+<span class="nc" id="L390">        }</span>
+<span class="nc" id="L391">        return new Dimension(width, height);</span>
+    }
+
+    /**
+     * Return the object with a given index from the layouter.
+     *
+     * @param index
+     *            represents the index of this object in the layouter.
+     * @return The LayoutedObject for the given index.
+     */
+    public LayoutedObject getObject(int index) {
+<span class="nc" id="L402">        return layoutedObjects.get(index);</span>
+    }
+
+    /**
+     * Return all the objects currently participating in
+     * the layout process.
+     *
+     * @return An array holding all the object in the layouter.
+     */
+    public LayoutedObject[] getObjects() {
+<span class="nc" id="L412">        return (LayoutedObject[]) layoutedObjects.toArray();</span>
+    }
+
+    /**
+     * Get the vertical gap between nodes.
+     *
+     * @return The vertical gap between nodes.
+     */
+    private int getVGap() {
+<span class="nc" id="L421">        return V_GAP;</span>
+    }
+
+    /**
+     * Lay out the current diagram.
+     */
+    public void layout() {
+<span class="nc" id="L428">        long s = System.currentTimeMillis();</span>
+<span class="nc" id="L429">        setupLinks();</span>
+<span class="nc" id="L430">        rankAndWeightNodes();</span>
+<span class="nc" id="L431">        placeNodes();</span>
+<span class="nc" id="L432">        placeEdges();</span>
+<span class="nc" id="L433">        LOG.log(Level.FINE,</span>
+<span class="nc" id="L434">                &quot;layout duration: {0}&quot;, (System.currentTimeMillis() - s));</span>
+<span class="nc" id="L435">    }</span>
+
+    /**
+     * All layoutedObjects of type &quot;Edge&quot; are placed using an
+     * edge-type specific layout algorithm. The offset from a
+     * &lt;em&gt;centered&lt;/em&gt; edge is taken from the parent node to avoid
+     * overlaps.
+     *
+     * @see ClassdiagramEdge
+     */
+    private void placeEdges() {
+<span class="nc" id="L446">        ClassdiagramEdge.setVGap(getVGap());</span>
+<span class="nc" id="L447">        ClassdiagramEdge.setHGap(getHGap());</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">        for (ClassdiagramEdge edge : layoutedEdges) {</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">            if (edge instanceof ClassdiagramInheritanceEdge) {</span>
+<span class="nc" id="L450">                ClassdiagramNode parent = figNodes.get(edge.getDestFigNode());</span>
+<span class="nc" id="L451">                ((ClassdiagramInheritanceEdge) edge).setOffset(parent</span>
+<span class="nc" id="L452">                        .getEdgeOffset());</span>
+            }
+<span class="nc" id="L454">            edge.layout();</span>
+
+<span class="nc" id="L456">        }</span>
+<span class="nc" id="L457">    }</span>
+
+    /**
+     * Set the placement coordinate for a given node.
+     *
+     * @param node To be placed.
+     */
+    private void placeNode(ClassdiagramNode node) {
+<span class="nc" id="L465">        List&lt;ClassdiagramNode&gt; uplinks = node.getUpNodes();</span>
+<span class="nc" id="L466">        List&lt;ClassdiagramNode&gt; downlinks = node.getDownNodes();</span>
+<span class="nc" id="L467">        int width = node.getSize().width;</span>
+<span class="nc" id="L468">        double xOffset = width + getHGap();</span>
+<span class="nc" id="L469">        int bumpX = getHGap() / 2; // (xOffset - curW) / 2;</span>
+<span class="nc" id="L470">        int xPosNew =</span>
+<span class="nc" id="L471">	    Math.max(xPos + bumpX,</span>
+<span class="nc bnc" id="L472" title="All 2 branches missed.">		     uplinks.size() == 1 ? node.getPlacementHint() : -1);</span>
+<span class="nc" id="L473">        node.setLocation(new Point(xPosNew, yPos));</span>
+
+<span class="nc" id="L475">        LOG.log(Level.FINE,</span>
+                &quot;placeNode - Row: {0} Col: {1} Weight: {2} Position: ({3},{4}) &quot;
+                + &quot;xPos: {5} hint: {6}&quot;,
+                new Object[] {
+<span class="nc" id="L479">                    node.getRank(),</span>
+<span class="nc" id="L480">                    node.getColumn(),</span>
+<span class="nc" id="L481">                    node.getWeight(),</span>
+<span class="nc" id="L482">                    xPosNew,</span>
+<span class="nc" id="L483">                    yPos,</span>
+<span class="nc" id="L484">                    xPos,</span>
+<span class="nc" id="L485">                    node.getPlacementHint()</span>
+                });
+
+        // If there's only a single child (and we're it's only parent),
+        // set a hint for where to place it when we get to its row
+<span class="nc bnc" id="L490" title="All 2 branches missed.">        if (downlinks.size() == 1) {</span>
+<span class="nc" id="L491">            ClassdiagramNode downNode = downlinks.get(0);</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">            if (downNode.getUpNodes().get(0).equals(node)) {</span>
+<span class="nc" id="L493">                downNode.setPlacementHint(xPosNew);</span>
+            }
+        }
+<span class="nc" id="L496">        xPos = (int) Math.max(node.getPlacementHint() + width, xPos + xOffset);</span>
+<span class="nc" id="L497">    }</span>
+
+    /**
+     * Place the NodeRows in the diagram.
+     */
+    private void placeNodes() {
+        // TODO: place comments near connected classes
+        // TODO: place from middle towards outer edges? (or place largest
+        // groups first)
+<span class="nc" id="L506">        int xInit = 0;</span>
+<span class="nc" id="L507">        yPos = getVGap() / 2;</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">        for (NodeRow row : nodeRows) {</span>
+<span class="nc" id="L509">            xPos = xInit;</span>
+<span class="nc" id="L510">            int rowHeight = 0;</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            for (ClassdiagramNode node : row) {</span>
+<span class="nc" id="L512">                placeNode(node);</span>
+<span class="nc" id="L513">                rowHeight = Math.max(rowHeight, node.getSize().height);</span>
+<span class="nc" id="L514">            }</span>
+<span class="nc" id="L515">            yPos += rowHeight + getVGap();</span>
+
+<span class="nc" id="L517">        }</span>
+<span class="nc" id="L518">        centerParents();</span>
+<span class="nc" id="L519">    }</span>
+
+    /**
+     * Center parents over their children, working from bottom to top.
+     */
+    private void centerParents() {
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        for (int i = nodeRows.size() - 1; i &gt;= 0; i--) {</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">            for (ClassdiagramNode node : nodeRows.get(i)) {</span>
+<span class="nc" id="L527">                List&lt;ClassdiagramNode&gt; children = node.getDownNodes();</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">                if (children.size() &gt; 0) {</span>
+<span class="nc" id="L529">                    node.setLocation(new Point(xCenter(children)</span>
+<span class="nc" id="L530">                            - node.getSize().width / 2, node.getLocation().y));</span>
+                }
+<span class="nc" id="L532">            }</span>
+            // TODO: Make another pass to deal with overlaps?
+        }
+<span class="nc" id="L535">    }</span>
+
+    /**
+     * Compute the horizontal center of a list of nodes.
+     * @param nodes the list of nodes
+     * @return the computed X coordinate
+     */
+    private int xCenter(List&lt;ClassdiagramNode&gt; nodes) {
+<span class="nc" id="L543">        int left = 9999999;</span>
+<span class="nc" id="L544">        int right = 0;</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">        for (ClassdiagramNode node : nodes) {</span>
+<span class="nc" id="L546">            int x = node.getLocation().x;</span>
+<span class="nc" id="L547">            left = Math.min(left, x);</span>
+<span class="nc" id="L548">            right = Math.max(right, x + node.getSize().width);</span>
+<span class="nc" id="L549">        }</span>
+<span class="nc" id="L550">        return (right + left) / 2;</span>
+    }
+
+    /**
+     * Rank the nodes depending on their level (position in hierarchy) and set
+     * their weight to achieve a proper node-sequence for the layout. Rows
+     * exceeding the maximum row width are split, if standalone nodes are
+     * available.
+     * &lt;p&gt;
+     * Weight the other nodes to determine their columns.
+     * &lt;p&gt;
+     * TODO: Weighting doesn't appear to be working as intended because multiple
+     * groups of children/specializations get intermixed in name order rather
+     * than being grouped by their parent/generalization. - tfm - 20070314
+     */
+    private void rankAndWeightNodes() {
+<span class="nc" id="L566">        List&lt;ClassdiagramNode&gt; comments = new ArrayList&lt;ClassdiagramNode&gt;();</span>
+<span class="nc" id="L567">        nodeRows.clear();</span>
+<span class="nc" id="L568">        TreeSet&lt;ClassdiagramNode&gt; nodeTree =</span>
+                new TreeSet&lt;ClassdiagramNode&gt;(layoutedClassNodes);
+//        boolean hasPackages = false;
+        // TODO: move &quot;package in row&quot; to NodeRow
+<span class="nc bnc" id="L572" title="All 2 branches missed.">        for (ClassdiagramNode node : nodeTree) {</span>
+//            if (node.isPackage()) {
+//                hasPackages = true;
+//            } else if (hasPackages) {
+//                hasPackages = false;
+//                currentRank = -1;
+//            }
+<span class="nc bnc" id="L579" title="All 2 branches missed.">            if (node.isComment()) {</span>
+<span class="nc" id="L580">                comments.add(node);</span>
+            } else {
+<span class="nc" id="L582">                int rowNum = node.getRank();</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">                for (int i = nodeRows.size(); i &lt;= rowNum; i++) {</span>
+<span class="nc" id="L584">                    nodeRows.add(new NodeRow(rowNum));</span>
+                }
+<span class="nc" id="L586">                nodeRows.get(rowNum).addNode(node);</span>
+            }
+<span class="nc" id="L588">        }</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        for (ClassdiagramNode node : comments) {</span>
+<span class="nc" id="L590">            int rowInd =</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">                    node.getUpNodes().isEmpty()</span>
+                            ? 0
+<span class="nc" id="L593">                            : ((node.getUpNodes().get(0)).getRank());</span>
+            // Issue 6450
+<span class="nc bnc" id="L595" title="All 2 branches missed.">            if (nodeRows.size() == 0) {</span>
+<span class="nc" id="L596">                nodeRows.add(new NodeRow(0));</span>
+            }
+            // end Issue 6450
+<span class="nc" id="L599">            nodeRows.get(rowInd).addNode(node);</span>
+<span class="nc" id="L600">        }</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">        for (int row = 0; row &lt; nodeRows.size();) {</span>
+<span class="nc" id="L602">            NodeRow diaRow = nodeRows.get(row);</span>
+<span class="nc" id="L603">            diaRow.setRowNumber(row++);</span>
+<span class="nc" id="L604">            diaRow = diaRow.doSplit(MAX_ROW_WIDTH, H_GAP);</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">            if (diaRow != null) {</span>
+<span class="nc" id="L606">                nodeRows.add(row, diaRow);</span>
+            }
+<span class="nc" id="L608">        }</span>
+<span class="nc" id="L609">    }</span>
+
+    /**
+     * Remove an object from the layout process.
+     *
+     * @param obj represents the object to remove.
+     */
+    public void remove(LayoutedObject obj) {
+<span class="nc" id="L617">        layoutedObjects.remove(obj);</span>
+<span class="nc" id="L618">    }</span>
+
+    /**
+     * Set the up- and downlinks for each node based on the edges which are
+     * shown in the diagram.
+     */
+    private void setupLinks() {
+<span class="nc" id="L625">        figNodes.clear();</span>
+<span class="nc" id="L626">        HashMap&lt;Fig, List&lt;ClassdiagramInheritanceEdge&gt;&gt; figParentEdges =</span>
+                new HashMap&lt;Fig, List&lt;ClassdiagramInheritanceEdge&gt;&gt;();
+<span class="nc bnc" id="L628" title="All 2 branches missed.">        for (ClassdiagramNode node : layoutedClassNodes) {</span>
+<span class="nc" id="L629">            node.getUpNodes().clear();</span>
+<span class="nc" id="L630">            node.getDownNodes().clear();</span>
+<span class="nc" id="L631">            figNodes.put(node.getFigure(), node);</span>
+<span class="nc" id="L632">        }</span>
+<span class="nc bnc" id="L633" title="All 2 branches missed.">        for (ClassdiagramEdge edge : layoutedEdges) {</span>
+<span class="nc" id="L634">            Fig parentFig = edge.getDestFigNode();</span>
+<span class="nc" id="L635">            ClassdiagramNode child = figNodes.get(edge.getSourceFigNode());</span>
+<span class="nc" id="L636">            ClassdiagramNode parent = figNodes.get(parentFig);</span>
+<span class="nc bnc" id="L637" title="All 2 branches missed.">            if (edge instanceof ClassdiagramInheritanceEdge) {</span>
+<span class="nc bnc" id="L638" title="All 4 branches missed.">                if (parent != null &amp;&amp; child != null) {</span>
+<span class="nc" id="L639">                    parent.addDownlink(child);</span>
+<span class="nc" id="L640">                    child.addUplink(parent);</span>
+<span class="nc" id="L641">                    List&lt;ClassdiagramInheritanceEdge&gt; edgeList =</span>
+<span class="nc" id="L642">                            figParentEdges.get(parentFig);</span>
+<span class="nc bnc" id="L643" title="All 2 branches missed.">                    if (edgeList == null) {</span>
+<span class="nc" id="L644">                        edgeList = new ArrayList&lt;ClassdiagramInheritanceEdge&gt;();</span>
+<span class="nc" id="L645">                        figParentEdges.put(parentFig, edgeList);</span>
+                    }
+<span class="nc" id="L647">                    edgeList.add((ClassdiagramInheritanceEdge) edge);</span>
+<span class="nc" id="L648">                } else {</span>
+<span class="nc" id="L649">                    LOG.log(Level.SEVERE, &quot;Edge with missing end(s): &quot; + edge);</span>
+                }
+<span class="nc bnc" id="L651" title="All 2 branches missed.">            } else if (edge instanceof ClassdiagramNoteEdge) {</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">                if (parent.isComment()) {</span>
+<span class="nc" id="L653">                    parent.addUplink(child);</span>
+<span class="nc bnc" id="L654" title="All 2 branches missed.">                } else if (child.isComment()) {</span>
+<span class="nc" id="L655">                    child.addUplink(parent);</span>
+                } else {
+<span class="nc" id="L657">                    LOG.log(Level.SEVERE,</span>
+                            &quot;Unexpected parent/child constellation for edge: &quot;
+                            + edge);
+                }
+<span class="nc bnc" id="L661" title="All 2 branches missed.">            } else if (edge instanceof ClassdiagramAssociationEdge) {</span>
+                // Associations not supported, yet
+                // TODO: Create appropriate ClassdiagramEdge
+            } else {
+<span class="nc" id="L665">                LOG.log(Level.SEVERE, &quot;Unsupported edge type&quot;);</span>
+            }
+
+<span class="nc" id="L668">        }</span>
+<span class="nc" id="L669">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

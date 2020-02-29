@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionAggregation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionAggregation.java</span></div><h1>ActionAggregation.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * Action to set the Aggregation kind.
+ *
+ */
+public class ActionAggregation extends UndoableAction {
+    
+    public static final int NONE = 0;
+    public static final int AGGREGATE_END1 = 1;
+    public static final int AGGREGATE_END2 = 2;
+    public static final int COMPOSITE_END1 = 3;
+    public static final int COMPOSITE_END2 = 4;
+    
+<span class="nc" id="L67">    private String str = &quot;&quot;;</span>
+<span class="nc" id="L68">    private Object agg = null;</span>
+
+    Object associationEnd1;
+    Object associationEnd2;
+    int aggr;
+
+    ////////////////////////////////////////////////////////////////
+    // static variables
+
+    // aggregation
+<span class="nc" id="L78">    private static UndoableAction srcAgg =</span>
+	new ActionAggregation(
+<span class="nc" id="L80">	        Model.getAggregationKind().getAggregate(), &quot;src&quot;);</span>
+<span class="nc" id="L81">    private static UndoableAction destAgg =</span>
+	new ActionAggregation(
+<span class="nc" id="L83">	        Model.getAggregationKind().getAggregate(), &quot;dest&quot;);</span>
+
+<span class="nc" id="L85">    private static UndoableAction srcAggComposite =</span>
+	new ActionAggregation(
+<span class="nc" id="L87">	        Model.getAggregationKind().getComposite(), &quot;src&quot;);</span>
+<span class="nc" id="L88">    private static UndoableAction destAggComposite =</span>
+	new ActionAggregation(
+<span class="nc" id="L90">	        Model.getAggregationKind().getComposite(), &quot;dest&quot;);</span>
+
+<span class="nc" id="L92">    private static UndoableAction srcAggNone =</span>
+<span class="nc" id="L93">	new ActionAggregation(Model.getAggregationKind().getNone(), &quot;src&quot;);</span>
+<span class="nc" id="L94">    private static UndoableAction destAggNone =</span>
+	new ActionAggregation(
+<span class="nc" id="L96">	        Model.getAggregationKind().getNone(), &quot;dest&quot;);</span>
+
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    
+    /**
+     * The &lt;code&gt;ActionNavigability&lt;/code&gt; constructor.
+     *
+     * @param assocStart a &lt;code&gt;MAssociationEnd&lt;/code&gt; object at the start
+     * of an association.
+     * @param assocEnd a &lt;code&gt;MAssociationEnd&lt;/code&gt; object at the end of
+     * an association.
+     * @param nav the type of navigation required in the association
+     * being either &lt;ul&gt; &lt;li&gt;BIDIRECTIONAL &lt;li&gt;STARTTOEND
+     * &lt;li&gt;ENDTOSTART &lt;/ul&gt;
+     *
+     * @return the constructed class
+     */
+    public static ActionAggregation newActionAggregation(Object assocStart,
+                                                           Object assocEnd,
+                                                           int aggr) {
+<span class="nc" id="L118">        return new ActionAggregation(getDescription(assocStart, assocEnd, aggr),</span>
+                                      assocStart,
+                                      assocEnd,
+                                      aggr);
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param label   the description as build in &lt;code&gt;getDescription&lt;/code&gt;
+     * @param associationEnd1 association end 1
+     * @param associationEnd2   association end 2
+     * @param aggr     the aggregation: one of
+     *                            NONE, AGGREGATE_END1, AGGREGATE_END2,
+     *                            COMPOSITE_END1, COMPOSITE_END  
+     */
+    private ActionAggregation(
+            final String label,
+            final Object associationEnd1,
+            final Object associationEnd2,
+            final int aggr) {
+<span class="nc" id="L139">        super(label, null);</span>
+        // Set the tooltip string:
+<span class="nc" id="L141">        putValue(Action.SHORT_DESCRIPTION, label);</span>
+<span class="nc" id="L142">        this.aggr = aggr;</span>
+<span class="nc" id="L143">        this.associationEnd1 = associationEnd1;</span>
+<span class="nc" id="L144">        this.associationEnd2 = associationEnd2;</span>
+<span class="nc" id="L145">    }</span>
+    
+    /**
+     * Build a description string from the given association ends,
+     * and the navigability.
+     *
+     * @param assocStart association end 1
+     * @param assocEnd   association end 2
+     * @param nav        the navigability
+     * @return           the string containing a human-readible indication
+     *                   of the navigability
+     */
+    private static String getDescription(final Object assocEnd1,
+                                         final Object assocEnd2,
+                                         final int aggr) {
+        String startName =
+<span class="nc" id="L161">            Model.getFacade().getName(Model.getFacade().getType(assocEnd1));</span>
+        String endName =
+<span class="nc" id="L163">            Model.getFacade().getName(Model.getFacade().getType(assocEnd2));</span>
+
+<span class="nc bnc" id="L165" title="All 4 branches missed.">        if (startName == null || startName.length() == 0) {</span>
+<span class="nc" id="L166">            startName = Translator.localize(&quot;action.navigation.anon&quot;);</span>
+        }
+<span class="nc bnc" id="L168" title="All 4 branches missed.">        if (endName == null || endName.length() == 0) {</span>
+<span class="nc" id="L169">            endName = Translator.localize(&quot;action.navigation.anon&quot;);</span>
+        }
+        
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (aggr == COMPOSITE_END1) {</span>
+<span class="nc" id="L173">            return Translator.messageFormat(</span>
+                    &quot;action.aggregation.composite&quot;,
+                    new Object[] {
+                        startName,
+                        endName,
+                    }
+            );
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        } else if (aggr == COMPOSITE_END2) {</span>
+<span class="nc" id="L181">            return Translator.messageFormat(</span>
+                    &quot;action.aggregation.composite&quot;,
+                    new Object[] {
+                        endName,
+                        startName,
+                    }
+            );
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        } else if (aggr == AGGREGATE_END1) {</span>
+<span class="nc" id="L189">            return Translator.messageFormat(</span>
+                    &quot;action.aggregation.aggregate&quot;,
+                    new Object[] {
+                        startName,
+                        endName,
+                    }
+            );
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        } else if (aggr == AGGREGATE_END2) {</span>
+<span class="nc" id="L197">            return Translator.messageFormat(</span>
+                    &quot;action.aggregation.aggregate&quot;,
+                    new Object[] {
+                        endName,
+                        startName,
+                    }
+            );
+        } else {
+<span class="nc" id="L205">            return Translator.localize(&quot;action.aggregation.none&quot;);</span>
+        }
+    }
+    
+    /**
+     * The constructor.
+     * @param a the aggregation kind object
+     * @param s &quot;src&quot; or &quot;dest&quot;. Anything else is interpreted as &quot;dest&quot;.
+     * @deprecated by Bob Tarling in 0.33.1 by Bob Tarling use
+     * ActionAggregation.newActionAggregation
+     */
+    protected ActionAggregation(Object a, String s) {
+<span class="nc" id="L217">        super(Translator.localize(Model.getFacade().getName(a)),</span>
+                null);
+        // Set the tooltip string:
+<span class="nc" id="L220">        putValue(Action.SHORT_DESCRIPTION, </span>
+<span class="nc" id="L221">                Translator.localize(Model.getFacade().getName(a)));</span>
+<span class="nc" id="L222">	str = s;</span>
+<span class="nc" id="L223">	agg = a;</span>
+<span class="nc" id="L224">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (agg != null) {</span>
+<span class="nc" id="L232">            oldActionPerformed(ae);</span>
+        } else {
+<span class="nc" id="L234">            super.actionPerformed(ae);</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">            if (aggr == AGGREGATE_END1) {</span>
+<span class="nc" id="L236">                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getAggregate());</span>
+<span class="nc" id="L237">                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            } else if (aggr == AGGREGATE_END2) {</span>
+<span class="nc" id="L239">                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L240">                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getAggregate());</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            } else if (aggr == COMPOSITE_END1) {</span>
+<span class="nc" id="L242">                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getComposite());</span>
+<span class="nc" id="L243">                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            } else if (aggr == COMPOSITE_END2) {</span>
+<span class="nc" id="L245">                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L246">                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getComposite());</span>
+            } else {
+<span class="nc" id="L248">                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L249">                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());</span>
+            }
+        }
+<span class="nc" id="L252">    }</span>
+
+    public void oldActionPerformed(ActionEvent ae) {
+<span class="nc" id="L255">        super.actionPerformed(ae);</span>
+<span class="nc" id="L256">        List sels = Globals.curEditor().getSelectionManager().selections();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (sels.size() == 1) {</span>
+<span class="nc" id="L258">            Selection sel = (Selection) sels.get(0);</span>
+<span class="nc" id="L259">            Fig f = sel.getContent();</span>
+<span class="nc" id="L260">            Object owner = ((FigEdgeModelElement) f).getOwner();</span>
+<span class="nc" id="L261">            Collection ascEnds = Model.getFacade().getConnections(owner);</span>
+<span class="nc" id="L262">            Iterator iter = ascEnds.iterator();</span>
+<span class="nc" id="L263">            Object ascEnd = null;</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">            if (str.equals(&quot;src&quot;)) {</span>
+<span class="nc" id="L265">                ascEnd = iter.next();</span>
+            } else {
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                while (iter.hasNext()) {</span>
+<span class="nc" id="L268">                    ascEnd = iter.next();</span>
+                }
+            }
+<span class="nc" id="L271">            Model.getCoreHelper().setAggregation(ascEnd, agg);</span>
+        }
+<span class="nc" id="L273">    }</span>
+    
+    
+    /*
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+     */
+    @Override
+    public boolean isEnabled() {
+<span class="nc" id="L281">	return true;</span>
+    }
+
+
+    /**
+     * @return Returns the srcAgg.
+     */
+    public static UndoableAction getSrcAgg() {
+<span class="nc" id="L289">        return srcAgg;</span>
+    }
+
+
+    /**
+     * @return Returns the destAgg.
+     */
+    public static UndoableAction getDestAgg() {
+<span class="nc" id="L297">        return destAgg;</span>
+    }
+
+
+    /**
+     * @return Returns the srcAggComposite.
+     */
+    public static UndoableAction getSrcAggComposite() {
+<span class="nc" id="L305">        return srcAggComposite;</span>
+    }
+
+
+    /**
+     * @return Returns the destAggComposite.
+     */
+    public static UndoableAction getDestAggComposite() {
+<span class="nc" id="L313">        return destAggComposite;</span>
+    }
+
+
+    /**
+     * @return Returns the srcAggNone.
+     */
+    public static UndoableAction getSrcAggNone() {
+<span class="nc" id="L321">        return srcAggNone;</span>
+    }
+
+
+    /**
+     * @return Returns the destAggNone.
+     */
+    public static UndoableAction getDestAggNone() {
+<span class="nc" id="L329">        return destAggNone;</span>
+    }
+} /* end class ActionSrcMultOneToMany */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Wizard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.critics</a> &gt; <span class="el_source">Wizard.java</span></div><h1>Wizard.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
+
+/**
+ * &quot;Abstract&quot; base class for non-modal wizards.  Each subclass should
+ * define its own makeNextPanel methods. Because most
+ * wizards will not be run to completion, the panels are constructed
+ * only as needed. This implies that Wizards should not initialize
+ * many instance variables in their constructors.&lt;p&gt;
+ *
+ * By convention step 0 is the problem description of the ToDoItem,
+ * step 1 is the first panel displayed after the user presses
+ * &quot;Next&gt;&quot;, and so on.  The problem description panel is not stored in
+ * this wizard, only the panels that are specific to the wizard are
+ * stored. If the user presses &quot;Back&gt;&quot; enough times to get back to the
+ * problem description, backPanel should return null.  A null panel
+ * indicates that the problem description should be shown. &lt;p&gt;
+ *
+ * Several of the comments in this class refer to &quot;context&quot;.  Context
+ * is the data about this execution of this wizard, for example, values
+ * that the user enters in step 1 is part of the context of later steps,
+ * and the ToDoItem with its offenders Set is always context.  Most
+ * context should be stored in instance variables of Wizard subclasses.
+ *
+ * @author jrobbins
+ */
+public abstract class Wizard implements java.io.Serializable {
+
+    /** User interface panels displayed so far. */
+<span class="nc" id="L73">    private List&lt;JPanel&gt; panels = new ArrayList&lt;JPanel&gt;();</span>
+
+    /** The current step that the Wizard is on.  Zero indicates that the
+     *  wizard has not yet begun. */
+<span class="nc" id="L77">    private int step = 0;</span>
+
+    /** True when the wizard has done everything it can. */
+<span class="nc" id="L80">    private boolean finished = false;</span>
+<span class="nc" id="L81">    private boolean started = false;</span>
+
+<span class="nc" id="L83">    private WizardItem item = null;</span>
+
+    /** Construct a new wizard to help the user repair a design flaw. */
+<span class="nc" id="L86">    public Wizard() {</span>
+<span class="nc" id="L87">    }</span>
+
+    /**
+     * @param s the step number of the panel to be removed
+     */
+    protected void removePanel(int s) {
+<span class="nc" id="L93">        panels.remove(s);</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Setter for the todoitem.
+     *
+     * @param i the todoitem
+     */
+    public void setToDoItem(WizardItem i) {
+<span class="nc" id="L102">        item = i;</span>
+<span class="nc" id="L103">    }</span>
+
+    /**
+     * @return the todoitem
+     */
+    public WizardItem getToDoItem() {
+<span class="nc" id="L109">        return item;</span>
+    }
+
+    /** An integer between 0 and 100, shows percent done. The current
+     *  ArgoUML user interface shows different PostIt note icons for
+     *  0, 1-25, 26-50. 51-75, and 76-100.
+     *  @return the percentage done.
+     */
+    public int getProgress() {
+<span class="nc" id="L118">        return step * 100 / getNumSteps();</span>
+    }
+
+    /** Get the number of steps in this wizard.  Subclasses should
+     *  override to return a constant, or compute based on context.
+     *  @return the number of steps in this wizard.
+     */
+    public abstract int getNumSteps();
+
+    /** Get the panel that should be displayed now.  Usually called
+     *  after the user pressed &quot;Next&amp;gt;&quot; and next() has returned, or after
+     *  the user pressed &quot;&amp;lt;Back&quot; and back() has returned.  Also called
+     *  when the user turns away from the wizard to do something else and
+     *  then returns his or her attention to the wizard.
+     *  @return the panel that should be displayed now.
+     */
+    public JPanel getCurrentPanel() {
+<span class="nc" id="L135">        return getPanel(step);</span>
+    }
+
+
+    /** Get the exising panel at step s. Step 1 is the first wizard
+     *  panel.
+     * @param s the step
+     * @return the panel for step s or null if none.
+     */
+    public JPanel getPanel(int s) {
+<span class="nc bnc" id="L145" title="All 4 branches missed.">	if (s &gt; 0 &amp;&amp; s &lt;= panels.size()) {</span>
+<span class="nc" id="L146">	    return panels.get(s - 1);</span>
+        }
+<span class="nc" id="L148">	return null;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // wizard actions
+
+    /** Return true iff the &quot;Next&amp;gt;&quot; button should be enabled.
+     *  Subclasses should override to first check super.nextEnabled()
+     *  and then check for legal context values.
+     *  @return &lt;code&gt;true&lt;/code&gt; iff the &quot;Next&amp;gt;&quot; button should be enabled.
+     */
+    public boolean canGoNext() {
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        return step &lt; getNumSteps();</span>
+    }
+
+    /**
+     * The next step of the wizard.
+     */
+    public void next() {
+<span class="nc" id="L167">	doAction(step);</span>
+<span class="nc" id="L168">	step++;</span>
+<span class="nc" id="L169">	JPanel p = makePanel(step);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">	if (p != null) {</span>
+<span class="nc" id="L171">            panels.add(p);</span>
+        }
+<span class="nc" id="L173">	started = true;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">	if (item != null) {</span>
+<span class="nc" id="L175">            item.changed();</span>
+        }
+<span class="nc" id="L177">    }</span>
+
+    /**
+     * @return true if we can step back
+     */
+    public boolean canGoBack() {
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        return step &gt; 0;</span>
+    }
+
+    /**
+     * Step back.
+     */
+    public void back() {
+<span class="nc" id="L190">	step--;</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">	if (step &lt; 0) {</span>
+<span class="nc" id="L192">	    step = 0;</span>
+	}
+<span class="nc" id="L194">	undoAction(step);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">	if (item != null) {</span>
+<span class="nc" id="L196">	    item.changed();</span>
+	}
+<span class="nc" id="L198">    }</span>
+
+    /**
+     * @return true if we can finish (i.e. the finish button is not downlighted)
+     */
+    public boolean canFinish() {
+<span class="nc" id="L204">        return true;</span>
+    }
+
+    /**
+     * @return true if the wizard is started
+     */
+    public boolean isStarted() {
+<span class="nc" id="L211">        return started;</span>
+    }
+
+    /**
+     * @return true if the wizard is finished
+     */
+    public boolean isFinished() {
+<span class="nc" id="L218">        return finished;</span>
+    }
+
+    /**
+     * Finish the wizard.
+     */
+    public void finish() {
+<span class="nc" id="L225">	started = true;</span>
+<span class="nc" id="L226">	int numSteps = getNumSteps();</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">	for (int i = step; i &lt;= numSteps; i++) {</span>
+<span class="nc" id="L228">	    doAction(i);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">	    if (item != null) {</span>
+<span class="nc" id="L230">	        item.changed();</span>
+	    }
+	}
+	// TODO: do all following steps
+	// TODO: resolve item from ToDoList
+<span class="nc" id="L235">	finished = true;</span>
+<span class="nc" id="L236">    }</span>
+
+    /** Create a new panel for the given step. For example, When the
+     *  given step is 1, create the first step of the wizard. &lt;p&gt;
+     *
+     *  TODO: It might be convient to make a reusable
+     *  subclass of Wizard that shows all textual steps to guide the
+     *  user without any automation.  Such a Wizard could be easily
+     *  authored, stored in an XML file, and efficiently presented by
+     *  reusing a single panel with a single JTextArea.
+     *
+     *  @param newStep the number of the step to make a panel for.
+     *  @return a new panel for the given step
+     */
+    public abstract JPanel makePanel(int newStep);
+
+    /** Take action at the completion of a step. For example, when the
+     *  given step is 0, do nothing; and when the given step is 1, do
+     *  the first action.  Argo non-modal wizards should take action as
+     *  they do along, as soon as possible, they should not wait until
+     *  the final step. Also, if the user pressed &quot;Finish&quot; doAction may
+     *  be called for steps that never constructored or displayed their
+     *  panels.
+     *
+     * @param oldStep the given step
+     */
+    public abstract void doAction(int oldStep);
+
+    /**
+     * Do the action of this wizard.
+     */
+<span class="nc" id="L267">    public void doAction() { doAction(step); }</span>
+
+    /** Undo the action done after the given step. For example, when the
+     *  given step is 0, nothing was done, so nothing can be undone; and
+     *  when the given step is 1, undo the first action.  Undo allows
+     *  users to work part way through fixing a problem, see the partial
+     *  result, and explore a different alternative.
+     *
+     * @param oldStep the given step
+     */
+    public void undoAction(int oldStep) {
+<span class="nc" id="L278">    }</span>
+
+    /**
+     * Undo the action.
+     */
+<span class="nc" id="L283">    public void undoAction() { undoAction(step); }</span>
+
+    /**
+     * @return Returns the step.
+     */
+    protected int getStep() {
+<span class="nc" id="L289">        return step;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

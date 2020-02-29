@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeploymentDiagramGraphModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.deployment</a> &gt; <span class="el_source">DeploymentDiagramGraphModel.java</span></div><h1>DeploymentDiagramGraphModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.deployment;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+
+/**
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.&lt;p&gt;
+ *
+ * This class handles only UML Deployment Diagrams.&lt;p&gt;
+ *
+ */
+<span class="fc" id="L62">public class DeploymentDiagramGraphModel</span>
+    extends UMLMutableGraphSupport
+    implements VetoableChangeListener {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L68">    private static final Logger LOG =</span>
+<span class="fc" id="L69">            Logger.getLogger(DeploymentDiagramGraphModel.class.getName());</span>
+
+    ////////////////////////////////////////////////////////////////
+    // GraphModel implementation
+
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
+     */
+    public List getPorts(Object nodeOrEdge) {
+<span class="nc" id="L79">        List res = new ArrayList();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (Model.getFacade().isANode(nodeOrEdge)) {</span>
+<span class="nc" id="L81">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (Model.getFacade().isANodeInstance(nodeOrEdge)) {</span>
+<span class="nc" id="L84">            res.add(nodeOrEdge);</span>
+        }
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (Model.getFacade().isAComponent(nodeOrEdge)) {</span>
+<span class="nc" id="L88">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (Model.getFacade().isAComponentInstance(nodeOrEdge)) {</span>
+<span class="nc" id="L91">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (Model.getFacade().isAClass(nodeOrEdge)) {</span>
+<span class="nc" id="L94">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (Model.getFacade().isAInterface(nodeOrEdge)) {</span>
+<span class="nc" id="L97">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (Model.getFacade().isAObject(nodeOrEdge)) {</span>
+<span class="nc" id="L100">            res.add(nodeOrEdge);</span>
+        }
+<span class="nc" id="L102">        return res;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
+     */
+    public Object getOwner(Object port) {
+<span class="nc" id="L109">        return port;</span>
+    }
+
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
+     */
+    public List getInEdges(Object port) {
+<span class="nc" id="L117">        List res = new ArrayList();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (Model.getFacade().isANode(port)) {</span>
+<span class="nc" id="L119">            Collection ends = Model.getFacade().getAssociationEnds(port);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (ends == null) {</span>
+<span class="nc" id="L121">                return Collections.EMPTY_LIST;</span>
+            }
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            for (Object end : ends) {</span>
+<span class="nc" id="L124">                res.add(Model.getFacade().getAssociation(end));</span>
+<span class="nc" id="L125">            }</span>
+        }
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (Model.getFacade().isANodeInstance(port)) {</span>
+<span class="nc" id="L128">            Object noi = port;</span>
+<span class="nc" id="L129">            Collection ends = Model.getFacade().getLinkEnds(noi);</span>
+<span class="nc" id="L130">            res.addAll(ends);</span>
+        }
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (Model.getFacade().isAComponent(port)) {</span>
+<span class="nc" id="L133">            Collection ends = Model.getFacade().getAssociationEnds(port);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (ends == null) {</span>
+<span class="nc" id="L135">                return Collections.EMPTY_LIST;</span>
+            }
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            for (Object end : ends) {</span>
+<span class="nc" id="L138">                res.add(Model.getFacade().getAssociation(end));</span>
+<span class="nc" id="L139">            }</span>
+        }
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (Model.getFacade().isAComponentInstance(port)) {</span>
+<span class="nc" id="L142">            Object coi = port;</span>
+<span class="nc" id="L143">            Collection ends = Model.getFacade().getLinkEnds(coi);</span>
+<span class="nc" id="L144">            res.addAll(ends);</span>
+        }
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (Model.getFacade().isAClass(port)) {</span>
+<span class="nc" id="L147">            Collection ends = Model.getFacade().getAssociationEnds(port);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (ends == null) {</span>
+<span class="nc" id="L149">                return Collections.EMPTY_LIST;</span>
+            }
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            for (Object end : ends) {</span>
+<span class="nc" id="L152">                res.add(Model.getFacade().getAssociation(end));</span>
+<span class="nc" id="L153">            }</span>
+        }
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (Model.getFacade().isAInterface(port)) {</span>
+<span class="nc" id="L156">            Collection ends = Model.getFacade().getAssociationEnds(port);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (ends == null) {</span>
+<span class="nc" id="L158">                return Collections.EMPTY_LIST;</span>
+            }
+<span class="nc bnc" id="L160" title="All 2 branches missed.">            for (Object end : ends) {</span>
+<span class="nc" id="L161">                res.add(Model.getFacade().getAssociation(end));</span>
+<span class="nc" id="L162">            }</span>
+        }
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (Model.getFacade().isAObject(port)) {</span>
+<span class="nc" id="L165">            Object clo = port;</span>
+<span class="nc" id="L166">            Collection ends = Model.getFacade().getLinkEnds(clo);</span>
+<span class="nc" id="L167">            res.addAll(ends);</span>
+        }
+
+
+<span class="nc" id="L171">        return res;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
+     */
+    public List getOutEdges(Object port) {
+<span class="nc" id="L178">        return Collections.EMPTY_LIST; // TODO:?</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
+    @Override
+    public boolean canAddNode(Object node) {
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L190">            return false;</span>
+        }
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (Model.getFacade().isAAssociation(node)</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                &amp;&amp; !Model.getFacade().isANaryAssociation(node)) {</span>
+            // A binary association is not a node so reject.
+<span class="nc" id="L195">            return false;</span>
+        }
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (containsNode(node)) {</span>
+<span class="nc" id="L198">            return false;</span>
+        }
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (Model.getFacade().isAAssociation(node)) {</span>
+<span class="nc" id="L201">            Collection ends = Model.getFacade().getConnections(node);</span>
+<span class="nc" id="L202">            boolean canAdd = true;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">            for (Object end : ends) {</span>
+                Object classifier =
+<span class="nc" id="L205">                        Model.getFacade().getClassifier(end);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (!containsNode(classifier)) {</span>
+<span class="nc" id="L207">                    canAdd = false;</span>
+<span class="nc" id="L208">                    break;</span>
+                }
+<span class="nc" id="L210">            }</span>
+<span class="nc" id="L211">            return canAdd;</span>
+        }
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        return (Model.getFacade().isANode(node))</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                || (Model.getFacade().isAComponent(node))</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                || (Model.getFacade().isAClass(node))</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                || (Model.getFacade().isAInterface(node))</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                || (Model.getFacade().isAObject(node))</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                || (Model.getFacade().isANodeInstance(node))</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                || (Model.getFacade().isAComponentInstance(node)</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                || (Model.getFacade().isAComment(node)));</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
+    @Override
+    public boolean canAddEdge(Object edge)  {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (edge == null) {</span>
+<span class="nc" id="L229">            return false;</span>
+        }
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (containsEdge(edge)) {</span>
+<span class="nc" id="L232">            return false;</span>
+        }
+<span class="nc" id="L234">        Object end0 = null, end1 = null;</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">        if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L236">            end0 = ((CommentEdge) edge).getSource();</span>
+<span class="nc" id="L237">            end1 = ((CommentEdge) edge).getDestination();</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        } else if (Model.getFacade().isAAssociationEnd(edge)) {</span>
+<span class="nc" id="L239">            end0 = Model.getFacade().getAssociation(edge);</span>
+<span class="nc" id="L240">            end1 = Model.getFacade().getType(edge);</span>
+
+<span class="nc bnc" id="L242" title="All 4 branches missed.">            return (end0 != null</span>
+                    &amp;&amp; end1 != null
+<span class="nc bnc" id="L244" title="All 4 branches missed.">                    &amp;&amp; (containsEdge(end0) || containsNode(end0))</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                    &amp;&amp; containsNode(end1));</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">        } else if (Model.getFacade().isARelationship(edge)) {</span>
+<span class="nc" id="L247">            end0 = Model.getCoreHelper().getSource(edge);</span>
+<span class="nc" id="L248">            end1 = Model.getCoreHelper().getDestination(edge);</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        } else if (Model.getFacade().isALink(edge)) {</span>
+<span class="nc" id="L250">            end0 = Model.getCommonBehaviorHelper().getSource(edge);</span>
+            end1 =
+<span class="nc" id="L252">                    Model.getCommonBehaviorHelper().getDestination(edge);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">        } else if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L254">            end0 = ((CommentEdge) edge).getSource();</span>
+<span class="nc" id="L255">            end1 = ((CommentEdge) edge).getDestination();</span>
+        } else {
+<span class="nc" id="L257">            return false;</span>
+        }
+
+        // Both ends must be defined and nodes that are on the graph already.
+<span class="nc bnc" id="L261" title="All 4 branches missed.">        if (end0 == null || end1 == null) {</span>
+<span class="nc" id="L262">            LOG.log(Level.SEVERE, &quot;Edge rejected. Its ends are not attached to anything&quot;);</span>
+<span class="nc" id="L263">            return false;</span>
+        }
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (!containsNode(end0)</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                &amp;&amp; !containsEdge(end0)) {</span>
+<span class="nc" id="L268">            LOG.log(Level.SEVERE, &quot;Edge rejected. Its source end is attached to &quot;</span>
+                    + end0
+                    + &quot; but this is not in the graph model&quot;);
+<span class="nc" id="L271">            return false;</span>
+        }
+<span class="nc bnc" id="L273" title="All 2 branches missed.">        if (!containsNode(end1)</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                &amp;&amp; !containsEdge(end1)) {</span>
+<span class="nc" id="L275">            LOG.log(Level.SEVERE, &quot;Edge rejected. Its destination end is attached to &quot;</span>
+                    + end1
+                    + &quot; but this is not in the graph model&quot;);
+<span class="nc" id="L278">            return false;</span>
+        }
+
+<span class="nc" id="L281">        return true;</span>
+    }
+
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
+     */
+    @Override
+    public void addNode(Object node) {
+<span class="nc" id="L290">        LOG.log(Level.FINE, &quot;adding class node!!&quot;);</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (!canAddNode(node)) {</span>
+<span class="nc" id="L292">            return;</span>
+        }
+<span class="nc" id="L294">        getNodes().add(node);</span>
+        // TODO: assumes public, user pref for default visibility?
+        //do I have to check the namespace here? (Toby)
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(node)</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                &amp;&amp; (Model.getFacade().getNamespace(node) == null)) {</span>
+<span class="nc" id="L299">            Model.getCoreHelper().addOwnedElement(getHomeModel(), node);</span>
+        }
+<span class="nc" id="L301">        fireNodeAdded(node);</span>
+<span class="nc" id="L302">    }</span>
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
+     */
+    @Override
+    public void addEdge(Object edge) {
+<span class="nc" id="L309">        LOG.log(Level.FINE, &quot;adding class edge!!!!!!&quot;);</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">        if (!canAddEdge(edge)) {</span>
+<span class="nc" id="L311">            return;</span>
+        }
+<span class="nc" id="L313">        getEdges().add(edge);</span>
+        // TODO: assumes public
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(edge)</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">                &amp;&amp; !Model.getFacade().isAAssociationEnd(edge)) {</span>
+<span class="nc" id="L317">            Model.getCoreHelper().addOwnedElement(getHomeModel(), edge);</span>
+        }
+<span class="nc" id="L319">        fireEdgeAdded(edge);</span>
+<span class="nc" id="L320">    }</span>
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
+    @Override
+    public void addNodeRelatedEdges(Object node) {
+<span class="nc" id="L327">        super.addNodeRelatedEdges(node);</span>
+
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        if (Model.getFacade().isAClassifier(node)) {</span>
+<span class="nc" id="L330">            Collection ends = Model.getFacade().getAssociationEnds(node);</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">            for (Object ae : ends) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">                if (!Model.getFacade().isANaryAssociation(</span>
+<span class="nc" id="L333">                        Model.getFacade().getAssociation(ae))</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                        &amp;&amp; canAddEdge(Model.getFacade().getAssociation(ae))) {</span>
+<span class="nc" id="L335">                    addEdge(Model.getFacade().getAssociation(ae));</span>
+                }
+<span class="nc" id="L337">                return;</span>
+            }
+        }
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        if (Model.getFacade().isAAssociation(node)) {</span>
+<span class="nc" id="L341">            Collection ends = Model.getFacade().getConnections(node);</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            for (Object associationEnd : ends) {</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                if (canAddEdge(associationEnd)) {</span>
+<span class="nc" id="L344">                    addEdge(associationEnd);</span>
+                }
+<span class="nc" id="L346">            }</span>
+        }
+<span class="nc bnc" id="L348" title="All 2 branches missed.">        if (Model.getFacade().isAInstance(node)) {</span>
+<span class="nc" id="L349">            Collection ends = Model.getFacade().getLinkEnds(node);</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">            for (Object end : ends) {</span>
+<span class="nc" id="L351">                Object link = Model.getFacade().getLink(end);</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">                if (canAddEdge(link)) {</span>
+<span class="nc" id="L353">                    addEdge(link);</span>
+                }
+<span class="nc" id="L355">                return;</span>
+            }
+        }
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (Model.getFacade().isAGeneralizableElement(node)) {</span>
+            Collection generalizations =
+<span class="nc" id="L360">                Model.getFacade().getGeneralizations(node);</span>
+
+<span class="nc bnc" id="L362" title="All 2 branches missed.">            for (Object generalization : generalizations) {</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">                if (canAddEdge(generalization)) {</span>
+<span class="nc" id="L364">                    addEdge(generalization);</span>
+                }
+<span class="nc" id="L366">                return;</span>
+            }
+            Collection specializations =
+<span class="nc" id="L369">                Model.getFacade().getSpecializations(node);</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">            for (Object specialization : specializations) {</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">                if (canAddEdge(specialization)) {</span>
+<span class="nc" id="L372">                    addEdge(specialization);</span>
+                }
+<span class="nc" id="L374">                return;</span>
+            }
+        }
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(node)) {</span>
+<span class="nc" id="L378">            List dependencies =</span>
+<span class="nc" id="L379">                new ArrayList(Model.getFacade().getClientDependencies(node));</span>
+<span class="nc" id="L380">            dependencies.addAll(Model.getFacade().getSupplierDependencies(node));</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">            for (Object dependency : dependencies) {</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">                if (canAddEdge(dependency)) {</span>
+<span class="nc" id="L383">                    addEdge(dependency);</span>
+                }
+<span class="nc" id="L385">                return;</span>
+            }
+        }
+<span class="nc" id="L388">    }</span>
+
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent pce) {
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if (&quot;ownedElement&quot;.equals(pce.getPropertyName())) {</span>
+<span class="nc" id="L396">            List oldOwned = (List) pce.getOldValue();</span>
+<span class="nc" id="L397">            Object eo = pce.getNewValue();</span>
+<span class="nc" id="L398">            Object me = Model.getFacade().getModelElement(eo);</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">            if (oldOwned.contains(eo)) {</span>
+<span class="nc" id="L400">                LOG.log(Level.FINE, &quot;model removed {0}&quot;, me);</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                if (Model.getFacade().isANode(me)) {</span>
+<span class="nc" id="L402">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L404" title="All 2 branches missed.">                if (Model.getFacade().isANodeInstance(me)) {</span>
+<span class="nc" id="L405">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                if (Model.getFacade().isAComponent(me)) {</span>
+<span class="nc" id="L408">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L410" title="All 2 branches missed.">                if (Model.getFacade().isAComponentInstance(me)) {</span>
+<span class="nc" id="L411">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                if (Model.getFacade().isAClass(me)) {</span>
+<span class="nc" id="L414">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L416" title="All 2 branches missed.">                if (Model.getFacade().isAInterface(me)) {</span>
+<span class="nc" id="L417">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                if (Model.getFacade().isAObject(me)) {</span>
+<span class="nc" id="L420">                    removeNode(me);</span>
+                }
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                if (Model.getFacade().isAAssociation(me)) {</span>
+<span class="nc" id="L423">                    removeEdge(me);</span>
+                }
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                if (Model.getFacade().isADependency(me)) {</span>
+<span class="nc" id="L426">                    removeEdge(me);</span>
+                }
+<span class="nc bnc" id="L428" title="All 2 branches missed.">                if (Model.getFacade().isALink(me)) {</span>
+<span class="nc" id="L429">                    removeEdge(me);</span>
+                }
+            } else {
+<span class="nc" id="L432">                LOG.log(Level.FINE, &quot;model added {0}&quot;, me);</span>
+            }
+        }
+<span class="nc" id="L435">    }</span>
+
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = 1003748292917485298L;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

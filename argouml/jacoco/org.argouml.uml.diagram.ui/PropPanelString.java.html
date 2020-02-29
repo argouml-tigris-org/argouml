@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropPanelString.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">PropPanelString.java</span></div><h1>PropPanelString.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * The properties panel for a simple text / string.
+ *
+ */
+public class PropPanelString
+    extends AbstractArgoJPanel
+    implements TabModelTarget, PropertyChangeListener, DocumentListener {
+
+    private FigText target;
+<span class="nc" id="L66">    private JLabel nameLabel = new JLabel(Translator.localize(&quot;label.text&quot;));</span>
+<span class="nc" id="L67">    private JTextField nameField = new JTextField();</span>
+
+    /**
+     * The constructor.
+     *
+     */
+    public PropPanelString() {
+<span class="nc" id="L74">	super(Translator.localize(&quot;tab.string&quot;));</span>
+<span class="nc" id="L75">	GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L76">	setLayout(gb);</span>
+<span class="nc" id="L77">	GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L78">	c.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L79">	c.weightx = 0.0;</span>
+<span class="nc" id="L80">	c.ipadx = 3; c.ipady = 3;</span>
+
+<span class="nc" id="L82">	c.gridx = 0;</span>
+<span class="nc" id="L83">	c.gridwidth = 1;</span>
+<span class="nc" id="L84">	c.gridy = 0;</span>
+<span class="nc" id="L85">	gb.setConstraints(nameLabel, c);</span>
+<span class="nc" id="L86">	add(nameLabel);</span>
+
+<span class="nc" id="L88">	c.weightx = 1.0;</span>
+<span class="nc" id="L89">	c.gridx = 1;</span>
+<span class="nc" id="L90">	c.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L91">	c.gridheight = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L92">	c.gridy = 0;</span>
+<span class="nc" id="L93">	gb.setConstraints(nameField, c);</span>
+<span class="nc" id="L94">	add(nameField);</span>
+
+<span class="nc" id="L96">	nameField.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L97">	nameField.setEditable(true);</span>
+	// TODO: set font?
+
+<span class="nc" id="L100">    }</span>
+
+
+    /*
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
+    public void setTarget(Object t) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L108">            target.removePropertyChangeListener(this);</span>
+        }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">	if (t instanceof FigText) {</span>
+<span class="nc" id="L111">	    target = (FigText) t;</span>
+	    // to circumvent too many registered listeners
+<span class="nc" id="L113">	    target.removePropertyChangeListener(this);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">	    if (isVisible()) {</span>
+<span class="nc" id="L115">	        target.addPropertyChangeListener(this);</span>
+	    }
+	}
+
+<span class="nc" id="L119">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L125">        return target;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L132">        setTarget(target);</span>
+<span class="nc" id="L133">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+<span class="nc" id="L138">    public boolean shouldBeEnabled(Object theTarget) { return false; }</span>
+
+
+    /**
+     * Set the target name.
+     */
+    protected void setTargetName() {
+<span class="nc" id="L145">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    /*
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void insertUpdate(DocumentEvent e) {
+<span class="nc bnc" id="L154" title="All 4 branches missed.">	if (e.getDocument() == nameField.getDocument() &amp;&amp; target != null) {</span>
+<span class="nc" id="L155">	    target.setText(nameField.getText());</span>
+<span class="nc" id="L156">	    target.damage();</span>
+	}
+<span class="nc" id="L158">    }</span>
+
+    /*
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void removeUpdate(DocumentEvent e) {
+<span class="nc" id="L164">        insertUpdate(e);</span>
+<span class="nc" id="L165">    }</span>
+
+    /*
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void changedUpdate(DocumentEvent e) {
+<span class="nc" id="L171">    }</span>
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">	if (evt.getPropertyName().equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">	    &amp;&amp; evt.getNewValue().equals(Boolean.FALSE)) {</span>
+	    // ending editing
+<span class="nc" id="L180">	    nameField.setText(target.getText());</span>
+	}
+
+<span class="nc" id="L183">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L189">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L190">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L196">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L197">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L203">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L204">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

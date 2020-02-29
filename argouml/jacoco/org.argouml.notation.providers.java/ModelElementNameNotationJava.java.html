@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelElementNameNotationJava.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.java</a> &gt; <span class="el_source">ModelElementNameNotationJava.java</span></div><h1>ModelElementNameNotationJava.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.java;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ModelElementNameNotation;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * Java notation for the name of a modelelement.
+ * 
+ * @author Michiel
+ */
+public class ModelElementNameNotationJava extends ModelElementNameNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param name the modelelement
+     */
+    public ModelElementNameNotationJava(Object name) {
+<span class="fc" id="L68">        super(name);</span>
+<span class="fc" id="L69">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(
+     * java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="fc" id="L77">            parseModelElement(modelElement, text);</span>
+<span class="nc" id="L78">        } catch (ParseException pe) {</span>
+<span class="nc" id="L79">            String msg = &quot;statusmsg.bar.error.parsing.node-modelelement&quot;;</span>
+<span class="nc" id="L80">            Object[] args = {</span>
+<span class="nc" id="L81">                pe.getLocalizedMessage(),</span>
+<span class="nc" id="L82">                Integer.valueOf(pe.getErrorOffset()),</span>
+            };
+<span class="nc" id="L84">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L86">                Translator.messageFormat(msg, args)));</span>
+<span class="fc" id="L87">        }</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * @param modelElement the UML modelelement
+     * @param text the string to parse
+     */
+    static void parseModelElement(Object modelElement, String text) 
+        throws ParseException {
+        MyTokenizer st;
+
+<span class="fc" id="L98">        boolean abstrac = false;</span>
+<span class="fc" id="L99">        boolean fina = false;</span>
+<span class="fc" id="L100">        boolean publi = false;</span>
+<span class="fc" id="L101">        boolean privat = false;</span>
+<span class="fc" id="L102">        boolean protect = false;</span>
+        String token;
+<span class="fc" id="L104">        List&lt;String&gt; path = null;</span>
+<span class="fc" id="L105">        String name = null;</span>
+
+        try {
+<span class="fc" id="L108">            st = new MyTokenizer(text, </span>
+                    &quot; ,.,abstract,final,public,private,protected&quot;);
+<span class="fc bfc" id="L110" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L111">                token = st.nextToken();</span>
+
+<span class="fc bfc" id="L113" title="All 2 branches covered.">                if (&quot; &quot;.equals(token)) {</span>
+                    /* skip spaces */
+<span class="fc bfc" id="L115" title="All 2 branches covered.">                } else if (&quot;abstract&quot;.equals(token)) {</span>
+<span class="fc" id="L116">                    abstrac = true;</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                } else if (&quot;final&quot;.equals(token)) {</span>
+<span class="nc" id="L118">                    fina = true;</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                } else if (&quot;public&quot;.equals(token)) {</span>
+<span class="nc" id="L120">                    publi = true;</span>
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">                } else if (&quot;private&quot;.equals(token)) {</span>
+<span class="nc" id="L122">                    privat = true;</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">                } else if (&quot;protected&quot;.equals(token)) {</span>
+<span class="nc" id="L124">                    protect = true;</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                } else if (&quot;.&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                    if (name != null) {</span>
+<span class="fc" id="L127">                        name = name.trim();</span>
+                    }
+
+<span class="pc bpc" id="L130" title="2 of 6 branches missed.">                    if (path != null &amp;&amp; (name == null || &quot;&quot;.equals(name))) {</span>
+<span class="nc" id="L131">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.anon-qualifiers&quot;;
+<span class="nc" id="L133">                        throw new ParseException(Translator.localize(msg), </span>
+<span class="nc" id="L134">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">                    if (path == null) {</span>
+<span class="fc" id="L138">                        path = new ArrayList&lt;String&gt;();</span>
+                    }
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">                    if (name != null) {</span>
+<span class="fc" id="L141">                        path.add(name);</span>
+                    }
+<span class="fc" id="L143">                    name = null;</span>
+                
+                } else { // the name itself
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">                    if (name != null) {</span>
+<span class="nc" id="L147">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.twin-names&quot;;
+<span class="nc" id="L149">                        throw new ParseException(Translator.localize(msg), </span>
+<span class="nc" id="L150">                                st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L152">                    name = token;</span>
+                }
+            }
+<span class="nc" id="L155">        } catch (NoSuchElementException nsee) {</span>
+<span class="nc" id="L156">            String msg = </span>
+                &quot;parsing.error.model-element-name.unexpected-name-element&quot;;
+<span class="nc" id="L158">            throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L159">                    text.length());</span>
+<span class="nc" id="L160">        } catch (ParseException pre) {</span>
+<span class="nc" id="L161">            throw pre;</span>
+<span class="fc" id="L162">        }</span>
+        
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (name != null) {</span>
+<span class="fc" id="L165">            name = name.trim();</span>
+        }
+        
+<span class="pc bpc" id="L168" title="2 of 6 branches missed.">        if (path != null &amp;&amp; (name == null || &quot;&quot;.equals(name))) {</span>
+<span class="nc" id="L169">            String msg = &quot;parsing.error.model-element-name.must-end-with-name&quot;;</span>
+<span class="nc" id="L170">            throw new ParseException(Translator.localize(msg), 0);</span>
+        }
+        
+        /* Check the name for validity: */
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (!isValidJavaClassName(name)) {</span>
+<span class="nc" id="L175">            throw new ParseException(</span>
+                    &quot;Invalid class name for Java: &quot;
+                    + name, 0);
+        }
+        
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (path != null) {</span>
+            Object nspe =
+<span class="fc" id="L182">                Model.getModelManagementHelper().getElement(</span>
+                    path,
+<span class="fc" id="L184">                    Model.getFacade().getRoot(modelElement));</span>
+
+<span class="pc bpc" id="L186" title="2 of 4 branches missed.">            if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {</span>
+<span class="nc" id="L187">                String msg = </span>
+                        &quot;parsing.error.model-element-name.namespace-unresolved&quot;;
+<span class="nc" id="L189">                throw new ParseException(Translator.localize(msg), </span>
+                        0);
+            }
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if (!Model.getCoreHelper().isValidNamespace(</span>
+                    modelElement, nspe)) {
+<span class="nc" id="L194">                String msg = </span>
+                        &quot;parsing.error.model-element-name.namespace-invalid&quot;;
+<span class="nc" id="L196">                throw new ParseException(Translator.localize(msg), </span>
+                        0);
+            }
+<span class="fc" id="L199">            Model.getCoreHelper().addOwnedElement(nspe, modelElement);</span>
+        }
+
+<span class="fc" id="L202">        Model.getCoreHelper().setName(modelElement, name);</span>
+        
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (abstrac) {</span>
+<span class="fc" id="L205">            Model.getCoreHelper().setAbstract(modelElement, abstrac);</span>
+        }
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        if (fina) {</span>
+<span class="nc" id="L208">            Model.getCoreHelper().setLeaf(modelElement, fina);</span>
+        }
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (publi) {</span>
+<span class="nc" id="L211">            Model.getCoreHelper().setVisibility(modelElement,</span>
+<span class="nc" id="L212">                Model.getVisibilityKind().getPublic());</span>
+        }
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (privat) {</span>
+<span class="nc" id="L215">            Model.getCoreHelper().setVisibility(modelElement,</span>
+<span class="nc" id="L216">                Model.getVisibilityKind().getPrivate());</span>
+        }
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">        if (protect) {</span>
+<span class="nc" id="L219">            Model.getCoreHelper().setVisibility(modelElement,</span>
+<span class="nc" id="L220">                Model.getVisibilityKind().getProtected());</span>
+        }
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * @param name the name of the element
+     * @return true if the given name is a valid name according java syntax
+     */
+    private static boolean isValidJavaClassName(String name) {
+        /* TODO: Check the name for validity. */
+<span class="fc" id="L230">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="fc" id="L237">        return &quot;parsing.help.java.fig-nodemodelelement&quot;;</span>
+    }
+
+    public String toString(Object modelElement, NotationSettings settings) {
+        String name;
+<span class="fc" id="L242">        name = Model.getFacade().getName(modelElement);</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (name == null) {</span>
+<span class="fc" id="L244">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L246">        String visibility = &quot;&quot;;</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (settings.isShowVisibilities()) {</span>
+<span class="nc" id="L248">            visibility = NotationUtilityJava.generateVisibility(modelElement);</span>
+        }
+<span class="fc" id="L250">        String path = &quot;&quot;;</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">        if (settings.isShowPaths()) {</span>
+<span class="nc" id="L252">            path = NotationUtilityJava.generatePath(modelElement);</span>
+        }
+<span class="fc" id="L254">        return NotationUtilityJava.generateLeaf(modelElement)</span>
+<span class="fc" id="L255">            + NotationUtilityJava.generateAbstract(modelElement)</span>
+            + visibility
+            + path
+            + name;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

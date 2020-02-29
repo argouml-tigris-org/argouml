@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionAddExtensionPoint.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionAddExtensionPoint.java</span></div><h1>ActionAddExtensionPoint.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+
+/**
+ * A class to implement the addition of extension points to use cases.&lt;p&gt;
+ *
+ * This is a singleton. Implemented with a private constructor and a static
+ * access method. Marked as final, since it can't sensibly be subclassed (the
+ * access method wouldn't work properly).&lt;p&gt;
+ *
+ * @author  Jeremy Bennett (mail@jeremybennett.com).
+ * @stereotype singleton
+ */
+public final class ActionAddExtensionPoint extends UndoableAction {
+
+    /**
+     * Our private copy of the instance. Only accessible through the proper
+     * access method.
+     */
+    private static ActionAddExtensionPoint singleton;
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Constructors
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Constructor is private, since it cannot be called directly for a
+     * singleton. Make use of the access funtion.&lt;p&gt;
+     */
+    public ActionAddExtensionPoint() {
+<span class="nc" id="L84">        super(Translator.localize(&quot;button.new-extension-point&quot;),</span>
+<span class="nc" id="L85">                ResourceLoaderWrapper.lookupIcon(&quot;button.new-extension-point&quot;));</span>
+        // Set the tooltip string:
+<span class="nc" id="L87">        putValue(Action.SHORT_DESCRIPTION, </span>
+<span class="nc" id="L88">                Translator.localize(&quot;button.new-extension-point&quot;));</span>
+<span class="nc" id="L89">    }</span>
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Main methods
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * Get the single instance of the action.&lt;p&gt;
+     *
+     * Since we are a singleton, this is the only way of accessing the
+     * instance, which is created if it does not exist.&lt;p&gt;
+     *
+     * @return The singleton instance.
+     */
+    public static ActionAddExtensionPoint singleton() {
+
+        // Create the singleton if it does not exist, and then return it
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (singleton == null) {</span>
+<span class="nc" id="L112">            singleton = new ActionAddExtensionPoint();</span>
+            
+            // When a new target is selected, we have to check if it 's a use case.
+            //Then, the icone &quot;add extension point&quot; have to become enabled.
+<span class="nc" id="L116">            TargetManager.getInstance().addTargetListener(new TargetListener() {</span>
+               
+                public void targetAdded(TargetEvent e) {
+<span class="nc" id="L119">                    setTarget();</span>
+<span class="nc" id="L120">                }</span>
+                public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L122">                    setTarget();</span>
+<span class="nc" id="L123">                }</span>
+
+                public void targetSet(TargetEvent e) {
+<span class="nc" id="L126">                    setTarget();</span>
+<span class="nc" id="L127">                }</span>
+                private void setTarget() {
+<span class="nc" id="L129">                    singleton.setEnabled(singleton.shouldBeEnabled());</span>
+<span class="nc" id="L130">                }</span>
+            });
+<span class="nc" id="L132">            singleton.setEnabled(singleton.shouldBeEnabled());</span>
+        }
+
+<span class="nc" id="L135">        return singleton;</span>
+    }
+
+    /**
+     * Called if this action is invoked.&lt;p&gt;
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @param ae  The action that caused us to be invoked.
+     */
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L145">        super.actionPerformed(ae);</span>
+
+        // Find the target in the project browser. We can only do anything if
+        // its a use case.
+
+<span class="nc" id="L150">        Object target = TargetManager.getInstance().getModelTarget();</span>
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (!(Model.getFacade().isAUseCase(target))) {</span>
+<span class="nc" id="L153">            return;</span>
+        }
+
+        // Create a new extension point and make it the browser target. Then
+        // invoke the superclass action method.
+
+        Object ep =
+<span class="nc" id="L160">            Model.getUseCasesFactory()</span>
+<span class="nc" id="L161">                .buildExtensionPoint(target);</span>
+
+<span class="nc" id="L163">        TargetManager.getInstance().setTarget(ep);</span>
+<span class="nc" id="L164">    }</span>
+
+
+    /**
+     * A predicate to determine if this action is enabled.&lt;p&gt;
+     *
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+     * @return  &lt;code&gt;true&lt;/code&gt; if the superclass affirms this action is
+     *          enabled and the target is a use case. &lt;code&gt;false&lt;/code&gt;
+     *          otherwise.
+     */
+    public boolean isEnabled() {
+<span class="nc" id="L176">        Object target = TargetManager.getInstance().getModelTarget();</span>
+
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        return super.isEnabled()</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                &amp;&amp; (Model.getFacade().isAUseCase(target));</span>
+        
+    }
+    
+    /**
+     * Called when a new target is selected, in order to display Action
+     * @return true if the target is a use case, otherwise false
+     * 
+     * @since 2010-08-30
+     */
+    public boolean shouldBeEnabled() {
+<span class="nc" id="L190">        Object target = TargetManager.getInstance().getSingleModelTarget();</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L192">            return false;</span>
+        }
+<span class="nc" id="L194">        return Model.getFacade().isAUseCase(target);</span>
+    }
+
+} /* end class ActionAddExtensionPoint */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

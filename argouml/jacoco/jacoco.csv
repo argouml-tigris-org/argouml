@@ -1,0 +1,1472 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionNewEntryCallAction,20,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionSetSynch,44,0,4,0,15,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionAddEventAsTrigger,68,0,6,0,21,0,9,0,6,0
+argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,17,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,98,60,21,11,20,13,14,5,1,2
+argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
+argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1029,370,269,91,249,92,174,11,1,4
+argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
+argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclEnumLiteral,33,0,4,0,9,0,5,0,3,0
+argouml-app,org.argouml.notation.providers.uml,AbstractMessageNotationUml,935,2310,189,379,208,623,147,178,5,36
+argouml-app,org.argouml.notation.providers.uml,ObjectNotationUml,120,27,15,3,30,9,11,3,2,3
+argouml-app,org.argouml.notation.providers.uml,ClassifierRoleNotationUml,79,291,14,50,19,94,14,24,1,5
+argouml-app,org.argouml.notation.providers.uml,AssociationRoleNotationUml,259,4,48,0,78,2,29,1,5,1
+argouml-app,org.argouml.notation.providers.uml,OperationNotationUml,404,672,87,119,118,191,66,51,4,10
+argouml-app,org.argouml.notation.providers.uml,NodeInstanceNotationUml,101,55,14,6,26,14,10,5,2,3
+argouml-app,org.argouml.notation.providers.uml,MultiplicityNotationUml,77,4,0,0,25,2,5,1,5,1
+argouml-app,org.argouml.notation.providers.uml,StateBodyNotationUml.ModelElementInfoList.InfoItem,4,33,0,0,2,10,1,5,1,5
+argouml-app,org.argouml.notation.providers.uml,ExtensionPointNotationUml,126,52,20,5,41,12,18,3,4,3
+argouml-app,org.argouml.notation.providers.uml,AssociationNameNotationUml,151,4,18,0,46,2,14,1,5,1
+argouml-app,org.argouml.notation.providers.uml,EnumerationLiteralNotationUml,65,258,15,33,23,73,15,16,1,6
+argouml-app,org.argouml.notation.providers.uml,MessageNotationUml,0,9,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.notation.providers.uml,ObjectFlowStateStateNotationUml,292,24,31,1,84,7,20,3,4,3
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},6,16,4,2,1,6,3,2,0,2
+argouml-app,org.argouml.notation.providers.uml,InitNotationUml,6,116,0,0,3,28,3,2,3,2
+argouml-app,org.argouml.notation.providers.uml,ComponentInstanceNotationUml,119,41,17,3,28,12,12,3,2,3
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},19,3,4,0,6,1,3,1,1,1
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},10,3,2,0,4,1,2,1,1,1
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},17,15,6,2,4,5,4,2,0,2
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},6,16,4,2,1,6,3,2,0,2
+argouml-app,org.argouml.notation.providers.uml,AbstractMessageNotationUml.MsgPtr,0,3,0,0,0,1,0,1,0,1
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},6,16,4,2,1,6,3,2,0,2
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},27,3,6,0,8,1,4,1,1,1
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},0,22,3,3,0,7,3,2,0,2
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},21,3,6,0,6,1,4,1,1,1
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.new NotationUtilityUml.PropertyOperation() {...},21,3,6,0,6,1,4,1,1,1
+argouml-app,org.argouml.notation.providers.uml,StateBodyNotationUml.ModelElementInfoList,4,95,1,9,2,20,1,8,0,4
+argouml-app,org.argouml.notation.providers.uml,StateBodyNotationUml,142,282,23,35,41,76,17,23,2,9
+argouml-app,org.argouml.notation.providers.uml,CallStateNotationUml,54,336,13,55,11,92,14,26,1,5
+argouml-app,org.argouml.notation.providers.uml,AttributeNotationUml,292,831,76,132,68,236,59,61,0,16
+argouml-app,org.argouml.notation.providers.uml,ModelElementNameNotationUml,39,68,2,8,12,19,4,7,2,4
+argouml-app,org.argouml.notation.providers.uml,SDMessageNotationUml,5,14,1,1,1,5,1,2,0,2
+argouml-app,org.argouml.notation.providers.uml,TransitionNotationUml,275,868,70,138,76,242,55,70,0,21
+argouml-app,org.argouml.notation.providers.uml,ObjectFlowStateTypeNotationUml,107,26,15,3,32,9,12,3,3,3
+argouml-app,org.argouml.notation.providers.uml,ActionStateNotationUml,0,68,0,10,0,22,0,10,0,5
+argouml-app,org.argouml.notation.providers.uml,AssociationEndNameNotationUml,262,57,46,6,77,17,29,4,4,3
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml,579,1110,158,170,157,268,112,79,5,22
+argouml-app,org.argouml.notation.providers.uml,NotationUtilityUml.PropertySpecialString,0,23,0,2,0,8,0,3,0,2
+argouml-app,org.argouml.uml.ui.behavior.collaborations,ActionNewActionForMessage,33,0,4,0,10,0,7,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.collaborations,ActionAddMessagePredecessor,68,0,6,0,21,0,10,0,7,0
+argouml-app,org.argouml.profile.init,ProfileLoader,280,40,21,3,67,12,14,5,3,4
+argouml-app,org.argouml.profile.init,InitProfileSubsystem,0,19,0,0,0,7,0,2,0,2
+argouml-app,org.argouml.profile.init,ProfileLoader.JarFileFilter,19,0,6,0,4,0,5,0,2,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassToNavigableClass,106,0,22,0,35,0,15,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoCompositeStateToSubvertex,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToEntry,44,0,6,0,13,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToContents,36,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoAssocRoleToMessages,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateMachineToState,76,0,12,0,23,0,11,0,5,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassToAssociatedClass,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToModel,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSignalToReception,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoDiagramToEdge,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToContainedDiagrams,55,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToRoots,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoDiagramToNode,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,OutgoingDependencyNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,OperationsNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,InheritanceNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToCollaboration,50,0,6,0,15,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToInstance,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProfileToModel,22,0,2,0,9,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,AttributesNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoGeneralizableElementToSpecialized,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoPackageToElementImport,30,0,6,0,9,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToIncomingDependency,56,0,8,0,18,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToCollaboration,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoNamespaceToOwnedElements,125,0,36,0,39,0,22,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToBehavior,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToOutgoingTrans,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToStateMachine,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoBehavioralFeatureToStateMachine,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoInteractionToMessages,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoEnumerationToLiterals,55,0,8,0,16,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoCriticsToCritic,66,0,10,0,20,0,9,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoBehavioralFeatureToStateDiagram,52,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToOperation,34,0,4,0,11,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoUseCaseToExtensionPoint,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToAttribute,34,0,4,0,11,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoCollaborationToInteraction,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStereotypeToTagDefinition,57,0,8,0,17,0,9,0,5,0
+argouml-app,org.argouml.ui.explorer.rules,GoProfileToCritics.new ArrayList() {...},19,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToDownstream,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoOperationToSequenceDiagram,52,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoOperationToCollaboration,42,0,6,0,12,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToInternalTrans,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoTransitionToTarget,40,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoNamespaceToDiagram,53,0,12,0,14,0,10,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassToSummary,231,0,36,0,55,0,25,0,7,0
+argouml-app,org.argouml.ui.explorer.rules,GoNodeToResidentComponent,18,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoMessageToAction,44,0,6,0,14,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToStructuralFeature,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoCriticsToCritic.new Vector() {...},19,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer.rules,GoProfileConfigurationToProfile,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoTransitionToSource,40,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSubmachineStateToStateMachine,40,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToProfileConfiguration,25,0,2,0,8,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoNamespaceToClassifierAndPackage,58,0,10,0,18,0,9,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToInheritance,110,0,16,0,33,0,12,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoComponentToResidentModelElement,36,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelToCollaboration,48,0,8,0,16,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateMachineToTop,40,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToSequenceDiagram,52,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoElementToMachine,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelToElements,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,IncomingDependencyNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoLinkToStimuli,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToTemplateParameter,18,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToContainedLostElements,61,0,10,0,19,0,9,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToDiagram,17,0,2,0,6,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStatemachineToDiagram,69,0,12,0,22,0,10,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoTransitiontoEffect,44,0,6,0,14,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelToBaseElements,59,0,8,0,18,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelElementToComment,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelToDiagrams,82,0,14,0,24,0,12,0,5,0
+argouml-app,org.argouml.ui.explorer.rules,GoClassifierToBehavioralFeature,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProjectToStateMachine,37,0,4,0,11,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToIncomingTrans,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToAssociation,34,0,4,0,11,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoPackageToClass,20,0,2,0,8,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToDoActivity,44,0,6,0,13,0,7,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateMachineToTransition,32,0,4,0,10,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoProfileToCritics,29,0,2,0,9,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoStimulusToAction,44,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoCollaborationToDiagram,71,0,18,0,20,0,13,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoTransitionToGuard,40,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoOperationToCollaborationDiagram,54,0,8,0,16,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoModelToNode,20,0,2,0,8,0,5,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,GoSummaryToOutgoingDependency,56,0,8,0,19,0,8,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,AssociationsNode,14,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.ui.explorer.rules,AbstractPerspectiveRule,6,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer.rules,GoStateToExit,44,0,6,0,13,0,7,0,4,0
+argouml-app,org.argouml.uml.diagram.activity.layout,ActivityDiagramLayouter,206,0,22,0,42,0,20,0,9,0
+argouml-app,org.argouml.profile.internal.ui,PropPanelCritic,270,0,6,0,54,0,6,0,3,0
+argouml-app,org.argouml.profile.internal.ui,ProfilePropPanelFactory,5,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.cognitive.critics.ui,TableModelCritics,268,0,54,0,80,0,40,0,13,0
+argouml-app,org.argouml.cognitive.critics.ui,ActionOpenCritics,22,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.cognitive.critics.ui,TableCritics,133,0,4,0,40,0,8,0,6,0
+argouml-app,org.argouml.cognitive.critics.ui,CriticBrowserDialog,1125,0,64,0,292,0,51,0,19,0
+argouml-app,org.argouml.cognitive.critics.ui,TableModelCritics.new Runnable() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.cognitive.critics.ui,TableModelCritics.new Comparator() {...},12,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram,DiagramFactory.DiagramType,0,74,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.diagram,DiagramEdgeSettings,0,16,0,0,0,6,0,3,0,3
+argouml-app,org.argouml.uml.diagram,DiagramFactory,72,203,12,22,20,53,10,17,1,9
+argouml-app,org.argouml.uml.diagram,DiagramUtils,18,21,6,2,6,9,4,3,0,3
+argouml-app,org.argouml.uml.diagram,ArgoDiagramImpl,685,274,122,32,173,87,83,32,12,26
+argouml-app,org.argouml.uml.diagram,ProjectMemberDiagram,4,21,0,0,1,8,1,5,1,5
+argouml-app,org.argouml.uml.diagram,DiagramSettings,43,408,11,65,11,119,12,53,2,25
+argouml-app,org.argouml.uml.diagram,UMLMutableGraphSupport,523,67,81,3,131,22,60,10,18,10
+argouml-app,org.argouml.uml.diagram,GraphChangeAdapter,153,11,27,1,52,4,22,3,8,3
+argouml-app,org.argouml.uml.diagram,DiagramSettings.StereotypeStyle,8,77,4,6,1,12,4,4,0,3
+argouml-app,org.argouml.uml.diagram,DiagramUndoManager.DiagramCommand,13,9,0,0,5,3,3,1,3,1
+argouml-app,org.argouml.uml.diagram,DiagramUndoManager,16,47,4,8,6,14,6,6,2,4
+argouml-app,org.argouml.uml.diagram,DiagramSettings.new Memento() {...},12,17,2,0,2,3,2,2,1,2
+argouml-app,org.argouml.uml.diagram,DiagramSettings.new Memento() {...},12,17,2,0,2,3,2,2,1,2
+argouml-app,org.argouml.uml.diagram,DiagramSettings.new Memento() {...},7,20,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.uml.diagram,DiagramSettings.new Memento() {...},7,19,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.uml.diagram,DiagramElementSettings,0,9,0,0,0,4,0,2,0,2
+argouml-app,org.argouml.uml.diagram,DiagramAppearance,5,104,1,3,1,35,1,7,0,6
+argouml-app,org.argouml.uml.diagram,UmlDiagramRenderer,333,9,71,1,76,1,45,2,9,2
+argouml-app,org.argouml.uml.diagram.activity.ui,FigActionState,99,227,7,1,23,49,11,9,7,9
+argouml-app,org.argouml.uml.diagram.activity.ui,FigPool,156,0,6,0,44,0,16,0,13,0
+argouml-app,org.argouml.uml.diagram.activity.ui,FigObjectFlowState,296,230,21,3,64,56,27,11,15,11
+argouml-app,org.argouml.uml.diagram.activity.ui,InitActivityDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.activity.ui,ActionCreatePartition,17,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.activity.ui,ModePlacePartition,24,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.activity.ui,PropPanelUMLActivityDiagram,7,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.activity.ui,ActivityDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.uml.diagram.activity.ui,ActivityDiagramRenderer,38,3,6,0,10,1,4,1,1,1
+argouml-app,org.argouml.uml.diagram.activity.ui,FigPartition.SelectionPartition,760,0,74,0,138,0,47,0,6,0
+argouml-app,org.argouml.uml.diagram.activity.ui,SelectionCallState,10,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.activity.ui,FigPartition,627,0,38,0,153,0,43,0,24,0
+argouml-app,org.argouml.uml.diagram.activity.ui,UMLActivityDiagram,941,270,140,28,239,72,115,17,37,11
+argouml-app,org.argouml.uml.diagram.activity.ui,FigCallState,11,8,0,0,3,3,2,2,2,2
+argouml-app,org.argouml.uml.diagram.activity.ui,FigSubactivityState,458,0,18,0,93,0,27,0,18,0
+argouml-app,org.argouml.uml.diagram.activity.ui,SelectionActionState,169,0,12,0,44,0,20,0,14,0
+argouml-app,org.argouml.uml.diagram.use_case,UseCaseDiagramGraphModel,638,8,136,0,164,3,79,2,11,2
+argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryManager,34,388,14,46,3,86,14,28,0,12
+argouml-app,org.argouml.ui.targetmanager,TargetManager.Remover,27,75,4,14,8,22,4,11,1,5
+argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryRemover,0,13,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.ui.targetmanager,TargetEvent,51,70,8,8,11,16,9,8,4,5
+argouml-app,org.argouml.ui.targetmanager,TargetManager,165,650,28,94,34,186,25,69,3,30
+argouml-app,org.argouml.ui.targetmanager,TargetManager.TargetRemover,0,12,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.profile.internal.ocl,DefaultOclEvaluator,9,60,1,3,3,14,1,5,0,4
+argouml-app,org.argouml.profile.internal.ocl,ComputeDesignMaterials,13,64,1,3,2,13,1,5,0,4
+argouml-app,org.argouml.profile.internal.ocl,CompositeModelInterpreter,4,58,2,6,2,14,2,6,0,4
+argouml-app,org.argouml.profile.internal.ocl,ContextApplicable,8,34,0,0,4,8,2,3,2,3
+argouml-app,org.argouml.profile.internal.ocl,EvaluateExpression,564,1072,135,103,109,285,109,46,9,27
+argouml-app,org.argouml.profile.internal.ocl,ComputeTriggers,0,29,0,0,0,6,0,3,0,3
+argouml-app,org.argouml.profile.internal.ocl,InvalidOclException,4,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.profile.internal.ocl,EvaluateInvariant,0,89,3,7,0,22,3,5,0,3
+argouml-app,org.argouml.profile.internal.ocl,CrOCL,31,106,6,16,7,32,5,10,1,3
+argouml-app,org.argouml.profile.internal.ocl,OclInterpreter,8,79,0,0,3,20,0,5,0,5
+argouml-app,org.argouml.profile.internal.ocl,EvaluateExpression.new LambdaEvaluator() {...},0,40,0,0,0,9,0,2,0,2
+argouml-app,org.argouml.uml.cognitive.checklist,Init,1067,0,2,0,283,0,5,0,4,0
+argouml-app,org.argouml.uml.cognitive.checklist,UMLCheckItem,106,0,2,0,26,0,5,0,4,0
+argouml-app,org.argouml.ui.cmd,NavigateTargetBackAction,18,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.ui.cmd,ShortcutField,71,0,6,0,18,0,6,0,3,0
+argouml-app,org.argouml.ui.cmd,ActionAdjustGrid,239,0,30,0,54,0,22,0,7,0
+argouml-app,org.argouml.ui.cmd,ActionNewProfile,50,0,4,0,22,0,4,0,2,0
+argouml-app,org.argouml.ui.cmd,PrintManager,29,0,2,0,11,0,6,0,5,0
+argouml-app,org.argouml.ui.cmd,SettingsTabShortcuts.ShortcutTableModel,167,0,16,0,33,0,17,0,8,0
+argouml-app,org.argouml.ui.cmd,ActionPageSetup,10,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,NavigateTargetForwardAction,18,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.ui.cmd,ActionNotation,118,0,8,0,34,0,10,0,6,0
+argouml-app,org.argouml.ui.cmd,ActionSelectInvert,9,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,KeyStrokeCellRenderer,19,0,4,0,7,0,4,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionSystemInfo,58,0,2,0,15,0,3,0,2,0
+argouml-app,org.argouml.ui.cmd,ShortcutField.new KeyListener() {...},82,0,8,0,27,0,9,0,5,0
+argouml-app,org.argouml.ui.cmd,LastRecentlyUsedMenuList,245,0,22,0,55,0,14,0,3,0
+argouml-app,org.argouml.ui.cmd,ActionShowXMLDump,73,0,0,0,20,0,3,0,3,0
+argouml-app,org.argouml.ui.cmd,ShortcutMgr,898,0,54,0,192,0,40,0,13,0
+argouml-app,org.argouml.ui.cmd,ActionAdjustSnap,193,0,14,0,53,0,12,0,5,0
+argouml-app,org.argouml.ui.cmd,ActionGotoDiagram,36,0,2,0,13,0,4,0,3,0
+argouml-app,org.argouml.ui.cmd,ActionNew,50,0,4,0,22,0,4,0,2,0
+argouml-app,org.argouml.ui.cmd,GenericArgoMenuBar,1906,0,34,0,488,0,59,0,42,0
+argouml-app,org.argouml.ui.cmd,ShortcutChangedEvent,10,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionHelp,17,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionAdjustPageBreaks,9,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionFind,26,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionAboutArgoUML,22,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,ZoomActionProxy,37,0,8,0,11,0,6,0,2,0
+argouml-app,org.argouml.ui.cmd,InitUiCmdSubsystem,22,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.ui.cmd,SettingsTabShortcuts,864,0,49,0,216,0,42,0,17,0
+argouml-app,org.argouml.ui.cmd,ShortcutMgr.new Comparator() {...},21,0,4,0,8,0,4,0,2,0
+argouml-app,org.argouml.ui.cmd,RelationshipActionFactory,588,0,80,0,123,0,50,0,10,0
+argouml-app,org.argouml.ui.cmd,ActionWrapper,37,0,0,0,14,0,7,0,7,0
+argouml-app,org.argouml.ui.cmd,ActionSelectAll,9,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,RelationshipActionFactory.AddAssociationAction,66,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.ui.cmd,ActionExit,15,0,0,0,7,0,3,0,3,0
+argouml-app,org.argouml.ui.cmd,RelationshipActionFactory.AddSpecialAction,66,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.ui.cmd,CmdSetPreferredSize,94,0,16,0,32,0,13,0,5,0
+argouml-app,org.argouml.ui.cmd,ActionPrint,15,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.ui.cmd,GenericArgoMenuBar.new Runnable() {...},24,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.ui.cmd,RelationshipActionFactory.AddGeneralAction,66,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.ui.cmd,RelationshipActionFactory.AddUsageAction,66,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.layout,LayoutHelper,182,0,38,0,34,0,24,0,5,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigSubsystem,0,112,0,0,0,14,0,2,0,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,PropPanelUMLClassDiagram,0,7,0,0,0,3,0,1,0,1
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.FigPackageFigText,100,23,20,0,35,9,11,3,1,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionStereotype,191,0,18,0,45,0,21,0,11,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigDataType,38,132,11,11,10,40,12,6,2,5
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.HideVisibilityAction,18,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionClass,240,0,16,0,53,0,21,0,13,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigStereotypeDeclaration,151,73,8,2,27,22,7,3,3,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigInterface,220,97,33,5,41,31,21,5,3,4
+argouml-app,org.argouml.uml.diagram.static_structure.ui,InitClassDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,PackagePortFigRect,117,23,0,0,6,8,1,3,1,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.PackageBackground,117,190,0,0,6,37,1,3,1,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,StylePanelFigClass,85,41,8,0,28,12,7,1,3,1
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.ShowStereotypeAction,18,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionCompartmentText,14,0,0,0,7,0,6,0,6,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigEdgeNote,73,174,21,17,27,53,29,12,12,10
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigOperation,22,20,3,1,7,5,4,3,2,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionClass.ModeCreateEdgeAndNodeWithComposition,15,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionComment,82,0,2,0,14,0,8,0,7,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionSignal,10,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.HideStereotypeAction,18,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigException,5,6,0,0,1,2,1,1,1,1
+argouml-app,org.argouml.uml.diagram.static_structure.ui,ClassDiagramPropPanelFactory,0,12,0,2,0,4,0,3,0,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,StylePanelFigPackage,96,0,6,0,27,0,6,0,3,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigLink,77,77,15,3,28,18,15,3,6,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigComment,412,743,72,18,119,137,59,24,20,18
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionGeneralizableElement,134,0,10,0,25,0,13,0,8,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigEnumerationLiteral,0,8,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigFeature,29,24,2,0,10,8,4,3,3,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,StylePanelFigInterface,50,21,4,0,16,6,4,1,2,1
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionDataType,18,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,UMLClassDiagram,1261,442,120,80,317,108,108,38,38,8
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigAttribute,0,8,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionEnumeration,52,0,0,0,7,0,5,0,5,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigClass,204,74,47,3,56,25,29,5,5,4
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigClassifierBox,455,90,71,7,109,27,47,6,8,6
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigEnumeration,143,20,11,1,21,7,9,3,3,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionInterface,147,0,16,0,31,0,16,0,8,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage.ShowVisibilityAction,18,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,ClassDiagramRenderer,105,48,14,4,18,14,10,3,1,3
+argouml-app,org.argouml.uml.diagram.static_structure.ui,SelectionException,10,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigSignal,11,93,0,2,3,27,2,3,2,2
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigPackage,437,650,64,14,118,125,50,20,14,17
+argouml-app,org.argouml.uml.diagram.static_structure.ui,FigModel,0,79,0,0,0,13,0,2,0,2
+argouml-app,org.argouml.uml.ui.model_management,ActionAddPackage,30,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.model_management,ActionAddPackageImport,40,0,0,0,13,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.model_management,ActionRemovePackageImport,15,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.util.logging,AwtExceptionHandler,22,0,0,0,10,0,4,0,4,0
+argouml-app,org.argouml.util.logging,SimpleTimer.SimpleTimerEnumeration,149,0,8,0,20,0,7,0,3,0
+argouml-app,org.argouml.util.logging,SimpleTimer,72,0,2,0,17,0,6,0,5,0
+argouml-app,org.argouml.notation,SDNotationSettings,0,10,0,0,0,4,0,3,0,3
+argouml-app,org.argouml.notation,NotationProvider,137,243,15,21,21,60,17,18,2,15
+argouml-app,org.argouml.notation,Notation,2,159,0,2,1,58,1,10,1,9
+argouml-app,org.argouml.notation,InitNotation,6,6,0,0,3,3,3,2,3,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},7,19,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
+argouml-app,org.argouml.notation,NotationProviderFactory2,90,131,16,8,24,33,11,10,1,8
+argouml-app,org.argouml.notation,NotationSettings,35,453,13,69,13,140,13,56,0,28
+argouml-app,org.argouml.notation,NotationNameImpl,78,114,7,9,20,33,13,15,9,11
+argouml-app,org.argouml.notation.ui,InitNotationUI,32,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.notation.ui,SettingsTabNotation,632,0,32,0,160,0,30,0,14,0
+argouml-app,org.argouml.notation.ui,NotationComboBox,72,0,4,0,31,0,11,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrWrongDepEnds,203,0,42,0,64,0,26,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrMultipleInitialStates,148,30,24,0,46,11,16,3,4,3
+argouml-app,org.argouml.uml.cognitive.critics,CrMultiComposite,21,28,6,0,7,10,5,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyTransitions,6,60,3,5,1,18,3,4,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrMissingAttrName,63,50,7,7,18,18,7,6,3,3
+argouml-app,org.argouml.uml.cognitive.critics,CrNoTriggerOrGuard,103,28,28,0,32,10,15,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyAssoc,2,46,2,4,1,15,2,4,0,3
+argouml-app,org.argouml.uml.cognitive.critics,UMLWizard,53,0,8,0,20,0,10,0,6,0
+argouml-app,org.argouml.uml.cognitive.critics,CrEmptyPackage,17,27,4,0,6,10,3,3,1,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidSynch,88,25,22,0,31,9,12,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrCircularInheritance,21,33,2,0,8,12,2,3,1,3
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyStates,2,42,1,3,1,14,1,4,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrOppEndVsAttr,112,34,26,0,32,12,14,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrSubclassReference,160,31,26,0,46,11,17,2,4,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNoIncomingTransitions,121,22,30,0,34,8,17,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyOper,4,58,3,7,2,19,3,5,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidHistory,6,58,3,7,2,19,3,5,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrNodeInsideElement,97,8,14,0,30,4,11,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrNonAggDataType,2,25,0,0,1,9,1,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizCueCards,48,0,4,0,11,0,8,0,6,0
+argouml-app,org.argouml.uml.cognitive.critics,CrJoinIncomingTransition,40,22,8,0,14,8,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrDisambigClassName,136,17,30,0,45,7,19,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,ChildGenUML,206,0,42,0,58,0,25,0,4,0
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyClasses,41,25,8,0,11,9,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizManyNames,134,0,18,0,36,0,14,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrClassWithoutComponent,103,8,16,0,34,4,12,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrWrongLinkEnds,172,8,32,0,50,4,20,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrUselessAbstract,41,28,8,0,12,10,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrClassMustBeAbstract,29,25,8,0,9,9,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrAssocNameConflict,51,148,13,19,15,38,13,10,2,5
+argouml-app,org.argouml.uml.cognitive.critics,CrDupParamName,3,66,3,7,2,21,3,5,0,3
+argouml-app,org.argouml.uml.cognitive.critics,InitCognitiveCritics,10,0,0,0,5,0,5,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrInterfaceAllPublic,43,25,10,0,16,9,6,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizBreakCircularComp,381,0,52,0,102,0,37,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrUtilityViolated,78,31,16,0,23,11,9,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,ClAttributeCompartment,201,0,24,0,57,0,21,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrOppEndConflict,43,31,10,0,14,11,6,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrAttrNameConflict,44,34,10,0,14,12,7,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrMissingClassName,57,51,5,7,15,16,6,6,3,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidInitial,6,52,3,5,2,17,3,4,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrMissingOperName,61,50,7,7,17,17,6,6,2,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInstanceWithoutClassifier,114,8,20,0,39,4,14,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrSeqInstanceWithoutClassifier,120,0,20,0,38,0,15,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrMultipleShallowHistoryStates,148,30,24,0,46,11,16,3,4,3
+argouml-app,org.argouml.uml.cognitive.critics,CrUnnavigableAssoc,40,22,8,0,13,8,6,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNodeInstanceInsideElement,97,8,14,0,30,4,11,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrUselessInterface,29,28,8,0,9,10,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizMEName,119,0,16,0,37,0,17,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrUnconventionalAttrName,101,159,16,26,30,42,19,12,6,4
+argouml-app,org.argouml.uml.cognitive.critics,CrUnconventionalPackName,45,110,8,18,14,32,10,10,3,4
+argouml-app,org.argouml.uml.cognitive.critics,CrNameConflictAC,2,22,0,0,1,8,1,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizTooMany,90,0,16,0,31,0,13,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrMultipleDeepHistoryStates,148,30,24,0,47,11,16,3,4,3
+argouml-app,org.argouml.uml.cognitive.critics,ProfileCodeGeneration,0,304,1,3,0,55,1,7,0,6
+argouml-app,org.argouml.uml.cognitive.critics,AbstractCrUnconventionalName,0,3,0,0,0,1,0,1,0,1
+argouml-app,org.argouml.uml.cognitive.critics,WizAddConstructor,84,0,8,0,29,0,9,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrNoAssociations,87,159,34,28,30,43,25,10,0,4
+argouml-app,org.argouml.uml.cognitive.critics,CrComponentWithoutNode,145,8,28,0,48,4,18,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,ClOperationCompartment,163,0,18,0,49,0,18,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrMultipleAgg,56,25,16,0,20,9,10,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidJoinTriggerOrGuard,87,25,24,0,27,9,13,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNoOutgoingTransitions,126,22,34,0,36,8,19,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrIllegalGeneralization,35,25,8,0,12,9,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrMissingStateName,75,69,14,12,23,20,13,6,3,3
+argouml-app,org.argouml.uml.cognitive.critics,CrNodeInstanceWithoutClassifier,117,0,18,0,39,0,14,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrObjectWithoutClassifier,117,0,18,0,39,0,14,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrNoInstanceVariables,127,25,32,0,41,9,21,2,5,2
+argouml-app,org.argouml.uml.cognitive.critics,ClClassName,175,0,22,0,47,0,20,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidBranch,58,22,14,0,17,8,8,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizAddOperation,62,0,8,0,21,0,8,0,4,0
+argouml-app,org.argouml.uml.cognitive.critics,CrNWayAgg,48,28,14,0,16,10,8,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrIllegalName,55,47,16,0,15,13,10,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrUnconventionalClassName,46,100,10,16,15,30,11,9,3,4
+argouml-app,org.argouml.uml.cognitive.critics,CrNameConflict,47,108,9,13,15,29,9,8,2,4
+argouml-app,org.argouml.uml.cognitive.critics,CrForkOutgoingTransition,40,22,8,0,14,8,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrCircularAssocClass,40,22,10,0,14,8,6,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidPseudoStateTrigger,55,22,14,0,18,8,8,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrInterfaceOperOnly,31,25,8,0,10,9,5,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNameConfusion,278,33,58,0,75,11,39,2,10,2
+argouml-app,org.argouml.uml.cognitive.critics,AbstractCrTooMany,0,12,0,0,0,5,0,4,0,4
+argouml-app,org.argouml.uml.cognitive.critics,CrObjectWithoutComponent,109,8,18,0,34,4,13,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrNoGuard,60,25,16,0,20,9,9,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrZeroLengthEdge,18,17,4,0,7,7,3,1,1,1
+argouml-app,org.argouml.uml.cognitive.critics,CrNavFromInterface,53,25,14,0,18,9,8,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidJoin,52,22,12,0,15,8,7,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrDupRoleNames,49,25,12,0,15,9,7,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidForkTriggerOrGuard,112,0,24,0,36,0,15,0,3,0
+argouml-app,org.argouml.uml.cognitive.critics,CrCircularComposition,118,30,12,0,30,11,11,3,5,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInvalidFork,52,22,12,0,15,8,7,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNoInitialState,6,68,4,10,3,24,4,6,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrDisambigStateName,103,28,28,0,36,10,16,2,2,2
+argouml-app,org.argouml.uml.cognitive.critics,CrNoOperations,124,30,32,0,39,10,21,2,5,2
+argouml-app,org.argouml.uml.cognitive.critics,CrCompInstanceWithoutNode,141,8,26,0,45,4,17,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,CrReservedName,105,233,22,0,30,63,16,4,5,4
+argouml-app,org.argouml.uml.cognitive.critics,CrTooManyAttr,4,58,3,7,2,19,3,5,0,3
+argouml-app,org.argouml.uml.cognitive.critics,CrInterfaceWithoutComponent,104,8,16,0,34,4,12,1,4,1
+argouml-app,org.argouml.uml.cognitive.critics,WizAssocComposite,317,0,46,0,97,0,33,0,8,0
+argouml-app,org.argouml.uml.cognitive.critics,CrMergeClasses,124,0,26,0,34,0,16,0,3,0
+argouml-app,org.argouml.uml.cognitive.critics,CrCrossNamespaceAssoc,39,22,10,0,12,8,6,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,CrConstructorNeeded,107,17,24,0,35,7,15,1,3,1
+argouml-app,org.argouml.uml.cognitive.critics,CrProfile,33,0,4,0,7,0,4,0,2,0
+argouml-app,org.argouml.uml.cognitive.critics,ProfileGoodPractices,0,167,1,3,0,32,1,7,0,6
+argouml-app,org.argouml.uml.cognitive.critics,CrUML,154,56,20,0,40,13,18,6,8,6
+argouml-app,org.argouml.uml.cognitive.critics,CrConflictingComposites,66,0,16,0,27,0,10,0,2,0
+argouml-app,org.argouml.uml.cognitive.critics,CrOperNameConflict,162,31,48,0,50,11,27,2,3,2
+argouml-app,org.argouml.uml.cognitive.critics,CrComponentInstanceWithoutClassifier,117,0,18,0,42,0,14,0,5,0
+argouml-app,org.argouml.uml.cognitive.critics,CrNoTransitions,94,28,30,0,24,10,16,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,WizNavigable,251,0,36,0,62,0,25,0,7,0
+argouml-app,org.argouml.uml.cognitive.critics,CrFinalSubclassed,24,33,6,0,6,11,4,2,1,2
+argouml-app,org.argouml.uml.cognitive.critics,ChildGenDerivedClasses,46,0,6,0,13,0,5,0,2,0
+argouml-app,org.argouml.uml.cognitive.critics,WizOperName,345,0,63,0,120,0,43,0,9,0
+argouml-app,org.argouml.uml.cognitive.critics,WizAddInstanceVariable,69,0,8,0,25,0,8,0,4,0
+argouml-app,org.argouml.uml.cognitive.critics,CrUnconventionalOperName,172,86,30,10,50,23,24,6,6,4
+argouml-app,org.argouml.uml.cognitive.critics,CrNodesOverlap,177,23,42,0,50,9,25,2,4,2
+argouml-app,org.argouml.uml.cognitive.critics,CrAlreadyRealizes,27,29,4,0,8,10,3,2,1,2
+argouml-app,org.argouml.cognitive.ui,GoListToTypeToItem,202,0,34,0,59,0,25,0,8,0
+argouml-app,org.argouml.cognitive.ui,ToDoPane.new Runnable() {...},25,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.cognitive.ui,ToDoPane.new Runnable() {...},25,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.cognitive.ui,ToDoPane.new Runnable() {...},22,0,2,0,4,0,3,0,2,0
+argouml-app,org.argouml.cognitive.ui,ToDoPane.new Runnable() {...},49,0,6,0,11,0,5,0,2,0
+argouml-app,org.argouml.cognitive.ui,GoListToPosterToItem,89,0,12,0,27,0,15,0,9,0
+argouml-app,org.argouml.cognitive.ui,ToDoPerspective,124,0,22,0,32,0,20,0,9,0
+argouml-app,org.argouml.cognitive.ui,ToDoByOffender,346,0,32,0,105,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,ActionNewToDoItem,15,12,0,0,4,5,1,1,1,1
+argouml-app,org.argouml.cognitive.ui,ToDoByPoster,305,0,32,0,92,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,ActionResolve,15,5,0,0,5,2,1,1,1,1
+argouml-app,org.argouml.cognitive.ui,ActionAutoCritique,43,0,4,0,13,0,4,0,2,0
+argouml-app,org.argouml.cognitive.ui,WizStepCue,152,0,0,0,40,0,1,0,1,0
+argouml-app,org.argouml.cognitive.ui,KnowledgeTypeNode,100,0,2,0,20,0,6,0,5,0
+argouml-app,org.argouml.cognitive.ui,WizStepChoice,295,0,10,0,79,0,8,0,3,0
+argouml-app,org.argouml.cognitive.ui,ActionSnooze,19,5,2,0,8,2,2,1,1,1
+argouml-app,org.argouml.cognitive.ui,DismissToDoItemDialog,307,0,2,0,82,0,8,0,7,0
+argouml-app,org.argouml.cognitive.ui,GoListToDecisionsToItems,200,0,38,0,56,0,30,0,11,0
+argouml-app,org.argouml.cognitive.ui,ActionOpenGoals,22,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,ToDoPane,613,0,43,0,164,0,51,0,29,0
+argouml-app,org.argouml.cognitive.ui,GoListToPriorityToItem,172,0,34,0,54,0,25,0,8,0
+argouml-app,org.argouml.cognitive.ui,WizStepConfirm,152,0,0,0,41,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,ActionGoToCritique,29,0,0,0,10,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,PriorityNode,64,0,2,0,21,0,7,0,6,0
+argouml-app,org.argouml.cognitive.ui,ToDoItemAction,4,36,1,3,1,13,2,4,1,3
+argouml-app,org.argouml.cognitive.ui,ToDoTreeRenderer,296,0,44,0,71,0,25,0,3,0
+argouml-app,org.argouml.cognitive.ui,WizDescription,112,108,6,10,37,34,6,5,0,3
+argouml-app,org.argouml.cognitive.ui,TabToDo,97,172,11,7,31,50,19,8,11,7
+argouml-app,org.argouml.cognitive.ui,WizStepTextField,228,0,0,0,59,0,3,0,3,0
+argouml-app,org.argouml.cognitive.ui,DesignIssuesDialog,434,0,11,0,113,0,11,0,4,0
+argouml-app,org.argouml.cognitive.ui,ToDoByPriority,309,0,32,0,89,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,ToDoByType,274,0,32,0,80,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,ToDoByGoal,264,0,32,0,74,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,WizStep,196,236,33,5,64,54,33,7,15,6
+argouml-app,org.argouml.cognitive.ui,DismissToDoItemDialog.new ActionListener() {...},20,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,DismissToDoItemDialog.new ActionListener() {...},51,0,6,0,9,0,5,0,2,0
+argouml-app,org.argouml.cognitive.ui,DismissToDoItemDialog.new ActionListener() {...},12,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,WizStepManyTextFields,281,0,4,0,69,0,4,0,2,0
+argouml-app,org.argouml.cognitive.ui,DismissToDoItemDialog.new ActionListener() {...},12,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,GoListToGoalsToItems,181,0,32,0,52,0,25,0,9,0
+argouml-app,org.argouml.cognitive.ui,InitCognitiveUI,4,16,0,0,2,5,2,3,2,3
+argouml-app,org.argouml.cognitive.ui,AddToDoItemDialog,314,0,12,0,73,0,11,0,4,0
+argouml-app,org.argouml.cognitive.ui,ActionOpenDecisions,22,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.cognitive.ui,GoListToOffenderToItem,166,0,16,0,47,0,17,0,9,0
+argouml-app,org.argouml.cognitive.ui,AbstractGoList2,18,0,0,0,7,0,5,0,5,0
+argouml-app,org.argouml.cognitive.ui,ToDoByDecision,271,0,32,0,80,0,22,0,6,0
+argouml-app,org.argouml.cognitive.ui,GoalsDialog,269,0,4,0,63,0,5,0,3,0
+argouml-app,org.argouml.util,JavaRuntimeUtility,35,0,10,0,8,0,8,0,3,0
+argouml-app,org.argouml.util,PredicateTrue,2,7,0,0,1,2,1,2,1,2
+argouml-app,org.argouml.util,SuffixFilter,158,0,18,0,37,0,18,0,9,0
+argouml-app,org.argouml.util,Tools,323,0,20,0,86,0,16,0,6,0
+argouml-app,org.argouml.util,FileFilters,94,0,2,0,23,0,4,0,3,0
+argouml-app,org.argouml.util,ExprSeparatorWithStrings,0,143,0,26,0,44,0,18,0,5
+argouml-app,org.argouml.util,ToolBarUtility.PopupActionsListener,40,0,6,0,12,0,5,0,2,0
+argouml-app,org.argouml.util,EnumerationIterator,18,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.util,MyTokenizer,0,519,2,60,0,122,2,40,0,11
+argouml-app,org.argouml.util,CustomSeparator,29,90,1,7,7,20,4,9,3,6
+argouml-app,org.argouml.util,ItemUID,243,99,7,11,65,28,5,12,0,8
+argouml-app,org.argouml.util,QuotedStringSeparator,0,117,0,14,0,34,0,13,0,6
+argouml-app,org.argouml.util,FileConstants,3,0,0,0,1,0,1,0,1,0
+argouml-app,org.argouml.util,ArgoDialog,81,0,6,0,24,0,9,0,6,0
+argouml-app,org.argouml.util,IteratorEnumeration,14,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.util,PredicateEquals,20,0,4,0,6,0,4,0,2,0
+argouml-app,org.argouml.util,LineSeparator,0,78,0,14,0,24,0,14,0,7
+argouml-app,org.argouml.util,ArgoFrame,69,0,14,0,25,0,12,0,5,0
+argouml-app,org.argouml.util,KeyEventUtils,136,0,24,0,32,0,17,0,5,0
+argouml-app,org.argouml.util,PredicateStringMatch,156,0,24,0,37,0,16,0,4,0
+argouml-app,org.argouml.util,ToolBarUtility,228,0,30,0,52,0,21,0,6,0
+argouml-app,org.argouml.util,TokenSep,19,87,1,7,1,20,1,10,0,7
+argouml-app,org.argouml.util,ThreadUtils,7,3,1,1,2,2,2,1,1,1
+argouml-app,org.argouml.util,CollectionUtil,48,0,10,0,15,0,8,0,3,0
+argouml-app,org.argouml.util,UIUtils,23,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.util,SingleElementIterator,33,0,4,0,12,0,6,0,4,0
+argouml-app,org.argouml.util,UIUtils.new AbstractAction() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.util,PredicateType,162,0,14,0,40,0,15,0,8,0
+argouml-app,org.argouml.uml.cognitive,ChildGenSearch,60,0,6,0,14,0,6,0,3,0
+argouml-app,org.argouml.uml.cognitive,UMLToDoItem,183,0,38,0,50,0,30,0,11,0
+argouml-app,org.argouml.uml.cognitive,UMLDecision,0,102,0,0,0,18,0,2,0,2
+argouml-app,org.argouml.uml.cognitive,ProjectMemberTodoList,32,55,8,2,7,16,6,5,1,5
+argouml-app,org.argouml.uml.reveng,ImportInterface.ImportException,21,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.uml.reveng,ConfigPanelExtension,438,0,14,0,117,0,14,0,7,0
+argouml-app,org.argouml.uml.reveng,Import,687,0,80,0,172,0,57,0,17,0
+argouml-app,org.argouml.uml.reveng,ImporterManager,54,0,2,0,15,0,8,0,7,0
+argouml-app,org.argouml.uml.reveng,Setting.UniqueSelection,64,0,12,0,19,0,12,0,6,0
+argouml-app,org.argouml.uml.reveng,FileImportUtils,123,0,30,0,32,0,18,0,3,0
+argouml-app,org.argouml.uml.reveng,Setting,19,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.reveng,ImportCommon,757,0,124,0,213,0,91,0,29,0
+argouml-app,org.argouml.uml.reveng,Import.SelectedLanguageListener,65,0,2,0,16,0,4,0,3,0
+argouml-app,org.argouml.uml.reveng,Import.ConfigPanelExtension,343,0,26,0,69,0,16,0,3,0
+argouml-app,org.argouml.uml.reveng,Import.new Runnable() {...},13,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng,Import.new ActionListener() {...},22,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.uml.reveng,Setting.PathListSelection,21,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.reveng,Import.ConfigPanelExtension.new FocusListener() {...},23,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.uml.reveng,Import.ConfigPanelExtension.new ActionListener() {...},22,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng,Import.ConfigPanelExtension.new ActionListener() {...},22,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng,ImportClassLoader,259,0,20,0,71,0,22,0,12,0
+argouml-app,org.argouml.uml.reveng,DiagramInterface,353,0,36,0,93,0,36,0,18,0
+argouml-app,org.argouml.uml.reveng,Import.ImportFileChooser,112,0,8,0,41,0,11,0,7,0
+argouml-app,org.argouml.uml.reveng,Setting.PathSelection,21,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.reveng,Setting.BooleanSelection,20,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLStructuralFeatureChangeabilityRadioButtonPanel,102,0,10,0,27,0,8,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLAssociationEndTargetScopeCheckbox,19,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLOperationConcurrencyRadioButtonPanel,105,0,12,0,28,0,9,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLBehavioralFeatureQueryCheckBox,17,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetAssociationEndTargetScope,44,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddEnumeration,91,0,16,0,26,0,10,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLAssociationEndOrderingCheckBox,22,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddAttribute,87,12,16,0,25,5,11,1,3,1
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetOperationConcurrencyKind,69,0,8,0,22,0,8,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLGeneralizableElementLeafCheckBox,26,0,4,0,8,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddOperation.new TargetListener() {...},17,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLAssociationEndNavigableCheckBox,17,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLDiagramNameDocument,27,0,4,0,12,0,5,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionNewClass,35,0,4,0,12,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLModelElementNameDocument,0,15,0,0,0,5,0,3,0,3
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetFeatureOwnerScope,0,35,2,2,0,11,2,2,0,2
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddLiteral,43,0,4,0,13,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLParameterDirectionKindRadioButtonPanel,116,0,10,0,29,0,8,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddAttribute.new TargetListener() {...},17,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetBehavioralFeatureQuery,44,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLModelElementVisibilityRadioButtonPanel,149,0,16,0,35,0,12,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLGeneralizableElementRootCheckBox,26,0,4,0,8,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionNewInnerClass,29,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionNewModelElementConstraint,19,0,0,0,7,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetStructuralFeatureTargetScope,50,0,6,0,17,0,7,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLClassActiveCheckBox,17,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetGeneralizableElementRoot,50,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionNewInterface,34,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddClientDependencyAction,123,6,12,0,31,3,10,1,4,1
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetGeneralizableElementLeaf,50,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLAssociationEndChangeabilityRadioButtonPanel,102,0,10,0,24,0,8,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLDiscriminatorNameDocument,16,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetGeneralizableElementAbstract,50,0,8,0,15,0,8,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionNewParameter,38,0,4,0,13,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddOperation,91,0,12,0,28,0,10,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetAssociationEndOrdering,53,0,6,0,18,0,7,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLGeneralizableElementAbstractCheckBox,26,0,4,0,8,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetParameterDirectionKind,84,0,14,0,26,0,11,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetClassActive,44,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLOperationSpecificationDocument,37,0,8,0,10,0,7,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetElementOwnershipSpecification,53,0,8,0,16,0,8,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLStructuralFeatureTargetScopeCheckBox,28,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddAssociationSpecification,55,0,2,0,18,0,8,0,7,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddEnumerationLiteral,39,0,4,0,13,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetChangeability,71,0,10,0,22,0,9,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddDataType,84,0,16,0,24,0,10,0,2,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetAssociationEndNavigable,44,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,ActionAddSupplierDependencyAction,123,6,12,0,31,3,10,1,4,1
+argouml-app,org.argouml.uml.ui.foundation.core,ActionSetModelElementVisibility,83,0,14,0,25,0,11,0,4,0
+argouml-app,org.argouml.uml.ui.foundation.core,UMLFeatureOwnerScopeCheckBox,0,16,0,0,0,4,0,2,0,2
+argouml-app,org.argouml.persistence,TodoParser,440,55,73,4,117,24,56,10,13,8
+argouml-app,org.argouml.persistence,XmlFilePersister,2,5,0,0,1,2,1,2,1,2
+argouml-app,org.argouml.persistence,FigEdgeHandler,0,102,3,17,0,33,3,9,0,2
+argouml-app,org.argouml.persistence,ProfileConfigurationFilePersister,127,167,9,9,35,48,10,12,5,8
+argouml-app,org.argouml.persistence,ToDoItemXMLHelper,44,0,6,0,16,0,9,0,5,0
+argouml-app,org.argouml.persistence,SAXParserBase,235,182,16,12,46,53,17,13,6,10
+argouml-app,org.argouml.persistence,TodoTokenTable,0,60,0,0,0,14,0,2,0,2
+argouml-app,org.argouml.persistence,MemberFilePersister,54,3,8,0,16,1,5,1,1,1
+argouml-app,org.argouml.persistence,OpenException,56,12,11,1,16,5,10,2,4,2
+argouml-app,org.argouml.persistence,UmlFilePersister,394,492,32,26,120,128,24,22,4,13
+argouml-app,org.argouml.persistence,AbstractFilePersister.ProgressMgr,59,50,5,1,15,13,6,5,3,5
+argouml-app,org.argouml.persistence,XMLTokenTableBase,39,112,10,6,7,26,9,6,2,5
+argouml-app,org.argouml.persistence,XmiInputStream,283,13,46,0,69,5,29,1,6,1
+argouml-app,org.argouml.persistence,PrivateHandler.NameVal,3,14,0,0,1,5,1,2,1,2
+argouml-app,org.argouml.persistence,PGMLStackParser,225,872,44,108,48,221,41,53,1,17
+argouml-app,org.argouml.persistence,UmlVersionException,5,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.persistence,XmiFormatException,5,4,0,0,2,2,1,1,1,1
+argouml-app,org.argouml.persistence,ResolvedCriticXMLHelper,52,0,6,0,17,0,6,0,3,0
+argouml-app,org.argouml.persistence,PgmlUtility,221,0,32,0,59,0,22,0,6,0
+argouml-app,org.argouml.persistence,XMLElement,48,45,0,0,10,12,9,5,9,5
+argouml-app,org.argouml.persistence,ZargoFilePersister,315,660,32,50,75,170,28,35,4,18
+argouml-app,org.argouml.persistence,VersionException,4,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.persistence,AbstractFilePersister,83,264,18,20,23,67,20,20,4,17
+argouml-app,org.argouml.persistence,PersistenceManager,214,234,21,19,59,63,27,17,14,10
+argouml-app,org.argouml.persistence,ProjectFileView,22,0,4,0,7,0,5,0,3,0
+argouml-app,org.argouml.persistence,InterruptedIOException,9,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.persistence,DiagramMemberFilePersister,83,73,3,1,26,25,5,5,3,5
+argouml-app,org.argouml.persistence,XmiFilePersister,188,310,21,19,51,84,20,11,3,8
+argouml-app,org.argouml.persistence,SaveException,13,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.persistence,ProfileConfigurationParser,77,209,10,22,13,67,9,24,0,13
+argouml-app,org.argouml.persistence,OffenderXMLHelper,16,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.persistence,UmlFilePersister.XmlFilterOutputStream,274,0,22,0,66,0,21,0,10,0
+argouml-app,org.argouml.persistence,MultitypeFileFilter,93,0,8,0,18,0,9,0,5,0
+argouml-app,org.argouml.persistence,TodoListMemberFilePersister,59,50,2,0,18,19,3,4,2,4
+argouml-app,org.argouml.persistence,PGMLStackParser.EdgeData,22,46,4,4,1,13,4,6,0,6
+argouml-app,org.argouml.persistence,ModelMemberFilePersister,162,330,24,26,39,99,24,17,5,11
+argouml-app,org.argouml.persistence,ArgoParser,75,414,6,33,23,157,9,61,4,34
+argouml-app,org.argouml.persistence,PersistenceException,12,4,0,0,6,2,3,1,3,1
+argouml-app,org.argouml.persistence,OldModelMemberFilePersister,0,3,0,0,0,1,0,1,0,1
+argouml-app,org.argouml.persistence,PrivateHandler,208,127,45,19,48,38,29,10,2,5
+argouml-app,org.argouml.persistence,ProfileConfigurationParser.ProfileConfigurationTokenTable,0,33,0,0,0,9,0,2,0,2
+argouml-app,org.argouml.persistence,ZargoFilePersister.SubInputStream,0,15,0,0,0,6,0,3,0,3
+argouml-app,org.argouml.persistence,XmlInputStream,267,279,42,50,58,81,28,31,2,11
+argouml-app,org.argouml.persistence,ZipFilePersister,288,15,22,0,80,7,15,5,4,5
+argouml-app,org.argouml.persistence,ArgoTokenTable,0,140,0,0,0,35,0,2,0,2
+argouml-app,org.argouml.persistence,OldZargoFilePersister,67,239,8,16,20,67,9,9,2,4
+argouml-app,org.argouml.uml.reveng.ui,ImportClasspathDialog,161,0,4,0,31,0,4,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ProblemsDialog.new WindowAdapter() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportClasspathDialog.AddListener,56,0,4,0,10,0,4,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportClasspathDialog.RemoveListener,54,0,6,0,14,0,5,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen,320,0,4,0,77,0,20,0,18,0
+argouml-app,org.argouml.uml.reveng.ui,ProblemsDialog,172,0,2,0,38,0,5,0,4,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new Runnable() {...},16,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new Runnable() {...},14,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new Runnable() {...},15,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new Runnable() {...},20,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new Runnable() {...},34,0,4,0,8,0,4,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportStatusScreen.new ActionListener() {...},19,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.uml.reveng.ui,ImportClasspathDialog.AddListener.new ActionListener() {...},53,0,8,0,9,0,6,0,2,0
+argouml-app,org.argouml.uml.generator,TempFileUtils.new TempFileUtils.FileAction() {...},22,0,2,0,4,0,3,0,2,0
+argouml-app,org.argouml.uml.generator,TempFileUtils.new TempFileUtils.FileAction() {...},71,0,8,0,17,0,6,0,2,0
+argouml-app,org.argouml.uml.generator,TempFileUtils.new TempFileUtils.FileAction() {...},7,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.generator,SourceUnit,125,0,6,0,37,0,16,0,13,0
+argouml-app,org.argouml.uml.generator,CodeGenerator,4,0,0,0,1,0,1,0,1,0
+argouml-app,org.argouml.uml.generator,TempFileUtils,132,0,8,0,39,0,11,0,7,0
+argouml-app,org.argouml.uml.generator,GeneratorManager,181,26,24,0,43,9,22,4,10,4
+argouml-app,org.argouml.uml.generator,Language,72,0,4,0,25,0,14,0,12,0
+argouml-app,org.argouml.uml.generator,GeneratorHelper,58,0,4,0,14,0,8,0,6,0
+argouml-app,org.argouml.uml.generator,AbstractSection,350,0,36,0,88,0,24,0,6,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewEvent,56,0,6,0,19,0,6,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewCallEvent,19,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewPseudoState,38,0,2,0,13,0,4,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,UMLChangeExpressionModel,47,0,2,0,14,0,6,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewTransition,46,0,8,0,14,0,7,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionAddSignalsToSignalEvent,68,0,6,0,21,0,9,0,6,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewSignalEvent,19,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewTimeEvent,19,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewSynchState,24,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewSubmachineState,24,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,PopupMenuNewEvent,148,0,18,0,38,0,12,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ButtonActionNewGuard,57,0,4,0,19,0,7,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionAddEventAsDeferrableEvent,106,0,10,0,31,0,11,0,6,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewFinalState,24,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewCompositeState,24,0,0,0,9,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewChangeEvent,19,0,0,0,6,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewGuard,33,0,4,0,11,0,7,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,UMLSynchStateBoundDocument,45,0,4,0,16,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewStubState,24,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.state_machines,ActionNewSimpleState,24,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewEvent,78,0,2,0,26,0,7,0,6,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigBranchState,25,113,1,1,9,31,8,9,7,9
+argouml-app,org.argouml.uml.diagram.state.ui,FigSubmachineState,236,553,28,2,57,88,26,12,11,12
+argouml-app,org.argouml.uml.diagram.state.ui,FigShallowHistoryState,0,8,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.uml.diagram.state.ui,FigRegion,19,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigTransition,246,129,12,10,61,38,13,10,5,7
+argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.uml.diagram.state.ui,ActionCreatePseudostate,35,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1250,237,171,25,297,63,130,20,39,13
+argouml-app,org.argouml.uml.diagram.state.ui,FigState,156,169,30,2,49,41,24,8,8,8
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewChangeEvent,11,0,0,0,4,0,4,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,18,164,1,1,7,41,7,10,6,10
+argouml-app,org.argouml.uml.diagram.state.ui,FigVertex,681,0,56,0,169,0,53,0,25,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigVertex.FigRegionCompartment,160,0,12,0,38,0,10,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewSignalEvent,11,0,0,0,4,0,4,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigVertex.FigBody,34,0,0,0,10,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigForkState,17,114,1,1,6,31,6,9,5,9
+argouml-app,org.argouml.uml.diagram.state.ui,InitStateDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.state.ui,SelectionVertex,8,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigSynchState,88,151,7,1,29,37,13,8,9,8
+argouml-app,org.argouml.uml.diagram.state.ui,FigCompositeState,342,328,47,7,77,72,35,15,8,15
+argouml-app,org.argouml.uml.diagram.state.ui,FigFinalState,64,236,12,6,19,52,16,11,7,11
+argouml-app,org.argouml.uml.diagram.state.ui,FigDeepHistoryState,0,8,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.uml.diagram.state.ui,FigConcurrentRegion,941,0,74,0,212,0,69,0,32,0
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewEffect,60,0,2,0,19,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigJunctionState,136,93,1,1,18,25,9,8,8,8
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewTimeEvent,11,0,0,0,4,0,4,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigStateVertex,97,126,24,10,27,30,16,6,1,4
+argouml-app,org.argouml.uml.diagram.state.ui,FigSimpleState,53,267,1,1,10,55,6,12,5,12
+argouml-app,org.argouml.uml.diagram.state.ui,FigJoinState,17,114,1,1,6,31,6,9,5,9
+argouml-app,org.argouml.uml.diagram.state.ui,SelectionState,129,0,8,0,28,0,14,0,10,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigInitialState,79,114,7,1,26,31,11,10,7,10
+argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewCallEvent,11,0,0,0,4,0,4,0,4,0
+argouml-app,org.argouml.uml.diagram.state.ui,FigStubState,507,180,80,0,130,47,55,9,15,9
+argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramRenderer,109,13,21,1,22,3,13,2,2,2
+argouml-app,org.argouml.uml.diagram.state.ui,PropPanelUMLStateDiagram,7,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.notation.providers.java,AttributeNotationJava,107,0,12,0,28,0,11,0,5,0
+argouml-app,org.argouml.notation.providers.java,AssociationNameNotationJava,91,0,6,0,27,0,8,0,5,0
+argouml-app,org.argouml.notation.providers.java,NotationUtilityJava,269,12,64,2,73,4,42,2,9,2
+argouml-app,org.argouml.notation.providers.java,ModelElementNameNotationJava,137,199,22,42,39,63,22,16,0,6
+argouml-app,org.argouml.notation.providers.java,InitNotationJava,6,37,0,0,3,11,3,2,3,2
+argouml-app,org.argouml.notation.providers.java,OperationNotationJava,274,0,38,0,79,0,27,0,8,0
+argouml-app,org.argouml.notation.providers.java,AssociationEndNameNotationJava,60,0,6,0,18,0,8,0,5,0
+argouml-app,org.argouml.uml.diagram.use_case.ui,PropPanelUMLUseCaseDiagram,7,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigUseCase.FigMyCircle,0,97,0,0,0,12,0,3,0,3
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigInclude,11,81,0,0,4,19,2,3,2,3
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigUseCase,246,345,28,10,44,67,29,15,11,14
+argouml-app,org.argouml.uml.diagram.use_case.ui,UMLUseCaseDiagram,567,67,62,2,124,24,55,5,23,5
+argouml-app,org.argouml.uml.diagram.use_case.ui,SelectionActor,170,0,16,0,30,0,16,0,8,0
+argouml-app,org.argouml.uml.diagram.use_case.ui,UseCaseDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigActor,92,566,19,9,28,106,17,14,5,12
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigExtend,111,140,12,0,34,32,13,4,7,4
+argouml-app,org.argouml.uml.diagram.use_case.ui,InitUseCaseDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigActor.ActorPortFigRect,0,24,0,0,0,8,0,4,0,4
+argouml-app,org.argouml.uml.diagram.use_case.ui,UseCaseDiagramRenderer,296,13,23,1,67,3,14,2,2,2
+argouml-app,org.argouml.uml.diagram.use_case.ui,SelectionUseCase,167,0,14,0,30,0,15,0,8,0
+argouml-app,org.argouml.uml.diagram.use_case.ui,StylePanelFigUseCase,40,25,4,0,13,8,4,1,2,1
+argouml-app,org.argouml.uml.diagram.use_case.ui,FigExtensionPoint,0,8,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.application.helpers,ResourceLoaderWrapper,46,903,11,25,17,227,14,17,3,10
+argouml-app,org.argouml.application.helpers,ResourceLoader,54,199,11,25,17,56,11,22,4,11
+argouml-app,org.argouml.application.helpers,ApplicationVersion,10,23,5,5,0,8,5,4,0,4
+argouml-app,org.argouml.pattern.cognitive.critics,CrConsiderSingleton,110,0,26,0,36,0,15,0,2,0
+argouml-app,org.argouml.pattern.cognitive.critics,InitPatternCritics,35,0,0,0,12,0,6,0,6,0
+argouml-app,org.argouml.pattern.cognitive.critics,CrSingletonViolatedMissingStaticAttr,58,0,10,0,21,0,7,0,2,0
+argouml-app,org.argouml.pattern.cognitive.critics,CrSingletonViolatedOnlyPrivateConstructors,57,0,10,0,21,0,7,0,2,0
+argouml-app,org.argouml.pattern.cognitive.critics,CrConsiderFacade,13,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.ocl,ArgoAny,603,0,118,0,150,0,72,0,13,0
+argouml-app,org.argouml.ocl,ArgoFacade,61,0,10,0,13,0,7,0,2,0
+argouml-app,org.argouml.ocl,CriticOclEvaluator,22,0,0,0,5,0,4,0,4,0
+argouml-app,org.argouml.ocl,OCLUtil,142,0,20,0,36,0,12,0,2,0
+argouml-app,org.argouml.ocl,OCLExpander,0,10,0,0,0,4,0,2,0,2
+argouml-app,org.argouml.ocl,OCLEvaluator,160,18,20,0,36,5,13,1,3,1
+argouml-app,org.argouml.i18n,Translator,154,231,18,18,39,53,15,17,3,11
+argouml-app,org.argouml.uml.diagram.activity,ActivityDiagramGraphModel,16,3,4,0,5,1,3,1,1,1
+argouml-app,org.argouml.language.ui,LanguageComboBox,27,43,1,1,13,17,5,3,4,3
+argouml-app,org.argouml.ui.explorer,PerspectiveManager,1574,0,32,0,247,0,36,0,20,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree.ExplorerTreeWillExpandListener,31,0,2,0,8,0,4,0,3,0
+argouml-app,org.argouml.ui.explorer,ExplorerEventAdaptor,127,50,33,5,39,19,21,7,3,6
+argouml-app,org.argouml.ui.explorer,ActionDeployProfile,168,0,16,0,43,0,12,0,4,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree.ExplorerMouseListener,102,0,16,0,35,0,14,0,6,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree.ExplorerTreeSelectionListener,195,0,34,0,48,0,19,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RuleListener,33,0,6,0,9,0,5,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree.ExplorerTargetListener,154,0,18,0,37,0,14,0,5,0
+argouml-app,org.argouml.ui.explorer,ActionExportProfileXMI,171,0,18,0,48,0,15,0,6,0
+argouml-app,org.argouml.ui.explorer,ExplorerTreeModel.ExplorerUpdater,95,0,10,0,29,0,9,0,4,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup.ActionAddExistingRelatedNode,76,0,6,0,25,0,6,0,3,0
+argouml-app,org.argouml.ui.explorer,ActionPerspectiveConfig,20,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerTreeNode,119,0,22,0,35,0,19,0,8,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup.ActionCreateAssociation,74,0,2,0,17,0,3,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RenameListener,42,0,4,0,9,0,4,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.PerspectiveListSelectionListener,138,0,22,0,25,0,13,0,2,0
+argouml-app,org.argouml.ui.explorer,DnDExplorerTree.ArgoDropTargetListener.new ActionListener() {...},44,0,4,0,7,0,4,0,2,0
+argouml-app,org.argouml.ui.explorer,ActionManageProfiles,48,0,8,0,18,0,6,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveComboBox,17,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.ResetListener,36,0,4,0,9,0,4,0,2,0
+argouml-app,org.argouml.ui.explorer,ActionExportProfileXMI.new FileFilter() {...},18,0,4,0,3,0,5,0,3,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RuleListMouseListener,46,0,12,0,10,0,8,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.NewPerspectiveListener,50,0,0,0,11,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree.ExplorerTreeExpansionListener,14,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RulesListSelectionListener,46,0,10,0,11,0,7,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerTreeModel,841,0,100,0,233,0,71,0,21,0
+argouml-app,org.argouml.ui.explorer,DnDExplorerTree,485,0,46,0,113,0,34,0,11,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup.OrderedMenuItem,26,0,0,0,9,0,3,0,3,0
+argouml-app,org.argouml.ui.explorer,ExplorerEventAdaptor.ProfileChangeListener,4,10,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.ui.explorer,DnDExplorerTree.DnDTreeSelectionListener,13,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RenameDocumentListener,47,0,4,0,14,0,7,0,5,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.new Comparator() {...},12,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.new Comparator() {...},12,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,TypeThenNameOrder,105,0,28,0,33,0,17,0,3,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.RemovePerspectiveListener,43,0,4,0,9,0,4,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerEventAdaptor.new Runnable() {...},23,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.MoveUpListener,58,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.ui.explorer,DnDExplorerTree.ArgoDropTargetListener,707,0,98,0,203,0,57,0,8,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator,1179,0,24,0,261,0,26,0,14,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup.ActionCreateAssociationRole,74,0,2,0,17,0,3,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerPerspective,51,0,0,0,16,0,8,0,8,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup.OrderedMenu,16,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.DuplicatePerspectiveListener,44,0,2,0,11,0,3,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.MoveDownListener,64,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.LibraryListSelectionListener,32,0,6,0,7,0,5,0,2,0
+argouml-app,org.argouml.ui.explorer,ExplorerTree,258,0,30,0,66,0,23,0,8,0
+argouml-app,org.argouml.ui.explorer,NameOrder,90,0,14,0,28,0,12,0,5,0
+argouml-app,org.argouml.ui.explorer,ExplorerPopup,1079,0,196,0,244,0,108,0,10,0
+argouml-app,org.argouml.ui.explorer,PerspectiveConfigurator.OkListener,31,0,2,0,8,0,3,0,2,0
+argouml-app,org.argouml.notation.providers,ClassifierRoleNotation,8,26,1,3,2,8,1,3,0,2
+argouml-app,org.argouml.notation.providers,ComponentInstanceNotation,5,7,1,1,1,3,1,1,0,1
+argouml-app,org.argouml.notation.providers,TransitionNotation,0,16,0,2,0,6,0,3,0,2
+argouml-app,org.argouml.notation.providers,ActionStateNotation,8,50,1,5,3,12,1,4,0,2
+argouml-app,org.argouml.notation.providers,AttributeNotation,61,47,20,6,14,13,13,3,1,2
+argouml-app,org.argouml.notation.providers,ExtensionPointNotation,5,7,1,1,1,3,1,1,0,1
+argouml-app,org.argouml.notation.providers,MessageNotation,43,107,6,8,6,15,5,4,0,2
+argouml-app,org.argouml.notation.providers,OperationNotation,92,65,28,12,23,16,17,6,1,2
+argouml-app,org.argouml.notation.providers,ModelElementNameNotation,0,54,0,6,0,10,0,5,0,2
+argouml-app,org.argouml.notation.providers,AssociationRoleNotation,30,33,5,3,4,8,4,2,0,2
+argouml-app,org.argouml.notation.providers,ObjectNotation,45,31,14,2,13,8,9,2,1,2
+argouml-app,org.argouml.notation.providers,AssociationEndNameNotation,108,47,27,3,26,9,16,2,1,2
+argouml-app,org.argouml.notation.providers,ObjectFlowStateStateNotation,45,19,4,2,6,7,3,2,0,2
+argouml-app,org.argouml.notation.providers,NotationUtilityProviders,28,167,3,19,4,38,4,11,1,3
+argouml-app,org.argouml.notation.providers,StateBodyNotation,5,45,1,3,1,14,1,3,0,2
+argouml-app,org.argouml.notation.providers,AssociationNameNotation,29,47,3,3,6,9,3,2,0,2
+argouml-app,org.argouml.notation.providers,CallStateNotation,31,38,3,3,6,8,2,3,0,2
+argouml-app,org.argouml.notation.providers,ObjectFlowStateTypeNotation,5,32,2,2,1,8,2,2,0,2
+argouml-app,org.argouml.notation.providers,NodeInstanceNotation,5,52,1,3,1,9,1,3,0,2
+argouml-app,org.argouml.notation.providers,MultiplicityNotation,0,7,0,0,0,3,0,1,0,1
+argouml-app,org.argouml.notation.providers,EnumerationLiteralNotation,17,40,1,3,2,8,1,3,0,2
+argouml-app,org.argouml.profile.internal,ModelUtils,24,31,4,4,4,8,5,1,1,1
+argouml-app,org.argouml.profile.internal,ProfileMeta,33,125,1,7,12,35,1,11,0,8
+argouml-app,org.argouml.profile.internal,DependencyResolver,8,154,2,16,3,41,2,13,0,6
+argouml-app,org.argouml.profile.internal,ProfileUML,85,602,4,10,40,138,4,13,0,10
+argouml-app,org.argouml.profile.internal,FormatingStrategyUML,194,170,34,20,52,41,26,13,5,7
+argouml-app,org.argouml.profile.internal,ProfileUML.new DefaultTypeStrategy() {...},5,29,1,1,2,7,2,4,1,4
+argouml-app,org.argouml.profile.internal,ProfileManagerImpl.new DependencyChecker() {...},18,43,2,2,3,11,2,2,0,2
+argouml-app,org.argouml.profile.internal,ProfileManagerImpl,152,638,29,77,35,168,29,48,1,23
+argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionNodeInstance,94,0,6,0,16,0,11,0,8,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,DeploymentDiagramRenderer,334,13,21,1,81,3,13,2,2,2
+argouml-app,org.argouml.uml.diagram.deployment.ui,AbstractFigComponent,116,268,9,1,30,47,11,5,6,5
+argouml-app,org.argouml.uml.diagram.deployment.ui,FigComponentInstance,157,24,33,3,50,9,23,3,5,3
+argouml-app,org.argouml.uml.diagram.deployment.ui,PropPanelUMLDeploymentDiagram,7,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionObject,94,0,6,0,17,0,11,0,8,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,FigNodeInstance,76,29,17,5,21,11,13,3,2,3
+argouml-app,org.argouml.uml.diagram.deployment.ui,CubePortFigRect,0,130,0,0,0,9,0,2,0,2
+argouml-app,org.argouml.uml.diagram.deployment.ui,InitDeploymentDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.deployment.ui,FigObject,114,222,20,2,35,48,18,11,7,11
+argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionNode,85,0,4,0,14,0,10,0,8,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,UMLDeploymentDiagram,728,111,93,9,158,37,75,9,25,8
+argouml-app,org.argouml.uml.diagram.deployment.ui,AbstractFigNode,280,223,21,3,46,48,20,9,8,9
+argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionComponent,117,0,6,0,19,0,11,0,8,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,FigComponent,65,66,16,12,18,21,15,4,3,2
+argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionComponentInstance,117,0,6,0,18,0,11,0,8,0
+argouml-app,org.argouml.uml.diagram.deployment.ui,DeploymentDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.uml.diagram.deployment.ui,FigMNode,23,6,2,0,8,2,3,1,2,1
+argouml-app,org.argouml.uml.diagram.collaboration,CollabDiagramGraphModel,618,19,124,2,169,8,77,3,14,3
+argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,UMLTagDefinitionComboBoxModel,67,163,13,13,14,47,10,15,2,10
+argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,ActionNewStereotype,77,0,10,0,23,0,8,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,UMLStereotypeTagDefinitionListModel,29,0,6,0,8,0,6,0,3,0
+argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,ActionNewTagDefinition,78,12,10,0,24,5,6,1,1,1
+argouml-app,org.argouml.uml.diagram.ui,ActionNavigateUpFromDiagram,22,7,4,0,8,3,4,2,2,2
+argouml-app,org.argouml.uml.diagram.ui,ActionCompartmentDisplay,337,0,50,0,105,0,29,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,ActionStereotypeView,45,0,4,0,14,0,6,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,AbstractActionRadioMenuItem,75,0,10,0,28,0,8,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigCompartment.FigPort,25,19,6,0,5,8,4,4,1,4
+argouml-app,org.argouml.uml.diagram.ui,ActionAddStereotype,78,0,6,0,22,0,7,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityPackage,32,0,2,0,10,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityProtected,32,0,2,0,10,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,UMLDiagramHomeModelComboBoxModel,61,35,8,2,17,12,6,5,2,4
+argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement.new Runnable() {...},37,0,2,0,8,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,FigStereotypesGroup,123,560,23,61,32,152,20,42,2,18
+argouml-app,org.argouml.uml.diagram.ui,ActionAddNote,239,17,32,0,63,7,18,1,2,1
+argouml-app,org.argouml.uml.diagram.ui,SelectionClassifierBox.Button,18,0,0,0,6,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,FigRole,18,31,5,1,4,7,4,3,1,3
+argouml-app,org.argouml.uml.diagram.ui,ActionNavigability,129,0,20,0,24,0,15,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,FigStereotype,58,68,15,3,15,21,10,6,1,6
+argouml-app,org.argouml.uml.diagram.ui,InitDiagramAppearanceUI,28,4,0,0,7,2,3,2,3,2
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateGeneralization,6,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ModeLabelDragFactory,4,8,0,0,1,2,1,2,1,2
+argouml-app,org.argouml.uml.diagram.ui,FigNameWithAbstract,0,26,1,3,0,6,1,3,0,2
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateAssociationClass,147,0,6,0,43,0,9,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,FigOperationsCompartment,4,25,0,0,2,7,2,4,2,4
+argouml-app,org.argouml.uml.diagram.ui,SelectionMoveClarifiers,13,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddExistingNodes,64,0,8,0,23,0,7,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ImageSelection,45,0,6,0,12,0,7,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,FigClassAssociationClass,22,9,4,0,6,3,3,1,1,1
+argouml-app,org.argouml.uml.diagram.ui,FigPermission,0,5,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.diagram.ui,StylePanelFigMessage,101,0,6,0,30,0,7,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,TabDiagram,529,13,76,0,140,4,58,2,20,2
+argouml-app,org.argouml.uml.diagram.ui,SelectionEdgeClarifiers,42,0,6,0,11,0,5,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ArgoFigText,73,125,13,5,25,36,17,8,9,7
+argouml-app,org.argouml.uml.diagram.ui,ModeCreatePermission,6,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityPublic,32,0,2,0,10,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigKeyword,6,67,3,3,0,22,3,6,0,6
+argouml-app,org.argouml.uml.diagram.ui,FigSingleLineText,35,213,17,17,7,61,15,17,1,14
+argouml-app,org.argouml.uml.diagram.ui,FigAbstraction,0,14,0,0,0,5,0,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityPrivate,32,0,2,0,10,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ActionSetAddAssociationMode,21,0,0,0,5,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,ActionRemoveFromDiagram,61,0,10,0,18,0,7,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ArgoFig,0,19,0,0,0,6,0,1,0,1
+argouml-app,org.argouml.uml.diagram.ui,ActionAddExistingNode,77,0,10,0,27,0,8,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,PathConvPercent2,177,0,8,0,37,0,10,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,FigDependency,14,60,0,0,7,15,3,4,3,4
+argouml-app,org.argouml.uml.diagram.ui,ActionSetAddAssociationClassMode,8,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,ActionModifierActive,26,0,2,0,6,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateAssociation,50,0,2,0,16,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ActionSetMode,53,55,1,1,19,20,8,6,7,6
+argouml-app,org.argouml.uml.diagram.ui,FigEdgeModelElement,1745,509,253,39,444,143,206,35,68,27
+argouml-app,org.argouml.uml.diagram.ui,ActionList,160,0,48,0,49,0,31,0,7,0
+argouml-app,org.argouml.uml.diagram.ui,ActionStereotypeViewBigIcon,6,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,FigMultiLineTextWithBold,15,7,2,0,3,2,2,1,1,1
+argouml-app,org.argouml.uml.diagram.ui,SelectionClassifierBox,258,0,16,0,52,0,14,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,FigSingleLineText.new Runnable() {...},12,16,0,0,3,4,0,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,ArgoFigUtil,37,59,13,7,13,17,10,5,1,4
+argouml-app,org.argouml.uml.diagram.ui,PathItemPlacement,449,424,17,33,73,105,26,32,16,17
+argouml-app,org.argouml.uml.diagram.ui,ActionMultiplicity,152,0,8,0,41,0,16,0,12,0
+argouml-app,org.argouml.uml.diagram.ui,FigTrace,26,0,0,0,10,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ModeLabelDrag,152,25,10,0,35,8,9,2,4,2
+argouml-app,org.argouml.uml.diagram.ui,SettingsTabDiagramAppearance,513,0,34,0,134,0,33,0,16,0
+argouml-app,org.argouml.uml.diagram.ui,ArgoEditor,188,0,26,0,53,0,19,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateCommentEdge,48,0,14,0,14,0,10,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ActionEdgesDisplay,105,0,10,0,34,0,11,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,FigCompartment,92,429,10,42,27,111,16,34,7,17
+argouml-app,org.argouml.uml.diagram.ui,SelectionRerouteEdge,237,0,24,0,68,0,16,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddAllClassesFromModel,47,11,8,0,14,4,5,2,1,2
+argouml-app,org.argouml.uml.diagram.ui,FigMultiLineText,0,31,0,0,0,11,0,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,ModeAddToDiagram,266,0,30,0,75,0,21,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddMessage,98,0,6,0,32,0,8,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,SelectionNodeClarifiers2,614,0,68,0,134,0,56,0,20,0
+argouml-app,org.argouml.uml.diagram.ui,FigExtensionPointsCompartment,4,25,0,0,2,7,2,4,2,4
+argouml-app,org.argouml.uml.diagram.ui,PropPanelString,186,0,14,0,54,0,20,0,13,0
+argouml-app,org.argouml.uml.diagram.ui,FigEdgeAssociationClass,125,35,20,2,36,14,17,5,6,5
+argouml-app,org.argouml.uml.diagram.ui,DnDJGraph,230,7,24,0,81,3,22,2,10,2
+argouml-app,org.argouml.uml.diagram.ui,ArgoModeCreateFigText,21,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigNodeAssociation,219,247,38,4,63,53,29,11,8,11
+argouml-app,org.argouml.uml.diagram.ui,ActionModifierAbstract,26,0,2,0,7,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,ActionSetDiagramHomeModel,30,3,6,0,10,2,4,1,1,1
+argouml-app,org.argouml.uml.diagram.ui,FigOrdering,70,29,15,1,15,6,10,2,2,2
+argouml-app,org.argouml.uml.diagram.ui,PropPanelDiagram,5,62,1,1,2,13,2,2,1,2
+argouml-app,org.argouml.uml.diagram.ui,ActionSetAddCommentLinkMode,0,7,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.diagram.ui,FigCompartmentBox,161,696,41,51,47,171,32,42,5,23
+argouml-app,org.argouml.uml.diagram.ui,FigEnumLiteralsCompartment,4,23,0,0,2,6,2,4,2,4
+argouml-app,org.argouml.uml.diagram.ui,FigEmptyRect,12,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigAttributesCompartment,4,25,0,0,2,7,2,4,2,4
+argouml-app,org.argouml.uml.diagram.ui,AddToDiagramMemento,86,0,6,0,21,0,8,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,ActionSetAddAssociationEndMode,8,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddExtensionPoint.new TargetListener() {...},17,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAggregation,359,0,32,0,82,0,30,0,14,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddConcurrentRegion,260,0,18,0,73,0,13,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,SPFigEdgeModelElement,0,53,0,0,0,13,0,1,0,1
+argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement,2389,973,403,101,581,292,293,82,66,57
+argouml-app,org.argouml.uml.diagram.ui,FigEdgeModelElement.new Runnable() {...},6,11,0,0,2,4,0,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,FigEdgeModelElement.new Runnable() {...},22,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,FigCompartmentBox.new Runnable() {...},26,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,FigUsage,0,5,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.diagram.ui,ActionAddExistingEdge,57,0,8,0,20,0,7,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigAssociationEnd,110,80,18,0,33,16,16,4,7,4
+argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement.SelectionDefaultClarifiers,17,0,0,0,8,0,6,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,AddExistingNodeCommand,184,0,10,0,52,0,12,0,7,0
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateAssociationEnd,305,0,24,0,94,0,17,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddAssociationRole,52,0,2,0,13,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,StatusBarAdapter,11,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ActionModifierLeaf,26,0,2,0,6,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,AbstractActionCheckBoxMenuItem,73,0,10,0,27,0,8,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,FigCompartment.FigSeparator,0,15,0,0,0,6,0,3,0,3
+argouml-app,org.argouml.uml.diagram.ui,ActionStereotypeViewSmallIcon,6,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,FigEdgePort,45,52,2,6,9,15,8,5,6,3
+argouml-app,org.argouml.uml.diagram.ui,FigTextGroup,117,117,27,9,27,34,22,9,8,5
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateGraphEdge,401,0,54,0,117,0,33,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,FigAssociationClass,148,66,43,7,53,27,32,6,7,6
+argouml-app,org.argouml.uml.diagram.ui,ActionSaveDiagramToClipboard,155,0,28,0,42,0,19,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,FigGeneralization,56,150,14,6,19,36,13,6,4,5
+argouml-app,org.argouml.uml.diagram.ui,ArgoFigGroup,53,23,9,1,16,9,9,4,4,4
+argouml-app,org.argouml.uml.diagram.ui,ActionModifierRoot,26,0,2,0,6,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,TabDiagram.new Runnable() {...},22,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,ActionAddMessage.new TargetListener() {...},17,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,FigAssociationEndAnnotation,94,142,25,5,24,30,17,4,2,4
+argouml-app,org.argouml.uml.diagram.ui,FigSingleLineTextWithNotation,129,91,24,8,42,29,30,10,15,9
+argouml-app,org.argouml.uml.diagram.ui,FigNameWithAbstractAndBold,2,20,1,1,0,5,1,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateDependency,6,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,CompartmentFigText,46,16,2,0,14,5,8,1,7,1
+argouml-app,org.argouml.uml.diagram.ui,ActionStereotypeViewTextual,6,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.ui,ActionSetPath,146,0,28,0,42,0,18,0,4,0
+argouml-app,org.argouml.uml.diagram.ui,FigAssociation,658,160,89,5,151,39,67,9,20,9
+argouml-app,org.argouml.uml.diagram.ui,FigMultiplicity,0,31,0,0,0,5,0,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,FigMessage,207,544,20,18,39,99,29,16,12,13
+argouml-app,org.argouml.uml.diagram.ui,ModeCreateUsage,6,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,SettingsTabDiagramAppearance.new Memento() {...},17,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.ui,SettingsTabDiagramAppearance.new ActionListener() {...},39,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.diagram.ui,RadioAction,46,20,10,0,18,6,7,1,2,1
+argouml-app,org.argouml.uml.diagram.ui,FigAssociation.EndDecoration,25,69,0,0,8,10,6,2,6,2
+argouml-app,org.argouml.uml.diagram.ui,ActionAddExtensionPoint,73,0,10,0,25,0,10,0,5,0
+argouml-app,org.argouml.uml.diagram.ui,StylePanelFigAssociationClass,225,0,24,0,66,0,18,0,6,0
+argouml-app,org.argouml.uml.diagram.ui,DiagramNameDocument,95,47,8,2,33,17,10,5,6,4
+argouml-app,org.argouml.uml.diagram.ui,UMLDiagram,517,197,30,4,110,39,42,9,25,9
+argouml-app,org.argouml.uml.diagram.ui,FigProfileIcon,122,0,0,0,26,0,5,0,5,0
+argouml-app,org.argouml.cognitive.checklist,ChecklistStatus,0,16,0,0,0,6,0,3,0,3
+argouml-app,org.argouml.cognitive.checklist,Checklist,49,38,2,2,7,12,2,6,1,5
+argouml-app,org.argouml.cognitive.checklist,CheckItem,17,66,1,1,5,22,5,11,4,11
+argouml-app,org.argouml.cognitive.checklist,CheckManager,67,37,9,5,18,12,9,4,3,3
+argouml-app,org.argouml.uml.util,SortedListModel,214,0,20,0,58,0,29,0,19,0
+argouml-app,org.argouml.uml.util,PathComparator,49,161,14,38,11,55,10,19,0,3
+argouml-app,org.argouml.uml.util,ModelUtil,169,0,26,0,31,0,14,0,1,0
+argouml-app,org.argouml.application.api,Argo,7,164,1,1,4,75,3,2,2,2
+argouml-app,org.argouml.application.api,AbstractArgoJPanel,102,47,6,0,26,19,7,8,4,8
+argouml-app,org.argouml.uml.diagram.state,PredIsFinalState,11,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.uml.diagram.state,StateDiagramGraphModel,623,21,128,2,184,8,80,4,15,4
+argouml-app,org.argouml.uml.diagram.state,PredIsStartState,22,0,4,0,5,0,5,0,3,0
+argouml-app,org.argouml.gefext,ArgoFigCircle,52,0,0,0,14,0,6,0,6,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigInk,20,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigLine,16,0,0,0,4,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoFigInk,58,0,0,0,16,0,7,0,7,0
+argouml-app,org.argouml.gefext,ArgoFigSpline,58,0,0,0,16,0,7,0,7,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigSpline,33,0,0,0,10,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigRRect,14,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoFigPoly,50,8,0,0,13,3,6,1,6,1
+argouml-app,org.argouml.gefext,ArgoFigRRect,52,0,0,0,14,0,6,0,6,0
+argouml-app,org.argouml.gefext,ArgoFigRect,52,0,0,0,14,0,6,0,6,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigPoly,33,0,0,0,10,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigRect,14,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.gefext,ArgoModeCreateFigCircle,14,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.gefext,DeferredBufferedImage,453,0,16,0,88,0,34,0,26,0
+argouml-app,org.argouml.gefext,ArgoFigLine,73,0,0,0,18,0,8,0,8,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramNoteEdge,68,0,2,0,19,0,4,0,3,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramLayouter,766,0,68,0,170,0,51,0,17,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramGeneralizationEdge,4,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramLayouter.NodeRow,297,0,36,0,69,0,27,0,9,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramNote,62,0,10,0,11,0,12,0,7,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramNode,362,0,30,0,94,0,44,0,29,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramEdge,53,0,0,0,17,0,9,0,9,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramModelElementFactory,72,0,12,0,18,0,8,0,2,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramInheritanceEdge,252,0,2,0,41,0,10,0,9,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramRealizationEdge,4,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.static_structure.layout,ClassdiagramAssociationEdge,84,0,2,0,17,0,4,0,3,0
+argouml-app,org.argouml.swingext,LeftArrowIcon,47,3,0,0,10,1,3,1,3,1
+argouml-app,org.argouml.swingext,JLinkButton,231,0,24,0,58,0,27,0,15,0
+argouml-app,org.argouml.swingext,GlassPane,155,0,32,0,48,0,21,0,5,0
+argouml-app,org.argouml.swingext,BasicLinkButtonUI,139,0,20,0,35,0,14,0,4,0
+argouml-app,org.argouml.swingext,SpacerPanel,23,25,0,0,2,5,2,3,2,3
+argouml-app,org.argouml.swingext,GlassPane.new KeyAdapter() {...},6,0,0,0,1,0,1,0,1,0
+argouml-app,org.argouml.swingext,GlassPane.new MouseAdapter() {...},7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.swingext,UpArrowIcon,45,3,0,0,10,1,3,1,3,1
+argouml-app,org.argouml.kernel,DelayedChangeNotify,15,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.kernel,ProjectManager,108,364,10,24,30,105,15,29,6,21
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},24,32,4,2,3,5,3,3,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},26,30,5,1,3,5,4,2,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},24,32,4,2,3,5,3,3,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},24,32,4,2,3,5,3,3,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},26,30,5,1,3,5,4,2,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},26,30,5,1,3,5,4,2,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},26,30,5,1,3,5,4,2,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},17,32,0,0,3,5,1,2,1,2
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},24,32,4,2,3,5,3,3,1,2
+argouml-app,org.argouml.kernel,ProjectEvent,0,4,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.kernel,ProjectManager.new AbstractCommand() {...},16,17,0,0,5,3,4,2,4,2
+argouml-app,org.argouml.kernel,ProjectManager.new NonUndoableCommand() {...},0,48,1,1,0,12,1,2,0,2
+argouml-app,org.argouml.kernel,ProjectManager.new NonUndoableCommand() {...},57,0,2,0,14,0,3,0,2,0
+argouml-app,org.argouml.kernel,ProfileConfiguration,86,468,14,54,20,114,18,39,5,18
+argouml-app,org.argouml.kernel,DefaultUndoManager,129,97,14,2,35,24,15,6,7,6
+argouml-app,org.argouml.kernel,MemberList,182,260,29,39,46,78,37,25,17,11
+argouml-app,org.argouml.kernel,ProjectImpl,549,1183,96,100,142,336,79,105,14,72
+argouml-app,org.argouml.kernel,NonUndoableCommand,5,3,0,0,3,1,3,1,3,1
+argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.kernel,ProjectImpl.new Defaults() {...},73,0,18,0,21,0,12,0,3,0
+argouml-app,org.argouml.kernel,ProjectSettings,171,436,17,17,59,118,37,55,24,51
+argouml-app,org.argouml.kernel,ProjectFactory,0,17,0,0,0,4,0,4,0,4
+argouml-app,org.argouml.kernel,ProfileConfiguration.new FigNodeStrategy() {...},13,16,3,1,5,4,2,2,0,2
+argouml-app,org.argouml.kernel,AbstractCommand,4,3,0,0,2,1,2,1,2,1
+argouml-app,org.argouml.kernel,ActionList,54,0,0,0,18,0,9,0,9,0
+argouml-app,org.argouml.kernel,DefaultUndoManager.UndoStack,61,11,8,0,15,3,8,1,4,1
+argouml-app,org.argouml.kernel,ActionList.DummyAction,10,0,0,0,5,0,3,0,3,0
+argouml-app,org.argouml.kernel,DefaultUndoManager.InteractionStack,52,18,0,0,12,6,3,1,3,1
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},27,0,2,0,5,0,4,0,3,0
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},56,0,6,0,8,0,6,0,3,0
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},47,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.kernel,ProjectSettings.new Memento() {...},7,19,0,0,2,3,1,2,1,2
+argouml-app,org.argouml.kernel,ProjectImpl.NamePCL,5,6,0,0,2,1,1,1,1,1
+argouml-app,org.argouml.kernel,DefaultUndoManager.Interaction,141,0,16,0,36,0,17,0,9,0
+argouml-app,org.argouml.kernel,DefaultUndoManager.RedoStack,61,11,8,0,15,3,8,1,4,1
+argouml-app,org.argouml.kernel,AbstractProjectMember,33,132,10,12,8,32,9,9,1,6
+argouml-app,org.argouml.uml.diagram.static_structure,ClassDiagramGraphModel,1062,8,230,0,291,3,131,2,16,2
+argouml-app,org.argouml.cognitive,CompoundCritic,192,57,22,2,51,15,32,5,21,4
+argouml-app,org.argouml.cognitive,Decision,11,44,3,1,4,14,3,8,1,8
+argouml-app,org.argouml.cognitive,DesignGoalsCM,0,7,0,0,0,2,0,2,0,2
+argouml-app,org.argouml.cognitive,OrCM,24,0,4,0,6,0,4,0,2,0
+argouml-app,org.argouml.cognitive,Critic,227,390,22,12,65,120,45,38,31,35
+argouml-app,org.argouml.cognitive,NotSnoozedCM,0,11,0,2,0,2,0,3,0,2
+argouml-app,org.argouml.cognitive,Designer.EmptyChildGenerator,2,3,0,0,1,1,1,1,1,1
+argouml-app,org.argouml.cognitive,Translator,15,8,2,2,3,3,4,2,2,2
+argouml-app,org.argouml.cognitive,CurDecisionCM,0,7,0,0,0,2,0,2,0,2
+argouml-app,org.argouml.cognitive,AndCM,21,3,4,0,5,1,3,1,1,1
+argouml-app,org.argouml.cognitive,EnabledCM,0,6,0,0,0,2,0,2,0,2
+argouml-app,org.argouml.cognitive,ListSet,474,124,45,9,120,29,60,9,35,7
+argouml-app,org.argouml.cognitive,Designer,623,147,52,0,190,41,75,7,49,7
+argouml-app,org.argouml.cognitive,ToDoList,542,340,51,15,143,105,50,26,19,24
+argouml-app,org.argouml.cognitive,CompositeCM,3,14,0,0,1,4,1,2,1,2
+argouml-app,org.argouml.cognitive,Agency,292,121,28,12,81,38,26,13,11,8
+argouml-app,org.argouml.cognitive,DecisionModel,80,13,8,0,24,4,10,1,6,1
+argouml-app,org.argouml.cognitive,AbstractCognitiveTranslator,3,0,0,0,1,0,1,0,1,0
+argouml-app,org.argouml.cognitive,ToDoItem,334,123,33,11,88,34,41,11,20,10
+argouml-app,org.argouml.cognitive,StandardCM,0,23,0,0,0,6,0,1,0,1
+argouml-app,org.argouml.cognitive,ResolvedCritic,152,167,23,27,34,47,19,17,2,9
+argouml-app,org.argouml.cognitive,ToDoListEvent,19,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.cognitive,GoalModel,4,81,3,3,2,20,3,8,0,8
+argouml-app,org.argouml.cognitive,Goal,22,35,3,1,7,10,6,6,4,6
+argouml-app,org.argouml.cognitive,UnresolvableException,4,0,0,0,2,0,1,0,1,0
+argouml-app,org.argouml.uml.util.namespace,StringNamespace,78,190,6,14,25,50,11,21,7,15
+argouml-app,org.argouml.uml.util.namespace,StringNamespaceElement,3,9,0,0,1,4,1,2,1,2
+argouml-app,org.argouml.uml.diagram.deployment,DeploymentDiagramGraphModel,808,8,182,0,209,3,101,2,10,2
+argouml-app,org.argouml.uml.ui,ActionSaveAllGraphics,425,0,48,0,118,0,35,0,11,0
+argouml-app,org.argouml.uml.ui,TabConstraints.ConstraintModel.CR.new DepthFirstAdapter() {...},47,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui,UMLScriptExpressionModel,21,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui,ActionBooleanTaggedValue,53,14,8,0,16,5,5,1,1,1
+argouml-app,org.argouml.uml.ui,UMLExpressionExpressionModel,21,0,0,0,8,0,4,0,4,0
+argouml-app,org.argouml.uml.ui,UMLSearchableComboBox,70,6,18,0,20,2,11,1,2,1
+argouml-app,org.argouml.uml.ui,UMLDerivedCheckBox,0,4,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.ui,TabStereotype.AddRemoveListener,21,6,4,0,6,1,3,1,1,1
+argouml-app,org.argouml.uml.ui,ActionNavigateContext,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,SaveGIFAction2,22,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionNavigateUpPreviousDown,57,0,10,0,17,0,8,0,3,0
+argouml-app,org.argouml.uml.ui,UMLTaggedValueCheckBox,25,22,4,0,8,3,3,1,1,1
+argouml-app,org.argouml.uml.ui,TabSrc,222,127,36,6,51,33,26,6,7,4
+argouml-app,org.argouml.uml.ui,UMLModelElementCommentDocument,67,7,10,0,18,3,7,1,2,1
+argouml-app,org.argouml.uml.ui,LabelledLayout,654,20,62,0,167,8,52,3,21,3
+argouml-app,org.argouml.uml.ui,ActionCut,108,33,23,1,33,9,16,3,4,3
+argouml-app,org.argouml.uml.ui,PropPanel.TargettableButton,14,0,2,0,5,0,3,0,2,0
+argouml-app,org.argouml.uml.ui,UMLAddDialog.new WindowAdapter() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionRemoveModelElement,36,0,6,0,11,0,7,0,4,0
+argouml-app,org.argouml.uml.ui,ActionDeleteModelElements.new TargetListener() {...},6,11,0,0,4,5,2,3,2,3
+argouml-app,org.argouml.uml.ui,ActionRevertToSaved,44,0,6,0,17,0,5,0,2,0
+argouml-app,org.argouml.uml.ui,SavePNGAction2,82,0,4,0,22,0,6,0,4,0
+argouml-app,org.argouml.uml.ui,TabStyle,407,242,62,16,121,59,49,12,15,7
+argouml-app,org.argouml.uml.ui,UMLStimulusActionTextProperty,80,0,20,0,25,0,15,0,5,0
+argouml-app,org.argouml.uml.ui,ActionNavigateTransition,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLLinkMouseListener,26,17,6,0,11,7,8,2,5,2
+argouml-app,org.argouml.uml.ui,UMLComboBoxNavigator,64,71,9,1,19,19,9,3,4,3
+argouml-app,org.argouml.uml.ui,SourcePathControllerImpl,11,107,2,10,4,32,3,11,1,7
+argouml-app,org.argouml.uml.ui,UMLModelElementTaggedValueDocument,33,4,6,0,11,2,5,1,2,1
+argouml-app,org.argouml.uml.ui,UMLStereotypeList,5,55,1,1,1,17,2,4,1,4
+argouml-app,org.argouml.uml.ui,SourcePathDialog.SelectionListener,17,0,2,0,4,0,3,0,2,0
+argouml-app,org.argouml.uml.ui,UMLAddDialog,656,0,50,0,146,0,38,0,13,0
+argouml-app,org.argouml.uml.ui,ActionDeleteModelElements,274,99,54,14,79,31,34,7,3,4
+argouml-app,org.argouml.uml.ui,ActionNavigateOppositeAssocEnd,39,0,6,0,11,0,6,0,3,0
+argouml-app,org.argouml.uml.ui,ActionNavigateNamespace,20,0,4,0,6,0,4,0,2,0
+argouml-app,org.argouml.uml.ui,TabStereotype.SelectedListSelectionListener,19,6,4,0,5,1,3,1,1,1
+argouml-app,org.argouml.uml.ui,TabConstraints.ConstraintModel,347,0,54,0,80,0,39,0,12,0
+argouml-app,org.argouml.uml.ui,ActionSequenceDiagram,11,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLStereotypeListModel,526,23,92,0,158,9,75,2,29,2
+argouml-app,org.argouml.uml.ui,UMLDeprecatedCheckBox,0,4,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.uml.ui,ActionNavigateAction,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionCopy,70,33,13,1,23,9,10,3,3,3
+argouml-app,org.argouml.uml.ui,AbstractActionNavigate,57,25,9,1,18,9,11,2,6,2
+argouml-app,org.argouml.uml.ui,ActionCollaborationDiagram,13,25,2,2,3,8,3,3,1,3
+argouml-app,org.argouml.uml.ui,UMLEditableComboBox.UMLComboBoxEditor.UMLImagePanel,44,60,3,1,15,16,6,3,4,3
+argouml-app,org.argouml.uml.ui,UMLChangeDispatch,30,73,10,7,11,23,10,5,2,4
+argouml-app,org.argouml.uml.ui,ActionImportFromSources,168,0,16,0,46,0,13,0,5,0
+argouml-app,org.argouml.uml.ui,Seperator,0,6,0,0,0,3,0,1,0,1
+argouml-app,org.argouml.uml.ui,ActionSaveProject,95,0,12,0,30,0,12,0,6,0
+argouml-app,org.argouml.uml.ui,InitUmlUI,4,52,0,0,2,11,2,3,2,3
+argouml-app,org.argouml.uml.ui,TabSrc.DefaultPredicate,0,4,0,0,0,1,0,1,0,1
+argouml-app,org.argouml.uml.ui,UMLExpressionModel2,264,0,52,0,78,0,39,0,13,0
+argouml-app,org.argouml.uml.ui,UMLComboBoxModel2.new Runnable() {...},12,16,0,0,3,4,0,2,0,2
+argouml-app,org.argouml.uml.ui,UMLCheckBox2,26,53,3,3,7,16,6,4,3,4
+argouml-app,org.argouml.uml.ui,ActionGenerateAll,159,0,34,0,48,0,21,0,4,0
+argouml-app,org.argouml.uml.ui,SourcePathTableModel,81,119,11,7,14,30,10,6,3,4
+argouml-app,org.argouml.uml.ui,UMLTextField2,6,26,0,0,2,8,1,2,1,2
+argouml-app,org.argouml.uml.ui,TabStereotype.AvailableListSelectionListener,19,6,4,0,5,1,3,1,1,1
+argouml-app,org.argouml.uml.ui,PropPanel,348,429,44,36,84,110,49,33,23,19
+argouml-app,org.argouml.uml.ui,SourcePathDialog,281,0,20,0,66,0,15,0,5,0
+argouml-app,org.argouml.uml.ui,UMLExpressionModel2.new Runnable() {...},12,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLRecurrenceExpressionModel,47,0,2,0,14,0,6,0,5,0
+argouml-app,org.argouml.uml.ui,UMLStimulusActionTextField,90,0,14,0,28,0,15,0,8,0
+argouml-app,org.argouml.uml.ui,TabConstraints,52,105,7,9,17,31,14,11,8,9
+argouml-app,org.argouml.uml.ui,UMLModelElementTaggedValueProxy,240,0,20,0,67,0,36,0,26,0
+argouml-app,org.argouml.uml.ui,UMLComboBoxModel2,649,420,151,51,160,118,108,35,20,22
+argouml-app,org.argouml.uml.ui,ActionSaveGraphics,288,0,30,0,87,0,22,0,7,0
+argouml-app,org.argouml.uml.ui,ActionAddTopLevelPackage,51,0,0,0,14,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,TabTaggedValuesModel,513,40,104,6,130,16,64,7,10,6
+argouml-app,org.argouml.uml.ui,ActionAddDiagram,138,26,34,0,44,10,20,3,3,3
+argouml-app,org.argouml.uml.ui,PropPanel.GroupPanel,45,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.uml.ui,ActionUseCaseDiagram,39,40,3,5,4,10,3,6,0,5
+argouml-app,org.argouml.uml.ui,SaveScaledEPSAction,59,0,0,0,13,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLListCellRenderer2,298,48,43,5,64,17,26,4,2,4
+argouml-app,org.argouml.uml.ui,UMLConditionExpressionModel,47,0,2,0,14,0,6,0,5,0
+argouml-app,org.argouml.uml.ui,ActionReopenProject,25,0,2,0,9,0,4,0,3,0
+argouml-app,org.argouml.uml.ui,ActionSetSourcePath,180,0,32,0,59,0,19,0,3,0
+argouml-app,org.argouml.uml.ui,ActionRemoveTaggedValue,14,15,0,0,4,6,1,1,1,1
+argouml-app,org.argouml.uml.ui,ActionGenerateProjectCode,141,0,32,0,45,0,20,0,4,0
+argouml-app,org.argouml.uml.ui,SaveGraphicsManager.new Comparator() {...},12,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,PropPanelFactoryManager,8,12,0,0,3,4,2,3,2,3
+argouml-app,org.argouml.uml.ui,UMLRadioButtonPanel,267,0,26,0,70,0,27,0,14,0
+argouml-app,org.argouml.uml.ui,UMLExpressionLanguageField,71,0,10,0,24,0,12,0,7,0
+argouml-app,org.argouml.uml.ui,ActionSaveProjectAs,21,0,0,0,8,0,3,0,3,0
+argouml-app,org.argouml.uml.ui,SaveGraphicsManager.FileFilterChangedListener.Anonymous1,19,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionPaste,55,36,13,1,18,10,12,3,5,3
+argouml-app,org.argouml.uml.ui,TabDocumentation,13,242,4,4,2,51,5,4,1,4
+argouml-app,org.argouml.uml.ui,SaveSVGAction2,129,0,6,0,27,0,8,0,5,0
+argouml-app,org.argouml.uml.ui,UMLTimeExpressionModel,47,0,2,0,14,0,6,0,5,0
+argouml-app,org.argouml.uml.ui,TabTaggedValues,123,316,17,7,36,83,22,9,10,9
+argouml-app,org.argouml.uml.ui,UMLPlainTextDocument,40,189,10,16,11,55,13,16,3,13
+argouml-app,org.argouml.uml.ui,AbstractActionRemoveElement,58,0,8,0,18,0,11,0,7,0
+argouml-app,org.argouml.uml.ui,ActionNavigateAssociation,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLExpressionBodyField,94,0,10,0,32,0,15,0,10,0
+argouml-app,org.argouml.uml.ui,UMLModelElementStereotypeListModel,85,4,10,0,21,2,9,1,4,1
+argouml-app,org.argouml.uml.ui,ActionLayout,62,0,10,0,21,0,8,0,3,0
+argouml-app,org.argouml.uml.ui,TabConstraints.ConstraintModel.CR,383,0,26,0,123,0,19,0,6,0
+argouml-app,org.argouml.uml.ui,UMLEditableComboBox,36,20,4,0,12,5,5,1,3,1
+argouml-app,org.argouml.uml.ui,ActionNewDiagram,72,103,15,9,19,35,13,6,1,6
+argouml-app,org.argouml.uml.ui,ActionActivityDiagram,2,33,2,2,1,9,2,3,0,3
+argouml-app,org.argouml.uml.ui,ActionClassDiagram,38,33,2,2,4,9,2,5,0,5
+argouml-app,org.argouml.uml.ui,UMLTableCellRenderer,24,3,4,0,8,2,3,1,1,1
+argouml-app,org.argouml.uml.ui,SaveGraphicsManager.FileFilterChangedListener,33,0,0,0,8,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,TabStereotype,64,331,12,4,23,62,11,5,3,5
+argouml-app,org.argouml.uml.ui,ActionNavigateOwner,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionDeploymentDiagram,72,29,11,3,17,9,8,4,1,4
+argouml-app,org.argouml.uml.ui,ActionNavigateUpNextDown,59,0,12,0,17,0,9,0,3,0
+argouml-app,org.argouml.uml.ui,ActionGenerateOne,66,0,8,0,20,0,8,0,4,0
+argouml-app,org.argouml.uml.ui,TabProps,177,273,32,32,46,73,32,20,9,11
+argouml-app,org.argouml.uml.ui,UMLEditableComboBox.UMLComboBoxEditor,17,60,2,4,6,18,5,7,3,6
+argouml-app,org.argouml.uml.ui,UMLTextArea2,6,24,0,0,2,8,1,2,1,2
+argouml-app,org.argouml.uml.ui,UMLComboBox2,134,54,20,0,37,17,16,4,6,4
+argouml-app,org.argouml.uml.ui,UMLLinkedListCellRenderer,28,5,0,0,5,2,2,1,2,1
+argouml-app,org.argouml.uml.ui,AbstractActionNewModelElement,29,12,0,0,11,5,4,1,4,1
+argouml-app,org.argouml.uml.ui,ActionAddPackage,17,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,ActionStateDiagram,52,68,17,7,17,19,12,5,1,4
+argouml-app,org.argouml.uml.ui,ActionOpenProject,168,0,26,0,52,0,16,0,3,0
+argouml-app,org.argouml.uml.ui,UMLTreeCellRenderer,112,0,14,0,31,0,10,0,3,0
+argouml-app,org.argouml.uml.ui,UMLModelElementListModel2,549,0,92,0,167,0,77,0,31,0
+argouml-app,org.argouml.uml.ui,ActionNavigateContainerElement,7,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,TabStereotype.UMLModelStereotypeListModel,201,4,44,0,63,2,26,1,4,1
+argouml-app,org.argouml.uml.ui,SaveGraphicsManager,362,0,32,0,86,0,29,0,13,0
+argouml-app,org.argouml.uml.ui,ActionGenerationSettings,24,0,0,0,10,0,3,0,3,0
+argouml-app,org.argouml.uml.ui,AbstractActionAddModelElement2,70,25,4,0,19,10,10,3,8,3
+argouml-app,org.argouml.application,StartCritics,127,0,2,0,36,0,4,0,3,0
+argouml-app,org.argouml.application,Main,1135,0,112,0,315,0,77,0,21,0
+argouml-app,org.argouml.application,PostLoad,44,0,2,0,16,0,4,0,3,0
+argouml-app,org.argouml.application,ArgoVersion,0,4,0,0,0,2,0,1,0,1
+argouml-app,org.argouml.application,LoadModules,48,0,2,0,12,0,5,0,4,0
+argouml-app,org.argouml.application,SubsystemUtility,59,0,8,0,13,0,6,0,2,0
+argouml-app,org.argouml.application,Main.new AbstractCognitiveTranslator() {...},10,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewUninterpretedAction.new ActionNewUninterpretedAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewCallAction.new ActionNewCallAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewCallAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewSendAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,UMLReceptionSpecificationDocument,27,0,4,0,8,0,5,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionAddInstanceClassifier,62,0,2,0,19,0,7,0,6,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewDestroyAction.new ActionNewDestroyAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewTerminateAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewReturnAction.new ActionNewReturnAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,UMLActionAsynchronousCheckBox,17,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewActionSequence,41,0,0,0,13,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewCreateAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewActionSequence.new ActionNewActionSequence() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewCreateAction.new ActionNewCreateAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewArgument,24,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewDestroyAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewTerminateAction.new ActionNewTerminateAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewUninterpretedAction,41,0,0,0,13,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewSendAction.new ActionNewSendAction() {...},18,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionAddContextSignal,44,0,2,0,14,0,6,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewAction,134,0,24,0,32,0,15,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewReturnAction,41,0,0,0,12,0,5,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionAddCreateActionInstantiation,73,0,8,0,22,0,9,0,5,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionRemoveArgument,24,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewSignal,70,0,10,0,22,0,7,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionSetActionAsynchronous,44,0,4,0,15,0,6,0,4,0
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewReception,30,9,2,0,7,3,2,1,1,1
+argouml-app,org.argouml.uml.ui.behavior.common_behavior,ActionNewException,39,0,2,0,13,0,3,0,2,0
+argouml-app,org.argouml.cognitive.critics,SnoozeOrder,0,100,0,4,0,25,0,10,0,8
+argouml-app,org.argouml.cognitive.critics,Wizard,183,0,20,0,50,0,29,0,19,0
+argouml-app,org.argouml.ui,ProjectBrowser.TitleHandler.new Runnable() {...},16,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,SwingWorker.TimerListener,24,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.ui,LoadSwingWorker,78,0,0,0,21,0,5,0,5,0
+argouml-app,org.argouml.ui,ActionSettings,20,0,2,0,7,0,3,0,2,0
+argouml-app,org.argouml.ui,ArgoStatusBar.new Runnable() {...},15,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectActions.new Runnable() {...},68,0,8,0,12,0,6,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.MyPopupMenuListener,30,0,2,0,9,0,6,0,5,0
+argouml-app,org.argouml.ui,UndoableAction,0,23,0,0,0,10,0,4,0,4
+argouml-app,org.argouml.ui,ProgressMonitorWindow,155,0,10,0,42,0,17,0,12,0
+argouml-app,org.argouml.ui,ProjectBrowser,2188,0,232,0,605,0,180,0,64,0
+argouml-app,org.argouml.ui,SettingsTabAppearance,282,0,6,0,75,0,12,0,9,0
+argouml-app,org.argouml.ui,ArgoStatusBar,79,0,0,0,29,0,9,0,9,0
+argouml-app,org.argouml.ui,PerspectiveSupport,69,0,4,0,23,0,13,0,11,0
+argouml-app,org.argouml.ui,SystemInfoDialog.ClipboardObserver,4,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectSettingsTabProfile.ProfileFileFilter,63,0,8,0,11,0,7,0,3,0
+argouml-app,org.argouml.ui,MyLocale,116,0,12,0,26,0,11,0,5,0
+argouml-app,org.argouml.ui,DisplayTextTree,589,0,82,0,152,0,56,0,15,0
+argouml-app,org.argouml.ui,ProjectSettingsTabProfile.new ItemListener() {...},54,0,8,0,18,0,7,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.new FocusAdapter() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.new ChangeListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.new AbstractAction() {...},13,0,2,0,4,0,3,0,2,0
+argouml-app,org.argouml.ui,SplashScreen,163,0,4,0,50,0,18,0,16,0
+argouml-app,org.argouml.ui,SaveSwingWorker,70,0,4,0,21,0,6,0,4,0
+argouml-app,org.argouml.ui,CmdCreateNode,26,0,0,0,10,0,3,0,3,0
+argouml-app,org.argouml.ui,ProjectSettingsTabProfile,887,0,96,0,221,0,68,0,19,0
+argouml-app,org.argouml.ui,JasonsHugeTheme,38,91,0,0,13,12,13,1,13,1
+argouml-app,org.argouml.ui,ProjectBrowser.WindowCloser,15,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,DetailsPane,385,467,71,57,102,124,66,34,20,16
+argouml-app,org.argouml.ui,ArgoJMenu,138,0,12,0,32,0,10,0,4,0
+argouml-app,org.argouml.ui,SwingWorker.ThreadVar,13,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.ui,FindDialog,1275,0,42,0,333,0,40,0,19,0
+argouml-app,org.argouml.ui,StylePanelFigNodeModelElement,95,72,14,0,32,17,11,2,4,2
+argouml-app,org.argouml.ui,GResolution,16,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.ui,SettingsTabLayout,131,0,0,0,35,0,11,0,11,0
+argouml-app,org.argouml.ui,ActionImportXMI,125,0,20,0,41,0,12,0,2,0
+argouml-app,org.argouml.ui,HeapMonitor,280,0,0,0,48,0,5,0,5,0
+argouml-app,org.argouml.ui,SplashPanel.new JLabel() {...},32,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,NavigatorPane,147,0,4,0,37,0,6,0,4,0
+argouml-app,org.argouml.ui,ArgoJFontChooser.new ListSelectionListener() {...},25,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.ui,ArgoJFontChooser.new ListSelectionListener() {...},24,0,2,0,6,0,3,0,2,0
+argouml-app,org.argouml.ui,ArgoJFontChooser.new ActionListener() {...},19,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,ArgoJFontChooser.new ActionListener() {...},19,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,ChildGenSearch,56,0,6,0,13,0,5,0,2,0
+argouml-app,org.argouml.ui,SettingsTabProfile,1045,0,86,0,255,0,60,0,16,0
+argouml-app,org.argouml.ui,JasonsBigTheme,38,91,0,0,13,12,13,1,13,1
+argouml-app,org.argouml.ui,TabText,133,118,20,4,42,34,22,11,11,10
+argouml-app,org.argouml.ui,ActionUndo,16,0,0,0,7,0,3,0,3,0
+argouml-app,org.argouml.ui,ExceptionDialog,315,0,12,0,67,0,16,0,10,0
+argouml-app,org.argouml.ui,SettingsDialog.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ProgressMonitorWindow.new Runnable() {...},15,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ProgressMonitorWindow.new Runnable() {...},16,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui,ProgressMonitorWindow.new Runnable() {...},30,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,ActionRedo,16,0,0,0,7,0,3,0,3,0
+argouml-app,org.argouml.ui,PredicateMType,84,0,2,0,21,0,8,0,7,0
+argouml-app,org.argouml.ui,SettingsTabPreferences,196,0,2,0,57,0,9,0,8,0
+argouml-app,org.argouml.ui,AbstractArgoJPanel,12,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.ui,ShadowComboBox.ShadowFig,27,0,0,0,9,0,4,0,4,0
+argouml-app,org.argouml.ui,AboutBox,852,0,4,0,193,0,12,0,10,0
+argouml-app,org.argouml.ui,JasonsTheme,38,91,0,0,13,12,13,1,13,1
+argouml-app,org.argouml.ui,ArgoToolbarManager,228,0,20,0,54,0,18,0,8,0
+argouml-app,org.argouml.ui,GUI,75,0,0,0,19,0,7,0,7,0
+argouml-app,org.argouml.ui,ProjectBrowser.new Runnable() {...},27,0,0,0,6,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectBrowser.new Runnable() {...},33,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectBrowser.new Runnable() {...},24,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectBrowser.new Runnable() {...},18,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectBrowser.new NonUndoableCommand() {...},8,0,0,0,2,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectBrowser.new ComponentAdapter() {...},107,0,14,0,20,0,10,0,3,0
+argouml-app,org.argouml.ui,ProjectBrowser.new PropertyChangeListener() {...},33,0,8,0,9,0,6,0,2,0
+argouml-app,org.argouml.ui,LookAndFeelMgr,450,65,74,2,126,15,56,4,18,4
+argouml-app,org.argouml.ui,SwingWorker.new Runnable() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,SwingWorker.new Runnable() {...},23,0,0,0,5,0,2,0,2,0
+argouml-app,org.argouml.ui,ArgoToolbarManager.new ComponentAdapter() {...},76,0,12,0,17,0,9,0,3,0
+argouml-app,org.argouml.ui,ArgoToolbarManager.new MouseAdapter() {...},40,0,4,0,9,0,5,0,3,0
+argouml-app,org.argouml.ui,TreeModelSupport,189,0,24,0,43,0,21,0,9,0
+argouml-app,org.argouml.ui,ActionCreateEdgeModelElement,56,0,0,0,15,0,3,0,3,0
+argouml-app,org.argouml.ui,ProjectSettingsTabProperties,386,0,14,0,90,0,16,0,9,0
+argouml-app,org.argouml.ui,TransferableModelElements,38,0,2,0,10,0,6,0,5,0
+argouml-app,org.argouml.ui,StylePanelFig,715,554,114,0,189,99,75,9,18,9
+argouml-app,org.argouml.ui,MenuBar2,156,0,0,0,41,0,2,0,2,0
+argouml-app,org.argouml.ui,SettingsTabAppearance.new ActionListener() {...},19,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.ui,SettingsTabAppearance.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,StylePanel,59,44,4,6,24,18,16,7,13,5
+argouml-app,org.argouml.ui,CheckboxTableModel,138,0,24,0,31,0,20,0,8,0
+argouml-app,org.argouml.ui,TabResults,560,0,50,0,142,0,48,0,23,0
+argouml-app,org.argouml.ui,ShadowComboBox.ShadowRenderer,130,0,16,0,31,0,11,0,3,0
+argouml-app,org.argouml.ui,ActionProjectSettings,21,0,2,0,9,0,3,0,2,0
+argouml-app,org.argouml.ui,HelpListener,17,0,0,0,7,0,3,0,3,0
+argouml-app,org.argouml.ui,MultiEditorPane,351,37,38,0,90,9,38,2,19,2
+argouml-app,org.argouml.ui,SwingWorker,162,0,10,0,58,0,19,0,14,0
+argouml-app,org.argouml.ui,GotoDialog,84,0,2,0,20,0,4,0,3,0
+argouml-app,org.argouml.ui,SystemInfoDialog,399,0,10,0,61,0,11,0,6,0
+argouml-app,org.argouml.ui,SettingsDialog,203,0,20,0,62,0,24,0,14,0
+argouml-app,org.argouml.ui,SystemInfoDialog.new WindowAdapter() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ArgoToolbarManager.ToolbarManagerMenuItemAction,57,0,4,0,15,0,6,0,4,0
+argouml-app,org.argouml.ui,SystemInfoDialog.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,SystemInfoDialog.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,StatusBar,219,0,2,0,58,0,16,0,15,0
+argouml-app,org.argouml.ui,SplashPanel,38,0,2,0,11,0,3,0,2,0
+argouml-app,org.argouml.ui,ExceptionDialog.new WindowAdapter() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ExceptionDialog.new HyperlinkListener() {...},11,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ExceptionDialog.new ActionListener() {...},11,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ZoomSliderButton.MyMouseListener,49,0,8,0,12,0,8,0,4,0
+argouml-app,org.argouml.ui,ZoomSliderButton,335,0,20,0,81,0,17,0,7,0
+argouml-app,org.argouml.ui,SettingsTabUser,240,0,2,0,63,0,9,0,8,0
+argouml-app,org.argouml.ui,StylePanelFigText,704,0,64,0,158,0,42,0,10,0
+argouml-app,org.argouml.ui,ArgoToolbarManager.ToolbarManagerMenuItemAction.new Runnable() {...},41,0,2,0,11,0,3,0,2,0
+argouml-app,org.argouml.ui,ProjectActions,236,0,42,0,81,0,33,0,12,0
+argouml-app,org.argouml.ui,ContextActionFactoryManager,64,0,8,0,20,0,10,0,6,0
+argouml-app,org.argouml.ui,MenuBar14,156,0,0,0,41,0,2,0,2,0
+argouml-app,org.argouml.ui,StylePanelFigRRect,107,0,8,0,31,0,8,0,4,0
+argouml-app,org.argouml.ui,SettingsTabEnvironment,404,0,6,0,98,0,11,0,8,0
+argouml-app,org.argouml.ui,ProjectBrowser.TitleHandler,127,0,22,0,30,0,15,0,4,0
+argouml-app,org.argouml.ui,ProjectSettingsDialog.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ProjectSettingsDialog.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.ui,ShadowComboBox,37,0,0,0,12,0,1,0,1,0
+argouml-app,org.argouml.ui,TreeModelComposite,127,0,14,0,34,0,16,0,9,0
+argouml-app,org.argouml.ui,SettingsTabProfile.new ItemListener() {...},41,0,6,0,17,0,6,0,2,0
+argouml-app,org.argouml.ui,SettingsTabProfile.new FileFilter() {...},11,0,0,0,3,0,3,0,3,0
+argouml-app,org.argouml.ui,ActionExportXMI,81,0,6,0,26,0,5,0,2,0
+argouml-app,org.argouml.ui,ProjectSettingsDialog,295,0,36,0,89,0,34,0,16,0
+argouml-app,org.argouml.ui,ArgoJFontChooser,615,0,12,0,137,0,17,0,11,0
+argouml-app,org.argouml.ui,ActionCreateContainedModelElement,60,0,0,0,19,0,4,0,4,0
+argouml-app,org.argouml.ui,HelpBox,284,0,6,0,48,0,6,0,3,0
+argouml-app,org.argouml.ui,ProjectBrowser.Position,0,94,0,0,0,3,0,1,0,1
+argouml-app,org.argouml.ui,MenuBarFactory,17,0,2,0,4,0,3,0,2,0
+argouml-app,org.argouml.profile,UserDefinedProfile.UserDefinedFigNodeStrategy,17,11,0,0,3,2,2,1,2,1
+argouml-app,org.argouml.profile,UserProfileReference,0,24,0,0,0,5,0,2,0,2
+argouml-app,org.argouml.profile,UserDefinedProfileHelper,140,0,22,0,35,0,15,0,4,0
+argouml-app,org.argouml.profile,ZipModelLoader,138,0,10,0,33,0,9,0,4,0
+argouml-app,org.argouml.profile,UserDefinedProfile.NullProfileManager,26,0,0,0,14,0,14,0,14,0
+argouml-app,org.argouml.profile,UserDefinedProfileHelper.new FileFilter() {...},39,0,14,0,7,0,10,0,3,0
+argouml-app,org.argouml.profile,ProfileReference,2,45,2,4,0,10,2,5,0,4
+argouml-app,org.argouml.profile,UserDefinedProfile,732,372,119,33,187,99,77,27,11,17
+argouml-app,org.argouml.profile,FileModelLoader,7,30,0,0,2,8,0,3,0,3
+argouml-app,org.argouml.profile,Profile,15,75,2,4,5,24,5,12,3,11
+argouml-app,org.argouml.profile,ProfileFacade,6,82,1,7,2,25,2,13,1,10
+argouml-app,org.argouml.profile,UserDefinedProfile.FigNodeDescriptor,19,0,6,0,2,0,5,0,2,0
+argouml-app,org.argouml.profile,URLModelLoader,56,47,4,4,12,14,4,4,1,3
+argouml-app,org.argouml.profile,ProfileException,13,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.profile,ResourceModelLoader,6,28,0,0,3,7,1,3,1,3
+argouml-app,org.argouml.profile,CoreProfileReference,25,52,3,7,3,7,4,4,1,2
+argouml-app,org.argouml.profile,ReaderModelLoader,16,38,1,1,4,13,1,3,0,3
+argouml-app,org.argouml.profile,StreamModelLoader,44,0,2,0,13,0,4,0,3,0
+argouml-app,org.argouml.configuration,ConfigurationKeyImpl,73,91,2,0,10,14,5,5,4,5
+argouml-app,org.argouml.configuration,ConfigurationProperties,215,120,23,3,58,29,18,7,5,7
+argouml-app,org.argouml.configuration,Configuration,67,79,0,0,20,21,15,16,15,16
+argouml-app,org.argouml.configuration,ConfigurationFactory,21,24,2,2,6,10,2,3,0,3
+argouml-app,org.argouml.configuration,ConfigurationHandler,205,149,38,10,66,46,36,17,15,14
+argouml-app,org.argouml.uml.diagram.collaboration.ui,FigClassifierRole,151,245,18,8,37,57,21,10,8,10
+argouml-app,org.argouml.uml.diagram.collaboration.ui,UMLCollaborationDiagram,691,125,73,11,151,44,62,11,24,7
+argouml-app,org.argouml.uml.diagram.collaboration.ui,CollabDiagramRenderer,199,13,27,1,42,3,17,2,3,2
+argouml-app,org.argouml.uml.diagram.collaboration.ui,CollaborationDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
+argouml-app,org.argouml.uml.diagram.collaboration.ui,InitCollaborationDiagram,6,10,0,0,3,4,3,2,3,2
+argouml-app,org.argouml.uml.diagram.collaboration.ui,SelectionClassifierRole,168,0,10,0,40,0,16,0,11,0
+argouml-app,org.argouml.uml.diagram.collaboration.ui,FigAssociationRole,0,43,0,0,0,12,0,4,0,4
+argouml-app,org.argouml.uml.diagram.collaboration.ui,PropPanelUMLCollaborationDiagram,7,0,0,0,3,0,1,0,1,0
+argouml-app,org.argouml.uml.diagram.collaboration.ui,FigMessageGroup,6,141,2,16,2,43,2,12,0,5
+argouml-app,org.argouml.uml.diagram.collaboration.ui,ActionAddClassifierRole,32,0,2,0,12,0,3,0,2,0
+argouml-app,org.argouml.application.events,ArgoDiagramAppearanceEvent,0,7,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.application.events,ArgoEvent,45,13,2,0,6,5,4,2,3,2
+argouml-app,org.argouml.application.events,ArgoHelpEvent,3,10,0,0,1,4,1,2,1,2
+argouml-app,org.argouml.application.events,ArgoEventPump,136,385,27,69,21,123,24,49,2,17
+argouml-app,org.argouml.application.events,ArgoProfileEvent,0,7,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.application.events,ArgoStatusEvent,3,10,0,0,1,4,1,2,1,2
+argouml-app,org.argouml.application.events,ArgoEventPump.Pair,30,35,3,5,4,11,4,6,2,4
+argouml-app,org.argouml.application.events,ArgoEventPump.new Runnable() {...},0,20,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.application.events,ArgoEventPump.new Runnable() {...},20,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.application.events,ArgoGeneratorEvent,0,7,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.application.events,ArgoNotationEvent,0,7,0,0,0,3,0,2,0,2
+argouml-app,org.argouml.cognitive.checklist.ui,InitCheckListUI,4,16,0,0,2,5,2,3,2,3
+argouml-app,org.argouml.cognitive.checklist.ui,TabChecklist,120,151,10,4,45,40,19,5,12,5
+argouml-app,org.argouml.cognitive.checklist.ui,TableModelChecklist.new Runnable() {...},14,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.cognitive.checklist.ui,TableModelChecklist,174,28,32,4,50,12,24,6,7,5
+argouml-app,org.argouml.moduleloader,ModuleLoader2.JarFileFilter,19,0,6,0,4,0,5,0,2,0
+argouml-app,org.argouml.moduleloader,SettingsTabModules,177,0,8,0,41,0,11,0,7,0
+argouml-app,org.argouml.moduleloader,ModuleStatus,33,0,2,0,15,0,9,0,8,0
+argouml-app,org.argouml.moduleloader,InitModuleLoader,25,0,0,0,9,0,5,0,5,0
+argouml-app,org.argouml.moduleloader,SettingsTabModules.ModuleTableModel,108,0,11,0,21,0,14,0,8,0
+argouml-app,org.argouml.moduleloader,ModuleLoader2,1072,111,112,6,261,33,81,5,22,5
+argouml-app,org.argouml.taskmgmt,ProgressEvent,16,0,0,0,6,0,3,0,3,0
+argouml-app,org.argouml.uml,GenCompositeClasses2,101,0,16,0,28,0,13,0,5,0
+argouml-app,org.argouml.uml,UUIDHelper,14,12,3,3,4,4,4,1,1,1
+argouml-app,org.argouml.uml,StereotypeUtility,223,418,51,59,59,115,37,32,4,10
+argouml-app,org.argouml.uml,PredicateNotInTrash,16,0,2,0,3,0,4,0,3,0
+argouml-app,org.argouml.uml,TMResults,220,0,53,0,68,0,42,0,11,0
+argouml-app,org.argouml.uml,DocumentationManager,393,0,80,0,106,0,50,0,10,0
+argouml-app,org.argouml.uml,PredicateSearch,66,0,8,0,16,0,9,0,5,0
+argouml-app,org.argouml.uml,ChildGenRelated,62,0,6,0,15,0,7,0,4,0
+argouml-app,org.argouml.uml,ActionAddStereotype,160,0,22,0,43,0,16,0,5,0
+argouml-app,org.argouml.uml,ProjectMemberModel,10,32,3,1,3,9,3,5,1,5
+argouml-app,org.argouml.uml,GenDescendantClasses,61,0,8,0,18,0,9,0,5,0
+argouml-app,org.argouml.uml,GenAncestorClasses,52,0,8,0,15,0,7,0,3,0
+argouml-app,org.argouml.uml,CommentEdge,182,30,22,4,44,12,22,4,9,4
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog.TableModelClassChecks,508,0,104,0,114,0,67,0,15,0
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog.new ActionListener() {...},10,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog.new ActionListener() {...},63,0,10,0,16,0,7,0,2,0
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog.new ActionListener() {...},16,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog.new ActionListener() {...},16,0,0,0,4,0,2,0,2,0
+argouml-app,org.argouml.uml.generator.ui,ClassGenerationDialog,714,0,52,0,178,0,36,0,10,0
+argouml-app,org.argouml.application.security,ArgoAwtExceptionHandler,5,0,0,0,3,0,2,0,2,0
+argouml-app,org.argouml.util.osdep,OSXAdapter,291,0,26,0,60,0,24,0,11,0
+argouml-app,org.argouml.util.osdep,StartBrowser,105,0,4,0,25,0,6,0,4,0
+argouml-app,org.argouml.util.osdep,OSXAdapter.new OSXAdapter() {...},38,0,2,0,8,0,3,0,2,0
+argouml-app,org.argouml.util.osdep,OsUtil,10,18,2,2,2,4,3,3,1,3
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionNewExtendExtensionPoint,29,0,2,0,9,0,4,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionAddExtendExtensionPoint,54,0,2,0,17,0,8,0,7,0
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionNewExtensionPoint,25,0,2,0,10,0,3,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionNewUseCase,36,0,4,0,13,0,4,0,2,0
+argouml-app,org.argouml.uml.ui.behavior.use_cases,UMLExtensionPointLocationDocument,0,15,0,0,0,5,0,3,0,3
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionNewUseCaseExtensionPoint,22,0,2,0,7,0,4,0,3,0
+argouml-app,org.argouml.uml.ui.behavior.use_cases,ActionNewActor,30,0,2,0,10,0,3,0,2,0

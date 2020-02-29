@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToDoByPoster.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">ToDoByPoster.java</span></div><h1>ToDoByPoster.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoListEvent;
+import org.argouml.cognitive.ToDoListListener;
+
+/**
+ * Represents a perspective for ToDo items: grouping by poster type.
+ *
+ */
+public class ToDoByPoster extends ToDoPerspective
+    implements ToDoListListener {
+<span class="nc" id="L58">    private static final Logger LOG =</span>
+<span class="nc" id="L59">        Logger.getLogger(ToDoByPoster.class.getName());</span>
+
+    /**
+     * The constructor.
+     *
+     */
+    public ToDoByPoster() {
+<span class="nc" id="L66">	super(&quot;combobox.todo-perspective-poster&quot;);</span>
+<span class="nc" id="L67">	addSubTreeModel(new GoListToPosterToItem());</span>
+<span class="nc" id="L68">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // ToDoListListener implementation
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsChanged(ToDoListEvent tde) {
+<span class="nc" id="L77">        LOG.log(Level.FINE, &quot;toDoItemsChanged&quot;);</span>
+<span class="nc" id="L78">        List&lt;ToDoItem&gt; items = tde.getToDoItemList();</span>
+<span class="nc" id="L79">	Object[] path = new Object[2];</span>
+<span class="nc" id="L80">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+	ListSet&lt;Poster&gt; allPosters =
+<span class="nc" id="L83">	    Designer.theDesigner().getToDoList().getPosters();</span>
+<span class="nc" id="L84">        synchronized (allPosters) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            for (Poster p : allPosters) {</span>
+<span class="nc" id="L86">                path[1] = p;</span>
+<span class="nc" id="L87">                int nMatchingItems = 0;</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L89">                    Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                    if (post != p) {</span>
+<span class="nc" id="L91">                        continue;</span>
+                    }
+<span class="nc" id="L93">                    nMatchingItems++;</span>
+<span class="nc" id="L94">                }</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                if (nMatchingItems == 0) {</span>
+<span class="nc" id="L96">                    continue;</span>
+                }
+<span class="nc" id="L98">                int[] childIndices = new int[nMatchingItems];</span>
+<span class="nc" id="L99">                Object[] children = new Object[nMatchingItems];</span>
+<span class="nc" id="L100">                nMatchingItems = 0;</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L102">                    Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                    if (post != p) {</span>
+<span class="nc" id="L104">                        continue;</span>
+                    }
+<span class="nc" id="L106">                    childIndices[nMatchingItems] = getIndexOfChild(p, item);</span>
+<span class="nc" id="L107">                    children[nMatchingItems] = item;</span>
+<span class="nc" id="L108">                    nMatchingItems++;</span>
+<span class="nc" id="L109">                }</span>
+<span class="nc" id="L110">                fireTreeNodesChanged(this, path, childIndices, children);</span>
+<span class="nc" id="L111">            }</span>
+<span class="nc" id="L112">        }</span>
+<span class="nc" id="L113">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsAdded(ToDoListEvent tde) {
+<span class="nc" id="L119">        LOG.log(Level.FINE, &quot;toDoItemAdded&quot;);</span>
+<span class="nc" id="L120">	List&lt;ToDoItem&gt; items = tde.getToDoItemList();</span>
+<span class="nc" id="L121">	Object[] path = new Object[2];</span>
+<span class="nc" id="L122">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+	ListSet&lt;Poster&gt; allPosters =
+<span class="nc" id="L125">	    Designer.theDesigner().getToDoList().getPosters();</span>
+<span class="nc" id="L126">	synchronized (allPosters) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">            for (Poster p : allPosters) {</span>
+<span class="nc" id="L128">                path[1] = p;</span>
+<span class="nc" id="L129">                int nMatchingItems = 0;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L131">                    Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                    if (post != p) {</span>
+<span class="nc" id="L133">                        continue;</span>
+                    }
+<span class="nc" id="L135">                    nMatchingItems++;</span>
+<span class="nc" id="L136">                }</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                if (nMatchingItems == 0) {</span>
+<span class="nc" id="L138">                    continue;</span>
+                }
+<span class="nc" id="L140">                int[] childIndices = new int[nMatchingItems];</span>
+<span class="nc" id="L141">                Object[] children = new Object[nMatchingItems];</span>
+<span class="nc" id="L142">                nMatchingItems = 0;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L144">                    Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                    if (post != p) {</span>
+<span class="nc" id="L146">                        continue;</span>
+                    }
+<span class="nc" id="L148">                    childIndices[nMatchingItems] = getIndexOfChild(p, item);</span>
+<span class="nc" id="L149">                    children[nMatchingItems] = item;</span>
+<span class="nc" id="L150">                    nMatchingItems++;</span>
+<span class="nc" id="L151">                }</span>
+<span class="nc" id="L152">                fireTreeNodesInserted(this, path, childIndices, children);</span>
+<span class="nc" id="L153">            }</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsRemoved(ToDoListEvent tde) {
+<span class="nc" id="L161">        LOG.log(Level.FINE, &quot;toDoItemRemoved&quot;);</span>
+<span class="nc" id="L162">        List&lt;ToDoItem&gt; items = tde.getToDoItemList();</span>
+
+<span class="nc" id="L164">	Object[] path = new Object[2];</span>
+<span class="nc" id="L165">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+<span class="nc" id="L167">	ListSet&lt;Poster&gt; allPosters = Designer.theDesigner().getToDoList()</span>
+<span class="nc" id="L168">                .getPosters();</span>
+<span class="nc" id="L169">        synchronized (allPosters) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            for (Poster p : allPosters) {</span>
+<span class="nc" id="L171">                boolean anyInPoster = false;</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L173">                    Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                    if (post == p) {</span>
+<span class="nc" id="L175">                        anyInPoster = true;</span>
+<span class="nc" id="L176">                        break;</span>
+                    }
+<span class="nc" id="L178">                }</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                if (!anyInPoster) {</span>
+<span class="nc" id="L180">                    continue;</span>
+                }
+<span class="nc" id="L182">                path[1] = p;</span>
+<span class="nc" id="L183">                fireTreeStructureChanged(path);</span>
+<span class="nc" id="L184">            }</span>
+<span class="nc" id="L185">        }</span>
+<span class="nc" id="L186">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoListChanged(ToDoListEvent tde) {
+<span class="nc" id="L192">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

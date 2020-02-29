@@ -1,0 +1,1802 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractMessageNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">AbstractMessageNotationUml.java</span></div><h1>AbstractMessageNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.providers.MessageNotation;
+import org.argouml.util.CustomSeparator;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * This abstract class provides the common functionality for
+ * the UML notation of messages.&lt;br/&gt;
+ * It is extended by {@link MessageNotationUml}, with the
+ * notation of messages as seen in collaboration diagrams,
+ * and {@link SDMessageNotationUml}, with the notation of
+ * messages as seen in sequence diagrams.&lt;p&gt;
+ *
+ * The Message notation syntax is a line of the following form,
+ * which we can generate and parse: &lt;p&gt;
+ *
+ * &lt;pre&gt;
+ * intno := integer|name
+ * seq := intno ['.' intno]*
+ * recurrence := '*'['//'] | '*'['//']'[' &lt;i&gt;iteration &lt;/i&gt;']' | '['
+ * &lt;i&gt;condition &lt;/i&gt;']'
+ * seqelem := {[intno] ['['recurrence']']}
+ * seq_expr := seqelem ['.' seqelem]*
+ * ret_list := lvalue [',' lvalue]*
+ * arg_list := rvalue [',' rvalue]*
+ * predecessor := seq [',' seq]* '/'
+ * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
+ * &lt;/pre&gt;
+ *
+ * Which is rather complex, so a few examples:&lt;ul&gt;
+ * &lt;li&gt; 2: display(x, y)
+ * &lt;li&gt; 1.3.1: p := find(specs)
+ * &lt;li&gt; [x &amp;lt; 0] 4: invert(color)
+ * &lt;li&gt; A3, B4/ C3.1*: update()
+ * &lt;/ul&gt;
+ *
+ * This syntax is compatible with the UML 1.4.2 specification.&lt;p&gt;
+ *
+ * Actually, only a subset of this syntax is currently supported, and some
+ * is not even planned to be supported. The exceptions are intno, which only
+ * allows a number possibly followed by a sequence of letters in the range
+ * 'a' - 'z', seqelem, which does not allow a recurrence, and message, which
+ * does allow one recurrence near seq_expr. &lt;p&gt;
+ *
+ * (formerly, the supported syntax was: name: action ) &lt;p&gt;
+ *
+ * Generating a string from the model has some extra functionality:
+ * If obtaining the Script of the Action returns an empty string,
+ * then an alternative representation is given:
+ * If the action is a CallAction, use the name of its Operation,
+ * and if it is a SendAction, the name of its Signal.
+ * If also this returns no string, then we display the name of the Message. &lt;p&gt;
+ *
+ *  Rationale:
+ *  This allows ArgoUML to show something on the diagram with older projects,
+ *  which only had the name of the Message filled in by the user.
+ *  This also may improve the diagrams for imported XMI.&lt;p&gt;
+ *
+ * Parsing a text that is generated by one of the backup scenarios,
+ * causes it to be written back in the script of the Action.
+ * Hence, editing the text on the diagram only once
+ * causes the Action Script to be used from then on. &lt;p&gt;
+ *
+ * Supported operations for the parser: &lt;p&gt;
+ * &lt;ul&gt;
+ * &lt;li&gt;Locating an Operation by name and the number of arguments -
+ * the operation is hooked to the CallAction of the Message.
+ * &lt;li&gt;Create an Operation with given name (no arguments).
+ * &lt;li&gt;Change the order of messages (predecessor/successor).
+ * &lt;li&gt;Reverting the direction of a message.
+ * &lt;li&gt;etc.
+ * &lt;/ul&gt;
+ *
+ * @see MessageNotationUml
+ * @see SDMessageNotationUml
+ * @since 0.28.alpha1
+ * @author penyaskito
+ */
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">public abstract class AbstractMessageNotationUml extends MessageNotation {</span>
+
+<span class="fc" id="L135">    private static final Logger LOG =</span>
+<span class="fc" id="L136">        Logger.getLogger(AbstractMessageNotationUml.class.getName());</span>
+
+    /**
+     * The list of CustomSeparators to use when tokenizing parameters.
+     */
+    private final List&lt;CustomSeparator&gt; parameterCustomSep;
+
+    /**
+     * An object containing an UML Message object.
+     */
+<span class="fc" id="L146">    protected static class MsgPtr {</span>
+        /**
+         * The message pointed to.
+         */
+        Object message;
+    }
+
+    /**
+     * @param umlMessage the UML Message object
+     */
+    public AbstractMessageNotationUml(Object umlMessage) {
+<span class="fc" id="L157">        super(umlMessage);</span>
+<span class="fc" id="L158">        parameterCustomSep = initParameterSeparators();</span>
+<span class="fc" id="L159">    }</span>
+
+    protected String toString(final Object umlMessage,
+            boolean showSequenceNumbers) {
+        Iterator it;
+        Collection umlPredecessors;
+        Object umlAction;
+        Object umlActivator; // this is a Message UML object
+        MsgPtr ptr;
+        int lpn;
+
+        /* Supported format:
+         *     predecessors number &quot;:&quot; action
+         * The 3 parts of the string to generate: */
+<span class="fc" id="L173">        StringBuilder predecessors = new StringBuilder(); // includes the &quot;/&quot;</span>
+        String number; // the &quot;seq_expr&quot; from the header javadoc
+        // the &quot;:&quot; is not included in &quot;number&quot; - it is always present
+<span class="fc" id="L176">        String action = &quot;&quot;;</span>
+
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (umlMessage == null) {</span>
+<span class="nc" id="L179">            return &quot;&quot;;</span>
+        }
+
+<span class="fc" id="L182">        ptr = new MsgPtr();</span>
+<span class="fc" id="L183">        lpn = recCountPredecessors(umlMessage, ptr) + 1;</span>
+<span class="fc" id="L184">        umlActivator = Model.getFacade().getActivator(umlMessage);</span>
+
+<span class="fc" id="L186">        umlPredecessors = Model.getFacade().getPredecessors(umlMessage);</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        it = (umlPredecessors != null) ? umlPredecessors.iterator() : null;</span>
+<span class="pc bpc" id="L188" title="1 of 4 branches missed.">        if (it != null &amp;&amp; it.hasNext()) {</span>
+<span class="fc" id="L189">            MsgPtr ptr2 = new MsgPtr();</span>
+<span class="fc" id="L190">            int precnt = 0;</span>
+
+<span class="fc bfc" id="L192" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L193">                Object msg = /*(MMessage)*/ it.next();</span>
+<span class="fc" id="L194">                int mpn = recCountPredecessors(msg, ptr2) + 1;</span>
+
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">                if (mpn == lpn - 1</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                    &amp;&amp; umlActivator == Model.getFacade().getActivator(msg)</span>
+<span class="pc bpc" id="L198" title="2 of 4 branches missed.">                    &amp;&amp; Model.getFacade().getPredecessors(msg).size() &lt; 2</span>
+                    &amp;&amp; (ptr2.message == null
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                        || countSuccessors(ptr2.message) &lt; 2)) {</span>
+<span class="nc" id="L201">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                if (predecessors.length() &gt; 0) {</span>
+<span class="nc" id="L205">                    predecessors.append(&quot;, &quot;);</span>
+                }
+<span class="nc" id="L207">                predecessors.append(</span>
+<span class="nc" id="L208">                        generateMessageNumber(msg, ptr2.message, mpn));</span>
+<span class="nc" id="L209">                precnt++;</span>
+<span class="nc" id="L210">            }</span>
+
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (precnt &gt; 0) {</span>
+<span class="nc" id="L213">                predecessors.append(&quot; / &quot;);</span>
+            }
+        }
+
+<span class="fc" id="L217">        number = generateMessageNumber(umlMessage, ptr.message, lpn);</span>
+
+<span class="fc" id="L219">        umlAction = Model.getFacade().getAction(umlMessage);</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (umlAction != null) {</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            if (Model.getFacade().getRecurrence(umlAction) != null) {</span>
+<span class="nc" id="L222">                number = generateRecurrence(</span>
+<span class="nc" id="L223">                        Model.getFacade().getRecurrence(umlAction))</span>
+                    + &quot; &quot;
+                    + number;
+                /* TODO: The recurrence goes in front of the action?
+                 * Does this not contradict the header JavaDoc? */
+            }
+        }
+<span class="fc" id="L230">        action = NotationUtilityUml.generateActionSequence(umlAction);</span>
+<span class="fc bfc" id="L231" title="All 4 branches covered.">        if (&quot;&quot;.equals(action) || action.trim().startsWith(&quot;(&quot;)) {</span>
+            /* If the script of the Action is empty,
+             * (or only specifies arguments and no method name)
+             * then we generate a string based on
+             * a different model element: */
+<span class="fc" id="L236">            action = getInitiatorOfAction(umlAction);</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">            if (&quot;&quot;.equals(action)) {</span>
+                // This may return null:
+<span class="fc" id="L239">                String n = Model.getFacade().getName(umlMessage);</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">                if (n != null) {</span>
+<span class="fc" id="L241">                    action = n;</span>
+                }
+<span class="fc" id="L243">            }</span>
+        }
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        else if (!action.endsWith(&quot;)&quot;)) {</span>
+            /* Dirty fix for issue 1758 (Needs to be amended
+             * when we start supporting parameters):
+             */
+<span class="fc" id="L249">            action = action + &quot;()&quot;;</span>
+        }
+
+<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (!showSequenceNumbers) {</span>
+<span class="fc" id="L253">            return action;</span>
+        }
+<span class="fc" id="L255">        return predecessors + number + &quot; : &quot; + action;</span>
+    }
+
+    protected String getInitiatorOfAction(Object umlAction) {
+<span class="fc" id="L259">        String result = &quot;&quot;;</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">        if (Model.getFacade().isACallAction(umlAction)) {</span>
+<span class="fc" id="L261">            Object umlOperation = Model.getFacade().getOperation(umlAction);</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">            if (Model.getFacade().isAOperation(umlOperation)) {</span>
+<span class="fc" id="L263">                StringBuilder sb = new StringBuilder(</span>
+<span class="fc" id="L264">                        Model.getFacade().getName(umlOperation));</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">                if (sb.length() &gt; 0) {</span>
+<span class="fc" id="L266">                    sb.append(&quot;()&quot;);</span>
+<span class="fc" id="L267">                    result = sb.toString();</span>
+                }
+            }
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">        } else if (Model.getFacade().isASendAction(umlAction)) {</span>
+<span class="nc" id="L271">            Object umlSignal = Model.getFacade().getSignal(umlAction);</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">            if (Model.getFacade().isASignal(umlSignal)) {</span>
+<span class="nc" id="L273">                String n = Model.getFacade().getName(umlSignal);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                if (n != null) {</span>
+<span class="nc" id="L275">                    result = n;</span>
+                }
+            }
+        }
+<span class="fc" id="L279">        return result;</span>
+    }
+
+    protected List&lt;CustomSeparator&gt; initParameterSeparators() {
+<span class="fc" id="L283">        List&lt;CustomSeparator&gt; separators = new ArrayList&lt;CustomSeparator&gt;();</span>
+<span class="fc" id="L284">        separators.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L285">        separators.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L286">        separators.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);</span>
+<span class="fc" id="L287">        return separators;</span>
+    }
+
+    public void parse(final Object umlMessage, final String text) {
+        try {
+<span class="nc" id="L292">            parseMessage(umlMessage, text);</span>
+<span class="nc" id="L293">        } catch (ParseException pe) {</span>
+<span class="nc" id="L294">            final String msg = &quot;statusmsg.bar.error.parsing.message&quot;;</span>
+<span class="nc" id="L295">            final Object[] args = {pe.getLocalizedMessage(),</span>
+<span class="nc" id="L296">                Integer.valueOf(pe.getErrorOffset()), };</span>
+<span class="nc" id="L297">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L299">                    Translator.messageFormat(msg, args)));</span>
+<span class="nc" id="L300">        }</span>
+<span class="nc" id="L301">    }</span>
+
+    public String getParsingHelp() {
+<span class="fc" id="L304">        return &quot;parsing.help.fig-message&quot;;</span>
+    }
+
+    /**
+     * Generate the &quot;intno&quot; of the given Message. &lt;p&gt;
+     *
+     * If the predecessor of the given message has only one successor, then
+     * we return the string representation of the given integer. &lt;p&gt;
+     * If the predecessor of the given message has more than one successor, then
+     * this is a case of parallel execution of messages, e.g.
+     * Message 3.1a and Message 3.1b are concurrent within activation 3.1.
+     * Hence In this case we use a syntax like: 1a, 1b, 1c.
+     *
+     * This means that the first successor
+     * in the ordered list of successors that has more than one entry
+     * will get the postfix a, the second b, etc.
+     *
+     * TODO: Document exceptional behaviour.
+     *
+     * @param umlMessage the UML message object to generate
+     * the sequence number for
+     * @param umlPredecessor the immediate predecessor message (UML object)
+     * that has the given message as successor
+     * @param position the integer position of the given message
+     * within its sequence
+     * @return the generated sequence expression string,
+     * or null if the given Message was null
+     */
+    protected String generateMessageNumber(Object umlMessage,
+            Object umlPredecessor,
+            int position) {
+        Iterator it;
+<span class="fc" id="L336">        String activatorIntNo = &quot;&quot;;</span>
+        Object umlActivator;
+<span class="fc" id="L338">        int subpos = 0, submax = 1;</span>
+
+<span class="pc bpc" id="L340" title="1 of 2 branches missed.">        if (umlMessage == null) {</span>
+<span class="nc" id="L341">            return null;</span>
+        }
+
+<span class="fc" id="L344">        umlActivator = Model.getFacade().getActivator(umlMessage);</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        if (umlActivator != null) {</span>
+<span class="fc" id="L346">            activatorIntNo = generateMessageNumber(umlActivator);</span>
+            // activatorIntNo is now guaranteed not null
+        }
+
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        if (umlPredecessor != null) {</span>
+            // get the ordered list of immediate successors:
+<span class="fc" id="L352">            Collection c = Model.getFacade().getSuccessors(umlPredecessor);</span>
+<span class="fc" id="L353">            submax = c.size();</span>
+<span class="fc" id="L354">            it = c.iterator();</span>
+<span class="pc bpc" id="L355" title="2 of 4 branches missed.">            while (it.hasNext() &amp;&amp; it.next() != umlMessage) {</span>
+<span class="nc" id="L356">                subpos++;</span>
+            }
+        }
+
+<span class="fc" id="L360">        StringBuilder result = new StringBuilder(activatorIntNo);</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        if (activatorIntNo.length() &gt; 0) {</span>
+<span class="fc" id="L362">            result.append(&quot;.&quot;);</span>
+        }
+<span class="fc" id="L364">        result.append(position);</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">        if (submax &gt; 1) {</span>
+<span class="nc" id="L366">            result.append((char) ('a' + subpos));</span>
+        }
+<span class="fc" id="L368">        return result.toString();</span>
+    }
+
+    /**
+     * Finds the break between message number and (possibly) message order.
+     *
+     * @return The position of the end of the number.
+     */
+    private static int findMsgOrderBreak(String s) {
+        int i, t;
+
+<span class="fc" id="L379">        t = s.length();</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        for (i = 0; i &lt; t; i++) {</span>
+<span class="fc" id="L381">            char c = s.charAt(i);</span>
+<span class="pc bpc" id="L382" title="2 of 4 branches missed.">            if (c &lt; '0' || c &gt; '9') {</span>
+<span class="nc" id="L383">                break;</span>
+            }
+        }
+<span class="fc" id="L386">        return i;</span>
+    }
+
+    /**
+     * Generates the textual number of a given Message, called seq_expr.
+     * The seq_expr is a string of numbers separated by points
+     * which describes the message's order
+     * and level in a collaboration.&lt;p&gt;
+     *
+     * If you plan to modify this seq_expr, make sure that
+     * the parsing of the Message is adapted accordingly to the change.
+     *
+     * @param message A Message to generate the seq_expr for
+     * @return A String with the seq_expr of the given message,
+     * or null if the given message was null
+     */
+    private String generateMessageNumber(Object message) {
+<span class="fc" id="L403">        MsgPtr ptr = new MsgPtr();</span>
+<span class="fc" id="L404">        int pos = recCountPredecessors(message, ptr) + 1;</span>
+<span class="fc" id="L405">        return generateMessageNumber(message, ptr.message, pos);</span>
+    }
+
+    /**
+     * Count the number of successors of the given Message. &lt;p&gt;
+     *
+     * Successors have the same Activator as the given message.
+     * This Activator may be null.
+     *
+     * @param message the UML Message object
+     * @return the number of successors: 0..n
+     */
+    protected int countSuccessors(Object message) {
+<span class="nc" id="L418">        int count = 0;</span>
+<span class="nc" id="L419">        final Object activator = Model.getFacade().getActivator(message);</span>
+<span class="nc" id="L420">        final Collection successors = Model.getFacade().getSuccessors(message);</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (successors != null) {</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">            for (Object suc : successors) {</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">                if (Model.getFacade().getActivator(suc) != activator) {</span>
+<span class="nc" id="L424">                    continue;</span>
+                }
+<span class="nc" id="L426">                count++;</span>
+<span class="nc" id="L427">            }</span>
+        }
+<span class="nc" id="L429">        return count;</span>
+    }
+
+    /**
+     * Generates a textual description of an IterationExpression.
+     *
+     * @param expr the given UML expression object or null
+     * @return the string
+     */
+    protected String generateRecurrence(Object expr) {
+<span class="nc bnc" id="L439" title="All 2 branches missed.">        if (expr == null) {</span>
+<span class="nc" id="L440">            return &quot;&quot;;</span>
+        }
+
+<span class="nc" id="L443">        return Model.getFacade().getBody(expr).toString();</span>
+    }
+
+    /**
+     * Parse a Message textual description.&lt;p&gt;
+     *
+     * TODO: - This method is too complex, lets break it up. &lt;p&gt;
+     *
+     * @param umlMessage the UML Message object to apply any changes to
+     * @param s   the String to parse
+     * @throws ParseException
+     *            when it detects an error in the attribute string. See also
+     *            ParseError.getErrorOffset().
+     */
+    protected void parseMessage(Object umlMessage, String s)
+        throws ParseException {
+<span class="fc" id="L459">        String fname = null;</span>
+     // the condition or iteration expression (recurrence):
+<span class="fc" id="L461">        StringBuilder guard = null;</span>
+<span class="fc" id="L462">        String paramExpr = null;</span>
+        String token;
+<span class="fc" id="L464">        StringBuilder varname = null;</span>
+<span class="fc" id="L465">        List&lt;List&gt; predecessors = new ArrayList&lt;List&gt;();</span>
+<span class="fc" id="L466">        List&lt;Integer&gt; seqno = null;</span>
+<span class="fc" id="L467">        List&lt;Integer&gt; currentseq = new ArrayList&lt;Integer&gt;();</span>
+//        List&lt;String&gt; args = null;
+<span class="fc" id="L469">        boolean mustBePre = false;</span>
+<span class="fc" id="L470">        boolean mustBeSeq = false;</span>
+<span class="fc" id="L471">        boolean parallell = false;</span>
+<span class="fc" id="L472">        boolean iterative = false;</span>
+<span class="fc" id="L473">        boolean mayDeleteExpr = false;</span>
+<span class="fc" id="L474">        boolean refindOperation = false;</span>
+<span class="fc" id="L475">        boolean hasPredecessors = false;</span>
+
+<span class="fc" id="L477">        currentseq.add(null);</span>
+<span class="fc" id="L478">        currentseq.add(null);</span>
+
+        try {
+<span class="fc" id="L481">            MyTokenizer st = new MyTokenizer(s, &quot; ,\t,*,[,],.,:,=,/,\\,&quot;,</span>
+                    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+<span class="fc bfc" id="L484" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L485">                token = st.nextToken();</span>
+
+<span class="fc bfc" id="L487" title="All 4 branches covered.">                if (&quot; &quot;.equals(token) || &quot;\t&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L488" title="All 2 branches covered.">                    if (currentseq == null) {</span>
+<span class="fc bfc" id="L489" title="All 4 branches covered.">                        if (varname != null &amp;&amp; fname == null) {</span>
+<span class="fc" id="L490">                            varname.append(token);</span>
+                        }
+                    }
+<span class="fc bfc" id="L493" title="All 2 branches covered.">                } else if (&quot;[&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">                    if (mustBePre) {</span>
+<span class="fc" id="L495">                        String msg = &quot;parsing.error.message.pred-unqualified&quot;;</span>
+<span class="fc" id="L496">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L497">                                st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L499">                    mustBeSeq = true;</span>
+
+<span class="fc bfc" id="L501" title="All 2 branches covered.">                    if (guard != null) {</span>
+<span class="fc" id="L502">                        String msg = &quot;parsing.error.message.several-specs&quot;;</span>
+<span class="fc" id="L503">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L504">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L507">                    guard = new StringBuilder();</span>
+                    while (true) {
+<span class="fc" id="L509">                        token = st.nextToken();</span>
+<span class="fc bfc" id="L510" title="All 2 branches covered.">                        if (&quot;]&quot;.equals(token)) {</span>
+<span class="fc" id="L511">                            break;</span>
+                        }
+<span class="fc" id="L513">                        guard.append(token);</span>
+                    }
+<span class="fc bfc" id="L515" title="All 2 branches covered.">                } else if (&quot;*&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">                    if (mustBePre) {</span>
+<span class="fc" id="L517">                        String msg = &quot;parsing.error.message.pred-unqualified&quot;;</span>
+<span class="fc" id="L518">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L519">                                st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L521">                    mustBeSeq = true;</span>
+
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">                    if (currentseq != null) {</span>
+<span class="fc" id="L524">                        iterative = true;</span>
+                    }
+<span class="fc bfc" id="L526" title="All 2 branches covered.">                } else if (&quot;.&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">                    if (currentseq == null) {</span>
+<span class="fc" id="L528">                        String msg = &quot;parsing.error.message.unexpected-dot&quot;;</span>
+<span class="fc" id="L529">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L530">                                st.getTokenIndex());</span>
+                    }
+<span class="fc bfc" id="L532" title="All 2 branches covered.">                    if (currentseq.get(currentseq.size() - 2) != null</span>
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">                            || currentseq.get(currentseq.size() - 1) != null) {</span>
+<span class="fc" id="L534">                        currentseq.add(null);</span>
+<span class="fc" id="L535">                        currentseq.add(null);</span>
+                    }
+<span class="fc bfc" id="L537" title="All 2 branches covered.">                } else if (&quot;:&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">                    if (st.hasMoreTokens()) {</span>
+<span class="fc" id="L539">                        String t = st.nextToken();</span>
+<span class="fc bfc" id="L540" title="All 2 branches covered.">                        if (&quot;=&quot;.equals(t)) {</span>
+<span class="fc" id="L541">                            st.putToken(&quot;:=&quot;);</span>
+<span class="fc" id="L542">                            continue;</span>
+                        }
+<span class="fc" id="L544">                        st.putToken(t);</span>
+                    }
+
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">                    if (mustBePre) {</span>
+<span class="nc" id="L548">                        String msg = &quot;parsing.error.message.pred-colon&quot;;</span>
+<span class="nc" id="L549">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L550">                                st.getTokenIndex());</span>
+                    }
+
+<span class="pc bpc" id="L553" title="1 of 2 branches missed.">                    if (currentseq != null) {</span>
+<span class="fc bfc" id="L554" title="All 2 branches covered.">                        if (currentseq.size() &gt; 2</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 2) == null</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 1) == null) {</span>
+<span class="nc" id="L557">                            currentseq.remove(currentseq.size() - 1);</span>
+<span class="nc" id="L558">                            currentseq.remove(currentseq.size() - 1);</span>
+                        }
+
+<span class="fc" id="L561">                        seqno = currentseq;</span>
+<span class="fc" id="L562">                        currentseq = null;</span>
+<span class="fc" id="L563">                        mayDeleteExpr = true;</span>
+                    }
+<span class="fc bfc" id="L565" title="All 2 branches covered.">                } else if (&quot;/&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">                    if (st.hasMoreTokens()) {</span>
+<span class="fc" id="L567">                        String t = st.nextToken();</span>
+<span class="fc bfc" id="L568" title="All 2 branches covered.">                        if (&quot;/&quot;.equals(t)) {</span>
+<span class="fc" id="L569">                            st.putToken(&quot;//&quot;);</span>
+<span class="fc" id="L570">                            continue;</span>
+                        }
+<span class="fc" id="L572">                        st.putToken(t);</span>
+                    }
+
+<span class="fc bfc" id="L575" title="All 2 branches covered.">                    if (mustBeSeq) {</span>
+<span class="fc" id="L576">                        String msg = &quot;parsing.error.message.sequence-slash&quot;;</span>
+<span class="fc" id="L577">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L578">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L581">                    mustBePre = false;</span>
+<span class="fc" id="L582">                    mustBeSeq = true;</span>
+
+<span class="fc bfc" id="L584" title="All 2 branches covered.">                    if (currentseq.size() &gt; 2</span>
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 2) == null</span>
+<span class="nc bnc" id="L586" title="All 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 1) == null) {</span>
+<span class="nc" id="L587">                        currentseq.remove(currentseq.size() - 1);</span>
+<span class="nc" id="L588">                        currentseq.remove(currentseq.size() - 1);</span>
+                    }
+
+<span class="fc bfc" id="L591" title="All 2 branches covered.">                    if (currentseq.get(currentseq.size() - 2) != null</span>
+<span class="pc bpc" id="L592" title="1 of 2 branches missed.">                            || currentseq.get(currentseq.size() - 1) != null) {</span>
+
+<span class="fc" id="L594">                        predecessors.add(currentseq);</span>
+
+<span class="fc" id="L596">                        currentseq = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L597">                        currentseq.add(null);</span>
+<span class="fc" id="L598">                        currentseq.add(null);</span>
+                    }
+<span class="fc" id="L600">                    hasPredecessors = true;</span>
+<span class="fc bfc" id="L601" title="All 2 branches covered.">                } else if (&quot;//&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">                    if (mustBePre) {</span>
+<span class="fc" id="L603">                        String msg = &quot;parsing.error.message.pred-parallelized&quot;;</span>
+<span class="fc" id="L604">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L605">                                st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L607">                    mustBeSeq = true;</span>
+
+<span class="pc bpc" id="L609" title="1 of 2 branches missed.">                    if (currentseq != null) {</span>
+<span class="fc" id="L610">                        parallell = true;</span>
+                    }
+<span class="fc bfc" id="L612" title="All 2 branches covered.">                } else if (&quot;,&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L613" title="All 2 branches covered.">                    if (currentseq != null) {</span>
+<span class="fc bfc" id="L614" title="All 2 branches covered.">                        if (mustBeSeq) {</span>
+<span class="fc" id="L615">                            String msg = &quot;parsing.error.message.many-numbers&quot;;</span>
+<span class="fc" id="L616">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L617">                                    st.getTokenIndex());</span>
+                        }
+<span class="fc" id="L619">                        mustBePre = true;</span>
+
+<span class="fc bfc" id="L621" title="All 2 branches covered.">                        if (currentseq.size() &gt; 2</span>
+<span class="pc bpc" id="L622" title="1 of 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 2) == null</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">                            &amp;&amp; currentseq.get(currentseq.size() - 1) == null) {</span>
+
+<span class="nc" id="L625">                            currentseq.remove(currentseq.size() - 1);</span>
+<span class="nc" id="L626">                            currentseq.remove(currentseq.size() - 1);</span>
+                        }
+
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">                        if (currentseq.get(currentseq.size() - 2) != null</span>
+<span class="nc bnc" id="L630" title="All 2 branches missed.">                            || currentseq.get(currentseq.size() - 1) != null) {</span>
+
+<span class="fc" id="L632">                            predecessors.add(currentseq);</span>
+
+<span class="fc" id="L634">                            currentseq = new ArrayList&lt;Integer&gt;();</span>
+<span class="fc" id="L635">                            currentseq.add(null);</span>
+<span class="fc" id="L636">                            currentseq.add(null);</span>
+                        }
+<span class="fc" id="L638">                        hasPredecessors = true;</span>
+                    } else {
+<span class="pc bpc" id="L640" title="1 of 4 branches missed.">                        if (varname == null &amp;&amp; fname != null) {</span>
+<span class="fc" id="L641">                            varname = new StringBuilder(fname + token);</span>
+<span class="fc" id="L642">                            fname = null;</span>
+<span class="pc bpc" id="L643" title="1 of 4 branches missed.">                        } else if (varname != null &amp;&amp; fname == null) {</span>
+<span class="fc" id="L644">                            varname.append(token);</span>
+                        } else {
+<span class="fc" id="L646">                            String msg = &quot;parsing.error.message.found-comma&quot;;</span>
+<span class="fc" id="L647">                            throw new ParseException(</span>
+<span class="fc" id="L648">                                    Translator.localize(msg),</span>
+<span class="fc" id="L649">                                    st.getTokenIndex());</span>
+                        }
+                    }
+<span class="fc bfc" id="L652" title="All 4 branches covered.">                } else if (&quot;=&quot;.equals(token) || &quot;:=&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L653" title="1 of 2 branches missed.">                    if (currentseq == null) {</span>
+<span class="fc bfc" id="L654" title="All 2 branches covered.">                        if (varname == null) {</span>
+<span class="fc" id="L655">                            varname = new StringBuilder(fname);</span>
+<span class="fc" id="L656">                            fname = &quot;&quot;;</span>
+                        } else {
+<span class="fc" id="L658">                            fname = &quot;&quot;;</span>
+                        }
+                    }
+<span class="fc bfc" id="L661" title="All 2 branches covered.">                } else if (currentseq == null) {</span>
+<span class="fc bfc" id="L662" title="All 4 branches covered.">                    if (paramExpr == null &amp;&amp; token.charAt(0) == '(') {</span>
+<span class="fc bfc" id="L663" title="All 2 branches covered.">                        if (token.charAt(token.length() - 1) != ')') {</span>
+<span class="fc" id="L664">                            String msg =</span>
+                                &quot;parsing.error.message.malformed-parameters&quot;;
+<span class="fc" id="L666">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L667">                                    st.getTokenIndex());</span>
+                        }
+<span class="pc bpc" id="L669" title="1 of 4 branches missed.">                        if (fname == null || &quot;&quot;.equals(fname)) {</span>
+<span class="fc" id="L670">                            String msg =</span>
+                                &quot;parsing.error.message.function-not-found&quot;;
+<span class="fc" id="L672">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L673">                                    st.getTokenIndex());</span>
+                        }
+<span class="fc bfc" id="L675" title="All 2 branches covered.">                        if (varname == null) {</span>
+<span class="fc" id="L676">                            varname = new StringBuilder();</span>
+                        }
+<span class="fc" id="L678">                        paramExpr = token.substring(1, token.length() - 1);</span>
+<span class="fc bfc" id="L679" title="All 4 branches covered.">                    } else if (varname != null &amp;&amp; fname == null) {</span>
+<span class="fc" id="L680">                        varname.append(token);</span>
+<span class="fc bfc" id="L681" title="All 4 branches covered.">                    } else if (fname == null || fname.length() == 0) {</span>
+<span class="fc" id="L682">                        fname = token;</span>
+                    } else {
+<span class="fc" id="L684">                        String msg = &quot;parsing.error.message.unexpected-token&quot;;</span>
+<span class="fc" id="L685">                        Object[] parseExcArgs = {token};</span>
+<span class="fc" id="L686">                        throw new ParseException(</span>
+<span class="fc" id="L687">                                Translator.localize(msg, parseExcArgs),</span>
+<span class="fc" id="L688">                                st.getTokenIndex());</span>
+                    }
+                } else {
+<span class="fc" id="L691">                    boolean hasVal =</span>
+<span class="pc bpc" id="L692" title="1 of 2 branches missed.">                        currentseq.get(currentseq.size() - 2) != null;</span>
+<span class="fc" id="L693">                    boolean hasOrd =</span>
+<span class="pc bpc" id="L694" title="1 of 2 branches missed.">                        currentseq.get(currentseq.size() - 1) != null;</span>
+<span class="fc" id="L695">                    boolean assigned = false;</span>
+<span class="fc" id="L696">                    int bp = findMsgOrderBreak(token);</span>
+
+<span class="pc bpc" id="L698" title="3 of 6 branches missed.">                    if (!hasVal &amp;&amp; !assigned &amp;&amp; bp == token.length()) {</span>
+                        try {
+<span class="fc" id="L700">                            currentseq.set(</span>
+<span class="fc" id="L701">                                currentseq.size() - 2, Integer.valueOf(</span>
+                                    token));
+<span class="fc" id="L703">                            assigned = true;</span>
+<span class="pc" id="L704">                        } catch (NumberFormatException nfe) { }</span>
+                    }
+
+<span class="pc bpc" id="L707" title="4 of 6 branches missed.">                    if (!hasOrd &amp;&amp; !assigned &amp;&amp; bp == 0) {</span>
+                        try {
+<span class="nc" id="L709">                            currentseq.set(</span>
+<span class="nc" id="L710">                                currentseq.size() - 1, Integer.valueOf(</span>
+<span class="nc" id="L711">                                    parseMsgOrder(token)));</span>
+<span class="nc" id="L712">                            assigned = true;</span>
+<span class="nc" id="L713">                        } catch (NumberFormatException nfe) { }</span>
+                    }
+
+<span class="pc bpc" id="L716" title="5 of 8 branches missed.">                    if (!hasVal &amp;&amp; !hasOrd &amp;&amp; !assigned &amp;&amp; bp &gt; 0</span>
+<span class="nc bnc" id="L717" title="All 2 branches missed.">                            &amp;&amp; bp &lt; token.length()) {</span>
+                        Integer nbr, ord;
+                        try {
+<span class="nc" id="L720">                            nbr = Integer.valueOf(token.substring(0, bp));</span>
+<span class="nc" id="L721">                            ord = Integer.valueOf(</span>
+<span class="nc" id="L722">                                    parseMsgOrder(token.substring(bp)));</span>
+<span class="nc" id="L723">                            currentseq.set(currentseq.size() - 2, nbr);</span>
+<span class="nc" id="L724">                            currentseq.set(currentseq.size() - 1, ord);</span>
+<span class="nc" id="L725">                            assigned = true;</span>
+<span class="nc" id="L726">                        } catch (NumberFormatException nfe) { }</span>
+                    }
+
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">                    if (!assigned) {</span>
+<span class="nc" id="L730">                        String msg = &quot;parsing.error.message.unexpected-token&quot;;</span>
+<span class="nc" id="L731">                        Object[] parseExcArgs = {token};</span>
+<span class="nc" id="L732">                        throw new ParseException(</span>
+<span class="nc" id="L733">                                Translator.localize(msg, parseExcArgs),</span>
+<span class="nc" id="L734">                                st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L736">                }</span>
+            }
+<span class="nc" id="L738">        } catch (NoSuchElementException nsee) {</span>
+<span class="nc" id="L739">            String msg = &quot;parsing.error.message.unexpected-end-message&quot;;</span>
+<span class="nc" id="L740">            throw new ParseException(Translator.localize(msg), s.length());</span>
+<span class="fc" id="L741">        } catch (ParseException pre) {</span>
+<span class="fc" id="L742">            throw pre;</span>
+<span class="fc" id="L743">        }</span>
+
+<span class="fc" id="L745">        List&lt;String&gt; args = parseArguments(paramExpr, mayDeleteExpr);</span>
+
+<span class="fc" id="L747">        printDebugInfo(s, fname, guard, paramExpr, varname, predecessors,</span>
+                seqno, parallell, iterative);
+
+        /* Now apply the changes to the model: */
+
+<span class="fc" id="L752">        buildAction(umlMessage);</span>
+
+<span class="fc" id="L754">        handleGuard(umlMessage, guard, parallell, iterative);</span>
+
+<span class="fc" id="L756">        fname = fillBlankFunctionName(umlMessage, fname, mayDeleteExpr);</span>
+
+<span class="fc" id="L758">        varname = fillBlankVariableName(umlMessage, varname, mayDeleteExpr);</span>
+
+<span class="fc" id="L760">        refindOperation = handleFunctionName(umlMessage, fname, varname,</span>
+                refindOperation);
+
+<span class="fc" id="L763">        refindOperation = handleArguments(umlMessage, args, refindOperation);</span>
+
+<span class="fc" id="L765">        refindOperation = handleSequenceNumber(umlMessage, seqno,</span>
+                refindOperation);
+
+<span class="fc" id="L768">        handleOperation(umlMessage, fname, refindOperation);</span>
+
+<span class="fc" id="L770">        handlePredecessors(umlMessage, predecessors, hasPredecessors);</span>
+<span class="fc" id="L771">    }</span>
+
+    private void printDebugInfo(String s, String fname, StringBuilder guard,
+            String paramExpr, StringBuilder varname, List&lt;List&gt; predecessors,
+            List&lt;Integer&gt; seqno, boolean parallell, boolean iterative) {
+<span class="pc bpc" id="L776" title="1 of 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L777">            StringBuffer buf = new StringBuffer();</span>
+<span class="nc" id="L778">            buf.append(&quot;ParseMessage: &quot; + s + &quot;\n&quot;);</span>
+<span class="nc" id="L779">            buf.append(&quot;Message: &quot;);</span>
+<span class="nc bnc" id="L780" title="All 4 branches missed.">            for (int i = 0; seqno != null &amp;&amp; i + 1 &lt; seqno.size(); i += 2) {</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">                if (i &gt; 0) {</span>
+<span class="nc" id="L782">                    buf.append(&quot;, &quot;);</span>
+                }
+<span class="nc" id="L784">                buf.append(seqno.get(i) + &quot; (&quot; + seqno.get(i + 1) + &quot;)&quot;);</span>
+            }
+<span class="nc" id="L786">            buf.append(&quot;\n&quot;);</span>
+<span class="nc" id="L787">            buf.append(&quot;predecessors: &quot; + predecessors.size() + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L788" title="All 2 branches missed.">            for (int i = 0; i &lt; predecessors.size(); i++) {</span>
+                int j;
+<span class="nc" id="L790">                List v = predecessors.get(i);</span>
+<span class="nc" id="L791">                buf.append(&quot;    Predecessor: &quot;);</span>
+<span class="nc bnc" id="L792" title="All 4 branches missed.">                for (j = 0; v != null &amp;&amp; j + 1 &lt; v.size(); j += 2) {</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">                    if (j &gt; 0) {</span>
+<span class="nc" id="L794">                        buf.append(&quot;, &quot;);</span>
+                    }
+<span class="nc" id="L796">                    buf.append(v.get(j) + &quot; (&quot; + v.get(j + 1) + &quot;)&quot;);</span>
+                }
+            }
+<span class="nc" id="L799">            buf.append(&quot;guard: &quot; + guard + &quot; it: &quot; + iterative + &quot; pl: &quot;</span>
+                    + parallell + &quot;\n&quot;);
+<span class="nc" id="L801">            buf.append(varname + &quot; := &quot; + fname + &quot; ( &quot; + paramExpr + &quot; )&quot;</span>
+                    + &quot;\n&quot;);
+<span class="nc" id="L803">            LOG.log(Level.FINE, &quot;{0}&quot;, buf);</span>
+        }
+<span class="fc" id="L805">    }</span>
+
+    /**
+     * @param paramExpr
+     * @param mayDeleteExpr
+     * @return
+     */
+    protected List&lt;String&gt; parseArguments(String paramExpr,
+            boolean mayDeleteExpr) {
+        String token;
+<span class="fc" id="L815">        List&lt;String&gt; args = null;</span>
+<span class="fc bfc" id="L816" title="All 2 branches covered.">        if (paramExpr != null) {</span>
+<span class="fc" id="L817">            MyTokenizer st = new MyTokenizer(paramExpr, &quot;\\,&quot;,</span>
+                    parameterCustomSep);
+<span class="fc" id="L819">            args = new ArrayList&lt;String&gt;();</span>
+<span class="pc bpc" id="L820" title="1 of 2 branches missed.">            while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L821">                token = st.nextToken();</span>
+
+<span class="nc bnc" id="L823" title="All 2 branches missed.">                if (&quot;,&quot;.equals(token)) {</span>
+<span class="nc bnc" id="L824" title="All 2 branches missed.">                    if (args.size() == 0) {</span>
+<span class="nc" id="L825">                        args.add(null);</span>
+                    }
+<span class="nc" id="L827">                    args.add(null);</span>
+                } else {
+<span class="nc bnc" id="L829" title="All 2 branches missed.">                    if (args.size() == 0) {</span>
+<span class="nc bnc" id="L830" title="All 2 branches missed.">                        if (token.trim().length() == 0) {</span>
+<span class="nc" id="L831">                            continue;</span>
+                        }
+<span class="nc" id="L833">                        args.add(null);</span>
+                    }
+<span class="nc" id="L835">                    String arg = args.get(args.size() - 1);</span>
+<span class="nc bnc" id="L836" title="All 2 branches missed.">                    if (arg != null) {</span>
+<span class="nc" id="L837">                        arg = arg + token;</span>
+                    } else {
+<span class="nc" id="L839">                        arg = token;</span>
+                    }
+<span class="nc" id="L841">                    args.set(args.size() - 1, arg);</span>
+<span class="nc" id="L842">                }</span>
+            }
+<span class="fc bfc" id="L844" title="All 2 branches covered.">        } else if (mayDeleteExpr) {</span>
+<span class="fc" id="L845">            args = new ArrayList&lt;String&gt;();</span>
+        }
+<span class="fc" id="L847">        return args;</span>
+    }
+
+    /**
+     * Set the predecessors of the given Message.
+     *
+     * @param umlMessage the given UML Message object to be adapted
+     * @param predecessors the given predecessors as parsed
+     * @param hasPredecessors true if there are some, if false we do nothing
+     * @throws ParseException if something is wrong with the predecessor text
+     */
+    protected void handlePredecessors(Object umlMessage,
+            List&lt;List&gt; predecessors, boolean hasPredecessors)
+        throws ParseException {
+
+        // Predecessors used to be not implemented, because it
+        // caused some problems that I've not found an easy way to handle yet,
+        // d00mst. The specific problem is that the notation currently is
+        // ambiguous on second message after a thread split.
+        // Why not implement it anyway? d00mst
+        // TODO: Document this ambiguity and the choice made.
+<span class="fc bfc" id="L868" title="All 2 branches covered.">        if (hasPredecessors) {</span>
+<span class="fc" id="L869">            Collection roots =</span>
+<span class="fc" id="L870">                findCandidateRoots(</span>
+<span class="fc" id="L871">                        Model.getFacade().getMessages(</span>
+<span class="fc" id="L872">                                Model.getFacade().getInteraction(umlMessage)),</span>
+                                null,
+                                null);
+<span class="fc" id="L875">            List&lt;Object&gt; pre = new ArrayList&lt;Object&gt;();</span>
+
+        predfor:
+<span class="fc bfc" id="L878" title="All 2 branches covered.">            for (int i = 0; i &lt; predecessors.size(); i++) {</span>
+<span class="fc bfc" id="L879" title="All 2 branches covered.">                for (Object root : roots) {</span>
+<span class="fc" id="L880">                    Object msg =</span>
+<span class="fc" id="L881">                        walkTree(root, predecessors.get(i));</span>
+<span class="pc bpc" id="L882" title="1 of 4 branches missed.">                    if (msg != null &amp;&amp; msg != umlMessage) {</span>
+<span class="fc bfc" id="L883" title="All 2 branches covered.">                        if (isBadPreMsg(umlMessage, msg)) {</span>
+<span class="fc" id="L884">                            String parseMsg = &quot;parsing.error.message.one-pred&quot;;</span>
+<span class="fc" id="L885">                            throw new ParseException(</span>
+<span class="fc" id="L886">                                    Translator.localize(parseMsg), 0);</span>
+                        }
+<span class="fc" id="L888">                        pre.add(msg);</span>
+<span class="fc" id="L889">                        continue predfor;</span>
+                    }
+<span class="fc" id="L891">                }</span>
+<span class="fc" id="L892">                String parseMsg = &quot;parsing.error.message.pred-not-found&quot;;</span>
+<span class="fc" id="L893">                throw new ParseException(Translator.localize(parseMsg), 0);</span>
+            }
+<span class="fc" id="L895">            MsgPtr ptr = new MsgPtr();</span>
+<span class="fc" id="L896">            recCountPredecessors(umlMessage, ptr);</span>
+<span class="pc bpc" id="L897" title="1 of 4 branches missed.">            if (ptr.message != null &amp;&amp; !pre.contains(ptr.message)) {</span>
+<span class="fc" id="L898">                pre.add(ptr.message);</span>
+            }
+<span class="fc" id="L900">            Model.getCollaborationsHelper().setPredecessors(umlMessage, pre);</span>
+        }
+<span class="fc" id="L902">    }</span>
+
+    /**
+     * Update the model with the operation name. &lt;p&gt;
+     *
+     * The given operation name is located on the receiver of the given message.
+     * If an operation with the given name
+     * and a matching number of arguments is located,
+     * then the CallAction of the message is adapted accordingly.
+     *
+     * @param umlMessage the message of which the CallAction is to be adapted
+     * @param fname the name of the operation to be used
+     * @param refindOperation true if we have to set the operation
+     * of the CallAction
+     * @throws ParseException if the operation syntax can not be parsed
+     */
+    protected void handleOperation(Object umlMessage, String fname,
+            boolean refindOperation) throws ParseException {
+<span class="pc bpc" id="L920" title="1 of 4 branches missed.">        if (fname != null &amp;&amp; refindOperation) {</span>
+<span class="fc" id="L921">            Object role = Model.getFacade().getReceiver(umlMessage);</span>
+<span class="fc" id="L922">            List ops =</span>
+<span class="fc" id="L923">                getOperation(</span>
+<span class="fc" id="L924">                    Model.getFacade().getBases(role),</span>
+<span class="fc" id="L925">                    fname.trim(),</span>
+<span class="fc" id="L926">                    Model.getFacade().getActualArguments(</span>
+<span class="fc" id="L927">                            Model.getFacade().getAction(umlMessage)).size());</span>
+
+<span class="fc" id="L929">            Object callAction = Model.getFacade().getAction(umlMessage);</span>
+<span class="pc bpc" id="L930" title="1 of 2 branches missed.">            if (Model.getFacade().isACallAction(callAction)) {</span>
+<span class="pc bpc" id="L931" title="1 of 2 branches missed.">                if (ops.size() &gt; 0) {</span>
+                    // If there are more than one suitable operation,
+                    // then we pick the first one.
+<span class="nc" id="L934">                    Model.getCommonBehaviorHelper().setOperation(callAction,</span>
+<span class="nc" id="L935">                            ops.get(0));</span>
+                } else {
+<span class="fc" id="L937">                    Model.getCommonBehaviorHelper().setOperation(</span>
+                            callAction, null);
+                }
+            }
+        }
+<span class="fc" id="L942">    }</span>
+
+    /**
+     * @param umlMessage
+     * @param seqno
+     * @param refindOperation
+     * @return
+     * @throws ParseException
+     */
+    protected boolean handleSequenceNumber(Object umlMessage,
+            List&lt;Integer&gt; seqno, boolean refindOperation) throws ParseException {
+        int i;
+<span class="fc bfc" id="L954" title="All 2 branches covered.">        if (seqno != null) {</span>
+            Object/* MMessage */root;
+            // Find the preceding message, if any, on either end of the
+            // association.
+<span class="fc" id="L958">            StringBuilder pname = new StringBuilder();</span>
+<span class="fc" id="L959">            StringBuilder mname = new StringBuilder();</span>
+<span class="fc" id="L960">            String gname = generateMessageNumber(umlMessage);</span>
+<span class="fc" id="L961">            boolean swapRoles = false;</span>
+<span class="fc" id="L962">            int majval = 0;</span>
+<span class="pc bpc" id="L963" title="1 of 2 branches missed.">            if (seqno.get(seqno.size() - 2) != null) {</span>
+<span class="fc" id="L964">                majval =</span>
+<span class="fc" id="L965">                    Math.max((seqno.get(seqno.size() - 2)).intValue()</span>
+                            - 1,
+                            0);
+            }
+<span class="fc" id="L969">            int minval = 0;</span>
+<span class="pc bpc" id="L970" title="1 of 2 branches missed.">            if (seqno.get(seqno.size() - 1) != null) {</span>
+<span class="nc" id="L971">                minval =</span>
+<span class="nc" id="L972">                    Math.max((seqno.get(seqno.size() - 1)).intValue(),</span>
+                            0);
+            }
+
+<span class="fc bfc" id="L976" title="All 2 branches covered.">            for (i = 0; i + 1 &lt; seqno.size(); i += 2) {</span>
+<span class="fc" id="L977">                int bv = 1;</span>
+<span class="pc bpc" id="L978" title="1 of 2 branches missed.">                if (seqno.get(i) != null) {</span>
+<span class="fc" id="L979">                    bv = Math.max((seqno.get(i)).intValue(), 1);</span>
+                }
+
+<span class="fc" id="L982">                int sv = 0;</span>
+<span class="pc bpc" id="L983" title="1 of 2 branches missed.">                if (seqno.get(i + 1) != null) {</span>
+<span class="nc" id="L984">                    sv = Math.max((seqno.get(i + 1)).intValue(), 0);</span>
+                }
+
+<span class="fc bfc" id="L987" title="All 2 branches covered.">                if (i &gt; 0) {</span>
+<span class="fc" id="L988">                    mname.append(&quot;.&quot;);</span>
+                }
+<span class="fc" id="L990">                mname.append(Integer.toString(bv) + (char) ('a' + sv));</span>
+
+<span class="fc bfc" id="L992" title="All 2 branches covered.">                if (i + 3 &lt; seqno.size()) {</span>
+<span class="fc bfc" id="L993" title="All 2 branches covered.">                    if (i &gt; 0) {</span>
+<span class="fc" id="L994">                        pname.append(&quot;.&quot;);</span>
+                    }
+<span class="fc" id="L996">                    pname.append(Integer.toString(bv) + (char) ('a' + sv));</span>
+                }
+            }
+
+<span class="fc" id="L1000">            root = null;</span>
+<span class="fc bfc" id="L1001" title="All 2 branches covered.">            if (pname.length() &gt; 0) {</span>
+<span class="fc" id="L1002">                root = findMsg(Model.getFacade().getSender(umlMessage),</span>
+<span class="fc" id="L1003">                        pname.toString());</span>
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">                if (root == null) {</span>
+<span class="fc" id="L1005">                    root = findMsg(Model.getFacade().getReceiver(umlMessage),</span>
+<span class="fc" id="L1006">                            pname.toString());</span>
+<span class="fc bfc" id="L1007" title="All 2 branches covered.">                    if (root != null) {</span>
+<span class="fc" id="L1008">                        swapRoles = true;</span>
+                    }
+                }
+<span class="pc bpc" id="L1011" title="1 of 2 branches missed.">            } else if (!hasMsgWithActivator(Model.getFacade().getSender(umlMessage),</span>
+                    null)
+<span class="pc bpc" id="L1013" title="1 of 2 branches missed.">                    &amp;&amp; hasMsgWithActivator(Model.getFacade().getReceiver(umlMessage),</span>
+                            null)) {
+<span class="fc" id="L1015">                swapRoles = true;</span>
+            }
+
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">            if (compareMsgNumbers(mname.toString(), gname.toString())) {</span>
+                // Do nothing
+<span class="fc bfc" id="L1020" title="All 2 branches covered.">            } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {</span>
+<span class="fc" id="L1021">                String msg = &quot;parsing.error.message.subtree-rooted-self&quot;;</span>
+<span class="fc" id="L1022">                throw new ParseException(Translator.localize(msg), 0);</span>
+<span class="pc bpc" id="L1023" title="1 of 2 branches missed.">            } else if (Model.getFacade().getPredecessors(umlMessage).size() &gt; 1</span>
+<span class="nc bnc" id="L1024" title="All 2 branches missed.">                    &amp;&amp; Model.getFacade().getSuccessors(umlMessage).size() &gt; 1) {</span>
+<span class="nc" id="L1025">                String msg = &quot;parsing.error.message.start-end-many-threads&quot;;</span>
+<span class="nc" id="L1026">                throw new ParseException(Translator.localize(msg), 0);</span>
+<span class="fc bfc" id="L1027" title="All 4 branches covered.">            } else if (root == null &amp;&amp; pname.length() &gt; 0) {</span>
+<span class="fc" id="L1028">                String msg = &quot;parsing.error.message.activator-not-found&quot;;</span>
+<span class="fc" id="L1029">                throw new ParseException(Translator.localize(msg), 0);</span>
+<span class="fc bfc" id="L1030" title="All 2 branches covered.">            } else if (swapRoles</span>
+<span class="fc bfc" id="L1031" title="All 2 branches covered.">                    &amp;&amp; Model.getFacade().getActivatedMessages(umlMessage).size() &gt; 0</span>
+<span class="fc" id="L1032">                    &amp;&amp; (Model.getFacade().getSender(umlMessage)</span>
+<span class="pc bpc" id="L1033" title="1 of 2 branches missed.">                            != Model.getFacade().getReceiver(umlMessage))) {</span>
+<span class="fc" id="L1034">                String msg = &quot;parsing.error.message.reverse-direction-message&quot;;</span>
+<span class="fc" id="L1035">                throw new ParseException(Translator.localize(msg), 0);</span>
+            } else {
+                /* Disconnect the message from the call graph
+                 * Make copies of returned live collections
+                 * since we're modifying
+                 */
+<span class="fc" id="L1041">                Collection c = new ArrayList(</span>
+<span class="fc" id="L1042">                        Model.getFacade().getPredecessors(umlMessage));</span>
+<span class="fc" id="L1043">                Collection c2 = new ArrayList(</span>
+<span class="fc" id="L1044">                        Model.getFacade().getSuccessors(umlMessage));</span>
+                Iterator it;
+
+<span class="fc" id="L1047">                it = c2.iterator();</span>
+<span class="fc bfc" id="L1048" title="All 2 branches covered.">                while (it.hasNext()) {</span>
+<span class="fc" id="L1049">                    Model.getCollaborationsHelper().removeSuccessor(umlMessage,</span>
+<span class="fc" id="L1050">                            it.next());</span>
+                }
+
+<span class="fc" id="L1053">                it = c.iterator();</span>
+<span class="fc bfc" id="L1054" title="All 2 branches covered.">                while (it.hasNext()) {</span>
+<span class="fc" id="L1055">                    Iterator it2 = c2.iterator();</span>
+<span class="fc" id="L1056">                    Object pre = /* (MMessage) */it.next();</span>
+<span class="fc" id="L1057">                    Model.getCollaborationsHelper().removePredecessor(umlMessage, pre);</span>
+<span class="pc bpc" id="L1058" title="1 of 2 branches missed.">                    while (it2.hasNext()) {</span>
+<span class="nc" id="L1059">                        Model.getCollaborationsHelper().addPredecessor(</span>
+<span class="nc" id="L1060">                                it2.next(), pre);</span>
+                    }
+<span class="fc" id="L1062">                }</span>
+
+                // Connect the message at a new spot
+<span class="fc" id="L1065">                Model.getCollaborationsHelper().setActivator(umlMessage, root);</span>
+<span class="fc bfc" id="L1066" title="All 2 branches covered.">                if (swapRoles) {</span>
+                    Object/* MClassifierRole */r =
+<span class="fc" id="L1068">                        Model.getFacade().getSender(umlMessage);</span>
+<span class="fc" id="L1069">                    Model.getCollaborationsHelper().setSender(umlMessage,</span>
+<span class="fc" id="L1070">                            Model.getFacade().getReceiver(umlMessage));</span>
+<span class="fc" id="L1071">                    Model.getCommonBehaviorHelper().setReceiver(umlMessage, r);</span>
+                }
+
+<span class="fc bfc" id="L1074" title="All 2 branches covered.">                if (root == null) {</span>
+<span class="fc" id="L1075">                    c =</span>
+<span class="fc" id="L1076">                        filterWithActivator(</span>
+<span class="fc" id="L1077">                                Model.getFacade().getSentMessages(</span>
+<span class="fc" id="L1078">                                        Model.getFacade().getSender(umlMessage)),</span>
+                                        null);
+                } else {
+<span class="fc" id="L1081">                    c = Model.getFacade().getActivatedMessages(root);</span>
+                }
+<span class="fc" id="L1083">                c2 = findCandidateRoots(c, root, umlMessage);</span>
+<span class="fc" id="L1084">                it = c2.iterator();</span>
+                // If c2 is empty, then we're done (or there is a
+                // cycle in the message graph, which would be bad) If
+                // c2 has more than one element, then the model is
+                // crappy, but we'll just use one of them anyway
+<span class="fc bfc" id="L1089" title="All 2 branches covered.">                if (majval &lt;= 0) {</span>
+<span class="fc bfc" id="L1090" title="All 2 branches covered.">                    while (it.hasNext()) {</span>
+<span class="fc" id="L1091">                        Model.getCollaborationsHelper().addSuccessor(umlMessage,</span>
+<span class="fc" id="L1092">                                /* (MMessage) */it.next());</span>
+                    }
+<span class="pc bpc" id="L1094" title="1 of 2 branches missed.">                } else if (it.hasNext()) {</span>
+<span class="fc" id="L1095">                    Object/* MMessage */pre =</span>
+<span class="fc" id="L1096">                        walk(/* (MMessage) */it.next(), majval - 1, false);</span>
+<span class="fc" id="L1097">                    Object/* MMessage */post = successor(pre, minval);</span>
+<span class="pc bpc" id="L1098" title="1 of 2 branches missed.">                    if (post != null) {</span>
+<span class="nc" id="L1099">                        Model.getCollaborationsHelper()</span>
+<span class="nc" id="L1100">                            .removePredecessor(post, pre);</span>
+<span class="nc" id="L1101">                        Model.getCollaborationsHelper()</span>
+<span class="nc" id="L1102">                            .addPredecessor(post, umlMessage);</span>
+                    }
+<span class="fc" id="L1104">                    insertSuccessor(pre, umlMessage, minval);</span>
+                }
+<span class="fc" id="L1106">                refindOperation = true;</span>
+            }
+        }
+<span class="fc" id="L1109">        return refindOperation;</span>
+    }
+
+    /**
+     * @param umlMessage
+     * @param args
+     * @param refindOperation
+     * @return
+     */
+    protected boolean handleArguments(Object umlMessage, List&lt;String&gt; args,
+            boolean refindOperation) {
+<span class="fc bfc" id="L1120" title="All 2 branches covered.">        if (args != null) {</span>
+<span class="fc" id="L1121">            Collection c = new ArrayList(</span>
+<span class="fc" id="L1122">                    Model.getFacade().getActualArguments(</span>
+<span class="fc" id="L1123">                            Model.getFacade().getAction(umlMessage)));</span>
+<span class="fc" id="L1124">            Iterator it = c.iterator();</span>
+            int ii;
+<span class="pc bpc" id="L1126" title="1 of 2 branches missed.">            for (ii = 0; ii &lt; args.size(); ii++) {</span>
+<span class="nc bnc" id="L1127" title="All 2 branches missed.">                Object umlArgument = (it.hasNext() ? it.next() : null);</span>
+<span class="nc bnc" id="L1128" title="All 2 branches missed.">                if (umlArgument == null) {</span>
+<span class="nc" id="L1129">                    umlArgument = Model.getCommonBehaviorFactory()</span>
+<span class="nc" id="L1130">                        .createArgument();</span>
+<span class="nc" id="L1131">                    Model.getCommonBehaviorHelper().addActualArgument(</span>
+<span class="nc" id="L1132">                            Model.getFacade().getAction(umlMessage), umlArgument);</span>
+<span class="nc" id="L1133">                    refindOperation = true;</span>
+                }
+<span class="nc bnc" id="L1135" title="All 2 branches missed.">                if (Model.getFacade().getValue(umlArgument) == null</span>
+<span class="nc bnc" id="L1136" title="All 2 branches missed.">                        || !args.get(ii).equals(</span>
+<span class="nc" id="L1137">                                Model.getFacade().getBody(</span>
+<span class="nc" id="L1138">                                        Model.getFacade().getValue(umlArgument)))) {</span>
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">                    String value = (args.get(ii) != null ? args.get(ii)</span>
+                            : &quot;&quot;);
+                    Object umlExpression =
+<span class="nc" id="L1142">                        Model.getDataTypesFactory().createExpression(</span>
+<span class="nc" id="L1143">                                getExpressionLanguage(),</span>
+<span class="nc" id="L1144">                                value.trim());</span>
+<span class="nc" id="L1145">                    Model.getCommonBehaviorHelper().setValue(umlArgument, umlExpression);</span>
+                }
+            }
+
+<span class="pc bpc" id="L1149" title="1 of 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc" id="L1150">                Model.getCommonBehaviorHelper()</span>
+<span class="nc" id="L1151">                    .removeActualArgument(Model.getFacade().getAction(umlMessage),</span>
+<span class="nc" id="L1152">                        it.next());</span>
+<span class="nc" id="L1153">                refindOperation = true;</span>
+            }
+        }
+<span class="fc" id="L1156">        return refindOperation;</span>
+    }
+
+    /**
+     * Store the given function name and return variable name
+     * in the script of the action of the given message. &lt;p&gt;
+     *
+     * Constraint: the given Message shall have an Action.
+     *
+     * @param umlMessage the given UML Message object to adapt
+     * @param fname the name of the function
+     * @param varname the return variable name
+     * @param refindOperation if false, then we may return true or false.
+     * If true, we return true.
+     * @return true if we stored the fname and varname
+     * in the Action of the Message
+     */
+    protected boolean handleFunctionName(Object umlMessage, String fname,
+            StringBuilder varname, boolean refindOperation) {
+<span class="pc bpc" id="L1175" title="1 of 2 branches missed.">        if (fname != null) {</span>
+<span class="fc" id="L1176">            String expr = fname.trim();</span>
+<span class="fc bfc" id="L1177" title="All 2 branches covered.">            if (varname.length() &gt; 0) {</span>
+<span class="fc" id="L1178">                expr = varname.toString().trim() + &quot; := &quot; + expr;</span>
+            }
+
+<span class="fc" id="L1181">            Object action = Model.getFacade().getAction(umlMessage);</span>
+<span class="pc bpc" id="L1182" title="2 of 4 branches missed.">            assert action != null;</span>
+<span class="fc" id="L1183">            Object script = Model.getFacade().getScript(action);</span>
+<span class="fc bfc" id="L1184" title="All 2 branches covered.">            if (script == null</span>
+<span class="fc bfc" id="L1185" title="All 2 branches covered.">                    || !expr.equals(Model.getFacade().getBody(script))) {</span>
+                Object newActionExpression =
+<span class="fc" id="L1187">                    Model.getDataTypesFactory()</span>
+<span class="fc" id="L1188">                        .createActionExpression(</span>
+<span class="fc" id="L1189">                            getExpressionLanguage(),</span>
+<span class="fc" id="L1190">                            expr.trim());</span>
+<span class="fc" id="L1191">                Model.getCommonBehaviorHelper().setScript(</span>
+                        action, newActionExpression);
+<span class="fc" id="L1193">                refindOperation = true;</span>
+            }
+        }
+<span class="fc" id="L1196">        return refindOperation;</span>
+    }
+
+    /**
+     * Fill in the variable name if it is blank.  &lt;p&gt;
+     * The variable name is the part in front of the assignment operator.
+     *
+     * @param umlMessage the given message to fill the variable name for
+     * @param varname if null, then we get the variable name from the model.
+     * @param mayDeleteExpr if true, then we may delete the variable,
+     * and hence we return an empty string
+     * @return the original variable name, or if it was null,
+     * a variable name generated from the model
+     */
+    protected StringBuilder fillBlankVariableName(Object umlMessage,
+            StringBuilder varname, boolean mayDeleteExpr) {
+        /* If no variable name was given, then retain the one in the model. */
+<span class="fc bfc" id="L1213" title="All 2 branches covered.">        if (varname == null) {</span>
+<span class="fc" id="L1214">            Object script = Model.getFacade().getScript(</span>
+<span class="fc" id="L1215">                    Model.getFacade().getAction(umlMessage));</span>
+<span class="pc bpc" id="L1216" title="1 of 4 branches missed.">            if (!mayDeleteExpr &amp;&amp; script != null) {</span>
+                String body =
+<span class="fc" id="L1218">                    (String) Model.getFacade().getBody(script);</span>
+<span class="fc" id="L1219">                int idx = body.indexOf(&quot;:=&quot;);</span>
+<span class="pc bpc" id="L1220" title="1 of 2 branches missed.">                if (idx &lt; 0) {</span>
+<span class="fc" id="L1221">                    idx = body.indexOf(&quot;=&quot;);</span>
+                }
+
+<span class="pc bpc" id="L1224" title="1 of 2 branches missed.">                if (idx &gt;= 0) {</span>
+<span class="nc" id="L1225">                    varname = new StringBuilder(body.substring(0, idx));</span>
+                } else {
+<span class="fc" id="L1227">                    varname = new StringBuilder();</span>
+                }
+<span class="fc" id="L1229">            } else {</span>
+<span class="fc" id="L1230">                varname = new StringBuilder();</span>
+            }
+        }
+<span class="fc" id="L1233">        return varname;</span>
+    }
+
+    /**
+     * Fill in the function name if it is blank. &lt;p&gt;
+     *
+     * The fname is the part of the script after the assignment operator.
+     *
+     * @param umlMessage the given message to fill the fname for
+     * @param fname if null, then we get the fname from the model.
+     * @param mayDeleteExpr if true, then we may delete the function,
+     * and hence we return an empty string
+     * @return the original fname, or if it was null,
+     * a fname generated from the model
+     */
+    protected String fillBlankFunctionName(Object umlMessage, String fname,
+            boolean mayDeleteExpr) {
+        /* If no function-name was given, then retain the one in the model. */
+<span class="fc bfc" id="L1251" title="All 2 branches covered.">        if (fname == null) {</span>
+<span class="fc" id="L1252">            Object script = Model.getFacade().getScript(</span>
+<span class="fc" id="L1253">                    Model.getFacade().getAction(umlMessage));</span>
+<span class="pc bpc" id="L1254" title="1 of 4 branches missed.">            if (!mayDeleteExpr &amp;&amp; script != null) {</span>
+                String body =
+<span class="fc" id="L1256">                    (String) Model.getFacade().getBody(script);</span>
+
+<span class="fc" id="L1258">                int idx = body.indexOf(&quot;:=&quot;);</span>
+<span class="pc bpc" id="L1259" title="1 of 2 branches missed.">                if (idx &gt;= 0) {</span>
+<span class="nc" id="L1260">                    idx++;</span>
+                } else {
+<span class="fc" id="L1262">                    idx = body.indexOf(&quot;=&quot;);</span>
+                }
+
+<span class="pc bpc" id="L1265" title="1 of 2 branches missed.">                if (idx &gt;= 0) {</span>
+<span class="nc" id="L1266">                    fname = body.substring(idx + 1);</span>
+                } else {
+<span class="fc" id="L1268">                    fname = body;</span>
+                }
+<span class="fc" id="L1270">            } else {</span>
+<span class="fc" id="L1271">                fname = &quot;&quot;;</span>
+            }
+        }
+<span class="fc" id="L1274">        return fname;</span>
+    }
+
+    /**
+     * Store the parsed guard in the UML objects related to the given Message.
+     *
+     * @param umlMessage the UML Message object
+     * @param guard the guard expression string
+     * @param parallell true if parallel execution was indicated
+     * @param iterative true if this is an iterative expression,
+     * as opposed to a condition
+     */
+    protected void handleGuard(Object umlMessage, StringBuilder guard,
+            boolean parallell, boolean iterative) {
+        /* Store the guard, i.e. condition or iteration expression,
+         * in the recurrence field of the Action: */
+<span class="fc bfc" id="L1290" title="All 2 branches covered.">        if (guard != null) {</span>
+<span class="fc" id="L1291">            guard = new StringBuilder(&quot;[&quot; + guard.toString().trim() + &quot;]&quot;);</span>
+<span class="fc bfc" id="L1292" title="All 2 branches covered.">            if (iterative) {</span>
+<span class="fc bfc" id="L1293" title="All 2 branches covered.">                if (parallell) {</span>
+<span class="fc" id="L1294">                    guard = guard.insert(0, &quot;*//&quot;);</span>
+                } else {
+<span class="fc" id="L1296">                    guard = guard.insert(0, &quot;*&quot;);</span>
+                }
+            }
+            Object expr =
+<span class="fc" id="L1300">                Model.getDataTypesFactory().createIterationExpression(</span>
+<span class="fc" id="L1301">                        getExpressionLanguage(), guard.toString());</span>
+<span class="fc" id="L1302">            Model.getCommonBehaviorHelper().setRecurrence(</span>
+<span class="fc" id="L1303">                    Model.getFacade().getAction(umlMessage), expr);</span>
+        }
+<span class="fc" id="L1305">    }</span>
+
+    /**
+     * Build a CallAction for the given UML Message
+     * if it did not have an Action yet.
+     *
+     * @param umlMessage the UML Message object to create an Action for
+     */
+    protected void buildAction(Object umlMessage) {
+<span class="fc bfc" id="L1314" title="All 2 branches covered.">        if (Model.getFacade().getAction(umlMessage) == null) {</span>
+            /* If there was no Action yet, create a CallAction: */
+<span class="fc" id="L1316">            Object a = Model.getCommonBehaviorFactory()</span>
+<span class="fc" id="L1317">                .createCallAction();</span>
+<span class="fc" id="L1318">            Model.getCoreHelper().addOwnedElement(Model.getFacade().getContext(</span>
+<span class="fc" id="L1319">                    Model.getFacade().getInteraction(umlMessage)), a);</span>
+<span class="fc" id="L1320">            Model.getCollaborationsHelper().setAction(umlMessage, a);</span>
+        }
+<span class="fc" id="L1322">    }</span>
+
+    /**
+     * TODO: This name of the expression language should be
+     * configurable by the user. &lt;p&gt;
+     *
+     * According to the UML standard,
+     * the expression language should be the same
+     * for all elements in one diagram. &lt;p&gt;
+     *
+     * UML is not a sensible default - usually this is some pseudo-language.
+     *
+     * @return the name of the expression language
+     */
+    private String getExpressionLanguage() {
+<span class="fc" id="L1337">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Walks a call tree from a &lt;code&gt;root&lt;/code&gt; node
+     * following the directions given in &lt;code&gt;path&lt;/code&gt;
+     * to a destination node. If the destination node cannot be reached, then
+     * null is returned.
+     *
+     * @param root The root of the call tree.
+     * @param path The path to walk in the call tree.
+     * @return The message at the end of path, or &lt;code&gt;null&lt;/code&gt;.
+     */
+    private Object walkTree(Object root, List path) {
+        int i;
+<span class="fc bfc" id="L1352" title="All 2 branches covered.">        for (i = 0; i + 1 &lt; path.size(); i += 2) {</span>
+<span class="fc" id="L1353">            int bv = 0;</span>
+<span class="pc bpc" id="L1354" title="1 of 2 branches missed.">            if (path.get(i) != null) {</span>
+<span class="fc" id="L1355">                bv = Math.max(((Integer) path.get(i)).intValue() - 1, 0);</span>
+            }
+
+<span class="fc" id="L1358">            int sv = 0;</span>
+<span class="pc bpc" id="L1359" title="1 of 2 branches missed.">            if (path.get(i + 1) != null) {</span>
+<span class="nc" id="L1360">                sv = Math.max(((Integer) path.get(i + 1)).intValue(), 0);</span>
+            }
+
+<span class="fc" id="L1363">            root = walk(root, bv - 1, true);</span>
+<span class="pc bpc" id="L1364" title="1 of 2 branches missed.">            if (root == null) {</span>
+<span class="nc" id="L1365">                return null;</span>
+            }
+<span class="fc bfc" id="L1367" title="All 2 branches covered.">            if (bv &gt; 0) {</span>
+<span class="fc" id="L1368">                root = successor(root, sv);</span>
+<span class="pc bpc" id="L1369" title="1 of 2 branches missed.">                if (root == null) {</span>
+<span class="nc" id="L1370">                    return null;</span>
+                }
+            }
+<span class="fc bfc" id="L1373" title="All 2 branches covered.">            if (i + 3 &lt; path.size()) {</span>
+<span class="fc" id="L1374">                Iterator it =</span>
+<span class="fc" id="L1375">                    findCandidateRoots(</span>
+<span class="fc" id="L1376">                            Model.getFacade().getActivatedMessages(root),</span>
+                            root,
+<span class="fc" id="L1378">                            null).iterator();</span>
+                // Things are strange if there are more than one candidate root,
+                // it has no obvious interpretation in terms of a call tree.
+<span class="fc bfc" id="L1381" title="All 2 branches covered.">                if (!it.hasNext()) {</span>
+<span class="fc" id="L1382">                    return null;</span>
+                }
+<span class="fc" id="L1384">                root = /* (MMessage) */it.next();</span>
+            }
+        }
+<span class="fc" id="L1387">        return root;</span>
+    }
+
+    /**
+     * Finds the steps'th successor of r in the sense that it is a successor of
+     * a successor of r (steps times). The first successor with the same
+     * activator as r is used in each step. If there are not enough successors,
+     * then struct determines the result. If struct is true, then null is
+     * returned, otherwise the last successor found.
+     */
+    private Object walk(Object/* MMessage */r, int steps, boolean strict) {
+<span class="fc" id="L1398">        Object/* MMessage */act = Model.getFacade().getActivator(r);</span>
+<span class="pc bpc" id="L1399" title="1 of 2 branches missed.">        while (steps &gt; 0) {</span>
+<span class="nc" id="L1400">            Iterator it = Model.getFacade().getSuccessors(r).iterator();</span>
+            do {
+<span class="nc bnc" id="L1402" title="All 2 branches missed.">                if (!it.hasNext()) {</span>
+<span class="nc bnc" id="L1403" title="All 2 branches missed.">                    return (strict ? null : r);</span>
+                }
+<span class="nc" id="L1405">                r = /* (MMessage) */it.next();</span>
+<span class="nc bnc" id="L1406" title="All 2 branches missed.">            } while (Model.getFacade().getActivator(r) != act);</span>
+<span class="nc" id="L1407">            steps--;</span>
+<span class="nc" id="L1408">        }</span>
+<span class="fc" id="L1409">        return r;</span>
+    }
+
+    /**
+     * Finds the root candidates in a collection c, ie the messages in c that
+     * has the activator a (may be null) and has no predecessor with the same
+     * activator. If veto isn't null, then the message in veto will not be
+     * included in the Collection of candidates.
+     *
+     * @param c The collection of UML Message objects.
+     * @param a The message.
+     * @param veto The excluded message.
+     * @return The found roots.
+     */
+    private Collection findCandidateRoots(Collection c, Object a, Object veto) {
+<span class="fc" id="L1424">        List&lt;Object&gt; candidates = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L1425" title="All 2 branches covered.">        for (Object message : c) {</span>
+<span class="fc bfc" id="L1426" title="All 2 branches covered.">            if (message == veto) {</span>
+<span class="fc" id="L1427">                continue;</span>
+            }
+<span class="fc bfc" id="L1429" title="All 2 branches covered.">            if (Model.getFacade().getActivator(message) != a) {</span>
+<span class="fc" id="L1430">                continue;</span>
+            }
+            Collection predecessors =
+<span class="fc" id="L1433">                Model.getFacade().getPredecessors(message);</span>
+<span class="fc" id="L1434">            boolean isCandidate = true;</span>
+<span class="fc bfc" id="L1435" title="All 2 branches covered.">            for (Object predecessor : predecessors) {</span>
+<span class="pc bpc" id="L1436" title="1 of 2 branches missed.">                if (Model.getFacade().getActivator(predecessor) == a) {</span>
+<span class="fc" id="L1437">                    isCandidate = false;</span>
+                }
+<span class="fc" id="L1439">            }</span>
+<span class="fc bfc" id="L1440" title="All 2 branches covered.">            if (isCandidate) {</span>
+<span class="fc" id="L1441">                candidates.add(message);</span>
+            }
+<span class="fc" id="L1443">        }</span>
+<span class="fc" id="L1444">        return candidates;</span>
+    }
+
+    /**
+     * Finds the steps'th successor of message r in the sense that it is a
+     * direct successor of r. Returns null if r has fewer successors.
+     */
+    private Object successor(Object/* MMessage */r, int steps) {
+<span class="fc" id="L1452">        Iterator it = Model.getFacade().getSuccessors(r).iterator();</span>
+<span class="pc bpc" id="L1453" title="1 of 4 branches missed.">        while (it.hasNext() &amp;&amp; steps &gt; 0) {</span>
+<span class="nc" id="L1454">            it.next();</span>
+<span class="nc" id="L1455">            steps--;</span>
+        }
+<span class="fc bfc" id="L1457" title="All 2 branches covered.">        if (it.hasNext()) {</span>
+<span class="fc" id="L1458">            return /* (MMessage) */it.next();</span>
+        }
+<span class="fc" id="L1460">        return null;</span>
+    }
+
+    /**
+     * Compares two message numbers n1, n2 with each other to determine if n1
+     * specifies a the same position as n2 in a call tree or n1 specifies a
+     * position that is a father of the position specified by n2.
+     */
+    private boolean isMsgNumberStartOf(String n1, String n2) {
+        int i, j, len, jlen;
+<span class="fc" id="L1470">        len = n1.length();</span>
+<span class="fc" id="L1471">        jlen = n2.length();</span>
+<span class="fc" id="L1472">        i = 0;</span>
+<span class="fc" id="L1473">        j = 0;</span>
+<span class="fc bfc" id="L1474" title="All 2 branches covered.">        for (; i &lt; len;) {</span>
+            int ibv, isv;
+            int jbv, jsv;
+
+<span class="fc" id="L1478">            ibv = 0;</span>
+<span class="fc bfc" id="L1479" title="All 2 branches covered.">            for (; i &lt; len; i++) {</span>
+<span class="fc" id="L1480">                char c = n1.charAt(i);</span>
+<span class="fc bfc" id="L1481" title="All 4 branches covered.">                if (c &lt; '0' || c &gt; '9') {</span>
+<span class="fc" id="L1482">                    break;</span>
+                }
+<span class="fc" id="L1484">                ibv *= 10;</span>
+<span class="fc" id="L1485">                ibv += c - '0';</span>
+            }
+<span class="fc" id="L1487">            isv = 0;</span>
+<span class="fc bfc" id="L1488" title="All 2 branches covered.">            for (; i &lt; len; i++) {</span>
+<span class="fc" id="L1489">                char c = n1.charAt(i);</span>
+<span class="pc bpc" id="L1490" title="1 of 4 branches missed.">                if (c &lt; 'a' || c &gt; 'z') {</span>
+<span class="nc" id="L1491">                    break;</span>
+                }
+<span class="fc" id="L1493">                isv *= 26;</span>
+<span class="fc" id="L1494">                isv += c - 'a';</span>
+            }
+
+<span class="fc" id="L1497">            jbv = 0;</span>
+<span class="fc bfc" id="L1498" title="All 2 branches covered.">            for (; j &lt; jlen; j++) {</span>
+<span class="fc" id="L1499">                char c = n2.charAt(j);</span>
+<span class="fc bfc" id="L1500" title="All 4 branches covered.">                if (c &lt; '0' || c &gt; '9') {</span>
+<span class="fc" id="L1501">                    break;</span>
+                }
+<span class="fc" id="L1503">                jbv *= 10;</span>
+<span class="fc" id="L1504">                jbv += c - '0';</span>
+            }
+<span class="fc" id="L1506">            jsv = 0;</span>
+<span class="fc bfc" id="L1507" title="All 2 branches covered.">            for (; j &lt; jlen; j++) {</span>
+<span class="fc" id="L1508">                char c = n2.charAt(j);</span>
+<span class="pc bpc" id="L1509" title="1 of 4 branches missed.">                if (c &lt; 'a' || c &gt; 'z') {</span>
+<span class="nc" id="L1510">                    break;</span>
+                }
+<span class="fc" id="L1512">                jsv *= 26;</span>
+<span class="fc" id="L1513">                jsv += c - 'a';</span>
+            }
+
+<span class="pc bpc" id="L1516" title="1 of 4 branches missed.">            if (ibv != jbv || isv != jsv) {</span>
+<span class="fc" id="L1517">                return false;</span>
+            }
+
+<span class="pc bpc" id="L1520" title="1 of 4 branches missed.">            if (i &lt; len &amp;&amp; n1.charAt(i) != '.') {</span>
+<span class="nc" id="L1521">                return false;</span>
+            }
+<span class="fc" id="L1523">            i++;</span>
+
+<span class="pc bpc" id="L1525" title="1 of 4 branches missed.">            if (j &lt; jlen &amp;&amp; n2.charAt(j) != '.') {</span>
+<span class="nc" id="L1526">                return false;</span>
+            }
+<span class="fc" id="L1528">            j++;</span>
+<span class="fc" id="L1529">        }</span>
+<span class="fc" id="L1530">        return true;</span>
+    }
+
+    /**
+     * Compares two message numbers with each other to see if they are equal, in
+     * the sense that they refer to the same position in a call tree.
+     *
+     * @param n1 The first number.
+     * @param n2 The second number.
+     * @return &lt;code&gt;true&lt;/code&gt; if they are the same.
+     */
+    private boolean compareMsgNumbers(String n1, String n2) {
+<span class="fc bfc" id="L1542" title="All 4 branches covered.">        return isMsgNumberStartOf(n1, n2) &amp;&amp; isMsgNumberStartOf(n2, n1);</span>
+    }
+
+    /**
+     * Parses a message order specification.
+     */
+    private static int parseMsgOrder(String s) {
+        int i, t;
+<span class="nc" id="L1550">        int v = 0;</span>
+
+<span class="nc" id="L1552">        t = s.length();</span>
+<span class="nc bnc" id="L1553" title="All 2 branches missed.">        for (i = 0; i &lt; t; i++) {</span>
+<span class="nc" id="L1554">            char c = s.charAt(i);</span>
+<span class="nc bnc" id="L1555" title="All 4 branches missed.">            if (c &lt; 'a' || c &gt; 'z') {</span>
+<span class="nc" id="L1556">                throw new NumberFormatException();</span>
+            }
+<span class="nc" id="L1558">            v *= 26;</span>
+<span class="nc" id="L1559">            v += c - 'a';</span>
+        }
+
+<span class="nc" id="L1562">        return v;</span>
+    }
+
+    /**
+     * Finds the message in ClassifierRole r that has the message number written
+     * in n. If it isn't found, null is returned.
+     */
+    private Object findMsg(Object/* MClassifierRole */r, String n) {
+<span class="fc" id="L1570">        Collection c = Model.getFacade().getReceivedMessages(r);</span>
+<span class="fc" id="L1571">        Iterator it = c.iterator();</span>
+<span class="fc bfc" id="L1572" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L1573">            Object msg = /* (MMessage) */it.next();</span>
+<span class="fc" id="L1574">            String gname = generateMessageNumber(msg);</span>
+<span class="fc bfc" id="L1575" title="All 2 branches covered.">            if (compareMsgNumbers(gname, n)) {</span>
+<span class="fc" id="L1576">                return msg;</span>
+            }
+<span class="fc" id="L1578">        }</span>
+<span class="fc" id="L1579">        return null;</span>
+    }
+
+    /**
+     * Examines a collection to see if any message has the given message as an
+     * activator.
+     *
+     * @param r
+     *            MClassifierRole
+     * @param m
+     *            MMessage
+     */
+    private boolean hasMsgWithActivator(Object r, Object m) {
+<span class="fc" id="L1592">        Iterator it = Model.getFacade().getSentMessages(r).iterator();</span>
+<span class="fc bfc" id="L1593" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc bfc" id="L1594" title="All 2 branches covered.">            if (Model.getFacade().getActivator(it.next()) == m) {</span>
+<span class="fc" id="L1595">                return true;</span>
+            }
+        }
+<span class="fc" id="L1598">        return false;</span>
+    }
+
+    /**
+     * Examines the call tree from chld to see if ans is an ancestor.
+     *
+     * @param ans
+     *            MMessage
+     * @param chld
+     *            MMessage
+     */
+    private boolean isBadPreMsg(Object ans, Object chld) {
+<span class="fc bfc" id="L1610" title="All 2 branches covered.">        while (chld != null) {</span>
+<span class="fc bfc" id="L1611" title="All 2 branches covered.">            if (ans == chld) {</span>
+<span class="fc" id="L1612">                return true;</span>
+            }
+<span class="fc bfc" id="L1614" title="All 2 branches covered.">            if (isPredecessorMsg(ans, chld, 100)) {</span>
+<span class="fc" id="L1615">                return true;</span>
+            }
+<span class="fc" id="L1617">            chld = Model.getFacade().getActivator(chld);</span>
+        }
+<span class="fc" id="L1619">        return false;</span>
+    }
+
+    /**
+     * Examines the call tree from suc to see if pre is a predecessor. This
+     * function is recursive and md specifies the maximum level of recursions
+     * allowed.
+     *
+     * @param pre
+     *            MMessage
+     * @param suc
+     *            MMessage
+     */
+    private boolean isPredecessorMsg(Object pre, Object suc, int md) {
+<span class="fc" id="L1633">        Iterator it = Model.getFacade().getPredecessors(suc).iterator();</span>
+<span class="fc bfc" id="L1634" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L1635">            Object m = /* (MMessage) */it.next();</span>
+<span class="fc bfc" id="L1636" title="All 2 branches covered.">            if (m == pre) {</span>
+<span class="fc" id="L1637">                return true;</span>
+            }
+<span class="pc bpc" id="L1639" title="2 of 4 branches missed.">            if (md &gt; 0 &amp;&amp; isPredecessorMsg(pre, m, md - 1)) {</span>
+<span class="nc" id="L1640">                return true;</span>
+            }
+<span class="fc" id="L1642">        }</span>
+<span class="fc" id="L1643">        return false;</span>
+    }
+
+    /**
+     * Finds the messages in Collection c that has message a as activator.
+     */
+    private Collection&lt;Object&gt; filterWithActivator(Collection c,
+            Object/*MMessage*/a) {
+<span class="fc" id="L1651">        List&lt;Object&gt; v = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L1652" title="All 2 branches covered.">        for (Object msg : c) {</span>
+<span class="pc bpc" id="L1653" title="1 of 2 branches missed.">            if (Model.getFacade().getActivator(msg) == a) {</span>
+<span class="fc" id="L1654">                v.add(msg);</span>
+            }
+<span class="fc" id="L1656">        }</span>
+<span class="fc" id="L1657">        return v;</span>
+    }
+
+    /**
+     * Inserts message s as the p'th successor of message m.
+     *
+     * @param m
+     *            MMessage
+     * @param s
+     *            MMessage
+     */
+    private void insertSuccessor(Object m, Object s, int p) {
+<span class="fc" id="L1669">        List&lt;Object&gt; successors =</span>
+<span class="fc" id="L1670">            new ArrayList&lt;Object&gt;(Model.getFacade().getSuccessors(m));</span>
+<span class="pc bpc" id="L1671" title="1 of 2 branches missed.">        if (successors.size() &gt; p) {</span>
+<span class="nc" id="L1672">            successors.add(p, s);</span>
+        } else {
+<span class="fc" id="L1674">            successors.add(s);</span>
+        }
+<span class="fc" id="L1676">        Model.getCollaborationsHelper().setSuccessors(m, successors);</span>
+<span class="fc" id="L1677">    }</span>
+
+    /**
+     * Finds all operations in a given collection of classifiers
+     * with the given name
+     * and the given number of parameters.
+     * If no operation is found, one is created in the first given Classifier.
+     * The applicable operations are returned.
+     *
+     * @param classifiers the collection of classifiers to search for operations
+     * @param name the name of the operation to be found
+     * @param params the number of parameters of the operation to be found
+     * @return a list of the sought operations
+     * @throws ParseException if the operation syntax can not be parsed
+     */
+    private List getOperation(Collection classifiers, String name, int params)
+        throws ParseException {
+<span class="fc" id="L1694">        List&lt;Object&gt; operations = new ArrayList&lt;Object&gt;();</span>
+
+<span class="pc bpc" id="L1696" title="1 of 4 branches missed.">        if (name == null || name.length() == 0) {</span>
+<span class="fc" id="L1697">            return operations;</span>
+        }
+
+<span class="pc bpc" id="L1700" title="1 of 2 branches missed.">        for (Object clf : classifiers) {</span>
+<span class="nc" id="L1701">            Collection oe = Model.getFacade().getFeatures(clf);</span>
+<span class="nc bnc" id="L1702" title="All 2 branches missed.">            for (Object operation : oe) {</span>
+<span class="nc bnc" id="L1703" title="All 2 branches missed.">                if (!(Model.getFacade().isAOperation(operation))) {</span>
+<span class="nc" id="L1704">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L1707" title="All 2 branches missed.">                if (!name.equals(Model.getFacade().getName(operation))) {</span>
+<span class="nc" id="L1708">                    continue;</span>
+                }
+<span class="nc bnc" id="L1710" title="All 2 branches missed.">                if (params != countParameters(operation)) {</span>
+<span class="nc" id="L1711">                    continue;</span>
+                }
+<span class="nc" id="L1713">                operations.add(operation);</span>
+<span class="nc" id="L1714">            }</span>
+<span class="nc" id="L1715">        }</span>
+<span class="pc bpc" id="L1716" title="1 of 2 branches missed.">        if (operations.size() &gt; 0) {</span>
+<span class="nc" id="L1717">            return operations;</span>
+        }
+
+<span class="fc" id="L1720">        Iterator it = classifiers.iterator();</span>
+<span class="pc bpc" id="L1721" title="1 of 2 branches missed.">        if (it.hasNext()) {</span>
+<span class="nc" id="L1722">            StringBuilder expr = new StringBuilder(name + &quot;(&quot;);</span>
+            int i;
+<span class="nc bnc" id="L1724" title="All 2 branches missed.">            for (i = 0; i &lt; params; i++) {</span>
+<span class="nc bnc" id="L1725" title="All 2 branches missed.">                if (i &gt; 0) {</span>
+<span class="nc" id="L1726">                    expr.append(&quot;, &quot;);</span>
+                }
+<span class="nc" id="L1728">                expr.append(&quot;param&quot; + (i + 1));</span>
+            }
+<span class="nc" id="L1730">            expr.append(&quot;)&quot;);</span>
+            // Jaap Branderhorst 2002-23-09 added next lines to link
+            // parameters and operations to the figs that represent
+            // them
+<span class="nc" id="L1734">            Object cls = it.next();</span>
+            Object returnType =
+<span class="nc" id="L1736">                ProjectManager.getManager()</span>
+<span class="nc" id="L1737">                        .getCurrentProject().getDefaultReturnType();</span>
+<span class="nc" id="L1738">            Object op = Model.getCoreFactory().buildOperation(cls, returnType);</span>
+
+<span class="nc" id="L1740">            new OperationNotationUml(op).parseOperation(</span>
+<span class="nc" id="L1741">                        expr.toString(), op);</span>
+<span class="nc" id="L1742">            operations.add(op);</span>
+        }
+<span class="fc" id="L1744">        return operations;</span>
+    }
+
+    /**
+     * Counts the number of parameters that are not return values.
+     */
+    private int countParameters(Object bf) {
+<span class="nc" id="L1751">        int count = 0;</span>
+<span class="nc bnc" id="L1752" title="All 2 branches missed.">        for (Object parameter : Model.getFacade().getParameters(bf)) {</span>
+<span class="nc bnc" id="L1753" title="All 2 branches missed.">            if (!Model.getFacade().isReturn(parameter)) {</span>
+<span class="nc" id="L1754">                count++;</span>
+            }
+<span class="nc" id="L1756">        }</span>
+<span class="nc" id="L1757">        return count;</span>
+    }
+
+    /**
+     * Recursively count the number of predecessors of the given Message,
+     * and return (a pointer to) the first Message in the chain.
+     *
+     * @param umlMessage the UML Message to count the predecessors for
+     * @param ptr an object to contain the returned first Message
+     * @return the number of messages in the chain
+     */
+    protected int recCountPredecessors(Object umlMessage, MsgPtr ptr) {
+<span class="fc" id="L1769">        int pre = 0;</span>
+<span class="fc" id="L1770">        int local = 0;</span>
+<span class="fc" id="L1771">        Object/*MMessage*/ maxmsg = null;</span>
+        Object activator;
+
+<span class="pc bpc" id="L1774" title="1 of 2 branches missed.">        if (umlMessage == null) {</span>
+<span class="nc" id="L1775">            ptr.message = null;</span>
+<span class="nc" id="L1776">            return 0;</span>
+        }
+
+<span class="fc" id="L1779">        activator = Model.getFacade().getActivator(umlMessage);</span>
+        for (Object predecessor
+<span class="fc bfc" id="L1781" title="All 2 branches covered.">                : Model.getFacade().getPredecessors(umlMessage)) {</span>
+<span class="fc bfc" id="L1782" title="All 2 branches covered.">            if (Model.getFacade().getActivator(predecessor)</span>
+                    != activator) {
+<span class="fc" id="L1784">                continue;</span>
+            }
+<span class="fc" id="L1786">            int p = recCountPredecessors(predecessor, null) + 1;</span>
+<span class="pc bpc" id="L1787" title="1 of 2 branches missed.">            if (p &gt; pre) {</span>
+<span class="fc" id="L1788">                pre = p;</span>
+<span class="fc" id="L1789">                maxmsg = predecessor;</span>
+            }
+<span class="fc" id="L1791">            local++;</span>
+<span class="fc" id="L1792">        }</span>
+
+<span class="fc bfc" id="L1794" title="All 2 branches covered.">        if (ptr != null) {</span>
+<span class="fc" id="L1795">            ptr.message = maxmsg;</span>
+        }
+
+<span class="fc" id="L1798">        return Math.max(pre, local);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

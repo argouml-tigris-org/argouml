@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrCrossNamespaceAssoc.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrCrossNamespaceAssoc.java</span></div><h1>CrCrossNamespaceAssoc.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * A critic to check that the classifiers associated with the ends of an
+ * association are in the same namespace as the association.&lt;p&gt;
+ *
+ * This is the fourth well-formedness rule for associations in the UML 1.3
+ * standard (see section 2.5.3 of the standard).&lt;p&gt;
+ *
+ * Well-formedness rule [4] for Association. See page 52 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
+ * See the ArgoUML User Manual: Classifier not in Namespace of its Association
+ *
+ * @author Jason Robbins
+ */
+public class CrCrossNamespaceAssoc extends CrUML {
+    /**
+     * Constructor for the critic.&lt;p&gt;
+     *
+     * Sets up the resource name, which will allow headline and description
+     * to found for the current locale. Provides a design issue category
+     * (MODULARITY) and a knowledge type (SYNTAX).
+     */
+<span class="fc" id="L72">    public CrCrossNamespaceAssoc() {</span>
+<span class="fc" id="L73">        setupHeadAndDesc();</span>
+<span class="fc" id="L74">        addSupportedDecision(UMLDecision.MODULARITY);</span>
+<span class="fc" id="L75">        setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * The trigger for the critic.&lt;p&gt;
+     *
+     * Get the association. Then loop through the association ends, checking
+     * that their associated classifiers are in the namespace, i.e. are part of
+     * the same model or subsystem.&lt;p&gt;
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+        // Only look at associations
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (!Model.getFacade().isAAssociation(dm)) {</span>
+<span class="nc" id="L99">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc" id="L102">        Object ns = Model.getFacade().getNamespace(dm);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L104">            return PROBLEM_FOUND;</span>
+        }
+
+        // Get the Association and its connections.
+        // Iterate over all the AssociationEnds and check that each connected
+        // classifier is in the same sub-system or model
+<span class="nc" id="L110">        Iterator assocEnds = Model.getFacade().getConnections(dm).iterator();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        while (assocEnds.hasNext()) {</span>
+            // The next AssociationEnd, and its classifier. Check the
+            // classifier is in the namespace of the association. If not we
+            // have a problem.
+<span class="nc" id="L115">            Object clf = Model.getFacade().getType(assocEnds.next());</span>
+<span class="nc bnc" id="L116" title="All 4 branches missed.">            if (clf != null &amp;&amp; ns != Model.getFacade().getNamespace(clf)) {</span>
+<span class="nc" id="L117">                return PROBLEM_FOUND;</span>
+            }
+<span class="nc" id="L119">        }</span>
+        // If we drop out there is no problem
+<span class="nc" id="L121">        return NO_PROBLEM;</span>
+    }
+    
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L129">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L130">        ret.add(Model.getMetaTypes().getAssociationClass());</span>
+<span class="fc" id="L131">        return ret;</span>
+    }
+    
+} /* end class CrCrossNamespaceAssoc */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HelpBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">HelpBox.java</span></div><h1>HelpBox.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
+
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.cognitive.Translator;
+
+/**
+ * This is what you see after you activate the &quot;Help-&gt;Help&quot; menu-item.
+ */
+public class HelpBox extends JFrame implements HyperlinkListener {
+
+<span class="nc" id="L65">    private static final Logger LOG =</span>
+<span class="nc" id="L66">        Logger.getLogger(HelpBox.class.getName());</span>
+
+    /**
+     * A tabbed pane to display several pages simultaneously.
+     */
+<span class="nc" id="L71">    private JTabbedPane tabs = new JTabbedPane();</span>
+
+    /**
+     * The panes to display the various help pages.
+     */
+<span class="nc" id="L76">    private JEditorPane[] panes = null;</span>
+
+    /**
+     * The names and URLs for the pages.
+     */
+<span class="nc" id="L81">    private String pages[][] = {</span>
+        {
+<span class="nc" id="L83">            Translator.localize(&quot;tab.help.manual&quot;),</span>
+<span class="nc" id="L84">            (Translator.localize(&quot;tab.help.path.manual&quot;)</span>
+<span class="nc" id="L85">                + &quot;manual-&quot; + ApplicationVersion.getStableVersion()</span>
+                + &quot;/&quot;),
+<span class="nc" id="L87">             Translator.localize(&quot;tab.help.tip.manual&quot;)</span>
+        },
+        {
+<span class="nc" id="L90">            Translator.localize(&quot;tab.help.support&quot;),</span>
+<span class="nc" id="L91">            Translator.localize(&quot;tab.help.path.support&quot;),</span>
+<span class="nc" id="L92">            Translator.localize(&quot;tab.help.tip.support&quot;)</span>
+        }
+    };
+
+
+    /**
+    * Class constructor.
+    *
+    * @param title      the title of the help window.
+    */
+    public HelpBox( String title) {
+<span class="nc" id="L103">	super( title);</span>
+<span class="nc" id="L104">	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="nc" id="L105">	setLocation(scrSize.width / 2 - 400, scrSize.height / 2 - 300);</span>
+
+<span class="nc" id="L107">	getContentPane().setLayout(new BorderLayout(0, 0));</span>
+<span class="nc" id="L108">	setSize( 800, 600);</span>
+
+<span class="nc" id="L110">	panes = new JEditorPane [ pages.length];</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">	for ( int i = 0; i &lt; pages.length; i++) {</span>
+<span class="nc" id="L112">            panes[i] = new JEditorPane();</span>
+<span class="nc" id="L113">            panes[i].setEditable( false);</span>
+<span class="nc" id="L114">            panes[i].setSize( 780, 580);</span>
+<span class="nc" id="L115">            panes[i].addHyperlinkListener( this);</span>
+
+<span class="nc" id="L117">	    URL paneURL = null;</span>
+            try {
+<span class="nc" id="L119">                paneURL = new URL( pages[i][1]);</span>
+<span class="nc" id="L120">            } catch ( MalformedURLException e) {</span>
+<span class="nc" id="L121">                LOG.log(Level.WARNING, pages[i][0] + &quot; URL malformed: &quot; + pages[i][1]);</span>
+<span class="nc" id="L122">            }</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if ( paneURL != null) {</span>
+                try {
+<span class="nc" id="L126">                    panes[i].setPage( paneURL);</span>
+<span class="nc" id="L127">                } catch ( IOException e) {</span>
+<span class="nc" id="L128">                    LOG.log(Level.WARNING, &quot;Attempted to read a bad URL: &quot; + paneURL);</span>
+<span class="nc" id="L129">                }</span>
+            } else {
+<span class="nc" id="L131">                LOG.log(Level.WARNING, &quot;Couldn't find &quot; + pages[i][0]);</span>
+            }
+
+            // Put the current pane in a scroll pane.
+<span class="nc" id="L135">            JScrollPane paneScrollPane = new JScrollPane( panes[i]);</span>
+<span class="nc" id="L136">            paneScrollPane.setVerticalScrollBarPolicy(</span>
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+<span class="nc" id="L138">            paneScrollPane.setPreferredSize(new Dimension(800, 600));</span>
+<span class="nc" id="L139">            paneScrollPane.setMinimumSize(new Dimension(400, 300));</span>
+
+<span class="nc" id="L141">	    tabs.addTab( pages[i][0], null, paneScrollPane, pages[i][2]);</span>
+        }
+<span class="nc" id="L143">        getContentPane().add( tabs, BorderLayout.CENTER);</span>
+<span class="nc" id="L144">    }</span>
+
+    public void hyperlinkUpdate(HyperlinkEvent event) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">	if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {</span>
+<span class="nc" id="L148">	    JEditorPane pane = (JEditorPane) event.getSource();</span>
+            try {
+<span class="nc" id="L150">                pane.setPage(event.getURL());</span>
+<span class="nc" id="L151">            } catch (IOException ioe) {</span>
+<span class="nc" id="L152">                LOG.log(Level.WARNING, &quot;Could not fetch requested URL&quot;);</span>
+<span class="nc" id="L153">            }</span>
+	}
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 0L;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

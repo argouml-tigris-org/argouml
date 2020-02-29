@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StylePanelFig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">StylePanelFig.java</span></div><h1>StylePanelFig.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.text.Document;
+
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.SpacerPanel;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.StereotypeStyled;
+import org.argouml.util.ArgoFrame;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.ui.ColorRenderer;
+
+/**
+ * The basic stylepanel for a Fig which allows the user to see and adjust
+ * the common attributes of a Fig:
+ * the boundaries box,
+ * line and fill color information
+ * and the stereotype view combo box. &lt;p&gt;
+ *
+ * Shown to the user as the &quot;Presentation&quot; tab.
+ */
+public class StylePanelFig
+    extends StylePanel
+    implements ItemListener,
+        FocusListener, KeyListener {
+
+<span class="fc" id="L87">    private static final Logger LOG =</span>
+<span class="fc" id="L88">        Logger.getLogger(StylePanelFig.class.getName());</span>
+
+<span class="fc" id="L90">    private static final String CUSTOM_ITEM =</span>
+<span class="fc" id="L91">        Translator.localize(&quot;label.stylepane.custom&quot;) + &quot;...&quot;;</span>
+
+<span class="fc" id="L93">    private JLabel bboxLabel =</span>
+<span class="fc" id="L94">        new JLabel(Translator.localize(&quot;label.stylepane.bounds&quot;) + &quot;: &quot;);</span>
+
+<span class="fc" id="L96">    private JTextField bboxField = new JTextField();</span>
+
+<span class="fc" id="L98">    private JLabel fillLabel =</span>
+<span class="fc" id="L99">        new JLabel(Translator.localize(&quot;label.stylepane.fill&quot;) + &quot;: &quot;);</span>
+
+<span class="fc" id="L101">    private JComboBox fillField = new JComboBox();</span>
+
+<span class="fc" id="L103">    private JLabel lineLabel =</span>
+<span class="fc" id="L104">        new JLabel(Translator.localize(&quot;label.stylepane.line&quot;) + &quot;: &quot;);</span>
+
+<span class="fc" id="L106">    private JComboBox lineField = new JComboBox();</span>
+
+<span class="fc" id="L108">    private JLabel stereoLabel =</span>
+<span class="fc" id="L109">        new JLabel(Translator.localize(&quot;menu.popup.stereotype-view&quot;) + &quot;: &quot;);</span>
+
+<span class="fc" id="L111">    private JComboBox stereoField = new JComboBox();</span>
+
+<span class="fc" id="L113">    private SpacerPanel spacer = new SpacerPanel();</span>
+
+<span class="fc" id="L115">    private SpacerPanel spacer2 = new SpacerPanel();</span>
+
+<span class="fc" id="L117">    private SpacerPanel spacer3 = new SpacerPanel();</span>
+
+    /**
+     * The constructor of the style panel of a Fig.
+     * This constructor does not create any contents of the panel.
+     *
+     * @param title the title string
+     */
+    public StylePanelFig(String title) {
+<span class="fc" id="L126">        super(title);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * The constructor.
+     *
+     */
+    public StylePanelFig() {
+<span class="fc" id="L134">        super(&quot;Fig Appearance&quot;);</span>
+<span class="fc" id="L135">        initChoices();</span>
+
+<span class="fc" id="L137">        Document bboxDoc = bboxField.getDocument();</span>
+<span class="fc" id="L138">        bboxDoc.addDocumentListener(this);</span>
+<span class="fc" id="L139">        bboxField.addKeyListener(this);</span>
+<span class="fc" id="L140">        bboxField.addFocusListener(this);</span>
+<span class="fc" id="L141">        fillField.addItemListener(this);</span>
+<span class="fc" id="L142">        lineField.addItemListener(this);</span>
+<span class="fc" id="L143">        stereoField.addItemListener(this);</span>
+
+<span class="fc" id="L145">        fillField.setRenderer(new ColorRenderer());</span>
+<span class="fc" id="L146">        lineField.setRenderer(new ColorRenderer());</span>
+
+<span class="fc" id="L148">        bboxLabel.setLabelFor(bboxField);</span>
+<span class="fc" id="L149">        add(bboxLabel);</span>
+<span class="fc" id="L150">        add(bboxField);</span>
+
+<span class="fc" id="L152">        fillLabel.setLabelFor(fillField);</span>
+<span class="fc" id="L153">        add(fillLabel);</span>
+<span class="fc" id="L154">        add(fillField);</span>
+
+<span class="fc" id="L156">        lineLabel.setLabelFor(lineField);</span>
+<span class="fc" id="L157">        add(lineLabel);</span>
+<span class="fc" id="L158">        add(lineField);</span>
+
+<span class="fc" id="L160">        stereoLabel.setLabelFor(stereoField);</span>
+<span class="fc" id="L161">        add(stereoLabel);</span>
+<span class="fc" id="L162">        add(stereoField);</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * Fill in the user-choices.
+     */
+    protected void initChoices() {
+<span class="fc" id="L169">        fillField.addItem(Translator.localize(&quot;label.stylepane.no-fill&quot;));</span>
+<span class="fc" id="L170">        fillField.addItem(Color.black);</span>
+<span class="fc" id="L171">        fillField.addItem(Color.white);</span>
+<span class="fc" id="L172">        fillField.addItem(Color.gray);</span>
+<span class="fc" id="L173">        fillField.addItem(Color.lightGray);</span>
+<span class="fc" id="L174">        fillField.addItem(Color.darkGray);</span>
+<span class="fc" id="L175">        fillField.addItem(new Color(255, 255, 200));</span>
+<span class="fc" id="L176">        fillField.addItem(new Color(255, 200, 255));</span>
+<span class="fc" id="L177">        fillField.addItem(new Color(200, 255, 255));</span>
+<span class="fc" id="L178">        fillField.addItem(new Color(200, 200, 255));</span>
+<span class="fc" id="L179">        fillField.addItem(new Color(200, 255, 200));</span>
+<span class="fc" id="L180">        fillField.addItem(new Color(255, 200, 200));</span>
+<span class="fc" id="L181">        fillField.addItem(new Color(200, 200, 200));</span>
+<span class="fc" id="L182">        fillField.addItem(Color.red);</span>
+<span class="fc" id="L183">        fillField.addItem(Color.blue);</span>
+<span class="fc" id="L184">        fillField.addItem(Color.cyan);</span>
+<span class="fc" id="L185">        fillField.addItem(Color.yellow);</span>
+<span class="fc" id="L186">        fillField.addItem(Color.magenta);</span>
+<span class="fc" id="L187">        fillField.addItem(Color.green);</span>
+<span class="fc" id="L188">        fillField.addItem(Color.orange);</span>
+<span class="fc" id="L189">        fillField.addItem(Color.pink);</span>
+<span class="fc" id="L190">        fillField.addItem(CUSTOM_ITEM);</span>
+
+<span class="fc" id="L192">        lineField.addItem(Translator.localize(&quot;label.stylepane.no-line&quot;));</span>
+<span class="fc" id="L193">        lineField.addItem(Color.black);</span>
+<span class="fc" id="L194">        lineField.addItem(Color.white);</span>
+<span class="fc" id="L195">        lineField.addItem(Color.gray);</span>
+<span class="fc" id="L196">        lineField.addItem(Color.lightGray);</span>
+<span class="fc" id="L197">        lineField.addItem(Color.darkGray);</span>
+<span class="fc" id="L198">        lineField.addItem(new Color(60, 60, 200));</span>
+<span class="fc" id="L199">        lineField.addItem(new Color(60, 200, 60));</span>
+<span class="fc" id="L200">        lineField.addItem(new Color(200, 60, 60));</span>
+<span class="fc" id="L201">        lineField.addItem(Color.red);</span>
+<span class="fc" id="L202">        lineField.addItem(Color.blue);</span>
+<span class="fc" id="L203">        lineField.addItem(Color.cyan);</span>
+<span class="fc" id="L204">        lineField.addItem(Color.yellow);</span>
+<span class="fc" id="L205">        lineField.addItem(Color.magenta);</span>
+<span class="fc" id="L206">        lineField.addItem(Color.green);</span>
+<span class="fc" id="L207">        lineField.addItem(Color.orange);</span>
+<span class="fc" id="L208">        lineField.addItem(Color.pink);</span>
+<span class="fc" id="L209">        lineField.addItem(CUSTOM_ITEM);</span>
+
+<span class="fc" id="L211">        DefaultComboBoxModel model = new DefaultComboBoxModel();</span>
+<span class="fc" id="L212">        stereoField.setModel(model);</span>
+
+        // NOTE: These must stay in this order to match rendering styles
+<span class="fc" id="L215">        model.addElement(Translator</span>
+<span class="fc" id="L216">                .localize(&quot;menu.popup.stereotype-view.textual&quot;));</span>
+<span class="fc" id="L217">        model.addElement(Translator</span>
+<span class="fc" id="L218">                .localize(&quot;menu.popup.stereotype-view.big-icon&quot;));</span>
+<span class="fc" id="L219">        model.addElement(Translator</span>
+<span class="fc" id="L220">                .localize(&quot;menu.popup.stereotype-view.small-icon&quot;));</span>
+<span class="fc" id="L221">    }</span>
+
+    /**
+     * set whether this Fig has a editable boundingbox. This is done normally in
+     * &lt;code&gt;refresh()&lt;/code&gt;, e.g. for FigEdgeModelElements where it does
+     * not make sense to edit the bounding box.
+     *
+     * @param value
+     *            the boolean value of the bounding box property
+     */
+
+    protected void hasEditableBoundingBox(boolean value) {
+<span class="nc" id="L233">        bboxField.setEnabled(value);</span>
+<span class="nc" id="L234">        bboxLabel.setEnabled(value);</span>
+<span class="nc" id="L235">    }</span>
+
+    /**
+     * Handle a refresh of the style panel after the fig has moved.&lt;p&gt;
+     *
+     * &lt;em&gt;Warning&lt;/em&gt;. There is a circular trap here. Editing the
+     * boundary box will also trigger a refresh, and so we reset the
+     * boundary box, which causes funny behaviour (the cursor keeps
+     * jumping to the end of the text).
+     *
+     * The solution is to not reset the boundary box field if the boundaries
+     * have not changed.&lt;p&gt;
+     */
+    public void refresh() {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (TargetManager.getInstance().getTargets().size() &gt; 1) {</span>
+            // See issue 6109 - if we have multiple targets this method
+            // can result in a feedback problem where selecting a target
+            // changes the selection colour in the combo and as a result
+            // that trigger a change of colour of all selected Figs
+<span class="nc" id="L254">            return;</span>
+        }
+<span class="nc" id="L256">    	Fig target = getPanelTarget();</span>
+    	 //TODO: How about FigAssociationClass?
+<span class="nc bnc" id="L258" title="All 2 branches missed.">        if (target instanceof FigEdgeModelElement) {</span>
+<span class="nc" id="L259">            hasEditableBoundingBox(false);</span>
+        } else {
+<span class="nc" id="L261">            hasEditableBoundingBox(true);</span>
+        }
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L264">            return;</span>
+        }
+
+        // The boundary box as held in the target fig, and as listed in
+        // the
+        // boundary box style field (null if we don't have anything
+        // valid)
+
+<span class="nc" id="L272">        Rectangle figBounds = target.getBounds();</span>
+<span class="nc" id="L273">        Rectangle styleBounds = parseBBox();</span>
+
+        // Only reset the text if the two are not the same (i.e the fig
+        // has
+        // moved, rather than we've just edited the text, when
+        // setTargetBBox()
+        // will have made them the same). Note that styleBounds could
+        // be null,
+        // so we do the test this way round.
+
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (!(figBounds.equals(styleBounds))) {</span>
+<span class="nc" id="L284">            bboxField.setText(figBounds.x + &quot;,&quot; + figBounds.y + &quot;,&quot;</span>
+                    + figBounds.width + &quot;,&quot; + figBounds.height);
+        }
+
+        // Change the fill colour
+
+<span class="nc bnc" id="L290" title="All 2 branches missed.">        if (target.isFilled()) {</span>
+<span class="nc" id="L291">            Color c = target.getFillColor();</span>
+<span class="nc" id="L292">            fillField.setSelectedItem(c);</span>
+<span class="nc bnc" id="L293" title="All 4 branches missed.">            if (c != null &amp;&amp; !fillField.getSelectedItem().equals(c)) {</span>
+<span class="nc" id="L294">                fillField.insertItemAt(c, fillField.getItemCount() - 1);</span>
+<span class="nc" id="L295">                fillField.setSelectedItem(c);</span>
+            }
+<span class="nc" id="L297">        } else {</span>
+<span class="nc" id="L298">            fillField.setSelectedIndex(0);</span>
+        }
+
+        // Change the line colour
+
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (target.getLineWidth() &gt; 0) {</span>
+<span class="nc" id="L304">            Color c = target.getLineColor();</span>
+            // TODO: This is going to cause the color to be reset on a refresh
+<span class="nc" id="L306">            lineField.setSelectedItem(c);</span>
+<span class="nc bnc" id="L307" title="All 4 branches missed.">            if (c != null &amp;&amp; !lineField.getSelectedItem().equals(c)) {</span>
+<span class="nc" id="L308">                lineField.insertItemAt(c, lineField.getItemCount() - 1);</span>
+<span class="nc" id="L309">                lineField.setSelectedItem(c);</span>
+            }
+<span class="nc" id="L311">        } else {</span>
+<span class="nc" id="L312">            lineField.setSelectedIndex(0);</span>
+        }
+
+<span class="nc" id="L315">        stereoField.setEnabled(target instanceof StereotypeStyled);</span>
+<span class="nc" id="L316">        stereoLabel.setEnabled(target instanceof StereotypeStyled);</span>
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        if (target instanceof StereotypeStyled) {</span>
+<span class="nc" id="L319">            StereotypeStyled fig = (StereotypeStyled) target;</span>
+<span class="nc" id="L320">            stereoField.setSelectedIndex(fig.getStereotypeStyle().ordinal());</span>
+        }
+<span class="nc" id="L322">    }</span>
+
+    /**
+     * Change the bounds of the target fig. Called whenever the bounds box is
+     * edited. &lt;p&gt;
+     *
+     * Format of the bounds is four integers representing x, y, width and height
+     * separated by spaces or commas. An empty field is treated as no change and
+     * leading and trailing spaces are ignored. &lt;p&gt;
+     *
+     * &lt;em&gt;Note&lt;/em&gt;. There is a note in the old code that more work might be
+     * needed, because this could change the graph model. I don't see how that
+     * could ever be.
+     */
+    protected void setTargetBBox() {
+<span class="nc" id="L337">    	Fig target = getPanelTarget();</span>
+        // Can't do anything if we don't have a fig.
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L340">            return;</span>
+        }
+        // Parse the boundary box text. Null is
+        // returned if it is empty or
+        // invalid, which causes no change. Otherwise we tell
+        // GEF we are making
+        // a change, make the change and tell GEF we've
+        // finished.
+<span class="nc" id="L348">        Rectangle bounds = parseBBox();</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">        if (bounds == null) {</span>
+<span class="nc" id="L350">            return;</span>
+        }
+
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if (!target.getBounds().equals(bounds)) {</span>
+<span class="nc" id="L354">            target.setBounds(bounds.x, bounds.y, bounds.width,</span>
+                    bounds.height);
+<span class="nc" id="L356">            target.endTrans();</span>
+        }
+<span class="nc" id="L358">    }</span>
+
+    /**
+     * Parse the boundary box string and return the rectangle it
+     * represents.&lt;p&gt;
+     *
+     * The syntax are four integers separated by spaces or commas. We
+     * ignore leading and trailing blanks.&lt;p&gt;
+     *
+     * If we have the empty string we return &lt;code&gt;null&lt;/code&gt;.&lt;p&gt;
+     *
+     * If we fail to parse, then we return &lt;code&gt;null&lt;/code&gt; and print
+     * out a rude message.&lt;p&gt;
+     *
+     * @return The size of the box, or &lt;code&gt;null&lt;/code&gt; if the bounds string
+     *         is empty or invalid.
+     */
+    protected Rectangle parseBBox() {
+<span class="nc" id="L376">    	Fig target = getPanelTarget();</span>
+        // Get the text in the field, and don't do anything if the
+        // field is
+        // empty.
+<span class="nc" id="L380">        String bboxStr = bboxField.getText().trim();</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        if (bboxStr.length() == 0) {</span>
+<span class="nc" id="L382">            return null;</span>
+        } // Parse the string as if
+        // possible
+<span class="nc" id="L385">        Rectangle res = new Rectangle();</span>
+<span class="nc" id="L386">        java.util.StringTokenizer st =</span>
+            new java.util.StringTokenizer(bboxStr, &quot;, &quot;);
+        try {
+<span class="nc" id="L389">            boolean changed = false;</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
+<span class="nc" id="L391">                return target.getBounds();</span>
+            }
+<span class="nc" id="L393">            res.x = Integer.parseInt(st.nextToken());</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
+<span class="nc" id="L395">                res.y = target.getBounds().y;</span>
+<span class="nc" id="L396">                res.width = target.getBounds().width;</span>
+<span class="nc" id="L397">                res.height = target.getBounds().height;</span>
+<span class="nc" id="L398">                return res;</span>
+            }
+<span class="nc" id="L400">            res.y = Integer.parseInt(st.nextToken());</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
+<span class="nc" id="L402">                res.width = target.getBounds().width;</span>
+<span class="nc" id="L403">                res.height = target.getBounds().height;</span>
+<span class="nc" id="L404">                return res;</span>
+            }
+<span class="nc" id="L406">            res.width = Integer.parseInt(st.nextToken());</span>
+            // TODO: What does the magic number 6000 represent here?
+            // Put it in an explanatory literal! - tfm - 20071205
+<span class="nc bnc" id="L409" title="All 2 branches missed.">            if ((res.width + res.x) &gt; 6000) {</span>
+<span class="nc" id="L410">                res.width = 6000 - res.x;</span>
+<span class="nc" id="L411">                changed = true;</span>
+            }
+<span class="nc bnc" id="L413" title="All 2 branches missed.">            if (!st.hasMoreTokens()) {</span>
+<span class="nc" id="L414">                res.width = target.getBounds().width;</span>
+<span class="nc" id="L415">                return res;</span>
+            }
+<span class="nc" id="L417">            res.height = Integer.parseInt(st.nextToken());</span>
+            // TODO: What does the magic number 6000 represent here?
+            // Put it in an explanatory literal! - tfm - 20071205
+<span class="nc bnc" id="L420" title="All 2 branches missed.">            if ((res.height + res.y) &gt; 6000) {</span>
+<span class="nc" id="L421">                res.height = 6000 - res.y;</span>
+<span class="nc" id="L422">                changed = true;</span>
+            }
+<span class="nc bnc" id="L424" title="All 4 branches missed.">            if (res.x &lt; 0 || res.y &lt; 0) {</span>
+                // TODO: This exception will be thrown during autoscrolling
+                // when the edge of the canvas is reached causing either
+                // the width or height to be &quot;adjusted&quot; to a negative value
+<span class="nc" id="L428">                LOG.log(Level.WARNING,</span>
+                        &quot;Part of bounding box is off screen &quot; + res);
+            }
+<span class="nc bnc" id="L431" title="All 4 branches missed.">            if (res.width &lt; 0 || res.height &lt; 0) {</span>
+                // TODO: This exception will be thrown during autoscrolling
+                // when the edge of the canvas is reached causing either
+                // the width or height to be &quot;adjusted&quot; to a negative value
+<span class="nc" id="L435">                throw new IllegalArgumentException(</span>
+                        &quot;Bounding box has negative size &quot; + res);
+            }
+<span class="nc bnc" id="L438" title="All 2 branches missed.">            if (changed) {</span>
+<span class="nc" id="L439">                StringBuffer sb = new StringBuffer();</span>
+<span class="nc" id="L440">                sb.append(Integer.toString(res.x));</span>
+<span class="nc" id="L441">                sb.append(&quot;,&quot;);</span>
+<span class="nc" id="L442">                sb.append(Integer.toString(res.y));</span>
+<span class="nc" id="L443">                sb.append(&quot;,&quot;);</span>
+<span class="nc" id="L444">                sb.append(Integer.toString(res.width));</span>
+<span class="nc" id="L445">                sb.append(&quot;,&quot;);</span>
+<span class="nc" id="L446">                sb.append(Integer.toString(res.height));</span>
+<span class="nc" id="L447">                bboxField.setText(sb.toString());</span>
+            }
+<span class="nc" id="L449">        } catch (NumberFormatException ex) {</span>
+<span class="nc" id="L450">            bboxField.setBackground(Color.RED);</span>
+<span class="nc" id="L451">            return null;</span>
+        }
+<span class="nc" id="L453">        catch (IllegalArgumentException iae) {</span>
+<span class="nc" id="L454">            bboxField.setBackground(Color.RED);</span>
+<span class="nc" id="L455">            return null;</span>
+<span class="nc" id="L456">        }</span>
+<span class="nc" id="L457">        bboxField.setBackground(null);</span>
+<span class="nc" id="L458">        return res;</span>
+    }
+
+    /**
+     * Prompts the user for a new custom color and adds that color to the combo
+     * box.
+     *
+     * @param field the combobox to enter a new color for
+     * @param title the i18n key for the title for the dialog box
+     * @param targetColor the initial Color set when the color-chooser is shown
+     */
+    protected void handleCustomColor(JComboBox field, String title,
+            Color targetColor) {
+        Color newColor =
+<span class="nc" id="L472">            JColorChooser.showDialog(ArgoFrame.getFrame(),</span>
+<span class="nc" id="L473">                    Translator.localize(title), targetColor);</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">        if (newColor != null) {</span>
+<span class="nc" id="L475">            field.insertItemAt(newColor, field.getItemCount() - 1);</span>
+<span class="nc" id="L476">            field.setSelectedItem(newColor);</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        } else if (getPanelTarget() != null) {</span>
+<span class="nc" id="L478">            field.setSelectedItem(targetColor);</span>
+        }
+<span class="nc" id="L480">    }</span>
+
+    /**
+     * Change the fill.
+     */
+    public void setTargetFill() {
+<span class="nc" id="L486">    	Fig target = getPanelTarget();</span>
+<span class="nc" id="L487">        Object c = fillField.getSelectedItem();</span>
+<span class="nc bnc" id="L488" title="All 4 branches missed.">        if (target == null || c == null) {</span>
+<span class="nc" id="L489">            return;</span>
+        }
+<span class="nc" id="L491">        Boolean isColor = (c instanceof Color);</span>
+<span class="nc bnc" id="L492" title="All 2 branches missed.">        if (isColor) {</span>
+<span class="nc" id="L493">            target.setFillColor((Color) c);</span>
+        }
+<span class="nc" id="L495">        target.setFilled(isColor);</span>
+<span class="nc" id="L496">        target.endTrans();</span>
+
+        // TODO: The following handling of multiselection is just a local
+        // solution for the fill color, better find a more general solution:
+        // (I don't know if it's undoable this way - thn)
+<span class="nc" id="L501">        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        for (Object t : TargetManager.getInstance().getTargets()) {</span>
+<span class="nc" id="L503">            Fig fig = null;</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">            if (t instanceof FigNodeModelElement) {</span>
+<span class="nc" id="L505">                fig = (Fig) t;</span>
+            } else {
+<span class="nc" id="L507">                fig = activeDiagram.presentationFor(t);</span>
+            }
+<span class="nc bnc" id="L509" title="All 4 branches missed.">            if (fig != null &amp;&amp; fig != target) {</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">                if (isColor) {</span>
+<span class="nc" id="L511">                    fig.setFillColor((Color) c);</span>
+                }
+<span class="nc" id="L513">                fig.setFilled(isColor);</span>
+<span class="nc" id="L514">                fig.endTrans();</span>
+            }
+<span class="nc" id="L516">        }</span>
+<span class="nc" id="L517">    }</span>
+
+    /**
+     * Change the line.
+     */
+    public void setTargetLine() {
+<span class="nc" id="L523">    	Fig target = getPanelTarget();</span>
+<span class="nc" id="L524">        Object c = lineField.getSelectedItem();</span>
+<span class="nc bnc" id="L525" title="All 4 branches missed.">        if (target == null || c == null) {</span>
+<span class="nc" id="L526">            return;</span>
+        }
+<span class="nc" id="L528">        Boolean isColor = (c instanceof Color);</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">        if (isColor) {</span>
+<span class="nc" id="L530">            target.setLineColor((Color) c);</span>
+        }
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        target.setLineWidth(isColor ? ArgoFig.LINE_WIDTH : 0);</span>
+<span class="nc" id="L533">        target.endTrans();</span>
+
+        // TODO: The following handling of multiselection is just a local
+        // solution for the line color, better find a more general solution:
+        // (I don't know if it's undoable this way - thn)
+<span class="nc" id="L538">        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">        for (Object t : TargetManager.getInstance().getTargets()) {</span>
+<span class="nc" id="L540">            Fig fig = null;</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">            if (t instanceof FigNodeModelElement) {</span>
+<span class="nc" id="L542">                fig = (Fig) t;</span>
+            } else {
+<span class="nc" id="L544">                fig = activeDiagram.presentationFor(t);</span>
+            }
+<span class="nc bnc" id="L546" title="All 4 branches missed.">            if (fig != null &amp;&amp; fig != target) {</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">                if (isColor) {</span>
+<span class="nc" id="L548">                    fig.setLineColor((Color) c);</span>
+                }
+<span class="nc bnc" id="L550" title="All 2 branches missed.">                fig.setLineWidth(isColor ? ArgoFig.LINE_WIDTH : 0);</span>
+<span class="nc" id="L551">                fig.endTrans();</span>
+            }
+<span class="nc" id="L553">        }</span>
+<span class="nc" id="L554">    }</span>
+
+    /*
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+<span class="nc" id="L560">        Object src = e.getSource();</span>
+<span class="nc" id="L561">        Fig target = getPanelTarget();</span>
+<span class="nc bnc" id="L562" title="All 4 branches missed.">        if (e.getStateChange() == ItemEvent.SELECTED</span>
+                &amp;&amp; target != null) {
+<span class="nc bnc" id="L564" title="All 2 branches missed.">            if (src == fillField) {</span>
+<span class="nc bnc" id="L565" title="All 2 branches missed.">                if (e.getItem() == CUSTOM_ITEM) {</span>
+<span class="nc" id="L566">                    handleCustomColor(fillField,</span>
+                            &quot;label.stylepane.custom-fill-color&quot;,
+<span class="nc" id="L568">                            target.getFillColor());</span>
+                }
+<span class="nc" id="L570">                setTargetFill();</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">            } else if (src == lineField) {</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">                if (e.getItem() == CUSTOM_ITEM) {</span>
+<span class="nc" id="L573">                    handleCustomColor(lineField,</span>
+                            &quot;label.stylepane.custom-line-color&quot;,
+<span class="nc" id="L575">                            target.getLineColor());</span>
+                }
+<span class="nc" id="L577">                setTargetLine();</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">            } else if (src == stereoField) {</span>
+<span class="nc bnc" id="L579" title="All 2 branches missed.">                if (target instanceof StereotypeStyled) {</span>
+<span class="nc" id="L580">                    Object item = e.getItem();</span>
+<span class="nc" id="L581">                    DefaultComboBoxModel model =</span>
+<span class="nc" id="L582">                        (DefaultComboBoxModel) stereoField.getModel();</span>
+<span class="nc" id="L583">                    int idx = model.getIndexOf(item);</span>
+<span class="nc" id="L584">                    StereotypeStyled fig = (StereotypeStyled) target;</span>
+
+<span class="nc" id="L586">                    fig.setStereotypeStyle(StereotypeStyle.getEnum(idx));</span>
+
+                }
+            }
+        }
+<span class="nc" id="L591">    }</span>
+
+    /*
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public void focusGained(FocusEvent e) {
+<span class="nc" id="L597">    }</span>
+
+    /**
+     * Makes sure that the fig is updated when the bboxField loses focus.
+     *
+     * {@inheritDoc}
+     */
+    public void focusLost(FocusEvent e) {
+<span class="nc bnc" id="L605" title="All 2 branches missed.">        if (e.getSource() == bboxField) {</span>
+<span class="nc" id="L606">            setTargetBBox();</span>
+        }
+<span class="nc" id="L608">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent e) {
+        // Empty implementation - we only care about keyTyped
+<span class="nc" id="L615">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent e) {
+        // Empty implementation - we only care about keyTyped
+<span class="nc" id="L622">    }</span>
+
+    /*
+     * Tests if enter is pressed in the _bbodField so we need to set the target
+     * bounds.
+     *
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent e) {
+<span class="nc bnc" id="L631" title="All 4 branches missed.">        if (e.getSource().equals(bboxField) &amp;&amp; e.getKeyChar() == '\n') {</span>
+<span class="nc" id="L632">            setTargetBBox();</span>
+        }
+<span class="nc" id="L634">    }</span>
+
+    /**
+     * @return Returns the _bboxLabel.
+     */
+    protected JLabel getBBoxLabel() {
+<span class="fc" id="L640">        return bboxLabel;</span>
+    }
+
+    /**
+     * @return Returns the _bboxField.
+     */
+    protected JTextField getBBoxField() {
+<span class="fc" id="L647">        return bboxField;</span>
+    }
+
+    /**
+     * @return Returns the _fillLabel.
+     */
+    protected JLabel getFillLabel() {
+<span class="nc" id="L654">        return fillLabel;</span>
+    }
+
+    /**
+     * @return Returns the _fillField.
+     */
+    protected JComboBox getFillField() {
+<span class="fc" id="L661">        return fillField;</span>
+    }
+
+    /**
+     * @return Returns the _lineLabel.
+     */
+    protected JLabel getLineLabel() {
+<span class="fc" id="L668">        return lineLabel;</span>
+    }
+
+    /**
+     * @return Returns the _lineField.
+     */
+    protected JComboBox getLineField() {
+<span class="fc" id="L675">        return lineField;</span>
+    }
+
+    /**
+     * @return Returns the _spacer.
+     */
+    protected SpacerPanel getSpacer() {
+<span class="nc" id="L682">        return spacer;</span>
+    }
+
+    /**
+     * @return Returns the _spacer2.
+     */
+    protected SpacerPanel getSpacer2() {
+<span class="nc" id="L689">        return spacer2;</span>
+    }
+
+    /**
+     * @return Returns the _spacer3.
+     */
+    protected SpacerPanel getSpacer3() {
+<span class="nc" id="L696">        return spacer3;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -6232843473753751128L;
+
+    /**
+     * @return returns the translated name of the &quot;Custom...&quot; item.
+     */
+    protected static String getCustomItemName() {
+<span class="nc" id="L708">        return CUSTOM_ITEM;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

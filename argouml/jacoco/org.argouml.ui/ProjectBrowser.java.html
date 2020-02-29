@@ -1,0 +1,1980 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectBrowser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ProjectBrowser.java</span></div><h1>ProjectBrowser.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Luis Sergio Oliveira
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.KeyboardFocusManager;
+import java.awt.Window;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URI;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.application.api.Argo;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Designer;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Command;
+import org.argouml.kernel.NonUndoableCommand;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.model.XmiReferenceException;
+import org.argouml.model.XmiReferenceRuntimeException;
+import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.OpenException;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ProjectFilePersister;
+import org.argouml.persistence.ProjectFileView;
+import org.argouml.persistence.UmlVersionException;
+import org.argouml.persistence.VersionException;
+import org.argouml.persistence.XmiFormatException;
+import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.ui.cmd.GenericArgoMenuBar;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
+import org.argouml.uml.ui.ActionSaveProject;
+import org.argouml.util.ArgoFrame;
+import org.argouml.util.ThreadUtils;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.util.Util;
+import org.tigris.swidgets.BorderSplitPane;
+import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.Orientation;
+import org.tigris.swidgets.Vertical;
+import org.tigris.toolbar.layouts.DockBorderLayout;
+
+/**
+ * The main window of the ArgoUML application.
+ *
+ * @stereotype singleton
+ */
+<span class="nc bnc" id="L138" title="All 2 branches missed.">public final class ProjectBrowser</span>
+    extends JFrame
+    implements PropertyChangeListener, TargetListener {
+
+    /**
+     * Default width.
+     */
+    public static final int DEFAULT_COMPONENTWIDTH = 400;
+
+    /**
+     * Default height.
+     */
+    public static final int DEFAULT_COMPONENTHEIGHT = 350;
+
+    /**
+     * Logger.
+     */
+<span class="nc" id="L155">    private static final Logger LOG =</span>
+<span class="nc" id="L156">        Logger.getLogger(ProjectBrowser.class.getName());</span>
+
+
+    /**
+     * Position of pane in overall browser window.
+     */
+<span class="fc" id="L162">    public enum Position {</span>
+<span class="fc" id="L163">        Center, North, South, East, West,</span>
+<span class="fc" id="L164">        NorthEast, SouthEast, SouthWest, NorthWest</span>
+    }
+
+    // Make sure the correspondence that we depend on doesn't change
+    static {
+<span class="nc bnc" id="L169" title="All 4 branches missed.">        assert Position.Center.toString().equals(BorderSplitPane.CENTER);</span>
+<span class="nc bnc" id="L170" title="All 4 branches missed.">        assert Position.North.toString().equals(BorderSplitPane.NORTH);</span>
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST);</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        assert Position.South.toString().equals(BorderSplitPane.SOUTH);</span>
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Flag to indicate if we are the main application
+     * or being integrated in another top level application such
+     * as Eclipse (via the ArgoEclipse plugin).
+     * TODO: This is a temporary measure until ProjectBrowser
+     * can be refactored more appropriately. - tfm
+     */
+    private static boolean isMainApplication;
+
+
+    /**
+     * Member attribute to contain the singleton.
+     */
+    private static ProjectBrowser theInstance;
+
+
+<span class="nc" id="L191">    private String appName = &quot;ProjectBrowser&quot;;</span>
+
+    private MultiEditorPane editorPane;
+
+    /*
+     * TODO: Work in progress here to allow multiple details panes with
+     * different contents - Bob Tarling
+     */
+    private DetailsPane northEastPane;
+    private DetailsPane northPane;
+    private DetailsPane northWestPane;
+    private DetailsPane eastPane;
+    private DetailsPane southEastPane;
+    private DetailsPane southPane;
+
+<span class="nc" id="L206">    private Map&lt;Position, DetailsPane&gt; detailsPanesByCompassPoint =</span>
+        new HashMap&lt;Position, DetailsPane&gt;();
+
+    private GenericArgoMenuBar menuBar;
+
+    /**
+     * Partially implemented. Needs work to display
+     * import of source and saving of zargo.
+     */
+<span class="nc" id="L215">    private StatusBar statusBar = new ArgoStatusBar();</span>
+
+    /**
+     * TODO: this needs work so that users can set the font
+     * size through a gui preference window.
+     */
+<span class="nc" id="L221">    private Font defaultFont = new Font(&quot;Dialog&quot;, Font.PLAIN, 10);</span>
+
+    private BorderSplitPane workAreaPane;
+
+    /**
+     * The explorer (formerly called navigator) pane
+     * containing the modelstructure.
+     */
+    private NavigatorPane explorerPane;
+
+    /**
+     * The todopane (lower left corner of screen). This may actually be a blank
+     * JPanel if the ProjectBrowser was lazily initialized via
+     * {@link #getInstance()}.
+     */
+    private JPanel todoPane;
+
+    /**
+     * A class that handles the title of this frame,
+     * e.g. to indicate save status.
+     */
+<span class="nc" id="L242">    private TitleHandler titleHandler = new TitleHandler();</span>
+
+    /**
+     * The action to save the current project.
+     */
+    private AbstractAction saveAction;
+
+    /**
+     * The action to remove the current selected Figs from the diagram.
+     */
+<span class="nc" id="L252">    private final ActionRemoveFromDiagram removeFromDiagram =</span>
+        new ActionRemoveFromDiagram(
+<span class="nc" id="L254">                Translator.localize(&quot;action.remove-from-diagram&quot;));</span>
+
+    /**
+     * For testing purposes. In tests this constructor can be called so
+     * TheInstance is filled.
+     */
+    private ProjectBrowser() {
+<span class="nc" id="L261">        this(&quot;ArgoUML&quot;, null, true, null);</span>
+<span class="nc" id="L262">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param applicationName
+     *            the title of the frame
+     * @param splash
+     *            the splash screen to show at startup
+     * @param mainApplication
+     *            flag indicating whether we are the top level application.
+     *            False if we are providing components to another top level app.
+     * @param leftBottomPane
+     *            the panel to fit in the left bottom corner
+     */
+    private ProjectBrowser(String applicationName, SplashScreen splash,
+             boolean mainApplication, JPanel leftBottomPane) {
+<span class="nc" id="L279">        super(applicationName);</span>
+<span class="nc" id="L280">        theInstance = this;</span>
+<span class="nc" id="L281">        isMainApplication = mainApplication;</span>
+
+<span class="nc" id="L283">        getContentPane().setFont(defaultFont);</span>
+
+        // TODO: This causes a cyclic depencency with ActionSaveProject
+<span class="nc" id="L286">        saveAction = new ActionSaveProject();</span>
+<span class="nc" id="L287">        ProjectManager.getManager().setSaveAction(saveAction);</span>
+
+<span class="nc" id="L289">        createPanels(splash, leftBottomPane);</span>
+
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (isMainApplication) {</span>
+<span class="nc" id="L292">            menuBar = MenuBarFactory.createApplicationMenuBar();</span>
+<span class="nc" id="L293">            getContentPane().setLayout(new BorderLayout());</span>
+<span class="nc" id="L294">            this.setJMenuBar(menuBar);</span>
+            //getContentPane().add(_menuBar, BorderLayout.NORTH);
+<span class="nc" id="L296">            getContentPane().add(assemblePanels(), BorderLayout.CENTER);</span>
+
+<span class="nc" id="L298">            JPanel bottom = new JPanel();</span>
+<span class="nc" id="L299">            bottom.setLayout(new BorderLayout());</span>
+<span class="nc" id="L300">            bottom.add(statusBar, BorderLayout.CENTER);</span>
+<span class="nc" id="L301">            bottom.add(new HeapMonitor(), BorderLayout.EAST);</span>
+<span class="nc" id="L302">            getContentPane().add(bottom, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L304">            setAppName(applicationName);</span>
+
+            // allows me to ask &quot;Do you want to save first?&quot;
+<span class="nc" id="L307">            setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);</span>
+<span class="nc" id="L308">            addWindowListener(new WindowCloser());</span>
+
+<span class="nc" id="L310">            setApplicationIcon();</span>
+
+            // Add listener for project changes
+<span class="nc" id="L313">            ProjectManager.getManager().addPropertyChangeListener(this);</span>
+
+            // add listener to get notified when active diagram changes
+<span class="nc" id="L316">            TargetManager.getInstance().addTargetListener(this);</span>
+
+            // Add a listener to focus changes.
+            // Rationale: reset the undo manager to start a new chain.
+<span class="nc" id="L320">            addKeyboardFocusListener();</span>
+        }
+<span class="nc" id="L322">    }</span>
+
+    private void addKeyboardFocusListener() {
+        KeyboardFocusManager kfm =
+<span class="nc" id="L326">            KeyboardFocusManager.getCurrentKeyboardFocusManager();</span>
+<span class="nc" id="L327">        kfm.addPropertyChangeListener(new PropertyChangeListener() {</span>
+            private Object obj;
+
+            /*
+             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+             */
+            public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                if (&quot;focusOwner&quot;.equals(evt.getPropertyName())</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                        &amp;&amp; (evt.getNewValue() != null)</span>
+                    /* We get many many events (why?), so let's filter: */
+<span class="nc bnc" id="L337" title="All 2 branches missed.">                        &amp;&amp; (obj != evt.getNewValue())) {</span>
+<span class="nc" id="L338">                    obj = evt.getNewValue();</span>
+                    // TODO: Bob says -
+                    // We're looking at focus change to
+                    // flag the start of an interaction. This
+                    // is to detect when focus is gained in a prop
+                    // panel field on the assumption editing of that
+                    // field is about to start.
+                    // Not a good assumption. We Need to see if we can get
+                    // rid of this.
+                    Project p =
+<span class="nc" id="L348">                        ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">                    if (p != null) {</span>
+<span class="nc" id="L350">                        p.getUndoManager().startInteraction(&quot;Focus&quot;);</span>
+                    }
+                    /* This next line is ideal for debugging the taborder
+                     * (focus traversal), see e.g. issue 1849.
+                     */
+//                      System.out.println(&quot;Focus changed &quot; + obj);
+                }
+<span class="nc" id="L357">            }</span>
+        });
+<span class="nc" id="L359">    }</span>
+
+    private void setApplicationIcon() {
+<span class="nc" id="L362">        final ImageIcon argoImage16x16 =</span>
+<span class="nc" id="L363">            ResourceLoaderWrapper.lookupIconResource(&quot;ArgoIcon16x16&quot;);</span>
+
+<span class="nc" id="L365">        final ImageIcon argoImage32x32 = ResourceLoaderWrapper</span>
+<span class="nc" id="L366">                .lookupIconResource(&quot;ArgoIcon32x32&quot;);</span>
+<span class="nc" id="L367">        final List&lt;Image&gt; argoImages = new ArrayList&lt;Image&gt;(2);</span>
+<span class="nc" id="L368">        argoImages.add(argoImage16x16.getImage());</span>
+<span class="nc" id="L369">        argoImages.add(argoImage32x32.getImage());</span>
+
+<span class="nc" id="L371">        setIconImages(argoImages);</span>
+<span class="nc" id="L372">    }</span>
+
+    /**
+     * Singleton retrieval method for the projectbrowser.
+     * Do not use this before makeInstance is called!
+     *
+     * @return the singleton instance of the projectbrowser
+     */
+    public static synchronized ProjectBrowser getInstance() {
+<span class="nc bnc" id="L381" title="All 4 branches missed.">        assert theInstance != null;</span>
+<span class="nc" id="L382">        return theInstance;</span>
+    }
+
+    /**
+     * Creator method for the ProjectBrowser which optionally allows all
+     * components to be created without making a top level application window
+     * visible.
+     *
+     * @param splash
+     *            true if we are allowed to show a splash screen
+     * @param mainApplication
+     *            true to create a top level application, false if integrated
+     *            with something else.
+     * @param leftBottomPane panel to place in the bottom left corner of the GUI
+     *
+     * @return the singleton instance of the projectbrowser
+     */
+    public static ProjectBrowser makeInstance(SplashScreen splash,
+            boolean mainApplication, JPanel leftBottomPane) {
+<span class="nc" id="L401">        return new ProjectBrowser(&quot;ArgoUML&quot;, splash,</span>
+                mainApplication, leftBottomPane);
+    }
+
+    /*
+     * @see java.awt.Component#getLocale()
+     */
+    @Override
+    public Locale getLocale() {
+<span class="nc" id="L410">        return Locale.getDefault();</span>
+    }
+
+
+    /**
+     * Creates the panels in the working area.
+     *
+     * @param splash true if we show  the splashscreen during startup
+     * @param leftBottomPane panel to be placed in the bottom left (southwest)
+     *                corner of the UI.
+     */
+    protected void createPanels(SplashScreen splash, JPanel leftBottomPane) {
+
+<span class="nc bnc" id="L423" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L424">            splash.getStatusBar().showStatus(</span>
+<span class="nc" id="L425">                Translator.localize(&quot;statusmsg.bar.making-project-browser&quot;));</span>
+<span class="nc" id="L426">            splash.getStatusBar().showProgress(10);</span>
+<span class="nc" id="L427">            splash.setVisible(true);</span>
+        }
+
+<span class="nc" id="L430">        editorPane = new MultiEditorPane();</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L432">            splash.getStatusBar().showStatus(</span>
+<span class="nc" id="L433">                    Translator.localize(</span>
+                            &quot;statusmsg.bar.making-project-browser-explorer&quot;));
+<span class="nc" id="L435">            splash.getStatusBar().incProgress(5);</span>
+        }
+<span class="nc" id="L437">        explorerPane = new NavigatorPane(splash);</span>
+
+        // The workarea is all the visible space except the menu,
+        // toolbar and status bar.  Workarea is laid out as a
+        // BorderSplitPane where the various components that make up
+        // the argo application can be positioned.
+<span class="nc" id="L443">        workAreaPane = new BorderSplitPane();</span>
+
+        // create the todopane
+<span class="nc bnc" id="L446" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L447">            splash.getStatusBar().showStatus(Translator.localize(</span>
+                    &quot;statusmsg.bar.making-project-browser-to-do-pane&quot;));
+<span class="nc" id="L449">            splash.getStatusBar().incProgress(5);</span>
+        }
+<span class="nc" id="L451">        todoPane = leftBottomPane;</span>
+<span class="nc" id="L452">        createDetailsPanes();</span>
+<span class="nc" id="L453">        restorePanelSizes();</span>
+<span class="nc" id="L454">    }</span>
+
+    private Component assemblePanels() {
+<span class="nc" id="L457">        addPanel(editorPane, Position.Center);</span>
+<span class="nc" id="L458">        addPanel(explorerPane, Position.West);</span>
+<span class="nc" id="L459">        addPanel(todoPane, Position.SouthWest);</span>
+
+        // There are various details panes all of which could hold
+        // different tabs pages according to users settings.
+        // Place each pane in the required border area.
+        for (Map.Entry&lt;Position, DetailsPane&gt; entry
+<span class="nc bnc" id="L465" title="All 2 branches missed.">                : detailsPanesByCompassPoint.entrySet()) {</span>
+<span class="nc" id="L466">            Position position = entry.getKey();</span>
+<span class="nc" id="L467">            addPanel(entry.getValue(), position);</span>
+<span class="nc" id="L468">        }</span>
+
+        // Toolbar boundary is the area between the menu and the status
+        // bar. It contains the workarea at centre and the toolbar
+        // position north, south, east or west.
+<span class="nc" id="L473">        final JPanel toolbarBoundary = new JPanel();</span>
+<span class="nc" id="L474">        toolbarBoundary.setLayout(new DockBorderLayout());</span>
+        // TODO: - should save and restore the last positions of the toolbars
+<span class="nc" id="L476">        final String toolbarPosition = BorderLayout.NORTH;</span>
+<span class="nc" id="L477">        toolbarBoundary.add(menuBar.getFileToolbar(), toolbarPosition);</span>
+<span class="nc" id="L478">        toolbarBoundary.add(menuBar.getEditToolbar(), toolbarPosition);</span>
+<span class="nc" id="L479">        toolbarBoundary.add(menuBar.getViewToolbar(), toolbarPosition);</span>
+<span class="nc" id="L480">        toolbarBoundary.add(menuBar.getCreateDiagramToolbar(),</span>
+                        toolbarPosition);
+<span class="nc" id="L482">        toolbarBoundary.add(workAreaPane, BorderLayout.CENTER);</span>
+
+
+        /**
+         * Registers all toolbars and enables north panel hiding when all
+         * toolbars are hidden.
+         */
+<span class="nc" id="L489">        ArgoToolbarManager.getInstance().registerToolbar(</span>
+<span class="nc" id="L490">                menuBar.getFileToolbar(), menuBar.getFileToolbar(), 0);</span>
+<span class="nc" id="L491">        ArgoToolbarManager.getInstance().registerToolbar(</span>
+<span class="nc" id="L492">                menuBar.getEditToolbar(), menuBar.getEditToolbar(), 1);</span>
+<span class="nc" id="L493">        ArgoToolbarManager.getInstance().registerToolbar(</span>
+<span class="nc" id="L494">                menuBar.getViewToolbar(), menuBar.getViewToolbar(), 2);</span>
+<span class="nc" id="L495">        ArgoToolbarManager.getInstance().registerToolbar(</span>
+<span class="nc" id="L496">                menuBar.getCreateDiagramToolbar(),</span>
+<span class="nc" id="L497">                menuBar.getCreateDiagramToolbar(), 3);</span>
+
+<span class="nc" id="L499">        final JToolBar[] toolbars = new JToolBar[] {menuBar.getFileToolbar(),</span>
+<span class="nc" id="L500">                menuBar.getEditToolbar(), menuBar.getViewToolbar(),</span>
+<span class="nc" id="L501">                menuBar.getCreateDiagramToolbar() };</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        for (JToolBar toolbar : toolbars) {</span>
+<span class="nc" id="L503">            toolbar.addComponentListener(new ComponentAdapter() {</span>
+                public void componentHidden(ComponentEvent e) {
+<span class="nc" id="L505">                    boolean allHidden = true;</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">                    for (JToolBar bar : toolbars) {</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">                        if (bar.isVisible()) {</span>
+<span class="nc" id="L508">                            allHidden = false;</span>
+<span class="nc" id="L509">                            break;</span>
+                        }
+                    }
+
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                    if (allHidden) {</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">                        for (JToolBar bar : toolbars) {</span>
+<span class="nc" id="L515">                            toolbarBoundary.getLayout().removeLayoutComponent(</span>
+                                    bar);
+                        }
+<span class="nc" id="L518">                        toolbarBoundary.getLayout().layoutContainer(</span>
+                                toolbarBoundary);
+                    }
+<span class="nc" id="L521">                }</span>
+
+                public void componentShown(ComponentEvent e) {
+<span class="nc" id="L524">                    JToolBar oneVisible = null;</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">                    for (JToolBar bar : toolbars) {</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">                        if (bar.isVisible()) {</span>
+<span class="nc" id="L527">                            oneVisible = bar;</span>
+<span class="nc" id="L528">                            break;</span>
+                        }
+                    }
+
+<span class="nc bnc" id="L532" title="All 2 branches missed.">                    if (oneVisible != null) {</span>
+<span class="nc" id="L533">                        toolbarBoundary.add(oneVisible, toolbarPosition);</span>
+<span class="nc" id="L534">                        toolbarBoundary.getLayout().layoutContainer(</span>
+                                toolbarBoundary);
+                    }
+<span class="nc" id="L537">                }</span>
+            });
+        }
+        /**
+         * END registering toolbar
+         */
+
+<span class="nc" id="L544">        return toolbarBoundary;</span>
+    }
+
+    private void createDetailsPanes() {
+        /*
+         * Work in progress here to allow multiple details panes with different
+         * contents - Bob Tarling
+         */
+<span class="nc" id="L552">        eastPane  =</span>
+<span class="nc" id="L553">            makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());</span>
+<span class="nc" id="L554">        southPane =</span>
+<span class="nc" id="L555">            makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());</span>
+<span class="nc" id="L556">        southEastPane =</span>
+<span class="nc" id="L557">            makeDetailsPane(BorderSplitPane.SOUTHEAST,</span>
+<span class="nc" id="L558">                    Horizontal.getInstance());</span>
+<span class="nc" id="L559">        northWestPane =</span>
+<span class="nc" id="L560">            makeDetailsPane(BorderSplitPane.NORTHWEST,</span>
+<span class="nc" id="L561">                    Horizontal.getInstance());</span>
+<span class="nc" id="L562">        northPane =</span>
+<span class="nc" id="L563">            makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());</span>
+<span class="nc" id="L564">        northEastPane =</span>
+<span class="nc" id="L565">            makeDetailsPane(BorderSplitPane.NORTHEAST,</span>
+<span class="nc" id="L566">                    Horizontal.getInstance());</span>
+
+<span class="nc bnc" id="L568" title="All 2 branches missed.">        if (southPane != null) {</span>
+<span class="nc" id="L569">            detailsPanesByCompassPoint.put(Position.South, southPane);</span>
+        }
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        if (southEastPane != null) {</span>
+<span class="nc" id="L572">            detailsPanesByCompassPoint.put(Position.SouthEast,</span>
+                    southEastPane);
+        }
+<span class="nc bnc" id="L575" title="All 2 branches missed.">        if (eastPane != null) {</span>
+<span class="nc" id="L576">            detailsPanesByCompassPoint.put(Position.East, eastPane);</span>
+        }
+<span class="nc bnc" id="L578" title="All 2 branches missed.">        if (northWestPane != null) {</span>
+<span class="nc" id="L579">            detailsPanesByCompassPoint.put(Position.NorthWest,</span>
+                    northWestPane);
+        }
+<span class="nc bnc" id="L582" title="All 2 branches missed.">        if (northPane != null) {</span>
+<span class="nc" id="L583">            detailsPanesByCompassPoint.put(Position.North, northPane);</span>
+        }
+<span class="nc bnc" id="L585" title="All 2 branches missed.">        if (northEastPane != null) {</span>
+<span class="nc" id="L586">            detailsPanesByCompassPoint.put(Position.NorthEast,</span>
+                    northEastPane);
+        }
+
+        // Add target listeners for details panes
+<span class="nc" id="L591">        Iterator it = detailsPanesByCompassPoint.entrySet().iterator();</span>
+<span class="nc bnc" id="L592" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L593">            TargetManager.getInstance().addTargetListener(</span>
+<span class="nc" id="L594">                    (DetailsPane) ((Map.Entry) it.next()).getValue());</span>
+        }
+<span class="nc" id="L596">    }</span>
+
+
+    /**
+     * Add a panel to a split pane area.
+     *
+     * @param comp the panel to add
+     * @param position the position where the panel should be added
+     */
+    public void addPanel(Component comp, Position position) {
+<span class="nc" id="L606">        workAreaPane.add(comp, position.toString());</span>
+<span class="nc" id="L607">    }</span>
+
+    /**
+     * Remove a panel from a split pane area.
+     *
+     * @param comp the panel to remove
+     */
+    public void removePanel(Component comp) {
+<span class="nc" id="L615">        workAreaPane.remove(comp);</span>
+<span class="nc" id="L616">        workAreaPane.validate();</span>
+<span class="nc" id="L617">        workAreaPane.repaint();</span>
+<span class="nc" id="L618">    }</span>
+
+    /**
+     * Set the size of each panel to that last saved in the configuration file.
+     */
+    private void restorePanelSizes() {
+<span class="nc bnc" id="L624" title="All 2 branches missed.">        if (northPane != null) {</span>
+<span class="nc" id="L625">            northPane.setPreferredSize(new Dimension(</span>
+<span class="nc" id="L626">                    0, getSavedHeight(Argo.KEY_SCREEN_NORTH_HEIGHT)));</span>
+        }
+<span class="nc bnc" id="L628" title="All 2 branches missed.">        if (southPane != null) {</span>
+<span class="nc" id="L629">            southPane.setPreferredSize(new Dimension(</span>
+<span class="nc" id="L630">                    0, getSavedHeight(Argo.KEY_SCREEN_SOUTH_HEIGHT)));</span>
+        }
+<span class="nc bnc" id="L632" title="All 2 branches missed.">        if (eastPane != null) {</span>
+<span class="nc" id="L633">            eastPane.setPreferredSize(new Dimension(</span>
+<span class="nc" id="L634">                    getSavedWidth(Argo.KEY_SCREEN_EAST_WIDTH), 0));</span>
+        }
+<span class="nc bnc" id="L636" title="All 2 branches missed.">        if (explorerPane != null) {</span>
+<span class="nc" id="L637">            explorerPane.setPreferredSize(new Dimension(</span>
+<span class="nc" id="L638">                    getSavedWidth(Argo.KEY_SCREEN_WEST_WIDTH), 0));</span>
+        }
+<span class="nc bnc" id="L640" title="All 2 branches missed.">        if (northWestPane != null) {</span>
+<span class="nc" id="L641">            northWestPane.setPreferredSize(getSavedDimensions(</span>
+                    Argo.KEY_SCREEN_NORTHWEST_WIDTH,
+                    Argo.KEY_SCREEN_NORTH_HEIGHT));
+        }
+<span class="nc bnc" id="L645" title="All 2 branches missed.">        if (todoPane != null) {</span>
+<span class="nc" id="L646">            todoPane.setPreferredSize(getSavedDimensions(</span>
+                    Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+                    Argo.KEY_SCREEN_SOUTH_HEIGHT));
+        }
+<span class="nc bnc" id="L650" title="All 2 branches missed.">        if (northEastPane != null) {</span>
+<span class="nc" id="L651">            northEastPane.setPreferredSize(getSavedDimensions(</span>
+                    Argo.KEY_SCREEN_NORTHEAST_WIDTH,
+                    Argo.KEY_SCREEN_NORTH_HEIGHT));
+        }
+<span class="nc bnc" id="L655" title="All 2 branches missed.">        if (southEastPane != null) {</span>
+<span class="nc" id="L656">            southEastPane.setPreferredSize(getSavedDimensions(</span>
+                    Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
+                    Argo.KEY_SCREEN_SOUTH_HEIGHT));
+        }
+<span class="nc" id="L660">    }</span>
+
+    // Convenience methods to return saved width and height values
+    private Dimension getSavedDimensions(ConfigurationKey width,
+            ConfigurationKey height) {
+<span class="nc" id="L665">        return new Dimension(getSavedWidth(width), getSavedHeight(height));</span>
+    }
+    private int getSavedWidth(ConfigurationKey width) {
+<span class="nc" id="L668">        return Configuration.getInteger(width, DEFAULT_COMPONENTWIDTH);</span>
+    }
+    private int getSavedHeight(ConfigurationKey height) {
+<span class="nc" id="L671">        return Configuration.getInteger(height, DEFAULT_COMPONENTHEIGHT);</span>
+    }
+
+    /**
+     * Handle the title-bar of the window.
+     *
+     * @author michiel
+     */
+<span class="nc" id="L679">    private class TitleHandler implements PropertyChangeListener {</span>
+
+<span class="nc" id="L681">        private ArgoDiagram monitoredDiagram = null;</span>
+
+        /**
+         * Create a title for the main window's title.
+         *
+         * @param projectFileName the project-file name
+         * @param activeDiagram the (new) current diagram
+         */
+        protected void buildTitle(String projectFileName,
+                ArgoDiagram activeDiagram) {
+<span class="nc bnc" id="L691" title="All 4 branches missed.">            if (projectFileName == null || &quot;&quot;.equals(projectFileName)) {</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">                if (ProjectManager.getManager().getCurrentProject() != null) {</span>
+<span class="nc" id="L693">                    projectFileName = ProjectManager.getManager()</span>
+<span class="nc" id="L694">                        .getCurrentProject().getName();</span>
+                }
+            }
+            // TODO: Why would this be null?
+<span class="nc bnc" id="L698" title="All 2 branches missed.">            if (activeDiagram == null) {</span>
+<span class="nc" id="L699">                activeDiagram = DiagramUtils.getActiveDiagram();</span>
+            }
+<span class="nc" id="L701">            String changeIndicator = &quot;&quot;;</span>
+<span class="nc bnc" id="L702" title="All 4 branches missed.">            if (saveAction != null &amp;&amp; saveAction.isEnabled()) {</span>
+<span class="nc" id="L703">                changeIndicator = &quot; *&quot;;</span>
+            }
+<span class="nc bnc" id="L705" title="All 2 branches missed.">            if (activeDiagram != null) {</span>
+<span class="nc bnc" id="L706" title="All 2 branches missed.">                if (monitoredDiagram != null) {</span>
+<span class="nc" id="L707">                    monitoredDiagram.removePropertyChangeListener(&quot;name&quot;, this);</span>
+                }
+<span class="nc" id="L709">                activeDiagram.addPropertyChangeListener(&quot;name&quot;, this);</span>
+<span class="nc" id="L710">                monitoredDiagram = activeDiagram;</span>
+<span class="nc" id="L711">                setTitleInternal(projectFileName + &quot; - &quot;</span>
+<span class="nc" id="L712">                        + activeDiagram.getName() + &quot; - &quot; + getAppName()</span>
+                        + changeIndicator);
+            } else {
+<span class="nc" id="L715">                setTitleInternal(projectFileName + &quot; - &quot; + getAppName()</span>
+                        + changeIndicator);
+            }
+<span class="nc" id="L718">        }</span>
+
+        private void setTitleInternal(final String title) {
+<span class="nc bnc" id="L721" title="All 2 branches missed.">            if (SwingUtilities.isEventDispatchThread()) {</span>
+<span class="nc" id="L722">                setTitle(title);</span>
+            } else {
+<span class="nc" id="L724">                SwingUtilities.invokeLater(new Runnable() {</span>
+                    public void run() {
+<span class="nc" id="L726">                        setTitle(title);</span>
+<span class="nc" id="L727">                    }</span>
+                });
+            }
+<span class="nc" id="L730">        }</span>
+
+        /*
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc bnc" id="L736" title="All 2 branches missed.">            if (evt.getPropertyName().equals(&quot;name&quot;)</span>
+<span class="nc bnc" id="L737" title="All 2 branches missed.">                    &amp;&amp; evt.getSource() instanceof ArgoDiagram) {</span>
+<span class="nc" id="L738">                buildTitle(</span>
+<span class="nc" id="L739">                    ProjectManager.getManager().getCurrentProject().getName(),</span>
+<span class="nc" id="L740">                    (ArgoDiagram) evt.getSource());</span>
+            }
+<span class="nc" id="L742">        }</span>
+    }
+    /**
+     * Set the save indicator (the * after the title) to appear depending on
+     * the current save action enabled status.
+     */
+    public void showSaveIndicator() {
+<span class="nc" id="L749">        titleHandler.buildTitle(null, null);</span>
+<span class="nc" id="L750">    }</span>
+
+    /**
+     * @return the application name (&quot;ArgoUML&quot;) as shown in the titlebar
+     */
+    public String getAppName() {
+<span class="nc" id="L756">        return appName;</span>
+    }
+
+    /**
+     * @param n the application name (&quot;ArgoUML&quot;) as shown in the titlebar
+     */
+    public void setAppName(String n) {
+<span class="nc" id="L763">        appName = n;</span>
+<span class="nc" id="L764">    }</span>
+
+    /**
+     * The method used by the NavigatorPane, MultiEditor and DetailsPane
+     * to set the target of the application.&lt;p&gt;
+     *
+     * the target is either a Model Element (usually selected in
+     * the Navigation pane or Properties panel) or a Fig (selected in
+     * a diagram).&lt;p&gt;
+     *
+     * The concept of a selection transaction is used to prevent a change
+     * of target in one view creating a call back to this method, which
+     * would then change the target in all views again...&lt;p&gt;
+     *
+     * @param o the target
+     */
+    private void setTarget(Object o) {
+<span class="nc" id="L781">        TargetManager.getInstance().setTarget(o);</span>
+<span class="nc" id="L782">    }</span>
+
+    /**
+     * Select the tab page containing the todo item.
+     *
+     * @param o the todo item to select
+     * @deprecated for 0.25.5 by tfmorris. Send an event that the
+     *             DetailsPane/TabToDo will be listening for.
+     */
+    @Deprecated
+    public void setToDoItem(Object o) {
+<span class="nc" id="L793">        Iterator it = detailsPanesByCompassPoint.values().iterator();</span>
+<span class="nc bnc" id="L794" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L795">            DetailsPane detailsPane = (DetailsPane) it.next();</span>
+<span class="nc bnc" id="L796" title="All 2 branches missed.">            if (detailsPane.setToDoItem(o)) {</span>
+<span class="nc" id="L797">                return;</span>
+            }
+<span class="nc" id="L799">        }</span>
+<span class="nc" id="L800">    }</span>
+
+
+    /**
+     * Get the tab page instance of the given class.
+     *
+     * @param tabClass the given class
+     * @return the tabpage
+     * @deprecated by for 0.25.5 by tfmorris. Tabs should register themselves
+     *             with whoever they need to communicate with in a distributed
+     *             fashion rather than relying on a central registry. Currently
+     *             the only place this is used is to communicate between WizStep
+     *             and TabToDo in the Cognitive subsystem.
+     */
+    @Deprecated
+    public AbstractArgoJPanel getTab(Class tabClass) {
+        // In theory there can be multiple details pane (work in
+        // progress). It must first be determined which details
+        // page contains the properties tab. Bob Tarling 7 Dec 2002
+<span class="nc bnc" id="L819" title="All 2 branches missed.">        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values())  {</span>
+<span class="nc" id="L820">            AbstractArgoJPanel tab = detailsPane.getTab(tabClass);</span>
+<span class="nc bnc" id="L821" title="All 2 branches missed.">            if (tab != null) {</span>
+<span class="nc" id="L822">                return tab;</span>
+            }
+<span class="nc" id="L824">        }</span>
+<span class="nc" id="L825">        throw new IllegalStateException(&quot;No &quot; + tabClass.getName()</span>
+                                        + &quot; tab found&quot;);
+    }
+
+    /**
+     * @return the status bar
+     */
+    public StatusBar getStatusBar() {
+<span class="nc" id="L833">        return statusBar;</span>
+    }
+
+    /*
+     * @see javax.swing.JFrame#getJMenuBar()
+     */
+    @Override
+    public JMenuBar getJMenuBar() {
+<span class="nc" id="L841">        return menuBar;</span>
+    }
+
+    /**
+     * @return the editor pane
+     */
+    public MultiEditorPane getEditorPane() {
+<span class="nc" id="L848">        return editorPane;</span>
+    }
+
+    /**
+     * @return the explorer pane
+     */
+    public NavigatorPane getExplorerPane() {
+<span class="nc" id="L855">        return explorerPane;</span>
+    }
+
+    /**
+     * @return the details pane
+     */
+    public JPanel getDetailsPane() {
+<span class="nc" id="L862">        return southPane;</span>
+    }
+
+
+    /*
+     * @see java.awt.Component#setVisible(boolean)
+     */
+    @Override
+    public void setVisible(boolean b) {
+<span class="nc" id="L871">        super.setVisible(b);</span>
+<span class="nc bnc" id="L872" title="All 2 branches missed.">        if (b) {</span>
+<span class="nc" id="L873">            Globals.setStatusBar(getStatusBar());</span>
+        }
+<span class="nc" id="L875">    }</span>
+
+    private void updateStatus(String status) {
+<span class="nc" id="L878">        ArgoEventPump.fireEvent(new ArgoStatusEvent(ArgoEventTypes.STATUS_TEXT,</span>
+                this, status));
+<span class="nc" id="L880">    }</span>
+
+    /**
+     * Save the positions of the screen splitters, sizes and postion
+     * of main window in the properties file.
+     */
+    private void saveScreenConfiguration() {
+<span class="nc bnc" id="L887" title="All 2 branches missed.">        if (explorerPane != null) {</span>
+<span class="nc" id="L888">            Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,</span>
+<span class="nc" id="L889">                                     explorerPane.getWidth());</span>
+        }
+<span class="nc bnc" id="L891" title="All 2 branches missed.">        if (eastPane != null) {</span>
+<span class="nc" id="L892">            Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,</span>
+<span class="nc" id="L893">                                     eastPane.getWidth());</span>
+        }
+<span class="nc bnc" id="L895" title="All 2 branches missed.">        if (northPane != null) {</span>
+<span class="nc" id="L896">            Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,</span>
+<span class="nc" id="L897">                                     northPane.getHeight());</span>
+        }
+<span class="nc bnc" id="L899" title="All 2 branches missed.">        if (southPane != null) {</span>
+<span class="nc" id="L900">            Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,</span>
+<span class="nc" id="L901">                                     southPane.getHeight());</span>
+        }
+<span class="nc bnc" id="L903" title="All 2 branches missed.">        if (todoPane != null) {</span>
+<span class="nc" id="L904">            Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,</span>
+<span class="nc" id="L905">                    todoPane.getWidth());</span>
+        }
+<span class="nc bnc" id="L907" title="All 2 branches missed.">        if (southEastPane != null) {</span>
+<span class="nc" id="L908">            Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,</span>
+<span class="nc" id="L909">                    southEastPane.getWidth());</span>
+        }
+<span class="nc bnc" id="L911" title="All 2 branches missed.">        if (northWestPane != null) {</span>
+<span class="nc" id="L912">            Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,</span>
+<span class="nc" id="L913">                    northWestPane.getWidth());</span>
+        }
+<span class="nc bnc" id="L915" title="All 2 branches missed.">        if (northEastPane != null) {</span>
+<span class="nc" id="L916">            Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,</span>
+<span class="nc" id="L917">                    northEastPane.getWidth());</span>
+        }
+
+<span class="nc bnc" id="L920" title="All 2 branches missed.">        boolean maximized = getExtendedState() == MAXIMIZED_BOTH;</span>
+<span class="nc bnc" id="L921" title="All 2 branches missed.">        if (!maximized) {</span>
+<span class="nc" id="L922">            Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());</span>
+<span class="nc" id="L923">            Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());</span>
+<span class="nc" id="L924">            Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());</span>
+<span class="nc" id="L925">            Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());</span>
+        }
+<span class="nc" id="L927">        Configuration.setBoolean(Argo.KEY_SCREEN_MAXIMIZED,</span>
+                maximized);
+<span class="nc" id="L929">    }</span>
+
+    /**
+     * Build a new details pane for the given compass point.
+     *
+     * @param compassPoint the position for which to build the pane
+     * @param orientation the required orientation of the pane.
+     * @return the details pane or null if none is required for the given
+     *         compass point.
+     */
+    private DetailsPane makeDetailsPane(String compassPoint,
+                                        Orientation orientation) {
+<span class="nc" id="L941">        DetailsPane detailsPane =</span>
+<span class="nc" id="L942">            new DetailsPane(compassPoint.toLowerCase(), orientation);</span>
+<span class="nc bnc" id="L943" title="All 2 branches missed.">        if (!detailsPane.hasTabs()) {</span>
+<span class="nc" id="L944">            return null;</span>
+        }
+<span class="nc" id="L946">        return detailsPane;</span>
+    }
+
+    /**
+     * Exit the application if no save is required.
+     * If a save is required then prompt the user if they wish to,
+     * save and exit, exit without saving or cancel the exit operation.
+     */
+    public boolean tryExit() {
+<span class="nc" id="L955">        LOG.log(Level.INFO, &quot;Trying to exit the application&quot;);</span>
+<span class="nc bnc" id="L956" title="All 4 branches missed.">        if (saveAction != null &amp;&amp; saveAction.isEnabled()) {</span>
+<span class="nc" id="L957">            LOG.log(Level.INFO, &quot;A save is needed - prompting the user&quot;);</span>
+<span class="nc" id="L958">            Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc" id="L960">            String t =</span>
+<span class="nc" id="L961">                MessageFormat.format(Translator.localize(</span>
+                        &quot;optionpane.exit-save-changes-to&quot;),
+<span class="nc" id="L963">                    new Object[] {p.getName()});</span>
+<span class="nc" id="L964">            int response =</span>
+<span class="nc" id="L965">                JOptionPane.showConfirmDialog(</span>
+                    this, t, t, JOptionPane.YES_NO_CANCEL_OPTION);
+
+<span class="nc bnc" id="L968" title="All 2 branches missed.">            if (response == JOptionPane.YES_OPTION) {</span>
+                // The trySave method results in the save taking place in another thread.
+                // If that completes without error the ProjectBrowser.exit() method will
+                // be called which will actually exist the system.
+<span class="nc" id="L972">                LOG.log(Level.INFO, &quot;The user chose to exit and save&quot;);</span>
+<span class="nc bnc" id="L973" title="All 2 branches missed.">                trySave(ProjectManager.getManager().getCurrentProject() != null</span>
+<span class="nc" id="L974">                        &amp;&amp; ProjectManager.getManager().getCurrentProject()</span>
+<span class="nc bnc" id="L975" title="All 2 branches missed.">                                .getURI() != null,</span>
+                                false, true);
+<span class="nc" id="L977">                return false;</span>
+<span class="nc bnc" id="L978" title="All 2 branches missed.">            } else if (response == JOptionPane.CANCEL_OPTION) {</span>
+<span class="nc" id="L979">                LOG.log(Level.INFO, &quot;The user cancelled the save dialog&quot;);</span>
+<span class="nc" id="L980">                return false;</span>
+            }
+        }
+<span class="nc" id="L983">        LOG.log(Level.INFO, &quot;We will now exit&quot;);</span>
+<span class="nc" id="L984">        exit();</span>
+<span class="nc" id="L985">        return true;</span>
+    }
+
+
+    /**
+     * Exit the application saving the current user settings.
+     */
+    public void exit() {
+<span class="nc" id="L993">        saveScreenConfiguration();</span>
+<span class="nc" id="L994">        Configuration.save();</span>
+<span class="nc" id="L995">        System.exit(0);</span>
+<span class="nc" id="L996">    }</span>
+
+    /*
+     * @see java.awt.Window#dispose()
+     */
+    public void dispose() {
+
+<span class="nc" id="L1003">    }</span>
+
+    /**
+     * Receives window events.
+     */
+    class WindowCloser extends WindowAdapter {
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L1012">        public WindowCloser() {</span>
+<span class="nc" id="L1013">        }</span>
+
+        /*
+         * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+         */
+        public void windowClosing(WindowEvent e) {
+<span class="nc" id="L1019">            LOG.log(Level.INFO,</span>
+                    &quot;Detected attempt to close application - &quot;
+                    + &quot;checking if save needed&quot;);
+<span class="nc" id="L1022">            tryExit();</span>
+<span class="nc" id="L1023">        }</span>
+    } /* end class WindowCloser */
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(
+     *         java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        // the project changed
+<span class="nc" id="L1032">        if (evt.getPropertyName()</span>
+<span class="nc bnc" id="L1033" title="All 2 branches missed.">            .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {</span>
+<span class="nc" id="L1034">            Project p = (Project) evt.getNewValue();</span>
+<span class="nc bnc" id="L1035" title="All 2 branches missed.">            if (p != null) {</span>
+<span class="nc" id="L1036">                titleHandler.buildTitle(p.getName(), null);</span>
+                //Designer.TheDesigner.getToDoList().removeAllElements();
+<span class="nc" id="L1038">                Designer.setCritiquingRoot(p);</span>
+                // update all panes
+<span class="nc" id="L1040">                TargetManager.getInstance().setTarget(p.getInitialTarget());</span>
+            }
+            // TODO: Do we want to use the Project here instead of just its name?
+<span class="nc" id="L1043">            ArgoEventPump.fireEvent(new ArgoStatusEvent(</span>
+<span class="nc" id="L1044">                    ArgoEventTypes.STATUS_PROJECT_LOADED, this, p.getName()));</span>
+        }
+<span class="nc" id="L1046">    }</span>
+
+    /////////////////////////////////////////////////////////////////////////
+    // TargetListener methods implemented so notified when selected
+    // diagram changes. Used to update the window title.
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L1056">    	targetChanged(e.getNewTarget());</span>
+<span class="nc" id="L1057">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L1063">    	targetChanged(e.getNewTarget());</span>
+<span class="nc" id="L1064">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L1070">    	targetChanged(e.getNewTarget());</span>
+<span class="nc" id="L1071">    }</span>
+
+    /**
+     * Called to update the current namespace and active diagram after
+     * the target has changed.
+     *
+     * @param target the new target
+     */
+    private void targetChanged(Object target) {
+<span class="nc bnc" id="L1080" title="All 2 branches missed.">        if (target instanceof ArgoDiagram) {</span>
+<span class="nc" id="L1081">            titleHandler.buildTitle(null, (ArgoDiagram) target);</span>
+        }
+<span class="nc" id="L1083">        determineRemoveEnabled();</span>
+
+<span class="nc" id="L1085">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc" id="L1087">        Object theCurrentNamespace = null;</span>
+<span class="nc" id="L1088">        target = TargetManager.getInstance().getTarget();</span>
+<span class="nc bnc" id="L1089" title="All 2 branches missed.">        if (target instanceof ArgoDiagram) {</span>
+<span class="nc" id="L1090">            theCurrentNamespace = ((ArgoDiagram) target).getNamespace();</span>
+<span class="nc bnc" id="L1091" title="All 2 branches missed.">        } else if (Model.getFacade().isANamespace(target)) {</span>
+<span class="nc" id="L1092">            theCurrentNamespace = target;</span>
+<span class="nc bnc" id="L1093" title="All 2 branches missed.">        } else if (Model.getFacade().isAModelElement(target)) {</span>
+<span class="nc" id="L1094">            theCurrentNamespace = Model.getFacade().getNamespace(target);</span>
+        } else {
+<span class="nc" id="L1096">            theCurrentNamespace = p.getRoot();</span>
+        }
+<span class="nc" id="L1098">        p.setCurrentNamespace(theCurrentNamespace);</span>
+
+<span class="nc bnc" id="L1100" title="All 2 branches missed.">        if (target instanceof ArgoDiagram) {</span>
+<span class="nc" id="L1101">            p.setActiveDiagram((ArgoDiagram) target);</span>
+        }
+<span class="nc" id="L1103">    }</span>
+
+    /**
+     * Enabled the remove action if an item is selected in anything other then
+     * the activity or state diagrams.
+     */
+    private void determineRemoveEnabled() {
+<span class="nc" id="L1110">        Editor editor = Globals.curEditor();</span>
+<span class="nc" id="L1111">        Collection figs = editor.getSelectionManager().getFigs();</span>
+<span class="nc bnc" id="L1112" title="All 2 branches missed.">        boolean removeEnabled = !figs.isEmpty();</span>
+<span class="nc" id="L1113">        GraphModel gm = editor.getGraphModel();</span>
+<span class="nc bnc" id="L1114" title="All 2 branches missed.">        if (gm instanceof UMLMutableGraphSupport) {</span>
+<span class="nc" id="L1115">            removeEnabled =</span>
+<span class="nc" id="L1116">                ((UMLMutableGraphSupport) gm).isRemoveFromDiagramAllowed(figs);</span>
+        }
+<span class="nc" id="L1118">        removeFromDiagram.setEnabled(removeEnabled);</span>
+<span class="nc" id="L1119">    }</span>
+
+    /**
+     * Returns the todopane.
+     * @return ToDoPane
+     */
+    public JPanel getTodoPane() {
+<span class="nc" id="L1126">        return todoPane;</span>
+    }
+
+    /**
+     * @return Returns the defaultFont.
+     */
+    public Font getDefaultFont() {
+<span class="nc" id="L1133">        return defaultFont;</span>
+    }
+
+    /**
+     * Try to save the project, possibly not creating a new file
+     * @param overwrite if true, then we overwrite without asking
+     */
+    public void trySave(boolean overwrite) {
+<span class="nc" id="L1141">        this.trySave(overwrite, false);</span>
+<span class="nc" id="L1142">    }</span>
+
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param saveNewFile if true, we'll ask for a new file even if
+     *                    the current project already had one
+     */
+    public void trySave(boolean overwrite, boolean saveNewFile) {
+<span class="nc" id="L1151">        trySave(overwrite, saveNewFile, false);</span>
+<span class="nc" id="L1152">    }</span>
+
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param saveNewFile if true, we'll ask for a new file even if
+     *                    the current project already had one
+     * @param exitAfterSave The application will exit when the save has
+     * completed successfully
+     */
+    public void trySave(
+            final boolean overwrite,
+            boolean saveNewFile,
+            final boolean exitAfterSave) {
+<span class="nc" id="L1166">        URI uri = ProjectManager.getManager().getCurrentProject().getURI();</span>
+
+<span class="nc" id="L1168">        File file = null;</span>
+
+        // this method is invoked from several places, so we have to check
+        // whether if the project uri is set or not
+<span class="nc bnc" id="L1172" title="All 4 branches missed.">        if (uri != null &amp;&amp; !saveNewFile) {</span>
+<span class="nc" id="L1173">            file = new File(uri);</span>
+
+            // does the file really exists?
+<span class="nc bnc" id="L1176" title="All 2 branches missed.">            if (!file.exists()) {</span>
+<span class="nc" id="L1177">                LOG.log(Level.WARNING, &quot;Project file not found - URI: &quot; + uri);</span>
+                // project file doesn't exist. let's pop up a message dialog..
+<span class="nc" id="L1179">                int response = JOptionPane.showConfirmDialog(</span>
+                        this,
+<span class="nc" id="L1181">                        Translator.localize(</span>
+                                &quot;optionpane.save-project-file-not-found&quot;),
+<span class="nc" id="L1183">                        Translator.localize(</span>
+                                &quot;optionpane.save-project-file-not-found-title&quot;),
+                        JOptionPane.YES_NO_OPTION);
+
+                // ..and let's ask the user whether he wants to save the actual
+                // project into a new file or not
+<span class="nc bnc" id="L1189" title="All 2 branches missed.">                if (response == JOptionPane.YES_OPTION) {</span>
+<span class="nc" id="L1190">                    saveNewFile = true;</span>
+                } else {
+                    // save action has been cancelled
+<span class="nc" id="L1193">                    return;</span>
+                }
+<span class="nc" id="L1195">            }</span>
+        } else {
+            // Attempt to save this project under a new name.
+<span class="nc" id="L1198">            saveNewFile = true;</span>
+        }
+
+        // Prompt the user for the new name.
+<span class="nc bnc" id="L1202" title="All 2 branches missed.">        if (saveNewFile) {</span>
+<span class="nc" id="L1203">            file = getNewFile();</span>
+
+            // if the user cancelled the operation,
+            // we don't have to save anything
+<span class="nc bnc" id="L1207" title="All 2 branches missed.">            if (file == null) {</span>
+<span class="nc" id="L1208">                return;</span>
+            }
+        }
+
+        // let's call the real save method
+<span class="nc" id="L1213">        trySaveWithProgressMonitor(overwrite, file, exitAfterSave);</span>
+<span class="nc" id="L1214">    }</span>
+
+    /**
+     * Checks if the given file is writable or read-only
+     * @param file the file to be checked
+     * @return true if the given file is read-only
+     */
+    private boolean isFileReadonly(File file) {
+        try {
+<span class="nc bnc" id="L1223" title="All 2 branches missed.">            return (file == null)</span>
+<span class="nc bnc" id="L1224" title="All 4 branches missed.">                || (file.exists() &amp;&amp; !file.canWrite())</span>
+<span class="nc bnc" id="L1225" title="All 4 branches missed.">                || (!file.exists() &amp;&amp; !file.createNewFile());</span>
+
+<span class="nc" id="L1227">        } catch (IOException ioExc) {</span>
+<span class="nc" id="L1228">            return true;</span>
+        }
+    }
+
+    /**
+     * Loads a project displaying a nice ProgressMonitor
+     *
+     * @param overwrite if true, the file is going to be overwritten
+     * @param file      the target file
+     *
+     * TODO: Separate this into a Swing specific class - tfm
+     * @param exit if true: exit ArgoUML when done
+     */
+    public void trySaveWithProgressMonitor(
+            final boolean overwrite,
+            final File file,
+            final boolean exit) {
+<span class="nc bnc" id="L1245" title="All 2 branches missed.">        if (!PersistenceManager.getInstance().confirmOverwrite(</span>
+<span class="nc" id="L1246">                ArgoFrame.getFrame(), overwrite, file)) {</span>
+<span class="nc" id="L1247">            return;</span>
+        }
+<span class="nc bnc" id="L1249" title="All 2 branches missed.">        if (this.isFileReadonly(file)) {</span>
+<span class="nc" id="L1250">            JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L1251">                    Translator.localize(</span>
+                            &quot;optionpane.save-project-read-only&quot;),
+<span class="nc" id="L1253">                    Translator.localize(</span>
+                            &quot;optionpane.save-project-read-only-title&quot;),
+                          JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L1256">            return;</span>
+        }
+
+<span class="nc" id="L1259">        SaveSwingWorker worker = new SaveSwingWorker(</span>
+<span class="nc" id="L1260">                ProjectManager.getManager().getCurrentProject(),</span>
+                file,
+                exit);
+<span class="nc" id="L1263">        LOG.log(Level.INFO, &quot;Starting save thread&quot;);</span>
+<span class="nc" id="L1264">        worker.start();</span>
+<span class="nc" id="L1265">    }</span>
+
+    /**
+     * Rebuild the title using the name of the current project.
+     *
+     */
+    public void buildTitleWithCurrentProjectName() {
+<span class="nc" id="L1272">        titleHandler.buildTitle(</span>
+<span class="nc" id="L1273">                ProjectManager.getManager().getCurrentProject().getName(),</span>
+                null);
+<span class="nc" id="L1275">    }</span>
+
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param file the File to save to
+     * @param pmw       the ProgressMonitor to be updated;
+     * @return true if successful
+     *
+     * TODO: Separate this into a Swing specific class - tfm
+     * @deprecated in 0.29.1 by Bob Tarling use trySaveWithProgressMonitor
+     */
+    @Deprecated
+    public boolean trySave(boolean overwrite,
+            File file,
+            ProgressMonitor pmw) {
+<span class="nc" id="L1291">        LOG.log(Level.INFO, &quot;Saving the project&quot;);</span>
+
+<span class="nc bnc" id="L1293" title="All 2 branches missed.">        if (!PersistenceManager.getInstance().confirmOverwrite(</span>
+<span class="nc" id="L1294">                ArgoFrame.getFrame(), overwrite, file)) {</span>
+<span class="nc" id="L1295">            return false;</span>
+        }
+
+<span class="nc bnc" id="L1298" title="All 2 branches missed.">        if (this.isFileReadonly(file)) {</span>
+<span class="nc" id="L1299">            JOptionPane.showMessageDialog(this,</span>
+<span class="nc" id="L1300">                    Translator.localize(</span>
+                            &quot;optionpane.save-project-read-only&quot;),
+<span class="nc" id="L1302">                    Translator.localize(</span>
+                            &quot;optionpane.save-project-read-only-title&quot;),
+                          JOptionPane.INFORMATION_MESSAGE);
+<span class="nc" id="L1305">            return false;</span>
+        }
+
+<span class="nc" id="L1308">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L1309">        return trySave(file, pmw, project);</span>
+    }
+
+    /**
+     * Save the project.
+     * @param file the File to save to
+     * @param pmw       the ProgressMonitor to be updated;
+     * @return true if successful
+     *
+     * TODO: Separate this into a Swing specific class - tfm
+     */
+    boolean trySave(
+            final File file,
+            final ProgressMonitor pmw,
+            final Project project) {
+<span class="nc" id="L1324">        LOG.log(Level.INFO, &quot;Saving the project&quot;);</span>
+<span class="nc" id="L1325">        PersistenceManager pm = PersistenceManager.getInstance();</span>
+<span class="nc" id="L1326">        ProjectFilePersister persister = null;</span>
+
+        try {
+<span class="nc" id="L1329">            String sStatus =</span>
+<span class="nc" id="L1330">                MessageFormat.format(Translator.localize(</span>
+                    &quot;statusmsg.bar.save-project-status-writing&quot;),
+                         new Object[] {file});
+<span class="nc" id="L1333">            updateStatus (sStatus);</span>
+
+<span class="nc" id="L1335">            persister = pm.getSavePersister();</span>
+<span class="nc" id="L1336">            pm.setSavePersister(null);</span>
+<span class="nc bnc" id="L1337" title="All 2 branches missed.">            if (persister == null) {</span>
+<span class="nc" id="L1338">                persister = pm.getPersisterFromFileName(file.getName());</span>
+            }
+<span class="nc bnc" id="L1340" title="All 2 branches missed.">            if (persister == null) {</span>
+<span class="nc" id="L1341">                throw new IllegalStateException(&quot;Filename &quot; + project.getName()</span>
+                            + &quot; is not of a known file type&quot;);
+            }
+
+<span class="nc" id="L1345">            testSimulateErrors();</span>
+
+            // Repair any errors in the project
+<span class="nc" id="L1348">            String report = project.repair();</span>
+<span class="nc bnc" id="L1349" title="All 2 branches missed.">            if (report.length() &gt; 0) {</span>
+                // TODO: i18n
+<span class="nc" id="L1351">                report =</span>
+                    &quot;An inconsistency has been detected when saving the model.&quot;
+                        + &quot;These have been repaired and are reported below. &quot;
+                        + &quot;The save will continue with the model having been &quot;
+                        + &quot;amended as described.\n&quot; + report;
+<span class="nc" id="L1356">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1358">                        Translator.localize(&quot;dialog.repair&quot;) + report, true);</span>
+            }
+
+<span class="nc bnc" id="L1361" title="All 2 branches missed.">            if (pmw != null) {</span>
+<span class="nc" id="L1362">                pmw.updateProgress(25);</span>
+<span class="nc" id="L1363">                persister.addProgressListener(pmw);</span>
+            }
+
+<span class="nc" id="L1366">            project.preSave();</span>
+<span class="nc" id="L1367">            persister.save(project, file);</span>
+<span class="nc" id="L1368">            project.postSave();</span>
+
+<span class="nc" id="L1370">            ArgoEventPump.fireEvent(new ArgoStatusEvent(</span>
+                    ArgoEventTypes.STATUS_PROJECT_SAVED, this,
+<span class="nc" id="L1372">                    file.getAbsolutePath()));</span>
+<span class="nc" id="L1373">            LOG.fine (&quot;setting most recent project file to &quot;</span>
+<span class="nc" id="L1374">                   + file.getCanonicalPath());</span>
+
+            /*
+             * notification of menu bar
+             */
+<span class="nc bnc" id="L1379" title="All 2 branches missed.">            if (saveAction != null) {</span>
+                // Bob says - not sure how saveAction could be null here but
+                // NPE has been reported. See issue 6233. As Tom comments
+                // elsewhere we should be listening for file save events.
+                // That would allow us to have a final saveAction instance
+                // that can never be null
+<span class="nc" id="L1385">                saveAction.setEnabled(false);</span>
+            }
+
+<span class="nc" id="L1388">            addFileSaved(file);</span>
+
+<span class="nc" id="L1390">            Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,</span>
+<span class="nc" id="L1391">                        file.getCanonicalPath());</span>
+
+<span class="nc" id="L1393">            return true;</span>
+<span class="nc" id="L1394">        } catch (Exception ex) {</span>
+<span class="nc" id="L1395">            String sMessage =</span>
+<span class="nc" id="L1396">                MessageFormat.format(Translator.localize(</span>
+                    &quot;optionpane.save-project-general-exception&quot;),
+<span class="nc" id="L1398">                         new Object[] {ex.getMessage()});</span>
+
+<span class="nc" id="L1400">            JOptionPane.showMessageDialog(this, sMessage,</span>
+<span class="nc" id="L1401">                    Translator.localize(</span>
+                    &quot;optionpane.save-project-general-exception-title&quot;),
+                          JOptionPane.ERROR_MESSAGE);
+
+<span class="nc" id="L1405">            reportError(</span>
+                    pmw,
+<span class="nc" id="L1407">                    Translator.localize(</span>
+                            &quot;dialog.error.save.error&quot;,
+<span class="nc" id="L1409">                            new Object[] {file.getName()}),</span>
+                    true, ex);
+
+<span class="nc" id="L1412">            LOG.log(Level.SEVERE,sMessage, ex);</span>
+        }
+
+<span class="nc" id="L1415">        return false;</span>
+    }
+
+    /*
+     * Simulate some errors to repair.
+     * Replace with junits - Bob
+     */
+    private void testSimulateErrors() {
+        // Change to true to enable testing
+        if (false) {
+            Layer lay =
+                Globals.curEditor().getLayerManager().getActiveLayer();
+            List figs = lay.getContentsNoEdges();
+            // A Fig with a null owner
+            if (figs.size() &gt; 0) {
+                Fig fig = (Fig) figs.get(0);
+                LOG.log(Level.SEVERE, &quot;Setting owner of &quot;
+                        + fig.getClass().getName() + &quot; to null&quot;);
+                fig.setOwner(null);
+            }
+            // A Fig with a null layer
+            if (figs.size() &gt; 1) {
+                Fig fig = (Fig) figs.get(1);
+                fig.setLayer(null);
+            }
+            // A Fig with a removed model element
+            if (figs.size() &gt; 2) {
+                Fig fig = (Fig) figs.get(2);
+                Object owner = fig.getOwner();
+                Model.getUmlFactory().delete(owner);
+            }
+        }
+<span class="nc" id="L1447">    }</span>
+
+    /**
+     * Register a new file saved.
+     *
+     * @param file The file.
+     * @throws IOException if we cannot get the file name from the file.
+     */
+    public void addFileSaved(File file) throws IOException {
+        // TODO: This should listen for file save events - tfm
+<span class="nc" id="L1457">        GenericArgoMenuBar menu = (GenericArgoMenuBar) getJMenuBar();</span>
+<span class="nc bnc" id="L1458" title="All 2 branches missed.">        if (menu != null) {</span>
+<span class="nc" id="L1459">            menu.addFileSaved(file.getCanonicalPath());</span>
+        }
+<span class="nc" id="L1461">    }</span>
+
+    /**
+     * If the current project is dirty (needs saving) then this function will
+     * ask confirmation from the user.
+     * If the user indicates that saving is needed, then saving is attempted.
+     * See ActionExit.actionPerformed() for a very similar procedure!
+     *
+     * @return true if we can continue with opening
+     */
+    public boolean askConfirmationAndSave() {
+<span class="nc" id="L1472">        ProjectBrowser pb = ProjectBrowser.getInstance();</span>
+<span class="nc" id="L1473">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+
+<span class="nc bnc" id="L1476" title="All 4 branches missed.">        if (p != null &amp;&amp; saveAction.isEnabled()) {</span>
+<span class="nc" id="L1477">            String t =</span>
+<span class="nc" id="L1478">                MessageFormat.format(Translator.localize(</span>
+                        &quot;optionpane.open-project-save-changes-to&quot;),
+<span class="nc" id="L1480">                        new Object[] {p.getName()});</span>
+
+<span class="nc" id="L1482">            int response =</span>
+<span class="nc" id="L1483">                JOptionPane.showConfirmDialog(pb, t, t,</span>
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+
+<span class="nc bnc" id="L1486" title="All 4 branches missed.">            if (response == JOptionPane.CANCEL_OPTION</span>
+                    || response == JOptionPane.CLOSED_OPTION) {
+<span class="nc" id="L1488">                return false;</span>
+            }
+<span class="nc bnc" id="L1490" title="All 2 branches missed.">            if (response == JOptionPane.YES_OPTION) {</span>
+
+<span class="nc bnc" id="L1492" title="All 2 branches missed.">                trySave(ProjectManager.getManager().getCurrentProject() != null</span>
+<span class="nc" id="L1493">                        &amp;&amp; ProjectManager.getManager().getCurrentProject()</span>
+<span class="nc bnc" id="L1494" title="All 2 branches missed.">                                .getURI() != null);</span>
+<span class="nc bnc" id="L1495" title="All 2 branches missed.">                if (saveAction.isEnabled()) {</span>
+<span class="nc" id="L1496">                    return false;</span>
+                }
+            }
+        }
+<span class="nc" id="L1500">        return true;</span>
+    }
+
+    /**
+     * Loads a project displaying a nice ProgressMonitor
+     *
+     * @param file      the project to be opened
+     * @param showUI    whether to show the GUI or not
+     *
+     * TODO: This needs to be refactored to be GUI independent - tfm
+     */
+    public void loadProjectWithProgressMonitor(File file, boolean showUI) {
+<span class="nc" id="L1512">        LoadSwingWorker worker = new LoadSwingWorker(file, showUI);</span>
+<span class="nc" id="L1513">        worker.start();</span>
+<span class="nc" id="L1514">    }</span>
+
+    /**
+     * Loads the project file and opens all kinds of error message windows
+     * if it doesn't work for some reason. In those cases it preserves
+     * the old project.
+     *
+     * @param file the file to open.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     * @param pmw       the ProgressMonitor to be updated;
+     *                          if not needed, use null
+     * @return true if the file was successfully opened
+     *
+     * TODO: Separate this into a Swing specific class - tfm
+     */
+    public boolean loadProject(File file, boolean showUI,
+            ProgressMonitor pmw) {
+<span class="nc bnc" id="L1532" title="All 2 branches missed.">        return (loadProject2(file, showUI, pmw) != null);</span>
+    }
+
+    /**
+     * Loads the project file and opens all kinds of error message windows
+     * if it doesn't work for some reason. In those cases it preserves
+     * the old project.
+     *
+     * @param file the file to open.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     * @param pmw 	the ProgressMonitor to be updated;
+     * 				if not needed, use null
+     * @return project the project that was created based on the file that was
+     *                 successfully opened
+     *
+     * TODO: Separate this into a Swing specific class - tfm
+     */
+    public Project loadProject2(File file, boolean showUI,
+            ProgressMonitor pmw) {
+<span class="nc" id="L1552">        LOG.log(Level.INFO, &quot;Loading project.&quot;);</span>
+
+<span class="nc" id="L1554">        PersistenceManager pm = PersistenceManager.getInstance();</span>
+<span class="nc" id="L1555">        Project oldProject = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc bnc" id="L1556" title="All 2 branches missed.">        if (oldProject != null) {</span>
+            // Remove the old project first.  It's wasteful to create a temp
+            // empty project, but too much of ArgoUML depends on having a
+            // current project
+<span class="nc" id="L1560">            Project p = ProjectManager.getManager().makeEmptyProject();</span>
+<span class="nc" id="L1561">            ProjectManager.getManager().setCurrentProject(p);</span>
+<span class="nc" id="L1562">            ProjectManager.getManager().removeProject(oldProject);</span>
+<span class="nc" id="L1563">            oldProject = p;</span>
+        }
+
+<span class="nc" id="L1566">        boolean success = false;</span>
+
+        // TODO:
+        // This is actually a hack! Some diagram types
+        // (like the statechart diagrams) access the current
+        // diagram to get some info. This might cause
+        // problems if there's another statechart diagram
+        // active, so I remove the current project, before
+        // loading the new one.
+
+<span class="nc" id="L1576">        Designer.disableCritiquing();</span>
+<span class="nc" id="L1577">        Designer.clearCritiquing();</span>
+<span class="nc" id="L1578">        clearDialogs();</span>
+<span class="nc" id="L1579">        Project project = null;</span>
+
+<span class="nc bnc" id="L1581" title="All 2 branches missed.">        if (!(file.canRead())) {</span>
+<span class="nc" id="L1582">            reportError(pmw, &quot;File not found &quot; + file + &quot;.&quot;, showUI);</span>
+<span class="nc" id="L1583">            Designer.enableCritiquing();</span>
+<span class="nc" id="L1584">            success = false;</span>
+        } else {
+            // Hide save action during load. Otherwise we get the
+            // * appearing in title bar and the save enabling as models are
+            // updated
+            // TODO: Do we still need this now the save enablement is improved?
+<span class="nc" id="L1590">            final AbstractAction rememberedSaveAction = this.saveAction;</span>
+<span class="nc" id="L1591">            this.saveAction = null;</span>
+<span class="nc" id="L1592">            ProjectManager.getManager().setSaveAction(null);</span>
+            try {
+<span class="nc" id="L1594">                ProjectFilePersister persister =</span>
+<span class="nc" id="L1595">                    pm.getPersisterFromFileName(file.getName());</span>
+<span class="nc bnc" id="L1596" title="All 2 branches missed.">                if (persister == null) {</span>
+<span class="nc" id="L1597">                    throw new IllegalStateException(&quot;Filename &quot;</span>
+<span class="nc" id="L1598">                            + file.getName()</span>
+                            + &quot; is not of a known file type&quot;);
+                }
+
+<span class="nc bnc" id="L1602" title="All 2 branches missed.">                if (pmw != null) {</span>
+<span class="nc" id="L1603">                    persister.addProgressListener(pmw);</span>
+                }
+
+
+<span class="nc" id="L1607">                project = persister.doLoad(file);</span>
+
+<span class="nc bnc" id="L1609" title="All 2 branches missed.">                if (pmw != null) {</span>
+<span class="nc" id="L1610">                    persister.removeProgressListener(pmw);</span>
+                }
+<span class="nc" id="L1612">                ThreadUtils.checkIfInterrupted();</span>
+
+//                if (Model.getDiagramInterchangeModel() != null) {
+                // TODO: This assumes no more than one project at a time
+                // will be loaded.  If it is ever reinstituted, this needs to
+                // be fixed
+//                    Collection diagrams =
+//                        DiagramFactory.getInstance().getDiagram();
+//                    Iterator diag = diagrams.iterator();
+//                    while (diag.hasNext()) {
+//                        project.addMember(diag.next());
+//                    }
+//                    if (!diagrams.isEmpty()) {
+//                        project.setActiveDiagram(
+//                                (ArgoDiagram) diagrams.iterator().next());
+//                    }
+//                }
+
+                // Let's save this project in the mru list
+<span class="nc" id="L1631">                this.addFileSaved(file);</span>
+                // Let's save this project as the last used one
+                // in the configuration file
+<span class="nc" id="L1634">                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,</span>
+<span class="nc" id="L1635">                        file.getCanonicalPath());</span>
+
+<span class="nc" id="L1637">                updateStatus(</span>
+<span class="nc" id="L1638">                        Translator.localize(</span>
+                                &quot;statusmsg.bar.open-project-status-read&quot;,
+<span class="nc" id="L1640">                                new Object[] {file.getName(), }));</span>
+<span class="nc" id="L1641">                success = true;</span>
+<span class="nc" id="L1642">            } catch (VersionException ex) {</span>
+<span class="nc" id="L1643">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1645">                        Translator.localize(</span>
+                                &quot;dialog.error.file.version.error&quot;,
+<span class="nc" id="L1647">                                new Object[] {ex.getMessage()}),</span>
+                        showUI);
+<span class="nc" id="L1649">            } catch (OutOfMemoryError ex) {</span>
+<span class="nc" id="L1650">                LOG.log(Level.SEVERE,</span>
+                        &quot;Out of memory while loading project&quot;, ex);
+<span class="nc" id="L1652">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1654">                        Translator.localize(&quot;dialog.error.memory.limit&quot;),</span>
+                        showUI);
+<span class="nc" id="L1656">            } catch (java.lang.InterruptedException ex) {</span>
+<span class="nc" id="L1657">                LOG.log(Level.SEVERE, &quot;Project loading interrupted by user&quot;);</span>
+<span class="nc" id="L1658">            } catch (UmlVersionException ex) {</span>
+<span class="nc" id="L1659">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1661">                        Translator.localize(</span>
+                                &quot;dialog.error.file.version.error&quot;,
+<span class="nc" id="L1663">                                new Object[] {ex.getMessage()}),</span>
+                        showUI, ex);
+<span class="nc" id="L1665">            } catch (XmiFormatException ex) {</span>
+<span class="nc bnc" id="L1666" title="All 2 branches missed.">                if (ex.getCause() instanceof XmiReferenceException) {</span>
+                    // an error that can be corrected by the user, so no stack
+                    // trace, but instead an explanation and a hint how to fix
+<span class="nc" id="L1669">                    String reference =</span>
+<span class="nc" id="L1670">                        ((XmiReferenceException) ex.getCause()).getReference();</span>
+<span class="nc" id="L1671">                    reportError(</span>
+                            pmw,
+<span class="nc" id="L1673">                            Translator.localize(</span>
+                                    &quot;dialog.error.xmi.reference.error&quot;,
+<span class="nc" id="L1675">                                    new Object[] {reference, ex.getMessage()}),</span>
+<span class="nc" id="L1676">                            ex.toString(),</span>
+                            showUI);
+<span class="nc" id="L1678">                } else {</span>
+<span class="nc" id="L1679">                    reportError(</span>
+                            pmw,
+<span class="nc" id="L1681">                            Translator.localize(</span>
+                                    &quot;dialog.error.xmi.format.error&quot;,
+<span class="nc" id="L1683">                                    new Object[] {ex.getMessage()}),</span>
+                                    showUI, ex);
+                }
+<span class="nc" id="L1686">            } catch (IOException ex) {</span>
+<span class="nc" id="L1687">                LOG.log(Level.SEVERE, &quot;Exception while loading project&quot;, ex);</span>
+<span class="nc" id="L1688">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1690">                        Translator.localize(</span>
+                                &quot;dialog.error.open.error&quot;,
+<span class="nc" id="L1692">                                new Object[] {file.getName()}),</span>
+                        showUI, ex);
+<span class="nc" id="L1694">            } catch (OpenException ex) {</span>
+<span class="nc" id="L1695">                LOG.log(Level.SEVERE, &quot;Exception while loading project&quot;, ex);</span>
+<span class="nc" id="L1696">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1698">                        Translator.localize(</span>
+                                &quot;dialog.error.open.error&quot;,
+<span class="nc" id="L1700">                                new Object[] {file.getName()}),</span>
+                        showUI, ex);
+<span class="nc" id="L1702">            } catch (XmiReferenceRuntimeException ex) {</span>
+                // an error that can be corrected by the user, so no stack
+                // trace, but instead an explanation and a hint how to fix
+<span class="nc" id="L1705">                reportError(pmw,</span>
+<span class="nc" id="L1706">                    Translator.localize(&quot;dialog.error.xmi.reference.error&quot;,</span>
+<span class="nc" id="L1707">                        new Object[] {ex.getReference(), ex.getMessage()}),</span>
+<span class="nc" id="L1708">                    ex.toString(), showUI);</span>
+<span class="nc" id="L1709">            } catch (RuntimeException ex) {</span>
+<span class="nc" id="L1710">                LOG.log(Level.SEVERE, &quot;Exception while loading project&quot;, ex);</span>
+<span class="nc" id="L1711">                reportError(</span>
+                        pmw,
+<span class="nc" id="L1713">                        Translator.localize(</span>
+                                &quot;dialog.error.open.error&quot;,
+<span class="nc" id="L1715">                                new Object[] {file.getName()}),</span>
+                        showUI, ex);
+            } finally {
+
+                try {
+<span class="nc bnc" id="L1720" title="All 2 branches missed.">                    if (!success) {</span>
+                        project =
+<span class="nc" id="L1722">                            ProjectManager.getManager().makeEmptyProject();</span>
+                    }
+<span class="nc" id="L1724">                    ProjectManager.getManager().setCurrentProject(project);</span>
+<span class="nc bnc" id="L1725" title="All 2 branches missed.">                    if (oldProject != null) {</span>
+<span class="nc" id="L1726">                        ProjectManager.getManager().removeProject(oldProject);</span>
+                    }
+
+<span class="nc" id="L1729">                    project.getProjectSettings().init();</span>
+
+<span class="nc" id="L1731">                    Command cmd = new NonUndoableCommand() {</span>
+                        public Object execute() {
+                            // This is temporary. Load project
+                            // should create a new project
+                            // with its own UndoManager and so
+                            // there should be no Command
+<span class="nc" id="L1737">                            return null;</span>
+                        }
+                    };
+<span class="nc" id="L1740">                    project.getUndoManager().addCommand(cmd);</span>
+
+<span class="nc" id="L1742">                    LOG.log(Level.INFO,</span>
+                            &quot;There are {0} diagrams in the current project&quot;,
+<span class="nc" id="L1744">                            project.getDiagramList().size());</span>
+
+<span class="nc" id="L1746">                    Designer.enableCritiquing();</span>
+                } finally {
+                    // Make sure save action is always reinstated
+<span class="nc" id="L1749">                    this.saveAction = rememberedSaveAction;</span>
+
+                    // We clear the save-required flag on the Swing event thread
+                    // in the hopes that it gets done after any other background
+                    // work (listener updates) that is being done there
+<span class="nc" id="L1754">                    SwingUtilities.invokeLater(new Runnable() {</span>
+                        public void run() {
+<span class="nc" id="L1756">                            ProjectManager.getManager().setSaveAction(</span>
+                                    rememberedSaveAction);
+<span class="nc" id="L1758">                            rememberedSaveAction.setEnabled(false);</span>
+<span class="nc" id="L1759">                        }</span>
+                    });
+                }
+            }
+        }
+<span class="nc bnc" id="L1764" title="All 2 branches missed.">        if (!success) {</span>
+<span class="nc" id="L1765">            return null;</span>
+        }
+<span class="nc" id="L1767">        return project;</span>
+    }
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(ProgressMonitor monitor, final String message,
+            boolean showUI) {
+<span class="nc bnc" id="L1779" title="All 2 branches missed.">        if (showUI) {</span>
+<span class="nc bnc" id="L1780" title="All 2 branches missed.">            if (monitor != null) {</span>
+<span class="nc" id="L1781">                monitor.notifyMessage(</span>
+<span class="nc" id="L1782">                        Translator.localize(&quot;dialog.error.title&quot;),</span>
+<span class="nc" id="L1783">                        Translator.localize(&quot;dialog.error.open.save.error&quot;),</span>
+                        message);
+            } else {
+<span class="nc" id="L1786">                SwingUtilities.invokeLater(new Runnable() {</span>
+                    public void run() {
+<span class="nc" id="L1788">                        JDialog dialog =</span>
+                            new ExceptionDialog(
+<span class="nc" id="L1790">                                    ArgoFrame.getFrame(),</span>
+<span class="nc" id="L1791">                                    Translator.localize(&quot;dialog.error.title&quot;),</span>
+<span class="nc" id="L1792">                                    Translator.localize(</span>
+                                            &quot;dialog.error.open.save.error&quot;),
+                                    message);
+<span class="nc" id="L1795">                        dialog.setVisible(true);</span>
+<span class="nc" id="L1796">                    }</span>
+                });
+            }
+        } else {
+<span class="nc" id="L1800">            System.err.print(message);</span>
+        }
+<span class="nc" id="L1802">    }</span>
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     * @param ex The exception that was thrown.
+     */
+    private void reportError(ProgressMonitor monitor, final String message,
+            boolean showUI, final Throwable ex) {
+<span class="nc bnc" id="L1814" title="All 2 branches missed.">        if (showUI) {</span>
+<span class="nc bnc" id="L1815" title="All 2 branches missed.">            if (monitor != null) {</span>
+<span class="nc" id="L1816">                monitor.notifyMessage(</span>
+<span class="nc" id="L1817">                        Translator.localize(&quot;dialog.error.title&quot;),</span>
+                        message,
+<span class="nc" id="L1819">                        ExceptionDialog.formatException(</span>
+                                message, ex, ex instanceof OpenException));
+            } else {
+<span class="nc" id="L1822">                SwingUtilities.invokeLater(new Runnable() {</span>
+                    public void run() {
+<span class="nc" id="L1824">                        JDialog dialog =</span>
+                            new ExceptionDialog(
+<span class="nc" id="L1826">                                    ArgoFrame.getFrame(),</span>
+<span class="nc" id="L1827">                                    Translator.localize(&quot;dialog.error.title&quot;),</span>
+                                    message,
+<span class="nc" id="L1829">                                    ExceptionDialog.formatException(</span>
+                                                message, ex,
+                                                ex instanceof OpenException));
+<span class="nc" id="L1832">                        dialog.setVisible(true);</span>
+<span class="nc" id="L1833">                    }</span>
+                });
+            }
+        } else {
+<span class="nc" id="L1837">            StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L1838">            PrintWriter pw = new PrintWriter(sw);</span>
+<span class="nc" id="L1839">            ex.printStackTrace(pw);</span>
+<span class="nc" id="L1840">            String exception = sw.toString();</span>
+            // TODO:  Does anyone use command line?
+            // If so, localization is needed - tfm
+<span class="nc" id="L1843">            reportError(monitor, &quot;Please report the error below to the ArgoUML&quot;</span>
+                    + &quot;development team at http://argouml.tigris.org.\n&quot;
+                    + message + &quot;\n\n&quot; + exception, showUI);
+        }
+<span class="nc" id="L1847">    }</span>
+
+    /**
+     * Open a Message Dialog with an error message and an explanation. No
+     * stack trace, since it's not an application error, but a user issue.
+     *
+     * @param message the message to display.
+     * @param explanation the explanation to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(ProgressMonitor monitor, final String message,
+            final String explanation, boolean showUI) {
+<span class="nc bnc" id="L1860" title="All 2 branches missed.">        if (showUI) {</span>
+<span class="nc bnc" id="L1861" title="All 2 branches missed.">            if (monitor != null) {</span>
+<span class="nc" id="L1862">                monitor.notifyMessage(</span>
+<span class="nc" id="L1863">                        Translator.localize(&quot;dialog.error.title&quot;),</span>
+                        explanation,
+                        message);
+            } else {
+<span class="nc" id="L1867">                SwingUtilities.invokeLater(new Runnable() {</span>
+                    public void run() {
+<span class="nc" id="L1869">                        JDialog dialog =</span>
+                            new ExceptionDialog(
+<span class="nc" id="L1871">                                    ArgoFrame.getFrame(),</span>
+<span class="nc" id="L1872">                                    Translator.localize(&quot;dialog.error.title&quot;),</span>
+                                    explanation,
+                                    message);
+<span class="nc" id="L1875">                        dialog.setVisible(true);</span>
+<span class="nc" id="L1876">                    }</span>
+                });
+            }
+        } else {
+<span class="nc" id="L1880">            reportError(monitor, message + &quot;\n&quot; + explanation + &quot;\n\n&quot;,</span>
+                    showUI);
+        }
+<span class="nc" id="L1883">    }</span>
+
+    /**
+     * We should remove all open dialogs. They have as parent the
+     * ProjectBrowser. This is needed for the non-modal dialogs
+     * such as Find and Goto.
+     */
+    public void clearDialogs() {
+<span class="nc" id="L1891">        Window[] windows = getOwnedWindows();</span>
+<span class="nc bnc" id="L1892" title="All 2 branches missed.">        for (int i = 0; i &lt; windows.length; i++) {</span>
+<span class="nc bnc" id="L1893" title="All 2 branches missed.">            if (!(windows[i] instanceof FindDialog)) {</span>
+<span class="nc" id="L1894">                windows[i].dispose();</span>
+            }
+        }
+<span class="nc" id="L1897">        FindDialog.getInstance().reset();</span>
+<span class="nc" id="L1898">    }</span>
+
+    /**
+     * Get the action that can save the current project.
+     * @return the save action.
+     */
+    public AbstractAction getSaveAction() {
+<span class="nc" id="L1905">        return saveAction;</span>
+    }
+
+    /**
+     * Get the action that removes selected figs from the diagram.
+     * @return the remove from diagram action.
+     */
+    public AbstractAction getRemoveFromDiagramAction() {
+<span class="nc" id="L1913">        return removeFromDiagram;</span>
+    }
+
+    /**
+     * @return the File to save to
+     */
+    protected File getNewFile() {
+<span class="nc" id="L1920">        ProjectBrowser pb = ProjectBrowser.getInstance();</span>
+<span class="nc" id="L1921">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc" id="L1923">        JFileChooser chooser = null;</span>
+<span class="nc" id="L1924">        URI uri = p.getURI();</span>
+
+<span class="nc bnc" id="L1926" title="All 2 branches missed.">        if (uri != null) {</span>
+<span class="nc" id="L1927">            File projectFile = new File(uri);</span>
+<span class="nc bnc" id="L1928" title="All 2 branches missed.">            if (projectFile.length() &gt; 0) {</span>
+<span class="nc" id="L1929">                chooser = new JFileChooser(projectFile);</span>
+            } else {
+<span class="nc" id="L1931">                chooser = new JFileChooser();</span>
+            }
+<span class="nc" id="L1933">            chooser.setSelectedFile(projectFile);</span>
+<span class="nc" id="L1934">        } else {</span>
+<span class="nc" id="L1935">            chooser = new JFileChooser();</span>
+        }
+
+<span class="nc" id="L1938">        String sChooserTitle =</span>
+<span class="nc" id="L1939">            Translator.localize(&quot;filechooser.save-as-project&quot;);</span>
+<span class="nc" id="L1940">        chooser.setDialogTitle(sChooserTitle + &quot; &quot; + p.getName());</span>
+
+        // adding project files icon
+<span class="nc" id="L1943">        chooser.setFileView(ProjectFileView.getInstance());</span>
+
+<span class="nc" id="L1945">        chooser.setAcceptAllFileFilterUsed(false);</span>
+
+<span class="nc bnc" id="L1947" title="All 2 branches missed.">        PersistenceManager.getInstance().setSaveFileChooserFilters(</span>
+                chooser,
+<span class="nc" id="L1949">                uri != null ? Util.URIToFilename(uri.toString()) : null);</span>
+
+<span class="nc" id="L1951">        int retval = chooser.showSaveDialog(pb);</span>
+<span class="nc bnc" id="L1952" title="All 2 branches missed.">        if (retval == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L1953">            File theFile = chooser.getSelectedFile();</span>
+<span class="nc" id="L1954">            AbstractFilePersister filter =</span>
+<span class="nc" id="L1955">                (AbstractFilePersister) chooser.getFileFilter();</span>
+<span class="nc bnc" id="L1956" title="All 2 branches missed.">            if (theFile != null) {</span>
+<span class="nc" id="L1957">                Configuration.setString(</span>
+                        PersistenceManager.KEY_PROJECT_NAME_PATH,
+<span class="nc" id="L1959">                        PersistenceManager.getInstance().getBaseName(</span>
+<span class="nc" id="L1960">                                theFile.getPath()));</span>
+<span class="nc" id="L1961">                String name = theFile.getName();</span>
+<span class="nc bnc" id="L1962" title="All 2 branches missed.">                if (!name.endsWith(&quot;.&quot; + filter.getExtension())) {</span>
+<span class="nc" id="L1963">                    theFile =</span>
+                        new File(
+<span class="nc" id="L1965">                            theFile.getParent(),</span>
+<span class="nc" id="L1966">                            name + &quot;.&quot; + filter.getExtension());</span>
+                }
+            }
+<span class="nc" id="L1969">            PersistenceManager.getInstance().setSavePersister(filter);</span>
+<span class="nc" id="L1970">            return theFile;</span>
+        }
+<span class="nc" id="L1972">        return null;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6974246679451284917L;
+} /* end class ProjectBrowser */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

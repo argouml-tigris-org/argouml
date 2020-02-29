@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TransitionNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">TransitionNotationUml.java</span></div><h1>TransitionNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.StateMachinesFactory;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.TransitionNotation;
+
+/**
+ * UML Notation for the text shown next to a Transition.
+ *
+ * @author Michiel van der Wulp
+ */
+public class TransitionNotationUml extends TransitionNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param transition the transition represented by this notation
+     */
+    public TransitionNotationUml(Object transition) {
+<span class="fc" id="L68">        super(transition);</span>
+<span class="fc" id="L69">    }</span>
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="fc" id="L76">            parseTransition(modelElement, text);</span>
+<span class="nc" id="L77">        } catch (ParseException pe) {</span>
+<span class="nc" id="L78">            String msg = &quot;statusmsg.bar.error.parsing.transition&quot;;</span>
+<span class="nc" id="L79">            Object[] args = {</span>
+<span class="nc" id="L80">                pe.getLocalizedMessage(),</span>
+<span class="nc" id="L81">                Integer.valueOf(pe.getErrorOffset()),</span>
+            };
+<span class="nc" id="L83">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L85">                    Translator.messageFormat(msg, args)));</span>
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Parse a transition description line of the form:&lt;pre&gt;
+     *    &quot;event-signature [guard-condition] / action-expression&quot;.
+     * &lt;/pre&gt;
+     *
+     * A &quot;;&quot; is not interpreted as having any special meaning. &lt;p&gt;
+     *
+     * The &quot;event-signature&quot; may be one of the 4
+     * formats:&lt;ul&gt;
+     * &lt;li&gt; ChangeEvent: &quot;when(condition)&quot;
+     * &lt;li&gt; TimeEvent: &quot;after(duration)&quot;
+     * &lt;li&gt; CallEvent: &quot;a(parameter-list)&quot;.
+     * &lt;li&gt; SignalEvent: any string without ().
+     * &lt;/ul&gt;
+     *
+     * Remark: The UML standard does not make a distinction between
+     * the syntax of a CallEvent and SignalEvent:
+     * both may have parameters between ().
+     * For simplicity and user-friendliness, we chose for this distinction.
+     * If a user wants parameters for a SignalEvent,
+     * then he may add them in the properties panels, but not on the diagram.
+     * &lt;p&gt;
+     *
+     * An alternative solution would be to create a CallEvent by default,
+     * and when editing an existing event, do not change the type.&lt;p&gt;
+     *
+     * TODO: This function fails when the event-signature contains a &quot;[&quot;
+     * or a &quot;/&quot;. See issue 5983 for other cases that were 
+     * a problem in the past.
+     *
+     * @param trans the transition object to which this string applies
+     * @param s     the string to be parsed
+     * @return      the transition object
+     * @throws ParseException when no matching [] are found
+     */
+    protected Object parseTransition(Object trans, String s)
+        throws ParseException {
+<span class="fc" id="L126">        s = s.trim();</span>
+
+<span class="fc" id="L128">        int a = s.indexOf(&quot;[&quot;);</span>
+<span class="fc" id="L129">        int b = s.indexOf(&quot;]&quot;);</span>
+<span class="fc" id="L130">        int c = s.indexOf(&quot;/&quot;);</span>
+<span class="fc bfc" id="L131" title="All 10 branches covered.">        if (((a &lt; 0) &amp;&amp; (b &gt;= 0)) || ((b &lt; 0) &amp;&amp; (a &gt;= 0)) || (b &lt; a)) {</span>
+<span class="fc" id="L132">            String msg = &quot;parsing.error.transition.no-matching-square-brackets&quot;;</span>
+<span class="fc" id="L133">            throw new ParseException(Translator.localize(msg), 0);</span>
+        }
+<span class="pc bpc" id="L135" title="1 of 8 branches missed.">        if ((c &gt;= 0) &amp;&amp; (c &lt; b) &amp;&amp; (c &gt; a) &amp;&amp; (a &gt; 0)) {</span>
+<span class="fc" id="L136">            String msg = &quot;parsing.error.transition.found-bracket-instead-slash&quot;;</span>
+<span class="fc" id="L137">            throw new ParseException(Translator.localize(msg), 0);</span>
+        }
+
+<span class="fc" id="L140">        String[] s1 = s.trim().split(&quot;/&quot;, 2);</span>
+<span class="fc" id="L141">        String eg = s1[0].trim();</span>
+<span class="fc" id="L142">        String[] s2 = eg.split(&quot;\\[&quot;, 2);</span>
+        
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (s2[0].trim().length() &gt; 0) {</span>
+<span class="fc" id="L145">            parseTrigger(trans, s2[0].trim());</span>
+        }
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (s2.length &gt; 1)  {</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            if (s2[1].trim().endsWith(&quot;]&quot;)) {</span>
+<span class="fc" id="L149">                String g = s2[1].trim();</span>
+<span class="fc" id="L150">                g = g.substring(0, g.length() - 1).trim();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">                if (g.length() &gt; 0) {</span>
+<span class="fc" id="L152">                    parseGuard(trans, g);</span>
+                }
+            }
+        }
+<span class="fc bfc" id="L156" title="All 2 branches covered.">        if (s1.length &gt; 1)  {</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">            if (s1[1].trim().length() &gt; 0) {</span>
+<span class="fc" id="L158">                parseEffect(trans, s1[1].trim()); </span>
+            }
+        }
+<span class="fc" id="L161">        return trans;</span>
+    }
+
+    /**
+     * Parse the Event that is the trigger of the given transition.
+     *
+     * @param trans the transition which is triggered by the given event
+     * @param trigger the given trigger
+     * @throws ParseException
+     */
+    private void parseTrigger(Object trans, String trigger)
+        throws ParseException {
+        // let's look for a TimeEvent, ChangeEvent, CallEvent or SignalEvent
+<span class="fc" id="L174">        String s = &quot;&quot;;</span>
+<span class="fc" id="L175">        boolean timeEvent = false;</span>
+<span class="fc" id="L176">        boolean changeEvent = false;</span>
+<span class="fc" id="L177">        boolean callEvent = false;</span>
+<span class="fc" id="L178">        boolean signalEvent = false;</span>
+<span class="fc" id="L179">        trigger = trigger.trim();</span>
+
+<span class="fc" id="L181">        StringTokenizer tokenizer = new StringTokenizer(trigger, &quot;()&quot;);</span>
+<span class="fc" id="L182">        String name = tokenizer.nextToken().trim();</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (name.equalsIgnoreCase(&quot;after&quot;)) {</span>
+<span class="fc" id="L184">            timeEvent = true;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        } else if (name.equalsIgnoreCase(&quot;when&quot;)) {</span>
+<span class="fc" id="L186">            changeEvent = true;</span>
+        } else {
+            // the part after the || is for when there's nothing between the ()
+<span class="fc bfc" id="L189" title="All 2 branches covered.">            if (tokenizer.hasMoreTokens()</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                    || (trigger.indexOf(&quot;(&quot;) &gt; 0)</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">                    || (trigger.indexOf(&quot;)&quot;) &gt; 1)) {</span>
+<span class="fc" id="L192">                callEvent = true;</span>
+<span class="fc bfc" id="L193" title="All 4 branches covered.">                if (!trigger.endsWith(&quot;)&quot;) || !(trigger.indexOf(&quot;(&quot;) &gt; 0)) {</span>
+<span class="fc" id="L194">                    String msg =</span>
+                    	&quot;parsing.error.transition.no-matching-brackets&quot;;
+<span class="fc" id="L196">                    throw new ParseException(</span>
+<span class="fc" id="L197">                            Translator.localize(msg), 0);</span>
+                }
+            } else {
+<span class="fc" id="L200">                signalEvent = true;</span>
+            }
+        }
+<span class="fc bfc" id="L203" title="All 6 branches covered.">        if (timeEvent || changeEvent || callEvent) {</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            if (tokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L205">                s = tokenizer.nextToken().trim();</span>
+            } // else the empty s will do
+        }
+
+        /*
+         * We can distinguish between 4 cases:
+         * 1. A trigger is given. None exists yet.
+         * 2. The trigger was present, and it is the same type,
+         * or a different type, and its text is changed, or the same.
+         * 3. A trigger is not given. None exists yet.
+         * 4. The name of the trigger was present, but is removed.
+         * The reaction in these cases should be:
+         * 1. Find the referred trigger (issue 5988) or create a new one, and hook it to the transition.
+         * 2. Rename the trigger.
+         * 3. Nop.
+         * 4. Unhook and erase the existing trigger.
+         */
+<span class="fc" id="L222">        Object evt = Model.getFacade().getTrigger(trans);</span>
+        /* It is safe to give a null to the next function,
+         * since a statemachine is always composed by a model anyhow. */
+        Object ns =
+<span class="fc" id="L226">            Model.getStateMachinesHelper()</span>
+<span class="fc" id="L227">                .findNamespaceForEvent(trans, null);</span>
+        StateMachinesFactory sMFactory =
+<span class="fc" id="L229">                Model.getStateMachinesFactory();</span>
+<span class="fc" id="L230">        boolean weHaveAnEvent = false;</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        if (trigger.length() &gt; 0) {</span>
+            // case 1 and 2
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            if (evt == null) {</span>
+                // case 1
+<span class="fc bfc" id="L235" title="All 2 branches covered.">                if (timeEvent) { // after(...)</span>
+<span class="fc" id="L236">                    evt = findOrBuildTimeEvent(s, ns);</span>
+                    /* Do not set the name. */
+                }
+<span class="fc bfc" id="L239" title="All 2 branches covered.">                if (changeEvent) { // when(...)</span>
+<span class="fc" id="L240">                    evt = findOrBuildChangeEvent(s, ns);</span>
+                    /* Do not set the name. */
+                }
+<span class="fc bfc" id="L243" title="All 2 branches covered.">                if (callEvent) { // operation(paramlist)</span>
+<span class="fc" id="L244">                    String triggerName =</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">                        trigger.indexOf(&quot;(&quot;) &gt; 0</span>
+<span class="pc" id="L246">                        ? trigger.substring(0, trigger.indexOf(&quot;(&quot;)).trim()</span>
+                        : trigger;
+                    /* This case is a bit different, because of the parameters. 
+                     * If the event already exists, the parameters are ignored. */
+<span class="fc" id="L250">                    evt = findCallEvent(triggerName, ns);</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">                    if (evt == null) {</span>
+<span class="fc" id="L252">                        evt = sMFactory.buildCallEvent(trans, triggerName, ns);</span>
+                        // and parse the parameter list
+<span class="fc" id="L254">                        NotationUtilityUml.parseParamList(evt, s, 0);</span>
+                    }
+                }
+<span class="fc bfc" id="L257" title="All 2 branches covered.">                if (signalEvent) { // signalname</span>
+<span class="fc" id="L258">                    evt = findOrBuildSignalEvent(trigger, ns);</span>
+                }
+<span class="fc" id="L260">                weHaveAnEvent = true;</span>
+            } else {
+                // case 2
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">                if (timeEvent) {</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                    if (Model.getFacade().isATimeEvent(evt)) {</span>
+                        /* Just change the time expression */
+<span class="nc" id="L266">                        Object timeExpr = Model.getFacade().getWhen(evt);</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                        if (timeExpr == null) {</span>
+                            // we have an event without expression
+<span class="nc" id="L269">                            timeExpr = Model.getDataTypesFactory().createTimeExpression(&quot;&quot;, s);</span>
+<span class="nc" id="L270">                            Model.getStateMachinesHelper().setWhen(evt, timeExpr);</span>
+                        } else {
+<span class="nc" id="L272">                            Model.getDataTypesHelper().setBody(timeExpr, s);</span>
+                        }
+<span class="nc" id="L274">                    } else {</span>
+                        /* It's a time-event now,
+                         * but was of another type before! */
+<span class="nc" id="L277">                        delete(evt); /* TODO: What if used elsewhere? */</span>
+<span class="nc" id="L278">                        evt = sMFactory.buildTimeEvent(s, ns);</span>
+<span class="nc" id="L279">                        weHaveAnEvent = true;</span>
+                    }
+                }
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">                if (changeEvent) {</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">                    if (Model.getFacade().isAChangeEvent(evt)) {</span>
+                        /* Just change the ChangeExpression */
+                        Object changeExpr =
+<span class="nc" id="L286">                            Model.getFacade().getChangeExpression(evt);</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">                        if (changeExpr == null) {</span>
+                            /* Create a new expression: */
+<span class="nc" id="L289">                            changeExpr = Model.getDataTypesFactory()</span>
+<span class="nc" id="L290">                                .createBooleanExpression(&quot;&quot;, s);</span>
+<span class="nc" id="L291">                            Model.getStateMachinesHelper().setExpression(evt,</span>
+                                    changeExpr);
+                        } else {
+<span class="nc" id="L294">                            Model.getDataTypesHelper().setBody(changeExpr, s);</span>
+                        }
+<span class="nc" id="L296">                    } else {</span>
+                        /* The parsed text describes a change-event,
+                         * but the model contains another type! */
+<span class="fc" id="L299">                        delete(evt); /* TODO: What if used elsewhere? */</span>
+<span class="fc" id="L300">                        evt = sMFactory.buildChangeEvent(s, ns);</span>
+<span class="fc" id="L301">                        weHaveAnEvent = true;</span>
+                    }
+                }
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">                if (callEvent) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">                    if (Model.getFacade().isACallEvent(evt)) {</span>
+                        /* Just change the Name and linked operation */
+<span class="nc" id="L307">                        String triggerName =</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                            trigger.indexOf(&quot;(&quot;) &gt; 0</span>
+<span class="nc" id="L309">                            ? trigger.substring(0, trigger.indexOf(&quot;(&quot;)).trim()</span>
+                                    : trigger;
+<span class="nc" id="L311">                        if (!Model.getFacade().getName(evt)</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                                .equals(triggerName)) {</span>
+<span class="nc" id="L313">                            Model.getCoreHelper().setName(evt, triggerName);</span>
+                        }
+                            /* TODO: Change the linked operation. */
+<span class="nc" id="L316">                    } else {</span>
+<span class="nc" id="L317">                        delete(evt); /* TODO: What if used elsewhere? */</span>
+<span class="nc" id="L318">                        evt = sMFactory.buildCallEvent(trans, trigger, ns);</span>
+                        // and parse the parameter list
+<span class="nc" id="L320">                        NotationUtilityUml.parseParamList(evt, s, 0);</span>
+<span class="nc" id="L321">                        weHaveAnEvent = true;</span>
+                    }
+                }
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">                if (signalEvent) {</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">                    if (Model.getFacade().isASignalEvent(evt)) {</span>
+                        /* Just change the Name and linked signal */
+<span class="nc bnc" id="L327" title="All 2 branches missed.">                        if (!Model.getFacade().getName(evt).equals(trigger)) {</span>
+<span class="nc" id="L328">                            Model.getCoreHelper().setName(evt, trigger);</span>
+                        }
+                        /* TODO: link to the Signal. */
+                    } else {
+<span class="nc" id="L332">                        delete(evt); /* TODO: What if used elsewhere? */</span>
+<span class="nc" id="L333">                        evt = sMFactory.buildSignalEvent(trigger, ns);</span>
+<span class="nc" id="L334">                        weHaveAnEvent = true;</span>
+                    }
+                }
+            }
+<span class="pc bpc" id="L338" title="2 of 4 branches missed.">            if (weHaveAnEvent &amp;&amp; (evt != null)) {</span>
+<span class="fc" id="L339">                Model.getStateMachinesHelper().setEventAsTrigger(trans, evt);</span>
+            }
+        } else {
+            // case 3 and 4
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            if (evt == null) {</span>
+                /* case 3 */
+            } else {
+                // case 4
+<span class="nc" id="L347">                delete(evt); // erase it</span>
+            }
+        }
+<span class="fc" id="L350">    }</span>
+    
+    protected Object findOrBuildSignalEvent(String trigger, Object ns) {
+<span class="fc" id="L353">        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();</span>
+<span class="pc bpc" id="L354" title="2 of 4 branches missed.">        if ((trigger == null) || (&quot;&quot;.equals(trigger.trim()))) {</span>
+<span class="nc" id="L355">            return sMFactory.buildSignalEvent(trigger, ns);</span>
+        }
+<span class="fc" id="L357">        Object result = null;</span>
+<span class="fc" id="L358">        Object type = Model.getMetaTypes().getSignalEvent();</span>
+<span class="fc" id="L359">        Collection events = Model.getModelManagementHelper()</span>
+<span class="fc" id="L360">            .getAllModelElementsOfKind(ns, type);</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (Object event : events) {</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">            if (trigger.equals(Model.getFacade().getName(event))) {</span>
+<span class="fc" id="L363">                result = event;</span>
+<span class="fc" id="L364">                break;</span>
+            }
+<span class="fc" id="L366">        }</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">        if (result == null) {</span>
+<span class="fc" id="L368">            result = sMFactory.buildSignalEvent(trigger, ns);</span>
+        }
+<span class="fc" id="L370">        return result;</span>
+    }
+    
+    protected Object findOrBuildTimeEvent(String timeexpr, Object ns) {
+<span class="fc" id="L374">        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();</span>
+<span class="pc bpc" id="L375" title="2 of 4 branches missed.">        if ((timeexpr == null) || (&quot;&quot;.equals(timeexpr.trim()))) {</span>
+<span class="nc" id="L376">            return sMFactory.buildTimeEvent(timeexpr, ns);</span>
+        }
+<span class="fc" id="L378">        Object result = null;</span>
+<span class="fc" id="L379">        Object type = Model.getMetaTypes().getTimeEvent();</span>
+<span class="fc" id="L380">        Collection events = Model.getModelManagementHelper()</span>
+<span class="fc" id="L381">            .getAllModelElementsOfKind(ns, type);</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        for (Object event : events) {</span>
+<span class="fc" id="L383">            Object expression = Model.getFacade().getExpression(event);</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">            if (expression != null) {</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">                if (timeexpr.equals(Model.getFacade().getBody(expression))) {</span>
+<span class="fc" id="L386">                    result = event;</span>
+<span class="fc" id="L387">                    break;</span>
+                }
+            }
+<span class="fc" id="L390">        }</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        if (result == null) {</span>
+<span class="fc" id="L392">            result = sMFactory.buildTimeEvent(timeexpr, ns);</span>
+        }
+<span class="fc" id="L394">        return result;</span>
+    }
+    
+    protected Object findOrBuildChangeEvent(String changeexpr, Object ns) {
+<span class="fc" id="L398">        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();</span>
+<span class="pc bpc" id="L399" title="2 of 4 branches missed.">        if ((changeexpr == null) || (&quot;&quot;.equals(changeexpr.trim()))) {</span>
+<span class="nc" id="L400">            return sMFactory.buildChangeEvent(changeexpr, ns);</span>
+        }
+<span class="fc" id="L402">        Object result = null;</span>
+<span class="fc" id="L403">        Object type = Model.getMetaTypes().getChangeEvent();</span>
+<span class="fc" id="L404">        Collection events = Model.getModelManagementHelper()</span>
+<span class="fc" id="L405">            .getAllModelElementsOfKind(ns, type);</span>
+<span class="fc bfc" id="L406" title="All 2 branches covered.">        for (Object event : events) {</span>
+<span class="fc" id="L407">            Object expression = Model.getFacade().getExpression(event);</span>
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">            if (expression != null) {</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">                if (changeexpr.equals(Model.getFacade().getBody(expression))) {</span>
+<span class="fc" id="L410">                    result = event;</span>
+<span class="fc" id="L411">                    break;</span>
+                }
+            }
+<span class="fc" id="L414">        }</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        if (result == null) {</span>
+<span class="fc" id="L416">            result = sMFactory.buildChangeEvent(changeexpr, ns);</span>
+        }
+<span class="fc" id="L418">        return result;</span>
+    }
+    
+    protected Object findCallEvent(String callexpr, Object ns) {
+<span class="pc bpc" id="L422" title="2 of 4 branches missed.">        if ((callexpr == null) || (&quot;&quot;.equals(callexpr.trim()))) {</span>
+<span class="nc" id="L423">            return null;</span>
+        }
+<span class="fc" id="L425">        Object result = null;</span>
+<span class="fc" id="L426">        Object type = Model.getMetaTypes().getCallEvent();</span>
+<span class="fc" id="L427">        Collection events = Model.getModelManagementHelper()</span>
+<span class="fc" id="L428">            .getAllModelElementsOfKind(ns, type);</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">        for (Object event : events) {</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">            if (callexpr.equals(Model.getFacade().getName(event))) {</span>
+                /* Do not check if the parameters match. */
+<span class="fc" id="L432">                result = event;</span>
+<span class="fc" id="L433">                break;</span>
+            }
+<span class="fc" id="L435">        }</span>
+<span class="fc" id="L436">        return result;</span>
+    }
+
+    /**
+     * Handle the Guard of a Transition.&lt;p&gt;
+     *
+     * We can distinct between 4 cases:&lt;ol&gt;
+     * &lt;li&gt;A guard is given. None exists yet.
+     * &lt;li&gt;The expression of the guard was present, but is altered.
+     * &lt;li&gt;A guard is not given. None exists yet.
+     * &lt;li&gt;The expression of the guard was present, but is removed.
+     * &lt;/ol&gt;
+     *
+     * The reaction in these cases should be:&lt;ol&gt;
+     * &lt;li&gt;Create a new guard, set its name, language &amp; expression,
+     *     and hook it to the transition.
+     * &lt;li&gt;Change the guard's expression. Leave the name &amp; language
+     *     untouched. See also issue 2742.
+     * &lt;li&gt;Nop.
+     * &lt;li&gt;Unhook and erase the existing guard.
+     * &lt;/ol&gt;
+     *
+     * @param trans the UML element transition
+     * @param guard the string that represents the guard expression
+     */
+    private void parseGuard(Object trans, String guard) {
+<span class="fc" id="L462">        Object g = Model.getFacade().getGuard(trans);</span>
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">        if (guard.length() &gt; 0) {</span>
+<span class="pc bpc" id="L464" title="1 of 2 branches missed.">            if (g == null) {</span>
+                // case 1
+                /*TODO: In the next line, I should use buildGuard(),
+                 * but it doesn't show the guard on the diagram...
+                 * Why? (MVW)
+                 */
+<span class="fc" id="L470">                g = Model.getStateMachinesFactory().createGuard();</span>
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">                if (g != null) {</span>
+<span class="fc" id="L472">                    Model.getStateMachinesHelper().setExpression(g,</span>
+<span class="fc" id="L473">                            Model.getDataTypesFactory()</span>
+<span class="fc" id="L474">                                .createBooleanExpression(&quot;&quot;, guard));</span>
+<span class="fc" id="L475">                    Model.getCoreHelper().setName(g, &quot;anon&quot;);</span>
+<span class="fc" id="L476">                    Model.getCommonBehaviorHelper().setTransition(g, trans);</span>
+
+                    // NSUML does this (?)
+                    // Model.getFacade().setGuard(trans, g);
+                }
+            } else {
+                // case 2
+<span class="nc" id="L483">                Object expr = Model.getFacade().getExpression(g);</span>
+<span class="nc" id="L484">                String language = &quot;&quot;;</span>
+
+                /* TODO: This does not work! (MVW)
+                 Model.getFacade().setBody(expr,guard);
+                 Model.getFacade().setExpression(g,expr); */
+
+                //hence a less elegant workaround that works:
+<span class="nc bnc" id="L491" title="All 2 branches missed.">                if (expr != null) {</span>
+<span class="nc" id="L492">                    language = Model.getDataTypesHelper().getLanguage(expr);</span>
+                }
+<span class="nc" id="L494">                Model.getStateMachinesHelper().setExpression(g,</span>
+<span class="nc" id="L495">                        Model.getDataTypesFactory()</span>
+<span class="nc" id="L496">                                .createBooleanExpression(language, guard));</span>
+                /* TODO: In this case, the properties panel
+                 is not updated with the changed expression! */
+<span class="nc" id="L499">            }</span>
+        } else {
+<span class="nc bnc" id="L501" title="All 2 branches missed.">            if (g == null) {</span>
+                /* case 3 */
+            } else {
+                // case 4
+<span class="nc" id="L505">                delete(g); // erase it</span>
+            }
+        }
+<span class="fc" id="L508">    }</span>
+
+    /**
+     * Handle the Effect (Action) of a Transition.&lt;p&gt;
+     *
+     * We can distinct between 4 cases:&lt;ul&gt;
+     * &lt;li&gt;1. An effect is given. None exists yet.
+     * &lt;li&gt;2. The expression of the effect was present, but is altered.
+     * &lt;li&gt;3. An effect is not given. None exists yet.
+     * &lt;li&gt;4. The expression of the effect was present, but is removed.
+     * &lt;/ul&gt;
+     *
+     * The reaction in these cases should be:&lt;ul&gt;
+     * &lt;li&gt;1. Create a new CallAction, set its name, language &amp;
+     * expression, and hook it to the transition.
+     * &lt;li&gt;2. Change the effect's expression. Leave the actiontype, name
+     * &amp; language untouched.
+     * &lt;li&gt;3. Nop.
+     * &lt;li&gt;4. Unhook and erase the existing effect.
+     * &lt;/ul&gt;
+     *
+     * @param actions the string to be parsed
+     * @param trans the transition that causes the effect (actions)
+     */
+    private void parseEffect(Object trans, String actions) {
+<span class="fc" id="L533">        Object effect = Model.getFacade().getEffect(trans);</span>
+<span class="pc bpc" id="L534" title="1 of 2 branches missed.">        if (actions.length() &gt; 0) {</span>
+<span class="fc bfc" id="L535" title="All 2 branches covered.">            if (effect == null) { // case 1</span>
+                effect =
+<span class="fc" id="L537">                    Model.getCommonBehaviorFactory()</span>
+<span class="fc" id="L538">                        .createCallAction();</span>
+                /* And hook it to the transition immediately,
+                 * so that an exception can not cause it to remain dangling: */
+<span class="fc" id="L541">                Model.getStateMachinesHelper().setEffect(trans, effect);</span>
+<span class="fc" id="L542">                Model.getCommonBehaviorHelper().setScript(effect,</span>
+<span class="fc" id="L543">                        Model.getDataTypesFactory()</span>
+<span class="fc" id="L544">                                .createActionExpression(&quot;&quot;/*language*/,</span>
+                                                        actions));
+<span class="fc" id="L546">                Model.getCoreHelper().setName(effect, &quot;anon&quot;);</span>
+            } else { // case 2
+<span class="fc" id="L548">                Object script = Model.getFacade().getScript(effect);</span>
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">                String language = (script == null) ? null</span>
+<span class="fc" id="L550">                        : Model.getDataTypesHelper().getLanguage(script);</span>
+<span class="fc" id="L551">                Model.getCommonBehaviorHelper().setScript(effect,</span>
+<span class="fc" id="L552">                        Model.getDataTypesFactory()</span>
+<span class="fc" id="L553">                                .createActionExpression(language, actions));</span>
+<span class="fc" id="L554">            }</span>
+        } else { // case 3 &amp; 4
+<span class="nc bnc" id="L556" title="All 2 branches missed.">            if (effect == null) {</span>
+                // case 3
+            } else {
+                // case 4
+<span class="nc" id="L560">                delete(effect); // erase it</span>
+            }
+        }
+<span class="fc" id="L563">    }</span>
+
+    /**
+     * This deletes modelelements, and swallows null without barking.
+     *
+     * @author Michiel van der Wulp
+     * @param obj
+     *            the modelelement to be deleted
+     */
+    private void delete(Object obj) {
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">        if (obj != null) {</span>
+<span class="fc" id="L574">            Model.getUmlFactory().delete(obj);</span>
+        }
+<span class="fc" id="L576">    }</span>
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="fc" id="L582">        return &quot;parsing.help.fig-transition&quot;;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L587">        return toString(modelElement);</span>
+    }
+
+    private String toString(Object modelElement) {
+<span class="fc" id="L591">        Object trigger = Model.getFacade().getTrigger(modelElement);</span>
+<span class="fc" id="L592">    	Object guard = Model.getFacade().getGuard(modelElement);</span>
+<span class="fc" id="L593">        Object effect = Model.getFacade().getEffect(modelElement);</span>
+<span class="fc" id="L594">        String t = generateEvent(trigger);</span>
+<span class="fc" id="L595">        String g = generateGuard(guard);</span>
+<span class="fc" id="L596">        String e = NotationUtilityUml.generateActionSequence(effect);</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">        if (g.length() &gt; 0) {</span>
+<span class="fc" id="L598">            t += &quot; [&quot; + g + &quot;]&quot;;</span>
+        }
+<span class="fc bfc" id="L600" title="All 2 branches covered.">        if (e.length() &gt; 0) {</span>
+<span class="fc" id="L601">            t += &quot; / &quot; + e;</span>
+        }
+<span class="fc" id="L603">        return t;</span>
+    }
+
+    /**
+     * Generates the text for a (trigger) event.
+     *
+     * @param m Object of any MEvent kind
+     * @return the string representing the event
+     */
+    private String generateEvent(Object m) {
+<span class="fc bfc" id="L613" title="All 2 branches covered.">        if (m == null) {</span>
+<span class="fc" id="L614">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L616">        StringBuffer event = new StringBuffer();</span>
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">        if (Model.getFacade().isAChangeEvent(m)) {</span>
+<span class="nc" id="L618">            event.append(&quot;when(&quot;);</span>
+<span class="nc" id="L619">            event.append(</span>
+<span class="nc" id="L620">                    generateExpression(Model.getFacade().getExpression(m)));</span>
+<span class="nc" id="L621">            event.append(&quot;)&quot;);</span>
+<span class="pc bpc" id="L622" title="1 of 2 branches missed.">        } else if (Model.getFacade().isATimeEvent(m)) {</span>
+<span class="nc" id="L623">            event.append(&quot;after(&quot;);</span>
+<span class="nc" id="L624">            event.append(</span>
+<span class="nc" id="L625">                    generateExpression(Model.getFacade().getExpression(m)));</span>
+<span class="nc" id="L626">            event.append(&quot;)&quot;);</span>
+<span class="fc bfc" id="L627" title="All 2 branches covered.">        } else if (Model.getFacade().isASignalEvent(m)) {</span>
+<span class="fc" id="L628">            event.append(Model.getFacade().getName(m));</span>
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">        } else if (Model.getFacade().isACallEvent(m)) {</span>
+<span class="fc" id="L630">            event.append(Model.getFacade().getName(m));</span>
+<span class="fc" id="L631">            event.append(generateParameterList(m));</span>
+        }
+<span class="fc" id="L633">        return event.toString();</span>
+    }
+
+    /**
+     * Generates a string representing the given Guard. &lt;p&gt;
+     *
+     * If there is an expression, then its body text is returned.
+     * Else, a 0 length string is returned. &lt;p&gt;
+     *
+     * Apparently, the AndroMDA people are convinced that the
+     * name of the guard should be shown on the diagram, while this
+     * is not correct according the UML standard.
+     * ArgoUML does not support this feature because of its down-side:
+     * The name would end up in the expression
+     * if you edit the transition text on the diagram,
+     * while the name remains containing the old value.
+     *
+     * @param m the UML Guard object
+     * @return a string
+     */
+    private String generateGuard(Object m) {
+<span class="fc bfc" id="L654" title="All 2 branches covered.">        if (m != null) {</span>
+<span class="pc bpc" id="L655" title="1 of 2 branches missed.">            if (Model.getFacade().getExpression(m) != null) {</span>
+<span class="fc" id="L656">                return generateExpression(Model.getFacade().getExpression(m));</span>
+            }
+        }
+<span class="fc" id="L659">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Generates a list of parameters. The parameters belong to the
+     * given object.  The returned string will have the following
+     * syntax:&lt;p&gt;
+     *
+     * (param1, param2, param3, ..., paramN)&lt;p&gt;
+     *
+     * If there are no parameters, then &quot;()&quot; is returned.
+     *
+     * @param parameterListOwner the 'owner' of the parameters
+     * @return the generated parameter list
+     */
+    private String generateParameterList(Object parameterListOwner) {
+        Iterator it =
+<span class="fc" id="L676">            Model.getFacade().getParameters(parameterListOwner).iterator();</span>
+<span class="fc" id="L677">        StringBuffer list = new StringBuffer();</span>
+<span class="fc" id="L678">        list.append(&quot;(&quot;);</span>
+<span class="pc bpc" id="L679" title="1 of 2 branches missed.">        if (it.hasNext()) {</span>
+<span class="fc bfc" id="L680" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L681">                Object param = it.next();</span>
+<span class="fc" id="L682">                list.append(generateParameter(param));</span>
+<span class="fc bfc" id="L683" title="All 2 branches covered.">                if (it.hasNext()) {</span>
+<span class="fc" id="L684">                    list.append(&quot;, &quot;);</span>
+                }
+<span class="fc" id="L686">            }</span>
+        }
+<span class="fc" id="L688">        list.append(&quot;)&quot;);</span>
+<span class="fc" id="L689">        return list.toString();</span>
+    }
+
+    private String generateExpression(Object expr) {
+<span class="pc bpc" id="L693" title="1 of 2 branches missed.">        if (Model.getFacade().isAExpression(expr)) {</span>
+<span class="fc" id="L694">            Object body = Model.getFacade().getBody(expr);</span>
+<span class="pc bpc" id="L695" title="1 of 2 branches missed.">            if (body != null) {</span>
+<span class="fc" id="L696">                return (String) body;</span>
+            }
+        }
+<span class="nc" id="L699">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * Generates the representation of a parameter on the display
+     * (diagram). The string to be returned will have the following
+     * syntax:&lt;p&gt;
+     *
+     * kind name : type-expression = default-value
+     *
+     * @param parameter the parameter
+     * @return the generated text
+     */
+    public String generateParameter(Object parameter) {
+<span class="fc" id="L713">        StringBuffer s = new StringBuffer();</span>
+<span class="fc" id="L714">        s.append(generateKind(Model.getFacade().getKind(parameter)));</span>
+<span class="pc bpc" id="L715" title="1 of 2 branches missed.">        if (s.length() &gt; 0) {</span>
+<span class="nc" id="L716">            s.append(&quot; &quot;);</span>
+        }
+<span class="fc" id="L718">        s.append(Model.getFacade().getName(parameter));</span>
+<span class="fc" id="L719">        String classRef =</span>
+<span class="fc" id="L720">            generateClassifierRef(Model.getFacade().getType(parameter));</span>
+<span class="pc bpc" id="L721" title="1 of 2 branches missed.">        if (classRef.length() &gt; 0) {</span>
+<span class="fc" id="L722">            s.append(&quot; : &quot;);</span>
+<span class="fc" id="L723">            s.append(classRef);</span>
+        }
+<span class="fc" id="L725">        String defaultValue =</span>
+<span class="fc" id="L726">            generateExpression(Model.getFacade().getDefaultValue(parameter));</span>
+<span class="pc bpc" id="L727" title="1 of 2 branches missed.">        if (defaultValue.length() &gt; 0) {</span>
+<span class="fc" id="L728">            s.append(&quot; = &quot;);</span>
+<span class="fc" id="L729">            s.append(defaultValue);</span>
+        }
+<span class="fc" id="L731">        return s.toString();</span>
+    }
+
+    private String generateKind(Object /*Parameter etc.*/ kind) {
+<span class="fc" id="L735">        StringBuffer s = new StringBuffer();</span>
+<span class="pc bpc" id="L736" title="1 of 2 branches missed.">        if (kind == null /* &quot;in&quot; is the default */</span>
+<span class="pc bpc" id="L737" title="1 of 2 branches missed.">                || kind == Model.getDirectionKind().getInParameter()) {</span>
+<span class="fc" id="L738">            s.append(/*&quot;in&quot;*/ &quot;&quot;); /* See issue 3421. */</span>
+<span class="nc bnc" id="L739" title="All 2 branches missed.">        } else if (kind == Model.getDirectionKind().getInOutParameter()) {</span>
+<span class="nc" id="L740">            s.append(&quot;inout&quot;);</span>
+<span class="nc bnc" id="L741" title="All 2 branches missed.">        } else if (kind == Model.getDirectionKind().getReturnParameter()) {</span>
+            // return nothing
+<span class="nc bnc" id="L743" title="All 2 branches missed.">        } else if (kind == Model.getDirectionKind().getOutParameter()) {</span>
+<span class="nc" id="L744">            s.append(&quot;out&quot;);</span>
+        }
+<span class="fc" id="L746">        return s.toString();</span>
+    }
+
+    /**
+     * Generate the type of a parameter, i.e. a reference to a classifier.
+     *
+     * @param cls the classifier
+     * @return the generated text
+     */
+    private String generateClassifierRef(Object cls) {
+<span class="pc bpc" id="L756" title="1 of 2 branches missed.">        if (cls == null) {</span>
+<span class="nc" id="L757">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L759">        return Model.getFacade().getName(cls);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

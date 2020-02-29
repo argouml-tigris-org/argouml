@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigurationProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.configuration</a> &gt; <span class="el_source">ConfigurationProperties.java</span></div><h1>ConfigurationProperties.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.configuration;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * This class provides a user configuration based upon
+ * the properties file &quot;argo.user.properties&quot; in the user's home directory.
+ *
+ * @author Thierry Lach
+ */
+class ConfigurationProperties extends ConfigurationHandler {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L61">    private static final Logger LOG =</span>
+<span class="fc" id="L62">        Logger.getLogger(ConfigurationProperties.class.getName());</span>
+
+    /**
+     * The location of Argo's default properties resource.
+     */
+<span class="fc" id="L67">    private static String propertyLocation =</span>
+        &quot;/org/argouml/resource/default.properties&quot;;
+
+    /**
+     * The primary property bundle.
+     */
+    private Properties propertyBundle;
+
+    /**
+     * Flag to ensure that only the first load failure is reported
+     * even though we keep trying because the file or URL may only
+     * be temporarily unavailable.
+     */
+<span class="fc" id="L80">    private boolean canComplain = true;</span>
+
+    /**
+     * Anonymous constructor.
+     */
+    ConfigurationProperties() {
+<span class="fc" id="L86">        super(true);</span>
+<span class="fc" id="L87">        Properties defaults = new Properties();</span>
+        try {
+<span class="fc" id="L89">            defaults.load(getClass().getResourceAsStream(propertyLocation));</span>
+<span class="fc" id="L90">            LOG.log(Level.FINE,</span>
+                    &quot;Configuration loaded from {0}&quot;, propertyLocation);
+<span class="nc" id="L92">        } catch (Exception ioe) {</span>
+            // TODO:  What should we do here?
+<span class="nc" id="L94">            LOG.log(Level.WARNING,</span>
+                    &quot;Configuration not loaded from &quot; + propertyLocation, ioe);
+<span class="fc" id="L96">        }</span>
+<span class="fc" id="L97">        propertyBundle = new Properties(defaults);</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Returns the default path for user properties.
+     *
+     * @return a generic path string.
+     */
+    public String getDefaultPath() {
+<span class="fc" id="L106">        return System.getProperty(&quot;user.home&quot;)</span>
+            + &quot;/.argouml/argo.user.properties&quot;;
+    }
+
+    /**
+     * Returns the default path for user properties (before 0.25.4)
+     * @return a generic path string
+     */
+    private String getOldDefaultPath() {
+<span class="fc" id="L115">        return System.getProperty(&quot;user.home&quot;) + &quot;/argo.user.properties&quot;;</span>
+    }
+
+    /**
+     * Copy a file from source to destination.
+     *
+     * TODO: Perhaps belongs in a utilities class of some sort.
+     *
+     * @param source the source file to be copied
+     * @param dest the destination file
+     * @return success status flag
+     */
+    private static boolean copyFile(final File source, final File dest) {
+        try {
+<span class="nc" id="L129">            final FileInputStream fis = new FileInputStream(source);</span>
+<span class="nc" id="L130">            final FileOutputStream fos = new FileOutputStream(dest);</span>
+<span class="nc" id="L131">            byte[] buf = new byte[1024];</span>
+<span class="nc" id="L132">            int i = 0;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            while ((i = fis.read(buf)) != -1) {</span>
+<span class="nc" id="L134">                fos.write(buf, 0, i);</span>
+            }
+<span class="nc" id="L136">            fis.close();</span>
+<span class="nc" id="L137">            fos.close();</span>
+<span class="nc" id="L138">            return true;</span>
+<span class="nc" id="L139">        } catch (final FileNotFoundException e) {</span>
+<span class="nc" id="L140">            LOG.log(Level.SEVERE, &quot;File not found while copying&quot;, e);</span>
+<span class="nc" id="L141">            return false;</span>
+<span class="nc" id="L142">        } catch (final IOException e) {</span>
+<span class="nc" id="L143">            LOG.log(Level.SEVERE, &quot;IO error copying file&quot;, e);</span>
+<span class="nc" id="L144">            return false;</span>
+<span class="nc" id="L145">        } catch (final SecurityException e) {</span>
+<span class="nc" id="L146">            LOG.log(Level.SEVERE, &quot;You are not allowed to copy these files&quot;, e);</span>
+<span class="nc" id="L147">            return false;</span>
+        }
+    }
+
+    /**
+     * Load the configuration from a specified location. &lt;p&gt;
+     *
+     * Before version 0.25.4, ArgoUML used to store the
+     * properties file in a different location. A user who
+     * upgrades his ArgoUML to a newer version,
+     * would not like to loose his settings.
+     * Hence, in case a properties file does not exist
+     * (in the new location),
+     * this code attempts to copy the file
+     * from the old location to the new location. &lt;p&gt;
+     *
+     * In this upgrade case, the properties file
+     * is copied, not moved.
+     * Rationale: see issue 5364. &lt;p&gt;
+     *
+     * The meaning of the return value is not simply success
+     * in loading the properties file,
+     * but it indicates if we may save the properties
+     * on top of this file later.
+     * Hence, in case a properties file did not exist
+     * (not in the new location, nor in the old location),
+     * then a new empty file is created,
+     * and in this case the return value is true. &lt;p&gt;
+     *
+     * Returning false here would mean that no properties
+     * will be saved at all.
+     *
+     * @param file  the path to load the configuration from.
+     *
+     * @return true if the given file-location may be used
+     * for writing the properties later.
+     */
+    public boolean loadFile(File file) {
+        try {
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">            if (!file.exists()) {</span>
+                // check for the older properties file and
+                // copy it over if possible
+
+                // This is done for compatibility with previous version:
+                // Move the argo.user.properties
+                // written before 0.25.4 to the new location, if it exists.
+<span class="fc" id="L193">                final File oldFile = new File(getOldDefaultPath());</span>
+<span class="pc bpc" id="L194" title="5 of 6 branches missed.">                if (oldFile.exists() &amp;&amp; oldFile.isFile() &amp;&amp; oldFile.canRead()</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                        &amp;&amp; file.getParentFile().canWrite()) {</span>
+                    // copy to new file and let the regular load code
+                    // do the actual load
+<span class="nc" id="L198">                    final boolean result = copyFile(oldFile, file);</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                    if (result) {</span>
+<span class="nc" id="L200">                        LOG.log(Level.INFO,</span>
+                                &quot;Configuration copied from {0} to {1}&quot;,
+                                new Object[]{oldFile, file});
+                    } else {
+<span class="nc" id="L204">                        LOG.log(Level.SEVERE,</span>
+                                &quot;Error copying old configuration to new, &quot;
+                                + &quot;see previous log messages&quot;);
+                    }
+<span class="nc" id="L208">                } else {</span>
+                    try {
+<span class="nc" id="L210">                        file.createNewFile();</span>
+<span class="fc" id="L211">                    } catch (IOException e) {</span>
+<span class="fc" id="L212">                        LOG.log(Level.SEVERE,</span>
+                                &quot;Could not create the properties file at: &quot;
+<span class="fc" id="L214">                                + file.getAbsolutePath(),</span>
+                                e);
+<span class="nc" id="L216">                    }</span>
+                }
+            }
+
+<span class="pc bpc" id="L220" title="5 of 6 branches missed.">            if (file.exists() &amp;&amp; file.isFile() &amp;&amp; file.canRead()) {</span>
+                try {
+<span class="nc" id="L222">                    propertyBundle.load(new FileInputStream(file));</span>
+<span class="nc" id="L223">                    LOG.log(Level.INFO, &quot;Configuration loaded from {0}&quot;, file);</span>
+<span class="nc" id="L224">                    return true;</span>
+<span class="nc" id="L225">                } catch (final IOException e) {</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                    if (canComplain) {</span>
+<span class="nc" id="L227">                        LOG.log(Level.WARNING,</span>
+                                &quot;Unable to load configuration {0}&quot;, file);
+                    }
+<span class="nc" id="L230">                    canComplain = false;</span>
+                }
+            }
+<span class="nc" id="L233">        } catch (final SecurityException e) {</span>
+<span class="nc" id="L234">            LOG.log(Level.SEVERE,</span>
+                    &quot;A security exception occurred trying to load&quot;
+                    + &quot; the configuration, check your security settings&quot;,
+                    e);
+<span class="fc" id="L238">        }</span>
+<span class="fc" id="L239">        return false;</span>
+    }
+
+    /**
+     * Save the configuration to a specified location.
+     *
+     * @param file  the path to save the configuration at.
+     *
+     * @return true if the save was successful, false if not.
+     */
+    public boolean saveFile(File file) {
+        try {
+<span class="nc" id="L251">            propertyBundle.store(new FileOutputStream(file),</span>
+                    &quot;ArgoUML properties&quot;);
+<span class="nc" id="L253">            LOG.log(Level.INFO, &quot;Configuration saved to {0}&quot;, file);</span>
+<span class="nc" id="L254">            return true;</span>
+<span class="nc" id="L255">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            if (canComplain) {</span>
+<span class="nc" id="L257">                LOG.log(Level.WARNING,</span>
+                        &quot;Unable to save configuration {0}&quot;, file);
+            }
+<span class="nc" id="L260">            canComplain = false;</span>
+        }
+
+<span class="nc" id="L263">        return false;</span>
+    }
+
+    /**
+     * Load the configuration from a specified location.
+     *
+     * @param url  the path to load the configuration from.
+     *
+     * @return true if the load was successful, false if not.
+     */
+    public boolean loadURL(URL url) {
+        try {
+<span class="nc" id="L275">            propertyBundle.load(url.openStream());</span>
+<span class="nc" id="L276">            LOG.log(Level.INFO, &quot;Configuration loaded from {0}&quot;, url);</span>
+<span class="nc" id="L277">            return true;</span>
+<span class="nc" id="L278">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            if (canComplain) {</span>
+<span class="nc" id="L280">                LOG.log(Level.WARNING, &quot;Unable to load configuration {0}&quot;, url);</span>
+            }
+<span class="nc" id="L282">            canComplain = false;</span>
+<span class="nc" id="L283">            return false;</span>
+        }
+    }
+
+    /**
+     * Save the configuration to a specified location.
+     *
+     * @param url  the path to save the configuration at.
+     *
+     * @return true if the save was successful, false if not.
+     */
+    public boolean saveURL(URL url) {
+        // LOG.log(Level.INFO, &quot;Configuration saved to {0}\n&quot;, url);
+<span class="nc" id="L296">        return false;</span>
+    }
+
+    /**
+     * Returns the string value of a configuration property.
+     *
+     * @param key the key to return the value of.
+     * @param defaultValue the value to return if the key was not found.
+     *
+     * @return the string value of the key if found, otherwise null;
+     */
+    public String getValue(String key, String defaultValue) {
+<span class="fc" id="L308">        String result = &quot;&quot;;</span>
+        try {
+<span class="fc" id="L310">            result = propertyBundle.getProperty(key, defaultValue);</span>
+<span class="nc" id="L311">        } catch (Exception e) {</span>
+<span class="nc" id="L312">            result = defaultValue;</span>
+<span class="fc" id="L313">        }</span>
+<span class="fc" id="L314">        return result;</span>
+    }
+
+    /**
+     * Sets the string value of a configuration property.
+     *
+     * @param key the key to set.
+     * @param value the value to set the key to.
+     */
+    public void setValue(String key, String value) {
+<span class="fc" id="L324">        LOG.log(Level.FINE, &quot;key {0} set to {1}&quot;, new Object[]{key, value});</span>
+<span class="fc" id="L325">        propertyBundle.setProperty(key, value);</span>
+<span class="fc" id="L326">    }</span>
+
+    /**
+     * Remove a property.
+     *
+     * @param key The property to remove.
+     */
+    public void remove(String key) {
+<span class="nc" id="L334">        propertyBundle.remove(key);</span>
+<span class="nc" id="L335">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AttributeNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">AttributeNotationUml.java</span></div><h1>AttributeNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.Facade;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.AttributeNotation;
+import org.argouml.uml.StereotypeUtility;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * The notation for an attribute for UML.
+ *
+ * @author Michiel
+ */
+public class AttributeNotationUml extends AttributeNotation {
+
+    /**
+     * The standard error etc. logger
+     */
+<span class="fc" id="L73">    private static final Logger LOG =</span>
+<span class="fc" id="L74">        Logger.getLogger(AttributeNotationUml.class.getName());</span>
+
+    /**
+     * The constructor.
+     * @param attribute the UML object
+     */
+    public AttributeNotationUml(Object attribute) {
+<span class="fc" id="L81">        super(attribute);</span>
+<span class="fc" id="L82">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="fc" id="L89">            parseAttributeFig(Model.getFacade().getOwner(modelElement),</span>
+                    modelElement, text);
+<span class="nc" id="L91">        } catch (ParseException pe) {</span>
+<span class="nc" id="L92">            String msg = &quot;statusmsg.bar.error.parsing.attribute&quot;;</span>
+<span class="nc" id="L93">            Object[] args = {</span>
+<span class="nc" id="L94">                pe.getLocalizedMessage(),</span>
+<span class="nc" id="L95">                Integer.valueOf(pe.getErrorOffset()),</span>
+            };
+<span class="nc" id="L97">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L99">                    Translator.messageFormat(msg, args)));</span>
+<span class="fc" id="L100">        }</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Parse a string representing one ore more ';' separated attributes. The
+     * case that a String or char contains a ';' (e.g. in an initializer) is
+     * handled, but not other occurrences of ';'.
+     *
+     * @param classifier  Classifier The classifier the attribute(s) belong to
+     * @param attribute   Attribute The attribute on which the editing happened
+     * @param text The string to parse
+     * @throws ParseException for invalid input
+     */
+    public void parseAttributeFig(
+            Object classifier,
+            Object attribute,
+            String text) throws ParseException {
+
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">        if (classifier == null || attribute == null) {</span>
+<span class="nc" id="L119">            return;</span>
+        }
+
+        /* TODO: We should have all the information that is required in the
+         * NotationSettings object */
+<span class="fc" id="L124">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="fc" id="L126">        ParseException pex = null;</span>
+<span class="fc" id="L127">        int start = 0;</span>
+<span class="fc" id="L128">        int end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+<span class="pc bpc" id="L129" title="1 of 2 branches missed.">        if (end == -1) {</span>
+            //no text? remove attr!
+<span class="nc" id="L131">            project.moveToTrash(attribute);</span>
+<span class="nc" id="L132">            return;</span>
+        }
+<span class="fc" id="L134">        String s = text.substring(start, end).trim();</span>
+<span class="pc bpc" id="L135" title="1 of 2 branches missed.">        if (s.length() == 0) {</span>
+            //no non-whitechars in text? remove attr!
+<span class="nc" id="L137">            project.moveToTrash(attribute);</span>
+<span class="nc" id="L138">            return;</span>
+        }
+<span class="fc" id="L140">        parseAttribute(s, attribute);</span>
+<span class="fc" id="L141">        int i = Model.getFacade().getFeatures(classifier).indexOf(attribute);</span>
+        // check for more attributes (';' separated):
+<span class="fc" id="L143">        start = end + 1;</span>
+<span class="fc" id="L144">        end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+<span class="pc bpc" id="L145" title="1 of 4 branches missed.">        while (end &gt; start &amp;&amp; end &lt;= text.length()) {</span>
+<span class="fc" id="L146">            s = text.substring(start, end).trim();</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (s.length() &gt; 0) {</span>
+                // yes, there are more:
+<span class="fc" id="L149">                Object attrType = project.getDefaultAttributeType();</span>
+
+<span class="fc" id="L151">                Object newAttribute = Model.getUmlFactory().buildNode(</span>
+<span class="fc" id="L152">                        Model.getMetaTypes().getAttribute());</span>
+
+<span class="fc" id="L154">                Model.getCoreHelper().setType(newAttribute, attrType);</span>
+
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">                if (newAttribute != null) {</span>
+                    /* We need to set the namespace/owner
+                     * of the new attribute before parsing: */
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                    if (i != -1) {</span>
+<span class="fc" id="L160">                        Model.getCoreHelper().addFeature(</span>
+                                classifier, ++i, newAttribute);
+                    } else {
+<span class="nc" id="L163">                        Model.getCoreHelper().addFeature(</span>
+                                classifier, newAttribute);
+                    }
+                    try {
+<span class="fc" id="L167">                        parseAttribute(s, newAttribute);</span>
+                        /* If the 1st attribute is static,
+                         * then the new ones, too. */
+<span class="fc" id="L170">                        Model.getCoreHelper().setStatic(</span>
+                                newAttribute,
+<span class="fc" id="L172">                                Model.getFacade().isStatic(attribute));</span>
+<span class="nc" id="L173">                    } catch (ParseException ex) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                        if (pex == null) {</span>
+<span class="nc" id="L175">                            pex = ex;</span>
+                        }
+<span class="fc" id="L177">                    }</span>
+                }
+            }
+<span class="fc" id="L180">            start = end + 1;</span>
+<span class="fc" id="L181">            end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+        }
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">        if (pex != null) {</span>
+<span class="nc" id="L184">            throw pex;</span>
+        }
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Parse a line on the form:&lt;pre&gt;
+     *      [/] visibility name [: type-expression] [= initial-value]
+     * &lt;/pre&gt;
+     *
+     * &lt;ul&gt;
+     * &lt;li&gt;The / for derived is optional but has to be the first non-white
+     * character.
+     * &lt;li&gt;If only one of visibility and name is given, then it is assumed to
+     * be the name and the visibility is left unchanged.
+     * &lt;li&gt;Type and initial value can be given in any order.
+     * &lt;li&gt;Properties can be given between any element in the form&lt;pre&gt;
+     *      {[name] [= [value]] [, ...]}
+     * &lt;/pre&gt;
+     * &lt;li&gt;Multiplicity can be given between any element except after the
+     * initial-value and before the type or end (to allow java-style array
+     * indexing in the initial value). It must be given on form [multiplicity]
+     * with the square brackets included.
+     * &lt;li&gt;Stereotypes can be given between any element except after the
+     * initial-value and before the type or end (to allow java-style bit-shifts
+     * in the initial value). It must be given on form
+     * &amp;lt;&amp;lt;stereotype1,stereotype2,stereotype3&amp;gt;&amp;gt;.
+     * &lt;/ul&gt;
+     *
+     * The following properties are recognized to have special meaning:
+     * frozen.&lt;p&gt;
+     *
+     * This syntax is compatible with the UML 1.3 spec.
+     *
+     * (formerly: visibility name [multiplicity] : type-expression =
+     * initial-value {property-string} ) (2nd formerly: [visibility] [keywords]
+     * type name [= init] [;] )
+     *
+     * @param text    The String to parse.
+     * @param attribute The attribute to modify to comply
+     *                           with the instructions in s.
+     * @throws ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    protected void parseAttribute(
+            String text,
+            Object attribute) throws ParseException {
+<span class="fc" id="L231">        StringBuilder multiplicity = null;</span>
+<span class="fc" id="L232">        String name = null;</span>
+<span class="fc" id="L233">        List&lt;String&gt; properties = null;</span>
+<span class="fc" id="L234">        StringBuilder stereotype = null; // This is null as until</span>
+                                // the first stereotype declaration is seen.
+                                // After that it is non-null.
+        String token;
+<span class="fc" id="L238">        String type = null;</span>
+<span class="fc" id="L239">        StringBuilder value = null;</span>
+<span class="fc" id="L240">        String visibility = null;</span>
+<span class="fc" id="L241">        boolean derived = false;</span>
+<span class="fc" id="L242">        boolean hasColon = false;</span>
+<span class="fc" id="L243">        boolean hasEq = false;</span>
+<span class="fc" id="L244">        int multindex = -1;</span>
+        MyTokenizer st;
+
+<span class="fc" id="L247">        text = text.trim();</span>
+        /* Handle Derived: */
+<span class="pc bpc" id="L249" title="1 of 4 branches missed.">        if (text.length() &gt; 0 &amp;&amp; &quot;/&quot;.indexOf(text.charAt(0)) &gt;= 0) {</span>
+<span class="fc" id="L250">            derived = true;</span>
+<span class="fc" id="L251">            text = text.substring(1);</span>
+<span class="fc" id="L252">            text = text.trim();</span>
+        }
+
+        /* Handle Visibility: */
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">        if (text.length() &gt; 0</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">                &amp;&amp; NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0))</span>
+                    &gt;= 0) {
+<span class="fc" id="L259">            visibility = text.substring(0, 1);</span>
+<span class="fc" id="L260">            text = text.substring(1);</span>
+        }
+
+        try {
+<span class="fc" id="L264">            st = new MyTokenizer(text,</span>
+                    &quot; ,\t,&lt;&lt;,\u00AB,\u00BB,&gt;&gt;,[,],:,=,{,},\\,&quot;,
+                    NotationUtilityUml.attributeCustomSep);
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L268">                token = st.nextToken();</span>
+<span class="pc bpc" id="L269" title="1 of 4 branches missed.">                if (&quot; &quot;.equals(token) || &quot;\t&quot;.equals(token)</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                        || &quot;,&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">                    if (hasEq) {</span>
+<span class="fc" id="L272">                        value.append(token);</span>
+                    }
+<span class="pc bpc" id="L274" title="1 of 4 branches missed.">                } else if (&quot;&lt;&lt;&quot;.equals(token) || &quot;\u00AB&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">                    if (hasEq) {</span>
+<span class="fc" id="L276">                        value.append(token);</span>
+                    } else {
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">                        if (stereotype != null) {</span>
+<span class="nc" id="L279">                            String msg =</span>
+                                &quot;parsing.error.attribute.two-sets-stereotypes&quot;;
+<span class="nc" id="L281">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L282">                                    st.getTokenIndex());</span>
+                        }
+<span class="fc" id="L284">                        stereotype = new StringBuilder();</span>
+                        while (true) {
+<span class="fc" id="L286">                            token = st.nextToken();</span>
+<span class="pc bpc" id="L287" title="1 of 4 branches missed.">                            if (&quot;&gt;&gt;&quot;.equals(token) || &quot;\u00BB&quot;.equals(token)) {</span>
+<span class="nc" id="L288">                                break;</span>
+                            }
+<span class="fc" id="L290">                            stereotype.append(token);</span>
+                        }
+                    }
+<span class="fc bfc" id="L293" title="All 2 branches covered.">                } else if (&quot;[&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">                    if (hasEq) {</span>
+<span class="fc" id="L295">                        value.append(token);</span>
+                    } else {
+<span class="fc bfc" id="L297" title="All 2 branches covered.">                        if (multiplicity != null) {</span>
+<span class="fc" id="L298">                            String msg =</span>
+                                &quot;parsing.error.attribute.two-multiplicities&quot;;
+<span class="fc" id="L300">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L301">                                    st.getTokenIndex());</span>
+                        }
+<span class="fc" id="L303">                        multiplicity = new StringBuilder();</span>
+<span class="fc" id="L304">                        multindex = st.getTokenIndex() + 1;</span>
+                        while (true) {
+<span class="fc" id="L306">                            token = st.nextToken();</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">                            if (&quot;]&quot;.equals(token)) {</span>
+<span class="fc" id="L308">                                break;</span>
+                            }
+<span class="fc" id="L310">                            multiplicity.append(token);</span>
+                        }
+                    }
+<span class="fc bfc" id="L313" title="All 2 branches covered.">                } else if (&quot;{&quot;.equals(token)) {</span>
+<span class="fc" id="L314">                    StringBuilder propname = new StringBuilder();</span>
+<span class="fc" id="L315">                    String propvalue = null;</span>
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">                    if (properties == null) {</span>
+<span class="fc" id="L318">                        properties = new ArrayList&lt;String&gt;();</span>
+                    }
+                    while (true) {
+<span class="fc" id="L321">                        token = st.nextToken();</span>
+<span class="fc bfc" id="L322" title="All 4 branches covered.">                        if (&quot;,&quot;.equals(token) || &quot;}&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">                            if (propname.length() &gt; 0) {</span>
+<span class="fc" id="L324">                                properties.add(propname.toString());</span>
+<span class="fc" id="L325">                                properties.add(propvalue);</span>
+                            }
+<span class="fc" id="L327">                            propname = new StringBuilder();</span>
+<span class="fc" id="L328">                            propvalue = null;</span>
+
+<span class="fc bfc" id="L330" title="All 2 branches covered.">                            if (&quot;}&quot;.equals(token)) {</span>
+<span class="fc" id="L331">                                break;</span>
+                            }
+<span class="fc bfc" id="L333" title="All 2 branches covered.">                        } else if (&quot;=&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">                            if (propvalue != null) {</span>
+<span class="nc" id="L335">                                String msg =</span>
+                                    &quot;parsing.error.attribute.prop-two-values&quot;;
+<span class="nc" id="L337">                                Object[] args = {propvalue};</span>
+
+<span class="nc" id="L339">                                throw new ParseException(Translator.localize(</span>
+<span class="nc" id="L340">                                        msg, args), st.getTokenIndex());</span>
+                            }
+<span class="fc" id="L342">                            propvalue = &quot;&quot;;</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">                        } else if (propvalue == null) {</span>
+<span class="fc" id="L344">                            propname.append(token);</span>
+                        } else {
+<span class="fc" id="L346">                            propvalue += token;</span>
+                        }
+                    }
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                    if (propname.length() &gt; 0) {</span>
+<span class="nc" id="L350">                        properties.add(propname.toString());</span>
+<span class="nc" id="L351">                        properties.add(propvalue);</span>
+                    }
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                } else if (&quot;:&quot;.equals(token)) {</span>
+<span class="fc" id="L354">                    hasColon = true;</span>
+<span class="fc" id="L355">                    hasEq = false;</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">                } else if (&quot;=&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L357" title="All 2 branches covered.">                    if (value != null) {</span>
+<span class="fc" id="L358">                        String msg =</span>
+                            &quot;parsing.error.attribute.two-default-values&quot;;
+<span class="fc" id="L360">                        throw new ParseException(Translator.localize(msg), st</span>
+<span class="fc" id="L361">                                .getTokenIndex());</span>
+                    }
+<span class="fc" id="L363">                    value = new StringBuilder();</span>
+<span class="fc" id="L364">                    hasColon = false;</span>
+<span class="fc" id="L365">                    hasEq = true;</span>
+                } else {
+<span class="fc bfc" id="L367" title="All 2 branches covered.">                    if (hasColon) {</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">                        if (type != null) {</span>
+<span class="fc" id="L369">                            String msg = &quot;parsing.error.attribute.two-types&quot;;</span>
+<span class="fc" id="L370">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L371">                                    st.getTokenIndex());</span>
+                        }
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">                        if (token.length() &gt; 0</span>
+<span class="fc bfc" id="L374" title="All 2 branches covered.">                                &amp;&amp; (token.charAt(0) == '\&quot;'</span>
+<span class="pc bpc" id="L375" title="1 of 2 branches missed.">                                    || token.charAt(0) == '\'')) {</span>
+<span class="fc" id="L376">                            String msg = &quot;parsing.error.attribute.quoted&quot;;</span>
+<span class="fc" id="L377">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L378">                                    st.getTokenIndex());</span>
+                        }
+<span class="pc bpc" id="L380" title="1 of 4 branches missed.">                        if (token.length() &gt; 0 &amp;&amp; token.charAt(0) == '(') {</span>
+<span class="fc" id="L381">                            String msg = &quot;parsing.error.attribute.is-expr&quot;;</span>
+<span class="fc" id="L382">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L383">                                    st.getTokenIndex());</span>
+                        }
+<span class="fc" id="L385">                        type = token;</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">                    } else if (hasEq) {</span>
+<span class="fc" id="L387">                        value.append(token);</span>
+                    } else {
+<span class="fc bfc" id="L389" title="All 4 branches covered.">                        if (name != null &amp;&amp; visibility != null) {</span>
+<span class="fc" id="L390">                            String msg = &quot;parsing.error.attribute.extra-text&quot;;</span>
+<span class="fc" id="L391">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L392">                                    st.getTokenIndex());</span>
+                        }
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">                        if (token.length() &gt; 0</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                                &amp;&amp; (token.charAt(0) == '\&quot;'</span>
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">                                    || token.charAt(0) == '\'')) {</span>
+<span class="fc" id="L397">                            String msg = &quot;parsing.error.attribute.name-quoted&quot;;</span>
+<span class="fc" id="L398">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L399">                                    st.getTokenIndex());</span>
+                        }
+<span class="pc bpc" id="L401" title="1 of 4 branches missed.">                        if (token.length() &gt; 0 &amp;&amp; token.charAt(0) == '(') {</span>
+<span class="fc" id="L402">                            String msg = &quot;parsing.error.attribute.name-expr&quot;;</span>
+<span class="fc" id="L403">                            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L404">                                    st.getTokenIndex());</span>
+                        }
+
+<span class="fc bfc" id="L407" title="All 4 branches covered.">                        if (name == null</span>
+                                &amp;&amp; visibility == null
+<span class="fc bfc" id="L409" title="All 2 branches covered.">                                &amp;&amp; token.length() &gt; 1</span>
+                                &amp;&amp; NotationUtilityUml.VISIBILITYCHARS
+<span class="fc bfc" id="L411" title="All 2 branches covered.">                                        .indexOf(token.charAt(0)) &gt;= 0) {</span>
+<span class="fc" id="L412">                            visibility = token.substring(0, 1);</span>
+<span class="fc" id="L413">                            token = token.substring(1);</span>
+                        }
+
+<span class="fc bfc" id="L416" title="All 2 branches covered.">                        if (name != null) {</span>
+<span class="fc" id="L417">                            visibility = name;</span>
+<span class="fc" id="L418">                            name = token;</span>
+                        } else {
+<span class="fc" id="L420">                            name = token;</span>
+                        }
+                    }
+                }
+            }
+<span class="fc" id="L425">        } catch (NoSuchElementException nsee) {</span>
+<span class="fc" id="L426">            String msg = &quot;parsing.error.attribute.unexpected-end-attribute&quot;;</span>
+<span class="fc" id="L427">            throw new ParseException(Translator.localize(msg), text.length());</span>
+<span class="fc" id="L428">        }</span>
+        // catch &amp; rethrow is not necessary if we don't do nothing (penyaskito)
+        // catch (ParseException pre) {
+        //      throw pre;
+        // }
+
+<span class="pc bpc" id="L434" title="1 of 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L435">            LOG.log(Level.FINE, &quot;ParseAttribute [name: &quot; + name</span>
+                    + &quot; visibility: &quot; + visibility
+                    + &quot; type: &quot; + type + &quot; value: &quot; + value
+                    + &quot; stereo: &quot; + stereotype
+                    + &quot; mult: &quot; + multiplicity);
+<span class="nc bnc" id="L440" title="All 2 branches missed.">            if (properties != null) {</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">                for (int i = 0; i + 1 &lt; properties.size(); i += 2) {</span>
+<span class="nc" id="L442">                    LOG.log(Level.FINE,</span>
+<span class="nc" id="L443">                            &quot;\tProperty [name: &quot; + properties.get(i) + &quot; = &quot;</span>
+<span class="nc" id="L444">                            + properties.get(i + 1) + &quot;]&quot;);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L449">        dealWithDerived(attribute, derived);</span>
+<span class="fc" id="L450">        dealWithVisibility(attribute, visibility);</span>
+<span class="fc" id="L451">        dealWithName(attribute, name);</span>
+<span class="fc" id="L452">        dealWithType(attribute, type);</span>
+<span class="fc" id="L453">        dealWithValue(attribute, value);</span>
+<span class="fc" id="L454">        dealWithMultiplicity(attribute, multiplicity, multindex);</span>
+<span class="fc" id="L455">        dealWithProperties(attribute, properties);</span>
+<span class="fc" id="L456">        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);</span>
+<span class="fc" id="L457">    }</span>
+
+    private void dealWithDerived(Object umlObject, boolean derived) {
+<span class="fc" id="L460">        NotationUtilityUml.setDerived(umlObject, derived);</span>
+<span class="fc" id="L461">    }</span>
+
+    private void dealWithProperties(Object attribute, List&lt;String&gt; properties) {
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        if (properties != null) {</span>
+<span class="fc" id="L465">            NotationUtilityUml.setProperties(attribute, properties,</span>
+                    NotationUtilityUml.attributeSpecialStrings);
+        }
+<span class="fc" id="L468">    }</span>
+
+    private void dealWithMultiplicity(Object attribute,
+            StringBuilder multiplicity, int multindex) throws ParseException {
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        if (multiplicity != null) {</span>
+            try {
+<span class="fc" id="L474">                Model.getCoreHelper().setMultiplicity(attribute, multiplicity.toString());</span>
+<span class="nc" id="L475">            } catch (IllegalArgumentException iae) {</span>
+<span class="nc" id="L476">                String msg = &quot;parsing.error.attribute.bad-multiplicity&quot;;</span>
+<span class="nc" id="L477">                Object[] args = {iae};</span>
+
+<span class="nc" id="L479">                throw new ParseException(Translator.localize(msg, args),</span>
+                        multindex);
+<span class="fc" id="L481">            }</span>
+        }
+<span class="fc" id="L483">    }</span>
+
+    private void dealWithValue(Object attribute, StringBuilder value) {
+<span class="fc bfc" id="L486" title="All 2 branches covered.">        if (value != null) {</span>
+            Project project =
+<span class="fc" id="L488">                ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L489">            ProjectSettings ps = project.getProjectSettings();</span>
+<span class="fc" id="L490">            Object initExpr = Model.getDataTypesFactory().createExpression(</span>
+<span class="fc" id="L491">                    ps.getNotationLanguage(), value.toString().trim());</span>
+<span class="fc" id="L492">            Model.getCoreHelper().setInitialValue(attribute, initExpr);</span>
+        }
+<span class="fc" id="L494">    }</span>
+
+    private void dealWithType(Object attribute, String type) {
+<span class="fc bfc" id="L497" title="All 2 branches covered.">        if (type != null) {</span>
+<span class="fc" id="L498">            Object ow = Model.getFacade().getOwner(attribute);</span>
+<span class="fc" id="L499">            Object ns = null;</span>
+<span class="pc bpc" id="L500" title="1 of 4 branches missed.">            if (ow != null &amp;&amp; Model.getFacade().getNamespace(ow) != null) {</span>
+<span class="fc" id="L501">                ns = Model.getFacade().getNamespace(ow);</span>
+            } else {
+<span class="fc" id="L503">                ns = Model.getFacade().getRoot(attribute);</span>
+            }
+<span class="fc" id="L505">            Model.getCoreHelper().setType(attribute,</span>
+<span class="fc" id="L506">                    NotationUtilityUml.getType(type.trim(), ns));</span>
+        }
+<span class="fc" id="L508">    }</span>
+
+    private void dealWithName(Object attribute, String name) {
+<span class="pc bpc" id="L511" title="1 of 2 branches missed.">        if (name != null) {</span>
+<span class="fc" id="L512">            Model.getCoreHelper().setName(attribute, name.trim());</span>
+<span class="nc bnc" id="L513" title="All 2 branches missed.">        } else if (Model.getFacade().getName(attribute) == null</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">                || &quot;&quot;.equals(Model.getFacade().getName(attribute))) {</span>
+<span class="nc" id="L515">            Model.getCoreHelper().setName(attribute, &quot;anonymous&quot;);</span>
+        }
+<span class="fc" id="L517">    }</span>
+
+    private void dealWithVisibility(Object attribute, String visibility) {
+<span class="fc bfc" id="L520" title="All 2 branches covered.">        if (visibility != null) {</span>
+<span class="fc" id="L521">            Model.getCoreHelper().setVisibility(attribute,</span>
+<span class="fc" id="L522">                    NotationUtilityUml.getVisibility(visibility.trim()));</span>
+        }
+<span class="fc" id="L524">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="fc" id="L530">        return &quot;parsing.help.attribute&quot;;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L535">        return toString(modelElement, settings.isUseGuillemets(), settings</span>
+<span class="fc" id="L536">                .isShowVisibilities(), settings.isShowMultiplicities(), settings</span>
+<span class="fc" id="L537">                .isShowTypes(), settings.isShowInitialValues(),</span>
+<span class="fc" id="L538">                settings.isShowProperties());</span>
+    }
+
+    /*
+     * Generates a string representation for the provided
+     * attribute. The string representation will be of the form:
+     *          visibility name [multiplicity] : type-expression =
+     *                          initial-value {property-string}
+     * Depending on settings in Notation, visibility, multiplicity,
+     * type-expression, initial value and properties are shown/not shown.
+     */
+    private String toString(Object modelElement, boolean useGuillemets,
+            boolean showVisibility, boolean showMultiplicity, boolean showTypes,
+            boolean showInitialValues, boolean showProperties) {
+        try {
+<span class="fc" id="L553">            String derived = &quot;&quot;;</span>
+<span class="fc" id="L554">            Object tv = Model.getFacade().getTaggedValue(modelElement,</span>
+                    Facade.DERIVED_TAG);
+<span class="pc bpc" id="L556" title="1 of 2 branches missed.">            if (tv != null) {</span>
+<span class="nc" id="L557">                String tag = Model.getFacade().getValueOfTag(tv);</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">                if (&quot;true&quot;.equalsIgnoreCase(tag)) {</span>
+<span class="nc" id="L559">                    derived = &quot;/&quot;;</span>
+                }
+            }
+
+<span class="fc" id="L563">            String stereo = NotationUtilityUml.generateStereotype(modelElement,</span>
+                    useGuillemets);
+<span class="fc" id="L565">            String name = Model.getFacade().getName(modelElement);</span>
+<span class="fc" id="L566">            String multiplicity = generateMultiplicity(</span>
+<span class="fc" id="L567">                    Model.getFacade().getMultiplicity(modelElement));</span>
+<span class="fc" id="L568">            String type = &quot;&quot;; // fix for loading bad projects</span>
+<span class="pc bpc" id="L569" title="1 of 2 branches missed.">            if (Model.getFacade().getType(modelElement) != null) {</span>
+<span class="fc" id="L570">                type = Model.getFacade().getName(</span>
+<span class="fc" id="L571">                        Model.getFacade().getType(modelElement));</span>
+            }
+
+<span class="fc" id="L574">            StringBuilder sb = new StringBuilder(20);</span>
+<span class="fc" id="L575">            sb.append(derived);</span>
+
+<span class="pc bpc" id="L577" title="1 of 4 branches missed.">            if ((stereo != null) &amp;&amp; (stereo.length() &gt; 0)) {</span>
+<span class="fc" id="L578">                sb.append(stereo).append(&quot; &quot;);</span>
+            }
+<span class="pc bpc" id="L580" title="1 of 2 branches missed.">            if (showVisibility) {</span>
+<span class="nc" id="L581">                String visibility = NotationUtilityUml</span>
+<span class="nc" id="L582">                        .generateVisibility2(modelElement);</span>
+<span class="nc bnc" id="L583" title="All 4 branches missed.">                if (visibility != null &amp;&amp; visibility.length() &gt; 0) {</span>
+<span class="nc" id="L584">                    sb.append(visibility);</span>
+                }
+            }
+<span class="pc bpc" id="L587" title="2 of 4 branches missed.">            if ((name != null) &amp;&amp; (name.length() &gt; 0)) {</span>
+<span class="fc" id="L588">                sb.append(name).append(&quot; &quot;);</span>
+            }
+<span class="pc bpc" id="L590" title="1 of 2 branches missed.">            if ((multiplicity != null)</span>
+<span class="pc bpc" id="L591" title="3 of 4 branches missed.">                    &amp;&amp; (multiplicity.length() &gt; 0)</span>
+                    &amp;&amp; showMultiplicity) {
+<span class="nc" id="L593">                sb.append(&quot;[&quot;).append(multiplicity).append(&quot;]&quot;).append(&quot; &quot;);</span>
+            }
+<span class="pc bpc" id="L595" title="3 of 6 branches missed.">            if ((type != null) &amp;&amp; (type.length() &gt; 0)</span>
+                    /*
+                     * The &quot;show types&quot; defaults to TRUE, to stay compatible
+                     * with older ArgoUML versions that did not have this
+                     * setting:
+                     */
+                    &amp;&amp; showTypes) {
+<span class="fc" id="L602">                sb.append(&quot;: &quot;).append(type).append(&quot; &quot;);</span>
+            }
+<span class="pc bpc" id="L604" title="1 of 2 branches missed.">            if (showInitialValues) {</span>
+<span class="nc" id="L605">                Object iv = Model.getFacade().getInitialValue(modelElement);</span>
+<span class="nc bnc" id="L606" title="All 2 branches missed.">                if (iv != null) {</span>
+                    String initialValue =
+<span class="nc" id="L608">                        (String) Model.getFacade().getBody(iv);</span>
+<span class="nc bnc" id="L609" title="All 4 branches missed.">                    if (initialValue != null &amp;&amp; initialValue.length() &gt; 0) {</span>
+<span class="nc" id="L610">                        sb.append(&quot; = &quot;).append(initialValue).append(&quot; &quot;);</span>
+                    }
+                }
+            }
+<span class="pc bpc" id="L614" title="1 of 2 branches missed.">            if (showProperties) {</span>
+<span class="nc" id="L615">                String changeableKind = &quot;&quot;;</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">                if (Model.getFacade().isReadOnly(modelElement)) {</span>
+<span class="nc" id="L617">                    changeableKind = &quot;frozen&quot;;</span>
+                }
+<span class="nc bnc" id="L619" title="All 2 branches missed.">                if (Model.getFacade().getChangeability(modelElement) != null) {</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">                    if (Model.getChangeableKind().getAddOnly().equals(</span>
+<span class="nc" id="L621">                            Model.getFacade().getChangeability(modelElement))) {</span>
+<span class="nc" id="L622">                        changeableKind = &quot;addOnly&quot;;</span>
+                    }
+                }
+<span class="nc" id="L625">                StringBuilder properties = new StringBuilder();</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">                if (changeableKind.length() &gt; 0) {</span>
+<span class="nc" id="L627">                    properties.append(&quot;{ &quot;).append(changeableKind).append(&quot; }&quot;);</span>
+                }
+
+<span class="nc bnc" id="L630" title="All 2 branches missed.">                if (properties.length() &gt; 0) {</span>
+<span class="nc" id="L631">                    sb.append(properties);</span>
+                }
+            }
+<span class="fc" id="L634">            return sb.toString().trim();</span>
+<span class="nc" id="L635">        } catch (InvalidElementException e) {</span>
+            // The element was deleted while we were processing it
+<span class="nc" id="L637">            return &quot;&quot;;</span>
+        }
+    }
+
+    private static String generateMultiplicity(Object m) {
+<span class="pc bpc" id="L642" title="1 of 4 branches missed.">        if (m == null || &quot;1&quot;.equals(Model.getFacade().toString(m))) {</span>
+<span class="fc" id="L643">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L645">        return Model.getFacade().toString(m);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShortcutMgr.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">ShortcutMgr.java</span></div><h1>ShortcutMgr.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+
+import org.argouml.cognitive.critics.ui.ActionOpenCritics;
+import org.argouml.cognitive.ui.ActionAutoCritique;
+import org.argouml.cognitive.ui.ActionOpenDecisions;
+import org.argouml.cognitive.ui.ActionOpenGoals;
+import org.argouml.configuration.Configuration;
+import org.argouml.ui.ActionExportXMI;
+import org.argouml.ui.ActionImportXMI;
+import org.argouml.ui.ActionProjectSettings;
+import org.argouml.ui.ActionSettings;
+import org.argouml.ui.ProjectActions;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.explorer.ActionPerspectiveConfig;
+import org.argouml.uml.ui.ActionActivityDiagram;
+import org.argouml.uml.ui.ActionClassDiagram;
+import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.ActionDeploymentDiagram;
+import org.argouml.uml.ui.ActionGenerateAll;
+import org.argouml.uml.ui.ActionGenerateOne;
+import org.argouml.uml.ui.ActionGenerateProjectCode;
+import org.argouml.uml.ui.ActionGenerationSettings;
+import org.argouml.uml.ui.ActionImportFromSources;
+import org.argouml.uml.ui.ActionOpenProject;
+import org.argouml.uml.ui.ActionRevertToSaved;
+import org.argouml.uml.ui.ActionSaveAllGraphics;
+import org.argouml.uml.ui.ActionSaveGraphics;
+import org.argouml.uml.ui.ActionSaveProjectAs;
+import org.argouml.uml.ui.ActionSequenceDiagram;
+import org.argouml.uml.ui.ActionStateDiagram;
+import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.argouml.util.KeyEventUtils;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.ReorderAction;
+import org.tigris.gef.base.ZoomAction;
+
+/**
+ * This class manages all Argo's shortcuts.
+ *
+ * @author nirux
+ */
+<span class="nc bnc" id="L101" title="All 2 branches missed.">public class ShortcutMgr {</span>
+
+    /** Action key for new project */
+    public static final String ACTION_NEW_PROJECT = &quot;newProject&quot;;
+
+    /** Action key for open project */
+    public static final String ACTION_OPEN_PROJECT = &quot;openProject&quot;;
+
+    /** Action key for save project */
+    public static final String ACTION_SAVE_PROJECT = &quot;saveProject&quot;;
+
+    /** Action key for save project as */
+    public static final String ACTION_SAVE_PROJECT_AS = &quot;saveProjectAs&quot;;
+
+    /** Action key for print */
+    public static final String ACTION_PRINT = &quot;print&quot;;
+
+    /** Action key for selectAll */
+    public static final String ACTION_SELECT_ALL = &quot;selectAll&quot;;
+
+    /** Action key for undo */
+    public static final String ACTION_UNDO = &quot;undo&quot;;
+
+    /** Action key for redo */
+    public static final String ACTION_REDO = &quot;redo&quot;;
+
+    /** Action key for remove from diagram */
+    public static final String ACTION_REMOVE_FROM_DIAGRAM = &quot;removeFromDiagram&quot;;
+
+    /** Action key for delete model elements */
+    public static final String ACTION_DELETE_MODEL_ELEMENTS =
+        &quot;deleteModelElements&quot;;
+
+    /** Action key for zoom out */
+    public static final String ACTION_ZOOM_OUT = &quot;zoomOut&quot;;
+
+    /** Action key for zoom in */
+    public static final String ACTION_ZOOM_IN = &quot;zoomIn&quot;;
+
+    /** Action key for find */
+    public static final String ACTION_FIND = &quot;find&quot;;
+
+    /** Action key for generate all classes */
+    public static final String ACTION_GENERATE_ALL_CLASSES =
+        &quot;generateAllClasses&quot;;
+
+    /** Action key for align rights */
+    public static final String ACTION_ALIGN_RIGHTS = &quot;alignRights&quot;;
+
+    /** Action key for align lefts */
+    public static final String ACTION_ALIGN_LEFTS = &quot;alignLefts&quot;;
+
+    /** Action key for revert to saved */
+    public static final String ACTION_REVERT_TO_SAVED = &quot;revertToSaved&quot;;
+
+    /** Action key for import xmi */
+    public static final String ACTION_IMPORT_XMI = &quot;importXmi&quot;;
+
+    /** Action key for export xmi */
+    public static final String ACTION_EXPORT_XMI = &quot;exportXmi&quot;;
+
+    /** Action key for import from sources */
+    public static final String ACTION_IMPORT_FROM_SOURCES = &quot;importFromSources&quot;;
+
+    /** Action key for project settings */
+    public static final String ACTION_PROJECT_SETTINGS = &quot;projectSettings&quot;;
+
+    /** Action key for page setup */
+    public static final String ACTION_PAGE_SETUP = &quot;pageSetup&quot;;
+
+    /** Action key for save graphics */
+    public static final String ACTION_SAVE_GRAPHICS = &quot;saveGraphics&quot;;
+
+    /** Action key for save all graphics */
+    public static final String ACTION_SAVE_ALL_GRAPHICS = &quot;saveAllGraphics&quot;;
+
+    /** Action key for navigate forward */
+    public static final String ACTION_NAVIGATE_FORWARD =
+        &quot;navigateTargetForward&quot;;
+
+    /** Action key for navigate back */
+    public static final String ACTION_NAVIGATE_BACK = &quot;navigateTargetBack&quot;;
+
+    /** Action key for select invert */
+    public static final String ACTION_SELECT_INVERT = &quot;selectInvert&quot;;
+
+    /** Action key for perspective info */
+    public static final String ACTION_PERSPECTIVE_CONFIG = &quot;perspectiveConfig&quot;;
+
+    /** Action key for settings */
+    public static final String ACTION_SETTINGS = &quot;settings&quot;;
+
+    /** Action key for notation */
+    public static final String ACTION_NOTATION = &quot;notation&quot;;
+
+    /** Action key for go to diagram */
+    public static final String ACTION_GO_TO_DIAGRAM = &quot;goToDiagram&quot;;
+
+    /** Action key for zoom reset */
+    public static final String ACTION_ZOOM_RESET = &quot;zoomReset&quot;;
+
+    /** Action key for adjust grid */
+    public static final String ACTION_ADJUST_GRID = &quot;adjustGrid&quot;;
+
+    /** Action key for adjust guide */
+    public static final String ACTION_ADJUST_GUIDE = &quot;adjustGuide&quot;;
+
+    /** Action key for adjust page breaks */
+    public static final String ACTION_ADJUST_PAGE_BREAKS = &quot;adjustPageBreaks&quot;;
+
+    /** Action key for show xml dump */
+    public static final String ACTION_SHOW_XML_DUMP = &quot;showXmlDump&quot;;
+
+    /** Action key for use case diagram */
+    public static final String ACTION_USE_CASE_DIAGRAM = &quot;useCaseDiagrams&quot;;
+
+    /** Action key for class diagram */
+    public static final String ACTION_CLASS_DIAGRAM = &quot;classDiagrams&quot;;
+
+    /** Action key for sequence diagram */
+    public static final String ACTION_SEQUENCE_DIAGRAM = &quot;sequenceDiagrams&quot;;
+
+    /** Action key for collaboration diagram */
+    public static final String ACTION_COLLABORATION_DIAGRAM =
+        &quot;collaborationDiagrams&quot;;
+
+    /** Action key for state diagram */
+    public static final String ACTION_STATE_DIAGRAM = &quot;stateDiagrams&quot;;
+
+    /** Action key for activity diagram */
+    public static final String ACTION_ACTIVITY_DIAGRAM = &quot;activityDiagrams&quot;;
+
+    /** Action key for deployment diagram */
+    public static final String ACTION_DEPLOYMENT_DIAGRAM = &quot;deploymentDiagrams&quot;;
+
+    /** Action key for generate one */
+    public static final String ACTION_GENERATE_ONE = &quot;generateOne&quot;;
+
+    /** Action key for generate project code */
+    public static final String ACTION_GENERATE_PROJECT_CODE =
+        &quot;generateProjectCode&quot;;
+
+    /** Action key for generation settings */
+    public static final String ACTION_GENERATION_SETTINGS =
+        &quot;generationSettings&quot;;
+
+    /** Action key for preferred size */
+    public static final String ACTION_PREFERRED_SIZE = &quot;preferredSize&quot;;
+
+    /** Action key for auto critique */
+    public static final String ACTION_AUTO_CRITIQUE = &quot;autoCritique&quot;;
+
+    /** Action key for open decisions */
+    public static final String ACTION_OPEN_DECISIONS = &quot;openDecisions&quot;;
+
+    /** Action key for open goals */
+    public static final String ACTION_OPEN_GOALS = &quot;openGoals&quot;;
+
+    /** Action key for open critics */
+    public static final String ACTION_OPEN_CRITICS = &quot;openCritics&quot;;
+
+    /** Action key for help */
+    public static final String ACTION_HELP = &quot;help&quot;;
+
+    /** Action key for system info */
+    public static final String ACTION_SYSTEM_INFORMATION = &quot;systemInfo&quot;;
+
+    /** Action key for about ArgoUML */
+    public static final String ACTION_ABOUT_ARGOUML = &quot;aboutArgoUml&quot;;
+
+    /** Action key for align tops */
+    public static final String ACTION_ALIGN_TOPS = &quot;alignTops&quot;;
+
+    /** Action key for align bottoms */
+    public static final String ACTION_ALIGN_BOTTOMS = &quot;alignBottoms&quot;;
+
+    /** Action key for align h centers */
+    public static final String ACTION_ALIGN_H_CENTERS = &quot;alignHCenters&quot;;
+
+    /** Action key for align v centers */
+    public static final String ACTION_ALIGN_V_CENTERS = &quot;alignVCenters&quot;;
+
+    /** Action key for align to grid */
+    public static final String ACTION_ALIGN_TO_GRID = &quot;alignToGrid&quot;;
+
+    /** Action key for distribute h spacing */
+    public static final String ACTION_DISTRIBUTE_H_SPACING =
+        &quot;distributeHSpacing&quot;;
+
+    /** Action key for distribute h centers */
+    public static final String ACTION_DISTRIBUTE_H_CENTERS =
+        &quot;distributeHCenters&quot;;
+
+    /** Action key for distribute v spacing */
+    public static final String ACTION_DISTRIBUTE_V_SPACING =
+        &quot;distributeVSpacing&quot;;
+
+    /** Action key for distribute v centers */
+    public static final String ACTION_DISTRIBUTE_V_CENTERS =
+        &quot;distributeVCenters&quot;;
+
+    /** Action key for reorder forward */
+    public static final String ACTION_REORDER_FORWARD = &quot;reorderForward&quot;;
+
+    /** Action key for reorder backward */
+    public static final String ACTION_REORDER_BACKWARD = &quot;reorderBackward&quot;;
+
+    /** Action key for reorder to front */
+    public static final String ACTION_REORDER_TO_FRONT = &quot;reorderToFront&quot;;
+
+    /** Action key for reorder to back */
+    public static final String ACTION_REORDER_TO_BACK = &quot;reorderToBack&quot;;
+
+    /**
+     * Logger.
+     */
+<span class="nc" id="L317">    private static final Logger LOG = Logger.getLogger(ShortcutMgr.class.getName());</span>
+
+<span class="nc" id="L319">    private static final int DEFAULT_MASK = Toolkit.getDefaultToolkit()</span>
+<span class="nc" id="L320">            .getMenuShortcutKeyMask();</span>
+
+<span class="nc" id="L322">    private static final int SHIFTED_DEFAULT_MASK = Toolkit.getDefaultToolkit()</span>
+<span class="nc" id="L323">            .getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK;</span>
+
+<span class="nc" id="L325">    private static HashMap&lt;String, ActionWrapper&gt; shortcutHash =</span>
+        new HashMap&lt;String, ActionWrapper&gt;(90);
+
+<span class="nc" id="L328">    private static HashMap&lt;KeyStroke, KeyStroke&gt; duplicate =</span>
+        new HashMap&lt;KeyStroke, KeyStroke&gt;(10);
+
+    /**
+     * Return the shortcuts as an ActionWrapper array
+     *
+     * @return an array of ActionWrappers
+     */
+    static ActionWrapper[] getShortcuts() {
+<span class="nc" id="L337">        ActionWrapper[] actions = shortcutHash.values().toArray(</span>
+<span class="nc" id="L338">                new ActionWrapper[shortcutHash.size()]);</span>
+<span class="nc" id="L339">        Arrays.sort(actions, new Comparator&lt;ActionWrapper&gt;() {</span>
+            public int compare(ActionWrapper o1, ActionWrapper o2) {
+<span class="nc" id="L341">                String name1 = o1.getActionName();</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">                if (name1 == null) {</span>
+<span class="nc" id="L343">                    name1 = &quot;&quot;;</span>
+                }
+<span class="nc" id="L345">                String name2 = o2.getActionName();</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">                if (name2 == null) {</span>
+<span class="nc" id="L347">                    name2 = &quot;&quot;;</span>
+                }
+<span class="nc" id="L349">                return name1.compareTo(name2);</span>
+            }
+        });
+<span class="nc" id="L352">        return actions;</span>
+    }
+
+    /**
+     * Assign a shortcut to the given JMenuItem
+     *
+     * @param menuItem
+     *            the menu item
+     * @param shortcutKey
+     *            the shortcut key
+     */
+    public static void assignAccelerator(JMenuItem menuItem,
+            String shortcutKey) {
+<span class="nc" id="L365">        ActionWrapper shortcut = shortcutHash.get(shortcutKey);</span>
+
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (shortcut != null) {</span>
+<span class="nc" id="L368">            KeyStroke keyStroke = shortcut.getCurrentShortcut();</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">            if (keyStroke != null) {</span>
+<span class="nc" id="L370">                menuItem.setAccelerator(keyStroke);</span>
+            }
+<span class="nc" id="L372">            KeyStroke alternativeKeyStroke = duplicate.get(keyStroke);</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">            if (alternativeKeyStroke != null) {</span>
+<span class="nc" id="L374">                String actionName = (String) menuItem.getAction().getValue(</span>
+                        AbstractAction.NAME);
+
+<span class="nc" id="L377">                menuItem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(</span>
+                        alternativeKeyStroke, actionName);
+<span class="nc" id="L379">                menuItem.getActionMap().put(actionName, menuItem.getAction());</span>
+            }
+        }
+<span class="nc" id="L382">    }</span>
+
+    /**
+     * Assign a shortcut to the given JPanel (only when focused)
+     *
+     * @param panel
+     *            the panel
+     * @param shortcutKey
+     *            the shortcut key
+     */
+    public static void assignAccelerator(JPanel panel,
+            String shortcutKey) {
+<span class="nc" id="L394">        ActionWrapper shortcut = shortcutHash.get(shortcutKey);</span>
+
+<span class="nc bnc" id="L396" title="All 2 branches missed.">        if (shortcut != null) {</span>
+<span class="nc" id="L397">            KeyStroke keyStroke = shortcut.getCurrentShortcut();</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">            if (keyStroke != null) {</span>
+                // TODO: This method is obsolete.  Use getInputMap etc as below
+<span class="nc" id="L400">                panel.registerKeyboardAction(shortcut.getActionInstance(),</span>
+                        keyStroke, JComponent.WHEN_FOCUSED);
+            }
+<span class="nc" id="L403">            KeyStroke alternativeKeyStroke = duplicate.get(keyStroke);</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">            if (alternativeKeyStroke != null) {</span>
+<span class="nc" id="L405">                String actionName = (String)</span>
+<span class="nc" id="L406">                    shortcut.getActionInstance().getValue(AbstractAction.NAME);</span>
+
+<span class="nc" id="L408">                panel.getInputMap(JComponent.WHEN_FOCUSED).put(</span>
+                        alternativeKeyStroke, actionName);
+<span class="nc" id="L410">                panel.getActionMap().put(actionName,</span>
+<span class="nc" id="L411">                        shortcut.getActionInstance());</span>
+            }
+        }
+<span class="nc" id="L414">    }</span>
+
+    /**
+     * Search for the duplicate of a given KeyStroke
+     *
+     * @param keyStroke         the KeyStroke to search for
+     * @return                  the duplicate, or null if not present
+     */
+    static KeyStroke getDuplicate(KeyStroke keyStroke) {
+<span class="nc" id="L423">        return duplicate.get(keyStroke);</span>
+    }
+
+    /**
+     * Returns a shortcut for the given action id
+     *
+     * @param actionId
+     *            the id of the action
+     * @return the given action, or null if the action is not found
+     */
+    public static ActionWrapper getShortcut(String actionId) {
+<span class="nc" id="L434">        return shortcutHash.get(actionId);</span>
+    }
+
+    private static void putDefaultShortcut(String shortcutKey,
+        KeyStroke defaultKeyStroke, AbstractAction action) {
+<span class="nc" id="L439">        putDefaultShortcut(shortcutKey, defaultKeyStroke, action,</span>
+<span class="nc" id="L440">                getActionDefaultName(action));</span>
+<span class="nc" id="L441">    }</span>
+
+    private static void putDefaultShortcut(String shortcutKey,
+        KeyStroke defaultKeyStroke, AbstractAction action, String actionName) {
+        // let's load the current shortcut from the configuration (as a string)
+<span class="nc" id="L446">        String confCurrentShortcut = Configuration.getString(Configuration</span>
+<span class="nc" id="L447">                .makeKey(shortcutKey), null);</span>
+<span class="nc" id="L448">        KeyStroke currentKeyStroke = null;</span>
+
+<span class="nc bnc" id="L450" title="All 2 branches missed.">        if (confCurrentShortcut == null) {</span>
+            // if the current shortcut has not been set, then the actual
+            // shortcut value is the default one
+<span class="nc" id="L453">            currentKeyStroke = defaultKeyStroke;</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">        } else if (confCurrentShortcut.compareTo(&quot;&quot;) != 0) {</span>
+            // if the current shortcut has been set but is void, then the
+            // current shortcut is not set --&gt; then the default value does not
+            // change
+<span class="nc" id="L458">            currentKeyStroke = decodeKeyStroke(confCurrentShortcut);</span>
+        }
+
+<span class="nc" id="L461">        ActionWrapper currentShortcut =</span>
+            new ActionWrapper(shortcutKey, currentKeyStroke,
+                defaultKeyStroke, action, actionName);
+<span class="nc" id="L464">        shortcutHash.put(shortcutKey, currentShortcut);</span>
+<span class="nc" id="L465">    }</span>
+
+    /**
+     * This method decodes the given String into the corresponding KeyStroke
+     *
+     * @param strKeyStroke
+     *            the String to be decoded
+     * @return the corresponding KeyStroke
+     */
+    public static KeyStroke decodeKeyStroke(String strKeyStroke) {
+<span class="nc bnc" id="L475" title="All 4 branches missed.">        assert (strKeyStroke != null);</span>
+
+<span class="nc" id="L477">        StringTokenizer tokenizer = new StringTokenizer(strKeyStroke,</span>
+                KeyEventUtils.MODIFIER_JOINER);
+<span class="nc" id="L479">        int modifiers = 0;</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">        while (tokenizer.hasMoreElements()) {</span>
+<span class="nc" id="L481">            String nextElement = (String) tokenizer.nextElement();</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">            if (tokenizer.hasMoreTokens()) {</span>
+<span class="nc" id="L483">                modifiers |= decodeModifier(nextElement);</span>
+            } else {
+                try {
+<span class="nc" id="L486">                    Field f = KeyEvent.class.getField(&quot;VK_&quot; + nextElement);</span>
+<span class="nc" id="L487">                    return KeyStroke.getKeyStroke(f.getInt(null), modifiers);</span>
+
+<span class="nc" id="L489">                } catch (Exception exc) {</span>
+<span class="nc" id="L490">                    LOG.log(Level.SEVERE, &quot;Exception: &quot; + exc);</span>
+                }
+            }
+<span class="nc" id="L493">        }</span>
+<span class="nc" id="L494">        return null;</span>
+    }
+
+    /**
+     * Saves the given actions in the configuration file
+     *
+     * @param newActions
+     *            the actions array
+     */
+    static void saveShortcuts(ActionWrapper[] newActions) {
+<span class="nc bnc" id="L504" title="All 2 branches missed.">        for (int i = 0; i &lt; newActions.length; i++) {</span>
+<span class="nc" id="L505">            ActionWrapper oldAction = shortcutHash</span>
+<span class="nc" id="L506">                    .get(newActions[i].getKey());</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">            if (newActions[i].getCurrentShortcut() == null</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">                    &amp;&amp; newActions[i].getDefaultShortcut() != null) {</span>
+                // if a default action was voided then we have to save it
+<span class="nc" id="L510">                Configuration.setString(Configuration.makeKey(oldAction</span>
+<span class="nc" id="L511">                        .getKey()), &quot;&quot;);</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">            } else if (newActions[i].getCurrentShortcut() != null</span>
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                    &amp;&amp; !newActions[i].getCurrentShortcut().equals(</span>
+<span class="nc" id="L514">                            newActions[i].getDefaultShortcut())) {</span>
+                // if a not-default current shortcut was added, then we have to
+                // save it
+<span class="nc" id="L517">                Configuration.setString(Configuration.makeKey(oldAction</span>
+<span class="nc" id="L518">                        .getKey()), KeyEventUtils.formatKeyStroke(newActions[i]</span>
+<span class="nc" id="L519">                        .getCurrentShortcut()));</span>
+            } else {
+                // if the actual is not going to be saved, then try to remove it
+                // (as it could have been cancelled)
+<span class="nc" id="L523">                Configuration.removeKey(Configuration.makeKey(oldAction</span>
+<span class="nc" id="L524">                        .getKey()));</span>
+            }
+        }
+<span class="nc" id="L527">    }</span>
+
+    private static int decodeModifier(String modifier) {
+<span class="nc bnc" id="L530" title="All 4 branches missed.">        if (modifier == null || modifier.length() == 0) {</span>
+<span class="nc" id="L531">            return 0;</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        } else if (modifier.equals(KeyEventUtils.CTRL_MODIFIER)) {</span>
+<span class="nc" id="L533">            return InputEvent.CTRL_DOWN_MASK;</span>
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        } else if (modifier.equals(KeyEventUtils.ALT_MODIFIER)) {</span>
+<span class="nc" id="L535">            return InputEvent.ALT_DOWN_MASK;</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">        } else if (modifier.equals(KeyEventUtils.ALT_GRAPH_MODIFIER)) {</span>
+<span class="nc" id="L537">            return InputEvent.ALT_GRAPH_DOWN_MASK;</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        } else if (modifier.equals(KeyEventUtils.META_MODIFIER)) {</span>
+<span class="nc" id="L539">            return InputEvent.META_DOWN_MASK;</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">        } else if (modifier.equals(KeyEventUtils.SHIFT_MODIFIER)) {</span>
+<span class="nc" id="L541">            return InputEvent.SHIFT_DOWN_MASK;</span>
+        } else {
+            // it should never go here!
+<span class="nc" id="L544">            LOG.log(Level.FINE, &quot;Unknown modifier: {0}&quot;, modifier);</span>
+<span class="nc" id="L545">            return 0;</span>
+        }
+    }
+
+    private static String getActionDefaultName(AbstractAction action) {
+<span class="nc" id="L550">        return (String) action.getValue(AbstractAction.NAME);</span>
+    }
+
+    // let's load the default shortcut for every action
+    static {
+        // First of all, let's set up the duplicate hash. This hash contains
+        // all the duplicate key for another key.
+        //
+        // TODO: every duplicate.put() is done twice - but how to avoid this?
+<span class="nc" id="L559">        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, DEFAULT_MASK),</span>
+<span class="nc" id="L560">                KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, DEFAULT_MASK));</span>
+<span class="nc" id="L561">        duplicate.put(KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_SUBTRACT, DEFAULT_MASK),
+<span class="nc" id="L563">                KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, DEFAULT_MASK));</span>
+<span class="nc" id="L564">        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, DEFAULT_MASK),</span>
+<span class="nc" id="L565">                KeyStroke.getKeyStroke(KeyEvent.VK_ADD, DEFAULT_MASK));</span>
+<span class="nc" id="L566">        duplicate.put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, DEFAULT_MASK),</span>
+<span class="nc" id="L567">                KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, DEFAULT_MASK));</span>
+
+        // file menu
+<span class="nc" id="L570">        putDefaultShortcut(ACTION_NEW_PROJECT, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_N, DEFAULT_MASK), new ActionNew());
+<span class="nc" id="L572">        putDefaultShortcut(ACTION_OPEN_PROJECT, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_O, DEFAULT_MASK), new ActionOpenProject());
+<span class="nc" id="L574">        putDefaultShortcut(ACTION_SAVE_PROJECT, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_S, DEFAULT_MASK),
+<span class="nc" id="L576">                ProjectBrowser.getInstance().getSaveAction());</span>
+<span class="nc" id="L577">        putDefaultShortcut(ACTION_SAVE_PROJECT_AS, null,</span>
+                new ActionSaveProjectAs());
+<span class="nc" id="L579">        putDefaultShortcut(ACTION_REVERT_TO_SAVED, null,</span>
+                new ActionRevertToSaved());
+<span class="nc" id="L581">        putDefaultShortcut(ACTION_IMPORT_XMI, null, new ActionImportXMI());</span>
+<span class="nc" id="L582">        putDefaultShortcut(ACTION_EXPORT_XMI, null, new ActionExportXMI());</span>
+<span class="nc" id="L583">        putDefaultShortcut(ACTION_IMPORT_FROM_SOURCES, null,</span>
+<span class="nc" id="L584">                ActionImportFromSources.getInstance());</span>
+<span class="nc" id="L585">        putDefaultShortcut(ACTION_PROJECT_SETTINGS, null,</span>
+                new ActionProjectSettings());
+<span class="nc" id="L587">        putDefaultShortcut(ACTION_PAGE_SETUP, null, new ActionPageSetup());</span>
+<span class="nc" id="L588">        putDefaultShortcut(ACTION_SAVE_GRAPHICS, null,</span>
+                new ActionSaveGraphics());
+<span class="nc" id="L590">        putDefaultShortcut(ACTION_SAVE_ALL_GRAPHICS, null,</span>
+                new ActionSaveAllGraphics());
+<span class="nc" id="L592">        putDefaultShortcut(ACTION_NOTATION, null, new ActionNotation());</span>
+<span class="nc" id="L593">        putDefaultShortcut(ACTION_PRINT, KeyStroke.getKeyStroke(KeyEvent.VK_P,</span>
+                DEFAULT_MASK), new ActionPrint());
+
+        // edit menu
+<span class="nc" id="L597">        putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_A, DEFAULT_MASK),
+                new ActionSelectAll());
+<span class="nc" id="L600">        putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,</span>
+<span class="nc" id="L601">                DEFAULT_MASK), ProjectActions.getInstance().getRedoAction());</span>
+<span class="nc" id="L602">        putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,</span>
+<span class="nc" id="L603">                DEFAULT_MASK), ProjectActions.getInstance().getUndoAction());</span>
+<span class="nc" id="L604">        putDefaultShortcut(ACTION_NAVIGATE_FORWARD, null,</span>
+                new NavigateTargetForwardAction());
+<span class="nc" id="L606">        putDefaultShortcut(ACTION_NAVIGATE_BACK, null,</span>
+                new NavigateTargetBackAction());
+<span class="nc" id="L608">        putDefaultShortcut(ACTION_SELECT_INVERT, null,</span>
+                new ActionSelectInvert());
+<span class="nc" id="L610">        putDefaultShortcut(ACTION_PERSPECTIVE_CONFIG, null,</span>
+                new ActionPerspectiveConfig());
+<span class="nc" id="L612">        putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());</span>
+<span class="nc" id="L613">        putDefaultShortcut(ACTION_REMOVE_FROM_DIAGRAM, KeyStroke.getKeyStroke(</span>
+<span class="nc" id="L614">                KeyEvent.VK_DELETE, 0), ProjectActions.getInstance()</span>
+<span class="nc" id="L615">                .getRemoveFromDiagramAction());</span>
+<span class="nc" id="L616">        putDefaultShortcut(ACTION_DELETE_MODEL_ELEMENTS, KeyStroke</span>
+<span class="nc" id="L617">                .getKeyStroke(KeyEvent.VK_DELETE, DEFAULT_MASK),</span>
+<span class="nc" id="L618">                ActionDeleteModelElements.getTargetFollower());</span>
+
+        // view menu
+<span class="nc" id="L621">        putDefaultShortcut(ACTION_GO_TO_DIAGRAM, null, new ActionGotoDiagram());</span>
+<span class="nc" id="L622">        putDefaultShortcut(ACTION_ZOOM_RESET, null, new ZoomAction(0.0));</span>
+
+<span class="nc" id="L624">        List gridActions = ActionAdjustGrid.createAdjustGridActions(true);</span>
+<span class="nc" id="L625">        Iterator i = gridActions.iterator();</span>
+<span class="nc bnc" id="L626" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L627">            AbstractAction cmdAG = (AbstractAction) i.next();</span>
+<span class="nc" id="L628">            putDefaultShortcut(ACTION_ADJUST_GRID + cmdAG.getValue(&quot;ID&quot;),</span>
+<span class="nc" id="L629">                    (KeyStroke) cmdAG.getValue(&quot;shortcut&quot;), cmdAG);</span>
+<span class="nc" id="L630">        }</span>
+
+<span class="nc" id="L632">        List snapActions = ActionAdjustSnap.createAdjustSnapActions();</span>
+<span class="nc" id="L633">        i = snapActions.iterator();</span>
+<span class="nc bnc" id="L634" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L635">            AbstractAction cmdAS = (AbstractAction) i.next();</span>
+<span class="nc" id="L636">            putDefaultShortcut(ACTION_ADJUST_GUIDE + cmdAS.getValue(&quot;ID&quot;),</span>
+<span class="nc" id="L637">                    (KeyStroke) cmdAS.getValue(&quot;shortcut&quot;), cmdAS);</span>
+<span class="nc" id="L638">        }</span>
+
+<span class="nc" id="L640">        putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,</span>
+                new ActionAdjustPageBreaks());
+<span class="nc" id="L642">        putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());</span>
+
+<span class="nc" id="L644">        putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_PLUS, DEFAULT_MASK), new ZoomActionProxy(
+                        (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
+
+<span class="nc" id="L648">        putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_MINUS, DEFAULT_MASK), new ZoomActionProxy(
+                        GenericArgoMenuBar.ZOOM_FACTOR));
+
+<span class="nc" id="L652">        putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,</span>
+                0), new ActionFind());
+
+        // create menu
+<span class="nc" id="L656">        putDefaultShortcut(ACTION_USE_CASE_DIAGRAM, null,</span>
+                new ActionUseCaseDiagram());
+<span class="nc" id="L658">        putDefaultShortcut(ACTION_CLASS_DIAGRAM, null,</span>
+                new ActionClassDiagram());
+<span class="nc" id="L660">        putDefaultShortcut(ACTION_SEQUENCE_DIAGRAM, null,</span>
+                new ActionSequenceDiagram());
+<span class="nc" id="L662">        putDefaultShortcut(ACTION_COLLABORATION_DIAGRAM, null,</span>
+                new ActionCollaborationDiagram());
+<span class="nc" id="L664">        putDefaultShortcut(ACTION_STATE_DIAGRAM, null,</span>
+                new ActionStateDiagram());
+<span class="nc" id="L666">        putDefaultShortcut(ACTION_ACTIVITY_DIAGRAM, null,</span>
+                new ActionActivityDiagram());
+<span class="nc" id="L668">        putDefaultShortcut(ACTION_DEPLOYMENT_DIAGRAM, null,</span>
+                new ActionDeploymentDiagram());
+
+        // generate menu
+<span class="nc" id="L672">        putDefaultShortcut(ACTION_GENERATE_ONE, null, new ActionGenerateOne());</span>
+<span class="nc" id="L673">        putDefaultShortcut(ACTION_GENERATE_PROJECT_CODE, null,</span>
+                new ActionGenerateProjectCode());
+<span class="nc" id="L675">        putDefaultShortcut(ACTION_GENERATION_SETTINGS, null,</span>
+                new ActionGenerationSettings());
+<span class="nc" id="L677">        putDefaultShortcut(ACTION_GENERATE_ALL_CLASSES, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_F7, 0), new ActionGenerateAll());
+
+        // critique menu
+        // TODO: This dependency should be inverted with the Critics subsystem
+        // registering its desired shortcuts with us - tfm
+<span class="nc" id="L683">        putDefaultShortcut(ACTION_AUTO_CRITIQUE, null,</span>
+                new ActionAutoCritique());
+<span class="nc" id="L685">        putDefaultShortcut(ACTION_OPEN_DECISIONS, null,</span>
+                new ActionOpenDecisions());
+<span class="nc" id="L687">        putDefaultShortcut(ACTION_OPEN_GOALS, null, new ActionOpenGoals());</span>
+<span class="nc" id="L688">        putDefaultShortcut(ACTION_OPEN_CRITICS, null, new ActionOpenCritics());</span>
+
+        // help menu
+<span class="nc" id="L691">        putDefaultShortcut(ACTION_SYSTEM_INFORMATION, null,</span>
+                new ActionSystemInfo());
+<span class="nc" id="L693">        putDefaultShortcut(ACTION_ABOUT_ARGOUML, null,</span>
+                new ActionAboutArgoUML());
+
+        // arrange menu
+<span class="nc" id="L697">        putDefaultShortcut(ACTION_PREFERRED_SIZE, null,</span>
+                new CmdSetPreferredSize());
+
+        // align submenu
+<span class="nc" id="L701">        putDefaultShortcut(ACTION_ALIGN_TOPS, null, new AlignAction(</span>
+                AlignAction.ALIGN_TOPS));
+<span class="nc" id="L703">        putDefaultShortcut(ACTION_ALIGN_BOTTOMS, null, new AlignAction(</span>
+                AlignAction.ALIGN_BOTTOMS));
+<span class="nc" id="L705">        putDefaultShortcut(ACTION_ALIGN_RIGHTS, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_R, DEFAULT_MASK),
+                new AlignAction(AlignAction.ALIGN_RIGHTS));
+<span class="nc" id="L708">        putDefaultShortcut(ACTION_ALIGN_LEFTS, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_L, DEFAULT_MASK),
+                new AlignAction(AlignAction.ALIGN_LEFTS));
+<span class="nc" id="L711">        putDefaultShortcut(ACTION_ALIGN_H_CENTERS, null, new AlignAction(</span>
+                AlignAction.ALIGN_H_CENTERS));
+<span class="nc" id="L713">        putDefaultShortcut(ACTION_ALIGN_V_CENTERS, null, new AlignAction(</span>
+                AlignAction.ALIGN_V_CENTERS));
+<span class="nc" id="L715">        putDefaultShortcut(ACTION_ALIGN_TO_GRID, null, new AlignAction(</span>
+                AlignAction.ALIGN_TO_GRID));
+
+        // distribute submenu
+<span class="nc" id="L719">        putDefaultShortcut(ACTION_DISTRIBUTE_H_SPACING, null,</span>
+                new DistributeAction(DistributeAction.H_SPACING));
+<span class="nc" id="L721">        putDefaultShortcut(ACTION_DISTRIBUTE_H_CENTERS, null,</span>
+                new DistributeAction(DistributeAction.H_CENTERS));
+<span class="nc" id="L723">        putDefaultShortcut(ACTION_DISTRIBUTE_V_SPACING, null,</span>
+                new DistributeAction(DistributeAction.V_SPACING));
+<span class="nc" id="L725">        putDefaultShortcut(ACTION_DISTRIBUTE_V_CENTERS, null,</span>
+                new DistributeAction(DistributeAction.V_CENTERS));
+
+        // reorder submenu
+        // TODO: I think this requires I18N, but not sure - tfm
+<span class="nc" id="L730">        putDefaultShortcut(ACTION_REORDER_FORWARD, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_F, DEFAULT_MASK), new ReorderAction(&quot;Forward&quot;,
+                        ReorderAction.BRING_FORWARD));
+<span class="nc" id="L733">        putDefaultShortcut(ACTION_REORDER_BACKWARD, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_B, DEFAULT_MASK), new ReorderAction(
+                        &quot;Backward&quot;,
+                        ReorderAction.SEND_BACKWARD));
+<span class="nc" id="L737">        putDefaultShortcut(ACTION_REORDER_TO_FRONT, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_F, SHIFTED_DEFAULT_MASK), new ReorderAction(
+                        &quot;ToFront&quot;,
+                        ReorderAction.BRING_TO_FRONT));
+<span class="nc" id="L741">        putDefaultShortcut(ACTION_REORDER_TO_BACK, KeyStroke.getKeyStroke(</span>
+                KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new ReorderAction(
+                        &quot;ToBack&quot;,
+                        ReorderAction.SEND_TO_BACK));
+
+	// help menu
+<span class="nc" id="L747">	putDefaultShortcut(ACTION_HELP,</span>
+<span class="nc" id="L748">                           KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0),</span>
+                           new ActionHelp());
+<span class="nc" id="L750">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

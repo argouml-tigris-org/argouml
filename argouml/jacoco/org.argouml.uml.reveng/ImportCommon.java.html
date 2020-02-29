@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportCommon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng</a> &gt; <span class="el_source">ImportCommon.java</span></div><h1>ImportCommon.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006, 2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng;
+
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.Designer;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.util.SuffixFilter;
+import org.tigris.gef.base.Globals;
+
+/**
+ * Source language import class - GUI independent superclass.
+ * &lt;p&gt;
+ * Specific Swing and SWT/Eclipse importers will extend this class.
+ * &lt;p&gt;
+ * &lt;em&gt;NOTE:&lt;/em&gt;Any change to the public API here must be tested in both Swing
+ * (standalone ArgoUML) and Eclipse (ArgoEclipse) environments.
+ * 
+ * @author Tom Morris
+ */
+public abstract class ImportCommon implements ImportSettingsInternal {
+
+    /**
+     * The % maximum progress required to preparing for import.
+     */
+    protected static final int MAX_PROGRESS_PREPARE = 1;
+
+    /**
+     * The % maximum progress required to import.
+     */
+    protected static final int MAX_PROGRESS_IMPORT = 99;
+
+    protected static final int MAX_PROGRESS = MAX_PROGRESS_PREPARE
+            + MAX_PROGRESS_IMPORT;
+    /**
+     * keys are module name, values are PluggableImport instance.
+     */
+    private Hashtable&lt;String, ImportInterface&gt; modules;
+
+    /**
+     * Current language module.
+     */
+    private ImportInterface currentModule;
+
+
+    /**
+     * Imported directory.
+     */
+    private String srcPath;
+
+    /**
+     * Create a interface to the current diagram.
+     */
+    private DiagramInterface diagramInterface;
+
+    private File[] selectedFiles;
+    
+    private SuffixFilter selectedSuffixFilter;
+
+    protected ImportCommon() {
+<span class="nc" id="L119">        super();</span>
+<span class="nc" id="L120">        modules = new Hashtable&lt;String, ImportInterface&gt;();</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (ImportInterface importer : ImporterManager.getInstance()</span>
+<span class="nc" id="L123">                .getImporters()) {</span>
+<span class="nc" id="L124">            modules.put(importer.getName(), importer);</span>
+<span class="nc" id="L125">        }</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (modules.isEmpty()) {</span>
+<span class="nc" id="L127">            throw new RuntimeException(&quot;Internal error. &quot;</span>
+                    + &quot;No importer modules found.&quot;);
+        }
+        // &quot;Java&quot; is the default module for historical reasons,
+        // but it's not required to be there
+<span class="nc" id="L132">        currentModule = modules.get(&quot;Java&quot;);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (currentModule == null) {</span>
+<span class="nc" id="L134">            currentModule = modules.elements().nextElement();</span>
+        }
+<span class="nc" id="L136">    }</span>
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettings#getImportLevel()
+     */
+    public abstract int getImportLevel();
+
+
+    /**
+     * Compute and cache the current diagram interface.
+     */
+    protected void initCurrentDiagram() {
+<span class="nc" id="L148">        diagramInterface = getCurrentDiagram();</span>
+<span class="nc" id="L149">    }</span>
+
+    /**
+     * Set target diagram.&lt;p&gt;
+     *
+     * @return selected diagram, if it is class diagram,
+     * else return null.
+     */
+    private DiagramInterface getCurrentDiagram() {
+<span class="nc" id="L158">        DiagramInterface result = null;</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (Globals.curEditor().getGraphModel()</span>
+                instanceof ClassDiagramGraphModel) {
+<span class="nc" id="L161">            result =  new DiagramInterface(Globals.curEditor());</span>
+        } else {
+<span class="nc" id="L163">            Project p =  ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L164">            TargetManager.getInstance().setTarget(p.getInitialTarget());</span>
+            // the previous line helps, but we better check again:
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (Globals.curEditor().getGraphModel()</span>
+                    instanceof ClassDiagramGraphModel) {
+<span class="nc" id="L168">                result =  new DiagramInterface(Globals.curEditor());</span>
+            }
+        }
+<span class="nc" id="L171">        return result;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettings#getInputSourceEncoding()
+     */
+    public abstract String getInputSourceEncoding();
+
+
+    /**
+     * Get the files.  We generate it based on their specified
+     * file suffixes.
+     * @param monitor progress monitor which can be used to cancel long running 
+     * request
+     * @return the list of files to be imported
+     */
+    protected List&lt;File&gt; getFileList(ProgressMonitor monitor) {
+<span class="nc" id="L188">        List&lt;File&gt; files = Arrays.asList(getSelectedFiles());</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (files.size() == 1) {</span>
+<span class="nc" id="L190">            File file = files.get(0);</span>
+<span class="nc" id="L191">            SuffixFilter suffixFilters[] = {selectedSuffixFilter};</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (suffixFilters[0] == null) {</span>
+                // not a SuffixFilter selected, so we take all
+<span class="nc" id="L194">                suffixFilters = currentModule.getSuffixFilters();</span>
+            }
+<span class="nc" id="L196">            files =</span>
+<span class="nc" id="L197">                FileImportUtils.getList(</span>
+<span class="nc" id="L198">                        file, isDescendSelected(),</span>
+                        suffixFilters, monitor);
+<span class="nc bnc" id="L200" title="All 2 branches missed.">            if (file.isDirectory()) {</span>
+<span class="nc" id="L201">                setSrcPath(file.getAbsolutePath());</span>
+            } else {
+<span class="nc" id="L203">                setSrcPath(null);</span>
+            }
+        }
+
+
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (isChangedOnlySelected()) {</span>
+            // filter out all unchanged files
+            Object model =
+<span class="nc" id="L211">                ProjectManager.getManager().getCurrentProject().getModel();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            for (int i = files.size() - 1; i &gt;= 0; i--) {</span>
+<span class="nc" id="L213">                File f = files.get(i);</span>
+<span class="nc" id="L214">                String fn = f.getAbsolutePath();</span>
+<span class="nc" id="L215">                String lm = String.valueOf(f.lastModified());</span>
+                
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+                    // TODO: Not yet working for UML2
+<span class="nc bnc" id="L219" title="All 2 branches missed.">                    if (lm.equals(</span>
+<span class="nc" id="L220">                            Model.getFacade().getTaggedValueValue(model, fn))) {</span>
+<span class="nc" id="L221">                        files.remove(i);</span>
+                    }
+                }
+            }
+        }
+
+<span class="nc" id="L227">        return files;</span>
+    }
+
+    /**
+     * Set path for processed directory.
+     *
+     * @param path the given path
+     */
+    public void setSrcPath(String path) {
+<span class="nc" id="L236">        srcPath = path;</span>
+<span class="nc" id="L237">    }</span>
+
+    /**
+     * @return path for processed directory.
+     */
+    public String getSrcPath() {
+<span class="nc" id="L243">        return srcPath;</span>
+    }
+
+    /*
+     * Create a TaggedValue with a tag/type matching our source module
+     * filename and a value of the file's last modified timestamp.
+     *
+     * TODO: This functionality needs to be moved someplace useful if
+     * it's needed, otherwise it can be deleted. - tfm - 20070217
+     */
+    private void setLastModified(Project project, File file) {
+        // set the lastModified value
+<span class="nc" id="L255">        String fn = file.getAbsolutePath();</span>
+<span class="nc" id="L256">        String lm = String.valueOf(file.lastModified());</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (lm != null) {</span>
+<span class="nc" id="L258">            Model.getCoreHelper()</span>
+<span class="nc" id="L259">                .setTaggedValue(project.getModel(), fn, lm);</span>
+        }
+<span class="nc" id="L261">    }</span>
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettings#isCreateDiagramsSelected()
+     */
+    public abstract boolean isCreateDiagramsSelected();
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettings#isMinimiseFigsSelected()
+     */
+    public abstract boolean isMinimizeFigsSelected();
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettingsInternal#isDiagramLayoutSelected()
+     */
+    public abstract boolean isDiagramLayoutSelected();
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettingsInternal#isDescendSelected()
+     */
+    public abstract boolean isDescendSelected();
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettingsInternal#isChangedOnlySelected()
+     */
+    public abstract boolean isChangedOnlySelected();
+
+    /**
+     * Gets the specified import module.
+     * 
+     * @param importerName The import module's name
+     * @return The found import module, otherwise null
+     */
+    public ImportInterface getImporter(String importerName) {
+<span class="nc" id="L295">        return getModules().get(importerName);</span>
+    }
+
+    /**
+     * Sets the files that will be imported.
+     * 
+     * @param files The array of files.
+     */
+    public void setFiles(File[] files) {
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (files != null) {</span>
+<span class="nc" id="L305">            setSelectedFiles(files);</span>
+        }
+<span class="nc" id="L307">    }</span>
+
+    protected Hashtable&lt;String, ImportInterface&gt; getModules() {
+<span class="nc" id="L310">        return modules;</span>
+    }
+
+    protected void setSelectedFiles(final File[] files) {
+<span class="nc" id="L314">        selectedFiles = files;</span>
+<span class="nc" id="L315">    }</span>
+
+    /**
+     * Set the selected (file) suffix filter.
+     * 
+     * @param suffixFilter the (file) suffix filter
+     */
+    protected void setSelectedSuffixFilter(final SuffixFilter suffixFilter) {
+<span class="nc" id="L323">        selectedSuffixFilter = suffixFilter;</span>
+<span class="nc" id="L324">    }</span>
+
+    protected File[] getSelectedFiles() {
+<span class="nc" id="L327">	File[] copy = new File[selectedFiles.length];</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">	for (int i = 0; i &lt; selectedFiles.length; i++) {</span>
+<span class="nc" id="L329">	    copy[i] = selectedFiles[i];</span>
+	}
+<span class="nc" id="L331">	return copy;</span>
+        //return Arrays.copyOf(selectedFiles, selectedFiles.length);
+    }
+    
+    /**
+     * Sets the current import module.
+     * 
+     * @param module
+     */
+    public void setCurrentModule(ImportInterface module) {
+<span class="nc" id="L341">        currentModule = module;</span>
+<span class="nc" id="L342">    }</span>
+
+    protected ImportInterface getCurrentModule() {
+<span class="nc" id="L345">        return currentModule;</span>
+    }
+
+    /**
+     * Returns the possible languages in which the user can import the sources.
+     * @return a list of Strings with the names of the languages available
+     */
+    public List&lt;String&gt; getLanguages() {
+<span class="nc" id="L353">        return Collections.unmodifiableList(</span>
+<span class="nc" id="L354">                new ArrayList&lt;String&gt;(modules.keySet()));</span>
+    }
+
+    /**
+     * The flag for: descend directories recursively.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isDescend() {
+<span class="nc" id="L364">        String flags =</span>
+<span class="nc" id="L365">                Configuration.getString(</span>
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+<span class="nc bnc" id="L367" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L368">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L370">                return false;</span>
+            }
+        }
+<span class="nc" id="L373">        return true;</span>
+    }
+
+    /**
+     * The flag for: changed/new files only.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isChangedOnly() {
+<span class="nc" id="L383">        String flags =</span>
+<span class="nc" id="L384">                Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);</span>
+<span class="nc bnc" id="L385" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L386">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc" id="L387">            skipTokens(st, 1);</span>
+<span class="nc bnc" id="L388" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L389">                return false;</span>
+            }
+        }
+<span class="nc" id="L392">        return true;</span>
+    }
+
+    /**
+     * The flag for: create diagrams from imported code.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isCreateDiagrams() {
+<span class="nc" id="L402">        String flags =</span>
+<span class="nc" id="L403">                Configuration.getString(</span>
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+<span class="nc bnc" id="L405" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L406">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc" id="L407">            skipTokens(st, 2);</span>
+<span class="nc bnc" id="L408" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L409">                return false;</span>
+            }
+        }
+<span class="nc" id="L412">        return true;</span>
+    }
+
+    /**
+     * The flag for: minimise class icons in diagrams.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isMinimizeFigs() {
+<span class="nc" id="L422">        String flags =</span>
+<span class="nc" id="L423">                Configuration.getString(</span>
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+<span class="nc bnc" id="L425" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L426">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc" id="L427">            skipTokens(st, 3);</span>
+<span class="nc bnc" id="L428" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L429">                return false;</span>
+            }
+        }
+<span class="nc" id="L432">        return true;</span>
+    }
+
+    private void skipTokens(StringTokenizer st, int count) {
+<span class="nc bnc" id="L436" title="All 2 branches missed.">        for (int i = 0; i &lt; count; i++) {</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">            if (st.hasMoreTokens()) {</span>
+<span class="nc" id="L438">                st.nextToken();</span>
+            }
+        }
+<span class="nc" id="L441">    }</span>
+
+    /**
+     * The flag for: perform automatic diagram layout.
+     * This should be asked by the GUI for initialization.
+     * @return the flag stored in KEY_IMPORT_GENERAL_SETTINGS_FLAGS key or
+     * true if this is null.
+     */
+    public boolean isDiagramLayout() {
+<span class="nc" id="L450">        String flags =</span>
+<span class="nc" id="L451">                Configuration.getString(</span>
+                        Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+<span class="nc bnc" id="L453" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L454">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc" id="L455">            skipTokens(st, 4);</span>
+<span class="nc bnc" id="L456" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L457">                return false;</span>
+            }
+        }
+<span class="nc" id="L460">        return true;</span>
+    }
+
+    /**
+     * The default encoding. This should be asked by the GUI for
+     * initialization.
+     * @return the encoding stored in Argo.KEY_INPUT_SOURCE_ENCODING key or if
+     * this is null the default system encoding
+     */
+    public String getEncoding() {
+<span class="nc" id="L470">        String enc = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);</span>
+<span class="nc bnc" id="L471" title="All 4 branches missed.">        if (enc == null || enc.trim().equals(&quot;&quot;)) { //$NON-NLS-1$</span>
+<span class="nc" id="L472">            enc = System.getProperty(&quot;file.encoding&quot;); //$NON-NLS-1$</span>
+        }
+
+<span class="nc" id="L475">        return enc;</span>
+    }
+
+
+    /**
+     * Layouts the diagrams.
+     *
+     * @param monitor
+     *            the progress meter.  Null if not progress updates desired.
+     * @param startingProgress
+     *            the actual progress until now
+     */
+    public void layoutDiagrams(ProgressMonitor monitor, int startingProgress) {
+
+<span class="nc bnc" id="L489" title="All 2 branches missed.">        if (diagramInterface == null) {</span>
+<span class="nc" id="L490">            return;</span>
+        }
+//        if (monitor != null) {
+//            monitor.updateSubTask(ImportsMessages.layoutingAction);
+//        }
+<span class="nc" id="L495">        List&lt;ArgoDiagram&gt; diagrams = diagramInterface.getModifiedDiagramList();</span>
+<span class="nc" id="L496">        int total = startingProgress + diagrams.size()</span>
+                / 10;
+<span class="nc bnc" id="L498" title="All 2 branches missed.">        for (int i = 0; i &lt; diagrams.size(); i++) {</span>
+<span class="nc" id="L499">            ArgoDiagram diagram = diagrams.get(i);</span>
+<span class="nc" id="L500">            ClassdiagramLayouter layouter = new ClassdiagramLayouter(diagram);</span>
+<span class="nc" id="L501">            layouter.layout();</span>
+<span class="nc" id="L502">            int act = startingProgress + (i + 1) / 10;</span>
+<span class="nc" id="L503">            int progress = MAX_PROGRESS_PREPARE</span>
+                    + MAX_PROGRESS_IMPORT * act / total;
+<span class="nc bnc" id="L505" title="All 2 branches missed.">            if (monitor != null) {</span>
+<span class="nc" id="L506">                monitor.updateProgress(progress);</span>
+            }
+//          iss.setValue(countFiles + (i + 1) / 10);
+        }
+
+<span class="nc" id="L511">    }</span>
+
+
+    /**
+     * Import the selected source files. It calls the actual
+     * parser methods depending on the type of the file.
+     *
+     * @param monitor
+     *            a ProgressMonitor to both receive progress updates and to be
+     *            polled for user requests to cancel.
+     */
+    public void doImport(ProgressMonitor monitor) {
+        // Roughly equivalent to and derived from old Import.doFile()
+<span class="nc" id="L524">        monitor.setMaximumProgress(MAX_PROGRESS);</span>
+<span class="nc" id="L525">        int progress = 0;</span>
+<span class="nc" id="L526">        monitor.updateSubTask(Translator.localize(&quot;dialog.import.preImport&quot;));</span>
+<span class="nc" id="L527">        List&lt;File&gt; files = getFileList(monitor);</span>
+<span class="nc" id="L528">        progress += MAX_PROGRESS_PREPARE;</span>
+<span class="nc" id="L529">        monitor.updateProgress(progress);</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">        if (files.size() == 0) {</span>
+<span class="nc" id="L531">            monitor.notifyNullAction();</span>
+<span class="nc" id="L532">            return;</span>
+        }
+<span class="nc" id="L534">        Model.getPump().stopPumpingEvents();</span>
+<span class="nc" id="L535">        boolean criticThreadWasOn = Designer.theDesigner().getAutoCritique();</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">        if (criticThreadWasOn) {</span>
+<span class="nc" id="L537">            Designer.theDesigner().setAutoCritique(false);</span>
+        }
+        try {
+<span class="nc" id="L540">            doImportInternal(files, monitor, progress);</span>
+        } finally {
+<span class="nc bnc" id="L542" title="All 2 branches missed.">            if (criticThreadWasOn) {</span>
+<span class="nc" id="L543">                Designer.theDesigner().setAutoCritique(true);</span>
+            }
+            // TODO: Send an event instead of calling Explorer directly
+<span class="nc" id="L546">            ExplorerEventAdaptor.getInstance().structureChanged();</span>
+<span class="nc" id="L547">            Model.getPump().startPumpingEvents();</span>
+        }
+<span class="nc" id="L549">    }</span>
+
+
+    /**
+     * Do the import.
+     * @param filesLeft the files to parse
+     * @param monitor the progress meter
+     * @param progress the actual progress until now
+     */
+    private void doImportInternal(List&lt;File&gt; filesLeft,
+            final ProgressMonitor monitor, int progress) {
+<span class="nc" id="L560">        Project project =  ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L561">        initCurrentDiagram();</span>
+<span class="nc" id="L562">        final StringBuffer problems = new StringBuffer();</span>
+<span class="nc" id="L563">        Collection newElements = new HashSet();</span>
+        
+        try {
+<span class="nc" id="L566">            newElements.addAll(currentModule.parseFiles(</span>
+                    project, filesLeft, this, monitor));
+<span class="nc" id="L568">        } catch (Exception e) {</span>
+<span class="nc" id="L569">            problems.append(printToBuffer(e));</span>
+<span class="nc" id="L570">        }</span>
+        // New style importers don't create diagrams, so we'll do it
+        // based on the list of newElements that they created
+<span class="nc bnc" id="L573" title="All 4 branches missed.">        if (isCreateDiagramsSelected() &amp;&amp; diagramInterface != null) {</span>
+<span class="nc" id="L574">            addFiguresToDiagrams(newElements);</span>
+        }
+
+        // Do layout even if problems occurred during import
+<span class="nc bnc" id="L578" title="All 2 branches missed.">        if (isDiagramLayoutSelected()) {</span>
+            // TODO: Monitor is getting dismissed before layout is complete
+<span class="nc" id="L580">            monitor.updateMainTask(</span>
+<span class="nc" id="L581">                    Translator.localize(&quot;dialog.import.postImport&quot;));</span>
+<span class="nc" id="L582">            monitor.updateSubTask(</span>
+<span class="nc" id="L583">                    Translator.localize(&quot;dialog.import.layoutAction&quot;));</span>
+<span class="nc" id="L584">            layoutDiagrams(monitor, progress + filesLeft.size());</span>
+        }
+        
+        // Add messages from caught exceptions
+<span class="nc bnc" id="L588" title="All 4 branches missed.">        if (problems != null &amp;&amp; problems.length() &gt; 0) {</span>
+<span class="nc" id="L589">            monitor.notifyMessage(</span>
+<span class="nc" id="L590">                    Translator.localize(</span>
+                            &quot;dialog.title.import-problems&quot;), //$NON-NLS-1$
+<span class="nc" id="L592">                            Translator.localize(</span>
+                            &quot;label.import-problems&quot;),        //$NON-NLS-1$
+<span class="nc" id="L594">                            problems.toString());</span>
+        }
+        
+<span class="nc" id="L597">        monitor.updateMainTask(Translator.localize(&quot;dialog.import.done&quot;));</span>
+<span class="nc" id="L598">        monitor.updateSubTask(&quot;&quot;); //$NON-NLS-1$</span>
+<span class="nc" id="L599">        monitor.updateProgress(MAX_PROGRESS);</span>
+
+<span class="nc" id="L601">    }</span>
+
+
+    /**
+     * Create diagram figures for a collection of model elements.
+     *
+     * @param newElements
+     *            the collection of elements for which figures should be
+     *            created.
+     */
+    private void addFiguresToDiagrams(Collection newElements) {
+<span class="nc bnc" id="L612" title="All 2 branches missed.">        for (Object element : newElements) {</span>
+<span class="nc bnc" id="L613" title="All 2 branches missed.">            if (Model.getFacade().isAClassifier(element)</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">                    || Model.getFacade().isAPackage(element)) {</span>
+
+<span class="nc" id="L616">                Object ns = Model.getFacade().getNamespace(element);</span>
+<span class="nc bnc" id="L617" title="All 2 branches missed.">                if (ns == null) {</span>
+<span class="nc" id="L618">                    diagramInterface.createRootClassDiagram();</span>
+                } else {
+<span class="nc" id="L620">                    String packageName = getQualifiedName(ns);</span>
+                    // Select the correct diagram (implicitly creates it)
+<span class="nc bnc" id="L622" title="All 2 branches missed.">                    if (packageName != null</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">                            &amp;&amp; !packageName.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L624">                        diagramInterface.selectClassDiagram(ns,</span>
+                                packageName);
+                    } else {
+<span class="nc" id="L627">                        diagramInterface.createRootClassDiagram();</span>
+                    }
+                    // Add the element to the diagram
+<span class="nc bnc" id="L630" title="All 2 branches missed.">                    if (Model.getFacade().isAInterface(element)) {</span>
+<span class="nc" id="L631">                        diagramInterface.addInterface(element,</span>
+<span class="nc" id="L632">                                isMinimizeFigsSelected());</span>
+<span class="nc bnc" id="L633" title="All 2 branches missed.">                    } else if (Model.getFacade().isAClass(element)) {</span>
+<span class="nc" id="L634">                        diagramInterface.addClass(element,</span>
+<span class="nc" id="L635">                                isMinimizeFigsSelected());</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">                    } else if (Model.getFacade().isAPackage(element)) {</span>
+<span class="nc" id="L637">                        diagramInterface.addPackage(element);</span>
+                    }
+                }
+            }
+<span class="nc" id="L641">        }</span>
+<span class="nc" id="L642">    }</span>
+
+    /**
+     * Return the fully qualified name of a model element in Java (dot
+     * separated) format.
+     * &lt;p&gt;
+     * TODO: We really need a language independent format here. Perhaps the list
+     * of names that form the hierarchy? - tfm
+     */
+    private String getQualifiedName(Object element) {
+<span class="nc" id="L652">        StringBuffer sb = new StringBuffer();</span>
+        
+<span class="nc" id="L654">        Object ns = element;</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">        while (ns != null) {</span>
+<span class="nc" id="L656">            String name = Model.getFacade().getName(ns);</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">            if (name == null) {</span>
+<span class="nc" id="L658">                name = &quot;&quot;;</span>
+            }
+<span class="nc" id="L660">            sb.insert(0, name);</span>
+<span class="nc" id="L661">            ns = Model.getFacade().getNamespace(ns);</span>
+<span class="nc bnc" id="L662" title="All 2 branches missed.">            if (ns != null) {</span>
+<span class="nc" id="L663">                sb.insert(0, &quot;.&quot;);</span>
+            }
+<span class="nc" id="L665">        }</span>
+<span class="nc" id="L666">        return sb.toString();</span>
+    }
+
+    /*
+     * Print an exception trace to a string buffer
+     */
+    private StringBuffer printToBuffer(Exception e) {
+<span class="nc" id="L673">        StringWriter sw = new StringWriter();</span>
+<span class="nc" id="L674">        PrintWriter pw = new java.io.PrintWriter(sw);</span>
+<span class="nc" id="L675">        e.printStackTrace(pw);</span>
+<span class="nc" id="L676">        return sw.getBuffer();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

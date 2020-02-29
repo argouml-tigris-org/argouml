@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Designer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">Designer.java</span></div><h1>Designer.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.model.InvalidElementException;
+import org.tigris.gef.util.ChildGenerator;
+import org.tigris.gef.util.EnumerationEmpty;
+
+
+/**
+ * This class models the designer who is building a complex design in
+ * some application domain and needs continuous feedback to aid in the
+ * making of good design decisions.&lt;p&gt;
+ *
+ * &lt;strong&gt;This area needs work, especially as it is a
+ * central idea of Argo.&lt;/strong&gt;&lt;p&gt;
+ *
+ * Currently (almost) everything is hardcoded. What can be configurable??&lt;p&gt;
+ *
+ * The ToDoList is dependent on this class,
+ * i.e. each designer has its ToDoList.&lt;p&gt;
+ *
+ * Each designer has his own Agency,
+ * which is the only class that knows all the critics.&lt;p&gt;
+ *
+ * This class listens to property changes from ...?&lt;p&gt;
+ *
+ * A designer can create ToDo Items, just like the critics. Hence the designer
+ * implements the Poster interface.&lt;p&gt;
+ *
+ * TODO: There is a strong dependency cycle between Agency and Designer.  They
+ * either need to be merged into a single class or partitioned differently,
+ * perhaps using an interface to break the cycle.  The Designer singleton gets
+ * passed to almost every single part of the Critic subsystem, creating strong
+ * coupling throughout. - tfm 20070620
+ *
+ * @author Jason Robbins
+ */
+public final class Designer
+     implements Poster,
+         Runnable,
+         PropertyChangeListener {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L98">    private static final Logger LOG =</span>
+<span class="fc" id="L99">        Logger.getLogger(Designer.class.getName());</span>
+
+    /**
+     * the singleton of this class.
+     */
+<span class="fc" id="L104">    private static Designer theDesignerSingleton = new Designer();</span>
+
+    private static boolean userWorking;
+
+    private static List&lt;Decision&gt; unspecifiedDecision;
+    private static List&lt;Goal&gt; unspecifiedGoal;
+
+    private static Action saveAction;
+
+    static {
+<span class="fc" id="L114">        unspecifiedDecision = new ArrayList&lt;Decision&gt;();</span>
+<span class="fc" id="L115">        unspecifiedDecision.add(Decision.UNSPEC);</span>
+<span class="fc" id="L116">        unspecifiedGoal = new ArrayList&lt;Goal&gt;();</span>
+<span class="fc" id="L117">        unspecifiedGoal.add(Goal.getUnspecifiedGoal());</span>
+    }
+
+    /**
+     * The key to remember persistently the latest choice made
+     * for the menuitem Toggle Auto-Critique.
+     */
+<span class="fc" id="L124">    public static final ConfigurationKey AUTO_CRITIQUE =</span>
+<span class="fc" id="L125">        Configuration.makeKey(&quot;cognitive&quot;, &quot;autocritique&quot;);</span>
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    /**
+     * ToDoList items that are on the designers ToDoList because of
+     * this material.
+     */
+    private ToDoList toDoList;
+
+    /**
+     * Preferences -- very ill defined.
+     */
+    private Properties prefs;
+
+    /**
+     * The designerName is the name of the current user, as he can enter in the
+     * menuitem Edit-&gt;Settings...-&gt;User-&gt;Full Name.&lt;p&gt;
+     *
+     * The designerName gets updated when the user enters a new name.
+     */
+    private String designerName;
+
+    /**
+     * The decisions currently being considered by the designer.&lt;p&gt;
+     *
+     * Decisions are currently modeled as simple descriptive strings.&lt;p&gt;
+     *
+     * Each decision also has a priority number which is ill defined,
+     * but positive Ints mean that the designer is considering it. This
+     * explicit representation of what decisions the designer is
+     * interested in at a given moment allows the Agency to select
+     * relevant critics for execution.
+     */
+    private DecisionModel decisions;
+
+    /**
+     * The goals of the designer are likewise used by the Agency to
+     * determine what critics are relevant.
+     */
+    private GoalModel goals;
+
+    /**
+     * Each designer has their own Agency instance that is responsible
+     * for selecting and executing critics that are relevant to this
+     * designer on an on going basis.
+     */
+    private Agency agency;
+
+    /**
+     * The clarifying icon for this poster.
+     */
+    private Icon clarifier;
+
+
+    private Thread critiquerThread;
+
+    private int critiquingInterval;
+
+    private int critiqueCPUPercent;
+
+   /**
+     * dm's that should be critiqued ASAP.
+     */
+    private List&lt;Object&gt; hotQueue;
+
+    private List&lt;Long&gt; hotReasonQueue;
+
+    private List&lt;Object&gt; addQueue;
+
+    private List&lt;Long&gt; addReasonQueue;
+
+    private List&lt;Object&gt; removeQueue;
+
+    private static int longestAdd;
+
+    private static int longestHot;
+
+    /**
+     * dm's that should be critiqued relatively soon.
+     */
+    private List&lt;Object&gt; warmQueue;
+
+    private ChildGenerator childGenerator;
+
+    private static Object critiquingRoot;
+
+    private long critiqueDuration;
+
+    private int critiqueLock;
+
+    private static PropertyChangeSupport pcs;
+
+    /**
+     * Property Names.
+     */
+    public static final String MODEL_TODOITEM_ADDED =
+        &quot;MODEL_TODOITEM_ADDED&quot;;
+
+    /**
+     * Property Names.
+     */
+    public static final String MODEL_TODOITEM_DISMISSED =
+        &quot;MODEL_TODOITEM_DISMISSED&quot;;
+
+    ////////////////////////////////////////////////////////////////
+    // constructor and singeton methods
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L237">    private Designer() {</span>
+<span class="fc" id="L238">        decisions = new DecisionModel();</span>
+<span class="fc" id="L239">        goals = new GoalModel();</span>
+<span class="fc" id="L240">        agency = new Agency();</span>
+<span class="fc" id="L241">        prefs = new Properties();</span>
+
+<span class="fc" id="L243">        toDoList = new ToDoList();</span>
+<span class="fc" id="L244">        toDoList.spawnValidityChecker(this);</span>
+
+<span class="fc" id="L246">        userWorking = false;</span>
+
+<span class="fc" id="L248">        critiquingInterval = 8000;</span>
+<span class="fc" id="L249">        critiqueCPUPercent = 10;</span>
+
+<span class="fc" id="L251">        hotQueue = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L252">        hotReasonQueue = new ArrayList&lt;Long&gt;();</span>
+<span class="fc" id="L253">        addQueue = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L254">        addReasonQueue = new ArrayList&lt;Long&gt;();</span>
+<span class="fc" id="L255">        removeQueue = new ArrayList&lt;Object&gt;();</span>
+<span class="fc" id="L256">        longestAdd = 0;</span>
+<span class="fc" id="L257">        longestHot = 0;</span>
+
+<span class="fc" id="L259">        warmQueue = new ArrayList&lt;Object&gt;();</span>
+
+<span class="fc" id="L261">        childGenerator = new EmptyChildGenerator();</span>
+
+<span class="fc" id="L263">        critiqueLock = 0;</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * @return the designer singleton
+     */
+    public static Designer theDesigner() {
+<span class="fc" id="L270">        return theDesignerSingleton;</span>
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // critiquing
+
+    /**
+     * Start a separate thread to continually select and execute
+     * critics that are relevant to this designer's work.
+     *
+     * @param root the rootobject the critiques will check
+     */
+    public void spawnCritiquer(Object root) {
+        /* TODO: really should be a separate class */
+<span class="nc" id="L285">        critiquerThread = new Thread(this, &quot;CritiquingThread&quot;);</span>
+<span class="nc" id="L286">        critiquerThread.setDaemon(true);</span>
+<span class="nc" id="L287">        critiquerThread.setPriority(Thread.currentThread().getPriority() - 1);</span>
+<span class="nc" id="L288">        critiquerThread.start();</span>
+<span class="nc" id="L289">        critiquingRoot = root;</span>
+<span class="nc" id="L290">    }</span>
+
+    /**
+     * Continuously select and execute critics against this designer's
+     * design. {@link #spawnCritiquer(Object)} is used to start a
+     * Thread that runs this.
+     */
+    public void run() {
+        try {
+            while (true) {
+
+                // local variables - what do they do?
+                long critiqueStartTime;
+                long cutoffTime;
+<span class="nc" id="L304">                int minWarmElements = 5;</span>
+                int size;
+
+                // the critiquing thread should wait if disabled.
+<span class="nc" id="L308">                synchronized (this) {</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                    while (!Configuration.getBoolean(</span>
+                            Designer.AUTO_CRITIQUE, true)) {
+                        try {
+<span class="nc" id="L312">                            this.wait();</span>
+<span class="nc" id="L313">                        } catch (InterruptedException ignore) {</span>
+<span class="nc" id="L314">                            LOG.log(Level.SEVERE, &quot;InterruptedException!!!&quot;, ignore);</span>
+<span class="nc" id="L315">                        }</span>
+                    }
+<span class="nc" id="L317">                }</span>
+
+                // why?
+<span class="nc bnc" id="L320" title="All 4 branches missed.">                if (critiquingRoot != null</span>
+//                      &amp;&amp; getAutoCritique()
+                        &amp;&amp; critiqueLock &lt;= 0) {
+
+                    // why?
+<span class="nc" id="L325">                    synchronized (this) {</span>
+<span class="nc" id="L326">                        critiqueStartTime = System.currentTimeMillis();</span>
+<span class="nc" id="L327">                        cutoffTime = critiqueStartTime + 3000;</span>
+
+<span class="nc" id="L329">                        size = addQueue.size();</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">                        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L331">                            hotQueue.add(addQueue.get(i));</span>
+<span class="nc" id="L332">                            hotReasonQueue.add(addReasonQueue.get(i));</span>
+                        }
+<span class="nc" id="L334">                        addQueue.clear();</span>
+<span class="nc" id="L335">                        addReasonQueue.clear();</span>
+
+<span class="nc" id="L337">                        longestHot = Math.max(longestHot, hotQueue.size());</span>
+<span class="nc" id="L338">                        agency.determineActiveCritics(this);</span>
+
+<span class="nc bnc" id="L340" title="All 2 branches missed.">                        while (hotQueue.size() &gt; 0) {</span>
+<span class="nc" id="L341">                            Object dm = hotQueue.get(0);</span>
+<span class="nc" id="L342">                            Long reasonCode =</span>
+<span class="nc" id="L343">                                    hotReasonQueue.get(0);</span>
+<span class="nc" id="L344">                            hotQueue.remove(0);</span>
+<span class="nc" id="L345">                            hotReasonQueue.remove(0);</span>
+<span class="nc" id="L346">                            Agency.applyAllCritics(dm, theDesigner(),</span>
+<span class="nc" id="L347">                                    reasonCode.longValue());</span>
+<span class="nc" id="L348">                        }</span>
+
+<span class="nc" id="L350">                        size = removeQueue.size();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">                        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L352">                            warmQueue.remove(removeQueue.get(i));</span>
+                        }
+<span class="nc" id="L354">                        removeQueue.clear();</span>
+
+<span class="nc bnc" id="L356" title="All 2 branches missed.">                        if (warmQueue.size() == 0) {</span>
+<span class="nc" id="L357">                            warmQueue.add(critiquingRoot);</span>
+                        }
+<span class="nc bnc" id="L359" title="All 2 branches missed.">                        while (warmQueue.size() &gt; 0</span>
+<span class="nc bnc" id="L360" title="All 4 branches missed.">                                &amp;&amp; (System.currentTimeMillis() &lt; cutoffTime</span>
+                                        || minWarmElements &gt; 0)) {
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                            if (minWarmElements &gt; 0) {</span>
+<span class="nc" id="L363">                                minWarmElements--;</span>
+                            }
+<span class="nc" id="L365">                            Object dm = warmQueue.get(0);</span>
+<span class="nc" id="L366">                            warmQueue.remove(0);</span>
+                            try {
+<span class="nc" id="L368">                                Agency.applyAllCritics(dm, theDesigner());</span>
+<span class="nc" id="L369">                                java.util.Enumeration subDMs =</span>
+<span class="nc" id="L370">                                        childGenerator.gen(dm);</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">                                while (subDMs.hasMoreElements()) {</span>
+<span class="nc" id="L372">                                    Object nextDM = subDMs.nextElement();</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                                    if (!(warmQueue.contains(nextDM))) {</span>
+<span class="nc" id="L374">                                        warmQueue.add(nextDM);</span>
+                                    }
+<span class="nc" id="L376">                                }</span>
+<span class="nc" id="L377">                            } catch (InvalidElementException e) {</span>
+                                // Don't let a transient error kill the thread
+<span class="nc" id="L379">                                LOG.log(Level.WARNING, &quot;Element &quot; + dm</span>
+                                        + &quot;caused an InvalidElementException.  &quot;
+                                        + &quot;Ignoring for this pass.&quot;);
+<span class="nc" id="L382">                            }</span>
+<span class="nc" id="L383">                        }</span>
+<span class="nc" id="L384">                    }</span>
+                } else {
+<span class="nc" id="L386">                    critiqueStartTime = System.currentTimeMillis();</span>
+                }
+<span class="nc" id="L388">                critiqueDuration =</span>
+<span class="nc" id="L389">                        System.currentTimeMillis() - critiqueStartTime;</span>
+<span class="nc" id="L390">                long cycleDuration =</span>
+                    (critiqueDuration * 100) / critiqueCPUPercent;
+<span class="nc" id="L392">                long sleepDuration =</span>
+<span class="nc" id="L393">                    Math.min(cycleDuration - critiqueDuration, 3000);</span>
+<span class="nc" id="L394">                sleepDuration = Math.max(sleepDuration, 1000);</span>
+<span class="nc" id="L395">                LOG.log(Level.FINE, &quot;sleepDuration= {0}&quot;, sleepDuration);</span>
+                try {
+<span class="nc" id="L397">                    Thread.sleep(sleepDuration);</span>
+<span class="nc" id="L398">                } catch (InterruptedException ignore) {</span>
+<span class="nc" id="L399">                    LOG.log(Level.SEVERE, &quot;InterruptedException!!!&quot;, ignore);</span>
+<span class="nc" id="L400">                }</span>
+<span class="nc" id="L401">            }</span>
+<span class="nc" id="L402">        } catch (Exception e) {</span>
+<span class="nc" id="L403">            LOG.log(Level.SEVERE, &quot;Critic thread killed by exception&quot;, e);</span>
+        }
+<span class="nc" id="L405">    }</span>
+
+    /**
+     * A modelelement has been changed.
+     * Now we give it priority to be checked by the critics ASAP.
+     *
+     * TODO: why is is synchronised?
+     * TODO: what about when objects are first created?
+     *
+     * @param dm the design material
+     * @param reason the reason
+     */
+    public synchronized void critiqueASAP(Object dm, String reason) {
+<span class="nc" id="L418">        long rCode = Critic.reasonCodeFor(reason);</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        if (!userWorking) {</span>
+<span class="nc" id="L420">	    return;</span>
+	}
+        // TODO: Should we be doing anything on deleted elements?
+        // This throws an exception on remove events. - skip for now - tfm
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        if (&quot;remove&quot;.equals(reason)) {</span>
+<span class="nc" id="L425">            return;</span>
+        }
+<span class="nc" id="L427">        LOG.log(Level.FINE, &quot;critiqueASAP: {0}&quot;, dm);</span>
+<span class="nc" id="L428">        int addQueueIndex = addQueue.indexOf(dm);</span>
+<span class="nc bnc" id="L429" title="All 2 branches missed.">        if (addQueueIndex == -1) {</span>
+<span class="nc" id="L430">            addQueue.add(dm);</span>
+<span class="nc" id="L431">            Long reasonCodeObj = new Long(rCode);</span>
+<span class="nc" id="L432">            addReasonQueue.add(reasonCodeObj);</span>
+<span class="nc" id="L433">        } else {</span>
+<span class="nc" id="L434">            Long reasonCodeObj =</span>
+<span class="nc" id="L435">		addReasonQueue.get(addQueueIndex);</span>
+<span class="nc" id="L436">            long rc = reasonCodeObj.longValue() | rCode;</span>
+<span class="nc" id="L437">            Long newReasonCodeObj = new Long(rc);</span>
+<span class="nc" id="L438">            addReasonQueue.set(addQueueIndex, newReasonCodeObj);</span>
+        }
+<span class="nc" id="L440">        removeQueue.add(dm);</span>
+<span class="nc" id="L441">        longestAdd = Math.max(longestAdd, addQueue.size());</span>
+<span class="nc" id="L442">    }</span>
+
+    /**
+     * Look for potential problems or open issues in the given design.
+     * This is currently done by invoking the Agency.
+     *
+     * @param des the design to be checked
+     */
+    public void critique(Object des) {
+<span class="nc" id="L451">        Agency.applyAllCritics(des, this);</span>
+<span class="nc" id="L452">    }</span>
+
+    /**
+     * Adds a property change listener.
+     *
+     * @param pcl
+     *           The property change listener to add
+     */
+    public static void addListener(PropertyChangeListener pcl) {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (pcs == null) {</span>
+<span class="nc" id="L462">            pcs = new PropertyChangeSupport(theDesigner());</span>
+        }
+<span class="nc" id="L464">        LOG.log(Level.FINE, &quot;addPropertyChangeListener({0})&quot;, pcl);</span>
+<span class="nc" id="L465">        pcs.addPropertyChangeListener(pcl);</span>
+<span class="nc" id="L466">    }</span>
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param p
+     *           The class to remove as a property change listener.
+     */
+    public static void removeListener(PropertyChangeListener p) {
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        if (pcs != null) {</span>
+<span class="nc" id="L476">            LOG.log(Level.FINE, &quot;removePropertyChangeListener()&quot;);</span>
+<span class="nc" id="L477">            pcs.removePropertyChangeListener(p);</span>
+        }
+<span class="nc" id="L479">    }</span>
+
+    /**
+     * Setter for saveAction.
+     *
+     * @param theSaveAction The new saveAction.
+     */
+    public static void setSaveAction(Action theSaveAction) {
+<span class="nc" id="L487">    	saveAction = theSaveAction;</span>
+<span class="nc" id="L488">    }</span>
+
+    /**
+     * @param property the property name
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    public static void firePropertyChange(String property, Object oldValue,
+            Object newValue) {
+<span class="nc bnc" id="L497" title="All 2 branches missed.">        if (pcs != null) {</span>
+<span class="nc" id="L498">            pcs.firePropertyChange(property, oldValue, newValue);</span>
+        }
+<span class="nc bnc" id="L500" title="All 2 branches missed.">        if (MODEL_TODOITEM_ADDED.equals(property)</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">                || MODEL_TODOITEM_DISMISSED.equals(property)) {</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">            if (saveAction != null) {</span>
+<span class="nc" id="L503">                saveAction.setEnabled(true);</span>
+            }
+        }
+<span class="nc" id="L506">    }</span>
+
+    /*
+     * Performs critique asap.
+     *
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="nc bnc" id="L514" title="All 2 branches missed.">        if (pce.getPropertyName().equals(Argo.KEY_USER_FULLNAME.getKey())) {</span>
+<span class="nc" id="L515">            designerName = pce.getNewValue().toString();</span>
+        } else {
+<span class="nc" id="L517">            critiqueASAP(pce.getSource(), pce.getPropertyName());</span>
+        }
+<span class="nc" id="L519">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // criticism control
+
+    /**
+     * Ask this designer's agency to select which critics should be active.
+     */
+    public void determineActiveCritics() {
+<span class="nc" id="L528">        agency.determineActiveCritics(this);</span>
+<span class="nc" id="L529">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * autoCritique and critiquingInterval are two prameters that
+     * control how the critiquing thread operates. If autoCritique is
+     * false then now critiquing is done in the background. The
+     * critiquingInterval determines how often the critiquing thread
+     * executes. The concept of an interval between runs will become
+     * less important as Argo is redesigned to be more trigger
+     * driven.
+     *
+     * @return autoCritique
+     */
+    public boolean getAutoCritique() {
+<span class="nc" id="L546">        return Configuration.getBoolean(Designer.AUTO_CRITIQUE, true);</span>
+    }
+
+    /**
+     * @see #getAutoCritique()
+     * @param b true to set auto critique on, false for off
+     */
+    public void setAutoCritique(boolean b) {
+<span class="nc" id="L554">        Configuration.setBoolean(Designer.AUTO_CRITIQUE, b);</span>
+<span class="nc" id="L555">	synchronized (this) {</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">	    if (b) {</span>
+<span class="nc" id="L557">		this.notifyAll();</span>
+	    }
+<span class="nc" id="L559">	}</span>
+<span class="nc" id="L560">    }</span>
+
+    /**
+     * Get the Critiquing interval.
+     *
+     * @return The interval.
+     */
+    public int getCritiquingInterval() {
+
+<span class="nc" id="L569">        return critiquingInterval;</span>
+    }
+
+    /**
+     * Set the Critiquing Interval.
+     *
+     * @param i The new interval.
+     */
+    public void setCritiquingInterval(int i) {
+<span class="nc" id="L578">	critiquingInterval = i;</span>
+<span class="nc" id="L579">    }</span>
+
+    /**
+     * Disable critiquing.
+     */
+    public static void disableCritiquing() {
+<span class="fc" id="L585">        synchronized (theDesigner()) {</span>
+<span class="fc" id="L586">            theDesigner().critiqueLock++;</span>
+<span class="fc" id="L587">        }</span>
+<span class="fc" id="L588">    }</span>
+
+    /**
+     * Enable critiquing.
+     */
+    public static void enableCritiquing() {
+<span class="fc" id="L594">        synchronized (theDesigner()) {</span>
+<span class="fc" id="L595">            theDesigner().critiqueLock--;</span>
+<span class="fc" id="L596">        }</span>
+<span class="fc" id="L597">    }</span>
+
+    /**
+     * Clear all critiquing results.
+     */
+    public static void clearCritiquing() {
+<span class="nc" id="L603">        synchronized (theDesigner()) {</span>
+<span class="nc" id="L604">            theDesigner().toDoList.removeAllElements(); //v71</span>
+<span class="nc" id="L605">            theDesigner().hotQueue.clear();</span>
+<span class="nc" id="L606">            theDesigner().hotReasonQueue.clear();</span>
+<span class="nc" id="L607">            theDesigner().addQueue.clear();</span>
+<span class="nc" id="L608">            theDesigner().addReasonQueue.clear();</span>
+<span class="nc" id="L609">            theDesigner().removeQueue.clear();</span>
+<span class="nc" id="L610">            theDesigner().warmQueue.clear();</span>
+<span class="nc" id="L611">        }</span>
+        //clear out queues! @@@
+<span class="nc" id="L613">    }</span>
+
+    /**
+     * @param d the critiquing root
+     */
+    public static void setCritiquingRoot(Object d) {
+<span class="nc" id="L619">        synchronized (theDesigner()) {</span>
+<span class="nc" id="L620">            critiquingRoot = d;</span>
+<span class="nc" id="L621">        }</span>
+        /* Don't clear everything here, breaks loading! */
+<span class="nc" id="L623">    }</span>
+
+    /**
+     * @return the critiquing root
+     */
+    public static Object getCritiquingRoot() {
+<span class="nc" id="L629">        synchronized (theDesigner()) {</span>
+<span class="nc" id="L630">            return critiquingRoot;</span>
+        }
+    }
+
+    /**
+     * @return the childgenerator
+     */
+    public ChildGenerator getChildGenerator() {
+<span class="nc" id="L638">        return childGenerator;</span>
+    }
+
+    /**
+     * @param cg the childgenerator
+     */
+    public void setChildGenerator(ChildGenerator cg) {
+<span class="nc" id="L645">        childGenerator = cg;</span>
+<span class="nc" id="L646">    }</span>
+
+    /**
+     * @return the decisions
+     */
+    public DecisionModel getDecisionModel() {
+<span class="nc" id="L652">        return decisions;</span>
+    }
+
+
+    /**
+     * @return the goals
+     */
+    public GoalModel getGoalModel() {
+<span class="nc" id="L660">        return goals;</span>
+    }
+
+    /**
+     * @return the goals.
+     */
+    public List&lt;Goal&gt; getGoalList() {
+<span class="nc" id="L667">        return goals.getGoalList();</span>
+    }
+
+    /**
+     * This method returns true.&lt;p&gt;
+     *
+     * ToDoItem's that are posted by the designer are assumed to be
+     * valid until the designer explicitly removes them. Perhaps in the
+     * future the designer could specify a condition to determine when
+     * his items expire.
+     *
+     * @see ToDoItem
+     * @see org.argouml.cognitive.Critic#stillValid
+     *
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     *
+     * @param i the todo item
+     * @param d the designer
+     * @return true if still valid
+     */
+<span class="nc" id="L688">    public boolean stillValid(ToDoItem i, Designer d) { return true; }</span>
+
+    /*
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
+     */
+    public boolean supports(Decision d) {
+<span class="nc bnc" id="L694" title="All 2 branches missed.">        return d == Decision.UNSPEC;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#getSupportedDecisions()
+     */
+    public List&lt;Decision&gt; getSupportedDecisions() {
+<span class="nc" id="L701">        return unspecifiedDecision;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
+     */
+    public boolean supports(Goal g) {
+<span class="nc" id="L708">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#getSupportedGoals()
+     */
+    public List&lt;Goal&gt; getSupportedGoals() {
+<span class="nc" id="L715">        return unspecifiedGoal;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
+     */
+    public boolean containsKnowledgeType(String type) {
+<span class="nc" id="L722">        return type.equals(&quot;Designer's&quot;);</span>
+    }
+
+    /*
+     * Just returns the descr param.
+     *
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, ListSet)
+     */
+    public String expand(String desc, ListSet offs) {
+<span class="nc" id="L731">        return desc;</span>
+    }
+
+    /*
+     * Get the generic clarifier for this designer/poster.
+     *
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
+    public Icon getClarifier() {
+<span class="nc" id="L740">        return clarifier;</span>
+    }
+
+    /**
+     * Get the generic clarifier for this designer/poster.
+     *
+     * @param clar the clarifier icon
+     */
+    public void setClarifier(Icon clar) {
+<span class="nc" id="L749">        clarifier = clar;</span>
+<span class="nc" id="L750">    }</span>
+
+    /**
+     * @return this Designer's ToDoList, a list of pending problems and
+     * issues that the designer might be interested in.
+     *
+     * @see ToDoList
+     */
+    public ToDoList getToDoList() {
+<span class="fc" id="L759">        return toDoList;</span>
+    }
+
+    /**
+     * Remove all the items in the given list from my list.
+     *
+     * @param list the items to be removed
+     */
+    public void removeToDoItems(ToDoList list) {
+<span class="nc" id="L768">        toDoList.removeAll(list);</span>
+<span class="nc" id="L769">    }</span>
+
+    /**
+     * Reply the designers personal preferences.
+     * Currently not used (?).
+     *
+     * @return the preferences
+     */
+    public Properties getPrefs() {
+<span class="nc" id="L778">        return prefs;</span>
+    }
+
+
+    /**
+     * @param d the decision
+     * @return true if the given decision is considered
+     */
+    public boolean isConsidering(Decision d) {
+<span class="nc bnc" id="L787" title="All 2 branches missed.">        return d.getPriority() &gt; 0;</span>
+    }
+
+    /**
+     * Record the extent to which the designer is considering the given
+     * decision.
+     *
+     * @param decision the decision
+     * @param priority the priority
+     */
+    public void setDecisionPriority(String decision, int priority) {
+<span class="nc" id="L798">        decisions.setDecisionPriority(decision, priority);</span>
+<span class="nc" id="L799">    }</span>
+
+    /**
+     * Record the extent to which the designer desires the given goal.
+     *
+     * @param goal the given goal
+     * @return true if this goal is desired
+     */
+    public boolean hasGoal(String goal) {
+<span class="nc" id="L808">        return goals.hasGoal(goal);</span>
+    }
+
+    /**
+     * @param goal the given goal
+     * @param priority the priority
+     */
+    public void setGoalPriority(String goal, int priority) {
+<span class="nc" id="L816">        goals.setGoalPriority(goal, priority);</span>
+<span class="nc" id="L817">    }</span>
+
+    /**
+     * @param goal the goal I (me, the designer) desire
+     */
+    public void startDesiring(String goal) {
+<span class="nc" id="L823">        goals.startDesiring(goal);</span>
+<span class="nc" id="L824">    }</span>
+
+    /**
+     * @param goal the goal that is not desired any more
+     */
+    public void stopDesiring(String goal) {
+<span class="nc" id="L830">        goals.stopDesiring(goal);</span>
+<span class="nc" id="L831">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.Poster#snooze()
+     */
+    public void snooze() {
+        /* do nothing */
+<span class="nc" id="L838">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.Poster#unsnooze()
+     */
+    public void unsnooze() {
+        /* do nothing */
+<span class="nc" id="L845">    }</span>
+
+    /**
+     * Reply the Agency object that is helping this Designer.
+     *
+     * @return my agency
+     */
+    public Agency getAgency() {
+<span class="fc" id="L853">        return agency;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // user interface
+
+    /**
+     * Inform the human designer using this system that the given
+     * ToDoItem should be considered. This can be disruptive if the item
+     * is urgent, or (more commonly) it is added to his ToDoList so that
+     * he can consider it at his leisure.
+     *
+     * @param item the todo item
+     */
+    public void inform(ToDoItem item) {
+<span class="nc" id="L868">        toDoList.addElement(item);</span>
+<span class="nc" id="L869">    }</span>
+
+    /**
+     * set the name of this designer.
+     * @param name the designer name
+     */
+    public void setDesignerName(String name) {
+<span class="nc" id="L876">        designerName = name;</span>
+<span class="nc" id="L877">    }</span>
+
+    /**
+     * query the name of the designer.
+     * @return the designer name
+     */
+    public String getDesignerName() {
+<span class="nc" id="L884">        return designerName;</span>
+    }
+
+    /*
+     * This is used in the todo panel, when &quot;By Poster&quot; is chosen for a
+     * manually created todo item.
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        //TODO: This should be the name of the designer that created
+        //      the todoitem, not the current username!
+<span class="nc" id="L897">        return getDesignerName();</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // issue resolution
+
+    /*
+     * Does not do anything.
+     *
+     * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem,
+     * java.lang.Object)
+     */
+<span class="nc" id="L909">    public void fixIt(ToDoItem item, Object arg) { }</span>
+
+    /*
+     * Just returns false.
+     *
+     * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)
+     */
+<span class="nc" id="L916">    public boolean canFixIt(ToDoItem item) { return false; }</span>
+
+    /**
+     * @param working true if the user is working
+     * (i.e. this is not the startup phase of ArgoUML)
+     */
+    public static void setUserWorking(boolean working) {
+<span class="nc" id="L923">        userWorking = working;</span>
+<span class="nc" id="L924">    }</span>
+
+    /**
+     * @return true if the user is working
+     * (i.e. this is not the startup phase of ArgoUML)
+     */
+    public static boolean isUserWorking() {
+<span class="nc" id="L931">        return userWorking;</span>
+    }
+
+
+    /**
+     * ChildGenerator which always returns an empty enumeration.
+     * @author MarkusK
+     *
+     */
+<span class="fc" id="L940">    static class EmptyChildGenerator implements ChildGenerator {</span>
+        /**
+         * Reply a Enumeration of the children of the given Object.
+	 *
+	 * @param o The object.
+	 * @return the Enumeration.
+         */
+        public Enumeration gen(Object o) {
+<span class="nc" id="L948">            return EnumerationEmpty.theInstance();</span>
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7599621170029351645L;
+    } /* end class ChildGenDMElements */
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3647853023882216454L;
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

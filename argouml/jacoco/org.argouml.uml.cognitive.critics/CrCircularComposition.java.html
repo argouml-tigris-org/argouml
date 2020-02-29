@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrCircularComposition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrCircularComposition.java</span></div><h1>CrCircularComposition.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
+import org.argouml.uml.GenCompositeClasses2;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.UMLToDoItem;
+
+/**
+ * @author jrobbins@ics.uci.edu
+ */
+public class CrCircularComposition extends CrUML {
+<span class="fc" id="L59">    private static final Logger LOG =</span>
+<span class="fc" id="L60">        Logger.getLogger(CrCircularComposition.class.getName());</span>
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L65">    public CrCircularComposition() {</span>
+<span class="fc" id="L66">        setupHeadAndDesc();</span>
+<span class="fc" id="L67">	addSupportedDecision(UMLDecision.CONTAINMENT);</span>
+<span class="fc" id="L68">	setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+<span class="fc" id="L69">	setPriority(ToDoItem.LOW_PRIORITY);</span>
+	// no good trigger
+<span class="fc" id="L71">    }</span>
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     *      java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">	if (!(Model.getFacade().isAClassifier(dm))) {</span>
+<span class="nc" id="L80">            return NO_PROBLEM;</span>
+        }
+<span class="nc" id="L82">	ListSet reach =</span>
+<span class="nc" id="L83">	    (new ListSet(dm)).reachable(GenCompositeClasses2.getInstance());</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">	if (reach.contains(dm)) {</span>
+<span class="nc" id="L85">            return PROBLEM_FOUND;</span>
+        }
+<span class="nc" id="L87">	return NO_PROBLEM;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
+     *      org.argouml.cognitive.Designer)
+     */
+    @Override
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+
+<span class="nc" id="L97">        ListSet offs = computeOffenders(dm);</span>
+<span class="nc" id="L98">	return new UMLToDoItem(this, offs, dsgr);</span>
+    }
+
+    /**
+     * @param dm is the UML entity that is being checked
+     * @return the list of offenders
+     */
+    protected ListSet computeOffenders(Object dm) {
+<span class="nc" id="L106">	ListSet offs = new ListSet(dm);</span>
+<span class="nc" id="L107">	ListSet above = offs.reachable(GenCompositeClasses2.getInstance());</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for (Object cls2 : above) {</span>
+<span class="nc" id="L109">	    ListSet trans = (new ListSet(cls2))</span>
+<span class="nc" id="L110">	        .reachable(GenCompositeClasses2.getInstance());</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">	    if (trans.contains(dm)) {</span>
+<span class="nc" id="L112">                offs.add(cls2);</span>
+            }
+<span class="nc" id="L114">	}</span>
+<span class="nc" id="L115">	return offs;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#stillValid(
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">	if (!isActive()) {</span>
+<span class="nc" id="L125">	    return false;</span>
+	}
+<span class="nc" id="L127">	ListSet offs = i.getOffenders();</span>
+<span class="nc" id="L128">	Object dm =  offs.get(0);</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">	if (!predicate(dm, dsgr)) {</span>
+<span class="nc" id="L130">	    return false;</span>
+	}
+<span class="nc" id="L132">	ListSet newOffs = computeOffenders(dm);</span>
+<span class="nc" id="L133">	boolean res = offs.equals(newOffs);</span>
+
+<span class="nc" id="L135">        LOG.log(Level.FINE,</span>
+                &quot;offs={0} newOffs={1} res = {2}&quot;,
+                new Object[] {
+                    offs,
+                    newOffs,
+<span class="nc" id="L140">                    res</span>
+                });
+<span class="nc" id="L142">	return res;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+<span class="nc" id="L150">	return WizBreakCircularComp.class;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L158">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L159">        ret.add(Model.getMetaTypes().getUMLClass());</span>
+<span class="fc" id="L160">        return ret;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

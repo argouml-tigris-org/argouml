@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLListCellRenderer2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLListCellRenderer2.java</span></div><h1>UMLListCellRenderer2.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.Component;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.UIManager;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+
+/**
+ * The default cell renderer for uml model elements. Used by UMLList2 and its
+ * children.
+ *
+ * This class must be efficient as it is called many 1000's of times.
+ *
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 2, 2003
+ */
+public class UMLListCellRenderer2 extends DefaultListCellRenderer {
+
+    /**
+     * True if the icon for the modelelement should be shown. The icon is, for
+     * instance, a small class symbol for a class.
+     */
+    private boolean showIcon;
+
+    /**
+     * True if the containment path should be shown 
+     * (to help the user disambiguate elements with the same name);
+     */
+    private boolean showPath;
+
+    /**
+     * Constructor for UMLListCellRenderer2.
+     *
+     * @param showTheIcon true if the list should show icons
+     */
+    public UMLListCellRenderer2(boolean showTheIcon) {
+<span class="fc" id="L85">        this(showTheIcon, true);</span>
+<span class="fc" id="L86">    }</span>
+    
+    /**
+     * Constructor for UMLListCellRenderer2.
+     *
+     * @param showTheIcon true if the list should show icons
+     * @param showThePath true if the list should show containment path
+     */
+<span class="fc" id="L94">    public UMLListCellRenderer2(boolean showTheIcon, boolean showThePath) {</span>
+
+        // only need to this from super()
+<span class="fc" id="L97">        updateUI();</span>
+<span class="fc" id="L98">        setAlignmentX(LEFT_ALIGNMENT);</span>
+
+<span class="fc" id="L100">        showIcon = showTheIcon;</span>
+<span class="fc" id="L101">        showPath = showThePath;</span>
+<span class="fc" id="L102">    }</span>
+
+    /*
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+     *      java.lang.Object, int, boolean, boolean)
+     */
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value,
+            int index, boolean isSelected, boolean cellHasFocus) {
+        // Leave logging commented out by default for efficiency
+//        LOG.debug(&quot;determine rendering for: &quot; + value);
+//        LOG.debug(&quot;show icon: &quot; + showIcon);
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (Model.getFacade().isAUMLElement(value)) {</span>
+
+//            LOG.debug(&quot;is a Base or Multiplicity&quot;);
+<span class="nc" id="L117">            String text = makeText(value);</span>
+<span class="nc" id="L118">            setText(text);</span>
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (showIcon) {</span>
+
+                // ----- setup similar to the super() implementation -----
+<span class="nc" id="L123">                setComponentOrientation(list.getComponentOrientation());</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                if (isSelected) {</span>
+<span class="nc" id="L125">                    setForeground(list.getSelectionForeground());</span>
+<span class="nc" id="L126">                    setBackground(list.getSelectionBackground());</span>
+                } else {
+<span class="nc" id="L128">                    setForeground(list.getForeground());</span>
+<span class="nc" id="L129">                    setBackground(list.getBackground());</span>
+                }
+
+<span class="nc" id="L132">                setEnabled(list.isEnabled());</span>
+<span class="nc" id="L133">                setFont(list.getFont());</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                setBorder((cellHasFocus) ? UIManager</span>
+<span class="nc" id="L135">                        .getBorder(&quot;List.focusCellHighlightBorder&quot;)</span>
+                        : noFocusBorder);
+                // --------------------------------------------------------
+<span class="nc" id="L138">                setIcon(ResourceLoaderWrapper.getInstance()</span>
+<span class="nc" id="L139">                        .lookupIcon(value));</span>
+            } else {
+                // hack to make sure that the right height is
+                // applied when no icon is used.
+<span class="nc" id="L143">                return super.getListCellRendererComponent(list, text, index,</span>
+                        isSelected, cellHasFocus);
+            }
+
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        } else if (value instanceof String) {</span>
+<span class="nc" id="L148">            return super.getListCellRendererComponent(list, value, index,</span>
+                    isSelected, cellHasFocus);
+<span class="nc bnc" id="L150" title="All 4 branches missed.">        } else if (value == null || value.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L151">            JLabel label = new JLabel(&quot;&lt;none&gt;&quot;);</span>
+<span class="nc" id="L152">            label.setIcon(null);</span>
+<span class="nc" id="L153">            return label;</span>
+        }
+
+<span class="nc" id="L156">        return this;</span>
+    }
+
+    /**
+     * Makes the text that must be placed on the label that is returned.
+     * If there is no name for the given modelelement, then
+     * (anon xxx) is shown, with xxx the type name.
+     *
+     * @param value the given modelelement
+     * @return String the text to be shown
+     */
+    public String makeText(Object value) {
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (value instanceof String) {</span>
+<span class="nc" id="L169">            return (String) value;</span>
+        }
+<span class="fc" id="L171">        String name = null;</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (Model.getFacade().isAParameter(value)) {</span>
+<span class="nc" id="L173">            Object type = Model.getFacade().getType(value);</span>
+<span class="nc" id="L174">            name = getName(value);</span>
+<span class="nc" id="L175">            String typeName = null;</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">            if (type != null) {</span>
+<span class="nc" id="L177">                typeName = Model.getFacade().getName(type);</span>
+            }
+<span class="nc bnc" id="L179" title="All 4 branches missed.">            if (typeName != null || &quot;&quot;.equals(typeName)) {</span>
+<span class="nc" id="L180">                name = Translator.localize(</span>
+                        &quot;misc.name.withType&quot;,
+                        new Object[] {name, typeName});
+            }
+<span class="nc" id="L184">            return name;</span>
+        }
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (Model.getFacade().isAUMLElement(value)) {</span>
+            try {
+<span class="nc" id="L188">                name = getName(value);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                if (Model.getFacade().isAStereotype(value)) {</span>
+<span class="nc" id="L190">                    String baseString = &quot;&quot;;</span>
+                    Iterator bases =
+<span class="nc" id="L192">                            Model.getFacade().getBaseClasses(value).iterator();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                    if (bases.hasNext()) {</span>
+<span class="nc" id="L194">                        baseString = makeText(bases.next());</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                        while (bases.hasNext()) {</span>
+<span class="nc" id="L196">                            baseString = Translator.localize(</span>
+                                    &quot;misc.name.baseClassSeparator&quot;,
+                                    new Object[] {baseString, 
+<span class="nc" id="L199">                                                  makeText(bases.next())</span>
+                                    }
+                            );
+                        }
+                    }
+<span class="nc" id="L204">                    name = Translator.localize(</span>
+                            &quot;misc.name.withBaseClasses&quot;,
+                            new Object[] {name, baseString});
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                } else if (showPath) {</span>
+                    List pathList =
+<span class="nc" id="L209">                            Model.getModelManagementHelper().getPathList(value);</span>
+                    String path;
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                    if (pathList.size() &gt; 1) {</span>
+<span class="nc" id="L212">                        path = (String) pathList.get(0);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                        for (int i = 1; i &lt; pathList.size() - 1; i++) {</span>
+<span class="nc" id="L214">                            String n = (String) pathList.get(i);</span>
+<span class="nc" id="L215">                            path = Translator.localize(</span>
+                                            &quot;misc.name.pathSeparator&quot;,
+                                            new Object[] {path, n});
+                        }
+<span class="nc" id="L219">                        name = Translator.localize(</span>
+                                        &quot;misc.name.withPath&quot;,
+                                        new Object[] {name, path});
+                    }
+                }
+<span class="nc" id="L224">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L225">                name = Translator.localize(&quot;misc.name.deleted&quot;);</span>
+<span class="nc" id="L226">            }</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAMultiplicity(value)) {</span>
+<span class="nc" id="L228">            name = Model.getFacade().getName(value);</span>
+        } else {
+<span class="fc" id="L230">            name = makeTypeName(value);</span>
+        }
+<span class="fc" id="L232">        return name;</span>
+
+    }
+
+    private String getName(Object value) {
+<span class="nc" id="L237">        String name = null;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (Model.getFacade().isANamedElement(value)) {</span>
+<span class="nc" id="L239">            name = Model.getFacade().getName(value);</span>
+        } else {
+            // TODO: Bob says - if the model element is not named we could
+            // generate a name. e.g. a generalization becomes &quot;Class A -&gt; Class B&quot;
+<span class="nc" id="L243">            name = null;</span>
+        }
+<span class="nc bnc" id="L245" title="All 4 branches missed.">        if (name == null || name.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L246">            name = Translator.localize(</span>
+                            &quot;misc.name.unnamed&quot;,
+<span class="nc" id="L248">                            new Object[] {makeTypeName(value)});</span>
+        }
+<span class="nc" id="L250">        return name;</span>
+    }
+
+    private String makeTypeName(Object elem) {
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        if (Model.getFacade().isAUMLElement(elem)) {</span>
+<span class="nc" id="L255">            return Model.getFacade().getUMLClassName(elem);</span>
+        }
+<span class="fc" id="L257">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizStepTextField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">WizStepTextField.java</span></div><h1>WizStepTextField.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.SpacerPanel;
+
+
+/**
+ * A non-modal wizard step that shows instructions and prompts
+ * the user to enter a string.
+ *
+ * @see org.argouml.cognitive.Critic
+ * @see org.argouml.cognitive.critics.Wizard
+ */
+public class WizStepTextField extends WizStep {
+<span class="nc" id="L61">    private JTextArea instructions = new JTextArea();</span>
+<span class="nc" id="L62">    private JLabel label = new JLabel(Translator.localize(&quot;label.value&quot;));</span>
+<span class="nc" id="L63">    private JTextField field = new JTextField(20);</span>
+
+    /**
+     * The constructor. Since this constructor does not set the necessary
+     * instructions, textfield label and default value, it is private.
+     */
+<span class="nc" id="L69">    private WizStepTextField() {</span>
+<span class="nc" id="L70">	instructions.setEditable(false);</span>
+<span class="nc" id="L71">	instructions.setWrapStyleWord(true);</span>
+<span class="nc" id="L72">	instructions.setBorder(null);</span>
+<span class="nc" id="L73">	instructions.setBackground(getMainPanel().getBackground());</span>
+
+<span class="nc" id="L75">	getMainPanel().setBorder(new EtchedBorder());</span>
+
+<span class="nc" id="L77">	GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L78">	getMainPanel().setLayout(gb);</span>
+
+<span class="nc" id="L80">	GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L81">	c.ipadx = 3; c.ipady = 3;</span>
+<span class="nc" id="L82">	c.weightx = 0.0; c.weighty = 0.0;</span>
+<span class="nc" id="L83">	c.anchor = GridBagConstraints.EAST;</span>
+
+	// TODO: should have an image of a wizard or some logo
+<span class="nc" id="L86">	JLabel image = new JLabel(&quot;&quot;);</span>
+	//image.setMargin(new Insets(0, 0, 0, 0));
+<span class="nc" id="L88">	image.setIcon(getWizardIcon());</span>
+<span class="nc" id="L89">	image.setBorder(null);</span>
+<span class="nc" id="L90">	c.gridx = 0;</span>
+<span class="nc" id="L91">	c.gridheight = 4;</span>
+<span class="nc" id="L92">	c.gridy = 0;</span>
+<span class="nc" id="L93">	gb.setConstraints(image, c);</span>
+<span class="nc" id="L94">	getMainPanel().add(image);</span>
+
+<span class="nc" id="L96">	c.weightx = 1.0;</span>
+<span class="nc" id="L97">	c.gridx = 2;</span>
+<span class="nc" id="L98">	c.gridheight = 1;</span>
+<span class="nc" id="L99">	c.gridwidth = 3;</span>
+<span class="nc" id="L100">	c.gridy = 0;</span>
+<span class="nc" id="L101">	c.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L102">	gb.setConstraints(instructions, c);</span>
+<span class="nc" id="L103">	getMainPanel().add(instructions);</span>
+
+<span class="nc" id="L105">	c.gridx = 1;</span>
+<span class="nc" id="L106">	c.gridy = 1;</span>
+<span class="nc" id="L107">	c.weightx = 0.0;</span>
+<span class="nc" id="L108">	c.gridwidth = 1;</span>
+<span class="nc" id="L109">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L110">	SpacerPanel spacer = new SpacerPanel();</span>
+<span class="nc" id="L111">	gb.setConstraints(spacer, c);</span>
+<span class="nc" id="L112">	getMainPanel().add(spacer);</span>
+
+<span class="nc" id="L114">	c.gridx = 2;</span>
+<span class="nc" id="L115">	c.gridy = 2;</span>
+<span class="nc" id="L116">	c.weightx = 0.0;</span>
+<span class="nc" id="L117">	c.gridwidth = 1;</span>
+<span class="nc" id="L118">	gb.setConstraints(label, c);</span>
+<span class="nc" id="L119">	getMainPanel().add(label);</span>
+
+<span class="nc" id="L121">	c.weightx = 1.0;</span>
+<span class="nc" id="L122">	c.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L123">	c.gridx = 3;</span>
+<span class="nc" id="L124">	c.gridy = 2;</span>
+<span class="nc" id="L125">	gb.setConstraints(field, c);</span>
+<span class="nc" id="L126">	getMainPanel().add(field);</span>
+
+	//     c.gridx = 1;
+	//     c.gridy = 3;
+	//     c.gridheight = GridBagConstraints.REMAINDER;
+	//     SpacerPanel spacer2 = new SpacerPanel();
+	//     gb.setConstraints(spacer2, c);
+	//     _mainPanel.add(spacer2);
+
+<span class="nc" id="L135">	field.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param w the wizard (ignored)
+     * @param instr the instructions
+     * @param lab the label for the textfield
+     * @param val the initial value for the textfield
+     */
+    public WizStepTextField(Wizard w, String instr, String lab, String val) {
+<span class="nc" id="L147">	this();</span>
+	// store wizard?
+<span class="nc" id="L149">	instructions.setText(instr);</span>
+<span class="nc" id="L150">	label.setText(lab);</span>
+<span class="nc" id="L151">	field.setText(val);</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * @return the resulting text
+     */
+<span class="nc" id="L157">    public String getText() { return field.getText(); }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4245718254267840545L;
+} /* end class WizStepTextField */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

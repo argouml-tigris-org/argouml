@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SourcePathTableModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">SourcePathTableModel.java</span></div><h1>SourcePathTableModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.table.DefaultTableModel;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+
+/**
+ * The table model for source path settings. This class contains functionality
+ * to load the source path settings from the model.
+ */
+class SourcePathTableModel extends DefaultTableModel {
+
+    /**
+     * Index of the column where model element objects are placed.
+     */
+    static final int MODEL_ELEMENT_COLUMN = 0;
+    /**
+     * Index of the column where the model element names are placed.
+     */
+    static final int NAME_COLUMN = 1;
+    /**
+     * Index of the column where the types of the model elements are placed.
+     */
+    static final int TYPE_COLUMN = 2;
+    /**
+     * Index of the column where the source paths for the model elements are
+     * placed.
+     */
+    static final int SOURCE_PATH_COLUMN = 3;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L79">    private static final Logger LOG =</span>
+<span class="fc" id="L80">        Logger.getLogger(SourcePathTableModel.class.getName());</span>
+
+    /**
+     * Creates a new instance of SourcePathTableModel.
+     */
+    public SourcePathTableModel(SourcePathController srcPathCtrl) {
+<span class="fc" id="L86">        super(new Object[][] {</span>
+        }, new String[] {
+<span class="fc" id="L88">            &quot; &quot;, Translator.localize(&quot;misc.name&quot;),</span>
+<span class="fc" id="L89">            Translator.localize(&quot;misc.type&quot;),</span>
+<span class="fc" id="L90">            Translator.localize(&quot;misc.source-path&quot;),</span>
+        });
+<span class="fc" id="L92">        String strModel = Translator.localize(&quot;misc.model&quot;);</span>
+<span class="fc" id="L93">        String strPackage = Translator.localize(&quot;misc.package&quot;);</span>
+<span class="fc" id="L94">        String strClass = Translator.localize(&quot;misc.class&quot;);</span>
+<span class="fc" id="L95">        String strInterface = Translator.localize(&quot;misc.interface&quot;);</span>
+
+<span class="fc" id="L97">        Collection elems = srcPathCtrl.getAllModelElementsWithSourcePath();</span>
+
+<span class="fc" id="L99">        Iterator iter = elems.iterator();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        while (iter.hasNext()) {</span>
+<span class="fc" id="L101">            Object me = iter.next();</span>
+<span class="fc" id="L102">            File path = srcPathCtrl.getSourcePath(me);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (path != null) {</span>
+<span class="fc" id="L104">                String type = &quot;&quot;;</span>
+<span class="fc" id="L105">                String name = Model.getFacade().getName(me);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                if (Model.getFacade().isAModel(me)) {</span>
+<span class="fc" id="L107">                    type = strModel;</span>
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">                } else if (Model.getFacade().isAPackage(me)) {</span>
+<span class="nc" id="L109">                    type = strPackage;</span>
+<span class="nc" id="L110">                    Object parent = Model.getFacade().getNamespace(me);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                    while (parent != null) {</span>
+                        // ommit root package name; it's the model's root
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                        if (Model.getFacade().getNamespace(parent) != null) {</span>
+<span class="nc" id="L114">                            name =</span>
+<span class="nc" id="L115">                                Model.getFacade().getName(parent) + &quot;.&quot; + name;</span>
+                        }
+<span class="nc" id="L117">                        parent = Model.getFacade().getNamespace(parent);</span>
+                    }
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">                } else if (Model.getFacade().isAClass(me)) {</span>
+<span class="fc" id="L120">                    type = strClass;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                } else if (Model.getFacade().isAInterface(me)) {</span>
+<span class="nc" id="L122">                    type = strInterface;</span>
+                } else {
+<span class="nc" id="L124">                    LOG.log(Level.WARNING,</span>
+                            &quot;Can't assign a type to this model element: &quot;
+                            + me);
+                }
+<span class="fc" id="L128">                addRow(new Object[] {</span>
+<span class="fc" id="L129">                    me, name, type, path.toString(),</span>
+                });
+<span class="fc" id="L131">            } else {</span>
+<span class="nc" id="L132">                LOG.log(Level.WARNING, &quot;Unexpected: the source path for &quot; + me + &quot; is null!&quot;);</span>
+            }
+<span class="fc" id="L134">        }</span>
+<span class="fc" id="L135">    }</span>
+
+    /**
+     * The only editable cells are the ones in the source path column.
+     * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
+     */
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        return columnIndex == SOURCE_PATH_COLUMN;</span>
+    }
+
+    /**
+     * For the specified row, get the model element (ME).
+     * @param rowIndex the row index where the ME data is located
+     * @return the ME
+     */
+    public Object getModelElement(int rowIndex) {
+<span class="fc" id="L151">        return getValueAt(rowIndex, MODEL_ELEMENT_COLUMN);</span>
+    }
+
+    /**
+     * For the specified row, get the model element (ME) name.
+     * @param rowIndex the row index where the ME data is located
+     * @return the ME name
+     */
+    public String getMEName(int rowIndex) {
+<span class="nc" id="L160">        return (String) getValueAt(rowIndex, NAME_COLUMN);</span>
+    }
+
+    /**
+     * For the specified row, get the ME type.
+     * @param rowIndex the row index where the ME data is located
+     * @return the String representation of the ME type
+     */
+    public String getMEType(int rowIndex) {
+<span class="nc" id="L169">        return (String) getValueAt(rowIndex, TYPE_COLUMN);</span>
+    }
+
+    /**
+     * For the specified row get the, get the source path.
+     * @param rowIndex the row index where the ME data is located
+     * @return the String representation of the ME source path
+     */
+    public String getMESourcePath(int rowIndex) {
+<span class="fc" id="L178">        return (String) getValueAt(rowIndex, SOURCE_PATH_COLUMN);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation</a> &gt; <span class="el_source">NotationSettings.java</span></div><h1>NotationSettings.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008-2009 Tom Morris and other contributors. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Contributors.
+// The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Contributors. The 
+// Contributors do not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// CONTRIBUTORS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE CONTRIBUTORS HAVE BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE CONTRIBUTORS SPECIFICALLY DISCLAIM ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE CONTRIBUTORS
+// HAVE NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation;
+
+import org.tigris.gef.undo.Memento;
+
+/**
+ * Notation settings value object. Stores settings which control how text is
+ * rendered on diagrams.
+ * &lt;p&gt;
+ * TODO: This needs to go on a diet. It's used everywhere, so is performance
+ * sensitive. The current set of settings is the union of all those found in the
+ * legacy code, but it's not clear that all of them are actually used.
+ * 
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+public class NotationSettings {
+
+<span class="fc" id="L55">    private static final NotationSettings DEFAULT_SETTINGS = </span>
+<span class="fc" id="L56">        initializeDefaultSettings();</span>
+    
+    private NotationSettings parent;
+
+    private String notationLanguage;
+    
+    // No valid field for above notationLanguage.  It's valid if not null.
+    
+    private boolean showAssociationNames;
+
+<span class="fc" id="L66">    private boolean showAssociationNamesSet = false;</span>
+
+    private boolean showVisibilities;
+
+<span class="fc" id="L70">    private boolean showVisibilitiesSet = false;</span>
+
+    private boolean showPaths;
+
+<span class="fc" id="L74">    private boolean showPathsSet = false;</span>
+
+    private boolean fullyHandleStereotypes;
+
+<span class="fc" id="L78">    private boolean fullyHandleStereotypesSet = false;</span>
+
+    private boolean useGuillemets;
+
+<span class="fc" id="L82">    private boolean useGuillemetsSet = false;</span>
+
+    private boolean showMultiplicities;
+
+<span class="fc" id="L86">    private boolean showMultiplicitiesSet = false;</span>
+
+    private boolean showSingularMultiplicities;
+
+<span class="fc" id="L90">    private boolean showSingularMultiplicitiesSet = false;</span>
+
+    // TODO: Do we need to control separately for attributes and operations?
+    private boolean showTypes;
+
+<span class="fc" id="L95">    private boolean showTypesSet = false;</span>
+
+    private boolean showProperties;
+
+<span class="fc" id="L99">    private boolean showPropertiesSet = false;</span>
+
+    private boolean showInitialValues;
+
+<span class="fc" id="L103">    private boolean showInitialValuesSet = false;</span>
+
+    /**
+     * Create a notation settings value object with all default values.
+     * &lt;p&gt;
+     * TODO: This class only has partial Undo support (basically just those
+     * members that had it as part of a previous implementation).
+     */
+    public NotationSettings() {
+<span class="fc" id="L112">        super();</span>
+<span class="fc" id="L113">        parent = getDefaultSettings();</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Create a notation settings object which uses the given settings as its
+     * default values.  Note that there can be multiple levels of settings in
+     * the hierarchy.
+     */
+    public NotationSettings(NotationSettings parentSettings) {
+<span class="fc" id="L122">        this();</span>
+<span class="fc" id="L123">        parent = parentSettings;</span>
+<span class="fc" id="L124">    }</span>
+
+    // TODO: These defaults need to be checked against historical ones
+    private static NotationSettings initializeDefaultSettings() {
+<span class="fc" id="L128">        NotationSettings settings = new NotationSettings();</span>
+<span class="fc" id="L129">        settings.parent = null;</span>
+<span class="fc" id="L130">        settings.setNotationLanguage(Notation.DEFAULT_NOTATION);</span>
+<span class="fc" id="L131">        settings.setFullyHandleStereotypes(false);</span>
+<span class="fc" id="L132">        settings.setShowAssociationNames(true);</span>
+<span class="fc" id="L133">        settings.setShowInitialValues(false);</span>
+<span class="fc" id="L134">        settings.setShowMultiplicities(false);</span>
+<span class="fc" id="L135">        settings.setShowPaths(false);</span>
+<span class="fc" id="L136">        settings.setShowProperties(false);</span>
+<span class="fc" id="L137">        settings.setShowSingularMultiplicities(true);</span>
+<span class="fc" id="L138">        settings.setShowTypes(true);</span>
+<span class="fc" id="L139">        settings.setShowVisibilities(false);</span>
+<span class="fc" id="L140">        settings.setUseGuillemets(false);</span>
+<span class="fc" id="L141">        return settings;</span>
+    }
+    
+    /**
+     * @return the default settings
+     */
+    public static NotationSettings getDefaultSettings() {
+<span class="fc" id="L148">        return DEFAULT_SETTINGS;</span>
+    }
+    
+    /**
+     * @return Return the notation language.
+     */
+    public String getNotationLanguage() {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (notationLanguage == null) {</span>
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">            if (parent != null) {</span>
+<span class="fc" id="L157">                return parent.getNotationLanguage();</span>
+            } else {
+<span class="nc" id="L159">                return Notation.DEFAULT_NOTATION;</span>
+            }
+        }
+<span class="fc" id="L162">        return notationLanguage;</span>
+    }
+
+
+    /**
+     * @param newLanguage the notation language.
+     * @return true if the notation is set - false if it does not exist
+     */
+    public boolean setNotationLanguage(final String newLanguage) {
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (notationLanguage != null </span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">                &amp;&amp; notationLanguage.equals(newLanguage)) {</span>
+<span class="nc" id="L173">            return true;</span>
+        }
+        
+        // TODO: Do we care?
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (Notation.findNotation(newLanguage) == null) {</span>
+            /* This Notation is not available! */
+<span class="fc" id="L179">            return false;</span>
+        }
+
+<span class="fc" id="L182">        final String oldLanguage = notationLanguage;</span>
+
+<span class="fc" id="L184">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L186">                notationLanguage = newLanguage;</span>
+                // TODO: We can't have a global &quot;current&quot; language
+                // NotationProviderFactory2.setCurrentLanguage(newLanguage);
+<span class="fc" id="L189">            }</span>
+
+            public void undo() {
+<span class="nc" id="L192">                notationLanguage = oldLanguage;</span>
+                // TODO: We can't have a global &quot;current&quot; language
+                // NotationProviderFactory2.setCurrentLanguage(oldLanguage);
+<span class="nc" id="L195">            }</span>
+        };
+<span class="fc" id="L197">        doUndoable(memento);</span>
+<span class="fc" id="L198">        return true;</span>
+    }
+
+
+    /**
+     * @return Returns the fullyHandleStereotypes setting. If true, it will
+     *         cause notation providers to include the names of the stereotypes
+     *         for an element in the editable string presented to the user.
+     */
+    public boolean isFullyHandleStereotypes() {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (fullyHandleStereotypesSet) {</span>
+<span class="fc" id="L209">            return fullyHandleStereotypes;</span>
+        } else {
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">            if (parent != null) {</span>
+<span class="fc" id="L212">                return parent.isFullyHandleStereotypes();</span>
+            } else {
+<span class="nc" id="L214">                return getDefaultSettings().isFullyHandleStereotypes();</span>
+            }
+        }
+    }
+
+    /**
+     * @param newValue The fullyHandleStereotypes to set. If true, it will cause
+     *            notation providers to include the names of the stereotypes for
+     *            an element in the editable string presented to the user.
+     */
+    public void setFullyHandleStereotypes(boolean newValue) {
+<span class="fc" id="L225">        fullyHandleStereotypes = newValue;</span>
+<span class="fc" id="L226">        fullyHandleStereotypesSet = true;</span>
+<span class="fc" id="L227">    }</span>
+
+    /**
+     * @return Returns the showSingularMultiplicities.
+     */
+    public boolean isShowSingularMultiplicities() {
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (showSingularMultiplicitiesSet) {</span>
+<span class="fc" id="L234">            return showSingularMultiplicities;</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L236">            return parent.isShowSingularMultiplicities();</span>
+        }
+<span class="nc" id="L238">        return getDefaultSettings().isShowSingularMultiplicities();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if &quot;1&quot; Multiplicities are to be shown.
+     */
+    public void setShowSingularMultiplicities(final boolean showem) {
+<span class="fc bfc" id="L245" title="All 4 branches covered.">        if (showSingularMultiplicities == showem </span>
+                &amp;&amp; showSingularMultiplicitiesSet) {
+<span class="fc" id="L247">            return;</span>
+        }
+
+<span class="fc" id="L250">        final boolean oldValid = showSingularMultiplicitiesSet;</span>
+<span class="fc" id="L251">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L253">                showSingularMultiplicities = showem;</span>
+<span class="fc" id="L254">                showSingularMultiplicitiesSet = true;</span>
+<span class="fc" id="L255">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L258" title="All 2 branches missed.">                showSingularMultiplicities = !showem;</span>
+<span class="nc" id="L259">                showSingularMultiplicitiesSet = oldValid;</span>
+<span class="nc" id="L260">            }</span>
+        };
+<span class="fc" id="L262">        doUndoable(memento);</span>
+<span class="fc" id="L263">    }</span>
+
+    /**
+     * @return Returns the useGuillemets.
+     */
+    public boolean isUseGuillemets() {
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        if (useGuillemetsSet) {</span>
+<span class="fc" id="L270">            return useGuillemets;</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L272">            return parent.isUseGuillemets();</span>
+        }
+<span class="nc" id="L274">        return getDefaultSettings().isUseGuillemets();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if guillemets are to be shown.
+     */
+    public void setUseGuillemets(final boolean showem) {
+<span class="pc bpc" id="L281" title="1 of 4 branches missed.">        if (useGuillemets == showem &amp;&amp; useGuillemetsSet) {</span>
+<span class="nc" id="L282">            return;</span>
+        }
+
+<span class="fc" id="L285">        final boolean oldValid = useGuillemetsSet;</span>
+        
+<span class="fc" id="L287">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L289">                useGuillemets = showem;</span>
+<span class="fc" id="L290">                useGuillemetsSet = true;</span>
+<span class="fc" id="L291">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L294" title="All 2 branches missed.">                useGuillemets = !showem;</span>
+<span class="nc" id="L295">                useGuillemetsSet = oldValid;</span>
+<span class="nc" id="L296">            }</span>
+        };
+<span class="fc" id="L298">        doUndoable(memento);</span>
+<span class="fc" id="L299">    }</span>
+
+    /**
+     * @return Returns the showTypes.
+     */
+    public boolean isShowTypes() {
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (showTypesSet) {</span>
+<span class="fc" id="L306">            return showTypes;</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L308">            return parent.isShowTypes();</span>
+        }
+<span class="nc" id="L310">        return getDefaultSettings().isShowTypes();</span>
+    }
+
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if types are to be shown.
+     */
+    public void setShowTypes(final boolean showem) {
+<span class="fc bfc" id="L318" title="All 4 branches covered.">        if (showTypes == showem &amp;&amp; showTypesSet) {</span>
+<span class="fc" id="L319">            return;</span>
+        }
+
+<span class="fc" id="L322">        final boolean oldValid = showTypesSet;</span>
+        
+<span class="fc" id="L324">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L326">                showTypes = showem;</span>
+<span class="fc" id="L327">                showTypesSet = true;</span>
+<span class="fc" id="L328">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                showTypes = !showem;</span>
+<span class="nc" id="L332">                showTypesSet = oldValid;</span>
+<span class="nc" id="L333">            }</span>
+        };
+<span class="fc" id="L335">        doUndoable(memento);</span>
+
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * @return Returns the showProperties.
+     */
+    public boolean isShowProperties() {
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (showPropertiesSet) {</span>
+<span class="fc" id="L344">            return showProperties;</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L346">            return parent.isShowProperties();</span>
+        }
+<span class="nc" id="L348">        return getDefaultSettings().isShowProperties();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if properties are to be shown.
+     */
+    public void setShowProperties(final boolean showem) {
+<span class="fc bfc" id="L355" title="All 4 branches covered.">        if (showProperties == showem &amp;&amp; showPropertiesSet) {</span>
+<span class="fc" id="L356">            return;</span>
+        }
+
+<span class="fc" id="L359">        final boolean oldValid = showPropertiesSet;</span>
+        
+<span class="fc" id="L361">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L363">                showProperties = showem;</span>
+<span class="fc" id="L364">                showPropertiesSet = true;</span>
+<span class="fc" id="L365">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L368" title="All 2 branches missed.">                showProperties = !showem;</span>
+<span class="nc" id="L369">                showPropertiesSet = oldValid;</span>
+<span class="nc" id="L370">            }</span>
+        };
+<span class="fc" id="L372">        doUndoable(memento);</span>
+
+<span class="fc" id="L374">    }</span>
+
+    /**
+     * @return Returns the showInitialValues.
+     */
+    public boolean isShowInitialValues() {
+<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (showInitialValuesSet) {</span>
+<span class="fc" id="L381">            return showInitialValues;</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L383">            return parent.isShowInitialValues();</span>
+        }
+<span class="nc" id="L385">        return getDefaultSettings().isShowInitialValues();</span>
+    }
+
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if initial values are to be shown.
+     */
+    public void setShowInitialValues(final boolean showem) {
+<span class="fc bfc" id="L393" title="All 4 branches covered.">        if (showInitialValues == showem &amp;&amp; showInitialValuesSet) {</span>
+<span class="fc" id="L394">            return;</span>
+        }
+
+<span class="fc" id="L397">        final boolean oldValid = showInitialValuesSet;</span>
+        
+<span class="fc" id="L399">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L401">                showInitialValues = showem;</span>
+<span class="fc" id="L402">                showInitialValuesSet = true;</span>
+<span class="fc" id="L403">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L406" title="All 2 branches missed.">                showInitialValues = !showem;</span>
+<span class="nc" id="L407">                showInitialValuesSet = oldValid;</span>
+<span class="nc" id="L408">            }</span>
+        };
+<span class="fc" id="L410">        doUndoable(memento);</span>
+
+<span class="fc" id="L412">    }</span>
+
+    /**
+     * @return Returns the showMultiplicities.
+     */
+    public boolean isShowMultiplicities() {
+<span class="fc bfc" id="L418" title="All 2 branches covered.">        if (showMultiplicitiesSet) {</span>
+<span class="fc" id="L419">            return showMultiplicities;</span>
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L421">            return parent.isShowMultiplicities();</span>
+        }
+<span class="nc" id="L423">        return getDefaultSettings().isShowMultiplicities();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if the multiplicity is to be shown.
+     */
+    public void setShowMultiplicities(final boolean showem) {
+<span class="fc bfc" id="L430" title="All 4 branches covered.">        if (showMultiplicities == showem &amp;&amp; showMultiplicitiesSet) {</span>
+<span class="fc" id="L431">            return;</span>
+        }
+
+<span class="fc" id="L434">        final boolean oldValid = showMultiplicitiesSet;</span>
+        
+<span class="fc" id="L436">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L438">                showMultiplicities = showem;</span>
+<span class="fc" id="L439">                showMultiplicitiesSet = true;</span>
+<span class="fc" id="L440">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L443" title="All 2 branches missed.">                showMultiplicities = !showem;</span>
+<span class="nc" id="L444">                showMultiplicitiesSet = oldValid;</span>
+<span class="nc" id="L445">            }</span>
+        };
+<span class="fc" id="L447">        doUndoable(memento);</span>
+<span class="fc" id="L448">    }</span>
+
+
+
+    /**
+     * @return Returns the showAssociationNames.
+     */
+    public boolean isShowAssociationNames() {
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (showAssociationNamesSet) {</span>
+<span class="fc" id="L457">            return showAssociationNames;</span>
+<span class="pc bpc" id="L458" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L459">            return parent.isShowAssociationNames();</span>
+        }
+<span class="nc" id="L461">        return getDefaultSettings().isShowAssociationNames();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if association names are to be shown.
+     */
+    public void setShowAssociationNames(final boolean showem) {
+<span class="fc bfc" id="L468" title="All 4 branches covered.">        if (showAssociationNames == showem &amp;&amp; showAssociationNamesSet) {</span>
+<span class="fc" id="L469">            return;</span>
+        }
+
+<span class="fc" id="L472">        final boolean oldValid = showAssociationNamesSet;</span>
+        
+<span class="fc" id="L474">        Memento memento = new Memento() {</span>
+
+            public void redo() {
+<span class="fc" id="L477">                showAssociationNames = showem;</span>
+<span class="fc" id="L478">                showAssociationNamesSet = true;</span>
+<span class="fc" id="L479">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L482" title="All 2 branches missed.">                showAssociationNames = !showem;</span>
+<span class="nc" id="L483">                showAssociationNamesSet = oldValid;</span>
+<span class="nc" id="L484">            }</span>
+        };
+<span class="fc" id="L486">        doUndoable(memento);</span>
+<span class="fc" id="L487">    }</span>
+
+    /**
+     * @return Returns the showVisibilities.
+     */
+    public boolean isShowVisibilities() {
+<span class="fc bfc" id="L493" title="All 2 branches covered.">        if (showVisibilitiesSet) {</span>
+<span class="fc" id="L494">            return showVisibilities;</span>
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L496">            return parent.isShowVisibilities();</span>
+        }
+<span class="nc" id="L498">        return getDefaultSettings().isShowVisibilities();</span>
+    }
+
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if visibilities are to be shown.
+     */
+    public void setShowVisibilities(final boolean showem) {
+        
+<span class="fc bfc" id="L507" title="All 4 branches covered.">        if (showVisibilities == showem &amp;&amp; showVisibilitiesSet) {</span>
+<span class="fc" id="L508">            return;</span>
+        }
+
+<span class="fc" id="L511">        final boolean oldValid = showVisibilitiesSet;</span>
+        
+<span class="fc" id="L513">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L515">                showVisibilities = showem;</span>
+<span class="fc" id="L516">                showVisibilitiesSet = true;</span>
+<span class="fc" id="L517">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L520" title="All 2 branches missed.">                showVisibilities = !showem;</span>
+<span class="nc" id="L521">                showVisibilitiesSet = oldValid;</span>
+<span class="nc" id="L522">            }</span>
+        };
+<span class="fc" id="L524">        doUndoable(memento);</span>
+<span class="fc" id="L525">    }</span>
+
+    /**
+     * @return Returns the showPaths.
+     */
+    public boolean isShowPaths() {
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        if (showPathsSet) {</span>
+<span class="fc" id="L532">            return showPaths;</span>
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">        } else if (parent != null) {</span>
+<span class="fc" id="L534">            return parent.isShowPaths();</span>
+        }
+<span class="nc" id="L536">        return getDefaultSettings().isShowPaths();</span>
+    }
+
+
+    /**
+     * @param showPaths The showPaths to set.
+     */
+    public void setShowPaths(boolean showPaths) {
+<span class="fc" id="L544">        this.showPaths = showPaths;</span>
+<span class="fc" id="L545">        showPathsSet = true;</span>
+<span class="fc" id="L546">    }</span>
+
+   
+    
+    private void doUndoable(Memento memento) {
+        // TODO: Undo should be managed externally or we should be given 
+        // an Undo manager to use (the project's) rather than using a global one
+//        if (DiagramUndoManager.getInstance().isGenerateMementos()) {
+//            DiagramUndoManager.getInstance().addMemento(memento);
+//        }
+<span class="fc" id="L556">        memento.redo();</span>
+        // TODO: Mark diagram/project as dirty?
+<span class="fc" id="L558">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

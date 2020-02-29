@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionNewDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">ActionNewDiagram.java</span></div><h1>ActionNewDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
+
+/**
+ * Abstract action to trigger creation of a new diagram. &lt;p&gt;
+ *
+ * ArgoUML shall never create a diagram for a read-only modelelement.
+ * &lt;p&gt;
+ * TODO: Bobs says, can we merge ActionAddDiagram with this class?
+ *
+ * @author michiel
+ */
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">public abstract class ActionNewDiagram extends UndoableAction {</span>
+
+<span class="fc" id="L70">    private static final Logger LOG =</span>
+<span class="fc" id="L71">        Logger.getLogger(ActionNewDiagram.class.getName());</span>
+
+    /**
+     * The constructor.
+     * @param name the i18n key for this action name.
+     */
+    protected ActionNewDiagram(String name) {
+<span class="fc" id="L78">        super(Translator.localize(name),</span>
+<span class="fc" id="L79">                ResourceLoaderWrapper.lookupIcon(name));</span>
+        // Set the tooltip string:
+<span class="fc" id="L81">        putValue(Action.SHORT_DESCRIPTION,</span>
+<span class="fc" id="L82">                Translator.localize(name));</span>
+<span class="fc" id="L83">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(
+     *      java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        // TODO: Get Project or other necessary context from source??
+        // e.getSource();
+
+        // TODO: Since there may be multiple top level elements in
+        // a project, this should be using the default Namespace (currently
+        // undefined) or something similar
+<span class="fc" id="L98">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L99">        Object ns = findNamespace();</span>
+
+<span class="pc bpc" id="L101" title="2 of 4 branches missed.">        if (ns != null &amp;&amp; isValidNamespace(ns)) {</span>
+<span class="fc" id="L102">            super.actionPerformed(e);</span>
+<span class="fc" id="L103">            DiagramSettings settings =</span>
+<span class="fc" id="L104">                p.getProjectSettings().getDefaultDiagramSettings();</span>
+<span class="fc" id="L105">            ArgoDiagram diagram = createDiagram(ns, settings);</span>
+<span class="pc bpc" id="L106" title="2 of 4 branches missed.">            assert (diagram != null)</span>
+            : &quot;No diagram was returned by the concrete class&quot;;
+
+<span class="fc" id="L109">            p.addMember(diagram);</span>
+            //TODO: make the explorer listen to project member property
+            //changes...  to eliminate coupling on gui.
+<span class="fc" id="L112">            ExplorerEventAdaptor.getInstance().modelElementAdded(</span>
+<span class="fc" id="L113">                    diagram.getNamespace());</span>
+<span class="fc" id="L114">            TargetManager.getInstance().setTarget(diagram);</span>
+<span class="fc" id="L115">        } else {</span>
+<span class="nc" id="L116">            LOG.log(Level.SEVERE, &quot;No valid namespace found&quot;);</span>
+<span class="nc" id="L117">            throw new IllegalStateException(&quot;No valid namespace found&quot;);</span>
+        }
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * Find an alternative namespace for the diagram, only to be used
+     * if the target is not suitable.
+     *
+     * @return the namespace or null
+     */
+    protected Object findNamespace() {
+<span class="fc" id="L128">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L129">        return p.getRoot();</span>
+    }
+
+    /**
+     * @param namespace the namespace in which to create the diagram
+     * @return the new diagram
+     * @deprecated for 0.29.1 by tfmorris. Use
+     *             {@link #createDiagram(Object, DiagramSettings)}/
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    protected ArgoDiagram createDiagram(Object namespace) {
+<span class="nc" id="L141">        DiagramSettings settings = ProjectManager.getManager()</span>
+<span class="nc" id="L142">                .getCurrentProject().getProjectSettings()</span>
+<span class="nc" id="L143">                .getDefaultDiagramSettings();</span>
+
+<span class="nc" id="L145">        return createDiagram(namespace, settings);</span>
+    }
+
+    /**
+     * @param namespace the namespace in which to create the diagram
+     * @param settings the render settings for the diagram
+     * @return the new diagram
+     */
+    protected abstract ArgoDiagram createDiagram(Object namespace,
+            DiagramSettings settings);
+
+    /**
+     * Test if the given namespace is a valid namespace to add the diagram to.
+     * TODO: This method was created to facilitate the merge
+     * of this class with ActionAddDiagram.
+     *
+     * @param ns the namespace to check
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if valid.
+     */
+    public boolean isValidNamespace(Object ns) {
+<span class="fc" id="L165">        return true;</span>
+    }
+
+    /**
+     * Utility function to create a collaboration.
+     *
+     * @return a new collaboration
+     * @param namespace the back-up namespace to put the collaboration in
+     */
+    protected static Object createCollaboration(Object namespace) {
+<span class="fc" id="L175">        Object target = TargetManager.getInstance().getModelTarget();</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (Model.getFacade().isAUMLElement(target)</span>
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">                &amp;&amp; Model.getModelManagementHelper().isReadOnly(target)) {</span>
+<span class="nc" id="L178">            target = namespace;</span>
+        }
+<span class="fc" id="L180">        Object collaboration = null;</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (Model.getFacade().isAOperation(target)) {</span>
+<span class="nc" id="L182">            Object ns = Model.getFacade().getNamespace(</span>
+<span class="nc" id="L183">                    Model.getFacade().getOwner(target));</span>
+            collaboration =
+<span class="nc" id="L185">                Model.getCollaborationsFactory().buildCollaboration(ns, target);</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAClassifier(target)) {</span>
+<span class="fc" id="L187">            Object ns = Model.getFacade().getNamespace(target);</span>
+            collaboration =
+<span class="fc" id="L189">                Model.getCollaborationsFactory().buildCollaboration(ns, target);</span>
+<span class="fc" id="L190">        } else {</span>
+            collaboration =
+<span class="nc" id="L192">                Model.getCollaborationsFactory().createCollaboration();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            if (Model.getFacade().isANamespace(target)) {</span>
+                /* TODO: Not all namespaces are useful here - any WFRs? */
+<span class="nc" id="L195">                namespace = target;</span>
+            } else {
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (Model.getFacade().isAModelElement(target)) {</span>
+<span class="nc" id="L198">                    Object ns = Model.getFacade().getNamespace(target);</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                    if (Model.getFacade().isANamespace(ns)) {</span>
+<span class="nc" id="L200">                        namespace = ns;</span>
+                    }
+                }
+            }
+<span class="nc" id="L204">            Model.getCoreHelper().setNamespace(collaboration, namespace);</span>
+<span class="nc" id="L205">            Model.getCoreHelper().setName(collaboration,</span>
+                    &quot;unattachedCollaboration&quot;);
+        }
+<span class="fc" id="L208">        return collaboration;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

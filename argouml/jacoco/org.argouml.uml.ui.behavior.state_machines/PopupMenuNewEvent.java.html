@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopupMenuNewEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui.behavior.state_machines</a> &gt; <span class="el_source">PopupMenuNewEvent.java</span></div><h1>PopupMenuNewEvent.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui.behavior.state_machines;
+
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.ActionRemoveModelElement;
+import org.argouml.uml.ui.behavior.activity_graphs.ActionAddEventAsTrigger;
+
+/**
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
+ */
+<span class="nc bnc" id="L55" title="All 2 branches missed.">@Deprecated</span>
+public class PopupMenuNewEvent extends JPopupMenu {
+
+    /**
+     * Constructor for PopupMenuNewEvent.&lt;p&gt;
+     *
+     * Constructs a new popupmenu. The given parameter role determines what
+     * the purpose is of the events that can be created via this popupmenu.
+     * The parameter must comply to the interface Roles
+     * defined on ActionNewEvent.
+     *
+     * @param role the role
+     * @param target the target
+     */
+    public PopupMenuNewEvent(String role, Object target) {
+<span class="nc" id="L70">        super();</span>
+
+<span class="nc" id="L72">        buildMenu(this, role, target);</span>
+<span class="nc" id="L73">    }</span>
+    
+    static void buildMenu(JPopupMenu pmenu, String role, Object target) {
+        
+<span class="nc bnc" id="L77" title="All 4 branches missed.">        assert role != null;</span>
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        assert target != null;</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                || role.equals(ActionNewEvent.Roles.TRIGGER)) {</span>
+<span class="nc" id="L82">            JMenu select = new JMenu(Translator.localize(&quot;action.select&quot;));</span>
+//            select.setText(Translator.localize(&quot;action.select&quot;));
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)) {</span>
+<span class="nc" id="L85">                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(target);</span>
+<span class="nc" id="L86">                JMenuItem menuItem = new JMenuItem(</span>
+                        ActionAddEventAsDeferrableEvent.SINGLETON);
+//                select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
+<span class="nc" id="L89">                select.add(menuItem);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            } else if (role.equals(ActionNewEvent.Roles.TRIGGER)) {</span>
+<span class="nc" id="L91">                ActionAddEventAsTrigger.SINGLETON.setTarget(target);</span>
+<span class="nc" id="L92">                select.add(ActionAddEventAsTrigger.SINGLETON);</span>
+            }
+<span class="nc" id="L94">            pmenu.add(select);</span>
+        }
+
+<span class="nc" id="L97">        JMenu newMenu = new JMenu(Translator.localize(&quot;action.new&quot;));</span>
+//        newMenu.setText(Translator.localize(&quot;action.new&quot;));
+<span class="nc" id="L99">        newMenu.add(ActionNewCallEvent.getSingleton());</span>
+<span class="nc" id="L100">        ActionNewCallEvent.getSingleton().setTarget(target);</span>
+<span class="nc" id="L101">        ActionNewCallEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);</span>
+<span class="nc" id="L102">        newMenu.add(ActionNewChangeEvent.getSingleton());</span>
+<span class="nc" id="L103">        ActionNewChangeEvent.getSingleton().setTarget(target);</span>
+<span class="nc" id="L104">        ActionNewChangeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);</span>
+<span class="nc" id="L105">        newMenu.add(ActionNewSignalEvent.getSingleton());</span>
+<span class="nc" id="L106">        ActionNewSignalEvent.getSingleton().setTarget(target);</span>
+<span class="nc" id="L107">        ActionNewSignalEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);</span>
+<span class="nc" id="L108">        newMenu.add(ActionNewTimeEvent.getSingleton());</span>
+<span class="nc" id="L109">        ActionNewTimeEvent.getSingleton().setTarget(target);</span>
+<span class="nc" id="L110">        ActionNewTimeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);</span>
+<span class="nc" id="L111">        pmenu.add(newMenu);</span>
+
+<span class="nc" id="L113">        pmenu.addSeparator();</span>
+
+<span class="nc" id="L115">        ActionRemoveModelElement.SINGLETON.setObjectToRemove(</span>
+<span class="nc" id="L116">                ActionNewEvent.getAction(role, target));</span>
+<span class="nc" id="L117">        ActionRemoveModelElement.SINGLETON.putValue(Action.NAME, </span>
+<span class="nc" id="L118">                Translator.localize(&quot;action.delete-from-model&quot;));</span>
+<span class="nc" id="L119">        pmenu.add(ActionRemoveModelElement.SINGLETON);</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7624618103144695448L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

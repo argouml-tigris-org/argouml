@@ -1,0 +1,956 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigAssociation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">FigAssociation.java</span></div><h1>FigAssociation.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.ArrowHead;
+import org.tigris.gef.presentation.ArrowHeadComposite;
+import org.tigris.gef.presentation.ArrowHeadDiamond;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigText;
+
+
+/**
+ * This class represents the Fig of a binary association on a diagram.
+ *
+ */
+public class FigAssociation extends FigEdgeModelElement {
+
+<span class="fc" id="L79">    private static final Logger LOG =</span>
+<span class="fc" id="L80">        Logger.getLogger(FigAssociation.class.getName());</span>
+
+    /**
+     * Group for the FigTexts concerning the source association end.
+     */
+    private EndDecoration srcEnd;
+
+    /**
+     * Group for the FigTexts concerning the dest association end.
+     */
+    private EndDecoration destEnd;
+
+    /**
+     * Group for the FigTexts concerning the name and stereotype of the
+     * association itself.
+     */
+    private FigTextGroup middleGroup;
+
+    /**
+     * Constructor used by PGML parser.
+     *
+     * @param diagramEdgeSettings the destination uml association-end element
+     * @param settings rendering settings
+     */
+    public FigAssociation(
+            final DiagramEdgeSettings diagramEdgeSettings,
+            final DiagramSettings settings) {
+<span class="fc" id="L107">        super(diagramEdgeSettings.getOwner(), settings);</span>
+
+<span class="fc" id="L109">        createNameLabel(getOwner(), settings);</span>
+
+<span class="fc" id="L111">        Object sourceAssociationEnd =</span>
+<span class="fc" id="L112">            diagramEdgeSettings.getSourceConnector();</span>
+<span class="fc" id="L113">        Object destAssociationEnd =</span>
+<span class="fc" id="L114">            diagramEdgeSettings.getDestinationConnector();</span>
+<span class="pc bpc" id="L115" title="3 of 4 branches missed.">        if (sourceAssociationEnd == null || destAssociationEnd == null) {</span>
+            // If we have no source and dest connector then we assume this is
+            // load of an old UML1.4 diagram from before this data was saved
+            // in PGML. For UML1.4 we can assume the source is first connection
+            // and destination is last connection stored in repository for this
+            // association.
+            Iterator it =
+<span class="fc" id="L122">                Model.getFacade().getConnections(getOwner()).iterator();</span>
+
+<span class="fc" id="L124">            sourceAssociationEnd = it.next();</span>
+<span class="fc" id="L125">            destAssociationEnd = it.next();</span>
+        }
+
+<span class="fc" id="L128">        createEndFigs(</span>
+                sourceAssociationEnd,
+                destAssociationEnd,
+                settings, 45);
+
+<span class="fc" id="L133">        setBetweenNearestPoints(true);</span>
+
+<span class="fc" id="L135">        initializeNotationProvidersInternal(getOwner());</span>
+
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {</span>
+<span class="nc" id="L138">            Model.getPump().addModelEventListener(this, getOwner(),</span>
+                    new String[] {&quot;navigableOwnedEnd&quot;});
+        }
+<span class="fc" id="L141">    }</span>
+
+    protected void removeFromDiagramImpl() {
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {</span>
+<span class="nc" id="L145">            Model.getPump().removeModelEventListener(this,</span>
+<span class="nc" id="L146">                    getOwner(),</span>
+                    new String[] {&quot;navigableOwnedEnd&quot;});
+        }
+<span class="fc" id="L149">        super.removeFromDiagramImpl();</span>
+<span class="fc" id="L150">    }</span>
+
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="pc bpc" id="L153" title="3 of 4 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '2'</span>
+                &amp;&amp; pce instanceof AssociationChangeEvent
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                &amp;&amp; pce.getPropertyName().equals(&quot;navigableOwnedEnd&quot;)) {</span>
+<span class="nc" id="L156">            applyArrowHeads();</span>
+<span class="nc" id="L157">            damage();</span>
+        }
+<span class="fc" id="L159">        super.propertyChange(pce);</span>
+<span class="fc" id="L160">    }</span>
+
+
+    /**
+     * Called by the constructor to create the Figs at each end
+     * of the association.
+     * TODO: This is temporary during refactoring process. We should
+     * override setDestFigNode and setSourceFigNode and create the ends there.
+     * That will allow the same pattern to work for UML2 where we cannot assume
+     * the connection order.
+     *
+     * @param sourceAssociationEnd
+     * @param destAssociationEnd
+     * @param settings
+     */
+    private void createEndFigs(
+            final Object sourceAssociationEnd,
+            final Object destAssociationEnd,
+            final DiagramSettings settings,
+            final int displacementAngle) {
+<span class="fc" id="L180">        srcEnd = createEnd(</span>
+                sourceAssociationEnd,
+                settings, 0, 5, 180 - displacementAngle, 5);
+<span class="fc" id="L183">        destEnd = createEnd(</span>
+                destAssociationEnd,
+                settings, 100, -5, displacementAngle, 5);
+<span class="fc" id="L186">    }</span>
+
+    private EndDecoration createEnd(
+            final Object endOwner,
+            final DiagramSettings settings,
+            final int percentPostionOnLine,
+            final int pathDelta,
+            final int displacementAngle,
+            final int displacementDistance) {
+<span class="fc" id="L195">        return new EndDecoration(endOwner, settings,</span>
+                percentPostionOnLine,
+                pathDelta,
+                displacementAngle,
+                displacementDistance);
+    }
+
+    /**
+     * Create the main draggable label for the association.
+     * This can be overridden in subclasses to change behaviour.
+     * TODO: Consider introducing this to FigEdgeModelElement and
+     * using throughout all edges.
+     *
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    protected void createNameLabel(Object owner, DiagramSettings settings) {
+<span class="fc" id="L212">        middleGroup = new FigTextGroup(owner, settings);</span>
+
+        // let's use groups to construct the different text sections at
+        // the association
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">        if (getNameFig() != null) {</span>
+<span class="fc" id="L217">            middleGroup.addFig(getNameFig());</span>
+        }
+<span class="fc" id="L219">        middleGroup.addFig(getStereotypeFig());</span>
+<span class="fc" id="L220">        addPathItem(middleGroup,</span>
+                new PathItemPlacement(this, middleGroup, 50, 25));
+<span class="fc" id="L222">        ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);</span>
+<span class="fc" id="L223">    }</span>
+
+    @Override
+    public void renderingChanged() {
+<span class="nc" id="L227">        super.renderingChanged();</span>
+        /* This fixes issue 4987: */
+<span class="nc" id="L229">        srcEnd.renderingChanged();</span>
+<span class="nc" id="L230">        destEnd.renderingChanged();</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (middleGroup != null) {</span>
+<span class="nc" id="L232">            middleGroup.renderingChanged();</span>
+        }
+<span class="nc" id="L234">    }</span>
+
+
+    @Override
+    protected void initNotationProviders(Object own) {
+<span class="nc" id="L239">        initializeNotationProvidersInternal(own);</span>
+<span class="nc" id="L240">    }</span>
+
+    private void initializeNotationProvidersInternal(Object own) {
+<span class="fc" id="L243">        super.initNotationProviders(own);</span>
+<span class="fc" id="L244">        srcEnd.initNotationProviders();</span>
+<span class="fc" id="L245">        destEnd.initNotationProviders();</span>
+<span class="fc" id="L246">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public void updateListeners(Object oldOwner, Object newOwner) {
+<span class="nc" id="L253">        Set&lt;Object[]&gt; listeners = new HashSet&lt;Object[]&gt;();</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (newOwner != null) {</span>
+<span class="nc" id="L255">            listeners.add(</span>
+                    new Object[] {newOwner,
+                                  new String[] {&quot;isAbstract&quot;, &quot;remove&quot;}
+                    });
+        }
+<span class="nc" id="L260">        updateElementListeners(listeners);</span>
+        /* No further listeners required in this case - the rest is handled
+         * by the notationProvider and sub-Figs. */
+<span class="nc" id="L263">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
+     */
+    @Override
+    protected int getNotationProviderType() {
+<span class="fc" id="L270">        return NotationProviderFactory2.TYPE_ASSOCIATION_NAME;</span>
+    }
+
+    /**
+     * Get the source classifier that the association was drawn from.
+     * Note that source and destination are not necessarily meaningful
+     * regarding associations. Although the edge may originally have been
+     * drawn by the user in a certain direction it in no way indicates the
+     * direction of the association.
+     * @return the classifier at the source end of the association or null
+     * if the association is not yet attached (TODO can we ensure that this is
+     * never null?).
+     */
+    protected Object getSource() {
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (srcEnd == null) {</span>
+<span class="nc" id="L285">            return null;</span>
+        }
+<span class="nc" id="L287">        return Model.getFacade().getClassifier(srcEnd.getOwner());</span>
+    }
+
+    /**
+     * Get the destination classifier that the association was drawn from.
+     * Note that source and destination are not necessarily meaningful
+     * regarding associations. Although the edge may originally have been
+     * drawn by the user in a certain direction it in no way indicates the
+     * direction of the association.
+     * @return the classifier at the destination end of the association or null
+     * if the association is not yet attached (TODO can we ensure that this is
+     * never null?).
+     */
+    protected Object getDestination() {
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (destEnd == null) {</span>
+<span class="nc" id="L302">            return null;</span>
+        }
+<span class="nc" id="L304">        return Model.getFacade().getClassifier(destEnd.getOwner());</span>
+    }
+
+    /**
+     * Get the model element at the source end of the edge. This is not the
+     * same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getSourceConnector() {
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (srcEnd == null) {</span>
+<span class="nc" id="L320">            return null;</span>
+        }
+<span class="nc" id="L322">        return srcEnd.getOwner();</span>
+    }
+
+    /**
+     * Get the model element at the destination end of the edge. This is not
+     * the same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getDestinationConnector() {
+<span class="nc bnc" id="L337" title="All 2 branches missed.">        if (destEnd == null) {</span>
+<span class="nc" id="L338">            return null;</span>
+        }
+<span class="nc" id="L340">        return destEnd.getOwner();</span>
+    }
+
+
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    @Override
+    protected void textEdited(FigText ft) {
+
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L352">            return;</span>
+        }
+<span class="nc" id="L354">        super.textEdited(ft);</span>
+
+<span class="nc" id="L356">        Collection conn = Model.getFacade().getConnections(getOwner());</span>
+<span class="nc bnc" id="L357" title="All 4 branches missed.">        if (conn == null || conn.size() == 0) {</span>
+<span class="nc" id="L358">            return;</span>
+        }
+
+<span class="nc bnc" id="L361" title="All 2 branches missed.">	if (ft == srcEnd.getRole()) {</span>
+<span class="nc" id="L362">	    srcEnd.getRole().textEdited();</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">	} else if (ft == destEnd.getRole()) {</span>
+<span class="nc" id="L364">	    destEnd.getRole().textEdited();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">	} else if (ft == srcEnd.getMult()) {</span>
+<span class="nc" id="L366">            srcEnd.getMult().textEdited();</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">	} else if (ft == destEnd.getMult()) {</span>
+<span class="nc" id="L368">            destEnd.getMult().textEdited();</span>
+	}
+<span class="nc" id="L370">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    @Override
+    protected void textEditStarted(FigText ft) {
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (ft == srcEnd.getRole()) {</span>
+<span class="nc" id="L378">            srcEnd.getRole().textEditStarted();</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        } else if (ft == destEnd.getRole()) {</span>
+<span class="nc" id="L380">            destEnd.getRole().textEditStarted();</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        } else if (ft == srcEnd.getMult()) {</span>
+<span class="nc" id="L382">            srcEnd.getMult().textEditStarted();</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        } else if (ft == destEnd.getMult()) {</span>
+<span class="nc" id="L384">            destEnd.getMult().textEditStarted();</span>
+        } else {
+<span class="nc" id="L386">            super.textEditStarted(ft);</span>
+        }
+<span class="nc" id="L388">    }</span>
+
+    /**
+     * Choose the arrowhead style for each end. &lt;p&gt;
+     *
+     * TODO: This is called from paint(). Would it not better
+     * be called from renderingChanged()?
+     */
+    protected void applyArrowHeads() {
+<span class="nc bnc" id="L397" title="All 4 branches missed.">        if (srcEnd == null || destEnd == null) {</span>
+            /* This only happens if model-change events arrive
+             * before we are completely constructed. */
+<span class="nc" id="L400">            return;</span>
+        }
+<span class="nc" id="L402">        int sourceArrowType = srcEnd.getArrowType();</span>
+<span class="nc" id="L403">        int destArrowType = destEnd.getArrowType();</span>
+
+<span class="nc bnc" id="L405" title="All 6 branches missed.">        if (!getSettings().isShowBidirectionalArrows()</span>
+                &amp;&amp; sourceArrowType &gt; 2
+                &amp;&amp; destArrowType &gt; 2) {
+<span class="nc" id="L408">            sourceArrowType -= 3;</span>
+<span class="nc" id="L409">            destArrowType -= 3;</span>
+        }
+
+<span class="nc" id="L412">        setSourceArrowHead(FigAssociationEndAnnotation</span>
+                .ARROW_HEADS[sourceArrowType]);
+<span class="nc" id="L414">        setDestArrowHead(FigAssociationEndAnnotation</span>
+                .ARROW_HEADS[destArrowType]);
+<span class="nc" id="L416">    }</span>
+
+    /*
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L423">	Vector popUpActions = super.getPopUpActions(me);</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        if (TargetManager.getInstance().getTargets().size() &gt; 1) {</span>
+<span class="nc" id="L425">            return popUpActions;</span>
+        }
+
+<span class="nc bnc" id="L428" title="All 2 branches missed.">	if (isPointCloseToEdgeEnd(me.getPoint())) {</span>
+<span class="nc" id="L429">            buildMultiplicityMenu(popUpActions);</span>
+	}
+
+<span class="nc" id="L432">	Object association = getOwner();</span>
+<span class="nc" id="L433">        Collection ascEnds = Model.getFacade().getConnections(association);</span>
+<span class="nc" id="L434">        Iterator iter = ascEnds.iterator();</span>
+<span class="nc" id="L435">        Object ascStart = iter.next();</span>
+<span class="nc" id="L436">        Object ascEnd = iter.next();</span>
+
+<span class="nc" id="L438">        buildNavigationMenu(popUpActions, ascStart, ascEnd);</span>
+<span class="nc" id="L439">        buildAggregationMenu(popUpActions, ascStart, ascEnd);</span>
+
+<span class="nc" id="L441">	return popUpActions;</span>
+    }
+
+    private boolean isPointCloseToEdgeEnd(Point p) {
+        // x^2 + y^2 = r^2  (equation of a circle)
+<span class="nc" id="L446">        Point firstPoint = this.getFirstPoint();</span>
+<span class="nc" id="L447">        Point lastPoint = this.getLastPoint();</span>
+<span class="nc" id="L448">        int length = getPerimeterLength();</span>
+
+<span class="nc" id="L450">        int rSquared = (int) (.3 * length);</span>
+
+        // max distance is set at 100 pixels, (rSquared = 100^2)
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        if (rSquared &gt; 100) {</span>
+<span class="nc" id="L454">            rSquared = 10000;</span>
+        } else {
+<span class="nc" id="L456">            rSquared *= rSquared;</span>
+        }
+
+<span class="nc" id="L459">        int srcDeterminingFactor =</span>
+<span class="nc" id="L460">            getSquaredDistance(p, firstPoint);</span>
+<span class="nc" id="L461">        int destDeterminingFactor =</span>
+<span class="nc" id="L462">            getSquaredDistance(p, lastPoint);</span>
+
+<span class="nc bnc" id="L464" title="All 6 branches missed.">        return destDeterminingFactor &lt; rSquared</span>
+                || (srcDeterminingFactor &lt; rSquared
+                        &amp;&amp; srcDeterminingFactor &lt; destDeterminingFactor);
+    }
+
+    private void buildMultiplicityMenu(
+            final Vector popUpActions) {
+<span class="nc" id="L471">        ArgoJMenu menu =</span>
+            new ArgoJMenu(&quot;menu.popup.multiplicity&quot;);
+<span class="nc" id="L473">        menu.add(ActionMultiplicity.getDestMultOne());</span>
+<span class="nc" id="L474">        menu.add(ActionMultiplicity.getDestMultZeroToOne());</span>
+<span class="nc" id="L475">        menu.add(ActionMultiplicity.getDestMultOneToMany());</span>
+<span class="nc" id="L476">        menu.add(ActionMultiplicity.getDestMultZeroToMany());</span>
+<span class="nc" id="L477">        popUpActions.add(popUpActions.size() - getPopupAddOffset(),</span>
+                menu);
+<span class="nc" id="L479">    }</span>
+
+
+    private void buildNavigationMenu(
+            final Vector popUpActions,
+            final Object ascStart,
+            final Object ascEnd) {
+<span class="nc" id="L486">        ArgoJMenu menu =</span>
+            new ArgoJMenu(&quot;menu.popup.navigability&quot;);
+
+<span class="nc" id="L489">        menu.add(ActionNavigability.newActionNavigability(</span>
+            ascStart,
+            ascEnd,
+            ActionNavigability.BIDIRECTIONAL));
+<span class="nc" id="L493">        menu.add(ActionNavigability.newActionNavigability(</span>
+            ascStart,
+            ascEnd,
+            ActionNavigability.STARTTOEND));
+<span class="nc" id="L497">        menu.add(ActionNavigability.newActionNavigability(</span>
+            ascStart,
+            ascEnd,
+            ActionNavigability.ENDTOSTART));
+
+<span class="nc" id="L502">        popUpActions.add(</span>
+<span class="nc" id="L503">                popUpActions.size() - getPopupAddOffset(),</span>
+                menu);
+<span class="nc" id="L505">    }</span>
+
+    private void buildAggregationMenu(
+            final Vector popUpActions,
+            final Object ascStart,
+            final Object ascEnd) {
+<span class="nc" id="L511">        ArgoJMenu menu =</span>
+            new ArgoJMenu(&quot;menu.popup.aggregation&quot;);
+
+<span class="nc" id="L514">        menu.add(ActionAggregation.newActionAggregation(</span>
+            ascStart,
+            ascEnd,
+            ActionAggregation.NONE));
+<span class="nc" id="L518">        menu.add(ActionAggregation.newActionAggregation(</span>
+            ascStart,
+            ascEnd,
+            ActionAggregation.AGGREGATE_END1));
+<span class="nc" id="L522">        menu.add(ActionAggregation.newActionAggregation(</span>
+            ascStart,
+            ascEnd,
+            ActionAggregation.AGGREGATE_END2));
+<span class="nc" id="L526">        menu.add(ActionAggregation.newActionAggregation(</span>
+            ascStart,
+            ascEnd,
+            ActionAggregation.COMPOSITE_END1));
+<span class="nc" id="L530">        menu.add(ActionAggregation.newActionAggregation(</span>
+            ascStart,
+            ascEnd,
+            ActionAggregation.COMPOSITE_END2));
+<span class="nc" id="L534">        popUpActions.add(</span>
+<span class="nc" id="L535">                popUpActions.size() - getPopupAddOffset(),</span>
+                menu);
+<span class="nc" id="L537">    }</span>
+
+    /**
+     * Updates the multiplicity fields.
+     */
+    protected void updateMultiplicity() {
+<span class="nc bnc" id="L543" title="All 2 branches missed.">        if (getOwner() != null</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">                &amp;&amp; srcEnd.getOwner() != null</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">                &amp;&amp; destEnd.getOwner() != null) {</span>
+<span class="nc" id="L546">            srcEnd.getMult().setText();</span>
+<span class="nc" id="L547">            destEnd.getMult().setText();</span>
+        }
+<span class="nc" id="L549">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
+    @Override
+    public void paint(Graphics g) {
+<span class="nc bnc" id="L556" title="All 2 branches missed.">        if (getOwner() == null ) {</span>
+<span class="nc" id="L557">            LOG.log(Level.SEVERE, &quot;Trying to paint a FigAssociation without an owner. &quot;);</span>
+        } else {
+<span class="nc bnc" id="L559" title="All 2 branches missed.">            if (!Model.getFacade().isAConnector(getOwner())) {</span>
+                // If we're a UML2 Connector then we don't need arrows.
+                // TODO: When issue 6266 is implemented we can
+                // get rid of the condition and always call applyArrowHeads
+<span class="nc" id="L563">                applyArrowHeads();</span>
+            }
+        }
+<span class="nc bnc" id="L566" title="All 4 branches missed.">        if (getSourceArrowHead() != null &amp;&amp; getDestArrowHead() != null) {</span>
+<span class="nc" id="L567">            getSourceArrowHead().setLineColor(getLineColor());</span>
+<span class="nc" id="L568">            getDestArrowHead().setLineColor(getLineColor());</span>
+        }
+<span class="nc" id="L570">        super.paint(g);</span>
+<span class="nc" id="L571">    }</span>
+
+    /**
+     * @return Returns the middleGroup.
+     */
+    protected FigTextGroup getMiddleGroup() {
+<span class="nc" id="L577">        return middleGroup;</span>
+    }
+
+    /**
+     * Lays out the association edges as any other edge except for
+     * special rules for an association that loops back to the same
+     * class. For this it is snapped back to the bottom right corner
+     * if it resized to the point of not being visible.
+     * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
+     */
+    @Override
+    protected void layoutEdge() {
+<span class="nc" id="L589">        FigNode sourceFigNode = getSourceFigNode();</span>
+<span class="nc" id="L590">        Point[] points = getPoints();</span>
+<span class="nc bnc" id="L591" title="All 4 branches missed.">        if (points.length &lt; 3</span>
+                &amp;&amp; sourceFigNode != null
+<span class="nc bnc" id="L593" title="All 2 branches missed.">                &amp;&amp; getDestFigNode() == sourceFigNode) {</span>
+<span class="nc" id="L594">            Rectangle rect = new Rectangle(</span>
+<span class="nc" id="L595">                    sourceFigNode.getX() + sourceFigNode.getWidth() - 20,</span>
+<span class="nc" id="L596">                    sourceFigNode.getY() + sourceFigNode.getHeight() - 20,</span>
+                    40,
+                    40);
+<span class="nc" id="L599">            points = new Point[5];</span>
+<span class="nc" id="L600">            points[0] = new Point(rect.x, rect.y + rect.height / 2);</span>
+<span class="nc" id="L601">            points[1] = new Point(rect.x, rect.y + rect.height);</span>
+<span class="nc" id="L602">            points[2] = new Point(rect.x + rect.width , rect.y + rect.height);</span>
+<span class="nc" id="L603">            points[3] = new Point(rect.x + rect.width , rect.y);</span>
+<span class="nc" id="L604">            points[4] = new Point(rect.x + rect.width / 2, rect.y);</span>
+<span class="nc" id="L605">            setPoints(points);</span>
+<span class="nc" id="L606">        } else {</span>
+<span class="nc" id="L607">            super.layoutEdge();</span>
+        }
+<span class="nc" id="L609">    }</span>
+
+    /**
+     * If the name is updated, update the bounds of the middle group.
+     * This makes the selection box appear correctly during prop-panel edit.
+     * This is a temporary solution, until a better architecture is decided
+     * upon, see issue 5477 and
+     * http://argouml.tigris.org/issues/show_bug.cgi?id=5621#desc19.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+<span class="nc" id="L620">        super.updateNameText();</span>
+        // TODO: Without the null check the following throws a NPE so many
+        // times when it is called from FigEdgeModelElement.modelChanged(),
+        // we need to think about it.
+<span class="nc bnc" id="L624" title="All 2 branches missed.">        if (middleGroup != null) {</span>
+<span class="nc" id="L625">            middleGroup.calcBounds();</span>
+        }
+<span class="nc" id="L627">    }</span>
+
+
+    /**
+     *
+     */
+    class EndDecoration {
+        private FigAssociationEndAnnotation group;
+        private FigMultiplicity mult;
+
+        EndDecoration(
+            final Object endOwner,
+            final DiagramSettings settings,
+            final int percentPostionOnLine,
+            final int pathDelta,
+            final int displacementAngle,
+<span class="fc" id="L643">            final int displacementDistance) {</span>
+<span class="fc" id="L644">            mult = new FigMultiplicity(endOwner, settings);</span>
+<span class="fc" id="L645">            addPathItem(mult,</span>
+                    new PathItemPlacement(FigAssociation.this, mult,
+                            percentPostionOnLine, pathDelta,
+                            displacementAngle, displacementDistance));
+<span class="fc" id="L649">            ArgoFigUtil.markPosition(</span>
+                    FigAssociation.this, percentPostionOnLine, pathDelta,
+                    displacementAngle, displacementDistance, Color.green);
+
+<span class="fc" id="L653">            group = new FigAssociationEndAnnotation(</span>
+                    FigAssociation.this, endOwner, settings);
+<span class="fc" id="L655">            addPathItem(group,</span>
+                    new PathItemPlacement(FigAssociation.this, group,
+                            percentPostionOnLine, pathDelta,
+                            -displacementAngle, displacementDistance));
+<span class="fc" id="L659">            ArgoFigUtil.markPosition(</span>
+                    FigAssociation.this, percentPostionOnLine, pathDelta,
+                    -displacementAngle, displacementDistance, Color.blue);
+<span class="fc" id="L662">        }</span>
+
+        public FigAssociationEndAnnotation getGroup() {
+<span class="nc" id="L665">            return group;</span>
+        }
+
+        public FigMultiplicity getMult() {
+<span class="nc" id="L669">            return mult;</span>
+        }
+
+        public FigRole getRole() {
+<span class="nc" id="L673">            return group.getRole();</span>
+        }
+
+        public int getArrowType() {
+<span class="nc" id="L677">            return group.getArrowType();</span>
+        }
+
+        public void renderingChanged() {
+<span class="nc" id="L681">            mult.renderingChanged();</span>
+<span class="nc" id="L682">            group.renderingChanged();</span>
+<span class="nc" id="L683">        }</span>
+
+        public void initNotationProviders() {
+<span class="fc" id="L686">            mult.initNotationProviders();</span>
+<span class="fc" id="L687">        }</span>
+
+        public Object getOwner() {
+<span class="nc" id="L690">            return mult.getOwner();</span>
+        }
+    }
+
+} /* end class FigAssociation */
+
+/**
+ * A Fig representing the multiplicity of some model element.
+ * This has potential reuse for other edges showing multiplicity. &lt;p&gt;
+ *
+ * The owner is an AssociationEnd.
+ *
+ * @author Bob Tarling
+ */
+class FigMultiplicity extends FigSingleLineTextWithNotation {
+
+    FigMultiplicity(Object owner, DiagramSettings settings) {
+<span class="fc" id="L707">        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,</span>
+                new String[] {&quot;multiplicity&quot;, &quot;upperValue&quot;});
+        // Note that &quot;multiplicity&quot; is what is the notation is listening
+        // for in UML1.4 &quot;uppervalue&quot; are listened to in UML2. It is not
+        // currently why it is not required to register for &quot;lowerValue&quot;
+        // also.
+<span class="fc" id="L713">        setTextFilled(false);</span>
+<span class="fc" id="L714">        setJustification(FigText.JUSTIFY_CENTER);</span>
+<span class="fc" id="L715">    }</span>
+
+    @Override
+    protected int getNotationProviderType() {
+<span class="fc" id="L719">        return NotationProviderFactory2.TYPE_MULTIPLICITY;</span>
+    }
+
+}
+
+/**
+ * A textual Fig representing the ordering of some model element,
+ * i.e. &quot;{ordered}&quot; or nothing.
+ * This has potential reuse for other edges showing ordering. &lt;p&gt;
+ *
+ * This Fig is not editable by the user.
+ *
+ * @author Bob Tarling
+ */
+<span class="pc bpc" id="L733" title="1 of 2 branches missed.">class FigOrdering extends FigSingleLineText {</span>
+
+    private static final long serialVersionUID = 5385230942216677015L;
+
+    FigOrdering(Object owner, DiagramSettings settings) {
+<span class="fc" id="L738">        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,</span>
+                &quot;ordering&quot;);
+<span class="fc" id="L740">        setTextFilled(false);</span>
+<span class="fc" id="L741">        setJustification(FigText.JUSTIFY_CENTER);</span>
+<span class="fc" id="L742">        setEditable(false);</span>
+<span class="fc" id="L743">    }</span>
+
+    @Override
+    protected void setText() {
+<span class="nc bnc" id="L747" title="All 4 branches missed.">        assert getOwner() != null;</span>
+<span class="nc bnc" id="L748" title="All 2 branches missed.">        if (getSettings().getNotationSettings().isShowProperties()) {</span>
+<span class="nc" id="L749">            setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));</span>
+        } else {
+<span class="nc" id="L751">            setText(&quot;&quot;);</span>
+        }
+<span class="nc" id="L753">        damage();</span>
+<span class="nc" id="L754">    }</span>
+
+    /**
+     * Returns the name of the OrderingKind.
+     *
+     * @param orderingKind the kind of ordering
+     * @return &quot;{ordered}&quot; or &quot;&quot;, the latter if null or unordered
+     */
+    private String getOrderingName(Object orderingKind) {
+<span class="nc bnc" id="L763" title="All 2 branches missed.">        if (orderingKind == null) {</span>
+<span class="nc" id="L764">            return &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L766" title="All 2 branches missed.">        if (Model.getFacade().getName(orderingKind) == null) {</span>
+<span class="nc" id="L767">            return &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L769" title="All 2 branches missed.">        if (&quot;&quot;.equals(Model.getFacade().getName(orderingKind))) {</span>
+<span class="nc" id="L770">            return &quot;&quot;;</span>
+        }
+<span class="nc bnc" id="L772" title="All 2 branches missed.">        if (&quot;unordered&quot;.equals(Model.getFacade().getName(orderingKind))) {</span>
+<span class="nc" id="L773">            return &quot;&quot;;</span>
+        }
+        // TODO: I18N
+<span class="nc" id="L776">        return &quot;{&quot; + Model.getFacade().getName(orderingKind) + &quot;}&quot;;</span>
+    }
+}
+
+/**
+ * A Fig representing the association end role of some model element.
+ * This class is designed as a composite part and should always be
+ * part of a FigGroup.
+ * @author Bob Tarling
+ */
+<span class="pc bpc" id="L786" title="1 of 2 branches missed.">class FigRole extends FigSingleLineTextWithNotation {</span>
+
+    FigRole(Object owner, DiagramSettings settings) {
+<span class="fc" id="L789">        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,</span>
+                (String[]) null
+        // no need to listen to these property changes - the
+        // notationProvider takes care of this.
+                /*, new String[] {&quot;name&quot;, &quot;visibility&quot;, &quot;stereotype&quot;}*/
+                );
+<span class="fc" id="L795">        setTextFilled(false);</span>
+<span class="fc" id="L796">        setJustification(FigText.JUSTIFY_CENTER);</span>
+<span class="fc" id="L797">        setText();</span>
+<span class="fc" id="L798">    }</span>
+
+    protected int getNotationProviderType() {
+<span class="fc" id="L801">        return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;</span>
+    }
+
+    /**
+     * Property change listener to recalculate bounds of enclosing
+     * group whenever any properties of the FigRole get changed.
+     * This is only really needed for the name, see issue 5621.
+     *
+     * @param pce The property change event to process.
+     * @see org.argouml.uml.diagram.ui.FigSingleLineTextWithNotation#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="nc" id="L814">        super.propertyChange(pce);</span>
+<span class="nc bnc" id="L815" title="All 4 branches missed.">        assert (getGroup() != null);</span>
+<span class="nc" id="L816">        this.getGroup().calcBounds();</span>
+<span class="nc" id="L817">    }</span>
+
+}
+
+/**
+ * The arrowhead and the group of labels shown at the association end:
+ * the role name and the ordering property.
+ * This does not include the multiplicity. &lt;p&gt;
+ *
+ * This class does not yet support arrows for a FigAssociationEnd,
+ * as is used for N-ary associations.
+ */
+<span class="pc bpc" id="L829" title="1 of 2 branches missed.">class FigAssociationEndAnnotation extends FigTextGroup {</span>
+
+    private static final long serialVersionUID = 1871796732318164649L;
+
+<span class="fc" id="L833">    private static final ArrowHead NAV_AGGR =</span>
+        new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
+                   new ArrowHeadGreater());
+
+<span class="fc" id="L837">    private static final ArrowHead NAV_COMP =</span>
+        new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
+                   new ArrowHeadGreater());
+
+    // These are a list of arrow types.
+    private static final int NONE = 0;
+    private static final int AGGREGATE = 1;
+    private static final int COMPOSITE = 2;
+
+    // Added to the arrow type for navigable
+    private static final int NAV = 3;
+
+    /**
+     * All the arrow head types.
+     */
+<span class="fc" id="L852">    public static final ArrowHead[] ARROW_HEADS = new ArrowHead[6];</span>
+    static {
+<span class="fc" id="L854">        ARROW_HEADS[NONE] = ArrowHeadNone.TheInstance;</span>
+<span class="fc" id="L855">        ARROW_HEADS[AGGREGATE] = ArrowHeadDiamond.WhiteDiamond;</span>
+<span class="fc" id="L856">        ARROW_HEADS[COMPOSITE] = ArrowHeadDiamond.BlackDiamond;</span>
+<span class="fc" id="L857">        ARROW_HEADS[NAV + NONE] = new ArrowHeadGreater();</span>
+<span class="fc" id="L858">        ARROW_HEADS[NAV + AGGREGATE] = NAV_AGGR;</span>
+<span class="fc" id="L859">        ARROW_HEADS[NAV + COMPOSITE] = NAV_COMP;</span>
+<span class="fc" id="L860">    }</span>
+
+    private FigRole role;
+    private FigOrdering ordering;
+    private FigEdgeModelElement figEdge;
+
+    FigAssociationEndAnnotation(FigEdgeModelElement edge, Object owner,
+            DiagramSettings settings) {
+<span class="fc" id="L868">        super(owner, settings);</span>
+<span class="fc" id="L869">        figEdge = edge;</span>
+
+<span class="fc" id="L871">        role = new FigRole(owner, settings);</span>
+<span class="fc" id="L872">        addFig(role);</span>
+
+<span class="fc" id="L874">        ordering = new FigOrdering(owner, settings);</span>
+<span class="fc" id="L875">        addFig(ordering);</span>
+
+<span class="fc" id="L877">        Model.getPump().addModelEventListener(this, owner,</span>
+                new String[] {&quot;isNavigable&quot;, &quot;aggregation&quot;, &quot;participant&quot;});
+<span class="fc" id="L879">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    @Override
+    public void removeFromDiagram() {
+<span class="fc" id="L886">        Model.getPump().removeModelEventListener(this,</span>
+<span class="fc" id="L887">                getOwner(),</span>
+                new String[] {&quot;isNavigable&quot;, &quot;aggregation&quot;, &quot;participant&quot;});
+<span class="fc" id="L889">        super.removeFromDiagram();</span>
+<span class="fc" id="L890">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="pc bpc" id="L897" title="1 of 2 branches missed.">        if (pce instanceof AttributeChangeEvent</span>
+<span class="nc bnc" id="L898" title="All 2 branches missed.">            &amp;&amp; (pce.getPropertyName().equals(&quot;isNavigable&quot;)</span>
+<span class="nc bnc" id="L899" title="All 2 branches missed.">                || pce.getPropertyName().equals(&quot;aggregation&quot;))) {</span>
+<span class="nc" id="L900">            ((FigAssociation) figEdge).applyArrowHeads();</span>
+<span class="nc" id="L901">            damage();</span>
+        }
+<span class="pc bpc" id="L903" title="1 of 2 branches missed.">        if (pce instanceof AddAssociationEvent</span>
+<span class="nc bnc" id="L904" title="All 2 branches missed.">                &amp;&amp; pce.getPropertyName().equals(&quot;participant&quot;)) {</span>
+<span class="nc" id="L905">            figEdge.determineFigNodes();</span>
+        }
+
+<span class="fc" id="L908">        String pName = pce.getPropertyName();</span>
+<span class="pc bpc" id="L909" title="1 of 2 branches missed.">        if (pName.equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L910" title="All 2 branches missed.">                &amp;&amp; Boolean.FALSE.equals(pce.getNewValue())) {</span>
+            // Finished editing.
+            // Parse the text that was edited.
+            // Only the role is editable, hence:
+<span class="nc" id="L914">            role.textEdited();</span>
+<span class="nc" id="L915">            calcBounds();</span>
+<span class="nc" id="L916">            endTrans();</span>
+<span class="pc bpc" id="L917" title="1 of 2 branches missed.">        } else if (pName.equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L918" title="All 2 branches missed.">                &amp;&amp; Boolean.TRUE.equals(pce.getNewValue())) {</span>
+//            figEdge.showHelp(role.getParsingHelp());
+//            role.setText();
+<span class="nc" id="L921">            role.textEditStarted();</span>
+        } else {
+            // Pass everything else to superclass
+<span class="fc" id="L924">            super.propertyChange(pce);</span>
+        }
+<span class="fc" id="L926">    }</span>
+
+    /**
+     * @return the current arrow type of this end of the association
+     */
+    public int getArrowType() {
+<span class="nc bnc" id="L932" title="All 4 branches missed.">        assert getOwner() != null;</span>
+
+
+<span class="nc" id="L935">        final Object ak = Model.getFacade().getAggregation1(getOwner());</span>
+<span class="nc" id="L936">        final boolean nav = Model.getFacade().isNavigable(getOwner());</span>
+
+        int arrowType;
+<span class="nc bnc" id="L939" title="All 2 branches missed.">        if (Model.getAggregationKind().getAggregate().equals(ak)) {</span>
+<span class="nc" id="L940">            arrowType = AGGREGATE;</span>
+<span class="nc bnc" id="L941" title="All 2 branches missed.">        } else if (Model.getAggregationKind().getComposite().equals(ak)) {</span>
+<span class="nc" id="L942">            arrowType = COMPOSITE;</span>
+        } else {
+<span class="nc" id="L944">            arrowType = NONE;</span>
+        }
+<span class="nc bnc" id="L946" title="All 2 branches missed.">        if (nav) {</span>
+<span class="nc" id="L947">            arrowType += NAV;</span>
+        }
+<span class="nc" id="L949">        return arrowType;</span>
+    }
+
+    FigRole getRole() {
+<span class="nc" id="L953">        return role;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

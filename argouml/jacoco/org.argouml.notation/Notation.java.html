@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Notation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation</a> &gt; <span class="el_source">Notation.java</span></div><h1>Notation.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+
+/**
+ * Provides centralized methods dealing with notation.
+ *
+ * @stereotype singleton
+ * @author Thierry Lach
+ * @since 0.9.4
+ */
+public final class Notation implements PropertyChangeListener {
+
+<span class="fc" id="L65">    private static final Logger LOG =</span>
+<span class="fc" id="L66">        Logger.getLogger(Notation.class.getName());</span>
+
+    // TODO: Do we have any potential consumers of the unversioned name outside
+    // of the notation subsystem?
+    private static final String DEFAULT_NOTATION_NAME = &quot;UML&quot;;
+
+    private static final String DEFAULT_NOTATION_VERSION = &quot;1.4&quot;;
+
+    /**
+     * Default notation with both base name and version (e.g. &quot;UML 1.4&quot;)
+     */
+    public static final String DEFAULT_NOTATION = DEFAULT_NOTATION_NAME + &quot; &quot;
+            + DEFAULT_NOTATION_VERSION;
+
+    /**
+     * The name of the default ArgoUML notation.  This notation is
+     * part of ArgoUML core distribution.
+     */
+<span class="fc" id="L84">    private static NotationName notationArgo =</span>
+<span class="fc" id="L85">        makeNotation(</span>
+            DEFAULT_NOTATION_NAME,
+            DEFAULT_NOTATION_VERSION,
+<span class="fc" id="L88">            ResourceLoaderWrapper.lookupIconResource(&quot;UmlNotation&quot;));</span>
+
+    /*
+     * Remark:
+     * There is also a java-like notation, which is also
+     * part of ArgoUML core distribution.
+     */
+
+    /**
+     * The configuration key for the preferred notation.
+     */
+<span class="fc" id="L99">    public static final ConfigurationKey KEY_DEFAULT_NOTATION =</span>
+<span class="fc" id="L100">        Configuration.makeKey(&quot;notation&quot;, &quot;default&quot;);</span>
+
+    /**
+     * The configuration key that indicates whether to show stereotypes
+     * in the navigation panel.
+     */
+<span class="fc" id="L106">    public static final ConfigurationKey KEY_SHOW_STEREOTYPES =</span>
+<span class="fc" id="L107">        Configuration.makeKey(&quot;notation&quot;, &quot;navigation&quot;, &quot;show&quot;, &quot;stereotypes&quot;);</span>
+
+    /**
+     * The configuration key that indicates whether to show stereotypes
+     * in the navigation panel.
+     */
+<span class="fc" id="L113">    public static final ConfigurationKey KEY_SHOW_SINGULAR_MULTIPLICITIES =</span>
+<span class="fc" id="L114">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;singularmultiplicities&quot;);</span>
+
+
+    /**
+     * The configuration key that indicates whether to use guillemots
+     * or greater/lessthan characters in stereotypes.
+     */
+<span class="fc" id="L121">    public static final ConfigurationKey KEY_USE_GUILLEMOTS =</span>
+<span class="fc" id="L122">        Configuration.makeKey(&quot;notation&quot;, &quot;guillemots&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see association names
+     */
+<span class="fc" id="L127">    public static final ConfigurationKey KEY_SHOW_ASSOCIATION_NAMES =</span>
+<span class="fc" id="L128">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;associationnames&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see visibility signs (public,
+     * private, protected or # + -).
+     */
+<span class="fc" id="L134">    public static final ConfigurationKey KEY_SHOW_VISIBILITY =</span>
+<span class="fc" id="L135">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;visibility&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see multiplicity in attributes
+     * and classes.
+     */
+<span class="fc" id="L141">    public static final ConfigurationKey KEY_SHOW_MULTIPLICITY =</span>
+<span class="fc" id="L142">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;multiplicity&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see the initial value.
+     */
+<span class="fc" id="L147">    public static final ConfigurationKey KEY_SHOW_INITIAL_VALUE =</span>
+<span class="fc" id="L148">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;initialvalue&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see the properties (everything
+     * between braces), that is for example the concurrency.
+     */
+<span class="fc" id="L154">    public static final ConfigurationKey KEY_SHOW_PROPERTIES =</span>
+<span class="fc" id="L155">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;properties&quot;);</span>
+
+    /**
+     * Indicates if the user wants to see the types and parameters
+     * of attributes and operations.
+     */
+<span class="fc" id="L161">    public static final ConfigurationKey KEY_SHOW_TYPES =</span>
+<span class="fc" id="L162">        Configuration.makeKey(&quot;notation&quot;, &quot;show&quot;, &quot;types&quot;);</span>
+
+
+    /**
+     * The instance.
+     */
+<span class="fc" id="L168">    private static final Notation SINGLETON = new Notation();</span>
+
+
+    /**
+     * The constructor.
+     * TODO: Why does this method not handle all settings?
+     */
+<span class="fc" id="L175">    private Notation() {</span>
+<span class="fc" id="L176">        Configuration.addListener(KEY_USE_GUILLEMOTS, this);</span>
+<span class="fc" id="L177">        Configuration.addListener(KEY_DEFAULT_NOTATION, this);</span>
+<span class="fc" id="L178">        Configuration.addListener(KEY_SHOW_TYPES, this);</span>
+<span class="fc" id="L179">        Configuration.addListener(KEY_SHOW_MULTIPLICITY, this);</span>
+<span class="fc" id="L180">        Configuration.addListener(KEY_SHOW_PROPERTIES, this);</span>
+<span class="fc" id="L181">        Configuration.addListener(KEY_SHOW_ASSOCIATION_NAMES, this);</span>
+<span class="fc" id="L182">        Configuration.addListener(KEY_SHOW_VISIBILITY, this);</span>
+<span class="fc" id="L183">        Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * @param n the NotationName that will become default
+     */
+    public static void setDefaultNotation(NotationName n) {
+<span class="fc" id="L190">        LOG.log(Level.INFO,</span>
+<span class="fc" id="L191">                &quot;default notation set to {0}&quot;, n.getConfigurationValue());</span>
+
+<span class="fc" id="L193">        Configuration.setString(</span>
+            KEY_DEFAULT_NOTATION,
+<span class="fc" id="L195">            n.getConfigurationValue());</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Convert a String into a NotationName.
+     * @param s the String
+     * @return the matching NotationName
+     */
+    public static NotationName findNotation(String s) {
+<span class="fc" id="L204">        return NotationNameImpl.findNotation(s);</span>
+    }
+
+    /**
+     * Returns the Notation as set in the menu.
+     *
+     * @return the default NotationName
+     */
+    public static NotationName getConfiguredNotation() {
+<span class="fc" id="L213">        NotationName n =</span>
+<span class="fc" id="L214">            NotationNameImpl.findNotation(</span>
+<span class="fc" id="L215">                Configuration.getString(</span>
+                    KEY_DEFAULT_NOTATION,
+<span class="fc" id="L217">                    notationArgo.getConfigurationValue()));</span>
+        // This is needed for the case when the default notation is
+        // not loaded at this point.
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (n == null) {</span>
+<span class="fc" id="L221">            n = NotationNameImpl.findNotation(DEFAULT_NOTATION);</span>
+	}
+<span class="fc" id="L223">        LOG.log(Level.FINE, &quot;default notation is {0}&quot;, n.getConfigurationValue());</span>
+<span class="fc" id="L224">        return n;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // class accessors
+
+    ////////////////////////////////////////////////////////////////
+    // static accessors
+
+    /**
+     * @return the singleton
+     */
+    public static Notation getInstance() {
+<span class="nc" id="L237">        return SINGLETON;</span>
+    }
+
+    /*
+     * Called after the notation default property gets changed.
+     *
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="fc" id="L246">        LOG.log(Level.INFO, &quot;Notation change: {0} to {1}&quot;,</span>
+<span class="fc" id="L247">                new Object[]{pce.getOldValue(), pce.getNewValue()});</span>
+
+<span class="fc" id="L249">        ArgoEventPump.fireEvent(</span>
+            new ArgoNotationEvent(ArgoEventTypes.NOTATION_CHANGED, pce));
+<span class="fc" id="L251">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // Static workers for dealing with notation names.
+
+    /**
+     * Get list of available notations, of type NotationName.
+     * This returns an immutable list so that
+     * the implementation type isn't exposed in the API.
+     *
+     * @return list of available notations
+     */
+    public static List&lt;NotationName&gt; getAvailableNotations() {
+<span class="fc" id="L264">        return NotationNameImpl.getAvailableNotations();</span>
+    }
+
+    /**
+     * Remove a complete Notation language.
+     * This is to be used by plug-ins that implement their own notation,
+     * and that are removed. &lt;p&gt;
+     * This function fails if the given notation does not exist.
+     *
+     * @param theNotation the given NotationName
+     * @return true if the Notation indeed is removed
+     */
+    public static boolean removeNotation(NotationName theNotation)  {
+<span class="fc" id="L277">        return NotationNameImpl.removeNotation(theNotation);</span>
+    }
+
+    /**
+     * Create a versioned notation name with an icon.
+     *
+     * @param k1 the name (e.g. UML)
+     * @param k2 the version (e.g. 1.3)
+     * @param icon the icon
+     * @return the notation name
+     */
+    public static NotationName makeNotation(String k1, String k2, Icon icon) {
+<span class="fc" id="L289">        NotationName nn = NotationNameImpl.makeNotation(k1, k2, icon);</span>
+<span class="fc" id="L290">        return nn;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

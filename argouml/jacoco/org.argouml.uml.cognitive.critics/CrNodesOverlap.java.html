@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrNodesOverlap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrNodesOverlap.java</span></div><h1>CrNodesOverlap.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.awt.Rectangle;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.diagram.SequenceDiagram;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * A critic to detect when a modelelements overlap.
+ *
+ * @author jrobbins
+ */
+public class CrNodesOverlap extends CrUML {
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L70">    public CrNodesOverlap() {</span>
+	// TODO: {name} is not expanded for diagram objects
+<span class="fc" id="L72">        setupHeadAndDesc();</span>
+<span class="fc" id="L73">	addSupportedDecision(UMLDecision.CLASS_SELECTION);</span>
+<span class="fc" id="L74">	addSupportedDecision(UMLDecision.EXPECTED_USAGE);</span>
+<span class="fc" id="L75">	addSupportedDecision(UMLDecision.STATE_MACHINES);</span>
+<span class="fc" id="L76">	setKnowledgeTypes(Critic.KT_PRESENTATION);</span>
+<span class="fc" id="L77">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // critiquing API
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     *      java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">	if (!(dm instanceof Diagram)) {</span>
+<span class="nc" id="L89">            return NO_PROBLEM;</span>
+        }
+<span class="nc" id="L91">	Diagram d = (Diagram) dm;</span>
+
+	// fixes bug #669. Sequencediagrams always overlap, so they shall
+	// never report a problem
+<span class="nc bnc" id="L95" title="All 2 branches missed.">	if (dm instanceof SequenceDiagram) {</span>
+<span class="nc" id="L96">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc" id="L99">	ListSet offs = computeOffenders(d);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">	if (offs == null) {</span>
+<span class="nc" id="L101">	    return NO_PROBLEM;</span>
+	}
+<span class="nc" id="L103">	return PROBLEM_FOUND;</span>
+    }
+
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
+     *      org.argouml.cognitive.Designer)
+     */
+    @Override
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+<span class="nc" id="L113">	Diagram d = (Diagram) dm;</span>
+<span class="nc" id="L114">	ListSet offs = computeOffenders(d);</span>
+<span class="nc" id="L115">	return new ToDoItem(this, offs, dsgr);</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#stillValid(
+     *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+<span class="nc bnc" id="L124" title="All 2 branches missed.">	if (!isActive()) {</span>
+<span class="nc" id="L125">            return false;</span>
+        }
+<span class="nc" id="L127">	ListSet offs = i.getOffenders();</span>
+<span class="nc" id="L128">	Diagram d = (Diagram) offs.get(0);</span>
+	//if (!predicate(dm, dsgr)) return false;
+<span class="nc" id="L130">	ListSet newOffs = computeOffenders(d);</span>
+<span class="nc" id="L131">	boolean res = offs.equals(newOffs);</span>
+<span class="nc" id="L132">	return res;</span>
+    }
+
+    /**
+     * @param d the diagram
+     * @return the set of offenders
+     */
+    public ListSet computeOffenders(Diagram d) {
+	//TODO: algorithm is n^2 in number of nodes
+<span class="nc" id="L141">	List figs = d.getLayer().getContents();</span>
+<span class="nc" id="L142">	int numFigs = figs.size();</span>
+<span class="nc" id="L143">	ListSet offs = null;</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">	for (int i = 0; i &lt; numFigs - 1; i++) {</span>
+<span class="nc" id="L145">	    Object oi = figs.get(i);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">	    if (!(oi instanceof FigNode)) {</span>
+<span class="nc" id="L147">                continue;</span>
+            }
+<span class="nc" id="L149">	    FigNode fni = (FigNode) oi;</span>
+<span class="nc" id="L150">	    Rectangle boundsi = fni.getBounds();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">	    for (int j = i + 1; j &lt; numFigs; j++) {</span>
+<span class="nc" id="L152">		Object oj = figs.get(j);</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (!(oj instanceof FigNode)) {</span>
+<span class="nc" id="L154">                    continue;</span>
+                }
+<span class="nc" id="L156">		FigNode fnj = (FigNode) oj;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (fnj.intersects(boundsi)) {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		    if (!(d instanceof UMLDeploymentDiagram)) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">			if (fni instanceof FigNodeModelElement) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			    if (((FigNodeModelElement) fni).getEnclosingFig()</span>
+				== fnj) {
+<span class="nc" id="L162">				continue;</span>
+			    }
+			}
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (fnj instanceof FigNodeModelElement) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">			    if (((FigNodeModelElement) fnj).getEnclosingFig()</span>
+				== fni) {
+<span class="nc" id="L168">				continue;</span>
+			    }
+			}
+		    }
+		    // In DeploymentDiagrams the situation is not the
+		    // same as in other diagrams only classes,
+		    // interfaces and objects can intersect each other
+		    // while they are not the EnclosingFig, so you
+		    // have to prouve only these elements.
+		    else {
+<span class="nc bnc" id="L178" title="All 12 branches missed.">			if ((!((fni instanceof  FigClass)</span>
+			       || (fni instanceof FigInterface)
+			       || (fni instanceof FigObject)))
+			    || (!((fnj instanceof  FigClass)
+				  || (fnj instanceof FigInterface)
+				  || (fnj instanceof FigObject)))) {
+<span class="nc" id="L184">			    continue;</span>
+			}
+		    }
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		    if (offs == null) {</span>
+<span class="nc" id="L188">			offs = new ListSet();</span>
+<span class="nc" id="L189">			offs.add(d);</span>
+		    }
+<span class="nc" id="L191">		    offs.add(fni);</span>
+<span class="nc" id="L192">		    offs.add(fnj);</span>
+<span class="nc" id="L193">		    break;</span>
+		}
+	    }
+	}
+<span class="nc" id="L197">	return offs;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L205">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L206">        return ret;</span>
+    }
+    
+} 
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigSingleLineTextWithNotation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">FigSingleLineTextWithNotation.java</span></div><h1>FigSingleLineTextWithNotation.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Rectangle;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.i18n.Translator;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationRenderer;
+import org.argouml.notation.NotationSettings;
+import org.argouml.uml.diagram.DiagramSettings;
+
+/**
+ * A single line FigText that uses the Notation subsystem facilities 
+ * for its text generation.
+ * This FigText is editable by the user on the diagram.
+ * 
+ * @author Michiel
+ */
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">public class FigSingleLineTextWithNotation extends FigSingleLineText </span>
+    implements ArgoNotationEventListener, NotationRenderer {
+
+    /**
+     * @param owner the owning UML object
+     * @param bounds the initial position and size
+     * @param settings the diagram settings applicable for this Fig
+     * @param expandOnly true if the Fig won't shrink if its contents shrink
+     */
+    public FigSingleLineTextWithNotation(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+<span class="fc" id="L76">        super(owner, bounds, settings, expandOnly);</span>
+<span class="fc" id="L77">        initNotationProviders();</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * @param owner the owning UML object
+     * @param bounds the initial position and size
+     * @param settings the diagram settings applicable for this Fig
+     * @param expandOnly true if the Fig won't shrink if its contents shrink
+     * @param property name of property to listen to
+     */
+    public FigSingleLineTextWithNotation(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly, String property) {
+<span class="nc" id="L89">        super(owner, bounds, settings, expandOnly, property);</span>
+<span class="nc" id="L90">        initNotationProviders();</span>
+<span class="nc" id="L91">    }</span>
+
+    /**
+     * @param owner the owning UML object
+     * @param bounds the initial position and size
+     * @param settings the diagram settings applicable for this Fig
+     * @param expandOnly true if the Fig won't shrink if its contents shrink
+     * @param allProperties names of properties to listen to
+     */
+    public FigSingleLineTextWithNotation(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly, 
+            String[] allProperties) {
+<span class="fc" id="L103">        super(owner, bounds, settings, expandOnly, allProperties);</span>
+<span class="fc" id="L104">        initNotationProviders();</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * The notation provider for the text shown in this compartment.
+     */
+    private NotationProvider notationProvider;
+
+    @Override
+    public void removeFromDiagram() {
+<span class="fc" id="L114">        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);</span>
+<span class="fc" id="L115">        notationProvider.cleanListener();</span>
+<span class="fc" id="L116">        super.removeFromDiagram();</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * &lt;p&gt;Override this in any subclasses in order to redisplay the Fig
+     * due to change of any model element that this Fig is listening to.&lt;/p&gt;
+     * &lt;p&gt;This method is guaranteed by the framework to be running on the 
+     * Swing/AWT thread.&lt;/p&gt;
+     *
+     * @param event the UmlChangeEvent that caused the change
+     */
+    protected void updateLayout(UmlChangeEvent event) {
+<span class="nc bnc" id="L131" title="All 4 branches missed.">        assert event != null;</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (notationProvider != null</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                &amp;&amp; (!&quot;remove&quot;.equals(event.getPropertyName())</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                        || event.getSource() != getOwner())) { // not???</span>
+<span class="nc" id="L136">            this.setText(notationProvider.toString(getOwner(), </span>
+<span class="nc" id="L137">                    getNotationSettings()));</span>
+<span class="nc" id="L138">            damage();</span>
+        }
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * Overrule this for subclasses 
+     * that need a different NotationProvider.
+     * 
+     * @return the type of the notation provider
+     */
+    protected int getNotationProviderType() {
+<span class="nc" id="L149">        return NotationProviderFactory2.TYPE_NAME;</span>
+    }
+
+    /**
+     * @return Returns the notationProvider for the text in this compartment.
+     */
+    public NotationProvider getNotationProvider() {
+<span class="fc" id="L156">        return notationProvider;</span>
+    }
+
+    /**
+     * @param np The notationProvider to set.
+     */
+    void setNotationProvider(NotationProvider np) {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (notationProvider != null) {</span>
+<span class="nc" id="L164">            notationProvider.cleanListener();</span>
+        }
+<span class="nc" id="L166">        this.notationProvider = np;</span>
+<span class="nc" id="L167">    }</span>
+
+    protected void initNotationProviders() {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (notationProvider != null) {</span>
+<span class="fc" id="L171">            notationProvider.cleanListener();</span>
+        }
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="fc" id="L174">            NotationName notation = Notation.findNotation(</span>
+<span class="fc" id="L175">                    getNotationSettings().getNotationLanguage());</span>
+<span class="fc" id="L176">            notationProvider =</span>
+<span class="fc" id="L177">                NotationProviderFactory2.getInstance().getNotationProvider(</span>
+<span class="fc" id="L178">                        getNotationProviderType(), getOwner(), this, notation);</span>
+        }
+<span class="fc" id="L180">    }</span>
+    
+    /**
+     * Show the help-text for parsing, and initialise the text.
+     */
+    protected void textEditStarted() {
+<span class="nc" id="L186">        String s = getNotationProvider().getParsingHelp();</span>
+<span class="nc" id="L187">        showHelp(s);</span>
+<span class="nc" id="L188">        setText();</span>
+<span class="nc" id="L189">    }</span>
+
+    /**
+     * Parse the edited text to adapt the UML model.
+     */
+    protected void textEdited() {
+<span class="nc" id="L195">        notationProvider.parse(getOwner(), getText());</span>
+<span class="nc" id="L196">        setText();</span>
+<span class="nc" id="L197">    }</span>
+    
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
+     * updating their contained Figs with any notation changes.
+     * MVW: There is no replacement yet!
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
+    @Deprecated
+    public void notationAdded(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L210">    }</span>
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
+     * updating their contained Figs with any notation changes.
+     * MVW: There is no replacement yet!
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     */
+    @Deprecated
+    public void notationChanged(ArgoNotationEvent e) {
+<span class="nc" id="L222">        renderingChanged();</span>
+<span class="nc" id="L223">    }</span>
+    
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
+     * updating their contained Figs with any notation changes.
+     * MVW: There is no replacement yet!
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
+    @Deprecated
+    public void notationProviderAdded(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L236">    }</span>
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
+     * updating their contained Figs with any notation changes.
+     * MVW: There is no replacement yet!
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
+    @Deprecated
+    public void notationProviderRemoved(ArgoNotationEvent e) {
+        // Do nothing    
+<span class="nc" id="L249">    }</span>
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris. Diagrams are responsible for
+     * updating their contained Figs with any notation changes.
+     * MVW: There is no replacement yet!
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
+    @Deprecated
+    public void notationRemoved(ArgoNotationEvent e) {
+        // Do nothing        
+<span class="nc" id="L262">    }</span>
+
+    public void renderingChanged() {
+<span class="fc" id="L265">        initNotationProviders();</span>
+<span class="fc" id="L266">        super.renderingChanged();</span>
+<span class="fc" id="L267">    }</span>
+    
+    @Override
+    protected void setText() {
+<span class="pc bpc" id="L271" title="2 of 4 branches missed.">        assert getOwner() != null;</span>
+<span class="pc bpc" id="L272" title="2 of 4 branches missed.">        assert notationProvider != null;</span>
+<span class="fc" id="L273">        setText(notationProvider.toString(getOwner(), getNotationSettings()));</span>
+<span class="fc" id="L274">    }</span>
+    
+    /**
+     * Utility function to localize the given string with help text, and show it
+     * in the status bar of the ArgoUML window. This function is used in favour
+     * of the inline call to enable later improvements; e.g. it would be
+     * possible to show a help-balloon.
+     * &lt;p&gt;
+     * TODO: This code is also present in other root Figs...
+     * 
+     * @param s the given string to be localized and shown
+     */
+    protected void showHelp(String s) {
+<span class="nc" id="L287">        ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L289">                Translator.localize(s)));</span>
+<span class="nc" id="L290">    }</span>
+    
+    protected NotationSettings getNotationSettings() {
+<span class="fc" id="L293">        return getSettings().getNotationSettings();</span>
+    }
+
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (notationProvider == np) {</span>
+<span class="nc" id="L298">            setText(rendering);</span>
+<span class="nc" id="L299">            damage();</span>
+        }
+<span class="nc" id="L301">    }</span>
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (notationProvider == np) {</span>
+<span class="nc" id="L305">            return getNotationSettings();</span>
+        }
+<span class="nc" id="L307">        return null;</span>
+    }
+
+    public Object getOwner(NotationProvider np) {
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (notationProvider == np) {</span>
+<span class="nc" id="L312">            return getOwner();</span>
+        }
+<span class="nc" id="L314">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

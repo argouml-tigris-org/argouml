@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResolvedCritic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">ResolvedCritic.java</span></div><h1>ResolvedCritic.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2002-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.util.ItemUID;
+
+// TODO: Maybe the exception strings should be internationalized
+
+/**
+ * This class is responsible for identifying one critic that has been resolved
+ * by the user in one specific context.
+ *
+ * @author	Michael Stockman
+ */
+public class ResolvedCritic {
+    /**
+     * The logger.
+     */
+<span class="fc" id="L60">    private static final Logger LOG =</span>
+<span class="fc" id="L61">        Logger.getLogger(ResolvedCritic.class.getName());</span>
+
+    /**
+     * The name of the critic.
+     */
+    private String critic;
+
+    /**
+     * The IDs of the objects that define the context of the critic.
+     */
+    private List&lt;String&gt; offenders;
+
+
+    /**
+     * Create a new ResolvedCritic using the name of the Critic and the
+     * List of objects that triggered the Critic given as parameters.
+     *
+     * @param   cr      The name of the Critic that has been resolved
+     * @param   offs    The List of related objects.
+     */
+<span class="fc" id="L81">    public ResolvedCritic(String cr, List&lt;String&gt; offs) {</span>
+<span class="fc" id="L82">        critic = cr;</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (offs != null) {</span>
+<span class="fc" id="L84">            offenders = new ArrayList&lt;String&gt;(offs);</span>
+        } else {
+<span class="fc" id="L86">            offenders = new ArrayList&lt;String&gt;();</span>
+        }
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Same as {@link #ResolvedCritic(Critic,ListSet,boolean)}.
+     *
+     * @param c The Critic that has been resolved.
+     * @param offs The set of objects that triggered the Critic.
+     * @throws	UnresolvableException	If some of the objects does
+     *			not have a ItemUID and does not accept a new
+     *			one.
+     */
+    public ResolvedCritic(Critic c, ListSet offs)
+    	throws UnresolvableException {
+
+<span class="fc" id="L102">	this(c, offs, true);</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Creates a new ResolvedCritic from the given information.
+     *
+     * @param	c	The Critic that has been resolved.
+     * @param	offs	The set of objects that triggered the Critic.
+     * @param	canCreate	If it should try to assign new
+     *				ItemUIDs to objects that doesn't have.
+     * @throws	UnresolvableException	If some of the objects does
+     *			not have a ItemUID and does not accept a new
+     *			one.
+     */
+    public ResolvedCritic(Critic c, ListSet offs, boolean canCreate)
+<span class="fc" id="L117">	throws UnresolvableException {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">	if (c == null) {</span>
+<span class="nc" id="L119">	    throw new IllegalArgumentException();</span>
+	}
+
+        // LOG.log(Level.FINE,
+        //         &quot;Adding resolution for: &quot; + c.getClass() + &quot; &quot; + canCreate);
+
+	try {
+<span class="fc bfc" id="L126" title="All 4 branches covered.">	    if (offs != null &amp;&amp; offs.size() &gt; 0) {</span>
+<span class="fc" id="L127">		offenders = new ArrayList&lt;String&gt;(offs.size());</span>
+<span class="fc" id="L128">		importOffenders(offs, canCreate);</span>
+	    } else {
+<span class="fc" id="L130">	        offenders = new ArrayList&lt;String&gt;();</span>
+	    }
+<span class="nc" id="L132">	} catch (UnresolvableException ure) {</span>
+	    try {
+<span class="nc" id="L134">		getCriticString(c);</span>
+<span class="nc" id="L135">	    } catch (UnresolvableException ure2) {</span>
+<span class="nc" id="L136">		throw new UnresolvableException(ure2.getMessage() + &quot;\n&quot;</span>
+<span class="nc" id="L137">						+ ure.getMessage());</span>
+<span class="nc" id="L138">	    }</span>
+<span class="nc" id="L139">	    throw ure;</span>
+<span class="fc" id="L140">	}</span>
+
+<span class="fc" id="L142">	critic = getCriticString(c);</span>
+<span class="fc" id="L143">    }</span>
+
+    /*
+     * @see java.lang.Object#hashCode()
+     *
+     * This is a rather bad hash solution but with the {@link #equals(Object)}
+     * defined as below, it is not possible to do better.
+     */
+    @Override
+    public int hashCode() {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (critic == null) {</span>
+<span class="nc" id="L154">            return 0;</span>
+        }
+<span class="nc" id="L156">        return critic.hashCode();</span>
+    }
+
+    /**
+     * equals returns true if and only if obj also is a ResolvedCritic,
+     * has the same critic name, and has all related objects that this
+     * object has. Note that it is not required that this object has all
+     * related objects that that object has.&lt;p&gt;
+     *
+     * Formally that is inconsistent with {@link Object#equals(Object)
+     * equals as specified in java.lang.Object},
+     * but it was probably practical somehow.&lt;p&gt;
+     *
+     * The param obj is the Object to compare to.
+     * Returns true if equal according to the description, false
+     * otherwise.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+	ResolvedCritic rc;
+
+<span class="pc bpc" id="L179" title="2 of 4 branches missed.">	if (obj == null || !(obj instanceof ResolvedCritic)) {</span>
+<span class="nc" id="L180">	    return false;</span>
+	}
+
+<span class="fc" id="L183">	rc = (ResolvedCritic) obj;</span>
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">	if (critic == null) {</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">	    if (rc.critic != null) {</span>
+<span class="nc" id="L187">	        return false;</span>
+	    }
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">	} else if (!critic.equals(rc.critic)) {</span>
+<span class="nc" id="L190">	    return false;</span>
+	}
+
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">	if (offenders == null) {</span>
+<span class="nc" id="L194">	    return true;</span>
+	}
+
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">	if (rc.offenders == null) {</span>
+<span class="nc" id="L198">	    return false;</span>
+	}
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">	for (String offender : offenders) {</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">	    if (offender == null) {</span>
+<span class="nc" id="L203">	        continue;</span>
+	    }
+
+	    int j;
+<span class="fc bfc" id="L207" title="All 2 branches covered.">	    for (j = 0; j &lt; rc.offenders.size(); j++) {</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">	        if (offender.equals(rc.offenders.get(j))) {</span>
+<span class="fc" id="L209">	            break;</span>
+	        }
+	    }
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">	    if (j &gt;= rc.offenders.size()) {</span>
+<span class="fc" id="L214">	        return false;</span>
+	    }
+<span class="fc" id="L216">	}</span>
+
+<span class="fc" id="L218">	return true;</span>
+    }
+
+    /**
+     * Obtains a String that identifies the type of Critic.
+     *
+     * @param	c	A Critic.
+     * @throws	UnresolvableException	Not implemented.
+     * @return	A identifying name of the critic.
+     */
+    protected String getCriticString(Critic c) throws UnresolvableException {
+        // TODO: Should throw if the string is not good?
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (c == null) {</span>
+<span class="nc" id="L231">            throw (new UnresolvableException(&quot;Critic is null&quot;));</span>
+        }
+<span class="fc" id="L233">        String s = c.getClass().toString();</span>
+<span class="fc" id="L234">	return s;</span>
+    }
+
+    /**
+     * Imports the set of related objects in set to this object. If an
+     * object does not have an ItemUID, canCreate determines if one will
+     * be provided. If some object does not have an ItemUID and canCreate
+     * is false or the object does not accept an ItemUID, then
+     * UnresolvableException is thrown.
+     *
+     * @param	set	The set of related objects to import.
+     * @param	canCreate	If ItemUIDs are allowed to be created.
+     * @throws	UnresolvableException if not all objects can be
+     *		imported.
+     */
+    protected void importOffenders(ListSet set, boolean canCreate)
+	throws UnresolvableException {
+
+<span class="fc" id="L252">	String fail = null;</span>
+
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        for (Object obj : set) {</span>
+<span class="fc" id="L255">	    String id = ItemUID.getIDOfObject(obj, canCreate);</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">	    if (id == null) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		if (!canCreate) {</span>
+<span class="nc" id="L258">		    throw new UnresolvableException(&quot;ItemUID missing or &quot;</span>
+						    + &quot;unable to &quot;
+						    + &quot;create for class: &quot;
+<span class="nc" id="L261">						    + obj.getClass());</span>
+		}
+
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (fail == null) {</span>
+<span class="nc" id="L265">		    fail = obj.getClass().toString();</span>
+		} else {
+<span class="nc" id="L267">		    fail = fail + &quot;, &quot; + obj.getClass().toString();</span>
+		}
+
+<span class="nc" id="L270">                LOG.log(Level.WARNING,</span>
+<span class="nc" id="L271">                        &quot;Offender {0} unresolvable&quot;, obj.getClass());</span>
+
+		// Use this for fast fail instead.
+		// Sacrificed for complete fail. d00mst
+		//throw new UnresolvableException(
+		//	&quot;Unable to create ItemUID for class: &quot;
+		//	+ obj.getClass());
+	    } else {
+<span class="fc" id="L279">	        offenders.add(id);</span>
+	    }
+<span class="fc" id="L281">	}</span>
+
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">	if (fail != null) {</span>
+<span class="nc" id="L284">	    throw new UnresolvableException(&quot;Unable to create ItemUID for &quot;</span>
+					    + &quot;some class(es): &quot;
+					    + fail);
+	}
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Gets the content of critic.
+     *
+     * @return The critic this instance resolves.
+     */
+    public String getCritic() {
+<span class="fc" id="L296">	return critic;</span>
+    }
+
+    /**
+     * Gets the list of related objects, offenders.
+     *
+     * @return The list of offenders of the critic this instance resolved.
+     */
+    public List&lt;String&gt; getOffenderList() {
+<span class="fc" id="L305">	return offenders;</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L313">	StringBuffer sb =</span>
+	    new StringBuffer(&quot;ResolvedCritic: &quot; + critic + &quot; : &quot;);
+<span class="nc bnc" id="L315" title="All 2 branches missed.">	for (int i = 0; i &lt; offenders.size(); i++) {</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">	    if (i &gt; 0) {</span>
+<span class="nc" id="L317">	        sb.append(&quot;, &quot;);</span>
+	    }
+<span class="nc" id="L319">	    sb.append(offenders.get(i));</span>
+	}
+
+<span class="nc" id="L322">	return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DependencyResolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal</a> &gt; <span class="el_source">DependencyResolver.java</span></div><h1>DependencyResolver.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2010-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Luis Sergio Oliveira (euluis)
+ *****************************************************************************
+ */
+
+package org.argouml.profile.internal;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * A dependency resolver for items of type T. It implements a state-full
+ * dependency resolution algorithm.
+ *
+ * @author Luis Sergio Oliveira (euluis)
+ * @param &lt;T&gt; the type of items for which dependencies will be resolved.
+ */
+class DependencyResolver&lt;T&gt; {
+
+<span class="fc" id="L31">    private static final Logger LOG =</span>
+<span class="fc" id="L32">        Logger.getLogger(DependencyResolver.class.getName());</span>
+
+    private DependencyChecker&lt;T&gt; checker;
+
+    /**
+     * WARNING: only to be used from outside classes by tests.
+     * This is the state-full part of the algorithm, storing the unresolved
+     * items between resolve methods calls.
+     */
+    Collection&lt;T&gt; unresolvedItems;
+
+    /**
+     * Create a dependency resolver and initialize it with the associated
+     * dependency checker.
+     *
+     * @param checker the object that will be invoked to check if for a certain
+     *                item all dependencies are resolved.
+     */
+<span class="fc" id="L50">    DependencyResolver(DependencyChecker&lt;T&gt; checker) {</span>
+<span class="fc" id="L51">        this.checker = checker;</span>
+<span class="fc" id="L52">        unresolvedItems = new HashSet&lt;T&gt;();</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Attempt to resolve the dependencies of the items already handed over to
+     * the resolver instance.
+     */
+    void resolve() {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (unresolvedItems.isEmpty()) {</span>
+<span class="fc" id="L61">            return;</span>
+        }
+<span class="fc" id="L63">        final Collection&lt;T&gt; items = Collections.emptyList();</span>
+<span class="fc" id="L64">        resolve(items);</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Attempt to resolve the dependencies of the items already handed over to
+     * the resolver instance and the additional items handed over now.
+     *
+     * @param items additional items to resolve.
+     */
+    void resolve(Collection&lt;T&gt; items) {
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if (unresolvedItems.isEmpty() &amp;&amp; items.isEmpty()) {</span>
+<span class="nc" id="L75">            return;</span>
+        }
+<span class="fc" id="L77">        Collection&lt;T&gt; allUnresolvedItems = new HashSet&lt;T&gt;();</span>
+<span class="fc" id="L78">        allUnresolvedItems.addAll(items);</span>
+<span class="fc" id="L79">        allUnresolvedItems.addAll(unresolvedItems);</span>
+        
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L82">            LOG.log(Level.FINE,</span>
+<span class="nc" id="L83">                    items2Msg(&quot;Attempt to resolve the following items:&quot;,</span>
+                              allUnresolvedItems));
+        }
+<span class="fc" id="L86">        Collection&lt;T&gt; resolved = internalResolve(allUnresolvedItems);</span>
+<span class="fc" id="L87">        allUnresolvedItems.removeAll(resolved);</span>
+<span class="fc" id="L88">        unresolvedItems.clear();</span>
+<span class="fc" id="L89">        unresolvedItems.addAll(allUnresolvedItems);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (!unresolvedItems.isEmpty()) {</span>
+<span class="fc" id="L91">            LOG.log(Level.WARNING,</span>
+<span class="fc" id="L92">                    items2Msg(&quot;The following items were left unresolved after &quot;</span>
+                              + &quot;attempt:\n&quot;,
+                              unresolvedItems));
+        }
+<span class="fc" id="L96">    }</span>
+
+    private String items2Msg(String preface, Collection&lt;T&gt; items) {
+<span class="fc" id="L99">        StringBuffer msg = new StringBuffer(preface);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (T item : items) {</span>
+<span class="fc" id="L101">            msg.append(&quot;\t&quot;);</span>
+<span class="fc" id="L102">            msg.append(item.toString());</span>
+<span class="fc" id="L103">            msg.append(&quot;\n&quot;);</span>
+<span class="fc" id="L104">        }</span>
+<span class="fc" id="L105">        return msg.toString();</span>
+    }
+
+    /**
+     * Recursively resolve all dependencies. Stops when an iteration through
+     * all unresolved items didn't manage to resolve any.
+     *
+     * @param items items to resolve.
+     * @return the items that were resolved.
+     */
+    private Collection&lt;T&gt; internalResolve(Collection&lt;T&gt; items) {
+<span class="fc" id="L116">        Collection&lt;T&gt; resolved = new HashSet&lt;T&gt;();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (T item : items) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (checker.check(item)) {</span>
+<span class="fc" id="L119">                resolved.add(item);</span>
+            }
+<span class="fc" id="L121">        }</span>
+<span class="fc" id="L122">        HashSet&lt;T&gt; toResolveItems = new HashSet&lt;T&gt;(items);</span>
+<span class="fc" id="L123">        toResolveItems.removeAll(resolved);</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (!resolved.isEmpty()) {</span>
+<span class="fc" id="L125">            resolved.addAll(internalResolve(toResolveItems));</span>
+        }
+<span class="fc" id="L127">        return resolved;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

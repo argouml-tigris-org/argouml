@@ -1,0 +1,760 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigComment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">FigComment.java</span></div><h1>FigComment.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigMultiLineText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display a UML comment in a diagram.
+ *
+ * @author Andreas Rueckert
+ */
+public class FigComment
+    extends FigNodeModelElement
+    implements VetoableChangeListener,
+	       DelayedVChangeListener,
+	       MouseListener,
+	       KeyListener,
+	       PropertyChangeListener {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L94">    private static final Logger LOG =</span>
+<span class="fc" id="L95">        Logger.getLogger(FigComment.class.getName());</span>
+
+    ////////////////////////////////////////////////////////////////
+    // constants
+
+<span class="fc" id="L100">    private int width = 80;</span>
+<span class="fc" id="L101">    private int height = 60;</span>
+
+    /**
+     * A dog-ear is a bent corner in a book.
+     */
+<span class="fc" id="L106">    private int dogear = 10;</span>
+
+<span class="fc" id="L108">    private boolean readyToEdit = true;</span>
+
+    // The figure that holds the text of the note.
+    private FigText bodyTextFig;
+
+    private FigPoly outlineFig;
+
+    /**
+     * The upper right corner.
+     */
+    private FigPoly urCorner;
+
+    /**
+     * Flag to indicate that we have just been created. This is to fix the
+     * problem with loading comments that have stereotypes already
+     * defined.&lt;p&gt;
+     */
+    private boolean newlyCreated;
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L129">        FigRect fr = new FigRect(0, 0, width, height, null, null);</span>
+<span class="fc" id="L130">        fr.setFilled(false);</span>
+<span class="fc" id="L131">        fr.setLineWidth(0);</span>
+<span class="fc" id="L132">        return fr;</span>
+    }
+
+    private void initialize() {
+<span class="fc" id="L136">        Color fg = super.getLineColor(); // Use super because not fully init'd</span>
+<span class="fc" id="L137">        Color fill = super.getFillColor();</span>
+
+<span class="fc" id="L139">        outlineFig = new FigPoly(fg, fill);</span>
+<span class="fc" id="L140">        outlineFig.addPoint(0, 0);</span>
+<span class="fc" id="L141">        outlineFig.addPoint(width - 1 - dogear, 0);</span>
+<span class="fc" id="L142">        outlineFig.addPoint(width - 1, dogear);</span>
+<span class="fc" id="L143">        outlineFig.addPoint(width - 1, height - 1);</span>
+<span class="fc" id="L144">        outlineFig.addPoint(0, height - 1);</span>
+<span class="fc" id="L145">        outlineFig.addPoint(0, 0);</span>
+<span class="fc" id="L146">        outlineFig.setFilled(true);</span>
+<span class="fc" id="L147">        outlineFig.setLineWidth(LINE_WIDTH);</span>
+
+<span class="fc" id="L149">        urCorner = new FigPoly(fg, fill);</span>
+<span class="fc" id="L150">        urCorner.addPoint(width - 1 - dogear, 0);</span>
+<span class="fc" id="L151">        urCorner.addPoint(width - 1, dogear);</span>
+<span class="fc" id="L152">        urCorner.addPoint(width - 1 - dogear, dogear);</span>
+<span class="fc" id="L153">        urCorner.addPoint(width - 1 - dogear, 0);</span>
+<span class="fc" id="L154">        urCorner.setFilled(true);</span>
+<span class="fc" id="L155">        Color col = outlineFig.getFillColor();</span>
+<span class="fc" id="L156">        urCorner.setFillColor(col.darker());</span>
+<span class="fc" id="L157">        urCorner.setLineWidth(LINE_WIDTH);</span>
+
+        // add Figs to the FigNode in back-to-front order
+<span class="fc" id="L160">        addFig(getBigPort());</span>
+<span class="fc" id="L161">        addFig(outlineFig);</span>
+<span class="fc" id="L162">        addFig(urCorner);</span>
+<span class="fc" id="L163">        addFig(getStereotypeFig());</span>
+<span class="fc" id="L164">        addFig(bodyTextFig);</span>
+
+<span class="fc" id="L166">        col = outlineFig.getFillColor();</span>
+<span class="fc" id="L167">        urCorner.setFillColor(col.darker());</span>
+
+<span class="fc" id="L169">        setBlinkPorts(false); //make port invisible unless mouse enters</span>
+<span class="fc" id="L170">        Rectangle r = getBounds();</span>
+<span class="fc" id="L171">        setBounds(r.x, r.y, r.width, r.height);</span>
+<span class="fc" id="L172">        updateEdges();</span>
+
+<span class="fc" id="L174">        readyToEdit = false;</span>
+        // Mark this as newly created. This is to get round the problem with
+        // creating figs for loaded comments that had stereotypes. They are
+        // saved with their dimensions INCLUDING the stereotype, but since we
+        // pretend the stereotype is not visible, we add height the first time
+        // we render such a comment. This is a complete fudge, and really we
+        // ought to address how comment objects with stereotypes are saved. But
+        // that will be hard work.
+<span class="fc" id="L182">        newlyCreated = true;</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Construct a comment figure with the given model element, bounds, and
+     * settings. This constructor is used by the PGML parser.
+     *
+     * @param owner owning Comments
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigComment(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L195">        super(owner, bounds, settings);</span>
+
+<span class="fc" id="L197">        bodyTextFig = new FigMultiLineText(getOwner(),</span>
+                new Rectangle(2, 2, width - 2 - dogear, height - 4),
+<span class="fc" id="L199">                getSettings(), true);</span>
+
+<span class="fc" id="L201">        initialize();</span>
+<span class="fc" id="L202">        updateBody();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (bounds != null) {</span>
+<span class="fc" id="L204">            setLocation(bounds.x, bounds.y);</span>
+        }
+<span class="fc" id="L206">    }</span>
+
+    /**
+     * Get the default text for this figure.
+     *
+     * @return The default text for this figure.
+     */
+    @Override
+    public String placeString() {
+<span class="fc" id="L215">        String placeString = retrieveBody();</span>
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (placeString == null) {</span>
+            // TODO: I18N
+<span class="fc" id="L218">            placeString = &quot;new note&quot;;</span>
+        }
+<span class="fc" id="L220">        return placeString;</span>
+    }
+
+    /**
+     * Clone this figure.
+     *
+     * @return The cloned figure.
+     */
+    @Override
+    public Object clone() {
+<span class="nc" id="L230">        FigComment figClone = (FigComment) super.clone();</span>
+<span class="nc" id="L231">        Iterator thisIter = this.getFigs().iterator();</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        while (thisIter.hasNext()) {</span>
+<span class="nc" id="L233">            Object thisFig = thisIter.next();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            if (thisFig == outlineFig) {</span>
+<span class="nc" id="L235">                figClone.outlineFig = (FigPoly) thisFig;</span>
+            }
+<span class="nc bnc" id="L237" title="All 2 branches missed.">            if (thisFig == urCorner) {</span>
+<span class="nc" id="L238">                figClone.urCorner = (FigPoly) thisFig;</span>
+            }
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            if (thisFig == bodyTextFig) {</span>
+<span class="nc" id="L241">                figClone.bodyTextFig = (FigText) thisFig;</span>
+            }
+<span class="nc" id="L243">        }</span>
+<span class="nc" id="L244">        return figClone;</span>
+    }
+
+    private void updateBody() {
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="fc" id="L249">            String body = (String) Model.getFacade().getBody(getOwner());</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">            if (body != null) {</span>
+<span class="fc" id="L251">                bodyTextFig.setText(body);</span>
+            }
+        }
+<span class="fc" id="L254">    }</span>
+
+
+    /**
+     * See FigNodeModelElement.java for more info on these methods.
+     */
+
+    /**
+     * If the user double clicks on any part of this FigNode, pass it
+     * down to one of the internal Figs.  This allows the user to
+     * initiate direct text editing.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public void mouseClicked(MouseEvent me) {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (!readyToEdit) {</span>
+<span class="nc" id="L271">            Object owner = getOwner();</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">            if (Model.getFacade().isAModelElement(owner)</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                    &amp;&amp; !Model.getModelManagementHelper().isReadOnly(owner)) {</span>
+<span class="nc" id="L274">                readyToEdit = true;</span>
+            } else {
+<span class="nc" id="L276">                LOG.log(Level.FINE, &quot;not ready to edit note&quot;);</span>
+<span class="nc" id="L277">                return;</span>
+            }
+        }
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (me.isConsumed()) {</span>
+<span class="nc" id="L281">            return;</span>
+        }
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (me.getClickCount() &gt;= 2</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">	    &amp;&amp; !(me.isPopupTrigger()</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">		 || me.getModifiers() == InputEvent.BUTTON3_MASK)) {</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (getOwner() == null) {</span>
+<span class="nc" id="L287">                return;</span>
+            }
+<span class="nc" id="L289">            Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">            if (f instanceof MouseListener) {</span>
+<span class="nc" id="L291">                ((MouseListener) f).mouseClicked(me);</span>
+            }
+        }
+<span class="nc" id="L294">        me.consume();</span>
+<span class="nc" id="L295">    }</span>
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void vetoableChange(PropertyChangeEvent pce) {
+<span class="nc" id="L302">        Object src = pce.getSource();</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        if (src == getOwner()) {</span>
+<span class="nc" id="L304">            DelayedChangeNotify delayedNotify =</span>
+		new DelayedChangeNotify(this, pce);
+<span class="nc" id="L306">            SwingUtilities.invokeLater(delayedNotify);</span>
+<span class="nc" id="L307">        } else {</span>
+<span class="nc" id="L308">            LOG.log(Level.FINE,</span>
+                    &quot;FigNodeModelElement got vetoableChange from non-owner: {0}&quot;,
+                    src);
+        }
+<span class="nc" id="L312">    }</span>
+
+    /*
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+        // update any text, colors, fonts, etc.
+<span class="nc" id="L320">        renderingChanged();</span>
+        // update the relative sizes and positions of internel Figs
+<span class="nc" id="L322">        endTrans();</span>
+<span class="nc" id="L323">    }</span>
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pve) {
+<span class="fc" id="L330">        Object src = pve.getSource();</span>
+<span class="fc" id="L331">        String pName = pve.getPropertyName();</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">        if (pName.equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">	    &amp;&amp; Boolean.FALSE.equals(pve.getNewValue())) {</span>
+            //parse the text that was edited
+<span class="nc" id="L335">            textEdited((FigText) src);</span>
+            // resize the FigNode to accomodate the new text
+<span class="nc" id="L337">            Rectangle bbox = getBounds();</span>
+<span class="nc" id="L338">            Dimension minSize = getMinimumSize();</span>
+<span class="nc" id="L339">            bbox.width = Math.max(bbox.width, minSize.width);</span>
+<span class="nc" id="L340">            bbox.height = Math.max(bbox.height, minSize.height);</span>
+<span class="nc" id="L341">            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);</span>
+<span class="nc" id="L342">            endTrans();</span>
+<span class="nc" id="L343">        } else {</span>
+<span class="fc" id="L344">            super.propertyChange(pve);</span>
+        }
+<span class="fc" id="L346">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyPressed(KeyEvent ke) {
+        // Not used, do nothing.
+<span class="nc" id="L354">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyReleased(KeyEvent ke) {
+        // Not used, do nothing.
+<span class="nc" id="L362">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    @Override
+    public void keyTyped(KeyEvent ke) {
+<span class="nc bnc" id="L369" title="All 2 branches missed.">        if (Character.isISOControl(ke.getKeyChar())) {</span>
+<span class="nc" id="L370">            return;</span>
+        }
+<span class="nc bnc" id="L372" title="All 2 branches missed.">        if (!readyToEdit) {</span>
+<span class="nc" id="L373">            Object owner = getOwner();</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            if (Model.getFacade().isAModelElement(owner)</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">                    &amp;&amp; !Model.getModelManagementHelper().isReadOnly(owner)) {</span>
+<span class="nc" id="L376">                storeBody(&quot;&quot;);</span>
+<span class="nc" id="L377">                readyToEdit = true;</span>
+            } else {
+<span class="nc" id="L379">                LOG.log(Level.FINE, &quot;not ready to edit note&quot;);</span>
+<span class="nc" id="L380">                return;</span>
+            }
+        }
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (ke.isConsumed()) {</span>
+<span class="nc" id="L384">            return;</span>
+        }
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L387">            return;</span>
+        }
+<span class="nc" id="L389">        bodyTextFig.keyTyped(ke);</span>
+<span class="nc" id="L390">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
+
+    /**
+     * @return an empty menu
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#buildShowPopUp()
+     */
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+<span class="nc" id="L401">        return new ArgoJMenu(&quot;menu.popup.show&quot;);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L409">        return new SelectionComment(this);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+        // The text element has no border, so the line color doesn't matter.
+<span class="fc" id="L418">        outlineFig.setLineColor(col);</span>
+<span class="fc" id="L419">        urCorner.setLineColor(col);</span>
+<span class="fc" id="L420">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L427">        return outlineFig.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    @Override
+    public void setFillColor(Color col) {
+<span class="fc" id="L435">        outlineFig.setFillColor(col);</span>
+<span class="fc" id="L436">        urCorner.setFillColor(col);</span>
+<span class="fc" id="L437">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L444">        return outlineFig.getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L452">        bodyTextFig.setFilled(false); // The text is always opaque.</span>
+<span class="fc" id="L453">        outlineFig.setFilled(f);</span>
+<span class="fc" id="L454">        urCorner.setFilled(f);</span>
+<span class="fc" id="L455">    }</span>
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L459">        return outlineFig.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L467">        bodyTextFig.setLineWidth(0); // Make a seamless integration of the text</span>
+        // in the note figure.
+<span class="fc" id="L469">        outlineFig.setLineWidth(w);</span>
+<span class="fc" id="L470">        urCorner.setLineWidth(w);</span>
+<span class="fc" id="L471">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="nc" id="L478">        return outlineFig.getLineWidth();</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // user interaction methods
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    @Override
+    protected void textEdited(FigText ft) {
+<span class="nc bnc" id="L489" title="All 2 branches missed.">        if (ft == bodyTextFig) {</span>
+<span class="nc" id="L490">            storeBody(ft.getText());</span>
+        }
+<span class="nc" id="L492">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    @Override
+    protected void textEditStarted(FigText ft) {
+<span class="nc" id="L499">        showHelp(&quot;parsing.help.comment&quot;);</span>
+<span class="nc" id="L500">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+<span class="fc" id="L507">        super.setEnclosingFig(encloser);</span>
+<span class="fc" id="L508">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessor methods
+
+    /**
+     * Stores the body text in the associated model element.
+     *
+     * @param body The body text to store.
+     */
+    public final void storeBody(String body) {
+<span class="nc bnc" id="L519" title="All 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="nc" id="L520">            Model.getCoreHelper().setBody(getOwner(), body);</span>
+        }
+<span class="nc" id="L522">    }</span>
+
+    /**
+     * Retrieve the body text from the associated model element.
+     *
+     * @return The body from the associated model element.
+     */
+    private String retrieveBody() {
+<span class="pc bpc" id="L530" title="1 of 2 branches missed.">        return (getOwner() != null)</span>
+<span class="pc" id="L531">            ? (String) Model.getFacade().getBody(getOwner())</span>
+            : null;
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
+    @Override
+    public boolean getUseTrapRect() {
+<span class="nc" id="L540">        return true;</span>
+    }
+
+    /**
+     * Always returns null as the FigComment does not display its name.
+     * @return null
+     */
+    @Override
+    public Rectangle getNameBounds() {
+<span class="nc" id="L549">        return null;</span>
+    }
+
+    /**
+     * Get the minimum size for the note figure.
+     *
+     * @return The minimum size for the note figure.
+     */
+    @Override
+    public Dimension getMinimumSize() {
+
+        // Get the size of the text field.
+<span class="fc" id="L561">        Dimension aSize = bodyTextFig.getMinimumSize();</span>
+
+        // If we have a stereotype displayed, then allow some space for that
+        // (width and height)
+
+<span class="fc bfc" id="L566" title="All 2 branches covered.">        if (getStereotypeFig().isVisible()) {</span>
+<span class="fc" id="L567">            Dimension stereoMin = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L568">            aSize.width =</span>
+<span class="fc" id="L569">                Math.max(aSize.width,</span>
+                         stereoMin.width);
+<span class="fc" id="L571">            aSize.height += stereoMin.height;</span>
+        }
+
+        // And add the gaps around the textfield to get the minimum
+        // size of the note.
+<span class="fc" id="L576">        return new Dimension(aSize.width + 4 + dogear,</span>
+			     aSize.height + 4);
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    @Override
+    protected void setStandardBounds(int px, int py, int w, int h) {
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">        if (bodyTextFig == null) {</span>
+<span class="nc" id="L586">            return;</span>
+        }
+
+<span class="fc" id="L589">        Dimension stereoMin = getStereotypeFig().getMinimumSize();</span>
+
+<span class="fc" id="L591">        int stereotypeHeight = 0;</span>
+<span class="fc bfc" id="L592" title="All 2 branches covered.">        if (getStereotypeFig().isVisible()) {</span>
+<span class="fc" id="L593">            stereotypeHeight = stereoMin.height;</span>
+        }
+
+<span class="fc" id="L596">        Rectangle oldBounds = getBounds();</span>
+
+        // Resize the text figure
+<span class="fc" id="L599">        bodyTextFig.setBounds(px + 2, py + 2 + stereotypeHeight,</span>
+                w - 4 - dogear, h - 4 - stereotypeHeight);
+
+<span class="fc" id="L602">        getStereotypeFig().setBounds(px + 2, py + 2,</span>
+                w - 4 - dogear, stereoMin.height);
+
+        // Resize the big port around the figure
+<span class="fc" id="L606">        getBigPort().setBounds(px, py, w, h);</span>
+
+        // Since this is a complex polygon, there's no easy way to resize it.
+<span class="fc" id="L609">        Polygon newPoly = new Polygon();</span>
+<span class="fc" id="L610">        newPoly.addPoint(px, py);</span>
+<span class="fc" id="L611">        newPoly.addPoint(px + w - 1 - dogear, py);</span>
+<span class="fc" id="L612">        newPoly.addPoint(px + w - 1, py + dogear);</span>
+<span class="fc" id="L613">        newPoly.addPoint(px + w - 1, py + h - 1);</span>
+<span class="fc" id="L614">        newPoly.addPoint(px, py + h - 1);</span>
+<span class="fc" id="L615">        newPoly.addPoint(px, py);</span>
+<span class="fc" id="L616">        outlineFig.setPolygon(newPoly);</span>
+
+        // Just move the corner to it's new position.
+<span class="fc" id="L619">        urCorner.setBounds(px + w - 1 - dogear, py, dogear, dogear);</span>
+
+<span class="fc" id="L621">        calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="fc" id="L622">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L623">    }</span>
+
+    /*
+     * TODO: This is the same as in parent - remove?
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    @Override
+    protected void updateBounds() {
+<span class="fc" id="L631">        Rectangle bbox = getBounds();</span>
+<span class="fc" id="L632">        Dimension minSize = getMinimumSize();</span>
+<span class="fc" id="L633">        bbox.width = Math.max(bbox.width, minSize.width);</span>
+<span class="fc" id="L634">        bbox.height = Math.max(bbox.height, minSize.height);</span>
+<span class="fc" id="L635">        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);</span>
+<span class="fc" id="L636">    }</span>
+
+    ///////////////////////////////////////////////////////////////////
+    // Internal methods
+
+    @Override
+    protected final void updateLayout(UmlChangeEvent mee) {
+<span class="nc" id="L643">        super.updateLayout(mee);</span>
+
+<span class="nc bnc" id="L645" title="All 2 branches missed.">        if (mee instanceof AttributeChangeEvent</span>
+<span class="nc bnc" id="L646" title="All 2 branches missed.">                &amp;&amp; mee.getPropertyName().equals(&quot;body&quot;)) {</span>
+
+<span class="nc" id="L648">            bodyTextFig.setText(mee.getNewValue().toString());</span>
+<span class="nc" id="L649">            calcBounds();</span>
+<span class="nc" id="L650">            setBounds(getBounds());</span>
+<span class="nc" id="L651">            damage();</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">        } else if (mee instanceof RemoveAssociationEvent</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">                &amp;&amp; mee.getPropertyName().equals(&quot;annotatedElement&quot;)) {</span>
+            /* Remove the commentedge.
+             * If there are more then one comment-edges between
+             * the 2 objects, then delete them all. */
+<span class="nc" id="L657">            Collection&lt;FigEdgeNote&gt; toRemove = new ArrayList&lt;FigEdgeNote&gt;();</span>
+<span class="nc" id="L658">            Collection c = getFigEdges(); // all connected edges</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">            for (Iterator i = c.iterator(); i.hasNext(); ) {</span>
+<span class="nc" id="L660">                FigEdgeNote fen = (FigEdgeNote) i.next();</span>
+<span class="nc" id="L661">                Object otherEnd = fen.getDestination(); // the UML object</span>
+<span class="nc bnc" id="L662" title="All 2 branches missed.">                if (otherEnd == getOwner()) { // wrong end of the edge</span>
+<span class="nc" id="L663">                    otherEnd = fen.getSource();</span>
+                }
+<span class="nc bnc" id="L665" title="All 2 branches missed.">                if (otherEnd == mee.getOldValue())  {</span>
+<span class="nc" id="L666">                    toRemove.add(fen);</span>
+                }
+<span class="nc" id="L668">            }</span>
+
+<span class="nc bnc" id="L670" title="All 2 branches missed.">            for (FigEdgeNote fen : toRemove) {</span>
+<span class="nc" id="L671">                fen.removeFromDiagram();</span>
+<span class="nc" id="L672">            }</span>
+        }
+<span class="nc" id="L674">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    @Override
+    protected void updateStereotypeText() {
+<span class="fc" id="L681">        Object me = getOwner();</span>
+
+<span class="pc bpc" id="L683" title="1 of 2 branches missed.">        if (me == null) {</span>
+<span class="nc" id="L684">            return;</span>
+        }
+
+<span class="fc" id="L687">        Rectangle rect = getBounds();</span>
+
+<span class="fc" id="L689">        Dimension stereoMin = getStereotypeFig().getMinimumSize();</span>
+
+<span class="pc bpc" id="L691" title="1 of 2 branches missed.">        if (Model.getFacade().getStereotypes(me).isEmpty()) {</span>
+
+<span class="fc bfc" id="L693" title="All 2 branches covered.">            if (getStereotypeFig().isVisible()) {</span>
+<span class="fc" id="L694">                getStereotypeFig().setVisible(false);</span>
+<span class="fc" id="L695">                rect.y += stereoMin.height;</span>
+<span class="fc" id="L696">                rect.height -= stereoMin.height;</span>
+<span class="fc" id="L697">                setBounds(rect.x, rect.y, rect.width, rect.height);</span>
+<span class="fc" id="L698">                calcBounds();</span>
+            }
+        } else {
+<span class="nc bnc" id="L701" title="All 2 branches missed.">            if (!getStereotypeFig().isVisible()) {</span>
+<span class="nc" id="L702">                getStereotypeFig().setVisible(true);</span>
+
+                // Only adjust the stereotype height if we are not newly
+                // created. This gets round the problem of loading classes with
+                // stereotypes defined, which have the height already including
+                // the stereotype.
+
+<span class="nc bnc" id="L709" title="All 2 branches missed.">                if (!newlyCreated) {</span>
+<span class="nc" id="L710">                    rect.y -= stereoMin.height;</span>
+<span class="nc" id="L711">                    rect.height += stereoMin.height;</span>
+<span class="nc" id="L712">                    rect.width =</span>
+<span class="nc" id="L713">                        Math.max(getMinimumSize().width, rect.width);</span>
+<span class="nc" id="L714">                    setBounds(rect.x, rect.y, rect.width, rect.height);</span>
+<span class="nc" id="L715">                    calcBounds();</span>
+                }
+            }
+        }
+        // Whatever happened we are no longer newly created, so clear the
+        // flag. Then set the bounds for the rectangle we have defined.
+<span class="fc" id="L721">        newlyCreated = false;</span>
+<span class="fc" id="L722">    }</span>
+
+    /**
+     * Get the text body of the comment.
+     * @return the body of the comment
+     */
+    public String getBody() {
+<span class="nc" id="L729">        return bodyTextFig.getText();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    @Override
+    public Point getClosestPoint(Point anotherPt) {
+<span class="fc" id="L737">        Rectangle r = getBounds();</span>
+<span class="fc" id="L738">        int[] xs = {</span>
+            r.x, r.x + r.width - dogear, r.x + r.width,
+            r.x + r.width,  r.x,            r.x,
+        };
+<span class="fc" id="L742">        int[] ys = {</span>
+            r.y, r.y,                    r.y + dogear,
+            r.y + r.height, r.y + r.height, r.y,
+        };
+<span class="fc" id="L746">        Point p =</span>
+<span class="fc" id="L747">            Geometry.ptClosestTo(</span>
+                xs,
+                ys,
+                6,
+                anotherPt);
+<span class="fc" id="L752">        return p;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7242542877839921267L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

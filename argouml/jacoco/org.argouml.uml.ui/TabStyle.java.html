@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabStyle.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabStyle.java</span></div><h1>TabStyle.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.StylePanel;
+import org.argouml.ui.TabFigTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigClassAssociationClass;
+import org.argouml.uml.util.namespace.Namespace;
+import org.argouml.uml.util.namespace.StringNamespace;
+import org.argouml.uml.util.namespace.StringNamespaceElement;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+
+/**
+ * Provides support for changing the appearance of a diagram element. For each
+ * class of a diagram element, the TabStyle class attempts to find an according
+ * class of StylePanel which contains the attributes to be modified in terms of
+ * style.
+ * &lt;p&gt;
+ * The constructor of TabStyle takes an array argument which contains possible
+ * base names for these style panels, or by default StylePanel and SP,
+ * alternating between these two prefixes and the namespace of the Fig class or
+ * &lt;code&gt;org.argouml.ui&lt;/code&gt;. With this configuration, the stylepanel for
+ * e.g. &lt;code&gt;org.argouml.uml.diagram.static.structure.ui.FigClass&lt;/code&gt;,
+ * will be looked at in the following places:
+ * &lt;ul&gt;
+ * &lt;li&gt;org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass
+ * &lt;li&gt;org.argouml.uml.diagram.static_structure.ui.SPFigClass
+ * &lt;li&gt;org.argouml.ui.StylePanelFigClass
+ * &lt;li&gt;org.argouml.ui.SPFigClass
+ * &lt;/ul&gt;
+ * It continues to traverse the superclass structure until a matching class has
+ * been found, e.g.
+ * &lt;ul&gt;
+ * &lt;li&gt;org.argouml.uml.diagram.ui.StylePanelFigNodeModelElement
+ * &lt;li&gt;org.argouml.uml.diagram.ui.SPFigNodeModelElement
+ * &lt;li&gt;org.argouml.ui.StylePanelFigNodeModelElement
+ * &lt;li&gt;org.argouml.ui.SPFigNodeModelElement
+ * &lt;/ul&gt;
+ * If a stylepanel had been found, it will be stored in a cache.&lt;p&gt;
+ *
+ * According the decision taken in issue 502, this tab is renamed &quot;Presentation&quot;
+ * for the user. And the Presentation tab shall contain presentation options,
+ * and no semantic UML properties (which belong in the &quot;Properties&quot; panel).
+ * In contrast, the diagram pop-up menu for a model element
+ * may access both presentation options as well as semantic UML properties. &lt;p&gt;
+ *
+ * Note also that the semantic properties of a UML model element exist in one
+ * copy only but the presentation options exist in one copy per diagram
+ * that the model element is showing in. E.g. a class could have
+ * attributes hidden in one diagram and showing in another. So, for the user
+ * it would be very logical to separate these 2 kinds of settings
+ * on different tabs.
+ *
+ */
+public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
+        PropertyChangeListener, DelayedVChangeListener {
+
+<span class="fc" id="L119">    private static final Logger LOG =</span>
+<span class="fc" id="L120">        Logger.getLogger(TabStyle.class.getName());</span>
+
+    private Fig target;
+
+<span class="fc" id="L124">    private boolean shouldBeEnabled = false;</span>
+
+<span class="fc" id="L126">    private JPanel blankPanel = new JPanel();</span>
+
+<span class="fc" id="L128">    private Hashtable&lt;Class, TabFigTarget&gt; panels =</span>
+        new Hashtable&lt;Class, TabFigTarget&gt;();
+
+<span class="fc" id="L131">    private JPanel lastPanel = null;</span>
+
+    /**
+     * The stylepanel shown by the tab style.
+     */
+<span class="fc" id="L136">    private StylePanel stylePanel = null;</span>
+
+    private String[] stylePanelNames;
+
+<span class="fc" id="L140">    private EventListenerList listenerList = new EventListenerList();</span>
+
+    /**
+     * The constructor.
+     *
+     * @param tabName the name of the tab
+     * @param spn style panel names
+     */
+    public TabStyle(String tabName, String[] spn) {
+<span class="fc" id="L149">        super(tabName);</span>
+<span class="fc" id="L150">        this.stylePanelNames = spn;</span>
+<span class="fc" id="L151">        setIcon(new UpArrowIcon());</span>
+<span class="fc" id="L152">        setLayout(new BorderLayout());</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Construct a default stylepanel with basenames &lt;code&gt;StylePanel&lt;/code&gt;
+     * and &lt;code&gt;SP&lt;/code&gt;, resulting in the lookup order described above.
+     */
+    public TabStyle() {
+<span class="fc" id="L160">        this(&quot;tab.style&quot;, new String[] {&quot;StylePanel&quot;, &quot;SP&quot;});</span>
+<span class="fc" id="L161">    }</span>
+
+    /**
+     * Adds a style panel to the internal list. This allows a plugin to add and
+     * register a new style panel at run-time. This property style will then be
+     * displayed in the details pane whenever an element of the given metaclass
+     * is selected.
+     *
+     * @param c
+     *            the metaclass whose details show be displayed in the property
+     *            panel p
+     * @param s
+     *            an instance of the style panel for the metaclass m
+     */
+    public void addPanel(Class c, StylePanel s) {
+<span class="nc" id="L176">        panels.put(c, s);</span>
+<span class="nc" id="L177">    }</span>
+
+    /**
+     * Sets the target of the style tab.
+     *
+     * @param t
+     *            is the new target
+     */
+    public void setTarget(Object t) {
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L187">            target.removePropertyChangeListener(this);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            if (target instanceof FigEdge) {</span>
+                // In this case, the bounds are determined by the FigEdge
+<span class="nc" id="L190">                ((FigEdge) target).getFig().removePropertyChangeListener(this);</span>
+            }
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (target instanceof FigAssociationClass) {</span>
+                // In this case, the bounds (of the box) are determined
+                // by the FigClassAssociationClass
+<span class="nc" id="L195">                FigClassAssociationClass ac =</span>
+<span class="nc" id="L196">                    ((FigAssociationClass) target).getAssociationClass();</span>
+                // A newly created AssociationClass may not have all its parts
+                // created by the time we are called
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                if (ac != null) {</span>
+<span class="nc" id="L200">                    ac.removePropertyChangeListener(this);</span>
+                }
+            }
+        }
+
+        // TODO: Defer most of this work if the panel isn't visible - tfm
+
+        // the responsibility of determining if the given target is a
+        // correct one for this tab has been moved from the
+        // DetailsPane to the member tabs of the details pane. Reason for
+        // this is that the details pane is configurable and cannot
+        // know what's the correct target for some tab.
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (!(t instanceof Fig)) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">            if (Model.getFacade().isAModelElement(t)) {</span>
+<span class="nc" id="L214">                ArgoDiagram diagram = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                if (diagram != null) {</span>
+<span class="nc" id="L216">                    t = diagram.presentationFor(t);</span>
+                }
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                if (!(t instanceof Fig)) {</span>
+<span class="nc" id="L219">                    Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L220">                    Collection col = p.findFigsForMember(t);</span>
+<span class="nc bnc" id="L221" title="All 4 branches missed.">                    if (col == null || col.isEmpty()) {</span>
+<span class="nc" id="L222">                        return;</span>
+                    }
+<span class="nc" id="L224">                    t = col.iterator().next();</span>
+                }
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                if (!(t instanceof Fig)) {</span>
+<span class="nc" id="L227">                    return;</span>
+                }
+<span class="nc" id="L229">            } else {</span>
+<span class="nc" id="L230">                return;</span>
+            }
+
+        }
+
+<span class="nc" id="L235">        target = (Fig) t;</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L237">            target.addPropertyChangeListener(this);</span>
+            // TODO: This shouldn't know about the specific type of Fig that
+            // is being displayed.  That couples it too strongly to things it
+            // shouldn't need to know about - tfm - 20070924
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (target instanceof FigEdge) {</span>
+                // In this case, the bounds are determined by the FigEdge
+<span class="nc" id="L243">                ((FigEdge) target).getFig().addPropertyChangeListener(this);</span>
+            }
+<span class="nc bnc" id="L245" title="All 2 branches missed.">            if (target instanceof FigAssociationClass) {</span>
+                // In this case, the bounds (of the box) are determined
+                // by the FigClassAssociationClass
+<span class="nc" id="L248">                FigClassAssociationClass ac =</span>
+<span class="nc" id="L249">                    ((FigAssociationClass) target).getAssociationClass();</span>
+                // A newly created AssociationClass may not have all its parts
+                // created by the time we are called
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (ac != null) {</span>
+<span class="nc" id="L253">                    ac.addPropertyChangeListener(this);</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        if (lastPanel != null) {</span>
+<span class="nc" id="L258">            remove(lastPanel);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (lastPanel instanceof TargetListener) {</span>
+<span class="nc" id="L260">                removeTargetListener((TargetListener) lastPanel);</span>
+            }
+        }
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (t == null) {</span>
+<span class="nc" id="L264">            add(blankPanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L265">            shouldBeEnabled = false;</span>
+<span class="nc" id="L266">            lastPanel = blankPanel;</span>
+<span class="nc" id="L267">            return;</span>
+        }
+<span class="nc" id="L269">        shouldBeEnabled = true;</span>
+<span class="nc" id="L270">        stylePanel = null;</span>
+<span class="nc" id="L271">        Class targetClass = t.getClass();</span>
+
+<span class="nc" id="L273">        stylePanel = findPanelFor(targetClass);</span>
+
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if (stylePanel != null) {</span>
+<span class="nc" id="L276">            removeTargetListener(stylePanel);</span>
+<span class="nc" id="L277">            addTargetListener(stylePanel);</span>
+<span class="nc" id="L278">            stylePanel.setTarget(target);</span>
+<span class="nc" id="L279">            add(stylePanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L280">            shouldBeEnabled = true;</span>
+<span class="nc" id="L281">            lastPanel = stylePanel;</span>
+        } else {
+<span class="nc" id="L283">            add(blankPanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L284">            shouldBeEnabled = false;</span>
+<span class="nc" id="L285">            lastPanel = blankPanel;</span>
+        }
+<span class="nc" id="L287">        validate();</span>
+<span class="nc" id="L288">        repaint();</span>
+<span class="nc" id="L289">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L295">        setTarget(target);</span>
+<span class="nc" id="L296">    }</span>
+
+    /**
+     * Find the stylepanel for a given target class.
+     *
+     * @param targetClass
+     *            the target class
+     * @return a Stylepanel object or &lt;code&gt;null&lt;/code&gt; on error
+     */
+    public StylePanel findPanelFor(Class targetClass) {
+<span class="fc" id="L306">        Class panelClass = null;</span>
+<span class="fc" id="L307">        TabFigTarget p = panels.get(targetClass);</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">        if (p == null) {</span>
+<span class="fc" id="L309">            Class newClass = targetClass;</span>
+<span class="pc bpc" id="L310" title="1 of 4 branches missed.">            while (newClass != null &amp;&amp; panelClass == null) {</span>
+<span class="fc" id="L311">                panelClass = panelClassFor(newClass);</span>
+<span class="fc" id="L312">                newClass = newClass.getSuperclass();</span>
+            }
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">            if (panelClass == null) {</span>
+<span class="nc" id="L315">                return null;</span>
+            }
+            try {
+<span class="fc" id="L318">                p = (TabFigTarget) panelClass.newInstance();</span>
+<span class="nc" id="L319">            } catch (IllegalAccessException ignore) {</span>
+<span class="nc" id="L320">                LOG.log(Level.SEVERE, &quot;&quot;, ignore);</span>
+<span class="nc" id="L321">                return null;</span>
+<span class="nc" id="L322">            } catch (InstantiationException ignore) {</span>
+<span class="nc" id="L323">                LOG.log(Level.SEVERE, &quot;&quot;, ignore);</span>
+<span class="nc" id="L324">                return null;</span>
+<span class="fc" id="L325">            }</span>
+<span class="fc" id="L326">            panels.put(targetClass, p);</span>
+        }
+<span class="fc" id="L328">        LOG.log(Level.FINE, &quot;found style for {0}({1})&quot;,</span>
+<span class="fc" id="L329">                new Object[]{targetClass.getName(), p.getClass()});</span>
+<span class="fc" id="L330">        return (StylePanel) p;</span>
+
+    }
+
+    /**
+     * Get the class for the required stylepanel.
+     *
+     * @param targetClass the class of the current selected target.
+     * @return the panel class for the class given or
+     * null if none available.
+     */
+    public Class panelClassFor(Class targetClass) {
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">        if (targetClass == null) {</span>
+<span class="nc" id="L343">            return null;</span>
+        }
+
+<span class="fc" id="L346">        StringNamespace classNs = (StringNamespace) StringNamespace</span>
+<span class="fc" id="L347">                .parse(targetClass);</span>
+
+<span class="fc" id="L349">        StringNamespace baseNs = (StringNamespace) StringNamespace.parse(</span>
+                &quot;org.argouml.ui.&quot;, Namespace.JAVA_NS_TOKEN);
+
+<span class="fc" id="L352">        StringNamespaceElement targetClassElement =</span>
+<span class="fc" id="L353">        	(StringNamespaceElement) classNs.peekNamespaceElement();</span>
+
+<span class="fc" id="L355">        LOG.log(Level.FINE, &quot;Attempt to find style panel for: {0}&quot;, classNs);</span>
+
+<span class="fc" id="L357">        classNs.popNamespaceElement();</span>
+
+<span class="fc" id="L359">        String[] bases = new String[] {</span>
+<span class="fc" id="L360">                classNs.toString(), baseNs.toString()</span>
+        };
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        for (String stylePanelName : stylePanelNames) {</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">            for (String baseName : bases) {</span>
+<span class="fc" id="L364">                String name = baseName + &quot;.&quot; + stylePanelName</span>
+                        + targetClassElement;
+<span class="fc" id="L366">                Class cls = loadClass(name);</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">                if (cls != null) {</span>
+<span class="fc" id="L368">                    return cls;</span>
+                }
+            }
+        }
+<span class="fc" id="L372">        return null;</span>
+    }
+
+    private Class loadClass(String name) {
+        try {
+<span class="fc" id="L377">            Class cls = Class.forName(name);</span>
+<span class="fc" id="L378">            return cls;</span>
+<span class="fc" id="L379">        } catch (ClassNotFoundException ignore) {</span>
+<span class="fc" id="L380">            LOG.log(Level.FINE, &quot;ClassNotFoundException. Could not find class: {0}&quot;, name);</span>
+        }
+<span class="fc" id="L382">        return null;</span>
+    }
+
+    /**
+     * @return the style panel names
+     */
+    protected String[] getStylePanelNames() {
+<span class="nc" id="L389">        return stylePanelNames;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L396">        return target;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object targetItem) {
+
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">        if (!(targetItem instanceof Fig)) {</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">            if (Model.getFacade().isAModelElement(targetItem)) {</span>
+<span class="fc" id="L406">                ArgoDiagram diagram = DiagramUtils.getActiveDiagram();</span>
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">                if (diagram == null) {</span>
+<span class="fc" id="L408">                    shouldBeEnabled = false;</span>
+<span class="fc" id="L409">                    return false;</span>
+                }
+
+<span class="nc" id="L412">                Fig f = diagram.presentationFor(targetItem);</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                if (f == null) {</span>
+<span class="nc" id="L414">                    shouldBeEnabled = false;</span>
+<span class="nc" id="L415">                    return false;</span>
+                }
+<span class="nc" id="L417">                targetItem = f;</span>
+<span class="nc" id="L418">            } else {</span>
+<span class="fc" id="L419">                shouldBeEnabled = false;</span>
+<span class="fc" id="L420">                return false;</span>
+            }
+        }
+
+<span class="nc" id="L424">        shouldBeEnabled = true;</span>
+
+        // TODO: It would be better to defer this initialization until the panel
+        // actually needs to be displayed. Perhaps optimistically always return
+        // true and figure out later if we've got something to display - tfm -
+        // 20070110
+<span class="nc" id="L430">        Class targetClass = targetItem.getClass();</span>
+<span class="nc" id="L431">        stylePanel = findPanelFor(targetClass);</span>
+<span class="nc" id="L432">        targetClass = targetClass.getSuperclass();</span>
+
+<span class="nc bnc" id="L434" title="All 2 branches missed.">        if (stylePanel == null) {</span>
+<span class="nc" id="L435">            shouldBeEnabled = false;</span>
+        }
+
+<span class="nc" id="L438">        return shouldBeEnabled;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="nc" id="L445">        DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);</span>
+<span class="nc" id="L446">        SwingUtilities.invokeLater(delayedNotify);</span>
+<span class="nc" id="L447">    }</span>
+
+    /*
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        if (stylePanel != null) {</span>
+<span class="nc" id="L454">            stylePanel.refresh(pce);</span>
+        }
+<span class="nc" id="L456">    }</span>
+
+    /*
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L462">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L463">        fireTargetAdded(e);</span>
+<span class="nc" id="L464">    }</span>
+
+    /*
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the TabProps should only show an empty pane in that
+        // case
+<span class="nc" id="L473">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L474">        fireTargetRemoved(e);</span>
+<span class="nc" id="L475">    }</span>
+
+    /*
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L481">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L482">        fireTargetSet(e);</span>
+<span class="nc" id="L483">    }</span>
+
+    /**
+     * Adds a listener.
+     *
+     * @param listener
+     *            the listener to add
+     */
+    private void addTargetListener(TargetListener listener) {
+<span class="nc" id="L492">        listenerList.add(TargetListener.class, listener);</span>
+<span class="nc" id="L493">    }</span>
+
+    /**
+     * Removes a target listener.
+     *
+     * @param listener
+     *            the listener to remove
+     */
+    private void removeTargetListener(TargetListener listener) {
+<span class="nc" id="L502">        listenerList.remove(TargetListener.class, listener);</span>
+<span class="nc" id="L503">    }</span>
+
+    /**
+     * @param targetEvent
+     */
+    private void fireTargetSet(TargetEvent targetEvent) {
+        //          Guaranteed to return a non-null array
+<span class="nc" id="L510">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+                // Lazily create the event:
+<span class="nc" id="L514">                ((TargetListener) listeners[i + 1]).targetSet(targetEvent);</span>
+            }
+        }
+<span class="nc" id="L517">    }</span>
+
+    /**
+     * @param targetEvent
+     */
+    private void fireTargetAdded(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+<span class="nc" id="L524">        Object[] listeners = listenerList.getListenerList();</span>
+
+<span class="nc bnc" id="L526" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+                // Lazily create the event:
+<span class="nc" id="L529">                ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);</span>
+            }
+        }
+<span class="nc" id="L532">    }</span>
+
+    /**
+     * @param targetEvent
+     */
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+<span class="nc" id="L539">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L541" title="All 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+                // Lazily create the event:
+<span class="nc" id="L543">                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);</span>
+            }
+        }
+<span class="nc" id="L546">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

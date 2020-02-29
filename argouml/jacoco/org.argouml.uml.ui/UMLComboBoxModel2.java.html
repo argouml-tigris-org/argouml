@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLComboBoxModel2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLComboBoxModel2.java</span></div><h1>UMLComboBoxModel2.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * ComboBox Model for UML modelelements. &lt;p&gt;
+ *
+ * This combobox allows selecting no value, if so indicated
+ * at construction time of this class. I.e. it is &quot;clearable&quot;.
+ * @deprecated by Bob Tarling in 0.31.4 - the property panel module is now
+ * responsible for property panel controls and models
+ */
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">@Deprecated</span>
+public abstract class UMLComboBoxModel2 extends AbstractListModel
+        implements PropertyChangeListener,
+        ComboBoxModel, TargetListener, PopupMenuListener {
+
+<span class="fc" id="L83">    private static final Logger LOG =</span>
+<span class="fc" id="L84">        Logger.getLogger(UMLComboBoxModel2.class.getName());</span>
+
+    /**
+     * The string that represents a null or cleared choice.
+     */
+    // TODO: I18N
+    // Don't use the empty string for this or it won't show in the list
+    protected static final String CLEARED = &quot;&lt;none&gt;&quot;;
+
+    /**
+     * The target of the comboboxmodel. This is some UML modelelement
+     */
+<span class="fc" id="L96">    private Object comboBoxTarget = null;</span>
+
+    /**
+     * The list with objects that should be shown in the combobox.
+     * TODO: Using a list here forces a linear search when we're trying to add
+     * a new element to the model which can be very slow for large models.
+     */
+<span class="fc" id="L103">    private List objects = new LinkedList();</span>
+
+    /**
+     * The selected object.
+     */
+<span class="fc" id="L108">    private Object selectedObject = null;</span>
+
+    /**
+     * Flag to indicate if the user may select the special CLEARED choice
+     * (&quot;&lt;none&gt;&quot;) as value in the combobox. If true the attribute that is shown
+     * by this combobox may be set to null. Makes sure that there is always an
+     * entry in the list with objects so the user has the opportunity to select
+     * this to clear the attribute.
+     */
+<span class="fc" id="L117">    private boolean isClearable = false;</span>
+
+    /**
+     * The name of the property that we will use to listen for change events
+     * associated with this model element.
+     */
+    private String propertySetName;
+
+    /**
+     * Flag to indicate whether list events should be fired.
+     */
+<span class="fc" id="L128">    private boolean fireListEvents = true;</span>
+
+    /**
+     * Flag to indicate whether the model is being build.
+     */
+<span class="fc" id="L133">    protected boolean buildingModel = false;</span>
+
+    /**
+     * Flag needed to prevent infinite recursion during processing of
+     * popup visibility notification event.
+     */
+<span class="fc" id="L139">    private boolean processingWillBecomeVisible = false;</span>
+
+    private boolean modelValid;
+
+
+    /**
+     * Constructs a model for a combobox. The container given is used to
+     * retrieve the target that is manipulated through this combobox. If
+     * clearable is true, the user can select null in the combobox and thereby
+     * clear the attribute in the model.
+     *
+     * @param name The name of the property change event that must be fired to
+     *            set the selected item programmatically (via changing the
+     *            model)
+     * @param clearable Flag to indicate if the user may select the special
+     *            CLEARED value (&lt;none&gt;) as value in the combobox. If true the
+     *            attribute that is shown by this combobox may be set to null.
+     *            Makes sure that there is always an entry for this in the list
+     *            with objects so the user has the opportunity to select this to
+     *            clear the attribute.
+     * @throws IllegalArgumentException if one of the arguments is null
+     */
+    public UMLComboBoxModel2(String name, boolean clearable) {
+<span class="fc" id="L162">        super();</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">        if (name == null || name.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L164">            throw new IllegalArgumentException(&quot;one of the arguments is null&quot;);</span>
+	}
+        // It would be better if we didn't need the container to get
+        // the target. This constructor can have zero parameters as
+        // soon as we improve targetChanged.
+<span class="fc" id="L169">        isClearable = clearable;</span>
+<span class="fc" id="L170">        propertySetName = name;</span>
+<span class="fc" id="L171">    }</span>
+
+    public final void propertyChange(final PropertyChangeEvent pve) {
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (pve instanceof UmlChangeEvent) {</span>
+<span class="fc" id="L175">            final UmlChangeEvent event = (UmlChangeEvent) pve;</span>
+
+<span class="fc" id="L177">            Runnable doWorkRunnable = new Runnable() {</span>
+                public void run() {
+                    try {
+<span class="fc" id="L180">                        modelChanged(event);</span>
+<span class="nc" id="L181">                    } catch (InvalidElementException e) {</span>
+<span class="nc" id="L182">                        LOG.log(Level.FINE, &quot;event = {0} &quot;, event );</span>
+<span class="nc" id="L183">                        LOG.log(Level.FINE, &quot;updateLayout method accessed deleted element&quot;, e);</span>
+<span class="fc" id="L184">                    }</span>
+<span class="fc" id="L185">                }</span>
+            };
+<span class="fc" id="L187">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+        }
+<span class="fc" id="L189">    }</span>
+
+
+
+    /**
+     * If the property that this comboboxmodel depicts is changed in the UML
+     * model, this method will make sure that the changes will be
+     * done in the combobox-model equally. &lt;p&gt;
+     * TODO: This function is not yet completely written!
+     *
+     * {@inheritDoc}
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void modelChanged(UmlChangeEvent evt) {
+<span class="nc" id="L203">        buildingModel = true;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        if (evt instanceof AttributeChangeEvent) {</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            if (evt.getPropertyName().equals(propertySetName)) {</span>
+<span class="nc bnc" id="L206" title="All 4 branches missed.">                if (evt.getSource() == getTarget()</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                        &amp;&amp; (isClearable || getChangedElement(evt) != null)) {</span>
+<span class="nc" id="L208">                    Object elem = getChangedElement(evt);</span>
+<span class="nc bnc" id="L209" title="All 4 branches missed.">                    if (elem != null &amp;&amp; !contains(elem)) {</span>
+<span class="nc" id="L210">                        addElement(elem);</span>
+                    }
+                    /* MVW: for this case, I had to move the
+                     * call to setSelectedItem() outside the &quot;buildingModel&quot;,
+                     * otherwise the combo does not update
+                     * with the new selection. See issue 5418.
+                     **/
+<span class="nc" id="L217">                    buildingModel = false;</span>
+<span class="nc" id="L218">                    setSelectedItem(elem);</span>
+<span class="nc" id="L219">                }</span>
+            }
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        } else if (evt instanceof DeleteInstanceEvent) {</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">            if (contains(getChangedElement(evt))) {</span>
+<span class="nc" id="L223">                Object o = getChangedElement(evt);</span>
+<span class="nc" id="L224">                removeElement(o);</span>
+<span class="nc" id="L225">            }</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        } else if (evt instanceof AddAssociationEvent) {</span>
+<span class="nc bnc" id="L227" title="All 4 branches missed.">            if (getTarget() != null &amp;&amp; isValidEvent(evt)) {</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                if (evt.getPropertyName().equals(propertySetName)</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                    &amp;&amp; (evt.getSource() == getTarget())) {</span>
+<span class="nc" id="L230">                    Object elem = evt.getNewValue();</span>
+                    /* TODO: Here too? */
+<span class="nc" id="L232">                    setSelectedItem(elem);</span>
+<span class="nc" id="L233">                } else {</span>
+<span class="nc" id="L234">                    Object o = getChangedElement(evt);</span>
+<span class="nc" id="L235">                    addElement(o);</span>
+<span class="nc" id="L236">                }</span>
+            }
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        } else if (evt instanceof RemoveAssociationEvent &amp;&amp; isValidEvent(evt)) {</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if (evt.getPropertyName().equals(propertySetName)</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">                    &amp;&amp; (evt.getSource() == getTarget())) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                if (evt.getOldValue() == internal2external(getSelectedItem())) {</span>
+                    /* TODO: Here too? */
+<span class="nc" id="L243">                    setSelectedItem(external2internal(evt.getNewValue()));</span>
+                }
+            } else {
+<span class="nc" id="L246">                Object o = getChangedElement(evt);</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                if (contains(o)) {</span>
+<span class="nc" id="L248">                    removeElement(o);</span>
+                }
+<span class="nc" id="L250">            }</span>
+        }
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        else if (evt.getSource() instanceof ArgoDiagram</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                &amp;&amp; evt.getPropertyName().equals(propertySetName)) {</span>
+            /* This should not be necessary, but let's be sure: */
+<span class="nc" id="L255">            addElement(evt.getNewValue());</span>
+            /* MVW: for this case, I have to move the
+             * call to setSelectedItem() outside the &quot;buildingModel&quot;, otherwise
+             * the combo does not update with the new selection.
+             * The same does probably apply to the cases above! */
+<span class="nc" id="L260">            buildingModel = false;</span>
+<span class="nc" id="L261">            setSelectedItem(evt.getNewValue());</span>
+        }
+<span class="nc" id="L263">        buildingModel = false;</span>
+<span class="nc" id="L264">    }</span>
+
+    /**
+     * Returns true if the given element is valid.&lt;p&gt;
+     *
+     * It is valid if it may be added to the list of elements.
+     *
+     * @param element the given element
+     * @return true if the given element is valid
+     */
+    protected abstract boolean isValidElement(Object element);
+
+    /**
+     * Builds the list of elements and sets the selectedIndex to the currently
+     * selected item if there is one. Called from targetChanged every time the
+     * target of the proppanel is changed.
+     */
+    protected abstract void buildModelList();
+
+    /**
+     * @param obj an UML object
+     * @return its name or &quot;&quot; (if it was not named or deleted)
+     */
+    protected String getName(Object obj) {
+        try {
+<span class="nc" id="L289">            Object n = Model.getFacade().getName(obj);</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">            String name = (n != null ? (String) n : &quot;&quot;);</span>
+<span class="nc" id="L291">            return name;</span>
+<span class="nc" id="L292">        } catch (InvalidElementException e) {</span>
+<span class="nc" id="L293">            return &quot;&quot;;</span>
+        }
+    }
+
+    /**
+     * Utility method to change all elements in the list with modelelements
+     * at once.  A minimal update strategy is used to minimize event firing
+     * for unchanged elements.
+     *
+     * @param elements the given elements
+     */
+    protected void setElements(Collection elements) {
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">        if (elements != null) {</span>
+<span class="fc" id="L306">            ArrayList toBeRemoved = new ArrayList();</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            for (Object o : objects) {</span>
+<span class="pc bpc" id="L308" title="3 of 4 branches missed.">                if (!elements.contains(o)</span>
+                        &amp;&amp; !(isClearable
+                                // Check against &quot;&quot; is needed for backward
+                                // compatibility.  Don't remove without
+                                // checking subclasses and warning downstream
+                                // developers - tfm - 20081211
+<span class="nc bnc" id="L314" title="All 4 branches missed.">                                &amp;&amp; (&quot;&quot;.equals(o) || CLEARED.equals(o)))) {</span>
+<span class="nc" id="L315">                    toBeRemoved.add(o);</span>
+                }
+<span class="fc" id="L317">            }</span>
+<span class="fc" id="L318">            removeAll(toBeRemoved);</span>
+<span class="fc" id="L319">            addAll(elements);</span>
+
+<span class="pc bpc" id="L321" title="3 of 4 branches missed.">            if (isClearable &amp;&amp; !elements.contains(CLEARED)) {</span>
+<span class="nc" id="L322">                addElement(CLEARED);</span>
+            }
+<span class="fc bfc" id="L324" title="All 2 branches covered.">            if (!objects.contains(selectedObject)) {</span>
+<span class="fc" id="L325">                selectedObject = null;</span>
+            }
+<span class="fc" id="L327">        } else {</span>
+<span class="nc" id="L328">            throw new IllegalArgumentException(&quot;In setElements: may not set &quot;</span>
+					       + &quot;elements to null collection&quot;);
+	}
+<span class="fc" id="L331">    }</span>
+
+    /**
+     * Utility method to get the target.
+     *
+     * @return  the ModelElement
+     */
+    protected Object getTarget() {
+<span class="fc" id="L339">        return comboBoxTarget;</span>
+    }
+
+    /**
+     * Utility method to remove a collection of elements from the model.
+     *
+     * @param col the elements to be removed
+     */
+    protected void removeAll(Collection col) {
+<span class="fc" id="L348">        int first = -1;</span>
+<span class="fc" id="L349">        int last = -1;</span>
+<span class="fc" id="L350">        fireListEvents = false;</span>
+<span class="pc bpc" id="L351" title="1 of 2 branches missed.">        for (Object o : col) {</span>
+<span class="nc" id="L352">            int index = getIndexOf(o);</span>
+<span class="nc" id="L353">            removeElement(o);</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            if (first == -1) { // start of interval</span>
+<span class="nc" id="L355">                first = index;</span>
+<span class="nc" id="L356">                last = index;</span>
+            } else {
+<span class="nc bnc" id="L358" title="All 2 branches missed.">                if (index  != last + 1) { // end of interval</span>
+<span class="nc" id="L359">                    fireListEvents = true;</span>
+<span class="nc" id="L360">                    fireIntervalRemoved(this, first, last);</span>
+<span class="nc" id="L361">                    fireListEvents = false;</span>
+<span class="nc" id="L362">                    first = index;</span>
+<span class="nc" id="L363">                    last = index;</span>
+                } else { // in middle of interval
+<span class="nc" id="L365">                    last++;</span>
+                }
+            }
+<span class="nc" id="L368">        }</span>
+<span class="fc" id="L369">        fireListEvents = true;</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Utility method to add a collection of elements to the model.
+     *
+     * @param col the elements to be addd
+     */
+    protected void addAll(Collection col) {
+<span class="fc" id="L378">        Object selected = getSelectedItem();</span>
+<span class="fc" id="L379">        fireListEvents = false;</span>
+<span class="fc" id="L380">        int oldSize = objects.size();</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">        for (Object o : col) {</span>
+<span class="fc" id="L382">            addElement(o);</span>
+<span class="fc" id="L383">        }</span>
+<span class="fc" id="L384">        setSelectedItem(external2internal(selected));</span>
+<span class="fc" id="L385">        fireListEvents = true;</span>
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        if (objects.size() != oldSize) {</span>
+<span class="pc bpc" id="L387" title="1 of 2 branches missed.">            fireIntervalAdded(this, oldSize == 0 ? 0 : oldSize - 1,</span>
+<span class="fc" id="L388">                    objects.size() - 1);</span>
+        }
+<span class="fc" id="L390">    }</span>
+
+    /**
+     * Utility method to get the changed element from some event e.
+     *
+     * @param e the given event
+     * @return Object the changed element
+     */
+    protected Object getChangedElement(PropertyChangeEvent e) {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        if (e instanceof AssociationChangeEvent) {</span>
+<span class="nc" id="L400">            return ((AssociationChangeEvent) e).getChangedValue();</span>
+        }
+<span class="nc" id="L402">        return e.getNewValue();</span>
+    }
+
+    /**
+     * Sets the target. If the old target is a ModelElement, it also removes
+     * the model from the element listener list of the target. If the new target
+     * is a ModelElement, the model is added as element listener to the new
+     * target. &lt;p&gt;
+     *
+     * This function is called when the user changes the target.
+     * Hence, this shall not result in any UML model changes.
+     * Hence, we block firing list events completely by setting
+     * buildingModel to true for the duration of this function. &lt;p&gt;
+     *
+     * This function looks a lot like the one in UMLModelElementListModel2.
+     *
+     * @param theNewTarget the target
+     */
+    public void setTarget(Object theNewTarget) {
+<span class="pc bpc" id="L421" title="1 of 4 branches missed.">        if (theNewTarget != null &amp;&amp; theNewTarget.equals(comboBoxTarget)) {</span>
+<span class="nc" id="L422">            LOG.log(Level.FINE, &quot;Ignoring duplicate setTarget request {0}&quot;, theNewTarget);</span>
+<span class="nc" id="L423">            return;</span>
+        }
+<span class="fc" id="L425">        modelValid = false;</span>
+
+<span class="fc" id="L427">        LOG.log(Level.FINE, &quot;setTarget target: {0}&quot;, theNewTarget);</span>
+
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">        theNewTarget = theNewTarget instanceof Fig</span>
+<span class="pc" id="L430">            ? ((Fig) theNewTarget).getOwner() : theNewTarget;</span>
+<span class="fc bfc" id="L431" title="All 4 branches covered.">        if (Model.getFacade().isAModelElement(theNewTarget)</span>
+                || theNewTarget instanceof ArgoDiagram) {
+
+            /* Remove old listeners: */
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">            if (Model.getFacade().isAModelElement(comboBoxTarget)) {</span>
+<span class="nc" id="L436">                Model.getPump().removeModelEventListener(this, comboBoxTarget,</span>
+                        propertySetName);
+                // Allow listening to other elements:
+<span class="nc" id="L439">                removeOtherModelEventListeners(comboBoxTarget);</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">            } else if (comboBoxTarget instanceof ArgoDiagram) {</span>
+<span class="fc" id="L441">                ((ArgoDiagram) comboBoxTarget).removePropertyChangeListener(</span>
+                        ArgoDiagram.NAMESPACE_KEY, this);
+            }
+
+            /* Add new listeners: */
+<span class="fc bfc" id="L446" title="All 2 branches covered.">            if (Model.getFacade().isAModelElement(theNewTarget)) {</span>
+<span class="fc" id="L447">                comboBoxTarget = theNewTarget;</span>
+<span class="fc" id="L448">                Model.getPump().addModelEventListener(this, comboBoxTarget,</span>
+                        propertySetName);
+                // Allow listening to other elements:
+<span class="fc" id="L451">                addOtherModelEventListeners(comboBoxTarget);</span>
+
+<span class="fc" id="L453">                buildingModel = true;</span>
+<span class="fc" id="L454">                buildMinimalModelList();</span>
+                // Do not set buildingModel = false here,
+                // otherwise the action for selection is performed.
+<span class="fc" id="L457">                setSelectedItem(external2internal(getSelectedModelElement()));</span>
+<span class="fc" id="L458">                buildingModel = false;</span>
+
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">                if (getSize() &gt; 0) {</span>
+<span class="fc" id="L461">                    fireIntervalAdded(this, 0, getSize() - 1);</span>
+                }
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">            } else if (theNewTarget instanceof ArgoDiagram) {</span>
+<span class="fc" id="L464">                comboBoxTarget = theNewTarget;</span>
+<span class="fc" id="L465">                ArgoDiagram diagram = (ArgoDiagram) theNewTarget;</span>
+<span class="fc" id="L466">                diagram.addPropertyChangeListener(</span>
+                        ArgoDiagram.NAMESPACE_KEY, this);
+<span class="fc" id="L468">                buildingModel = true;</span>
+<span class="fc" id="L469">                buildMinimalModelList();</span>
+<span class="fc" id="L470">                setSelectedItem(external2internal(getSelectedModelElement()));</span>
+<span class="fc" id="L471">                buildingModel = false;</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">                if (getSize() &gt; 0) {</span>
+<span class="fc" id="L473">                    fireIntervalAdded(this, 0, getSize() - 1);</span>
+                }
+<span class="fc" id="L475">            } else { /*  MVW: This can never happen, isn't it? */</span>
+<span class="nc" id="L476">                comboBoxTarget = null;</span>
+<span class="nc" id="L477">                removeAllElements();</span>
+            }
+<span class="pc bpc" id="L479" title="3 of 4 branches missed.">            if (getSelectedItem() != null &amp;&amp; isClearable) {</span>
+<span class="nc" id="L480">                addElement(CLEARED); // makes sure we can select 'none'</span>
+            }
+        }
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * Build the minimal number of items in the model for the edit box
+     * to be populated. By default this calls buildModelList but it
+     * can be overridden in subclasses to delay population of the list
+     * till the list is displayed. &lt;p&gt;
+     *
+     * If this lazy list building is used, do call setModelInvalid() here!
+     */
+    protected void buildMinimalModelList() {
+<span class="fc" id="L494">        buildModelListTimed();</span>
+<span class="fc" id="L495">    }</span>
+
+    private void buildModelListTimed() {
+<span class="fc" id="L498">        long startTime = System.currentTimeMillis();</span>
+        try {
+<span class="fc" id="L500">            buildModelList();</span>
+
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">            if ( LOG.isLoggable( Level.FINE ) ) {</span>
+<span class="nc" id="L503">              long endTime = System.currentTimeMillis();</span>
+<span class="nc" id="L504">              LOG.log(Level.FINE, &quot;buildModelList took &quot; + (endTime - startTime)</span>
+<span class="nc" id="L505">                      + &quot; msec. for &quot; + this.getClass().getName());</span>
+            }
+<span class="nc" id="L507">        } catch (InvalidElementException e) {</span>
+<span class="nc" id="L508">            LOG.log(Level.WARNING, &quot;buildModelList attempted to operate on &quot;</span>
+                    + &quot;deleted element&quot;);
+<span class="fc" id="L510">        }</span>
+<span class="fc" id="L511">    }</span>
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     *
+     * @param oldTarget the UML modelelement
+     */
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        /* Do nothing by default. */
+<span class="nc" id="L521">    }</span>
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     *
+     * @param newTarget the UML modelelement
+     */
+    protected void addOtherModelEventListeners(Object newTarget) {
+        /* Do nothing by default. */
+<span class="fc" id="L531">    }</span>
+
+    /**
+     * Gets the modelelement that is selected in the UML model. For
+     * example, say that this ComboBoxmodel contains all namespaces
+     * (as in UMLNamespaceComboBoxmodel) , this method should return
+     * the namespace that owns the target then.
+     *
+     * @return Object
+     */
+    protected abstract Object getSelectedModelElement();
+
+    /*
+     * @see javax.swing.ListModel#getElementAt(int)
+     */
+    public Object getElementAt(int index) {
+<span class="nc bnc" id="L547" title="All 4 branches missed.">        if (index &gt;= 0 &amp;&amp; index &lt; objects.size()) {</span>
+<span class="nc" id="L548">            return objects.get(index);</span>
+	}
+<span class="nc" id="L550">        return null;</span>
+    }
+
+    /*
+     * @see javax.swing.ListModel#getSize()
+     */
+    public int getSize() {
+<span class="fc" id="L557">        return objects.size();</span>
+    }
+
+    /**
+     * @param o the given element
+     * @return the index of the given element
+     */
+    public int getIndexOf(Object o) {
+<span class="nc" id="L565">        return objects.indexOf(o);</span>
+    }
+
+    /**
+     * @param o the element to be added
+     */
+    public void addElement(Object o) {
+        // TODO: For large lists, this is doing a linear search of literally thousands of elements
+<span class="fc bfc" id="L573" title="All 2 branches covered.">        if (!objects.contains(o)) {</span>
+<span class="fc" id="L574">            objects.add(o);</span>
+<span class="fc" id="L575">            fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);</span>
+        }
+<span class="fc" id="L577">    }</span>
+
+    /*
+     * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
+     */
+    public void setSelectedItem(Object o) {
+<span class="pc bpc" id="L583" title="5 of 8 branches missed.">        if ((selectedObject != null &amp;&amp; !selectedObject.equals(o))</span>
+                || (selectedObject == null &amp;&amp; o != null)) {
+<span class="nc" id="L585">            selectedObject = o;</span>
+<span class="nc" id="L586">            fireContentsChanged(this, -1, -1);</span>
+        }
+<span class="fc" id="L588">    }</span>
+
+    /**
+     * @param o the element to be removed
+     */
+    public void removeElement(Object o) {
+<span class="nc" id="L594">        int index = objects.indexOf(o);</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">        if (getElementAt(index) == selectedObject) {</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">            if (!isClearable) {</span>
+<span class="nc bnc" id="L597" title="All 2 branches missed.">                if (index == 0) {</span>
+<span class="nc bnc" id="L598" title="All 2 branches missed.">                    setSelectedItem(getSize() == 1</span>
+                                    ? null
+<span class="nc" id="L600">                                    : getElementAt(index + 1));</span>
+                } else {
+<span class="nc" id="L602">                    setSelectedItem(getElementAt(index - 1));</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L606" title="All 2 branches missed.">        if (index &gt;= 0) {</span>
+<span class="nc" id="L607">            objects.remove(index);</span>
+<span class="nc" id="L608">            fireIntervalRemoved(this, index, index);</span>
+        }
+<span class="nc" id="L610">    }</span>
+
+    /**
+     * Remove all elements.
+     */
+    public void removeAllElements() {
+<span class="nc" id="L616">        int startIndex = 0;</span>
+<span class="nc" id="L617">        int endIndex = Math.max(0, objects.size() - 1);</span>
+<span class="nc" id="L618">        objects.clear();</span>
+<span class="nc" id="L619">        selectedObject = null;</span>
+<span class="nc" id="L620">        fireIntervalRemoved(this, startIndex, endIndex);</span>
+<span class="nc" id="L621">    }</span>
+
+    /*
+     * @see javax.swing.ComboBoxModel#getSelectedItem()
+     */
+    public Object getSelectedItem() {
+<span class="fc" id="L627">        return selectedObject;</span>
+    }
+
+    private Object external2internal(Object o) {
+<span class="pc bpc" id="L631" title="2 of 4 branches missed.">        return o == null &amp;&amp; isClearable ? CLEARED : o;</span>
+    }
+
+    private Object internal2external(Object o) {
+<span class="nc bnc" id="L635" title="All 4 branches missed.">        return isClearable &amp;&amp; CLEARED.equals(o) ? null : o;</span>
+    }
+
+    /**
+     * Returns true if some object elem is contained by the list of choices.
+     *
+     * @param elem the given element
+     * @return boolean true if it is in the selection
+     */
+    public boolean contains(Object elem) {
+<span class="fc bfc" id="L645" title="All 2 branches covered.">        if (objects.contains(elem)) {</span>
+<span class="fc" id="L646">            return true;</span>
+	}
+<span class="pc bpc" id="L648" title="1 of 2 branches missed.">        if (elem instanceof Collection) {</span>
+<span class="nc bnc" id="L649" title="All 2 branches missed.">            for (Object o : (Collection) elem) {</span>
+<span class="nc bnc" id="L650" title="All 2 branches missed.">                if (!objects.contains(o)) {</span>
+<span class="nc" id="L651">                    return false;</span>
+		}
+<span class="nc" id="L653">            }</span>
+<span class="nc" id="L654">            return true;</span>
+        }
+<span class="fc" id="L656">        return false;</span>
+    }
+
+    /**
+     * Returns true if some event is valid. An event is valid if the
+     * element changed in the event is valid. This is determined via a
+     * call to isValidElement.  This method can be overriden by
+     * subclasses if they cannot determine if it is a valid event just
+     * by checking the changed element.
+     *
+     * @param e the event
+     * @return boolean true if the event is valid
+     */
+    protected boolean isValidEvent(PropertyChangeEvent e) {
+<span class="nc" id="L670">        boolean valid = false;</span>
+<span class="nc bnc" id="L671" title="All 2 branches missed.">        if (!(getChangedElement(e) instanceof Collection)) {</span>
+<span class="nc bnc" id="L672" title="All 4 branches missed.">            if ((e.getNewValue() == null &amp;&amp; e.getOldValue() != null)</span>
+                    // Don't try to test this if we're removing the element
+<span class="nc bnc" id="L674" title="All 2 branches missed.">                    || isValidElement(getChangedElement(e))) {</span>
+<span class="nc" id="L675">                valid = true; // we tried to remove a value</span>
+            }
+        } else {
+<span class="nc" id="L678">            Collection col = (Collection) getChangedElement(e);</span>
+<span class="nc bnc" id="L679" title="All 2 branches missed.">            if (!col.isEmpty()) {</span>
+<span class="nc" id="L680">                valid = true;</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">                for (Object o : col) {</span>
+<span class="nc bnc" id="L682" title="All 2 branches missed.">                    if (!isValidElement(o)) {</span>
+<span class="nc" id="L683">                        valid = false;</span>
+<span class="nc" id="L684">                        break;</span>
+                    }
+<span class="nc" id="L686">                }</span>
+            } else {
+<span class="nc bnc" id="L688" title="All 2 branches missed.">                if (e.getOldValue() instanceof Collection</span>
+<span class="nc bnc" id="L689" title="All 2 branches missed.">                    &amp;&amp; !((Collection) e.getOldValue()).isEmpty()) {</span>
+<span class="nc" id="L690">                    valid = true;</span>
+                }
+            }
+        }
+<span class="nc" id="L694">        return valid;</span>
+    }
+
+    /*
+     * @see javax.swing.AbstractListModel#fireContentsChanged(
+     *          Object, int, int)
+     */
+    @Override
+    protected void fireContentsChanged(Object source, int index0, int index1) {
+<span class="nc bnc" id="L703" title="All 4 branches missed.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="nc" id="L704">            super.fireContentsChanged(source, index0, index1);</span>
+	}
+<span class="nc" id="L706">    }</span>
+
+    /*
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(
+     *          Object, int, int)
+     */
+    @Override
+    protected void fireIntervalAdded(Object source, int index0, int index1) {
+<span class="fc bfc" id="L714" title="All 4 branches covered.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="fc" id="L715">            super.fireIntervalAdded(source, index0, index1);</span>
+	}
+<span class="fc" id="L717">    }</span>
+
+    /*
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(
+     *          Object, int, int)
+     */
+    @Override
+    protected void fireIntervalRemoved(Object source, int index0, int index1) {
+<span class="nc bnc" id="L725" title="All 4 branches missed.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="nc" id="L726">            super.fireIntervalRemoved(source, index0, index1);</span>
+	}
+<span class="nc" id="L728">    }</span>
+
+    /*
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="fc" id="L734">        LOG.log(Level.FINE, &quot;targetAdded targetevent: {0}&quot;, e);</span>
+<span class="fc" id="L735">        setTarget(e.getNewTarget());</span>
+<span class="fc" id="L736">    }</span>
+
+    /*
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L742">        LOG.log(Level.FINE, &quot;targetRemoved targetevent: {0}&quot;, e);</span>
+<span class="nc" id="L743">        Object currentTarget = comboBoxTarget;</span>
+<span class="nc" id="L744">        Object oldTarget =</span>
+<span class="nc bnc" id="L745" title="All 2 branches missed.">	    e.getOldTargets().length &gt; 0</span>
+<span class="nc" id="L746">            ? e.getOldTargets()[0] : null;</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">        if (oldTarget instanceof Fig) {</span>
+<span class="nc" id="L748">            oldTarget = ((Fig) oldTarget).getOwner();</span>
+        }
+<span class="nc bnc" id="L750" title="All 2 branches missed.">        if (oldTarget == currentTarget) {</span>
+<span class="nc bnc" id="L751" title="All 2 branches missed.">            if (Model.getFacade().isAModelElement(currentTarget)) {</span>
+<span class="nc" id="L752">                Model.getPump().removeModelEventListener(this,</span>
+                        currentTarget, propertySetName);
+            }
+<span class="nc" id="L755">            comboBoxTarget = e.getNewTarget();</span>
+        }
+<span class="nc" id="L757">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L758">    }</span>
+
+    /*
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="fc" id="L764">        LOG.log(Level.FINE, &quot;targetSet targetevent : {0}&quot;, e);</span>
+<span class="fc" id="L765">        setTarget(e.getNewTarget());</span>
+
+<span class="fc" id="L767">    }</span>
+
+    /**
+     * Return boolean indicating whether combo allows empty string.  This
+     * flag can only be specified in the constructor, so it will never change.
+     * The flag is checked directly internally, so overriding this method will
+     * have no effect.
+     *
+     * @return state of isClearable flag
+     */
+    protected boolean isClearable() {
+<span class="nc" id="L778">        return isClearable;</span>
+    }
+
+    /**
+     * @return name of property registered with event listener
+     */
+    protected String getPropertySetName() {
+<span class="nc" id="L785">        return propertySetName;</span>
+    }
+
+    /**
+     * @return Returns the fireListEvents.
+     */
+    protected boolean isFireListEvents() {
+<span class="nc" id="L792">        return fireListEvents;</span>
+    }
+
+    /**
+     * @param events The fireListEvents to set.
+     */
+    protected void setFireListEvents(boolean events) {
+<span class="fc" id="L799">        this.fireListEvents = events;</span>
+<span class="fc" id="L800">    }</span>
+
+    protected boolean isLazy() {
+<span class="nc" id="L803">        return false;</span>
+    }
+
+    /**
+     * Indicate that the model has to be rebuild.
+     * For a lazy model, this suffices to get the model rebuild
+     * the next time the user opens the combo.
+     */
+    protected void setModelInvalid() {
+<span class="pc bpc" id="L812" title="2 of 4 branches missed.">        assert isLazy(); // catch callers attempting to use one without other</span>
+<span class="fc" id="L813">        modelValid = false;</span>
+<span class="fc" id="L814">    }</span>
+
+    public void popupMenuCanceled(PopupMenuEvent e) {
+<span class="nc" id="L817">    }</span>
+
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+<span class="nc" id="L820">    }</span>
+
+    public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
+<span class="nc bnc" id="L823" title="All 6 branches missed.">        if (isLazy() &amp;&amp; !modelValid &amp;&amp; !processingWillBecomeVisible) {</span>
+<span class="nc" id="L824">            buildModelListTimed();</span>
+<span class="nc" id="L825">            modelValid = true;</span>
+            // We should be able to just do the above, but Swing has already
+            // computed the size of the popup menu.  The rest of this is
+            // a workaround for Swing bug
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4743225
+<span class="nc" id="L830">            JComboBox list = (JComboBox) ev.getSource();</span>
+<span class="nc" id="L831">            processingWillBecomeVisible = true;</span>
+            try {
+<span class="nc" id="L833">                list.getUI().setPopupVisible( list, true );</span>
+            } finally {
+<span class="nc" id="L835">                processingWillBecomeVisible = false;</span>
+            }
+        }
+<span class="nc" id="L838">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

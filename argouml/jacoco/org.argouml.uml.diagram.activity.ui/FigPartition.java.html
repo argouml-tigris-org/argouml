@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigPartition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.activity.ui</a> &gt; <span class="el_source">FigPartition.java</span></div><h1>FigPartition.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.activity.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.Handle;
+
+/**
+ * This class represents a Partition or Swimlane for Activity diagrams.
+ *
+ * @author mkl
+ */
+public class FigPartition extends FigNodeModelElement {
+
+    private static final int MIN_WIDTH = 64;
+    private static final int MIN_HEIGHT = 256;
+    
+    private FigLine leftLine;
+    private FigLine rightLine;
+    private FigLine topLine;
+    private FigLine bottomLine;
+    private FigLine seperator;
+    
+    private FigPartition previousPartition;
+    private FigPartition nextPartition;
+    
+    /**
+     * Construct a new FigPartition.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigPartition(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+<span class="nc" id="L90">        super(owner, bounds, settings);</span>
+<span class="nc" id="L91">        initFigs();</span>
+<span class="nc" id="L92">    }</span>
+
+    @Override
+    protected Fig createBigPortFig() {
+        // TODO: define constants for magic numbers
+<span class="nc" id="L97">        FigRect fr = new FigRect(X0, Y0, 160, 200, DEBUG_COLOR, DEBUG_COLOR);</span>
+<span class="nc" id="L98">        fr.setFilled(false);</span>
+<span class="nc" id="L99">        fr.setLineWidth(0);</span>
+<span class="nc" id="L100">        return fr;</span>
+    }
+
+    private void initFigs() {
+        // TODO: define constants for magic numbers
+<span class="nc" id="L105">        leftLine = new FigLine(X0, Y0, 10, 300, LINE_COLOR);</span>
+<span class="nc" id="L106">        rightLine = new FigLine(150, Y0, 160, 300, LINE_COLOR);</span>
+<span class="nc" id="L107">        bottomLine = new FigLine(X0, 300, 150, 300, LINE_COLOR);</span>
+<span class="nc" id="L108">        topLine = new FigLine(X0, Y0, 150, 10, LINE_COLOR);</span>
+
+<span class="nc" id="L110">        getNameFig().setLineWidth(0);</span>
+<span class="nc" id="L111">        getNameFig().setBounds(X0, Y0, 50, 25);</span>
+<span class="nc" id="L112">        getNameFig().setFilled(false);</span>
+        
+<span class="nc" id="L114">        seperator = new FigLine(X0, Y0 + 15, 150, 25, LINE_COLOR);</span>
+
+<span class="nc" id="L116">        addFig(getBigPort());</span>
+<span class="nc" id="L117">        addFig(rightLine);</span>
+<span class="nc" id="L118">        addFig(leftLine);</span>
+<span class="nc" id="L119">        addFig(topLine);</span>
+<span class="nc" id="L120">        addFig(bottomLine);</span>
+<span class="nc" id="L121">        addFig(getNameFig());</span>
+<span class="nc" id="L122">        addFig(seperator);</span>
+        
+<span class="nc" id="L124">        setFilled(false);</span>
+<span class="nc" id="L125">        setBounds(getBounds());</span>
+<span class="nc" id="L126">    }</span>
+    
+    /*
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() {
+<span class="nc" id="L133">        FigPartition figClone = (FigPartition) super.clone();</span>
+<span class="nc" id="L134">        Iterator it = figClone.getFigs().iterator();</span>
+<span class="nc" id="L135">        figClone.setBigPort((FigRect) it.next());</span>
+<span class="nc" id="L136">        figClone.rightLine = (FigLine) it.next();</span>
+<span class="nc" id="L137">        figClone.leftLine = (FigLine) it.next();</span>
+<span class="nc" id="L138">        figClone.bottomLine = (FigLine) it.next();</span>
+<span class="nc" id="L139">        figClone.topLine = (FigLine) it.next();</span>
+<span class="nc" id="L140">        figClone.setNameFig((FigText) it.next());</span>
+//        figClone.seperator = (FigLine) it.next();
+<span class="nc" id="L142">        return figClone;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+<span class="nc" id="L150">        rightLine.setLineColor(col);</span>
+<span class="nc" id="L151">        leftLine.setLineColor(col);</span>
+<span class="nc" id="L152">        bottomLine.setLineColor(col);</span>
+<span class="nc" id="L153">        topLine.setLineColor(col);</span>
+<span class="nc" id="L154">        seperator.setLineColor(col);</span>
+<span class="nc" id="L155">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L162">        return rightLine.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    @Override
+    public void setFillColor(Color col) {
+<span class="nc" id="L170">        getBigPort().setFillColor(col);</span>
+<span class="nc" id="L171">        getNameFig().setFillColor(col);</span>
+<span class="nc" id="L172">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L179">        return getBigPort().getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    @Override
+    public void setFilled(boolean f) {
+<span class="nc" id="L187">        getBigPort().setFilled(f);</span>
+<span class="nc" id="L188">        getNameFig().setFilled(f);</span>
+<span class="nc" id="L189">        super.setFilled(f);</span>
+<span class="nc" id="L190">    }</span>
+    
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L194">        return getBigPort().isFilled();</span>
+    }
+    
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+<span class="nc" id="L202">        rightLine.setLineWidth(w);</span>
+<span class="nc" id="L203">        leftLine.setLineWidth(w);</span>
+<span class="nc" id="L204">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="nc" id="L211">        return rightLine.getLineWidth();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
+    @Override
+    public String placeString() {
+<span class="nc" id="L219">        return &quot;&quot;;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    @Override
+    public Dimension getMinimumSize() {
+<span class="nc" id="L227">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="nc" id="L228">        int w = nameDim.width;</span>
+<span class="nc" id="L229">        int h = nameDim.height;</span>
+
+        // we want to maintain a minimum size for the partition
+<span class="nc" id="L232">        w = Math.max(MIN_WIDTH, w);</span>
+<span class="nc" id="L233">        h = Math.max(MIN_HEIGHT, h);</span>
+
+<span class="nc" id="L235">        return new Dimension(w, h);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+	
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (getNameFig() == null) {</span>
+<span class="nc" id="L245">            return;</span>
+        }
+<span class="nc" id="L247">        Rectangle oldBounds = getBounds();</span>
+
+<span class="nc" id="L249">        Rectangle nameBounds = getNameFig().getBounds();</span>
+<span class="nc" id="L250">        getNameFig().setBounds(x, y, w, nameBounds.height);</span>
+
+<span class="nc" id="L252">        getBigPort().setBounds(x, y, w, h);</span>
+<span class="nc" id="L253">        leftLine.setBounds(x, y, 0, h);</span>
+<span class="nc" id="L254">        rightLine.setBounds(x + (w - 1) , y, 0, h);</span>
+<span class="nc" id="L255">        topLine.setBounds(x, y, w - 1, 0);</span>
+<span class="nc" id="L256">        bottomLine.setBounds(x, y + h, w - 1, 0);</span>
+<span class="nc" id="L257">        seperator.setBounds(x, y + nameBounds.height, w - 1, 0);</span>
+
+<span class="nc" id="L259">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="nc" id="L260">        calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="nc" id="L261">        updateEdges();</span>
+<span class="nc" id="L262">    }</span>
+    
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L266">	return new SelectionPartition(this);</span>
+    }
+    
+    /**
+     * On post placement look to see if there are any other
+     * FigPartitions. If so place to the right and resize height.
+     *
+     * @param activityGraph the UML ActivityGraph element 
+     * that contains the Partition 
+     */
+    public void appendToPool(Object activityGraph) {
+<span class="nc" id="L277">	List partitions = getPartitions(getLayer());</span>
+<span class="nc" id="L278">        Model.getCoreHelper().setModelElementContainer(</span>
+<span class="nc" id="L279">                getOwner(), activityGraph);</span>
+	
+<span class="nc bnc" id="L281" title="All 2 branches missed.">	if (partitions.size() == 1) {</span>
+<span class="nc" id="L282">	    FigPool fp = new FigPool(getBounds(), getSettings());</span>
+<span class="nc" id="L283">	    getLayer().add(fp);</span>
+<span class="nc" id="L284">	    getLayer().bringToFront(this);</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">	} else if (partitions.size() &gt; 1) {</span>
+<span class="nc" id="L286">	    FigPool fp = getFigPool();</span>
+<span class="nc" id="L287">	    fp.setWidth(fp.getWidth() + getWidth());</span>
+	    
+<span class="nc" id="L289">            int x = 0;</span>
+<span class="nc" id="L290">	    Iterator it = partitions.iterator();</span>
+<span class="nc" id="L291">	    FigPartition f = null;</span>
+<span class="nc" id="L292">	    FigPartition previousFig = null;</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">	    while (it.hasNext()) {</span>
+<span class="nc" id="L294">		f = (FigPartition) it.next();</span>
+<span class="nc bnc" id="L295" title="All 4 branches missed.">		if (f != this &amp;&amp; f.getX() + f.getWidth() &gt; x) {</span>
+<span class="nc" id="L296">		    previousFig = f;</span>
+<span class="nc" id="L297">		    x = f.getX();</span>
+		}
+	    }
+<span class="nc" id="L300">	    setPreviousPartition(previousFig);</span>
+<span class="nc" id="L301">	    previousPartition.setNextPartition(this);</span>
+<span class="nc" id="L302">	    setBounds(</span>
+<span class="nc" id="L303">		    x + previousFig.getWidth(),</span>
+<span class="nc" id="L304">		    previousFig.getY(),</span>
+<span class="nc" id="L305">		    getWidth(),</span>
+<span class="nc" id="L306">		    previousFig.getHeight());</span>
+	}
+<span class="nc" id="L308">    }</span>
+    
+    @Override
+    public void removeFromDiagramImpl() {
+<span class="nc" id="L312">	int width = getWidth();</span>
+<span class="nc" id="L313">	FigPool figPool = getFigPool();</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">        if (figPool == null) { //Needed for project deletion</span>
+<span class="nc" id="L315">            super.removeFromDiagramImpl();</span>
+<span class="nc" id="L316">            return;</span>
+        }
+        
+<span class="nc" id="L319">	int newFigPoolWidth = figPool.getWidth() - width;</span>
+	
+<span class="nc" id="L321">	super.removeFromDiagramImpl();</span>
+	
+<span class="nc" id="L323">	FigPartition next = nextPartition;</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">	while (next != null) {</span>
+<span class="nc" id="L325">	    next.translateWithContents(-width);</span>
+<span class="nc" id="L326">            next = next.nextPartition;</span>
+	}
+
+<span class="nc bnc" id="L329" title="All 4 branches missed.">        if (nextPartition == null &amp;&amp; previousPartition == null) {</span>
+            /* We removed the last partition, so now remove the pool, too: */
+<span class="nc" id="L331">            figPool.removeFromDiagram();</span>
+<span class="nc" id="L332">            return;</span>
+        }
+
+<span class="nc bnc" id="L335" title="All 2 branches missed.">	if (nextPartition != null) {</span>
+<span class="nc" id="L336">	    nextPartition.setPreviousPartition(previousPartition);</span>
+	}
+	
+<span class="nc bnc" id="L339" title="All 2 branches missed.">	if (previousPartition != null) {</span>
+<span class="nc" id="L340">	    previousPartition.setNextPartition(nextPartition);</span>
+	}
+	
+<span class="nc" id="L343">	setPreviousPartition(null);</span>
+<span class="nc" id="L344">	setNextPartition(null);</span>
+	
+<span class="nc" id="L346">	figPool.setWidth(newFigPoolWidth);</span>
+<span class="nc" id="L347">    }</span>
+    
+    // TODO: Needs work. Must determine which Figs enclosed
+    // in the pool are within the bounds of this Fig
+    // and translate those.
+    private void translateWithContents(int dx) {
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        for (Fig f : getFigPool().getEnclosedFigs()) {</span>
+<span class="nc" id="L354">            f.setX(f.getX() + dx);</span>
+<span class="nc" id="L355">	}</span>
+<span class="nc" id="L356">	setX(getX() + dx);</span>
+<span class="nc" id="L357">	damage();</span>
+<span class="nc" id="L358">    }</span>
+    
+    /**
+     * Get all the partitions on the same layer as this FigPartition
+     * @return th partitions
+     */
+    private List&lt;FigPartition&gt; getPartitions(Layer layer) {
+<span class="nc" id="L365">        final List&lt;FigPartition&gt; partitions = new ArrayList&lt;FigPartition&gt;();</span>
+        
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        for (Object o : layer.getContents()) {</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">            if (o instanceof FigPartition) {</span>
+<span class="nc" id="L369">                partitions.add((FigPartition) o);</span>
+            }
+<span class="nc" id="L371">        }</span>
+        
+<span class="nc" id="L373">        return partitions;</span>
+    }
+    
+    /**
+     * Get all the partitions on the same layer as this FigPartition
+     * @return th partitions
+     */
+    private FigPool getFigPool() {
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        if (getLayer() != null) { // This test needed for project deletion</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">            for (Object o : getLayer().getContents()) {</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                if (o instanceof FigPool) {</span>
+<span class="nc" id="L384">                    return (FigPool) o;</span>
+                }
+<span class="nc" id="L386">            }</span>
+        }
+        
+<span class="nc" id="L389">        return null;</span>
+    }
+    
+
+    /**
+     * @param nextPartition The nextPartition to set.
+     */
+    void setNextPartition(FigPartition next) {
+<span class="nc" id="L397">        this.nextPartition = next;</span>
+<span class="nc" id="L398">    }</span>
+
+    /**
+     * @param previousPartition The previousPartition to set.
+     */
+    void setPreviousPartition(FigPartition previous) {
+<span class="nc" id="L404">        this.previousPartition = previous;</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">        leftLine.setVisible(previousPartition == null);</span>
+<span class="nc" id="L406">    }</span>
+    
+    /**
+     * When dragging this partition drag all other partitions with it.
+     * @return all the partitions to drag together.
+     */
+    @Override
+    public List getDragDependencies() {
+<span class="nc" id="L414">	List dependents = getPartitions(getLayer());</span>
+<span class="nc" id="L415">	dependents.add(getFigPool());</span>
+<span class="nc" id="L416">	dependents.addAll(getFigPool().getEnclosedFigs());</span>
+<span class="nc" id="L417">	return dependents;</span>
+    }
+    
+    /**
+     * A specialist Selection class for FigPartitions.
+     * This ensures that all swimlanes are the same length (ie height).
+     * TODO: Make sure that all swimlanes appear side by side (UML spec
+     * states &quot;separated from neighboring swimlanes by vertical solid
+     * lines on both sides&quot;.
+     * TODO: Allow drag of the west and east edge to resize both the selected
+     * Fig and the fig connected to that side.
+     * TODO: Show NorthWest and SouthWest handle only on leftmost swimlane.
+     * TODO: Show NorthEast and SouthEast handle only on rightmost swimlane.
+     * @author Bob
+     */
+    private class SelectionPartition extends Selection {
+
+        private int cx;
+        private int cy;
+        private int cw;
+        private int ch;
+        
+        /**
+         * Construct a new SelectionPartition for the given partition
+         *
+         * @param f the Fig
+         */
+<span class="nc" id="L444">        public SelectionPartition(FigPartition f) {</span>
+<span class="nc" id="L445">            super(f);</span>
+<span class="nc" id="L446">        }</span>
+        
+        /** Return a handle ID for the handle under the mouse, or -1 if
+         *  none. Needs-More-Work: in the future, return a Handle instance or
+         *  null. &lt;p&gt;
+         *  &lt;pre&gt;
+         *   0-------1-------2
+         *   |               |
+         *   3               4
+         *   |               |
+         *   5-------6-------7
+         * &lt;/pre&gt;
+         */
+        public void hitHandle(Rectangle r, Handle h) {
+<span class="nc bnc" id="L460" title="All 2 branches missed.">            if (getContent().isResizable()) {</span>
+        
+<span class="nc" id="L462">                updateHandleBox();</span>
+<span class="nc" id="L463">                Rectangle testRect = new Rectangle(0, 0, 0, 0);</span>
+<span class="nc" id="L464">                testRect.setBounds(</span>
+                    cx - HAND_SIZE / 2,
+                    cy - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    ch + HAND_SIZE / 2);
+<span class="nc" id="L469">                boolean leftEdge = r.intersects(testRect);</span>
+<span class="nc" id="L470">                testRect.setBounds(</span>
+                    cx + cw - HAND_SIZE / 2,
+                    cy - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    ch + HAND_SIZE / 2);
+<span class="nc" id="L475">                boolean rightEdge = r.intersects(testRect);</span>
+<span class="nc" id="L476">                testRect.setBounds(</span>
+                    cx - HAND_SIZE / 2,
+                    cy - HAND_SIZE / 2,
+                    cw + HAND_SIZE / 2,
+                    HAND_SIZE);
+<span class="nc" id="L481">                boolean topEdge = r.intersects(testRect);</span>
+<span class="nc" id="L482">                testRect.setBounds(</span>
+                    cx - HAND_SIZE / 2,
+                    cy + ch - HAND_SIZE / 2,
+                    cw + HAND_SIZE / 2,
+                    HAND_SIZE);
+<span class="nc" id="L487">                boolean bottomEdge = r.intersects(testRect);</span>
+                // TODO: midpoints for side handles
+<span class="nc bnc" id="L489" title="All 4 branches missed.">                if (leftEdge &amp;&amp; topEdge) {</span>
+<span class="nc" id="L490">                    h.index = Handle.NORTHWEST;</span>
+<span class="nc" id="L491">                    h.instructions = &quot;Resize top left&quot;;</span>
+<span class="nc bnc" id="L492" title="All 4 branches missed.">                } else if (rightEdge &amp;&amp; topEdge) {</span>
+<span class="nc" id="L493">                    h.index = Handle.NORTHEAST;</span>
+<span class="nc" id="L494">                    h.instructions = &quot;Resize top right&quot;;</span>
+<span class="nc bnc" id="L495" title="All 4 branches missed.">                } else if (leftEdge &amp;&amp; bottomEdge) {</span>
+<span class="nc" id="L496">                    h.index = Handle.SOUTHWEST;</span>
+<span class="nc" id="L497">                    h.instructions = &quot;Resize bottom left&quot;;</span>
+<span class="nc bnc" id="L498" title="All 4 branches missed.">                } else if (rightEdge &amp;&amp; bottomEdge) {</span>
+<span class="nc" id="L499">                    h.index = Handle.SOUTHEAST;</span>
+<span class="nc" id="L500">                    h.instructions = &quot;Resize bottom right&quot;;</span>
+                }
+                // TODO: side handles
+                else {
+<span class="nc" id="L504">                    h.index = -1;</span>
+<span class="nc" id="L505">                    h.instructions = &quot;Move object(s)&quot;;</span>
+                }
+<span class="nc" id="L507">            } else {</span>
+<span class="nc" id="L508">                h.index = -1;</span>
+<span class="nc" id="L509">                h.instructions = &quot;Move object(s)&quot;;</span>
+            }
+        
+<span class="nc" id="L512">        }</span>
+        
+        /** Update the private variables cx etc. that represent the rectangle on
+        	  whose corners handles are to be drawn.*/
+        private void updateHandleBox() {
+<span class="nc" id="L517">            final Rectangle cRect = getContent().getHandleBox();</span>
+<span class="nc" id="L518">            cx = cRect.x;</span>
+<span class="nc" id="L519">            cy = cRect.y;</span>
+<span class="nc" id="L520">            cw = cRect.width;</span>
+<span class="nc" id="L521">            ch = cRect.height;</span>
+<span class="nc" id="L522">        }</span>
+        
+        /** Paint the handles at the four corners and midway along each edge
+         * of the bounding box.  */
+        @Override
+        public void paint(Graphics g) {
+<span class="nc" id="L528">            final Fig fig = getContent();</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">            if (getContent().isResizable()) {</span>
+        
+<span class="nc" id="L531">                updateHandleBox();</span>
+<span class="nc" id="L532">                g.setColor(Globals.getPrefs().handleColorFor(fig));</span>
+<span class="nc" id="L533">                g.fillRect(</span>
+                    cx - HAND_SIZE / 2,
+                    cy - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    HAND_SIZE);
+<span class="nc" id="L538">                g.fillRect(</span>
+                    cx + cw - HAND_SIZE / 2,
+                    cy - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    HAND_SIZE);
+<span class="nc" id="L543">                g.fillRect(</span>
+                    cx - HAND_SIZE / 2,
+                    cy + ch - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    HAND_SIZE);
+<span class="nc" id="L548">                g.fillRect(</span>
+                    cx + cw - HAND_SIZE / 2,
+                    cy + ch - HAND_SIZE / 2,
+                    HAND_SIZE,
+                    HAND_SIZE);
+            } else {
+<span class="nc" id="L554">                final int x = fig.getX();</span>
+<span class="nc" id="L555">                final int y = fig.getY();</span>
+<span class="nc" id="L556">                final int w = fig.getWidth();</span>
+<span class="nc" id="L557">                final int h = fig.getHeight();</span>
+<span class="nc" id="L558">                g.setColor(Globals.getPrefs().handleColorFor(fig));</span>
+<span class="nc" id="L559">                g.drawRect(</span>
+                    x - BORDER_WIDTH,
+                    y - BORDER_WIDTH,
+                    w + BORDER_WIDTH * 2 - 1,
+                    h + BORDER_WIDTH * 2 - 1);
+<span class="nc" id="L564">                g.drawRect(</span>
+                    x - BORDER_WIDTH - 1,
+                    y - BORDER_WIDTH - 1,
+                    w + BORDER_WIDTH * 2 + 2 - 1,
+                    h + BORDER_WIDTH * 2 + 2 - 1);
+<span class="nc" id="L569">                g.fillRect(x - HAND_SIZE, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);</span>
+<span class="nc" id="L570">                g.fillRect(x + w, y - HAND_SIZE, HAND_SIZE, HAND_SIZE);</span>
+<span class="nc" id="L571">                g.fillRect(x - HAND_SIZE, y + h, HAND_SIZE, HAND_SIZE);</span>
+<span class="nc" id="L572">                g.fillRect(x + w, y + h, HAND_SIZE, HAND_SIZE);</span>
+            }
+<span class="nc" id="L574">        }</span>
+        
+        /**
+         * Change some attribute of the selected Fig when the user drags one
+         * of its handles.
+         */
+        public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+            
+<span class="nc" id="L582">            final Fig fig = getContent();</span>
+
+<span class="nc" id="L584">            updateHandleBox();</span>
+        
+<span class="nc" id="L586">            final int x = cx;</span>
+<span class="nc" id="L587">            final int y = cy;</span>
+<span class="nc" id="L588">            final int w = cw;</span>
+<span class="nc" id="L589">            final int h = ch;</span>
+<span class="nc" id="L590">            int newX = x, newY = y, newWidth = w, newHeight = h;</span>
+<span class="nc" id="L591">            Dimension minSize = fig.getMinimumSize();</span>
+<span class="nc" id="L592">            int minWidth = minSize.width, minHeight = minSize.height;</span>
+<span class="nc bnc" id="L593" title="All 10 branches missed.">            switch (hand.index) {</span>
+            case -1 :
+<span class="nc" id="L595">                fig.translate(anX - mX, anY - mY);</span>
+<span class="nc" id="L596">                return;</span>
+            case Handle.NORTHWEST :
+<span class="nc" id="L598">                newWidth = x + w - mX;</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">                newWidth = (newWidth &lt; minWidth) ? minWidth : newWidth;</span>
+<span class="nc" id="L600">                newHeight = y + h - mY;</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">                newHeight = (newHeight &lt; minHeight) ? minHeight : newHeight;</span>
+<span class="nc" id="L602">                newX = x + w - newWidth;</span>
+<span class="nc" id="L603">                newY = y + h - newHeight;</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">                if ((newX + newWidth) != (x + w)) {</span>
+<span class="nc" id="L605">                    newX += (newX + newWidth) - (x + w);</span>
+                }
+<span class="nc bnc" id="L607" title="All 2 branches missed.">                if ((newY + newHeight) != (y + h)) {</span>
+<span class="nc" id="L608">                    newY += (newY + newHeight) - (y + h);</span>
+                }
+<span class="nc" id="L610">                setHandleBox(</span>
+<span class="nc" id="L611">                	previousPartition, </span>
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
+<span class="nc" id="L616">                return;</span>
+            case Handle.NORTH :
+<span class="nc" id="L618">                break;</span>
+            case Handle.NORTHEAST :
+<span class="nc" id="L620">                newWidth = mX - x;</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">                newWidth = (newWidth &lt; minWidth) ? minWidth : newWidth;</span>
+<span class="nc" id="L622">                newHeight = y + h - mY;</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">                newHeight = (newHeight &lt; minHeight) ? minHeight : newHeight;</span>
+<span class="nc" id="L624">                newY = y + h - newHeight;</span>
+<span class="nc bnc" id="L625" title="All 2 branches missed.">                if ((newY + newHeight) != (y + h)) {</span>
+<span class="nc" id="L626">                    newY += (newY + newHeight) - (y + h);</span>
+                }
+<span class="nc" id="L628">                setHandleBox(</span>
+<span class="nc" id="L629">                	nextPartition, </span>
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
+<span class="nc" id="L634">                break;</span>
+            case Handle.WEST :
+<span class="nc" id="L636">                break;</span>
+            case Handle.EAST :
+<span class="nc" id="L638">                break;</span>
+            case Handle.SOUTHWEST :
+<span class="nc" id="L640">                newWidth = x + w - mX;</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">                newWidth = (newWidth &lt; minWidth) ? minWidth : newWidth;</span>
+<span class="nc" id="L642">                newHeight = mY - y;</span>
+<span class="nc bnc" id="L643" title="All 2 branches missed.">                newHeight = (newHeight &lt; minHeight) ? minHeight : newHeight;</span>
+<span class="nc" id="L644">                newX = x + w - newWidth;</span>
+<span class="nc bnc" id="L645" title="All 2 branches missed.">                if ((newX + newWidth) != (x + w)) {</span>
+<span class="nc" id="L646">                    newX += (newX + newWidth) - (x + w);</span>
+                }
+<span class="nc" id="L648">                setHandleBox(</span>
+<span class="nc" id="L649">                	previousPartition, </span>
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
+<span class="nc" id="L654">                break;</span>
+            case Handle.SOUTH :
+<span class="nc" id="L656">                break;</span>
+            case Handle.SOUTHEAST :
+<span class="nc" id="L658">                newWidth = mX - x;</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">                newWidth = (newWidth &lt; minWidth) ? minWidth : newWidth;</span>
+<span class="nc" id="L660">                newHeight = mY - y;</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">                newHeight = (newHeight &lt; minHeight) ? minHeight : newHeight;</span>
+<span class="nc" id="L662">                setHandleBox(</span>
+<span class="nc" id="L663">                	nextPartition, </span>
+                	newX, 
+                	newY, 
+                	newWidth, 
+                	newHeight);
+                break;
+            }
+<span class="nc" id="L670">        }</span>
+        
+        private void setHandleBox(
+        	FigPartition neighbour, 
+        	int x, 
+        	int y, 
+        	int width, 
+        	int height) {
+            
+<span class="nc" id="L679">            final List&lt;FigPartition&gt; partitions = getPartitions(getLayer());</span>
+            
+<span class="nc" id="L681">            int newNeighbourWidth = 0;</span>
+<span class="nc bnc" id="L682" title="All 2 branches missed.">            if (neighbour != null) {</span>
+<span class="nc" id="L683">                newNeighbourWidth = </span>
+<span class="nc" id="L684">                    (neighbour.getWidth() + getContent().getWidth()) - width;</span>
+<span class="nc bnc" id="L685" title="All 2 branches missed.">        	if (neighbour.getMinimumSize().width &gt; newNeighbourWidth) {</span>
+<span class="nc" id="L686">        	    return;</span>
+        	}
+            }
+            
+<span class="nc" id="L690">            int lowX = 0;</span>
+<span class="nc" id="L691">            int totalWidth = 0;</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">            for (Fig f : partitions) {</span>
+<span class="nc bnc" id="L693" title="All 2 branches missed.">        	if (f == getContent()) {</span>
+<span class="nc" id="L694">                    f.setHandleBox(x, y, width, height);</span>
+<span class="nc bnc" id="L695" title="All 4 branches missed.">        	} else if (f == neighbour &amp;&amp; f == previousPartition) {</span>
+<span class="nc" id="L696">                    f.setHandleBox(f.getX(), y, newNeighbourWidth, height);</span>
+<span class="nc bnc" id="L697" title="All 4 branches missed.">        	} else if (f == neighbour &amp;&amp; f == nextPartition) {</span>
+<span class="nc" id="L698">                    f.setHandleBox(x + width, y, newNeighbourWidth, height);</span>
+        	} else {
+<span class="nc" id="L700">                    f.setHandleBox(f.getX(), y, f.getWidth(), height);</span>
+        	}
+<span class="nc bnc" id="L702" title="All 4 branches missed.">        	if (f.getHandleBox().getX() &lt; lowX || totalWidth == 0) {</span>
+<span class="nc" id="L703">        	    lowX = f.getHandleBox().x;</span>
+        	}
+<span class="nc" id="L705">        	totalWidth += f.getHandleBox().width;</span>
+<span class="nc" id="L706">            }</span>
+<span class="nc" id="L707">            FigPool pool = getFigPool();</span>
+<span class="nc" id="L708">            pool.setBounds(lowX, y, totalWidth, height);</span>
+<span class="nc" id="L709">        }</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

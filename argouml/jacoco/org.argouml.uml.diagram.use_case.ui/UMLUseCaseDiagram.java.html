@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLUseCaseDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.use_case.ui</a> &gt; <span class="el_source">UMLUseCaseDiagram.java</span></div><h1>UMLUseCaseDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.use_case.ui;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.UseCaseDiagram;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
+import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
+import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.RadioAction;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
+import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * The base class of the use case diagram.&lt;p&gt;
+ *
+ * Defines the toolbar, provides for its initialization and provides
+ * constructors for a top level diagram and one within a defined
+ * namespace.&lt;p&gt;
+ *
+ * A use case diagram has as owner either a package or a classifier.
+ */
+public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
+
+<span class="fc" id="L84">    private static final Logger LOG =</span>
+<span class="fc" id="L85">        Logger.getLogger(UMLUseCaseDiagram.class.getName());</span>
+
+    // Actions specific to the use case diagram toolbar
+
+    /**
+     * Tool to add an actor node.&lt;p&gt;
+     */
+    private Action actionActor;
+
+    /**
+     * Tool to add a use case node.&lt;p&gt;
+     */
+    private Action actionUseCase;
+
+    /**
+     * Tool to create an association between UML artifacts using a
+     * polyedge.&lt;p&gt;
+     */
+    private Action actionAssociation;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
+
+    /**
+     * Tool to create a generalization between UML artifacts using a
+     * polyedge.&lt;p&gt;
+     */
+    private Action actionGeneralize;
+
+    /**
+     * Tool to create an extend relationship between UML use cases
+     * using a polyedge.&lt;p&gt;
+     */
+    private Action actionExtend;
+
+    /**
+     * Tool to create an include relationship between UML use cases
+     * using a polyedge.&lt;p&gt;
+     */
+    private Action actionInclude;
+
+    /**
+     * Tool to create a dependency between UML artifacts using a
+     * polyedge.&lt;p&gt;
+     */
+    private Action actionDependency;
+
+    private Action actionExtensionPoint;
+
+    /**
+     * Construct a new use case diagram with no defined namespace.&lt;p&gt;
+     *
+     * Note we must never call this directly, since defining the
+     * namespace is what makes everything work. However GEF will call
+     * it directly when loading a new diagram, so it must remain
+     * public.&lt;p&gt;
+     *
+     * A unique name is constructed by using the serial index.
+     * We allow for the possibility
+     * that setting this may fail, in which case no name is set.&lt;p&gt;
+     * @deprecated ony for use by PGML parser.
+     */
+    @Deprecated
+    public UMLUseCaseDiagram() {
+<span class="fc" id="L151">        super(new UseCaseDiagramGraphModel());</span>
+        try {
+<span class="fc" id="L153">            setName(getNewDiagramName());</span>
+<span class="pc" id="L154">        } catch (PropertyVetoException pve) { }</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Construct a new use case diagram with in a defined namespace.&lt;p&gt;
+     *
+     * Invokes the generic constructor {@link #UMLUseCaseDiagram()},
+     * then intialises the namespace (which initializes all the
+     * graphics).&lt;p&gt;
+     *
+     * This is the constructor which should always be used.&lt;p&gt;
+     *
+     * @param m  the desired namespace for this diagram.
+     */
+    public UMLUseCaseDiagram(Object m) {
+<span class="fc" id="L169">        this();</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(m)) {</span>
+<span class="nc" id="L171">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L173">        setNamespace(m);</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param name the name for the diagram
+     * @param namespace the namespace for the diagram
+     */
+    public UMLUseCaseDiagram(String name, Object namespace) {
+<span class="nc" id="L183">        this(namespace);</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (!Model.getFacade().isANamespace(namespace)) {</span>
+<span class="nc" id="L185">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L188">            setName(name);</span>
+<span class="nc" id="L189">        } catch (PropertyVetoException v) { }</span>
+<span class="nc" id="L190">    }</span>
+
+    /**
+     * Perform a number of important initializations of a &lt;em&gt;Use Case
+     * Diagram&lt;/em&gt;.&lt;p&gt;
+     *
+     * Creates a new graph model for the diagram, settings its
+     * namespace to that supplied.&lt;p&gt;
+     *
+     * Changed &lt;em&gt;lay&lt;/em&gt; from &lt;em&gt;LayerPerspective&lt;/em&gt; to
+     * &lt;em&gt;LayerPerspectiveMutable&lt;/em&gt;. This class is a child of
+     * &lt;em&gt;LayerPerspective&lt;/em&gt; and was implemented to correct some
+     * difficulties in changing the model. &lt;em&gt;lay&lt;/em&gt; is used mainly
+     * in &lt;em&gt;LayerManager&lt;/em&gt;(GEF) to control the adding, changing
+     * and deleting of items in a layer of the diagram.&lt;p&gt;
+     *
+     * Set a renderer suitable for the use case diagram.&lt;p&gt;
+     *
+     * &lt;em&gt;Note&lt;/em&gt;. This is declared as public. Not clear that other
+     * classes should be allowed to invoke this method.&lt;p&gt;
+     *
+     * @param handle Namespace to be used for this diagram.
+     *
+     * @author   psager@tigris.org  Jan 24, 2002
+     */
+    @Override
+    public void setNamespace(Object handle) {
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(handle)) {</span>
+<span class="nc" id="L218">            LOG.log(Level.SEVERE,</span>
+                &quot;Illegal argument. Object &quot; + handle + &quot; is not a namespace&quot;);
+<span class="nc" id="L220">            throw new IllegalArgumentException(</span>
+                &quot;Illegal argument. Object &quot; + handle + &quot; is not a namespace&quot;);
+        }
+<span class="fc" id="L223">        Object m = handle;</span>
+<span class="fc" id="L224">        super.setNamespace(m);</span>
+
+<span class="fc" id="L226">        UseCaseDiagramGraphModel gm =</span>
+<span class="fc" id="L227">            (UseCaseDiagramGraphModel) getGraphModel();</span>
+<span class="fc" id="L228">        gm.setHomeModel(m);</span>
+<span class="fc" id="L229">        LayerPerspective lay =</span>
+<span class="fc" id="L230">            new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);</span>
+<span class="fc" id="L231">        UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();</span>
+<span class="fc" id="L232">        lay.setGraphNodeRenderer(rend);</span>
+<span class="fc" id="L233">        lay.setGraphEdgeRenderer(rend);</span>
+<span class="fc" id="L234">        setLayer(lay);</span>
+
+        // The renderer should be a singleton
+
+<span class="fc" id="L238">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     */
+    protected Object[] getUmlActions() {
+<span class="nc" id="L244">        Object[] actions =</span>
+        {
+<span class="nc" id="L246">            getActionActor(),</span>
+<span class="nc" id="L247">            getActionUseCase(),</span>
+	    null,
+<span class="nc" id="L249">	    getAssociationActions(),</span>
+<span class="nc" id="L250">	    getActionDependency(),</span>
+<span class="nc" id="L251">	    getActionGeneralize(),</span>
+<span class="nc" id="L252">	    getActionExtend(),</span>
+<span class="nc" id="L253">	    getActionInclude(),</span>
+	    null,
+<span class="nc" id="L255">	    getActionExtensionPoint(),</span>
+	};
+<span class="nc" id="L257">        return actions;</span>
+    }
+
+    private Object[] getAssociationActions() {
+<span class="nc" id="L261">        Object[][] actions = {</span>
+<span class="nc" id="L262">	    {getActionAssociation(), getActionUniAssociation() },</span>
+<span class="nc" id="L263">	    {getActionAggregation(), getActionUniAggregation() },</span>
+<span class="nc" id="L264">	    {getActionComposition(), getActionUniComposition() },</span>
+        };
+<span class="nc" id="L266">        ToolBarUtility.manageDefault(actions, &quot;diagram.usecase.association&quot;);</span>
+<span class="nc" id="L267">        return actions;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+<span class="fc" id="L274">        return Translator.localize(&quot;label.usecase-diagram&quot;);</span>
+    }
+
+    /**
+     * @return Returns the actionActor.
+     */
+    protected Action getActionActor() {
+<span class="nc bnc" id="L281" title="All 2 branches missed.">        if (actionActor == null) {</span>
+<span class="nc" id="L282">            actionActor = new RadioAction(new CmdCreateNode(</span>
+<span class="nc" id="L283">                    Model.getMetaTypes().getActor(), &quot;button.new-actor&quot;));</span>
+        }
+<span class="nc" id="L285">        return actionActor;</span>
+    }
+    /**
+     * @return Returns the actionAggregation.
+     */
+    protected Action getActionAggregation() {
+<span class="nc bnc" id="L291" title="All 2 branches missed.">        if (actionAggregation == null) {</span>
+<span class="nc" id="L292">            actionAggregation = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L294">                        Model.getAggregationKind().getAggregate(),</span>
+                        false,
+                        &quot;button.new-aggregation&quot;));
+        }
+<span class="nc" id="L298">        return actionAggregation;</span>
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (actionAssociation == null) {</span>
+<span class="nc" id="L305">            actionAssociation = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L307">                        Model.getAggregationKind().getNone(),</span>
+                        false,
+                        &quot;button.new-association&quot;));
+        }
+<span class="nc" id="L311">        return actionAssociation;</span>
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if (actionComposition == null) {</span>
+<span class="nc" id="L318">            actionComposition = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L320">                        Model.getAggregationKind().getComposite(),</span>
+                        false,
+                        &quot;button.new-composition&quot;));
+        }
+<span class="nc" id="L324">        return actionComposition;</span>
+    }
+    /**
+     * @return Returns the actionDependency.
+     */
+    protected Action getActionDependency() {
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        if (actionDependency == null) {</span>
+<span class="nc" id="L331">            actionDependency = new RadioAction(</span>
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L335">                        Model.getMetaTypes().getDependency(),</span>
+                        &quot;button.new-dependency&quot;));
+        }
+<span class="nc" id="L338">        return actionDependency;</span>
+    }
+    /**
+     * @return Returns the actionExtend.
+     */
+    protected Action getActionExtend() {
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        if (actionExtend == null) {</span>
+<span class="nc" id="L345">            actionExtend = new RadioAction(</span>
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L349">                        Model.getMetaTypes().getExtend(),</span>
+                        &quot;button.new-extend&quot;));
+        }
+<span class="nc" id="L352">        return actionExtend;</span>
+    }
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralize() {
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (actionGeneralize == null) {</span>
+<span class="nc" id="L359">            actionGeneralize = new RadioAction(</span>
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L363">                        Model.getMetaTypes().getGeneralization(),</span>
+                        &quot;button.new-generalization&quot;));
+        }
+<span class="nc" id="L366">        return actionGeneralize;</span>
+    }
+    /**
+     * @return Returns the actionInclude.
+     */
+    protected Action getActionInclude() {
+<span class="nc bnc" id="L372" title="All 2 branches missed.">        if (actionInclude == null) {</span>
+<span class="nc" id="L373">            actionInclude = new RadioAction(</span>
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L377">                        Model.getMetaTypes().getInclude(),</span>
+                        &quot;button.new-include&quot;));
+        }
+<span class="nc" id="L380">        return actionInclude;</span>
+    }
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        if (actionUniAggregation == null) {</span>
+<span class="nc" id="L387">            actionUniAggregation  = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L389">                            Model.getAggregationKind().getAggregate(),</span>
+                            true,
+                            &quot;button.new-uniaggregation&quot;));
+        }
+<span class="nc" id="L393">        return actionUniAggregation;</span>
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        if (actionUniAssociation == null) {</span>
+<span class="nc" id="L400">            actionUniAssociation  = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L402">                            Model.getAggregationKind().getNone(),</span>
+                            true,
+                            &quot;button.new-uniassociation&quot;));
+        }
+<span class="nc" id="L406">        return actionUniAssociation;</span>
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        if (actionUniComposition == null) {</span>
+<span class="nc" id="L413">            actionUniComposition  = new RadioAction(</span>
+                    new ActionSetAddAssociationMode(
+<span class="nc" id="L415">                            Model.getAggregationKind().getComposite(),</span>
+                            true,
+                            &quot;button.new-unicomposition&quot;));
+        }
+<span class="nc" id="L419">        return actionUniComposition;</span>
+    }
+    /**
+     * @return Returns the actionUseCase.
+     */
+    protected Action getActionUseCase() {
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        if (actionUseCase == null) {</span>
+<span class="nc" id="L426">            actionUseCase = new RadioAction(new CmdCreateNode(</span>
+<span class="nc" id="L427">                    Model.getMetaTypes().getUseCase(), &quot;button.new-usecase&quot;));</span>
+        }
+<span class="nc" id="L429">        return actionUseCase;</span>
+    }
+
+    /**
+     * @return the action to create an extension point
+     */
+    protected Action getActionExtensionPoint() {
+<span class="nc bnc" id="L436" title="All 2 branches missed.">        if (actionExtensionPoint == null) {</span>
+<span class="nc" id="L437">            actionExtensionPoint = ActionAddExtensionPoint.singleton();</span>
+        }
+<span class="nc" id="L439">        return actionExtensionPoint;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base)  {
+<span class="nc bnc" id="L446" title="All 2 branches missed.">    	return Model.getFacade().isAPackage(base)</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">        	|| Model.getFacade().isAClassifier(base);</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+<span class="nc" id="L454">        setNamespace(base);</span>
+<span class="nc" id="L455">        damage();</span>
+<span class="nc" id="L456">        return true;</span>
+    }
+
+    /*
+     * Allow all Packages and Classifiers..
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Collection getRelocationCandidates(Object root) {
+<span class="nc" id="L464">        Collection c = new HashSet();</span>
+<span class="nc" id="L465">        c.add(Model.getModelManagementHelper()</span>
+<span class="nc" id="L466">                .getAllModelElementsOfKindWithModel(root,</span>
+<span class="nc" id="L467">                        Model.getMetaTypes().getPackage()));</span>
+<span class="nc" id="L468">        c.add(Model.getModelManagementHelper()</span>
+<span class="nc" id="L469">                .getAllModelElementsOfKindWithModel(root,</span>
+<span class="nc" id="L470">                        Model.getMetaTypes().getClassifier()));</span>
+<span class="nc" id="L471">        return c;</span>
+    }
+
+    public void encloserChanged(FigNode enclosed,
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.
+<span class="nc" id="L477">    }</span>
+
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if (Model.getFacade().isAActor(objectToAccept)) {</span>
+<span class="nc" id="L482">            return true;</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">        } else if (Model.getFacade().isAUseCase(objectToAccept)) {</span>
+<span class="nc" id="L484">            return true;</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">        } else if (Model.getFacade().isAComment(objectToAccept)) {</span>
+<span class="nc" id="L486">            return true;</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">        } else if (Model.getFacade().isAPackage(objectToAccept)) {</span>
+            /* We accept a Package, but not a Model or a Subsystem. */
+<span class="nc bnc" id="L489" title="All 2 branches missed.">            if (Model.getFacade().isAModel(objectToAccept)) {</span>
+<span class="nc" id="L490">                return false;</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">            } else if (Model.getFacade().isASubsystem(objectToAccept)) {</span>
+<span class="nc" id="L492">                return false;</span>
+            }
+<span class="nc" id="L494">            return true;</span>
+        }
+<span class="nc" id="L496">        return false;</span>
+
+    }
+
+    @Override
+    public DiagramElement drop(Object droppedObject, Point location) {
+<span class="nc" id="L502">        DiagramElement figNode = null;</span>
+
+        // If location is non-null, convert to a rectangle that we can use
+<span class="nc" id="L505">        Rectangle bounds = null;</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">        if (location != null) {</span>
+<span class="nc" id="L507">            bounds = new Rectangle(location.x, location.y, 0, 0);</span>
+        }
+
+<span class="nc" id="L510">        return createDiagramElement(droppedObject, bounds);</span>
+    }
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+
+<span class="nc" id="L517">        FigNodeModelElement figNode = null;</span>
+
+<span class="nc" id="L519">        DiagramSettings settings = getDiagramSettings();</span>
+
+<span class="nc bnc" id="L521" title="All 2 branches missed.">        if (Model.getFacade().isAActor(modelElement)) {</span>
+<span class="nc" id="L522">            figNode = new FigActor(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L523" title="All 2 branches missed.">        } else if (Model.getFacade().isAUseCase(modelElement)) {</span>
+<span class="nc" id="L524">            figNode = new FigUseCase(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        } else if (Model.getFacade().isAComment(modelElement)) {</span>
+<span class="nc" id="L526">            figNode = new FigComment(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">        } else if (Model.getFacade().isAPackage(modelElement)) {</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">            if (!Model.getFacade().isAModel(modelElement)</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">                    &amp;&amp; !Model.getFacade().isASubsystem(modelElement)) {</span>
+                /* If we do not exclude a Model here, then dropping the
+                 * Model on a UseCase diagram causes a package
+                 * to be drawn. */
+<span class="nc" id="L533">                figNode = new FigPackage(modelElement, bounds, settings);</span>
+            }
+        }
+<span class="nc bnc" id="L536" title="All 2 branches missed.">        if (figNode != null) {</span>
+<span class="nc" id="L537">            LOG.log(Level.FINE,</span>
+                    &quot;Model element {0} converted to {1}&quot;,
+                    new Object[]{modelElement, figNode});
+        } else {
+<span class="nc" id="L541">            LOG.log(Level.FINE, &quot;Dropped object NOT added {0}&quot;, figNode);</span>
+        }
+<span class="nc" id="L543">        return figNode;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

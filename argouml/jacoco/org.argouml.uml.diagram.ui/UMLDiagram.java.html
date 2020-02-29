@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">UMLDiagram.java</span></div><h1>UMLDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.ButtonModel;
+import javax.swing.JToolBar;
+
+import org.argouml.gefext.ArgoModeCreateFigCircle;
+import org.argouml.gefext.ArgoModeCreateFigInk;
+import org.argouml.gefext.ArgoModeCreateFigLine;
+import org.argouml.gefext.ArgoModeCreateFigPoly;
+import org.argouml.gefext.ArgoModeCreateFigRRect;
+import org.argouml.gefext.ArgoModeCreateFigRect;
+import org.argouml.gefext.ArgoModeCreateFigSpline;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.diagram.ArgoDiagramImpl;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.Relocatable;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbar.ToolBarManager;
+import org.tigris.toolbar.toolbutton.ToolButton;
+
+/**
+ * This class provides support for writing a UML diagram for argo using
+ * the GEF framework. &lt;p&gt;
+ *
+ * It adds common buttons, and some help
+ * with creating a valid diagram name. &lt;p&gt;
+ *
+ * There are various methods for returning 'structures' of Actions
+ * which are used to build toolbars and dropdown buttons within toolbars.
+ * These structures are arrays of Objects.
+ * An array element is actually either an Action, null or another array.
+ * When building a toolbar an Action is used to create a button and null
+ * is used to create a spacer in the toolbar.
+ * An element containing an array results in a dropdown toolbar button
+ * being created which contains all the items in that array. &lt;p&gt;
+ *
+ * The &quot;owner&quot; of the UMLDiagram needs to be set to the
+ * UML modelelement of which the diagram depends.
+ * For a class diagram is that its namespace.
+ * For a collaboration diagram is that the Collaboration UML object.
+ * For a sequence diagram is that the collaboration.
+ * For a deployment diagram is that the namespace.
+ * For a statechart diagram is that the statemachine.
+ * For a activitydiagram is that the activitygraph.
+ * Override the getOwner method to return the owner. &lt;p&gt;
+ *
+ * The &quot;owner&quot; is shown in the diagram's properties
+ * panel as the &quot;home model&quot;. &lt;p&gt;
+ */
+public abstract class UMLDiagram
+    extends ArgoDiagramImpl
+    implements Relocatable {
+
+<span class="fc" id="L114">    private static final Logger LOG =</span>
+<span class="fc" id="L115">        Logger.getLogger(UMLDiagram.class.getName());</span>
+
+    /**
+     * Tool to add a comment node.
+     */
+<span class="fc" id="L120">    private static Action actionComment =</span>
+        new RadioAction(new ActionAddNote());
+
+    /**
+     * Tool to create an relationship between a comment node and some other node
+     * using a polyedge.&lt;p&gt;
+     */
+<span class="fc" id="L127">    private static Action actionCommentLink =</span>
+        new RadioAction(new ActionSetAddCommentLinkMode());
+
+
+<span class="fc" id="L131">    private static Action actionSelect =</span>
+        new ActionSetMode(ModeSelect.class, &quot;button.select&quot;);
+
+<span class="fc" id="L134">    private static Action actionBroom =</span>
+        new ActionSetMode(ModeBroom.class, &quot;button.broom&quot;);
+
+<span class="fc" id="L137">    private static Action actionRectangle =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRect.class,
+                &quot;Rectangle&quot;, &quot;misc.primitive.rectangle&quot;));
+
+<span class="fc" id="L141">    private static Action actionRRectangle =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigRRect.class,
+                &quot;RRect&quot;, &quot;misc.primitive.rounded-rectangle&quot;));
+
+<span class="fc" id="L145">    private static Action actionCircle =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigCircle.class,
+                &quot;Circle&quot;, &quot;misc.primitive.circle&quot;));
+
+<span class="fc" id="L149">    private static Action actionLine =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigLine.class,
+                &quot;Line&quot;, &quot;misc.primitive.line&quot;));
+
+<span class="fc" id="L153">    private static Action actionText =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigText.class,
+                &quot;Text&quot;, &quot;misc.primitive.text&quot;));
+
+<span class="fc" id="L157">    private static Action actionPoly =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigPoly.class,
+                &quot;Polygon&quot;, &quot;misc.primitive.polygon&quot;));
+
+<span class="fc" id="L161">    private static Action actionSpline =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigSpline.class,
+                &quot;Spline&quot;, &quot;misc.primitive.spline&quot;));
+
+<span class="fc" id="L165">    private static Action actionInk =</span>
+        new RadioAction(new ActionSetMode(ArgoModeCreateFigInk.class,
+                &quot;Ink&quot;, &quot;misc.primitive.ink&quot;));
+
+    private JToolBar toolBar;
+
+    private Action selectedAction;
+
+    /**
+     * Default constructor will become protected. All subclasses should have
+     * their constructors invoke the 3-arg version of the constructor.
+     *
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)} or another
+     *             explicit constructor.
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public UMLDiagram() {
+<span class="fc" id="L184">        super();</span>
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * @param ns the UML namespace of this diagram
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)}.
+     */
+    @Deprecated
+    public UMLDiagram(Object ns) {
+<span class="nc" id="L194">        this();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (!Model.getFacade().isANamespace(ns)) {</span>
+<span class="nc" id="L196">            throw new IllegalArgumentException();</span>
+        }
+        // TODO: Should we require a GraphModel in the constructor since
+        // our implementations of setNamespace are going to try and set
+        // the namespace on the graphmodel as well?
+<span class="nc" id="L201">        setNamespace(ns);</span>
+<span class="nc" id="L202">    }</span>
+
+    /**
+     * @param name the name of the diagram
+     * @param ns the UML namespace of this diagram
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)}.
+     */
+    @Deprecated
+    public UMLDiagram(String name, Object ns) {
+<span class="nc" id="L212">        this(ns);</span>
+        try {
+<span class="nc" id="L214">            setName(name);</span>
+<span class="nc" id="L215">        } catch (PropertyVetoException pve) {</span>
+<span class="nc" id="L216">            LOG.log(Level.SEVERE, &quot;Name not allowed in construction of diagram&quot;);</span>
+<span class="nc" id="L217">        }</span>
+<span class="nc" id="L218">    }</span>
+
+
+    /**
+     * Construct a new ArgoUML diagram.  This is the fully specified form
+     * of the constructor typically used by subclasses.
+     *
+     * @param name the name of the new diagram
+     * @param graphModel graph model to associate with diagram
+     * @param ns the namespace which will &quot;own&quot; the diagram
+     */
+    public UMLDiagram(String name, Object ns, GraphModel graphModel) {
+<span class="fc" id="L230">        super(name, graphModel, new LayerPerspective(name, graphModel));</span>
+<span class="fc" id="L231">        setNamespace(ns);</span>
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Construct an unnamed diagram using the given GraphModel.
+     *
+     * @param graphModel graph model to associate with diagram
+     */
+    public UMLDiagram(GraphModel graphModel) {
+<span class="fc" id="L240">        super(&quot;&quot;, graphModel, new LayerPerspective(&quot;&quot;, graphModel));</span>
+<span class="fc" id="L241">    }</span>
+
+    /**
+     * Method called by PGML parser during diagram load to initialize a diagram
+     * after it's been constructed. Order of method invocations currently is:
+     * &lt;ul&gt;
+     * &lt;li&gt;0-arg constructor
+     * &lt;li&gt;setDiagramSettings
+     * &lt;li&gt;initialize(Object) // UML element representing owner/home model
+     * &lt;li&gt;setName(String)
+     * &lt;li&gt;setScale(double)
+     * &lt;li&gt;setShowSingleMultiplicity(boolean)
+     * &lt;ul&gt;
+     *
+     * @param owner UML model element representing owner/namespace/home model
+     * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
+     */
+    @Override
+    public void initialize(Object owner) {
+<span class="fc" id="L260">        super.initialize(owner);</span>
+        /* The following is the default implementation
+         * for diagrams of which the owner is a namespace.
+         */
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">        if (Model.getFacade().isANamespace(owner)) {</span>
+<span class="fc" id="L265">            setNamespace(owner);</span>
+        }
+<span class="fc" id="L267">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.Diagram#getClassAndModelID()
+     */
+    public String getClassAndModelID() {
+<span class="fc" id="L273">        String s = super.getClassAndModelID();</span>
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L275">            return s;</span>
+        }
+<span class="fc" id="L277">        String id = UUIDHelper.getUUID(getOwner());</span>
+<span class="fc" id="L278">        return s + &quot;|&quot; + id;</span>
+    }
+
+    /**
+     * Get the toolbar for the diagram.
+     * @return the diagram toolbar
+     */
+    public JToolBar getJToolBar() {
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (toolBar == null) {</span>
+<span class="nc" id="L287">            initToolBar();</span>
+<span class="nc" id="L288">            toolBar.setName(&quot;misc.toolbar.diagram&quot;);</span>
+        }
+<span class="nc" id="L290">        return toolBar;</span>
+    }
+
+    /**
+     * Create the toolbar based on actions for the specific diagram
+     * subclass.
+     * @see org.tigris.gef.base.Diagram#initToolBar()
+     */
+    public void initToolBar() {
+<span class="nc" id="L299">        ToolBarFactory factory = new ToolBarFactory(getActions());</span>
+<span class="nc" id="L300">        factory.setRollover(true);</span>
+<span class="nc" id="L301">        factory.setFloatable(false);</span>
+
+<span class="nc" id="L303">        toolBar = factory.createToolBar();</span>
+<span class="nc" id="L304">        toolBar.putClientProperty(&quot;ToolBar.toolTipSelectTool&quot;,</span>
+<span class="nc" id="L305">                Translator.localize(&quot;action.select&quot;));</span>
+<span class="nc" id="L306">    }</span>
+
+    /**
+     * Return actions available for building toolbar or similar.
+     * @return an array of available actions.
+     */
+    public Object[] getActions() {
+<span class="nc" id="L313">        Object[] manipulateActions = getManipulateActions();</span>
+<span class="nc" id="L314">        Object[] umlActions = getUmlActions();</span>
+<span class="nc" id="L315">        Object[] commentActions = getCommentActions();</span>
+<span class="nc" id="L316">        Object[] shapeActions = getShapeActions();</span>
+
+<span class="nc" id="L318">        Object[] actions =</span>
+            new Object[manipulateActions.length
+                + umlActions.length
+                + commentActions.length
+                + shapeActions.length];
+
+<span class="nc" id="L324">        int posn = 0;</span>
+<span class="nc" id="L325">        System.arraycopy(</span>
+            manipulateActions,           // source
+            0,                           // source position
+            actions,                     // destination
+            posn,                        // destination position
+            manipulateActions.length);   // number of objects to be copied
+<span class="nc" id="L331">        posn += manipulateActions.length;</span>
+
+<span class="nc" id="L333">        System.arraycopy(umlActions, 0, actions, posn, umlActions.length);</span>
+<span class="nc" id="L334">        posn += umlActions.length;</span>
+
+<span class="nc" id="L336">        System.arraycopy(commentActions, 0, actions, posn,</span>
+                commentActions.length);
+<span class="nc" id="L338">        posn += commentActions.length;</span>
+
+<span class="nc" id="L340">        System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);</span>
+
+<span class="nc" id="L342">        return actions;</span>
+    }
+
+    /**
+     * Implement in the ancestor to get a 'structure' of actions for
+     * appending the UML creation tools to the toolbar.
+     * @return the actions structure
+     */
+    protected abstract Object[] getUmlActions();
+
+    /**
+     * Get a 'structure' of actions for appending the manipulation
+     * mode tools to the toolbar.
+     * @return the actions structure
+     */
+    private Object[] getManipulateActions() {
+<span class="nc" id="L358">        Object[] actions =</span>
+        {
+	    new RadioAction(actionSelect),
+	    new RadioAction(actionBroom),
+	    null,
+	};
+<span class="nc" id="L364">        return actions;</span>
+    }
+
+    /**
+     * Get a 'structure' of actions for appending the comment
+     * tools to the toolbar.
+     * @return the actions structure
+     */
+    private Object[] getCommentActions() {
+<span class="nc" id="L373">        Object[] actions =</span>
+        {
+            null,
+            actionComment,
+            actionCommentLink,
+        };
+<span class="nc" id="L379">        return actions;</span>
+    }
+
+    /**
+     * Get a 'structure' of actions for appending primitive drawing
+     * tools to the toolbar.
+     * @return the actions structure
+     */
+    private Object[] getShapeActions() {
+<span class="nc" id="L388">        Object[] actions = {</span>
+	    null,
+<span class="nc" id="L390">            getShapePopupActions(),</span>
+	};
+<span class="nc" id="L392">        return actions;</span>
+    }
+
+    /**
+     * Get a 'structure' of actions for showing in the shape
+     * primitives popup tool button.
+     * @return the actions structure
+     */
+    private Object[] getShapePopupActions() {
+<span class="nc" id="L401">        Object[][] actions = {</span>
+	    {actionRectangle, actionRRectangle },
+	    {actionCircle,    actionLine },
+            {actionText,      actionPoly },
+            {actionSpline,    actionInk },
+        };
+
+<span class="nc" id="L408">        ToolBarUtility.manageDefault(actions, &quot;diagram.shape&quot;);</span>
+<span class="nc" id="L409">        return actions;</span>
+    }
+
+    /**
+     * Set the given action as the selected action (ie pressed down on the
+     * diagram toolbar). All other actions become unselected.
+     *
+     * @param theAction the action to become selected
+     */
+    public void setSelectedAction(Action theAction) {
+<span class="nc" id="L419">        selectedAction = theAction;</span>
+<span class="nc" id="L420">        int toolCount = toolBar.getComponentCount();</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        for (int i = 0; i &lt; toolCount; ++i) {</span>
+<span class="nc" id="L422">            Component c = toolBar.getComponent(i);</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">            if (c instanceof ToolButton) {</span>
+<span class="nc" id="L424">                ToolButton tb = (ToolButton) c;</span>
+<span class="nc" id="L425">                Action action = tb.getRealAction();</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                if (action instanceof RadioAction) {</span>
+<span class="nc" id="L427">                    action = ((RadioAction) action).getAction();</span>
+                }
+<span class="nc" id="L429">                Action otherAction = theAction;</span>
+<span class="nc bnc" id="L430" title="All 2 branches missed.">                if (theAction instanceof RadioAction) {</span>
+<span class="nc" id="L431">                    otherAction = ((RadioAction) theAction).getAction();</span>
+                }
+<span class="nc bnc" id="L433" title="All 4 branches missed.">                if (action != null &amp;&amp; !action.equals(otherAction)) {</span>
+<span class="nc" id="L434">                    tb.setSelected(false);</span>
+<span class="nc" id="L435">                    ButtonModel bm = tb.getModel();</span>
+<span class="nc" id="L436">                    bm.setRollover(false);</span>
+<span class="nc" id="L437">                    bm.setSelected(false);</span>
+<span class="nc" id="L438">                    bm.setArmed(false);</span>
+<span class="nc" id="L439">                    bm.setPressed(false);</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                    if (!ToolBarManager.alwaysUseStandardRollover()) {</span>
+<span class="nc" id="L441">                        tb.setBorderPainted(false);</span>
+                    }
+<span class="nc" id="L443">                } else {</span>
+<span class="nc" id="L444">                    tb.setSelected(true);</span>
+<span class="nc" id="L445">                    ButtonModel bm = tb.getModel();</span>
+<span class="nc" id="L446">                    bm.setRollover(true);</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">                    if (!ToolBarManager.alwaysUseStandardRollover()) {</span>
+<span class="nc" id="L448">                        tb.setBorderPainted(true);</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L453">    }</span>
+
+    /**
+     * Get the selected action.
+     *
+     * @return the selected action
+     */
+    public Action getSelectedAction() {
+<span class="nc" id="L461">        return selectedAction;</span>
+    }
+
+    /**
+     * Unselect all the toolbar buttons.
+     */
+    public void deselectAllTools() {
+<span class="nc" id="L468">        setSelectedAction(actionSelect);</span>
+<span class="nc" id="L469">        actionSelect.actionPerformed(null);</span>
+<span class="nc" id="L470">    }</span>
+
+    /**
+     * Factory method to build an Action for creating a node in the
+     * diagram.
+     *
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateNodeAction(Object modelElement, String descr) {
+<span class="nc" id="L481">        return new RadioAction(new CmdCreateNode(modelElement, descr));</span>
+    }
+
+    /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     *
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateEdgeAction(Object modelElement, String descr) {
+<span class="nc" id="L493">        return new RadioAction(</span>
+            new ActionSetMode(ModeCreatePolyEdge.class, &quot;edgeClass&quot;,
+                    modelElement, descr));
+    }
+
+    /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     *
+     * @param modeClass the mode class to instantiate drawing
+     * @param metaType identifies the model element type to make
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateDependencyAction(
+	    Class modeClass,
+	    Object metaType,
+	    String descr) {
+<span class="nc" id="L511">        return new RadioAction(</span>
+            new ActionSetMode(modeClass, &quot;edgeClass&quot;, metaType, descr));
+    }
+
+    /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     * @return The action to create a new generalization mode.
+     */
+    protected Action makeCreateGeneralizationAction() {
+<span class="nc" id="L521">        return new RadioAction(</span>
+            new ActionSetMode(
+        	    ModeCreateGeneralization.class,
+        	    &quot;edgeClass&quot;,
+<span class="nc" id="L525">        	    Model.getMetaTypes().getGeneralization(),</span>
+        	    &quot;button.new-generalization&quot;));
+    }
+
+    /**
+     * Factory method to build an Action for creating an association edge in
+     * the diagram.
+     *
+     * @param aggregationKind the type of aggregation for this association
+     * @param unidirectional true if this is a one way association.
+     * @param descr the description to give this action.
+     * @return The action to create a new association.
+     */
+    protected Action makeCreateAssociationAction(
+            Object aggregationKind,
+            boolean unidirectional,
+            String descr) {
+
+<span class="nc" id="L543">        return new RadioAction(</span>
+            new ActionSetAddAssociationMode(aggregationKind,
+                unidirectional, descr));
+    }
+
+    /**
+     * Factory method to build an Action for creating an association end edge
+     * in the diagram.
+     *
+     * @param descr the description to give this action.
+     * @return The action to create a new association.
+     */
+    protected Action makeCreateAssociationEndAction(String descr) {
+
+<span class="nc" id="L557">        return new RadioAction(new ActionSetAddAssociationEndMode(descr));</span>
+    }
+
+    /**
+     * Factory method to build an Action for creating an edge in the
+     * diagram.
+     *
+     * @param descr the description to give this action.
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateAssociationClassAction(String descr) {
+<span class="nc" id="L568">        return new RadioAction(new ActionSetAddAssociationClassMode(descr));</span>
+    }
+
+    /**
+     * Reset the diagram serial counter to the initial value. This should e.g.
+     * be done when the menuitem File-&gt;New is activated.
+     *
+     * @deprecated for 0.27.3 by tfmorris. This is a noop. Diagram name
+     *             duplication is checked for and managed at the project level.
+     */
+    @Deprecated
+    public void resetDiagramSerial() {
+<span class="nc" id="L580">    }</span>
+
+    /**
+     * @return Returns the diagramSerial.
+     * @deprecated for 0.27.3 by tfmorris. This is always returns 1. Diagram
+     *             naming is managed at the project level.
+     */
+    @Deprecated
+    protected int getNextDiagramSerial() {
+<span class="nc" id="L589">        return 1;</span>
+    }
+
+    /**
+     * @return a string that can be used as a label for this kind of diagram
+     */
+    public abstract String getLabelName();
+
+    /*
+     * @see org.argouml.ui.explorer.Relocatable#isRelocationAllowed(java.lang.Object)
+     */
+    public abstract boolean isRelocationAllowed(Object base);
+
+    /*
+     * @see org.argouml.ui.explorer.Relocatable#relocate(java.lang.Object)
+     */
+    public abstract boolean relocate(Object base);
+
+    @Override
+    public final void setProject(Project p) {
+<span class="fc" id="L609">	super.setProject(p);</span>
+<span class="fc" id="L610">	UMLMutableGraphSupport gm = (UMLMutableGraphSupport) getGraphModel();</span>
+<span class="fc" id="L611">	gm.setProject(p);</span>
+<span class="fc" id="L612">    }</span>
+
+    /**
+     * Create a new diagram name.
+     * @return String
+     */
+    protected String getNewDiagramName() {
+        // TODO: Add &quot;unnamed&quot; or &quot;new&quot; or something? (Localized, of course)
+<span class="fc" id="L620">        return /*&quot;unnamed &quot; + */ getLabelName();</span>
+    }
+
+    /**
+     * Method to test it the diagram can accept a certain object.
+     * This should be overridden by any diagram that wants to accept a certain
+     * type of object. All other diagrams should not bother since the default
+     * answer is false, ie. don't accept the object.
+     * @param objectToAccept The object which acceptability will be checked.
+     * @return True if it can accept it, false otherwise.
+     */
+    public boolean doesAccept(
+            @SuppressWarnings(&quot;unused&quot;) Object objectToAccept) {
+<span class="nc" id="L633">        return false;</span>
+    }
+
+    /**
+     * Handles elements dropped over.
+     * @param droppedObject The dropped object.
+     * @param location The location in the diagram where the object is dropped.
+     * @return The object that has been added to the diagram.
+     */
+    public DiagramElement drop(Object droppedObject, Point location) {
+        // If location is non-null, convert to a rectangle that we can use
+<span class="fc" id="L644">        Rectangle bounds = null;</span>
+<span class="pc bpc" id="L645" title="1 of 2 branches missed.">        if (location != null) {</span>
+<span class="nc" id="L646">            bounds = new Rectangle(location.x, location.y, 0, 0);</span>
+        }
+
+<span class="fc" id="L649">        DiagramElement de = createDiagramElement(droppedObject, bounds);</span>
+<span class="pc bpc" id="L650" title="1 of 2 branches missed.">        if (de instanceof FigEdgeModelElement) {</span>
+            // Issue 6221 - we need to force the edge to redraw after a drop on
+            // the diagram from explorer or Add to Diagram
+<span class="nc" id="L653">            FigEdgeModelElement fe = (FigEdgeModelElement) de;</span>
+<span class="nc" id="L654">            fe.renderingChanged();</span>
+        }
+<span class="fc" id="L656">        return de;</span>
+    }
+
+    /**
+     * Gets the instructions to be displayed on the status bar.
+     * @param droppedObject The object for which instructions will be given.
+     * @return The instructions.
+     */
+    public String getInstructions(Object droppedObject) {
+<span class="nc" id="L665">        return Translator.localize(&quot;misc.message.click-on-diagram-to-add&quot;,</span>
+<span class="nc" id="L666">                new Object[] {Model.getFacade().toString(droppedObject), });</span>
+    }
+
+    /**
+     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that
+     * allows the diagram to place an accepted type of object
+     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a
+     * diagram may receive an object that can't be placed as is, but needs some
+     * transformation and 2. diagrams in modules should be independent from the
+     * main app, and should use their own implementation of ModePlace if it's
+     * required.
+     * @param gf TODO
+     * @param instructions a help string for the user
+     * @return The created ModePlace.
+     */
+    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+<span class="nc" id="L682">        return new ModePlace(gf, instructions);</span>
+    }
+
+    /**
+     * Create a nary association diamond shaped FigNode on this diagram.
+     *
+     * @param modelElement the model element this FigNode is to represent
+     * @param bounds the position and size for the diamond node.
+     * @param settings the diagram setting for presentation.
+     * @return The FigNode of the diamond representing the model element
+     */
+    protected FigNodeModelElement createNaryAssociationNode(
+            final Object modelElement,
+            final Rectangle bounds,
+            final DiagramSettings settings) {
+
+<span class="nc" id="L698">        final FigNodeAssociation diamondFig =</span>
+            new FigNodeAssociation(modelElement, bounds, settings);
+<span class="nc bnc" id="L700" title="All 4 branches missed.">        if (Model.getFacade().isAAssociationClass(modelElement)</span>
+                &amp;&amp; bounds != null) {
+<span class="nc" id="L702">            final FigClassAssociationClass classBoxFig =</span>
+                new FigClassAssociationClass(
+                        modelElement, bounds, settings);
+<span class="nc" id="L705">            final FigEdgeAssociationClass dashEdgeFig =</span>
+                new FigEdgeAssociationClass(
+                        classBoxFig, diamondFig, settings);
+<span class="nc" id="L708">            classBoxFig.renderingChanged();</span>
+
+            // TODO: Why isn't this calculation for location working?
+<span class="nc" id="L711">            Point location = bounds.getLocation();</span>
+<span class="nc" id="L712">            location.y = (location.y - diamondFig.getHeight()) - 32;</span>
+<span class="nc bnc" id="L713" title="All 2 branches missed.">            if (location.y &lt; 16) {</span>
+<span class="nc" id="L714">                location.y = 16;</span>
+            }
+<span class="nc" id="L716">            classBoxFig.setLocation(location);</span>
+<span class="nc" id="L717">            this.add(diamondFig);</span>
+<span class="nc" id="L718">            this.add(classBoxFig);</span>
+<span class="nc" id="L719">            this.add(dashEdgeFig);</span>
+        }
+<span class="nc" id="L721">        return diamondFig;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

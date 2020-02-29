@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizNavigable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">WizNavigable.java</span></div><h1>WizNavigable.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JPanel;
+
+import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+
+/**
+ * A non-modal wizard to help the user change navigability
+ * of an association.
+ */
+public class WizNavigable extends UMLWizard {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L60">    private static final Logger LOG =</span>
+<span class="nc" id="L61">        Logger.getLogger(WizNavigable.class.getName());</span>
+
+<span class="nc" id="L63">    private String instructions =</span>
+<span class="nc" id="L64">        Translator.localize(&quot;critics.WizNavigable-ins&quot;);</span>
+<span class="nc" id="L65">    private String option0 =</span>
+<span class="nc" id="L66">        Translator.localize(&quot;critics.WizNavigable-option1&quot;);</span>
+<span class="nc" id="L67">    private String option1 =</span>
+<span class="nc" id="L68">        Translator.localize(&quot;critics.WizNavigable-option2&quot;);</span>
+<span class="nc" id="L69">    private String option2 =</span>
+<span class="nc" id="L70">        Translator.localize(&quot;critics.WizNavigable-option3&quot;);</span>
+
+<span class="nc" id="L72">    private WizStepChoice step1 = null;</span>
+
+    /**
+     * The constructor.
+     *
+     */
+<span class="nc" id="L78">    public WizNavigable() { }</span>
+
+    /**
+     * @return the options
+     */
+    public List&lt;String&gt; getOptions() {
+<span class="nc" id="L84">        List&lt;String&gt; result = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L85">	Object asc = getModelElement();</span>
+<span class="nc" id="L86">	Object ae0 =</span>
+<span class="nc" id="L87">            new ArrayList(Model.getFacade().getConnections(asc)).get(0);</span>
+<span class="nc" id="L88">	Object ae1 =</span>
+<span class="nc" id="L89">	    new ArrayList(Model.getFacade().getConnections(asc)).get(1);</span>
+<span class="nc" id="L90">	Object cls0 = Model.getFacade().getType(ae0);</span>
+<span class="nc" id="L91">	Object cls1 = Model.getFacade().getType(ae1);</span>
+
+<span class="nc bnc" id="L93" title="All 4 branches missed.">	if (cls0 != null &amp;&amp; !&quot;&quot;.equals(Model.getFacade().getName(cls0))) {</span>
+<span class="nc" id="L94">	    option0 = Translator.localize(&quot;critics.WizNavigable-option4&quot;)</span>
+<span class="nc" id="L95">                + Model.getFacade().getName(cls0);</span>
+        }
+
+<span class="nc bnc" id="L98" title="All 4 branches missed.">	if (cls1 != null &amp;&amp; !&quot;&quot;.equals(Model.getFacade().getName(cls1))) {</span>
+<span class="nc" id="L99">	    option1 = Translator.localize(&quot;critics.WizNavigable-option5&quot;)</span>
+<span class="nc" id="L100">                + Model.getFacade().getName(cls1);</span>
+        }
+
+<span class="nc" id="L103">	result.add(option0);</span>
+<span class="nc" id="L104">	result.add(option1);</span>
+<span class="nc" id="L105">	result.add(option2);</span>
+<span class="nc" id="L106">	return result;</span>
+    }
+
+    /**
+     * @param s the instructions
+     */
+<span class="nc" id="L112">    public void setInstructions(String s) { instructions = s; }</span>
+
+    /*
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
+     */
+    public JPanel makePanel(int newStep) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">	switch (newStep) {</span>
+	case 1:
+<span class="nc bnc" id="L120" title="All 2 branches missed.">	    if (step1 == null) {</span>
+<span class="nc" id="L121">		step1 = new WizStepChoice(this, instructions, getOptions());</span>
+<span class="nc" id="L122">		step1.setTarget(getToDoItem());</span>
+	    }
+<span class="nc" id="L124">	    return step1;</span>
+	}
+<span class="nc" id="L126">	return null;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
+     */
+    public void doAction(int oldStep) {
+<span class="nc" id="L133">        LOG.log(Level.FINE, &quot;doAction {0}&quot;, oldStep);</span>
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">	switch (oldStep) {</span>
+	case 1:
+<span class="nc" id="L137">	    int choice = -1;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">	    if (step1 != null) {</span>
+<span class="nc" id="L139">                choice = step1.getSelectedIndex();</span>
+            }
+<span class="nc bnc" id="L141" title="All 2 branches missed.">	    if (choice == -1) {</span>
+<span class="nc" id="L142">		throw new Error(&quot;nothing selected, should not get here&quot;);</span>
+	    }
+	    try {
+<span class="nc" id="L145">		Object asc = getModelElement();</span>
+<span class="nc" id="L146">		Object ae0 =</span>
+<span class="nc" id="L147">		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);</span>
+<span class="nc" id="L148">		Object ae1 =</span>
+<span class="nc" id="L149">		    new ArrayList(Model.getFacade().getConnections(asc)).get(1);</span>
+<span class="nc bnc" id="L150" title="All 4 branches missed.">		Model.getCoreHelper().setNavigable(ae0,</span>
+		        choice == 0 || choice == 2);
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		Model.getCoreHelper().setNavigable(ae1,</span>
+		        choice == 1 || choice == 2);
+<span class="nc" id="L154">	    } catch (Exception pve) {</span>
+<span class="nc" id="L155">                LOG.log(Level.SEVERE, &quot;could not set navigablity&quot;, pve);</span>
+<span class="nc" id="L156">	    }</span>
+	}
+<span class="nc" id="L158">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ui.Wizard#canFinish()
+     */
+    @Override
+    public boolean canFinish() {
+<span class="nc bnc" id="L165" title="All 2 branches missed.">	if (!super.canFinish()) {</span>
+<span class="nc" id="L166">            return false;</span>
+        }
+<span class="nc bnc" id="L168" title="All 2 branches missed.">	if (getStep() == 0) {</span>
+<span class="nc" id="L169">            return true;</span>
+        }
+<span class="nc bnc" id="L171" title="All 6 branches missed.">	if (getStep() == 1 &amp;&amp; step1 != null &amp;&amp; step1.getSelectedIndex() != -1) {</span>
+<span class="nc" id="L172">            return true;</span>
+        }
+<span class="nc" id="L174">	return false;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2571165058454693999L;
+} /* end class WizNavigable */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

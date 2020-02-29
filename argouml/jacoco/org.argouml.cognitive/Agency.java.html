@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Agency.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">Agency.java</span></div><h1>Agency.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2013 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Agency manages Critics.  Since classes are not really first class
+ * objects in java, a singleton instance of Agency is made and passed
+ * around as needed.  The Agency keeps a registry of all Critics that
+ * should be applied to each type of design material. When a
+ * design material instance is critiqued it asks Agency to apply all
+ * registered Critic's.  In the current scheme there is a thread that
+ * proactively, continuously critiques the Design at hand, even if
+ * the user is idle! This is simple and it works.  The disadvantage
+ * is that _all_ active critics related to a given design material are
+ * applied, regardless of the reason for the critiquing and a lot of
+ * CPU time is basically wasted.  &lt;p&gt;
+ *
+ * TODO: I am moving toward a more reactionary scheme in
+ * which specific design manipulations in the editor cause critics
+ * relevant to those manipulations to be applied.  This transition is
+ * still half done.  Triggers are the critiquing requests.  The code
+ * for triggers is currently dormant (latent?).&lt;p&gt;
+ *
+ * TODO: There is a strong dependency cycle between Agency and Designer.  They
+ * either need to be merged into a single class or partitioned differently,
+ * perhaps using an interface to break the cycle.  The Designer singleton gets
+ * passed to almost every single part of the Critic subsystem, creating strong
+ * coupling throughout. - tfm 20070620
+ *
+ * @author Jason Robbins
+ */
+public class Agency extends Observable { //implements java.io.Serialization
+    /**
+     * Logger.
+     */
+<span class="fc" id="L83">    private static final Logger LOG = Logger.getLogger(Agency.class.getName());</span>
+
+
+    /**
+     * A registry of all critics that are currently loaded into the
+     * design environment.
+     */
+<span class="fc" id="L90">    private static Hashtable&lt;Class, List&lt;Critic&gt;&gt; criticRegistry =</span>
+        new Hashtable&lt;Class, List&lt;Critic&gt;&gt;(100);
+
+<span class="fc" id="L93">    private static List&lt;Critic&gt; critics = new ArrayList&lt;Critic&gt;();</span>
+
+    /**
+     * The main control mechanism for determining which critics should
+     * be active.
+     */
+    private ControlMech controlMech;
+
+<span class="fc" id="L101">    private static Hashtable&lt;String, Critic&gt; singletonCritics =</span>
+        new Hashtable&lt;String, Critic&gt;(40);
+
+
+    /**
+     * Construct a new Agency instance with the given ControlMech as the
+     * main control mechanism for determining which critics should be
+     * active.
+     *
+     * @param cm the given controlMech
+     */
+<span class="nc" id="L112">    public Agency(ControlMech cm) {</span>
+<span class="nc" id="L113">        controlMech = cm;</span>
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Construct a new Agency instance and use a StandardCM as the main
+     * control mechanism for determining which critics should be
+     * active.
+     */
+<span class="fc" id="L121">    public Agency() {</span>
+<span class="fc" id="L122">        controlMech = new StandardCM();</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Since Java does not really support classes as first class
+     * objects, there is one instance of Agency that is passed around as
+     * needed.&lt;p&gt;
+     *
+     * theAgency is actually stored in &lt;code&gt;Designer.theDesigner()&lt;/code&gt;.
+     *
+     * @see Designer#theDesigner
+     *
+     * @return Agency the Agency instance
+     */
+    public static Agency theAgency() {
+<span class="fc" id="L137">        Designer dsgr = Designer.theDesigner();</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (dsgr == null) {</span>
+<span class="nc" id="L139">            return null;</span>
+	}
+<span class="fc" id="L141">        return dsgr.getAgency();</span>
+    }
+
+    /**
+     * @return the registry.
+     */
+    private static Hashtable&lt;Class, List&lt;Critic&gt;&gt; getCriticRegistry() {
+<span class="fc" id="L148">        return criticRegistry;</span>
+    }
+
+
+    /**
+     * @return the critics
+     */
+    public static List&lt;Critic&gt; getCriticList() {
+<span class="nc" id="L156">        return critics;</span>
+    }
+
+    /**
+     * @param cr the critic to add/register
+     */
+    protected static void addCritic(Critic cr) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        if (critics.contains(cr)) {</span>
+<span class="fc" id="L164">            return;</span>
+	}
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (!(cr instanceof CompoundCritic)) {</span>
+<span class="fc" id="L167">            critics.add(cr);</span>
+	} else {
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            for (Critic c : ((CompoundCritic) cr).getCriticList()) {</span>
+<span class="fc" id="L170">                addCritic(c);</span>
+<span class="fc" id="L171">            }</span>
+<span class="fc" id="L172">            return;</span>
+        }
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * @param crClassName the critic class name
+     * @param dmClassName the design material class name
+     */
+    public static void register(String crClassName, String dmClassName) {
+        Class dmClass;
+        try {
+<span class="nc" id="L183">            dmClass = Class.forName(dmClassName);</span>
+<span class="nc" id="L184">        } catch (java.lang.ClassNotFoundException e) {</span>
+<span class="nc" id="L185">            LOG.log(Level.SEVERE, &quot;Error loading dm &quot; + dmClassName, e);</span>
+<span class="nc" id="L186">            return;</span>
+<span class="nc" id="L187">        }</span>
+<span class="nc" id="L188">        Critic cr = singletonCritics.get(crClassName);</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (cr == null) {</span>
+            Class crClass;
+            try {
+<span class="nc" id="L192">                crClass = Class.forName(crClassName);</span>
+<span class="nc" id="L193">            } catch (java.lang.ClassNotFoundException e) {</span>
+<span class="nc" id="L194">                LOG.log(Level.SEVERE,</span>
+                        &quot;Error loading cr &quot; + crClassName, e);
+<span class="nc" id="L196">                return;</span>
+<span class="nc" id="L197">            }</span>
+            try {
+<span class="nc" id="L199">                cr = (Critic) crClass.newInstance();</span>
+<span class="nc" id="L200">            } catch (java.lang.IllegalAccessException e) {</span>
+<span class="nc" id="L201">                LOG.log(Level.SEVERE,</span>
+                        &quot;Error instancating cr &quot; + crClassName, e);
+<span class="nc" id="L203">                return;</span>
+<span class="nc" id="L204">            } catch (java.lang.InstantiationException e) {</span>
+<span class="nc" id="L205">                LOG.log(Level.SEVERE,</span>
+                        &quot;Error instancating cr &quot; + crClassName, e);
+<span class="nc" id="L207">                return;</span>
+<span class="nc" id="L208">            }</span>
+<span class="nc" id="L209">            singletonCritics.put(crClassName, cr);</span>
+<span class="nc" id="L210">            addCritic(cr);</span>
+        }
+<span class="nc" id="L212">        register(cr, dmClass);</span>
+<span class="nc" id="L213">    }</span>
+
+    /**
+     * Register a critic in the global table of critics that have been
+     * loaded. Critics are associated with one or more design material
+     * classes. One way to do registration is in a static initializer of
+     * the design material class. But additional (after-market) critics
+     * could added through a menu command in some control panel...
+     *
+     * @param cr the critic to register
+     * @param clazz the design material class that is to be criticized
+     */
+    public static void register(Critic cr, Class clazz) {
+<span class="fc" id="L226">        List&lt;Critic&gt; theCritics = getCriticRegistry().get(clazz);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">        if (theCritics == null) {</span>
+<span class="fc" id="L228">            theCritics = new ArrayList&lt;Critic&gt;();</span>
+<span class="fc" id="L229">            criticRegistry.put(clazz, theCritics);</span>
+        }
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        if (!theCritics.contains(cr)) {</span>
+<span class="fc" id="L232">            theCritics.add(cr);</span>
+<span class="fc" id="L233">            notifyStaticObservers(cr);</span>
+<span class="fc" id="L234">            LOG.log(Level.FINE, &quot;Registered: {0}&quot;, theCritics );</span>
+<span class="fc" id="L235">            cachedCritics.remove(clazz);</span>
+<span class="fc" id="L236">            addCritic(cr);</span>
+        }
+<span class="fc" id="L238">    }</span>
+
+    /**
+     * Transitional method for migration purposes.  Don't use!
+     * @param cr the critic to register
+     * @param clazz the UML class to be criticized
+     */
+    public static void register(Critic cr, Object clazz) {
+<span class="fc" id="L246">        register(cr, (Class) clazz);</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Register a critic in the global table of critics that have been
+     * loaded.
+     *
+     * @param cr the critic to register
+     */
+    public static void register(Critic cr) {
+<span class="nc" id="L256">        Set&lt;Object&gt; metas = cr.getCriticizedDesignMaterials();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">        for (Object meta : metas) {</span>
+<span class="nc" id="L258">            register(cr, meta);</span>
+<span class="nc" id="L259">        }</span>
+<span class="nc" id="L260">    }</span>
+
+<span class="fc" id="L262">    private static Hashtable&lt;Class, Collection&lt;Critic&gt;&gt; cachedCritics =</span>
+        new Hashtable&lt;Class, Collection&lt;Critic&gt;&gt;();
+
+    /**
+     * Return a collection of all critics that can be applied to the
+     * design material subclass, including inherited critics.
+     *
+     * @param clazz the design material to criticize
+     * @return the collection of critics
+     */
+    public static Collection&lt;Critic&gt; criticsForClass(Class clazz) {
+<span class="nc" id="L273">        Collection&lt;Critic&gt; col = cachedCritics.get(clazz);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (col == null) {</span>
+<span class="nc" id="L275">            col = new ArrayList&lt;Critic&gt;();</span>
+<span class="nc" id="L276">	    col.addAll(criticListForSpecificClass(clazz));</span>
+<span class="nc" id="L277">	    Collection&lt;Class&gt; classes = new ArrayList&lt;Class&gt;();</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">	    if (clazz.getSuperclass() != null) {</span>
+<span class="nc" id="L279">		classes.add(clazz.getSuperclass());</span>
+	    }
+<span class="nc bnc" id="L281" title="All 2 branches missed.">	    if (clazz.getInterfaces() != null) {</span>
+<span class="nc" id="L282">		classes.addAll(Arrays.asList(clazz.getInterfaces()));</span>
+	    }
+<span class="nc bnc" id="L284" title="All 2 branches missed.">            for (Class c : classes) {</span>
+<span class="nc" id="L285">		col.addAll(criticsForClass(c));</span>
+<span class="nc" id="L286">	    }</span>
+<span class="nc" id="L287">	    cachedCritics.put(clazz, col);</span>
+        }
+<span class="nc" id="L289">        return col;</span>
+
+    }
+
+
+    /**
+     * Return the List of all critics that are directly
+     * associated with the given design material subclass.&lt;p&gt;
+     *
+     * If there aren't any an empty List is returned.
+     *
+     * @param clazz the design material
+     * @return the critics
+     */
+    protected static List&lt;Critic&gt; criticListForSpecificClass(Class clazz) {
+<span class="nc" id="L304">        List&lt;Critic&gt; theCritics = getCriticRegistry().get(clazz);</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">        if (theCritics == null) {</span>
+<span class="nc" id="L306">            theCritics = new ArrayList&lt;Critic&gt;();</span>
+<span class="nc" id="L307">            criticRegistry.put(clazz, theCritics);</span>
+        }
+<span class="nc" id="L309">        return theCritics;</span>
+    }
+
+
+    /**
+     * Apply all critics that can be applied to the given
+     * design material instance as appropriate for the given
+     * Designer. &lt;p&gt;
+     *
+     * I would call this critique, but it causes a compilation error
+     * because it conflicts with the instance method critique!
+     *
+     * @param dm the design material
+     * @param d the designer
+     * @param reasonCode the reason
+     */
+    public static void applyAllCritics(
+        Object dm,
+        Designer d,
+        long reasonCode) {
+<span class="nc" id="L329">        Class dmClazz = dm.getClass();</span>
+<span class="nc" id="L330">        Collection&lt;Critic&gt; c = criticsForClass(dmClazz);</span>
+<span class="nc" id="L331">        applyCritics(dm, d, c, reasonCode);</span>
+<span class="nc" id="L332">    }</span>
+
+    /**
+     * @param dm the design material
+     * @param d the designer
+     */
+    public static void applyAllCritics(Object dm, Designer d) {
+<span class="nc" id="L339">        Class dmClazz = dm.getClass();</span>
+<span class="nc" id="L340">        Collection&lt;Critic&gt; c = criticsForClass(dmClazz);</span>
+<span class="nc" id="L341">        applyCritics(dm, d, c, -1L);</span>
+<span class="nc" id="L342">    }</span>
+
+    /**
+     * @param dm the design material
+     * @param d the designer
+     * @param theCritics the critics
+     * @param reasonCode the reason
+     */
+    public static void applyCritics(
+        Object dm,
+        Designer d,
+        Collection&lt;Critic&gt; theCritics,
+        long reasonCode) {
+
+<span class="nc bnc" id="L356" title="All 2 branches missed.">        for (Critic c : theCritics) {</span>
+<span class="nc bnc" id="L357" title="All 4 branches missed.">            if (c.isActive() &amp;&amp; c.matchReason(reasonCode)) {</span>
+                try {
+<span class="nc" id="L359">                    c.critique(dm, d);</span>
+<span class="nc" id="L360">                } catch (Exception ex) {</span>
+<span class="nc" id="L361">                    LOG.log(Level.SEVERE,</span>
+                            &quot;Disabling critique due to exception\n&quot;
+                            + c + &quot;\n&quot; + dm,
+                            ex);
+<span class="nc" id="L365">                    c.setEnabled(false);</span>
+<span class="nc" id="L366">                }</span>
+            }
+<span class="nc" id="L368">        }</span>
+<span class="nc" id="L369">    }</span>
+
+    /**
+     * Compute which critics should be active (i.e., they can be
+     * applied by applyAllCritics) for a given Designer. &lt;p&gt;
+     *
+     * Note: I am setting global data, i.e. the
+     * isEnabled bit in each critic, based on the needs of one designer.
+     * I don't really support more than one Designer.
+     * Which is why each designer
+     * (if we would support more than one designer)
+     * has his own Agency.
+     *
+     * TODO: should loop over simpler list of critics, not CompoundCritics
+     *
+     * @param d the designer
+     */
+    public void determineActiveCritics(Designer d) {
+<span class="nc bnc" id="L387" title="All 2 branches missed.">        for (Critic c : critics) {</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">            if (controlMech.isRelevant(c, d)) {</span>
+<span class="nc" id="L389">                c.beActive();</span>
+            } else {
+<span class="nc" id="L391">                c.beInactive();</span>
+            }
+<span class="nc" id="L393">        }</span>
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * Let some object receive notifications when the Agency changes
+     * state.  Static observers are normal Observers on the singleton
+     * instance of this class.
+     *
+     * @param obs the notified object
+     */
+    public static void addStaticObserver(Observer obs) {
+<span class="nc" id="L404">        Agency a = theAgency();</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">        if (a == null) {</span>
+<span class="nc" id="L406">            return;</span>
+	}
+<span class="nc" id="L408">        a.addObserver(obs);</span>
+<span class="nc" id="L409">    }</span>
+
+    /**
+     * When the agency changes, notify observers.
+     *
+     * @param o the notified object
+     */
+    public static void notifyStaticObservers(Object o) {
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">        if (theAgency() != null) {</span>
+<span class="fc" id="L418">            theAgency().setChanged();</span>
+<span class="fc" id="L419">            theAgency().notifyObservers(o);</span>
+        }
+<span class="fc" id="L421">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

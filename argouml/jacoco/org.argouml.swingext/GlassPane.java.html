@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlassPane.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.swingext</a> &gt; <span class="el_source">GlassPane.java</span></div><h1>GlassPane.java</h1><pre class="source lang-java linenums">/*
+ *    Geotools2 - OpenSource mapping toolkit
+ *    http://geotools.org
+ *    (C) 2002, Geotools Project Managment Committee (PMC)
+ *
+ *    This library is free software; you can redistribute it and/or
+ *    modify it under the terms of the GNU Lesser General Public
+ *    License as published by the Free Software Foundation;
+ *    version 2.1 of the License.
+ *
+ *    This library is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *    Lesser General Public License for more details.
+ *
+ */
+package org.argouml.swingext;
+
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JComponent;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
+
+
+/**
+ * This is the glass pane class that intercepts screen interactions during 
+ * system busy states.
+ *
+ * @author Yexin Chen
+ * @author Andrea Aime
+ */
+public class GlassPane extends JComponent implements AWTEventListener {
+
+    private static final long serialVersionUID = -1170784689759475601L;
+	
+    private Window theWindow;
+    private Component activeComponent;
+
+    /**
+     * GlassPane constructor comment.
+     *
+     * @param component a
+     */
+<span class="nc" id="L54">    protected GlassPane(Component component) {</span>
+        // add adapters that do nothing for keyboard and mouse actions
+<span class="nc" id="L56">        addMouseListener(new MouseAdapter() {</span>
+            public void mouseClicked(MouseEvent e) {
+<span class="nc" id="L58">            }</span>
+        });
+
+<span class="nc" id="L61">        addKeyListener(new KeyAdapter() {</span>
+        });
+
+<span class="nc" id="L64">        setActiveComponent(component);</span>
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Receives all key events in the AWT and processes the ones that
+     * originated from the current window with the glass pane.
+     *
+     * @param event the AWTEvent that was fired
+     */
+    public void eventDispatched(AWTEvent event) {
+<span class="nc" id="L74">        Object source = event.getSource();</span>
+
+        // discard the event if its source is not from the correct type
+<span class="nc" id="L77">        boolean sourceIsComponent = (event.getSource() instanceof Component);</span>
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if ((event instanceof KeyEvent) </span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">                &amp;&amp; event.getID() != KeyEvent.KEY_RELEASED </span>
+                &amp;&amp; sourceIsComponent) {
+            // If the event originated from the window w/glass pane, consume 
+        	// the event
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            if ((SwingUtilities.windowForComponent((Component) source) </span>
+            		== theWindow)) {
+<span class="nc" id="L86">                ((KeyEvent) event).consume();</span>
+
+<span class="nc" id="L88">                Toolkit.getDefaultToolkit().beep();</span>
+            }
+        }
+<span class="nc" id="L91">    }</span>
+
+    /**
+     * Finds the glass pane that is related to the specified component.
+     *
+     * @param startComponent the component used to start the search for the 
+     * 			glass pane
+     * @param create a flag whether to create a glass pane if one does not exist
+     *
+     * @return GlassPane
+     */
+    public static synchronized GlassPane mount(Component startComponent, 
+    		boolean create) {
+<span class="nc" id="L104">        RootPaneContainer aContainer = null;</span>
+<span class="nc" id="L105">        Component aComponent = startComponent;</span>
+
+        // Climb the component hierarchy until a RootPaneContainer is found or 
+        // until the very top
+<span class="nc bnc" id="L109" title="All 4 branches missed.">        while ((aComponent.getParent() != null) </span>
+        		&amp;&amp; !(aComponent instanceof RootPaneContainer)) {
+<span class="nc" id="L111">            aComponent = aComponent.getParent();</span>
+        }
+
+        // Guard against error conditions if climb search wasn't successful
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (aComponent instanceof RootPaneContainer) {</span>
+<span class="nc" id="L116">            aContainer = (RootPaneContainer) aComponent;</span>
+        }
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (aContainer != null) {</span>
+            // Retrieve an existing GlassPane if old one already exist or 
+        	// create a new one, otherwise return null
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            if ((aContainer.getGlassPane() != null)</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                    &amp;&amp; (aContainer.getGlassPane() instanceof GlassPane)) {</span>
+<span class="nc" id="L124">                return (GlassPane) aContainer.getGlassPane();</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            } else if (create) {</span>
+<span class="nc" id="L126">                GlassPane aGlassPane = new GlassPane(startComponent);</span>
+<span class="nc" id="L127">                aContainer.setGlassPane(aGlassPane);</span>
+
+<span class="nc" id="L129">                return aGlassPane;</span>
+            } else {
+<span class="nc" id="L131">                return null;</span>
+            }
+        } else {
+<span class="nc" id="L134">            return null;</span>
+        }
+    }
+
+    /**
+     * Set the component that ordered-up the glass pane.
+     *
+     * @param aComponent the UI component that asked for the glass pane
+     */
+    private void setActiveComponent(Component aComponent) {
+<span class="nc" id="L144">        activeComponent = aComponent;</span>
+<span class="nc" id="L145">    }</span>
+
+    /**
+     * Sets the glass pane as visible or invisible. The mouse cursor will 
+     * be set accordingly.
+     *
+     * @param value DOCUMENT ME!
+     */
+    public void setVisible(boolean value) {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (value) {</span>
+            // keep track of the visible window associated w/the component
+            // useful during event filtering
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (theWindow == null) {</span>
+<span class="nc" id="L158">                theWindow = SwingUtilities.windowForComponent(activeComponent);</span>
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                if (theWindow == null) {</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                    if (activeComponent instanceof Window) {</span>
+<span class="nc" id="L162">                        theWindow = (Window) activeComponent;</span>
+                    }
+                }
+            }
+
+            // Sets the mouse cursor to hourglass mode
+<span class="nc" id="L168">            getTopLevelAncestor().setCursor(</span>
+<span class="nc" id="L169">            		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</span>
+
+<span class="nc" id="L171">            activeComponent = theWindow.getFocusOwner();</span>
+
+            // Start receiving all events and consume them if necessary
+<span class="nc" id="L174">            Toolkit.getDefaultToolkit().addAWTEventListener(</span>
+            		this, AWTEvent.KEY_EVENT_MASK);
+
+<span class="nc" id="L177">            this.requestFocus();</span>
+
+            // Activate the glass pane capabilities
+<span class="nc" id="L180">            super.setVisible(value);</span>
+        } else {
+            // Stop receiving all events
+<span class="nc" id="L183">            Toolkit.getDefaultToolkit().removeAWTEventListener(this);</span>
+
+            // Deactivate the glass pane capabilities
+<span class="nc" id="L186">            super.setVisible(value);</span>
+
+            // Sets the mouse cursor back to the regular pointer
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            if (getTopLevelAncestor() != null) {</span>
+<span class="nc" id="L190">                getTopLevelAncestor().setCursor(null);</span>
+            }
+        }
+<span class="nc" id="L193">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

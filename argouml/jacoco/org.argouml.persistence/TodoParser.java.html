@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TodoParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">TodoParser.java</span></div><h1>TodoParser.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ResolvedCritic;
+import org.argouml.cognitive.ToDoItem;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+
+// TODO: Reuse the offender List.
+
+/**
+ * Class that reads a todo list from a todo xml file.
+ *
+ * @author	Michael Stockman
+ */
+class TodoParser extends SAXParserBase {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L66">    private static final Logger LOG =</span>
+<span class="fc" id="L67">        Logger.getLogger(TodoParser.class.getName());</span>
+
+<span class="fc" id="L69">    private TodoTokenTable tokens = new TodoTokenTable();</span>
+
+    /**
+     * The headline of the ToDoItem currently being read.
+     */
+    private String headline;
+
+    /**
+     * The priority of the ToDoItem currently being read.
+     */
+    private int    priority;
+
+    /**
+     * The moreInfoURL of the ToDoItem currently being read.
+     */
+    private String moreinfourl;
+
+    /**
+     * The description of the ToDoItem currently being read.
+     */
+    private String description;
+
+    /**
+     * The critic String of the ResolvedCritic currently being read.
+     */
+    private String critic;
+
+    /**
+     * The offenders list of the ResolvedCritic currently being
+     * read.
+     */
+    private List offenders;
+
+    /**
+     * Creates a new TodoParser.
+     */
+<span class="fc" id="L105">    public TodoParser() {</span>
+        // Empty constructor
+<span class="fc" id="L107">    }</span>
+
+
+    /**
+     * Read an XML todo list and enter any todo items into the current designer.
+     *
+     * @param inputSource The stream containing TodoList XML data.
+     * @throws SAXException on any error
+     */
+    public synchronized void readTodoList(
+            InputSource inputSource) throws SAXException {
+<span class="fc" id="L118">        LOG.log(Level.INFO, &quot;Reading ToDo list&quot;);</span>
+<span class="fc" id="L119">        parse(inputSource);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Reads an XML todo list from InputStream is and enters
+     * any todo items into the current designer.
+     *
+     * @param	is	The stream containing TodoList XML data.
+     * @throws SAXException on any error
+     */
+    public synchronized void readTodoList(
+            Reader is) throws SAXException {
+
+<span class="nc" id="L132">        LOG.log(Level.INFO,</span>
+                &quot;=======================================\n&quot;
+                + &quot;== READING TO DO LIST&quot;);
+<span class="nc" id="L135">        parse(is);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Called by the XML implementation to signal the start of
+     * an XML entity.
+     *
+     * @param	e	The entity being started.
+     */
+    public void handleStartElement(XMLElement e) {
+	//cat.debug(&quot;NOTE: TodoParser handleStartTag:&quot; + e.getName());
+
+	try {
+<span class="pc bpc" id="L148" title="4 of 7 branches missed.">	    switch (tokens.toToken(e.getName(), true)) {</span>
+	    case TodoTokenTable.TOKEN_HEADLINE:
+	    case TodoTokenTable.TOKEN_DESCRIPTION:
+	    case TodoTokenTable.TOKEN_PRIORITY:
+	    case TodoTokenTable.TOKEN_MOREINFOURL:
+	    case TodoTokenTable.TOKEN_POSTER:
+	    case TodoTokenTable.TOKEN_OFFENDER:
+		// NOP
+<span class="nc" id="L156">		break;</span>
+
+	    case TodoTokenTable.TOKEN_TO_DO:
+<span class="fc" id="L159">		handleTodo(e);</span>
+<span class="fc" id="L160">		break;</span>
+
+	    case TodoTokenTable.TOKEN_TO_DO_LIST:
+<span class="fc" id="L163">		handleTodoList(e);</span>
+<span class="fc" id="L164">		break;</span>
+
+	    case TodoTokenTable.TOKEN_TO_DO_ITEM:
+<span class="nc" id="L167">		handleTodoItemStart(e);</span>
+<span class="nc" id="L168">		break;</span>
+
+	    case TodoTokenTable.TOKEN_RESOLVEDCRITICS:
+<span class="fc" id="L171">		handleResolvedCritics(e);</span>
+<span class="fc" id="L172">		break;</span>
+
+	    case TodoTokenTable.TOKEN_ISSUE:
+<span class="nc" id="L175">		handleIssueStart(e);</span>
+<span class="nc" id="L176">		break;</span>
+
+	    default:
+<span class="nc" id="L179">                LOG.log(Level.WARNING, &quot;WARNING: unknown tag:&quot; + e.getName());</span>
+		break;
+	    }
+<span class="nc" id="L182">	} catch (Exception ex) {</span>
+<span class="nc" id="L183">            LOG.log(Level.SEVERE, &quot;Exception in startelement&quot;, ex);</span>
+<span class="fc" id="L184">	}</span>
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * Called by the XML implementation to signal the end of an XML
+     * entity.
+     *
+     * @param	e	The XML entity that ends.
+     * @throws SAXException on any error
+     */
+    public void handleEndElement(XMLElement e) throws SAXException {
+
+        try {
+<span class="pc bpc" id="L197" title="9 of 10 branches missed.">            switch (tokens.toToken(e.getName(), false)) {</span>
+            case TodoTokenTable.TOKEN_TO_DO:
+            case TodoTokenTable.TOKEN_RESOLVEDCRITICS:
+            case TodoTokenTable.TOKEN_TO_DO_LIST:
+        	// NOP
+<span class="fc" id="L202">        	break;</span>
+
+            case TodoTokenTable.TOKEN_TO_DO_ITEM:
+<span class="nc" id="L205">        	handleTodoItemEnd(e);</span>
+<span class="nc" id="L206">        	break;</span>
+
+            case TodoTokenTable.TOKEN_HEADLINE:
+<span class="nc" id="L209">        	handleHeadline(e);</span>
+<span class="nc" id="L210">        	break;</span>
+
+            case TodoTokenTable.TOKEN_DESCRIPTION:
+<span class="nc" id="L213">        	handleDescription(e);</span>
+<span class="nc" id="L214">        	break;</span>
+
+            case TodoTokenTable.TOKEN_PRIORITY:
+<span class="nc" id="L217">        	handlePriority(e);</span>
+<span class="nc" id="L218">        	break;</span>
+
+            case TodoTokenTable.TOKEN_MOREINFOURL:
+<span class="nc" id="L221">        	handleMoreInfoURL(e);</span>
+<span class="nc" id="L222">        	break;</span>
+
+            case TodoTokenTable.TOKEN_ISSUE:
+<span class="nc" id="L225">        	handleIssueEnd(e);</span>
+<span class="nc" id="L226">        	break;</span>
+
+            case TodoTokenTable.TOKEN_POSTER:
+<span class="nc" id="L229">        	handlePoster(e);</span>
+<span class="nc" id="L230">        	break;</span>
+
+            case TodoTokenTable.TOKEN_OFFENDER:
+<span class="nc" id="L233">        	handleOffender(e);</span>
+<span class="nc" id="L234">        	break;</span>
+
+            default:
+<span class="nc" id="L237">                LOG.log(Level.WARNING,</span>
+<span class="nc" id="L238">                        &quot;WARNING: unknown end tag:&quot; + e.getName());</span>
+        	break;
+            }
+<span class="nc" id="L241">        } catch (Exception ex) {</span>
+<span class="nc" id="L242">            throw new SAXException(ex);</span>
+<span class="fc" id="L243">        }</span>
+<span class="fc" id="L244">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleTodo(XMLElement e) {
+	/* do nothing */
+<span class="fc" id="L253">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleTodoList(XMLElement e) {
+	/* do nothing */
+<span class="fc" id="L262">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleResolvedCritics(XMLElement e) {
+	/* do nothing */
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleTodoItemStart(XMLElement e) {
+<span class="nc" id="L279">        headline = &quot;&quot;;</span>
+<span class="nc" id="L280">        priority = ToDoItem.HIGH_PRIORITY;</span>
+<span class="nc" id="L281">        moreinfourl = &quot;&quot;;</span>
+<span class="nc" id="L282">        description = &quot;&quot;;</span>
+<span class="nc" id="L283">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleTodoItemEnd(XMLElement e) {
+        ToDoItem item;
+        Designer dsgr;
+
+        /* This is expected to be safe, don't add a try block here */
+
+<span class="nc" id="L296">        dsgr = Designer.theDesigner();</span>
+<span class="nc" id="L297">        item =</span>
+            new ToDoItem(dsgr, headline, priority, description, moreinfourl,
+                         new ListSet());
+<span class="nc" id="L300">        dsgr.getToDoList().addElement(item);</span>
+        //cat.debug(&quot;Added ToDoItem: &quot; + _headline);
+<span class="nc" id="L302">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleHeadline(XMLElement e) {
+<span class="nc" id="L310">	headline = decode(e.getText()).trim();</span>
+<span class="nc" id="L311">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handlePriority(XMLElement e) {
+<span class="nc" id="L319">        String prio = decode(e.getText()).trim();</span>
+        int np;
+
+        try {
+<span class="nc" id="L323">            np = Integer.parseInt(prio);</span>
+<span class="nc" id="L324">        } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L325">            np = ToDoItem.HIGH_PRIORITY;</span>
+
+<span class="nc bnc" id="L327" title="All 2 branches missed.">            if (TodoTokenTable.STRING_PRIO_HIGH.equalsIgnoreCase(prio)) {</span>
+<span class="nc" id="L328">                np = ToDoItem.HIGH_PRIORITY;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">            } else if (TodoTokenTable.STRING_PRIO_MED.equalsIgnoreCase(prio)) {</span>
+<span class="nc" id="L330">                np = ToDoItem.MED_PRIORITY;</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">            } else if (TodoTokenTable.STRING_PRIO_LOW.equalsIgnoreCase(prio)) {</span>
+<span class="nc" id="L332">                np = ToDoItem.LOW_PRIORITY;</span>
+            }
+<span class="nc" id="L334">        }</span>
+
+<span class="nc" id="L336">        priority = np;</span>
+<span class="nc" id="L337">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleMoreInfoURL(XMLElement e) {
+<span class="nc" id="L345">	moreinfourl = decode(e.getText()).trim();</span>
+<span class="nc" id="L346">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleDescription(XMLElement e) {
+<span class="nc" id="L354">	description = decode(e.getText()).trim();</span>
+<span class="nc" id="L355">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleIssueStart(XMLElement e) {
+<span class="nc" id="L363">	critic = null;</span>
+<span class="nc" id="L364">	offenders = null;</span>
+<span class="nc" id="L365">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleIssueEnd(XMLElement e) {
+        Designer dsgr;
+        ResolvedCritic item;
+
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        if (critic == null) {</span>
+<span class="nc" id="L377">            return;</span>
+        }
+
+<span class="nc" id="L380">        item = new ResolvedCritic(critic, offenders);</span>
+<span class="nc" id="L381">        dsgr = Designer.theDesigner();</span>
+<span class="nc" id="L382">        dsgr.getToDoList().addResolvedCritic(item);</span>
+<span class="nc" id="L383">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handlePoster(XMLElement e) {
+<span class="nc" id="L391">        critic = decode(e.getText()).trim();</span>
+<span class="nc" id="L392">    }</span>
+
+    /**
+     * Internal method.
+     *
+     * @param e the element
+     */
+    protected void handleOffender(XMLElement e) {
+<span class="nc bnc" id="L400" title="All 2 branches missed.">        if (offenders == null) {</span>
+<span class="nc" id="L401">            offenders = new ArrayList();</span>
+        }
+<span class="nc" id="L403">        offenders.add(decode(e.getText()).trim());</span>
+<span class="nc" id="L404">    }</span>
+
+    /**
+     * Utility method to decode a String filtering out any noise that
+     * an XML framework might have seen fit to add and thus regaining
+     * the original unmodified String.
+     *
+     * @param	str	The String to decode.
+     * @return	A copy of the original String.
+     */
+    public static String decode(String str) {
+<span class="nc bnc" id="L415" title="All 2 branches missed.">        if (str == null) {</span>
+<span class="nc" id="L416">            return null;</span>
+        }
+
+        StringBuffer sb;
+        int i1, i2;
+        char c;
+
+<span class="nc" id="L423">        sb = new StringBuffer();</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        for (i1 = 0, i2 = 0; i2 &lt; str.length(); i2++) {</span>
+<span class="nc" id="L425">            c = str.charAt(i2);</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">            if (c == '%') {</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">                if (i2 &gt; i1) {</span>
+<span class="nc" id="L428">                    sb.append(str.substring(i1, i2));</span>
+                }
+<span class="nc bnc" id="L430" title="All 2 branches missed.">                for (i1 = ++i2; i2 &lt; str.length(); i2++) {</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">                    if (str.charAt(i2) == ';') {</span>
+<span class="nc" id="L432">                        break;</span>
+                    }
+                }
+<span class="nc bnc" id="L435" title="All 2 branches missed.">                if (i2 &gt;= str.length()) {</span>
+<span class="nc" id="L436">                    i1 = i2;</span>
+<span class="nc" id="L437">                    break;</span>
+                }
+
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                if (i2 &gt; i1) {</span>
+<span class="nc" id="L441">                    String ent = str.substring(i1, i2);</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">                    if (&quot;proc&quot;.equals(ent)) {</span>
+<span class="nc" id="L443">                        sb.append('%');</span>
+                    } else {
+                        try {
+<span class="nc" id="L446">                            sb.append((char) Integer.parseInt(ent));</span>
+<span class="nc" id="L447">                        } catch (NumberFormatException nfe) {</span>
+                            // TODO: handle parse error
+<span class="nc" id="L449">                        }</span>
+                    }
+                }
+<span class="nc" id="L452">                i1 = i2 + 1;</span>
+            }
+        }
+<span class="nc bnc" id="L455" title="All 2 branches missed.">        if (i2 &gt; i1) {</span>
+<span class="nc" id="L456">            sb.append(str.substring(i1, i2));</span>
+        }
+<span class="nc" id="L458">        return sb.toString();</span>
+    }
+
+    /**
+     * Utility method to encode a String in a way that allows it to be
+     * saved properly in an XML file and regained filtering out any noice
+     * that an XML framework might have seen fit to add.
+     *
+     * TODO: Why are we doing this ourselves?  Surely encoding information
+     * for XML serialization is a well known task - tfm
+     * I have never understood why this is being done. I think we should remove
+     * any usage - bob
+     *
+     * @param	str	The String to encode.
+     * @return	The encoded String.
+     */
+    public static String encode(String str) {
+	StringBuffer sb;
+	int i1, i2;
+	char c;
+
+<span class="nc bnc" id="L479" title="All 2 branches missed.">	if (str == null) {</span>
+<span class="nc" id="L480">            return null;</span>
+        }
+<span class="nc" id="L482">	sb = new StringBuffer();</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">	for (i1 = 0, i2 = 0; i2 &lt; str.length(); i2++) {</span>
+<span class="nc" id="L484">	    c = str.charAt(i2);</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">	    if (c == '%') {</span>
+<span class="nc bnc" id="L486" title="All 2 branches missed.">		if (i2 &gt; i1) {</span>
+<span class="nc" id="L487">                    sb.append(str.substring(i1, i2));</span>
+                }
+<span class="nc" id="L489">		sb.append(&quot;%proc;&quot;);</span>
+<span class="nc" id="L490">		i1 = i2 + 1;</span>
+<span class="nc bnc" id="L491" title="All 18 branches missed.">	    } else if (c &lt; 0x28</span>
+                ||  (c &gt;= 0x3C &amp;&amp; c &lt;= 0x40 &amp;&amp; c != 0x3D &amp;&amp; c != 0x3F)
+                ||  (c &gt;= 0x5E &amp;&amp; c &lt;= 0x60 &amp;&amp; c != 0x5F)
+                ||   c &gt;= 0x7B) {
+<span class="nc bnc" id="L495" title="All 2 branches missed.">		if (i2 &gt; i1) {</span>
+<span class="nc" id="L496">                    sb.append(str.substring(i1, i2));</span>
+                }
+<span class="nc" id="L498">		sb.append(&quot;%&quot; + Integer.toString(c) + &quot;;&quot;);</span>
+<span class="nc" id="L499">		i1 = i2 + 1;</span>
+	    }
+	}
+<span class="nc bnc" id="L502" title="All 2 branches missed.">	if (i2 &gt; i1) {</span>
+<span class="nc" id="L503">            sb.append(str.substring(i1, i2));</span>
+        }
+
+	//cat.debug(&quot;encode:\n&quot; + str + &quot;\n -&gt; &quot; + sb.toString());
+<span class="nc" id="L507">	return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

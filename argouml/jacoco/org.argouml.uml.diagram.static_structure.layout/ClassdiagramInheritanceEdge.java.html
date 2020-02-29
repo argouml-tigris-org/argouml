@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassdiagramInheritanceEdge.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.layout</a> &gt; <span class="el_source">ClassdiagramInheritanceEdge.java</span></div><h1>ClassdiagramInheritanceEdge.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.layout;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+
+/**
+ *
+ * @author mkl
+ */
+public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
+<span class="nc" id="L52">    private static final Logger LOG =</span>
+<span class="nc" id="L53">        Logger.getLogger(ClassdiagramInheritanceEdge.class.getName());</span>
+
+    /**
+     * The largest difference that we consider equivalent to zero
+     */
+    private static final int EPSILON = 5;
+
+    /**
+     * The figures which are connected by this edge
+     */
+    private Fig high, low;
+
+    /**
+     * Offset used to distribute the lines
+     */
+    private int offset;
+
+    /**
+     * Constructor.
+     *
+     * @param edge the fig edge
+     */
+    public ClassdiagramInheritanceEdge(FigEdge edge) {
+<span class="nc" id="L76">        super(edge);</span>
+
+        // calculate the higher and lower Figs
+<span class="nc" id="L79">        high = getDestFigNode();</span>
+<span class="nc" id="L80">        low = getSourceFigNode();</span>
+<span class="nc" id="L81">        offset = 0;</span>
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * @return the vertical offset
+     */
+    public int getVerticalOffset() {
+<span class="nc" id="L88">        return (getVGap() / 2) - 10 + getOffset();</span>
+    }
+
+    /**
+     * @return the center of the high node
+     */
+    public int getCenterHigh() {
+<span class="nc" id="L95">        return (int) (high.getLocation().getX() + high.getSize().width / 2)</span>
+<span class="nc" id="L96">            + getOffset();</span>
+    }
+
+    /**
+     * @return the center of the low node
+     */
+    public int getCenterLow() {
+<span class="nc" id="L103">        return (int) (low.getLocation().getX() + low.getSize().width / 2)</span>
+<span class="nc" id="L104">                + getOffset();</span>
+    }
+
+    /**
+     * @return the gap with the node one level down
+     */
+    public int getDownGap() {
+<span class="nc" id="L111">        return (int) (low.getLocation().getY() - getVerticalOffset());</span>
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
+     *
+     * Layout the edges in a way that they form a nice inheritance tree. Try to
+     * implement these nice zigzag lines between classes and works well when the
+     * row difference is one.
+     *
+     * @author Markus Klink
+     * @since 0.9.6
+     */
+    public void layout() {
+        // now we construct the zig zag inheritance line
+        //getUnderlyingFig()
+<span class="nc" id="L127">        Fig fig = getUnderlyingFig();</span>
+<span class="nc" id="L128">        int centerHigh = getCenterHigh();</span>
+<span class="nc" id="L129">        int centerLow = getCenterLow();</span>
+
+        // the amount of the &quot;sidestep&quot;
+<span class="nc" id="L132">        int difference = centerHigh - centerLow;</span>
+
+        /*
+         * If center points are &quot;close enough&quot; we just adjust the endpoints
+         * of the line a little bit.  Otherwise we add a jog in the middle to
+         * deal with the offset.
+         *
+         * TODO: Epsilon is currently fixed, but could probably be computed
+         * dynamically as 10% of the width of the narrowest figure or some
+         * other value which is visually not noticeable.
+         */
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (Math.abs(difference) &lt; EPSILON) {</span>
+<span class="nc" id="L144">            fig.addPoint(centerLow + (difference / 2 + (difference % 2)),</span>
+<span class="nc" id="L145">                    (int) (low.getLocation().getY()));</span>
+<span class="nc" id="L146">            fig.addPoint(centerHigh - (difference / 2),</span>
+<span class="nc" id="L147">                    high.getLocation().y + high.getSize().height);</span>
+        } else {
+<span class="nc" id="L149">            fig.addPoint(centerLow, (int) (low.getLocation().getY()));</span>
+<span class="nc" id="L150">            LOG.log(Level.FINE,</span>
+                    &quot;Point: x: {0} y: {1}&quot;,
+<span class="nc" id="L152">                    new Object[]{ centerLow, low.getLocation().y});</span>
+
+<span class="nc" id="L154">            LOG.log(Level.FINE,</span>
+                    &quot;Point: x: {0} y: {1}&quot;,
+<span class="nc" id="L156">                    new Object[]{(centerHigh - difference), getDownGap()});</span>
+<span class="nc" id="L157">            getUnderlyingFig().addPoint(centerHigh - difference, getDownGap());</span>
+
+<span class="nc" id="L159">            LOG.log(Level.FINE,</span>
+                    &quot;Point: x: {0} y: {1}&quot;,
+<span class="nc" id="L161">                    new Object[]{centerHigh, getDownGap()});</span>
+<span class="nc" id="L162">            getUnderlyingFig().addPoint(centerHigh, getDownGap());</span>
+            
+
+<span class="nc" id="L165">            LOG.log(Level.FINE,</span>
+                    &quot;Point x: {0} y: {1}&quot;,
+                    new Object[] {
+<span class="nc" id="L168">                        centerHigh,</span>
+<span class="nc" id="L169">                        (high.getLocation().y + high.getSize().height)</span>
+                    });
+<span class="nc" id="L171">            fig.addPoint(centerHigh, high.getLocation().y + high.getSize().height);            </span>
+        }
+<span class="nc" id="L173">        fig.setFilled(false);</span>
+<span class="nc" id="L174">        getCurrentEdge().setFig(getUnderlyingFig());</span>
+        // currentEdge.setBetweenNearestPoints(false);
+<span class="nc" id="L176">    }</span>
+
+    /**
+     * Set the line-offset for this edge
+     *
+     * @param anOffset
+     *            the offset to use for this edge
+     */
+    public void setOffset(int anOffset) {
+<span class="nc" id="L185">        offset = anOffset;</span>
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * @return Line-offset for this edge
+     */
+    public int getOffset() {
+<span class="nc" id="L192">        return offset;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrReservedName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrReservedName.java</span></div><h1>CrReservedName.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * This critic checks whether a given name in the Model resembles or matches
+ * a reserved UML keyword or java keyword.
+ */
+public class CrReservedName extends CrUML {
+
+    private static List&lt;String&gt; names;
+    
+<span class="fc" id="L65">    private static List&lt;String&gt; umlReserved = new ArrayList&lt;String&gt;();</span>
+
+    static {
+<span class="fc" id="L68">	umlReserved.add(&quot;none&quot;);</span>
+<span class="fc" id="L69">	umlReserved.add(&quot;interface&quot;);</span>
+<span class="fc" id="L70">	umlReserved.add(&quot;sequential&quot;);</span>
+<span class="fc" id="L71">	umlReserved.add(&quot;guarded&quot;);</span>
+<span class="fc" id="L72">	umlReserved.add(&quot;concurrent&quot;);</span>
+<span class="fc" id="L73">	umlReserved.add(&quot;frozen&quot;);</span>
+<span class="fc" id="L74">	umlReserved.add(&quot;aggregate&quot;);</span>
+<span class="fc" id="L75">	umlReserved.add(&quot;composite&quot;);</span>
+    }
+
+    static {
+        // TODO: This could just work off the names in the UML profile
+        // TODO: It doesn't look like it matches what's in the UML 1.4 spec
+<span class="fc" id="L81">	umlReserved.add(&quot;becomes&quot;);</span>
+<span class="fc" id="L82">	umlReserved.add(&quot;call&quot;);</span>
+<span class="fc" id="L83">	umlReserved.add(&quot;component&quot;);</span>
+	//umlReserved.add(&quot;copy&quot;);
+	//umlReserved.add(&quot;create&quot;);
+<span class="fc" id="L86">	umlReserved.add(&quot;deletion&quot;);</span>
+<span class="fc" id="L87">	umlReserved.add(&quot;derived&quot;);</span>
+	//umlReserved.add(&quot;document&quot;);
+<span class="fc" id="L89">	umlReserved.add(&quot;enumeration&quot;);</span>
+<span class="fc" id="L90">	umlReserved.add(&quot;extends&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L94">	umlReserved.add(&quot;facade&quot;);</span>
+	//umlReserved.add(&quot;file&quot;);
+<span class="fc" id="L96">	umlReserved.add(&quot;framework&quot;);</span>
+<span class="fc" id="L97">	umlReserved.add(&quot;friend&quot;);</span>
+<span class="fc" id="L98">	umlReserved.add(&quot;import&quot;);</span>
+<span class="fc" id="L99">	umlReserved.add(&quot;inherits&quot;);</span>
+<span class="fc" id="L100">	umlReserved.add(&quot;instance&quot;);</span>
+<span class="fc" id="L101">	umlReserved.add(&quot;invariant&quot;);</span>
+<span class="fc" id="L102">	umlReserved.add(&quot;library&quot;);</span>
+	//umlReserved.add(&quot;node&quot;);
+<span class="fc" id="L104">	umlReserved.add(&quot;metaclass&quot;);</span>
+<span class="fc" id="L105">	umlReserved.add(&quot;powertype&quot;);</span>
+<span class="fc" id="L106">	umlReserved.add(&quot;private&quot;);</span>
+<span class="fc" id="L107">	umlReserved.add(&quot;process&quot;);</span>
+<span class="fc" id="L108">	umlReserved.add(&quot;requirement&quot;);</span>
+	//umlReserved.add(&quot;send&quot;);
+<span class="fc" id="L110">	umlReserved.add(&quot;stereotype&quot;);</span>
+<span class="fc" id="L111">	umlReserved.add(&quot;stub&quot;);</span>
+<span class="fc" id="L112">	umlReserved.add(&quot;subclass&quot;);</span>
+<span class="fc" id="L113">	umlReserved.add(&quot;subtype&quot;);</span>
+<span class="fc" id="L114">	umlReserved.add(&quot;system&quot;);</span>
+<span class="fc" id="L115">	umlReserved.add(&quot;table&quot;);</span>
+<span class="fc" id="L116">	umlReserved.add(&quot;thread&quot;);</span>
+<span class="fc" id="L117">	umlReserved.add(&quot;type&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L121">	umlReserved.add(&quot;useCaseModel&quot;);</span>
+<span class="fc" id="L122">	umlReserved.add(&quot;uses&quot;);</span>
+<span class="fc" id="L123">	umlReserved.add(&quot;utility&quot;);</span>
+	//umlReserved.add(&quot;destroy&quot;);
+<span class="fc" id="L125">	umlReserved.add(&quot;implementationClass&quot;);</span>
+<span class="fc" id="L126">	umlReserved.add(&quot;postcondition&quot;);</span>
+<span class="fc" id="L127">	umlReserved.add(&quot;precondition&quot;);</span>
+<span class="fc" id="L128">	umlReserved.add(&quot;topLevelPackage&quot;);</span>
+<span class="fc" id="L129">	umlReserved.add(&quot;subtraction&quot;);</span>
+
+	//     umlReserved.add(&quot;initial&quot;);
+	//     umlReserved.add(&quot;final&quot;);
+	//     umlReserved.add(&quot;fork&quot;);
+	//     umlReserved.add(&quot;join&quot;);
+	//     umlReserved.add(&quot;history&quot;);
+<span class="fc" id="L136">    }</span>
+
+
+    /**
+     * Default constructor.  Builds a critic that checks UML reserved names.
+     */
+    public CrReservedName() {
+<span class="fc" id="L143">        this(umlReserved);</span>
+<span class="fc" id="L144">    }</span>
+    
+    /**
+     * Construct a critic that checks against the given list of reserved names.
+     * 
+     * @param reservedNames the list of reserved names to check against.
+     */
+<span class="fc" id="L151">    public CrReservedName(List&lt;String&gt; reservedNames) {</span>
+<span class="fc" id="L152">        setupHeadAndDesc();</span>
+<span class="fc" id="L153">        setPriority(ToDoItem.HIGH_PRIORITY);</span>
+<span class="fc" id="L154">        addSupportedDecision(UMLDecision.NAMING);</span>
+<span class="fc" id="L155">        setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+<span class="fc" id="L156">        addTrigger(&quot;name&quot;);</span>
+<span class="fc" id="L157">        addTrigger(&quot;feature_name&quot;);</span>
+<span class="fc" id="L158">        names = reservedNames;</span>
+<span class="fc" id="L159">    }</span>
+
+
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">	if (!(Model.getFacade().isPrimaryObject(dm))) {</span>
+<span class="nc" id="L165">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (!(Model.getFacade().isAModelElement(dm))) {</span>
+<span class="nc" id="L169">            return NO_PROBLEM;</span>
+        }
+<span class="nc" id="L171">        String meName = Model.getFacade().getName(dm);</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        if (meName == null || meName.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L173">            return NO_PROBLEM;</span>
+        }
+<span class="nc" id="L175">        String nameStr = meName;</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">        if (nameStr == null || nameStr.length() == 0) {</span>
+<span class="nc" id="L177">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">	if (isBuiltin(nameStr)) {</span>
+<span class="nc" id="L181">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        for (String name : names) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (name.equalsIgnoreCase(nameStr)) {</span>
+<span class="nc" id="L186">                return PROBLEM_FOUND;</span>
+            }
+<span class="nc" id="L188">        }</span>
+
+<span class="nc" id="L190">        return NO_PROBLEM;</span>
+    }
+
+    /**
+     * Don't critique elements from the profile, they may have names
+     * which are nominally &quot;reserved.&quot;
+     *
+     * @param name The name of the type to test.
+     * @return true if it is a builtin.
+     */
+    protected boolean isBuiltin(String name) {
+<span class="nc" id="L201">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L202">        Object type = p.findTypeInDefaultModel(name);</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        return type != null;</span>
+    }
+
+
+    /*
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
+    @Override
+    public Icon getClarifier() {
+<span class="nc" id="L212">        return ClClassName.getTheInstance();</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
+     */
+    @Override
+    public void initWizard(Wizard w) {
+<span class="nc bnc" id="L221" title="All 2 branches missed.">	if (w instanceof WizMEName) {</span>
+<span class="nc" id="L222">	    ToDoItem item = (ToDoItem) w.getToDoItem();</span>
+	    String sug =
+<span class="nc" id="L224">	        Model.getFacade().getName(item.getOffenders().get(0));</span>
+<span class="nc" id="L225">	    String ins = super.getInstructions();</span>
+<span class="nc" id="L226">	    ((WizMEName) w).setInstructions(ins);</span>
+<span class="nc" id="L227">	    ((WizMEName) w).setSuggestion(sug);</span>
+<span class="nc" id="L228">	    ((WizMEName) w).setMustEdit(true);</span>
+	}
+<span class="nc" id="L230">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
+    @Override
+    public Class getWizardClass(ToDoItem item) {
+<span class="nc" id="L237">        return WizMEName.class;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L245">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L246">        ret.add(Model.getMetaTypes().getClassifier());</span>
+<span class="fc" id="L247">        ret.add(Model.getMetaTypes().getOperation());</span>
+<span class="fc" id="L248">        ret.add(Model.getMetaTypes().getState());</span>
+<span class="fc" id="L249">        ret.add(Model.getMetaTypes().getAssociation());</span>
+<span class="fc" id="L250">        return ret;</span>
+    }
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5839267391209851505L;
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

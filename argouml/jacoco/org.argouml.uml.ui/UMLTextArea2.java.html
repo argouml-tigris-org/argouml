@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLTextArea2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLTextArea2.java</span></div><h1>UMLTextArea2.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.JTextArea;
+
+import org.argouml.kernel.UmlModelMutator;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+
+/**
+ * A JTextArea especially made to represent UMLPlainTextDocuments.
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Dec 28, 2002
+ */
+@UmlModelMutator
+public class UMLTextArea2 extends JTextArea
+    implements PropertyChangeListener, TargettableModelView {
+
+    /**
+     * Serial version generated for rev 1.9
+     */
+    private static final long serialVersionUID = -9172093001792636086L;
+
+    /**
+     * Constructor for UMLTextArea2.
+     * @param doc the plain text document
+     */
+    public UMLTextArea2(UMLDocument doc) {
+<span class="fc" id="L70">        super(doc);</span>
+<span class="fc" id="L71">        setFont(LookAndFeelMgr.getInstance().getStandardFont());</span>
+<span class="fc" id="L72">        addCaretListener(ActionCopy.getInstance());</span>
+<span class="fc" id="L73">        addCaretListener(ActionCut.getInstance());</span>
+<span class="fc" id="L74">        addCaretListener(ActionPaste.getInstance());</span>
+<span class="fc" id="L75">        addFocusListener(ActionPaste.getInstance());</span>
+<span class="fc" id="L76">    }</span>
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc" id="L82">        ((UMLDocument) getDocument()).propertyChange(evt);</span>
+<span class="nc" id="L83">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
+     */
+    public TargetListener getTargettableModel() {
+<span class="fc" id="L89">        return ((UMLDocument) getDocument());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.checklist</a> &gt; <span class="el_source">CheckManager.java</span></div><h1>CheckManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.checklist;
+
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+/**
+ * The CheckManager keeps track of which Checklists should be
+ * presented for a given design material.  CheckManager also keeps
+ * track of which CheckItem's are checked off for a given design
+ * element.
+ *
+ * @author Jason Robbins
+ */
+public class CheckManager implements Serializable {
+
+    ////////////////////////////////////////////////////////////////
+    // static variables
+
+    /**
+     * List of checklists.
+     *
+     * Indexed on the object type of the element that this checklist is
+     * appropriate for.
+     */
+<span class="fc" id="L64">    private static Hashtable lists = new Hashtable();</span>
+
+    /**
+     * List of ChecklistStatus:es.
+     *
+     * Indexed on the model element itself.
+     * TODO: Should use weak references so that this is forgotten about
+     * when the object is removed.
+     */
+<span class="fc" id="L73">    private static Hashtable statuses = new Hashtable();</span>
+
+    /**
+     * Constructor.
+     */
+<span class="nc" id="L78">    public CheckManager() { }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // static accessors
+
+    /**
+     * Gets the checklist for an element.
+     *
+     * @param dm is the element
+     * @return a checklist
+     */
+    public static Checklist getChecklistFor(Object dm) {
+        Checklist cl;
+
+<span class="fc" id="L92">	java.lang.Class cls = dm.getClass();</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">	while (cls != null) {</span>
+<span class="fc" id="L94">	    cl = lookupChecklist(cls);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">	    if (cl != null) {</span>
+<span class="nc" id="L96">		return cl;</span>
+	    }
+<span class="fc" id="L98">	    cls = cls.getSuperclass();</span>
+	}
+<span class="fc" id="L100">	return null;</span>
+    }
+
+    /**
+     * Find an element in the list.
+     *
+     * This is a little more complex than the simple lookup since it might be
+     * that we are indexing with a class and the list contains interfaces.
+     *
+     * Since the hashtable lookup is a lot faster than the linear search we
+     * add the result of the linear search to the hashtable so that the next
+     * time we need not do it.
+     *
+     * @return Checklist or null if noone exist.
+     * @param cls the class to lookup.
+     */
+    private static Checklist lookupChecklist(Class cls) {
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">        if (lists.contains(cls)) {</span>
+<span class="nc" id="L118">            return (Checklist) lists.get(cls);</span>
+	}
+
+        // Now lets search
+<span class="fc" id="L122">        Enumeration enumeration = lists.keys();</span>
+
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        while (enumeration.hasMoreElements()) {</span>
+<span class="nc" id="L125">            Object clazz = enumeration.nextElement();</span>
+
+<span class="nc" id="L127">            Class[] intfs = cls.getInterfaces();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            for (int i = 0; i &lt; intfs.length; i++) {</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                if (intfs[i].equals(clazz)) {</span>
+                    // We found it!
+<span class="nc" id="L131">                    Checklist chlist = (Checklist) lists.get(clazz);</span>
+
+                    // Enter the class to speed up the next search.
+<span class="nc" id="L134">                    lists.put(cls, chlist);</span>
+<span class="nc" id="L135">                    return chlist;</span>
+                }
+            }
+<span class="nc" id="L138">        }</span>
+
+<span class="fc" id="L140">        return null;</span>
+    }
+
+
+    /**
+     * Registers a new list. Used when setting up the checklist stuff.
+     *
+     * @param dm the class for which the Checklist holds
+     * @param cl the Checklist
+     */
+    public static void register(Object dm, Checklist cl) {
+<span class="nc" id="L151">	lists.put(dm, cl);</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * Get the ChecklistStatus for some object.
+     *
+     * If there is none, then create one.
+     *
+     * @return ChecklistStatus, a half filled list.
+     * @param dm is the object that we retrieve the checklist for
+     */
+    public static ChecklistStatus getStatusFor(Object dm) {
+<span class="nc" id="L163">	ChecklistStatus cls = (ChecklistStatus) statuses.get(dm);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">	if (cls == null) {</span>
+<span class="nc" id="L165">	    cls = new ChecklistStatus();</span>
+<span class="nc" id="L166">	    statuses.put(dm, cls);</span>
+	}
+<span class="nc" id="L168">	return cls;</span>
+    }
+} /* end class CheckManager */
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

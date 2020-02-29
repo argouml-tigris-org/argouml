@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsTabUser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">SettingsTabUser.java</span></div><h1>SettingsTabUser.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.JLinkButton;
+
+/**
+ * Tab Panel for setting the default user attributes: name and email.
+ *
+ * @author Thierry Lach
+ * @since  0.9.4
+ */
+class SettingsTabUser extends JPanel
+    implements GUISettingsTabInterface {
+
+    private JPanel topPanel;
+    
+    /**
+     * This is where the user enters full name in settings tab.
+     * This information is stored
+     * in the argo.user.properties file.
+     */
+    private JTextField userFullname;
+
+    /**
+     * This is where the user enters email in settings tab.
+     * This information is stored
+     * in the argo.user.properties file.
+     */
+    private JTextField userEmail;
+
+    /**
+     * The constructor.
+     */
+<span class="nc" id="L86">    SettingsTabUser() {</span>
+        // defer work until fetched/visible
+<span class="nc" id="L88">    }</span>
+
+    private void buildPanel() {
+<span class="nc" id="L91">        setLayout(new BorderLayout());</span>
+        
+<span class="nc" id="L93">        topPanel = new JPanel();</span>
+<span class="nc" id="L94">        topPanel.setLayout(new BorderLayout());</span>
+        
+<span class="nc" id="L96">        JPanel warning = new JPanel();</span>
+<span class="nc" id="L97">        warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));</span>
+<span class="nc" id="L98">        JLabel warningLabel = new JLabel(Translator.localize(&quot;label.warning&quot;));</span>
+<span class="nc" id="L99">        warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);</span>
+<span class="nc" id="L100">        warning.add(warningLabel);</span>
+
+<span class="nc" id="L102">        JLinkButton projectSettings = new JLinkButton();</span>
+<span class="nc" id="L103">        projectSettings.setAction(new ActionProjectSettings());</span>
+<span class="nc" id="L104">        projectSettings.setText(Translator.localize(&quot;button.project-settings&quot;));</span>
+<span class="nc" id="L105">        projectSettings.setIcon(null);</span>
+<span class="nc" id="L106">        projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);</span>
+<span class="nc" id="L107">        warning.add(projectSettings);</span>
+        
+<span class="nc" id="L109">        topPanel.add(warning, BorderLayout.NORTH);</span>
+        
+<span class="nc" id="L111">	JPanel settings = new JPanel();</span>
+<span class="nc" id="L112">    	settings.setLayout(new GridBagLayout());</span>
+
+<span class="nc" id="L114">	GridBagConstraints labelConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L115">	labelConstraints.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L116">	labelConstraints.gridy = 0;</span>
+<span class="nc" id="L117">	labelConstraints.gridx = 0;</span>
+<span class="nc" id="L118">	labelConstraints.gridwidth = 1;</span>
+<span class="nc" id="L119">	labelConstraints.gridheight = 1;</span>
+<span class="nc" id="L120">	labelConstraints.insets = new Insets(2, 20, 2, 4);</span>
+
+<span class="nc" id="L122">	GridBagConstraints fieldConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L123">	fieldConstraints.anchor = GridBagConstraints.EAST;</span>
+<span class="nc" id="L124">	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L125">	fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L126">	fieldConstraints.gridx = 1;</span>
+<span class="nc" id="L127">	fieldConstraints.gridwidth = 3;</span>
+<span class="nc" id="L128">	fieldConstraints.gridheight = 1;</span>
+<span class="nc" id="L129">	fieldConstraints.weightx = 1.0;</span>
+<span class="nc" id="L130">	fieldConstraints.insets = new Insets(2, 4, 2, 20);</span>
+
+<span class="nc" id="L132">	labelConstraints.gridy = 0;</span>
+<span class="nc" id="L133">	fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L134">	settings.add(new JLabel(Translator.localize(&quot;label.user&quot;)),</span>
+                labelConstraints);
+<span class="nc" id="L136">	JTextField j = new JTextField();</span>
+<span class="nc" id="L137">        userFullname = j;</span>
+<span class="nc" id="L138">	settings.add(userFullname, fieldConstraints);</span>
+
+<span class="nc" id="L140">	labelConstraints.gridy = 1;</span>
+<span class="nc" id="L141">	fieldConstraints.gridy = 1;</span>
+<span class="nc" id="L142"> 	settings.add(new JLabel(Translator.localize(&quot;label.email&quot;)),</span>
+                labelConstraints);
+<span class="nc" id="L144"> 	JTextField j1 = new JTextField();</span>
+<span class="nc" id="L145">        userEmail = j1;</span>
+<span class="nc" id="L146">	settings.add(userEmail, fieldConstraints);</span>
+<span class="nc" id="L147">	topPanel.add(settings, BorderLayout.CENTER);</span>
+	
+<span class="nc" id="L149">	add(topPanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L150">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
+     */
+    public void handleSettingsTabRefresh() {
+<span class="nc" id="L156">        userFullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));</span>
+<span class="nc" id="L157">        userEmail.setText(Configuration.getString(Argo.KEY_USER_EMAIL));</span>
+<span class="nc" id="L158">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
+     */
+    public void handleSettingsTabSave() {
+<span class="nc" id="L164">        Configuration.setString(Argo.KEY_USER_FULLNAME, userFullname.getText());</span>
+<span class="nc" id="L165">        Configuration.setString(Argo.KEY_USER_EMAIL, userEmail.getText());</span>
+<span class="nc" id="L166">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
+     */
+    public void handleSettingsTabCancel() {
+<span class="nc" id="L172">	handleSettingsTabRefresh();</span>
+<span class="nc" id="L173">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
+<span class="nc" id="L180">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#getTabKey()
+     */
+    public String getTabKey() {
+<span class="nc" id="L186">        return &quot;tab.user&quot;;</span>
+    }
+
+    /*
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (topPanel == null) {</span>
+<span class="nc" id="L194">            buildPanel();</span>
+        }
+<span class="nc" id="L196">        return this;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -742258688091914619L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

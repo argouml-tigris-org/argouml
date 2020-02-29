@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PriorityNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">PriorityNode.java</span></div><h1>PriorityNode.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
+
+/**
+ * This class represents a &quot;priority&quot;. Which is a classification for critics.
+ *
+ */
+public class PriorityNode {
+
+<span class="nc" id="L53">    private static final String HIGH = </span>
+<span class="nc" id="L54">        Translator.localize(&quot;misc.level.high&quot;);</span>
+
+<span class="nc" id="L56">    private static final String MEDIUM = </span>
+<span class="nc" id="L57">        Translator.localize(&quot;misc.level.medium&quot;);</span>
+
+<span class="nc" id="L59">    private static final String LOW =</span>
+<span class="nc" id="L60">        Translator.localize(&quot;misc.level.low&quot;);</span>
+
+<span class="nc" id="L62">    private static List&lt;PriorityNode&gt; priorities = null;</span>
+
+    private String name;
+
+    private int priority;
+
+    /**
+     * The constructor.
+     *
+     * @param n the name of this priority
+     * @param pri the priority number
+     */
+<span class="nc" id="L74">    public PriorityNode(String n, int pri) {</span>
+<span class="nc" id="L75">	name = n;</span>
+<span class="nc" id="L76">	priority = pri;</span>
+<span class="nc" id="L77">    }</span>
+
+
+    /**
+     * @return the list of all the priorities
+     */
+    public static List&lt;PriorityNode&gt; getPriorityList() {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (priorities == null) {</span>
+<span class="nc" id="L85">            List&lt;PriorityNode&gt; p =  new ArrayList&lt;PriorityNode&gt;();</span>
+<span class="nc" id="L86">            p.add(new PriorityNode(HIGH,</span>
+                    ToDoItem.HIGH_PRIORITY));
+<span class="nc" id="L88">            p.add(new PriorityNode(MEDIUM,</span>
+                    ToDoItem.MED_PRIORITY));
+<span class="nc" id="L90">            p.add(new PriorityNode(LOW,</span>
+                    ToDoItem.LOW_PRIORITY));
+            /* Correct lazy initialization of static field 
+             * without further updates: */
+<span class="nc" id="L94">            priorities = p;</span>
+        }
+<span class="nc" id="L96">        return priorities;</span>
+    }
+
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+<span class="nc" id="L104">        return name;</span>
+    }
+
+    /**
+     * @return the priority
+     */
+    public int getPriority() {
+<span class="nc" id="L111">        return priority;</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L119">        return getName();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

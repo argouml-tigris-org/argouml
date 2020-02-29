@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmlInputStream.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">XmlInputStream.java</span></div><h1>XmlInputStream.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+/**
+ * A BufferInputStream that is aware of XML structure.
+ * It searches for the first occurrence of a named tag
+ * and reads only the data (inclusively) from that tag
+ * to the matching end tag or it can search for the first
+ * occurrence of a named tag and read on the child tags.
+ * The tag is not expected to be an empty tag.
+ * &lt;p&gt;
+ * TODO: This is hardwired to assume a fixed single byte
+ * character encoding.  It needs to be updated to handle different
+ * encodings, including multi-byte encodings. - tfm 20070607
+ *
+ * @author Bob Tarling
+ */
+class XmlInputStream extends BufferedInputStream {
+
+    private boolean xmlStarted;
+    private boolean inTag;
+<span class="fc" id="L70">    private StringBuffer currentTag = new StringBuffer();</span>
+    private boolean endStream;
+    private String tagName;
+    private String endTagName;
+    private Map attributes;
+    private boolean childOnly;
+    private int instanceCount;
+    //private EventListenerList listenerList = new EventListenerList();
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L82">    private static final Logger LOG =</span>
+<span class="fc" id="L83">        Logger.getLogger(XmlInputStream.class.getName());</span>
+
+    /**
+     * Construct a new XmlInputStream.
+     *
+     * @param inStream the input stream to wrap.
+     * @param theTag the tag name from which to start reading
+     * @param theLength the expected length of the input stream
+     * @param theEventSpacing the number of characters to read before
+     *        firing a progress event.
+     */
+    public XmlInputStream(
+            InputStream inStream,
+            String theTag,
+            long theLength,
+            long theEventSpacing) {
+<span class="fc" id="L99">        super(inStream);</span>
+<span class="fc" id="L100">        tagName = theTag;</span>
+<span class="fc" id="L101">        endTagName = '/' + theTag;</span>
+<span class="fc" id="L102">        attributes = null;</span>
+<span class="fc" id="L103">        childOnly = false;</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Reopen a stream that has already reached the end
+     * of an XML fragment.
+     *
+     * @param theTag the tag name
+     * @param attribs the attributes
+     * @param child child only
+     */
+    public synchronized void reopen(
+                String theTag,
+                Map attribs,
+                boolean child) {
+<span class="nc" id="L118">        endStream = false;</span>
+<span class="nc" id="L119">        xmlStarted = false;</span>
+<span class="nc" id="L120">        inTag = false;</span>
+<span class="nc" id="L121">        tagName = theTag;</span>
+<span class="nc" id="L122">        endTagName = '/' + theTag;</span>
+<span class="nc" id="L123">        attributes = attribs;</span>
+<span class="nc" id="L124">        childOnly = child;</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * Reopen a stream that has already reached the end
+     * of an XML fragment.
+     *
+     * @param theTag the tag name
+     */
+    public synchronized void reopen(String theTag) {
+<span class="fc" id="L134">        endStream = false;</span>
+<span class="fc" id="L135">        xmlStarted = false;</span>
+<span class="fc" id="L136">        inTag = false;</span>
+<span class="fc" id="L137">        tagName = theTag;</span>
+<span class="fc" id="L138">        endTagName = '/' + theTag;</span>
+<span class="fc" id="L139">        attributes = null;</span>
+<span class="fc" id="L140">        childOnly = false;</span>
+<span class="fc" id="L141">    }</span>
+
+    /*
+     * @see java.io.InputStream#read()
+     */
+    public synchronized int read() throws IOException {
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (!xmlStarted) {</span>
+<span class="fc" id="L149">            skipToTag();</span>
+<span class="fc" id="L150">            xmlStarted = true;</span>
+        }
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (endStream) {</span>
+<span class="fc" id="L153">            return -1;</span>
+        }
+<span class="fc" id="L155">        int ch = super.read();</span>
+<span class="fc" id="L156">        endStream = isLastTag(ch);</span>
+<span class="fc" id="L157">        return ch;</span>
+    }
+
+    /*
+     * @see java.io.InputStream#read(byte[], int, int)
+     */
+    public synchronized int read(byte[] b, int off, int len)
+        throws IOException {
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (!xmlStarted) {</span>
+<span class="fc" id="L167">            skipToTag();</span>
+<span class="fc" id="L168">            xmlStarted = true;</span>
+        }
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (endStream) {</span>
+<span class="fc" id="L171">            return -1;</span>
+        }
+
+        int cnt;
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        for (cnt = 0; cnt &lt; len; ++cnt) {</span>
+<span class="fc" id="L176">            int read = read();</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            if (read == -1) {</span>
+<span class="fc" id="L178">		break;</span>
+	    }
+<span class="fc" id="L180">            b[cnt + off] = (byte) read;</span>
+        }
+
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">        if (cnt &gt; 0) {</span>
+<span class="fc" id="L184">            return cnt;</span>
+        }
+<span class="nc" id="L186">        return -1;</span>
+    }
+
+
+
+    /**
+     * Determines if the character is the last character of the last tag of
+     * interest.
+     * Every character read after the first tag of interest should be passed
+     * through this method in order.
+     *
+     * @param ch the character to test.
+     * @return true if this is the end of the last tag.
+     */
+    private boolean isLastTag(int ch) {
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (ch == '&lt;') {</span>
+<span class="fc" id="L202">            inTag = true;</span>
+<span class="fc" id="L203">            currentTag.setLength(0);</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        } else if (ch == '&gt;') {</span>
+<span class="fc" id="L205">            inTag = false;</span>
+<span class="fc" id="L206">            String tag = currentTag.toString();</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">            if (tag.equals(endTagName)</span>
+                    // TODO: The below is not strictly correct, but should
+                    // cover the case we deal with.  Using a real XML parser
+                    // would be better.
+                    // Look for XML document has just a single root element
+<span class="fc bfc" id="L212" title="All 2 branches covered.">                    || (currentTag.charAt(currentTag.length() - 1) == '/'</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                        &amp;&amp; tag.startsWith(tagName)</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">                        &amp;&amp; tag.indexOf(' ') == tagName.indexOf(' '))) {</span>
+<span class="fc" id="L215">                return true;</span>
+            }
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        } else if (inTag) {</span>
+<span class="fc" id="L218">            currentTag.append((char) ch);</span>
+        }
+<span class="fc" id="L220">        return false;</span>
+    }
+
+    /**
+     * Keep on reading an input stream until a specific
+     * sequence of characters has ben read.
+     * This method assumes there is at least one match.
+     *
+     * @throws IOException
+     */
+    private void skipToTag() throws IOException {
+<span class="fc" id="L231">        char[] searchChars = tagName.toCharArray();</span>
+        int i;
+        boolean found;
+        while (true) {
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">            if (!childOnly) {</span>
+<span class="fc" id="L236">		mark(1000);</span>
+	    }
+            // Keep reading till we get the left bracket of an opening tag
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            while (realRead() != '&lt;') {</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">                if (!childOnly) {</span>
+<span class="fc" id="L241">		    mark(1000);</span>
+		}
+            }
+<span class="fc" id="L244">            found = true;</span>
+            // Compare each following character to see
+            // that it matches the tag we want
+<span class="fc bfc" id="L247" title="All 2 branches covered.">            for (i = 0; i &lt; tagName.length(); ++i) {</span>
+<span class="fc" id="L248">                int c = realRead();</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">                if (c != searchChars[i]) {</span>
+<span class="fc" id="L250">                    found = false;</span>
+<span class="fc" id="L251">                    break;</span>
+                }
+            }
+<span class="fc" id="L254">            int terminator = realRead();</span>
+            // We also want to match with the right bracket of the tag or
+            // some other terminator
+<span class="pc bpc" id="L257" title="1 of 4 branches missed.">            if (found &amp;&amp; !isNameTerminator((char) terminator)) {</span>
+<span class="nc" id="L258">                found = false;</span>
+            }
+
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            if (found) {</span>
+                // We've found the matching tag but do we have
+                // the correct instance with matching attributes?
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">                if (attributes != null) {</span>
+<span class="nc" id="L265">                    Map attributesFound = new HashMap();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                    if (terminator != '&gt;') {</span>
+<span class="nc" id="L267">                        attributesFound = readAttributes();</span>
+                    }
+                    // Search all attributes found to those expected.
+                    // If any don't match then turn off the found flag
+                    // so that we search for the next matching tag.
+<span class="nc" id="L272">                    Iterator it = attributes.entrySet().iterator();</span>
+<span class="nc bnc" id="L273" title="All 4 branches missed.">                    while (found &amp;&amp; it.hasNext()) {</span>
+<span class="nc" id="L274">                        Map.Entry pair = (Map.Entry) it.next();</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">                        if (!pair.getValue().equals(</span>
+<span class="nc" id="L276">                                attributesFound.get(pair.getKey()))) {</span>
+<span class="nc" id="L277">                            found = false;</span>
+                        }
+<span class="nc" id="L279">                    }</span>
+                }
+            }
+
+<span class="fc bfc" id="L283" title="All 2 branches covered.">            if (found) {</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">                if (instanceCount &lt; 0) {</span>
+<span class="nc" id="L285">                    found = false;</span>
+<span class="nc" id="L286">                    ++instanceCount;</span>
+                }
+            }
+
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            if (found) {</span>
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">                if (childOnly) {</span>
+                    // Read the name of the child tag
+                    // and then reset read position
+                    // back to that child tag.
+<span class="nc" id="L295">                    mark(1000);</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">                    while (realRead() != '&lt;') {</span>
+                        /* do nothing */
+		    }
+<span class="nc" id="L299">                    tagName = &quot;&quot;;</span>
+<span class="nc" id="L300">                    char ch = (char) realRead();</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                    while (!isNameTerminator(ch)) {</span>
+<span class="nc" id="L302">                        tagName += ch;</span>
+<span class="nc" id="L303">                        ch = (char) realRead();</span>
+                    }
+<span class="nc" id="L305">                    endTagName = &quot;/&quot; + tagName;</span>
+<span class="nc" id="L306">                    LOG.log(Level.INFO, &quot;Start tag = {0}&quot;, tagName);</span>
+<span class="nc" id="L307">                    LOG.log(Level.INFO, &quot;End tag = {0}&quot;, endTagName);</span>
+                }
+<span class="fc" id="L309">                reset();</span>
+<span class="fc" id="L310">                return;</span>
+            }
+<span class="fc" id="L312">        }</span>
+    }
+
+    private boolean isNameTerminator(char ch) {
+<span class="pc bpc" id="L316" title="1 of 4 branches missed.">        return (ch == '&gt;' || Character.isWhitespace(ch));</span>
+    }
+
+    /**
+     * Having read the inputstream up until the tag name.
+     * This method continues to read the contents of the tag to
+     * retrieve any attribute names and values.
+     * @return a map of name value pairs.
+     * @throws IOException
+     */
+    private Map readAttributes() throws IOException {
+<span class="nc" id="L327">        Map attributesFound = new HashMap();</span>
+        int character;
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        while ((character = realRead()) != '&gt;') {</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">            if (!Character.isWhitespace((char) character)) {</span>
+<span class="nc" id="L331">                StringBuffer attributeName = new StringBuffer();</span>
+<span class="nc" id="L332">                attributeName.append((char) character);</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">                while ((character = realRead()) != '='</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                        &amp;&amp; !Character.isWhitespace((char) character)) {</span>
+<span class="nc" id="L335">                    attributeName.append((char) character);</span>
+                }
+                // Skip any whitespace till we should be on an equals sign.
+<span class="nc bnc" id="L338" title="All 2 branches missed.">                while (Character.isWhitespace((char) character)) {</span>
+<span class="nc" id="L339">                    character = realRead();</span>
+                }
+<span class="nc bnc" id="L341" title="All 2 branches missed.">                if (character != '=') {</span>
+<span class="nc" id="L342">                    throw new IOException(</span>
+                            &quot;Expected = sign after attribute &quot;
+                            + attributeName);
+                }
+                // Skip any whitespace till we should be on a quote symbol.
+<span class="nc" id="L347">                int quoteSymbol = realRead();</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                while (Character.isWhitespace((char) quoteSymbol)) {</span>
+<span class="nc" id="L349">                    quoteSymbol = realRead();</span>
+                }
+<span class="nc bnc" id="L351" title="All 4 branches missed.">                if (quoteSymbol != '&quot;' &amp;&amp; quoteSymbol != '\'') {</span>
+<span class="nc" id="L352">                    throw new IOException(</span>
+                            &quot;Expected \&quot; or ' around attribute value after &quot;
+                            + &quot;attribute &quot; + attributeName);
+                }
+<span class="nc" id="L356">                StringBuffer attributeValue = new StringBuffer();</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">                while ((character = realRead()) != quoteSymbol) {</span>
+<span class="nc" id="L358">                    attributeValue.append((char) character);</span>
+                }
+<span class="nc" id="L360">                attributesFound.put(</span>
+<span class="nc" id="L361">                        attributeName.toString(),</span>
+<span class="nc" id="L362">                        attributeValue.toString());</span>
+<span class="nc" id="L363">            }</span>
+        }
+<span class="nc" id="L365">        return attributesFound;</span>
+    }
+
+
+
+    /**
+     * The close method is overridden to prevent some class out of
+     * our control from closing the stream (such as a SAX parser).
+     * Use realClose() to finally close the stream for real.
+     * @throws IOException to satisfy ancestor but will never happen.
+     */
+    public void close() throws IOException {
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Really close the input.
+     *
+     * @throws IOException if an I/O error occurs.
+     */
+    public void realClose() throws IOException {
+<span class="fc" id="L385">        super.close();</span>
+<span class="fc" id="L386">    }</span>
+
+    private int realRead() throws IOException {
+<span class="fc" id="L389">        int read = super.read();</span>
+<span class="pc bpc" id="L390" title="1 of 2 branches missed.">        if (read == -1) {</span>
+<span class="nc" id="L391">            throw new IOException(&quot;Tag &quot; + tagName + &quot; not found&quot;);</span>
+        }
+<span class="fc" id="L393">        return read;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

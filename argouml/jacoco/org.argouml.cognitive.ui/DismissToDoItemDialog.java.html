@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DismissToDoItemDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">DismissToDoItemDialog.java</span></div><h1>DismissToDoItemDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.UnresolvableException;
+import org.argouml.util.ArgoDialog;
+import org.tigris.swidgets.Dialog;
+
+/**
+ * The dialog to dismiss todo items.
+ *
+ */
+public class DismissToDoItemDialog extends ArgoDialog {
+
+<span class="nc" id="L71">    private static final Logger LOG =</span>
+<span class="nc" id="L72">        Logger.getLogger(DismissToDoItemDialog.class.getName());</span>
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    private JRadioButton    badGoalButton;
+    private JRadioButton    badDecButton;
+    private JRadioButton    explainButton;
+    private ButtonGroup     actionGroup;
+    private JTextArea       explanation;
+    private ToDoItem        target;
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * The constructor.
+     */
+    public DismissToDoItemDialog() {
+<span class="nc" id="L91">        super(</span>
+<span class="nc" id="L92">            Translator.localize(&quot;dialog.title.dismiss-todo-item&quot;),</span>
+            Dialog.OK_CANCEL_OPTION,
+            true);
+
+<span class="nc" id="L96">        JLabel instrLabel =</span>
+<span class="nc" id="L97">            new JLabel(Translator.localize(&quot;label.remove-item&quot;));</span>
+
+<span class="nc" id="L99">        badGoalButton = new JRadioButton(Translator.localize(</span>
+            &quot;button.not-relevant-to-my-goals&quot;));
+<span class="nc" id="L101">        badDecButton = new JRadioButton(Translator.localize(</span>
+            &quot;button.not-of-concern-at-moment&quot;));
+<span class="nc" id="L103">        explainButton = new JRadioButton(Translator.localize(</span>
+            &quot;button.reason-given-below&quot;));
+
+<span class="nc" id="L106">        badGoalButton.setMnemonic(</span>
+<span class="nc" id="L107">            Translator.localize(</span>
+                &quot;button.not-relevant-to-my-goals.mnemonic&quot;)
+<span class="nc" id="L109">	        .charAt(0));</span>
+<span class="nc" id="L110">        badDecButton.setMnemonic(</span>
+<span class="nc" id="L111">            Translator.localize(</span>
+                &quot;button.not-of-concern-at-moment.mnemonic&quot;)
+<span class="nc" id="L113">	        .charAt(0));</span>
+<span class="nc" id="L114">        explainButton.setMnemonic(</span>
+<span class="nc" id="L115">            Translator.localize(&quot;button.reason-given-below.mnemonic&quot;).charAt(</span>
+                0));
+
+<span class="nc" id="L118">        JPanel content = new JPanel();</span>
+
+<span class="nc" id="L120">        GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L121">        GridBagConstraints c = new GridBagConstraints();</span>
+
+<span class="nc" id="L123">        c.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L124">        c.weightx = 1.0;</span>
+<span class="nc" id="L125">        c.gridwidth = 2;</span>
+
+<span class="nc" id="L127">        content.setLayout(gb);</span>
+
+<span class="nc" id="L129">        explanation = new JTextArea(6, 40);</span>
+<span class="nc" id="L130">        explanation.setLineWrap(true);</span>
+<span class="nc" id="L131">        explanation.setWrapStyleWord(true);</span>
+<span class="nc" id="L132">        JScrollPane explain = new JScrollPane(explanation);</span>
+
+<span class="nc" id="L134">        c.gridx = 0;</span>
+<span class="nc" id="L135">        c.gridy = 0;</span>
+
+<span class="nc" id="L137">        gb.setConstraints(instrLabel, c);</span>
+<span class="nc" id="L138">        content.add(instrLabel);</span>
+
+<span class="nc" id="L140">        c.gridy = 1;</span>
+<span class="nc" id="L141">        c.insets = new Insets(5, 0, 0, 0);</span>
+
+<span class="nc" id="L143">        gb.setConstraints(badGoalButton, c);</span>
+<span class="nc" id="L144">        content.add(badGoalButton);</span>
+
+<span class="nc" id="L146">        c.gridy = 2;</span>
+
+<span class="nc" id="L148">        gb.setConstraints(badDecButton, c);</span>
+<span class="nc" id="L149">        content.add(badDecButton);</span>
+
+<span class="nc" id="L151">        c.gridy = 3;</span>
+
+<span class="nc" id="L153">        gb.setConstraints(explainButton, c);</span>
+<span class="nc" id="L154">        content.add(explainButton);</span>
+
+<span class="nc" id="L156">        c.gridy = 4;</span>
+<span class="nc" id="L157">        c.weighty = 1.0;</span>
+
+<span class="nc" id="L159">        gb.setConstraints(explain, c);</span>
+<span class="nc" id="L160">        content.add(explain);</span>
+
+<span class="nc" id="L162">        setContent(content);</span>
+
+<span class="nc" id="L164">        getOkButton().addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                if (badGoalButton.getModel().isSelected()) {</span>
+<span class="nc" id="L167">                    badGoal(e);</span>
+                }
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                else if (badDecButton.getModel().isSelected()) {</span>
+<span class="nc" id="L170">                    badDec(e);</span>
+                }
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                else if (explainButton.getModel().isSelected()) {</span>
+<span class="nc" id="L173">                    explain(e);</span>
+                }
+                else {
+<span class="nc" id="L176">                    LOG.log(Level.WARNING,</span>
+                            &quot;DissmissToDoItemDialog: Unknown action: &quot; + e);
+                }
+<span class="nc" id="L179">            }</span>
+        });
+
+<span class="nc" id="L182">        actionGroup = new ButtonGroup();</span>
+<span class="nc" id="L183">        actionGroup.add(badGoalButton);</span>
+<span class="nc" id="L184">        actionGroup.add(badDecButton);</span>
+<span class="nc" id="L185">        actionGroup.add(explainButton);</span>
+<span class="nc" id="L186">        actionGroup.setSelected(explainButton.getModel(), true);</span>
+
+<span class="nc" id="L188">        explanation.setText(</span>
+<span class="nc" id="L189">            Translator.localize(&quot;label.enter-rationale-here&quot;));</span>
+
+<span class="nc" id="L191">        badGoalButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L193">                explanation.setEnabled(false);</span>
+<span class="nc" id="L194">            }</span>
+        });
+<span class="nc" id="L196">        badDecButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L198">                explanation.setEnabled(false);</span>
+<span class="nc" id="L199">            }</span>
+        });
+<span class="nc" id="L201">        explainButton.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L203">                explanation.setEnabled(true);</span>
+<span class="nc" id="L204">                explanation.requestFocus();</span>
+<span class="nc" id="L205">                explanation.selectAll();</span>
+<span class="nc" id="L206">            }</span>
+        });
+<span class="nc" id="L208">    }</span>
+
+    /**
+     * @param t the new target object (ToDoItem)
+     */
+    public void setTarget(Object t) {
+<span class="nc" id="L214">        target = (ToDoItem) t;</span>
+<span class="nc" id="L215">    }</span>
+
+    /*
+     * Prepare for typing in rationale field when window is opened.
+     *
+     * @see java.awt.Component#setVisible(boolean)
+     */
+    public void setVisible(boolean b) {
+<span class="nc" id="L223">        super.setVisible(b);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (b) {</span>
+<span class="nc" id="L225">            explanation.requestFocus();</span>
+<span class="nc" id="L226">            explanation.selectAll();</span>
+        }
+<span class="nc" id="L228">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    private void badGoal(ActionEvent e) {
+        //cat.debug(&quot;bad goal&quot;);
+<span class="nc" id="L235">        GoalsDialog d = new GoalsDialog();</span>
+<span class="nc" id="L236">        d.setVisible(true);</span>
+<span class="nc" id="L237">    }</span>
+
+    private void badDec(ActionEvent e) {
+        //cat.debug(&quot;bad decision&quot;);
+<span class="nc" id="L241">        DesignIssuesDialog d = new DesignIssuesDialog();</span>
+<span class="nc" id="L242">        d.setVisible(true);</span>
+<span class="nc" id="L243">    }</span>
+
+    private void explain(ActionEvent e) {
+        //TODO: make a new history item
+<span class="nc" id="L247">        ToDoList list = Designer.theDesigner().getToDoList();</span>
+        try {
+<span class="nc" id="L249">            list.explicitlyResolve(target, explanation.getText());</span>
+<span class="nc" id="L250">            Designer.firePropertyChange(</span>
+                    Designer.MODEL_TODOITEM_DISMISSED, null, null);
+        }
+<span class="nc" id="L253">        catch (UnresolvableException ure) {</span>
+<span class="nc" id="L254">            LOG.log(Level.SEVERE, &quot;Resolve failed (ure): &quot;, ure);</span>
+<span class="nc" id="L255">            JOptionPane.showMessageDialog(</span>
+		    this,
+<span class="nc" id="L257">		    ure.getMessage(),</span>
+<span class="nc" id="L258">		    Translator.localize(&quot;optionpane.dismiss-failed&quot;),</span>
+		    JOptionPane.ERROR_MESSAGE);
+<span class="nc" id="L260">        }</span>
+<span class="nc" id="L261">    }</span>
+} /* end class DismissToDoItemDialog */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

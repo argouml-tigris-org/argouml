@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObjectFlowStateStateNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">ObjectFlowStateStateNotationUml.java</span></div><h1>ObjectFlowStateStateNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ObjectFlowStateStateNotation;
+
+/**
+ * Notation for the State of an ObjectFlowState.
+ * 
+ * @author Michiel van der Wulp
+ */
+public class ObjectFlowStateStateNotationUml extends
+        ObjectFlowStateStateNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param objectflowstate
+     *            the ObjectFlowState represented by this notation
+     */
+    public ObjectFlowStateStateNotationUml(Object objectflowstate) {
+<span class="fc" id="L71">        super(objectflowstate);</span>
+<span class="fc" id="L72">    }</span>
+    
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="nc" id="L78">        return &quot;parsing.help.fig-objectflowstate2&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="nc" id="L86">            parseObjectFlowState2(modelElement, text);</span>
+<span class="nc" id="L87">        } catch (ParseException pe) {</span>
+<span class="nc" id="L88">            String msg = &quot;statusmsg.bar.error.parsing.objectflowstate&quot;;</span>
+<span class="nc" id="L89">            Object[] args = {pe.getLocalizedMessage(),</span>
+<span class="nc" id="L90">                             Integer.valueOf(pe.getErrorOffset()), };</span>
+<span class="nc" id="L91">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L93">                    Translator.messageFormat(msg, args)));</span>
+<span class="nc" id="L94">        }</span>
+<span class="nc" id="L95">    }</span>
+
+    /**
+     * Do the actual parsing.
+     *
+     * @param objectFlowState
+     *            the given element to be altered
+     * @param s
+     *            the new string
+     * @return the altered ObjectFlowState
+     * @throws ParseException
+     *             when the given text was rejected
+     */
+    protected Object parseObjectFlowState2(Object objectFlowState, String s)
+        throws ParseException {
+<span class="nc" id="L110">        s = s.trim();</span>
+        /* Let's not be picky about the brackets - just remove them: */
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (s.startsWith(&quot;[&quot;)) {</span>
+<span class="nc" id="L113">            s = s.substring(1);</span>
+        }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (s.endsWith(&quot;]&quot;)) {</span>
+<span class="nc" id="L116">            s = s.substring(0, s.length() - 1);</span>
+        }
+<span class="nc" id="L118">        s = s.trim();</span>
+<span class="nc" id="L119">        Object c = Model.getFacade().getType(objectFlowState); // get the</span>
+                                                                // classifier
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (c != null) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            if (Model.getFacade().isAClassifierInState(c)) {</span>
+<span class="nc" id="L123">                Object classifier = Model.getFacade().getType(c);</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">                if ((s == null) || &quot;&quot;.equals(s)) {</span>
+                    // the State of a ClassifierInState is removed,
+                    // so let's reduce it to a Classifier.
+<span class="nc" id="L127">                    Model.getCoreHelper().setType(objectFlowState, classifier);</span>
+<span class="nc" id="L128">                    delete(c);</span>
+<span class="nc" id="L129">                    Model.getCoreHelper().setType(objectFlowState, classifier);</span>
+<span class="nc" id="L130">                    return objectFlowState; // the model is changed - job done</span>
+                }
+<span class="nc" id="L132">                Collection states =</span>
+<span class="nc" id="L133">                    new ArrayList(Model.getFacade()</span>
+<span class="nc" id="L134">                        .getInStates(c));</span>
+<span class="nc" id="L135">                Collection statesToBeRemoved = new ArrayList(states);</span>
+<span class="nc" id="L136">                Collection namesToBeAdded = new ArrayList(); // Strings</span>
+<span class="nc" id="L137">                StringTokenizer tokenizer = new StringTokenizer(s, &quot;,&quot;);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                while (tokenizer.hasMoreTokens()) {</span>
+<span class="nc" id="L139">                    String nextToken = tokenizer.nextToken().trim();</span>
+<span class="nc" id="L140">                    boolean found = false;</span>
+<span class="nc" id="L141">                    Iterator i = states.iterator();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                    while (i.hasNext()) {</span>
+<span class="nc" id="L143">                        Object state = i.next();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                        if (Model.getFacade().getName(state) == nextToken) {</span>
+<span class="nc" id="L145">                            found = true;</span>
+<span class="nc" id="L146">                            statesToBeRemoved.remove(state);</span>
+                        }
+<span class="nc" id="L148">                    }</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                    if (!found) {</span>
+<span class="nc" id="L150">                        namesToBeAdded.add(nextToken);</span>
+                    }
+<span class="nc" id="L152">                }</span>
+                /* Remove the states that did not match. */
+<span class="nc" id="L154">                states.removeAll(statesToBeRemoved);</span>
+
+<span class="nc" id="L156">                Iterator i = namesToBeAdded.iterator();</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">                while (i.hasNext()) {</span>
+<span class="nc" id="L158">                    String name = (String) i.next();</span>
+                    /*
+                     * Now we have to see if any state in any statemachine of
+                     * classifier is named [name]. If so, then we only have to
+                     * link the state to c.
+                     */
+                    Object state =
+<span class="nc" id="L165">                        Model.getActivityGraphsHelper()</span>
+<span class="nc" id="L166">                            .findStateByName(classifier, name);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                    if (state != null) {</span>
+<span class="nc" id="L168">                        states.add(state);</span>
+                        // the model is changed - our job is done
+                    } else {
+                        // no state named s is found, so we have to
+                        // reject the user's input
+<span class="nc" id="L173">                        String msg = </span>
+                            &quot;parsing.error.object-flow-state.state-not-found&quot;;
+<span class="nc" id="L175">                        Object[] args = {s};</span>
+<span class="nc" id="L176">                        throw new ParseException(Translator.localize(msg, args),</span>
+                                0);
+                    }
+<span class="nc" id="L179">                }</span>
+
+                /* Finally, do the adaptations: */
+<span class="nc" id="L182">                Model.getActivityGraphsHelper().setInStates(c, states);</span>
+
+<span class="nc" id="L184">            } else { // then c is a &quot;normal&quot; Classifier</span>
+<span class="nc" id="L185">                Collection statesToBeAdded = new ArrayList(); // UML states</span>
+
+<span class="nc" id="L187">                StringTokenizer tokenizer = new StringTokenizer(s, &quot;,&quot;);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">                while (tokenizer.hasMoreTokens()) {</span>
+<span class="nc" id="L189">                    String nextToken = tokenizer.nextToken().trim();</span>
+                    Object state =
+<span class="nc" id="L191">                        Model.getActivityGraphsHelper()</span>
+<span class="nc" id="L192">                            .findStateByName(c, nextToken);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                    if (state != null) {</span>
+<span class="nc" id="L194">                        statesToBeAdded.add(state);</span>
+                    } else {
+                        // no state with the given name is found, so we have to
+                        // reject the complete user's input
+<span class="nc" id="L198">                    	String msg = </span>
+                    	    &quot;parsing.error.object-flow-state.state-not-found&quot;;
+<span class="nc" id="L200">                        Object[] args = {s};</span>
+<span class="nc" id="L201">                        throw new ParseException(Translator.localize(msg, args),</span>
+                                0);
+                    }
+<span class="nc" id="L204">                }</span>
+
+                // let's create a new ClassifierInState with the correct links
+                Object cis =
+<span class="nc" id="L208">                    Model.getActivityGraphsFactory()</span>
+<span class="nc" id="L209">                        .buildClassifierInState(c, statesToBeAdded);</span>
+<span class="nc" id="L210">                Model.getCoreHelper().setType(objectFlowState, cis);</span>
+                // the model is changed - our job is done
+<span class="nc" id="L212">            }</span>
+        } else {
+            // if no classifier has been set, then entering a state is
+            // not useful, so the user's input has to be rejected.
+<span class="nc" id="L216">            String msg = </span>
+        	    &quot;parsing.error.object-flow-state.classifier-not-found&quot;;
+<span class="nc" id="L218">            throw new ParseException(Translator.localize(msg), </span>
+                    0);
+        }
+<span class="nc" id="L221">        return objectFlowState;</span>
+    }
+
+    /**
+     * This deletes modelelements, and swallows null without barking.
+     *
+     * @author mvw@tigris.org
+     * @param obj
+     *            the modelelement to be deleted
+     */
+    private void delete(Object obj) {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (obj != null) {</span>
+<span class="nc" id="L233">            ProjectManager.getManager().getCurrentProject().moveToTrash(obj);</span>
+        }
+<span class="nc" id="L235">    }</span>
+
+    private String toString(Object modelElement) {
+<span class="fc" id="L238">        StringBuilder theNewText = new StringBuilder(&quot;&quot;);</span>
+<span class="fc" id="L239">        Object cis = Model.getFacade().getType(modelElement);</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        if (Model.getFacade().isAClassifierInState(cis)) {</span>
+<span class="nc" id="L241">            theNewText.append(&quot;[ &quot;);</span>
+<span class="nc" id="L242">            theNewText.append(NotationUtilityUml.formatNameList(</span>
+<span class="nc" id="L243">                    Model.getFacade().getInStates(cis)));</span>
+<span class="nc" id="L244">            theNewText.append(&quot; ]&quot;);</span>
+        }
+<span class="fc" id="L246">        return theNewText.toString();</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L251">        return toString(modelElement);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

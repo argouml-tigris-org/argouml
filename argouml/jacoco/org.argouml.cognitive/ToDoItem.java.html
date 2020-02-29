@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToDoItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">ToDoItem.java</span></div><h1>ToDoItem.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.io.Serializable;
+
+import javax.swing.Icon;
+
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.cognitive.critics.WizardItem;
+import org.argouml.util.CollectionUtil;
+
+/**
+ * This class defines the feedback items that can be placed on the
+ * Designer's ToDoList.  The main point of a ToDoItem is to inform
+ * the Designer of some problem or open design issue.  Additional
+ * information in the ToDoItem helps put the designer in a mental
+ * context suitable for resolving the issue: ToDoItem's are well tied
+ * into the design and design process so that the Designer can see
+ * which design material's are the subject of this ToDoItem, and which
+ * Critic raised it.  The more info URL helps
+ * provide background knowledge of the domain. In the future
+ * ToDoItems will include ties back to the design rationale log.
+ * Also the run-time system needs to know who posted each ToDoItem so
+ * that it can automatically remove it if it is no longer valid.
+ */
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">public class ToDoItem implements Serializable, WizardItem {</span>
+
+    ////////////////////////////////////////////////////////////////
+    // constants
+
+    /**
+     * The interruptive priority todoitem of 4 levels.
+     */
+    public static final int INTERRUPTIVE_PRIORITY = 9;
+
+    /**
+     * The high priority todoitem of 4 levels.
+     */
+    public static final int HIGH_PRIORITY = 1;
+
+    /**
+     * The medium priority todoitem of 4 levels.
+     */
+    public static final int MED_PRIORITY = 2;
+
+    /**
+     * The lowest priority todoitem of 4 levels.
+     */
+    public static final int LOW_PRIORITY = 3;
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    /**
+     * Who posted this item (e.g., a Critic, or the designer)?
+     */
+    private Poster thePoster;
+
+    /**
+     * One line description of issue.
+     */
+    private String theHeadline;
+
+    /**
+     * How important is this issue? Enough to interrupt the designer?
+     */
+    private int thePriority;
+
+    /**
+     * One paragraph description of the issue.
+     */
+    private String theDescription;
+
+    /**
+     * URL for background (textbook?) knowledge about the domain.
+     */
+    private String theMoreInfoURL;
+
+    /**
+     * The part of the design this issue affects.
+     * &lt;p&gt;
+     * Each member is either a model element, a {@link Fig}, or a
+     * {@link Diagram}.
+     * &lt;p&gt;
+     * TODO: Offenders need to be more strongly typed. Because there is not a
+     * common supertype for these three types, we can't type this list. We
+     * should introduce a common supertype/interface. - tfm 20070630
+     * &lt;p&gt;
+     * The list of offenders is set once (e.g. by the constructor)
+     * and cannot change.
+     * &lt;p&gt;
+     */
+    private ListSet theOffenders;
+
+    private final Wizard theWizard;
+
+    /**
+     * The constructor.
+     *
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more info url
+     * @param offs the offenders
+     */
+    public ToDoItem(Poster poster, String h, int p, String d, String m,
+<span class="nc" id="L145">		    ListSet offs) {</span>
+<span class="nc" id="L146">        checkOffs(offs);</span>
+
+<span class="nc" id="L148">        thePoster = poster;</span>
+<span class="nc" id="L149">        theHeadline = h;</span>
+<span class="nc" id="L150">        theOffenders = offs;</span>
+<span class="nc" id="L151">        thePriority = p;</span>
+<span class="nc" id="L152">        theDescription = d;</span>
+<span class="nc" id="L153">        theMoreInfoURL = m;</span>
+<span class="nc" id="L154">        theWizard = null;</span>
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more info url
+     */
+<span class="fc" id="L166">    public ToDoItem(Poster poster, String h, int p, String d, String m) {</span>
+<span class="fc" id="L167">	thePoster = poster;</span>
+<span class="fc" id="L168">	theHeadline = h;</span>
+<span class="fc" id="L169">	theOffenders = new ListSet();</span>
+<span class="fc" id="L170">	thePriority = p;</span>
+<span class="fc" id="L171">	theDescription = d;</span>
+<span class="fc" id="L172">	theMoreInfoURL = m;</span>
+<span class="fc" id="L173">        theWizard = null;</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param c the poster (critic)
+     * @param dm A single offender.
+     * @param dsgr the designer
+     */
+<span class="nc" id="L183">    public ToDoItem(Critic c, Object dm, Designer dsgr) {</span>
+<span class="nc" id="L184">        checkArgument(dm);</span>
+
+<span class="nc" id="L186">        thePoster = c;</span>
+<span class="nc" id="L187">        theHeadline = c.getHeadline(dm, dsgr);</span>
+<span class="nc" id="L188">        theOffenders = new ListSet(dm);</span>
+<span class="nc" id="L189">        thePriority = c.getPriority(theOffenders, dsgr);</span>
+<span class="nc" id="L190">        theDescription = c.getDescription(theOffenders, dsgr);</span>
+<span class="nc" id="L191">        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);</span>
+<span class="nc" id="L192">        theWizard = c.makeWizard(this);</span>
+<span class="nc" id="L193">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param c the poster (critic)
+     * @param offs the offenders
+     * @param dsgr the designer
+     */
+<span class="nc" id="L202">    public ToDoItem(Critic c, ListSet offs, Designer dsgr) {</span>
+<span class="nc" id="L203">        checkOffs(offs);</span>
+
+<span class="nc" id="L205">        thePoster = c;</span>
+<span class="nc" id="L206">        theHeadline = c.getHeadline(offs, dsgr);</span>
+<span class="nc" id="L207">        theOffenders = offs;</span>
+<span class="nc" id="L208">        thePriority = c.getPriority(theOffenders, dsgr);</span>
+<span class="nc" id="L209">        theDescription = c.getDescription(theOffenders, dsgr);</span>
+<span class="nc" id="L210">        theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);</span>
+<span class="nc" id="L211">        theWizard = c.makeWizard(this);</span>
+<span class="nc" id="L212">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param c the poster (critic)
+     */
+<span class="nc" id="L219">    public ToDoItem(Critic c) {</span>
+<span class="nc" id="L220">	thePoster = c;</span>
+<span class="nc" id="L221">	theHeadline = c.getHeadline();</span>
+<span class="nc" id="L222">	theOffenders = new ListSet();</span>
+<span class="nc" id="L223">	thePriority = c.getPriority(null, null);</span>
+<span class="nc" id="L224">	theDescription = c.getDescription(null, null);</span>
+<span class="nc" id="L225">	theMoreInfoURL = c.getMoreInfoURL(null, null);</span>
+<span class="nc" id="L226">	theWizard = c.makeWizard(this);</span>
+<span class="nc" id="L227">    }</span>
+
+    /**
+     * Override in subclass to validate the offender is an expected type.
+     * @param dm the offender aka design material
+     */
+    protected void checkArgument(Object dm) {
+<span class="nc" id="L234">    }</span>
+
+
+    /**
+     * Check the offenders.&lt;p&gt;
+     *
+     * This is called from the constructors where the offenders are given.
+     *
+     * TODO: Why do we only care about checking the first 2 offenders above?
+     * @param offs The offenders.
+     */
+    private void checkOffs(ListSet offs) {
+<span class="nc bnc" id="L246" title="All 2 branches missed.">        if (offs == null) {</span>
+<span class="nc" id="L247">            throw new IllegalArgumentException(</span>
+                    &quot;A ListSet of offenders must be supplied.&quot;);
+        }
+<span class="nc" id="L250">        Object offender = CollectionUtil.getFirstItemOrNull(offs);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        if (offender != null) {</span>
+<span class="nc" id="L252">            checkArgument(offender);</span>
+        }
+
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (offs.size() &gt;= 2) {</span>
+<span class="nc" id="L256">            offender = offs.get(1);</span>
+<span class="nc" id="L257">            checkArgument(offender);</span>
+        }
+<span class="nc" id="L259">    }</span>
+
+    // Cached expansions
+    private String cachedExpandedHeadline;
+    private String cachedExpandedDescription;
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * @return the headline
+     */
+    public String getHeadline() {
+<span class="fc bfc" id="L272" title="All 2 branches covered.">	if (cachedExpandedHeadline == null) {</span>
+<span class="fc" id="L273">	    cachedExpandedHeadline =</span>
+<span class="fc" id="L274">	        thePoster.expand(theHeadline, theOffenders);</span>
+	}
+<span class="fc" id="L276">	return cachedExpandedHeadline;</span>
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">	if (cachedExpandedDescription == null) {</span>
+<span class="fc" id="L284">	    cachedExpandedDescription =</span>
+<span class="fc" id="L285">		thePoster.expand(theDescription, theOffenders);</span>
+	}
+<span class="fc" id="L287">	return cachedExpandedDescription;</span>
+    }
+
+    /**
+     * @return the more-info-url
+     */
+<span class="fc" id="L293">    public String getMoreInfoURL() { return theMoreInfoURL; }</span>
+
+    /**
+     * @return the priority
+     */
+<span class="fc" id="L298">    public int getPriority() { return thePriority; }</span>
+
+    /**
+     * @return the wizard progress. An integer between 0 and 100,
+     *         shows percent done.
+     */
+    public int getProgress() {
+<span class="nc bnc" id="L305" title="All 2 branches missed.">	if (theWizard != null) {</span>
+<span class="nc" id="L306">	    return theWizard.getProgress();</span>
+	}
+<span class="nc" id="L308">	return 0;</span>
+    }
+
+    /**
+     * Reply a Set of design material's that are the subject of this ToDoItem.
+     *
+     * @return the offenders
+     * TODO: Offenders need to be more strongly typed. - tfm 20070630
+     */
+    public ListSet getOffenders() {
+        // TODO: should not be using assert here but I don't want to change to
+        // IllegalStateException at lead up to a release as I don't know how
+        // much testing is done with assert on.
+<span class="pc bpc" id="L321" title="2 of 4 branches missed.">        assert theOffenders != null;</span>
+<span class="fc" id="L322">        return theOffenders;</span>
+    }
+
+    /**
+     * Reply the Critic or Designer that posted this ToDoItem.
+     *
+     * @return the poster
+     */
+    public Poster getPoster() {
+<span class="fc" id="L331">        return thePoster;</span>
+    }
+
+    /**
+     * Return a clarifier object that can graphical highlight this
+     * error in a design diagram. Return a clarifier for this todoitem,
+     * if not found by the poster, or null.
+     *
+     * @return an Icon or null if none found.
+     */
+    public Icon getClarifier() {
+<span class="nc" id="L342">	return thePoster.getClarifier();</span>
+    }
+
+    /**
+     * @return the wizard
+     */
+<span class="nc" id="L348">    public Wizard getWizard() { return theWizard; }</span>
+
+    /**
+     * @param type the knowledgetype
+     * @return true if the poster contains the given knowledgetype
+     */
+    public boolean containsKnowledgeType(String type) {
+<span class="nc" id="L355">	return getPoster().containsKnowledgeType(type);</span>
+    }
+
+    /**
+     * @param d the decision
+     * @return true if the decision is supported by the poster
+     */
+    public boolean supports(Decision d) {
+<span class="nc" id="L363">	return getPoster().supports(d);</span>
+    }
+
+    /**
+     * @param g the given goal
+     * @return true if the poster supports the given goal
+     */
+    public boolean supports(Goal g) {
+<span class="nc" id="L371">	return getPoster().supports(g);</span>
+    }
+
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L379">        int code = 0;</span>
+
+<span class="fc" id="L381">        code += getHeadline().hashCode();</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">        if (getPoster() != null) {</span>
+<span class="fc" id="L383">            code += getPoster().hashCode();</span>
+        }
+<span class="fc" id="L385">        return code;</span>
+    }
+
+    /*
+     * Is this item a copy?
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">	if (!(o instanceof ToDoItem)) {</span>
+<span class="nc" id="L396">	    return false;</span>
+	}
+<span class="fc" id="L398">	ToDoItem i = (ToDoItem) o;</span>
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">	if (!getHeadline().equals(i.getHeadline())) {</span>
+<span class="nc" id="L400">	    return false;</span>
+	}
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">	if (!(getPoster() == (i.getPoster()))) {</span>
+<span class="nc" id="L403">	    return false;</span>
+	}
+
+	// For some reason ListSet.equals() allocates a lot of memory, well
+	// some memory at least. Lets try to avoid that when not needed by
+	// invoking this test only when the two previous tests are not decisive.
+<span class="pc bpc" id="L409" title="1 of 2 branches missed.">	if (!getOffenders().equals(i.getOffenders())) {</span>
+<span class="nc" id="L410">	    return false;</span>
+	}
+<span class="fc" id="L412">	return true;</span>
+    }
+    
+    
+
+    ////////////////////////////////////////////////////////////////
+    // user interface
+
+    /**
+     * When a ToDoItem is selected in the UiToDoList window, highlight
+     * the &quot;offending&quot; design material's.
+     */
+    public void select() {
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        for (Object dm : getOffenders()) {</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">	    if (dm instanceof Highlightable) {</span>
+<span class="nc" id="L427">	        ((Highlightable) dm).setHighlight(true);</span>
+	    }
+<span class="nc" id="L429">	}</span>
+<span class="nc" id="L430">    }</span>
+
+    /**
+     * When a ToDoItem is deselected in the UiToDoList window,
+     * unhighlight the &quot;offending&quot; design material's.
+     */
+    public void deselect() {
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        for (Object dm : getOffenders()) {</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">	    if (dm instanceof Highlightable) {</span>
+<span class="nc" id="L439">	        ((Highlightable) dm).setHighlight(false);</span>
+	    }
+<span class="nc" id="L441">	}</span>
+<span class="nc" id="L442">    }</span>
+
+    /**
+     * The user has double-clicked or otherwise indicated that they
+     * want to do something active with this item. By default, just
+     * re-select it, subclasses may choose to do more (e.g., navigate to
+     * the offending item if it is not visible).
+     */
+    public void action() {
+<span class="nc" id="L451">        deselect();</span>
+<span class="nc" id="L452">        select();</span>
+<span class="nc" id="L453">    }</span>
+
+    /**
+     * Notify the user interface that this ToDoItem has
+     * changed. Currently, this is used to update the progress bar.
+     */
+    public void changed() {
+<span class="nc" id="L460">	ToDoList list = Designer.theDesigner().getToDoList();</span>
+<span class="nc" id="L461">	list.fireToDoItemChanged(this);</span>
+<span class="nc" id="L462">    }</span>
+
+
+    ////////////////////////////////////////////////////////////////
+    // issue resolutions
+
+    /**
+     * Some problems can be automatically fixed, ask the Critic to do
+     * it if it can. &lt;p&gt;
+     */
+    public void fixIt() {
+<span class="nc" id="L473">        thePoster.fixIt(this, null);</span>
+<span class="nc" id="L474">    }</span>
+
+    /**
+     * Some problems can be automatically fixed, ask the Critic to do
+     * it if it can.
+     *
+     * @return true if the critic can automatically fix the problem
+     */
+    public boolean canFixIt() {
+<span class="nc" id="L483">        return thePoster.canFixIt(this);</span>
+    }
+
+    /**
+     * TODO: this is not done yet. Eventually this will also
+     * feed the rational log.
+     */
+    //   public void resolve(Object reason) {
+    //     ToDoList list = Designer.theDesigner().getToDoList();
+    //     list.resolve(this, reason);
+    //   }
+
+    /**
+     * Reply true iff this ToDoItem should be kept on the Designer's
+     * ToDoList. This should return false if the poster has been
+     * deactivated, or if it can be determined that the problem that
+     * raised this issue is no longer present.
+     *
+     * @param d the given designer
+     * @return true if the todoitem is still valid
+     */
+    public boolean stillValid(Designer d) {
+<span class="nc bnc" id="L505" title="All 2 branches missed.">	if (thePoster == null) {</span>
+<span class="nc" id="L506">	    return true;</span>
+	}
+<span class="nc bnc" id="L508" title="All 4 branches missed.">	if (theWizard != null &amp;&amp; theWizard.isStarted()</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">	        &amp;&amp; !theWizard.isFinished()) {</span>
+<span class="nc" id="L510">	    return true;</span>
+	}
+<span class="nc" id="L512">	return thePoster.stillValid(this, d);</span>
+    }
+
+    /*
+     * Reply a string for debugging.
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L522">	return this.getClass().getName()</span>
+<span class="nc" id="L523">	    + &quot;(&quot; + getHeadline() + &quot;) on &quot; + getOffenders().toString();</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3058660098451455153L;
+}
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

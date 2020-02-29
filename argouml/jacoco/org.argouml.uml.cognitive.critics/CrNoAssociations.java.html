@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrNoAssociations.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrNoAssociations.java</span></div><h1>CrNoAssociations.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * A critic to detect when a classifier might require
+ * associations. It checks for inherited associations as well and
+ * keeps silent if it finds any.  For usecases it checks the
+ * extend/include relationships as well.
+ * If the classifier has dependencies defined, then the critic 
+ * remains silent (see issue 1129).
+ */
+public class CrNoAssociations extends CrUML {
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L64">    public CrNoAssociations() {</span>
+<span class="fc" id="L65">        setupHeadAndDesc();</span>
+<span class="fc" id="L66">        addSupportedDecision(UMLDecision.RELATIONSHIPS);</span>
+<span class="fc" id="L67">        setKnowledgeTypes(Critic.KT_COMPLETENESS);</span>
+<span class="fc" id="L68">        addTrigger(&quot;associationEnd&quot;);</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Decide whether the given design material causes a problem.
+     *
+     * @param dm the object to criticize
+     * the designer who decides the design process
+     * @param dsgr the designer
+     * @return &lt;CODE&gt;PROBLEM_FOUND&lt;/CODE&gt; if there is a problem,
+     *         otherwise &lt;CODE&gt;NO_PROBLEM&lt;/CODE&gt;
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if (!(Model.getFacade().isAClassifier(dm))) {</span>
+<span class="nc" id="L83">            return NO_PROBLEM;</span>
+        }
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (!(Model.getFacade().isPrimaryObject(dm))) {</span>
+<span class="nc" id="L86">            return NO_PROBLEM;</span>
+        }
+
+        // If the classifier does not have a name,
+        // then no problem - the model is not finished anyhow.
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if ((Model.getFacade().getName(dm) == null)</span>
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">	    || (&quot;&quot;.equals(Model.getFacade().getName(dm)))) {</span>
+<span class="nc" id="L93">            return NO_PROBLEM;</span>
+	}
+
+        // Abstract elements do not necessarily require associations
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (Model.getFacade().isAGeneralizableElement(dm)</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">	    &amp;&amp; Model.getFacade().isAbstract(dm)) {</span>
+<span class="nc" id="L99">            return NO_PROBLEM;</span>
+        }
+
+        // Types can probably have associations, but we should not nag at them
+        // not having any.
+        // utility is a namespace collection - also not strictly required
+        // to have associations.
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (Model.getFacade().isType(dm)) {</span>
+<span class="nc" id="L107">            return NO_PROBLEM;</span>
+        }
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (Model.getFacade().isUtility(dm)) {</span>
+<span class="nc" id="L110">            return NO_PROBLEM;</span>
+        }
+
+        // See issue 1129: If the classifier has dependencies,
+        // then mostly there is no problem. 
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">        if (Model.getFacade().getClientDependencies(dm).size() &gt; 0) {</span>
+<span class="nc" id="L116">            return NO_PROBLEM;</span>
+        }
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (Model.getFacade().getSupplierDependencies(dm).size() &gt; 0) {</span>
+<span class="nc" id="L119">            return NO_PROBLEM;</span>
+        }
+        
+        // special cases for use cases
+        // Extending use cases and use case that are being included are
+        // not required to have associations.
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (Model.getFacade().isAUseCase(dm)) {</span>
+<span class="fc" id="L126">            Object usecase = dm;</span>
+<span class="fc" id="L127">            Collection includes = Model.getFacade().getIncludes(usecase);</span>
+<span class="pc bpc" id="L128" title="1 of 4 branches missed.">            if (includes != null &amp;&amp; includes.size() &gt;= 1) {</span>
+<span class="fc" id="L129">                return NO_PROBLEM;</span>
+            }
+<span class="fc" id="L131">            Collection extend = Model.getFacade().getExtends(usecase);</span>
+<span class="pc bpc" id="L132" title="1 of 4 branches missed.">            if (extend != null &amp;&amp; extend.size() &gt;= 1) {</span>
+<span class="fc" id="L133">                return NO_PROBLEM;</span>
+            }
+        }
+        
+        
+
+        //TODO: different critic or special message for classes
+        //that inherit all ops but define none of their own.
+
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (findAssociation(dm, 0)) {</span>
+<span class="fc" id="L143">            return NO_PROBLEM;</span>
+        }
+<span class="fc" id="L145">        return PROBLEM_FOUND;</span>
+    }
+
+    /**
+     * @param dm The classifier to examine.
+     * @param depth Number of levels searched.
+     * @return true if an association can be found in this classifier
+     *		or in any of its generalizations.
+     */
+    private boolean findAssociation(Object dm, int depth) {
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (Model.getFacade().getAssociationEnds(dm).iterator().hasNext()) {</span>
+<span class="fc" id="L156">            return true;</span>
+        }
+
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (depth &gt; 50) {</span>
+<span class="nc" id="L160">            return false;</span>
+        }
+
+<span class="fc" id="L163">        Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();</span>
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L166">            Object parent = Model.getFacade().getGeneral(iter.next());</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if (parent == dm) {</span>
+<span class="nc" id="L169">                continue;</span>
+            }
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">            if (Model.getFacade().isAClassifier(parent)) {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                if (findAssociation(parent, depth + 1)) {</span>
+<span class="nc" id="L174">                    return true;</span>
+                }
+            }
+<span class="nc" id="L177">        }</span>
+
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (Model.getFacade().isAUseCase(dm)) {</span>
+            // for use cases we need to check for extend/includes
+            // actors cannot have them, so no need to check
+<span class="fc" id="L182">            Iterator iter2 = Model.getFacade().getExtends(dm).iterator();</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">            while (iter2.hasNext()) {</span>
+<span class="nc" id="L184">                Object parent = Model.getFacade().getExtension(iter2.next());</span>
+
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                if (parent == dm) {</span>
+<span class="nc" id="L187">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                if (Model.getFacade().isAClassifier(parent)) {</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                    if (findAssociation(parent, depth + 1)) {</span>
+<span class="nc" id="L192">                        return true;</span>
+                    }
+                }
+<span class="nc" id="L195">            }</span>
+
+<span class="fc" id="L197">            Iterator iter3 = Model.getFacade().getIncludes(dm).iterator();</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            while (iter3.hasNext()) {</span>
+<span class="nc" id="L199">                Object parent = Model.getFacade().getBase(iter3.next());</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                if (parent == dm) {</span>
+<span class="nc" id="L202">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                if (Model.getFacade().isAClassifier(parent)) {</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                    if (findAssociation(parent, depth + 1)) {</span>
+<span class="nc" id="L207">                        return true;</span>
+                    }
+                }
+<span class="nc" id="L210">            }</span>
+        }
+<span class="fc" id="L212">        return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L220">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L221">        ret.add(Model.getMetaTypes().getUMLClass());</span>
+<span class="fc" id="L222">        ret.add(Model.getMetaTypes().getActor());</span>
+<span class="fc" id="L223">        ret.add(Model.getMetaTypes().getUseCase());</span>
+<span class="fc" id="L224">        return ret;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

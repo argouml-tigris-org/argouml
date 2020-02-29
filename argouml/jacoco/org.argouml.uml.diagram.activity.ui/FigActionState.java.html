@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigActionState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.activity.ui</a> &gt; <span class="el_source">FigActionState.java</span></div><h1>FigActionState.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.activity.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.util.Iterator;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.state.ui.FigStateVertex;
+import org.argouml.uml.diagram.ui.FigMultiLineTextWithBold;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display graphics for a UML ActionState in a diagram.
+ * It contains a multiline textfield for the Entry Action Expression.
+ *
+ * @author ics 125b silverbullet team
+ */
+public class FigActionState extends FigStateVertex {
+
+    private static final int HEIGHT = 25;
+
+    private static final int STATE_WIDTH = 90;
+
+    private static final int PADDING = 8;
+
+    private FigRRect cover;
+
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigActionState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+<span class="fc" id="L84">        super(owner, bounds, settings);</span>
+<span class="fc" id="L85">        initializeActionState();</span>
+<span class="fc" id="L86">    }</span>
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L90">        FigRRect frr = new FigRRect(X0 + 1, Y0 + 1, STATE_WIDTH - 2, HEIGHT - 2,</span>
+                DEBUG_COLOR, DEBUG_COLOR);
+<span class="fc" id="L92">        frr.setCornerRadius(frr.getHeight() / 2);</span>
+<span class="fc" id="L93">        return frr;</span>
+    }
+
+    private void initializeActionState() {
+<span class="fc" id="L97">        cover = new FigRRect(X0, Y0, STATE_WIDTH, HEIGHT, </span>
+                LINE_COLOR, FILL_COLOR);
+<span class="fc" id="L99">        cover.setCornerRadius(getHeight() / 2);</span>
+
+        // overrule the single-line name-fig created by the parent
+<span class="fc" id="L102">        Rectangle bounds = new Rectangle(X0 + PADDING, Y0, </span>
+                STATE_WIDTH - PADDING * 2, HEIGHT);
+<span class="fc" id="L104">        setNameFig(new FigMultiLineTextWithBold(</span>
+<span class="fc" id="L105">                getOwner(),</span>
+                bounds,
+<span class="fc" id="L107">                getSettings(),</span>
+                true));
+<span class="fc" id="L109">        getNameFig().setText(placeString());</span>
+<span class="fc" id="L110">        getNameFig().setBotMargin(7); // make space for the clarifier</span>
+<span class="fc" id="L111">        getNameFig().setTopMargin(7); // for vertical symmetry</span>
+<span class="fc" id="L112">        getNameFig().setRightMargin(4); // margin between text and border</span>
+<span class="fc" id="L113">        getNameFig().setLeftMargin(4);</span>
+<span class="fc" id="L114">        getNameFig().setJustification(FigText.JUSTIFY_CENTER);</span>
+
+<span class="fc" id="L116">        getBigPort().setLineWidth(0);</span>
+
+        // add Figs to the FigNode in back-to-front order
+<span class="fc" id="L119">        addFig(getBigPort());</span>
+<span class="fc" id="L120">        addFig(cover);</span>
+<span class="fc" id="L121">        addFig(getStereotypeFig());</span>
+<span class="fc" id="L122">        addFig(getNameFig());</span>
+
+        //setBlinkPorts(false); //make port invisible unless mouse enters
+<span class="fc" id="L125">        Rectangle r = getBounds();</span>
+<span class="fc" id="L126">        setBounds(r.x, r.y, r.width, r.height);</span>
+<span class="fc" id="L127">    }</span>
+    
+    /**
+     * The FigActionState needs a different 
+     * NotationProvider for its &quot;name&quot; field.
+     * 
+     * @return the type of the notation provider
+     */
+    @Override
+    protected int getNotationProviderType() {
+<span class="fc" id="L137">        return NotationProviderFactory2.TYPE_ACTIONSTATE;</span>
+    }
+
+    /*
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() {
+<span class="nc" id="L145">        FigActionState figClone = (FigActionState) super.clone();</span>
+<span class="nc" id="L146">        Iterator it = figClone.getFigs().iterator();</span>
+<span class="nc" id="L147">        figClone.setBigPort((FigRRect) it.next());</span>
+<span class="nc" id="L148">        figClone.cover = (FigRRect) it.next();</span>
+<span class="nc" id="L149">        figClone.setNameFig((FigText) it.next());</span>
+        /* TODO: Do we need to clone the stereotype(s)? */
+<span class="nc" id="L151">        return figClone;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    @Override
+    public Dimension getMinimumSize() {
+<span class="nc" id="L159">        Dimension stereoDim = getStereotypeFig().getMinimumSize();</span>
+<span class="nc" id="L160">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+
+<span class="nc" id="L162">        int w = Math.max(stereoDim.width, nameDim.width) + PADDING * 2;</span>
+        /* The stereoDim has height=2, even if it is empty, 
+         * hence the -2 below: */
+<span class="nc" id="L165">        int h = stereoDim.height - 2 + nameDim.height + PADDING;</span>
+<span class="nc" id="L166">        w = Math.max(w, h + 44); // the width needs to be &gt; the height</span>
+<span class="nc" id="L167">        return new Dimension(w, h);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     *
+     * Override setBounds to keep shapes looking right.
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (getNameFig() == null) {</span>
+<span class="nc" id="L178">            return;</span>
+        }
+<span class="fc" id="L180">        Rectangle oldBounds = getBounds();</span>
+
+<span class="fc" id="L182">        Dimension stereoDim = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L183">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L184">        getNameFig().setBounds(x + PADDING, y + stereoDim.height,</span>
+                w - PADDING * 2, nameDim.height);
+<span class="fc" id="L186">        getStereotypeFig().setBounds(x + PADDING, y,</span>
+                w - PADDING * 2, stereoDim.height);
+<span class="fc" id="L188">        getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);</span>
+<span class="fc" id="L189">        cover.setBounds(x, y, w, h);</span>
+<span class="fc" id="L190">        ((FigRRect) getBigPort()).setCornerRadius(h);</span>
+<span class="fc" id="L191">        cover.setCornerRadius(h);</span>
+
+<span class="fc" id="L193">        calcBounds();</span>
+<span class="fc" id="L194">        updateEdges();</span>
+<span class="fc" id="L195">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L196">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+<span class="fc" id="L203">        cover.setLineColor(col);</span>
+<span class="fc" id="L204">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L211">        return cover.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    @Override
+    public void setFillColor(Color col) {
+<span class="fc" id="L219">        cover.setFillColor(col);</span>
+<span class="fc" id="L220">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L227">        return cover.getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L235">        cover.setFilled(f);</span>
+<span class="fc" id="L236">    }</span>
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L240">        return cover.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L248">        cover.setLineWidth(w);</span>
+<span class="fc" id="L249">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="nc" id="L256">        return cover.getLineWidth();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+<span class="nc" id="L264">        super.modelChanged(mee);</span>
+<span class="nc bnc" id="L265" title="All 4 branches missed.">        if (mee instanceof AddAssociationEvent</span>
+                || mee instanceof AttributeChangeEvent) {
+            // TODO: Rather than specifically ignore some item maybe it would be better
+            // to specifically state what items are of interest. Otherwise we may still
+            // be acting on other events we don't need
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if (!Model.getFacade().isATransition(mee.getNewValue())) {</span>
+<span class="nc" id="L271">                renderingChanged();</span>
+<span class="nc" id="L272">                damage();</span>
+            }
+        }
+<span class="nc" id="L275">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

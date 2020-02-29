@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionEdgesDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionEdgesDisplay.java</span></div><h1>ActionEdgesDisplay.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * An action that makes all edges on the selected node visible/not visible
+ * on the diagram.
+ *
+ * @author David Manura
+ * @since 0.13.5
+ */
+public class ActionEdgesDisplay extends UndoableAction {
+
+    // compartments
+<span class="nc" id="L69">    private static UndoableAction showEdges = new ActionEdgesDisplay(true,</span>
+<span class="nc" id="L70">                Translator.localize(&quot;menu.popup.add.all-relations&quot;));</span>
+<span class="nc" id="L71">    private static UndoableAction hideEdges = new ActionEdgesDisplay(false,</span>
+<span class="nc" id="L72">                Translator.localize(&quot;menu.popup.remove.all-relations&quot;));</span>
+
+    private boolean show;
+
+    /**
+     * The constructor.
+     *
+     * @param showEdge to show or not to show
+     * @param desc the name
+     */
+    protected ActionEdgesDisplay(boolean showEdge, String desc) {
+<span class="nc" id="L83">        super(desc, null);</span>
+		// Set the tooltip string:
+<span class="nc" id="L85">        putValue(Action.SHORT_DESCRIPTION, desc);</span>
+<span class="nc" id="L86">        show = showEdge;</span>
+<span class="nc" id="L87">    }</span>
+
+    /*
+     * TODO: Support commentEdges.
+     * TODO: Support associations to self.
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L97">    	super.actionPerformed(ae);</span>
+<span class="nc" id="L98">        ArgoDiagram d = DiagramUtils.getActiveDiagram();</span>
+<span class="nc" id="L99">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L100">        MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();</span>
+
+<span class="nc" id="L102">        Enumeration e = ce.getSelectionManager().selections().elements();</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        while (e.hasMoreElements()) {</span>
+<span class="nc" id="L104">            Selection sel = (Selection) e.nextElement();</span>
+<span class="nc" id="L105">            Object owner = sel.getContent().getOwner();</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (show) { // add</span>
+<span class="nc" id="L108">                mgm.addNodeRelatedEdges(owner);</span>
+//                Collection c = Model.getFacade().getComments(owner);
+//                Iterator i = c.iterator();
+//                while (i.hasNext()) {
+//                    Object annotatedElement = i.next();
+//                    Fig f = d.presentationFor(annotatedElement);
+//                    // and now what? How do I add it to the diagram?
+//                }
+            } else { // remove
+<span class="nc" id="L117">                List edges = mgm.getInEdges(owner);</span>
+<span class="nc" id="L118">                edges.addAll(mgm.getOutEdges(owner));</span>
+<span class="nc" id="L119">                Iterator e2 = edges.iterator();</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                while (e2.hasNext()) {</span>
+<span class="nc" id="L121">                    Object edge = e2.next();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                    if (Model.getFacade().isAAssociationEnd(edge)) {</span>
+<span class="nc" id="L123">                        edge = Model.getFacade().getAssociation(edge);</span>
+                    }
+<span class="nc" id="L125">                    Fig fig = d.presentationFor(edge);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if (fig != null) {</span>
+<span class="nc" id="L127">                        fig.removeFromDiagram();</span>
+                    }
+<span class="nc" id="L129">                }</span>
+                //The next does not yet work for comment edges:
+//                Collection c = Model.getFacade().getComments(owner);
+//                Iterator i = c.iterator();
+//                while (i.hasNext()) {
+//                    Object annotatedElement = i.next();
+//                    Fig f = d.presentationFor(annotatedElement);
+//                    if (f != null) f.removeFromDiagram();
+//                }
+            }
+<span class="nc" id="L139">        }</span>
+<span class="nc" id="L140">    }</span>
+
+    /**
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+     */
+    @Override
+    public boolean isEnabled() {
+<span class="nc" id="L148">        return true;</span>
+    }
+
+
+    /**
+     * @return Returns the showEdges.
+     */
+    public static UndoableAction getShowEdges() {
+<span class="nc" id="L156">        return showEdges;</span>
+    }
+
+
+    /**
+     * @return Returns the hideEdges.
+     */
+    public static UndoableAction getHideEdges() {
+<span class="nc" id="L164">        return hideEdges;</span>
+    }
+
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObjectNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">ObjectNotationUml.java</span></div><h1>ObjectNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.util.Collections;
+import java.util.StringTokenizer;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ObjectNotation;
+
+/**
+ * UML notation for an Object.
+ * 
+ * @author Michiel van der Wulp
+ *
+ */
+public class ObjectNotationUml extends ObjectNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param theObject the UML Object
+     */
+    public ObjectNotationUml(Object theObject) {
+<span class="fc" id="L63">        super(theObject);</span>
+<span class="fc" id="L64">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="nc" id="L70">        return &quot;parsing.help.fig-object&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+<span class="nc" id="L77">        String s = text.trim();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (s.length() == 0) {</span>
+<span class="nc" id="L79">            return;</span>
+        }
+        // strip any trailing semi-colons
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (s.charAt(s.length() - 1) == ';') {</span>
+<span class="nc" id="L83">            s = s.substring(0, s.length() - 2);</span>
+        }
+
+<span class="nc" id="L86">        String name = &quot;&quot;;</span>
+<span class="nc" id="L87">        String bases = &quot;&quot;;</span>
+<span class="nc" id="L88">        StringTokenizer baseTokens = null;</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (s.indexOf(&quot;:&quot;, 0) &gt; -1) {</span>
+<span class="nc" id="L91">            name = s.substring(0, s.indexOf(&quot;:&quot;, 0)).trim();</span>
+<span class="nc" id="L92">            bases = s.substring(s.indexOf(&quot;:&quot;, 0) + 1).trim();</span>
+<span class="nc" id="L93">            baseTokens = new StringTokenizer(bases, &quot;,&quot;);</span>
+        } else {
+<span class="nc" id="L95">            name = s;</span>
+        }
+
+<span class="nc" id="L98">        Model.getCommonBehaviorHelper().setClassifiers(modelElement, </span>
+<span class="nc" id="L99">                Collections.emptyList());</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        if (baseTokens != null) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            while (baseTokens.hasMoreElements()) {</span>
+<span class="nc" id="L102">                String typeString = baseTokens.nextToken();</span>
+                Object type =
+<span class="nc" id="L104">                    ProjectManager.getManager()</span>
+<span class="nc" id="L105">                        .getCurrentProject().findType(typeString);</span>
+<span class="nc" id="L106">                Model.getCommonBehaviorHelper().addClassifier(modelElement, </span>
+                        type);
+<span class="nc" id="L108">            }</span>
+        }
+        /* This updates the diagram - hence as last statement: */
+<span class="nc" id="L111">        Model.getCoreHelper().setName(modelElement, name);</span>
+<span class="nc" id="L112">    }</span>
+
+    private String toString(Object modelElement) {
+<span class="fc" id="L115">        String nameStr = &quot;&quot;;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (Model.getFacade().getName(modelElement) != null) {</span>
+<span class="nc" id="L117">            nameStr = Model.getFacade().getName(modelElement).trim();</span>
+        }
+
+<span class="fc" id="L120">        StringBuilder baseString = NotationUtilityUml.formatNameList(</span>
+<span class="fc" id="L121">                Model.getFacade().getClassifiers(modelElement));</span>
+
+<span class="pc bpc" id="L123" title="2 of 4 branches missed.">        if ((nameStr.length() == 0) &amp;&amp; (baseString.length() == 0)) {</span>
+<span class="fc" id="L124">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L126">        String base = baseString.toString().trim();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (base.length() &lt; 1) {</span>
+<span class="nc" id="L128">            return nameStr.trim();</span>
+        }
+<span class="nc" id="L130">        return nameStr.trim() + &quot; : &quot; + base;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L135">        return toString(modelElement);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

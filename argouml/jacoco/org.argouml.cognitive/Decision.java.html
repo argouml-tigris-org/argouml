@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Decision.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">Decision.java</span></div><h1>Decision.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+/**
+ * Posters look at the design material from different view points, since they
+ * have to make different decisions in their evaluation process. A decision is a
+ * unit which describes what kind of decision a given poster supports. E.g. a
+ * designer is interested in making particular decisions, whereas a critic can
+ * support relevant information which help making a particular decision (aka a
+ * decision which lies in the domain specified by this class).
+ *
+ */
+public class Decision {
+    ////////////////////////////////////////////////////////////////
+    // constants
+    /**
+     * This is another test.
+     */
+<span class="fc" id="L56">    public static final Decision UNSPEC =</span>
+        new Decision(&quot;misc.decision.uncategorized&quot;, 1);
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    /**
+     * The localized name.
+     */
+    private String name;
+
+    /**
+     * The priority.
+     */
+    private int priority;
+
+    /**
+     * The constructor.
+     *
+     * @param n
+     *            the (not yet localized) name
+     * @param p
+     *            the priority
+     */
+<span class="fc" id="L79">    public Decision(String n, int p) {</span>
+<span class="fc" id="L80">        name = Translator.localize(n);</span>
+<span class="fc" id="L81">        priority = p;</span>
+<span class="fc" id="L82">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L93">            return 0;</span>
+        }
+<span class="nc" id="L95">        return name.hashCode();</span>
+    }
+
+    /**
+     * Two decisions are considered to be equal if their names are equal. The
+     * priority is not considered.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object d2) {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (!(d2 instanceof Decision)) {</span>
+<span class="nc" id="L107">            return false;</span>
+        }
+<span class="fc" id="L109">        return ((Decision) d2).getName().equals(getName());</span>
+    }
+
+    /**
+     * @return the localized name
+     */
+    public String getName() {
+<span class="fc" id="L116">        return name;</span>
+    }
+
+    /**
+     * @param n
+     *            the localized name
+     */
+    public void setName(String n) {
+<span class="fc" id="L124">        name = n;</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * @return the priority
+     */
+    public int getPriority() {
+<span class="fc" id="L131">        return priority;</span>
+    }
+
+    /**
+     * @param p
+     *            the priority
+     */
+    public void setPriority(int p) {
+<span class="fc" id="L139">        priority = p;</span>
+<span class="fc" id="L140">    }</span>
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="fc" id="L147">        return getName();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

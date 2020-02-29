@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelMemberFilePersister.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">ModelMemberFilePersister.java</span></div><h1>ModelMemberFilePersister.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.configuration.Configuration;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Facade;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiException;
+import org.argouml.model.XmiReader;
+import org.argouml.model.XmiWriter;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.xml.sax.InputSource;
+
+/**
+ * The file persister for the UML model.
+ * @author Bob Tarling
+ */
+<span class="fc" id="L75">class ModelMemberFilePersister extends MemberFilePersister</span>
+    implements XmiExtensionParser {
+
+<span class="fc" id="L78">    private static final Logger LOG =</span>
+<span class="fc" id="L79">        Logger.getLogger(ModelMemberFilePersister.class.getName());</span>
+
+    private Object curModel;
+    private HashMap&lt;String, Object&gt; uUIDRefs;
+
+    private Collection elementsRead;
+
+    /**
+     * Loads a model (XMI only) from a URL. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.&lt;p&gt;
+     *
+     * If there is a problem with the xmi file, an error is set in the
+     * getLastLoadStatus() field. This needs to be examined by the
+     * calling function.&lt;p&gt;
+     */
+    public void load(Project project, URL url)
+        throws OpenException {
+
+<span class="nc" id="L97">        load(project, new InputSource(url.toExternalForm()));</span>
+<span class="nc" id="L98">    }</span>
+
+    /**
+     * Loads a model (XMI only) from an input stream. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.&lt;p&gt;
+     *
+     * If there is a problem with the xmi file, an error is set in the
+     * getLastLoadStatus() field. This needs to be examined by the
+     * calling function.&lt;p&gt;
+     *
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
+     */
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
+
+<span class="nc" id="L114">        load(project, new InputSource(inputStream));</span>
+<span class="nc" id="L115">    }</span>
+
+
+    public void load(Project project, InputSource source)
+        throws OpenException {
+
+<span class="fc" id="L121">        Object mmodel = null;</span>
+
+        // 2002-07-18
+        // Jaap Branderhorst
+        // changed the loading of the projectfiles to solve hanging
+        // of argouml if a project is corrupted. Issue 913
+        // Created xmireader with method getErrors to check if parsing went well
+        try {
+<span class="fc" id="L129">            source.setEncoding(Argo.getEncoding());</span>
+<span class="fc" id="L130">            readModels(source);</span>
+<span class="fc" id="L131">            mmodel = getCurModel();</span>
+<span class="fc" id="L132">        } catch (OpenException e) {</span>
+<span class="fc" id="L133">            LOG.log(Level.SEVERE, &quot;UmlException caught&quot;, e);</span>
+<span class="fc" id="L134">            throw e;</span>
+<span class="fc" id="L135">        }</span>
+        // This should probably be inside xmiReader.parse
+        // but there is another place in this source
+        // where XMIReader is used, but it appears to be
+        // the NSUML XMIReader.  When Argo XMIReader is used
+        // consistently, it can be responsible for loading
+        // the listener.  Until then, do it here.
+<span class="fc" id="L142">        Model.getUmlHelper().addListenersToModel(mmodel);</span>
+
+        // TODO Add all top level packages
+<span class="fc" id="L145">        project.addMember(mmodel);</span>
+
+<span class="fc" id="L147">        project.setUUIDRefs(new HashMap&lt;String, Object&gt;(getUUIDRefs()));</span>
+<span class="fc" id="L148">    }</span>
+
+    /*
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
+     */
+    public String getMainTag() {
+        try {
+<span class="fc" id="L155">            return Model.getXmiReader().getTagName();</span>
+<span class="nc" id="L156">        } catch (UmlException e) {</span>
+            // Should never happen - something's really wrong
+<span class="nc" id="L158">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * Save the project model to XMI.
+     *
+     * @see org.argouml.persistence.MemberFilePersister#save(ProjectMember, OutputStream)
+     */
+    public void save(ProjectMember member, OutputStream outStream)
+        throws SaveException {
+
+<span class="fc" id="L170">        ProjectMemberModel pmm = (ProjectMemberModel) member;</span>
+<span class="fc" id="L171">        Object model = pmm.getModel();</span>
+
+        try {
+<span class="fc" id="L174">            XmiWriter xmiWriter =</span>
+<span class="fc" id="L175">                Model.getXmiWriter(model, outStream,</span>
+<span class="fc" id="L176">                        ApplicationVersion.getVersion() + &quot;(&quot;</span>
+                        + UmlFilePersister.PERSISTENCE_VERSION + &quot;)&quot;);
+
+<span class="fc" id="L179">            xmiWriter.write();</span>
+<span class="fc" id="L180">            outStream.flush();</span>
+<span class="nc" id="L181">        } catch (UmlException e) {</span>
+<span class="nc" id="L182">            throw new SaveException(e);</span>
+<span class="nc" id="L183">        } catch (IOException e) {</span>
+<span class="nc" id="L184">            throw new SaveException(e);</span>
+<span class="fc" id="L185">        }</span>
+
+<span class="fc" id="L187">    }</span>
+
+    public void parse(String label, String xmiExtensionString) {
+<span class="nc" id="L190">        LOG.log(Level.INFO, &quot;Parsing an extension for {0}&quot;, label);</span>
+<span class="nc" id="L191">    }</span>
+
+
+    /**
+     * @return the current model
+     * @deprecated by tfmorris for 0.33.1
+     */
+    @Deprecated
+    public Object getCurModel() {
+<span class="fc" id="L200">        return curModel;</span>
+    }
+
+    /**
+     * Return XMI id to object map for the most recently read XMI file.
+     *
+     * @return the UUID
+     */
+    public HashMap&lt;String, Object&gt; getUUIDRefs() {
+<span class="fc" id="L209">        return uUIDRefs;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // main parsing methods
+
+    /**
+     * Read an XMI file from the given URL.
+     *
+     * @param url the URL
+     * @param xmiExtensionParser the XmiExtensionParser
+     * @throws OpenException when there is an IO error
+     */
+    public synchronized void readModels(URL url,
+            XmiExtensionParser xmiExtensionParser) throws OpenException {
+<span class="nc" id="L224">        LOG.log(Level.INFO,</span>
+                &quot;=======================================\n&quot;
+                +&quot;== READING MODEL {0}&quot;, url);
+
+        try {
+            // TODO: What progressMgr is to be used here? Where does
+            //       it come from?
+<span class="nc" id="L231">            InputSource source =</span>
+                new InputSource(new XmiInputStream(
+<span class="nc" id="L233">                    url.openStream(), xmiExtensionParser, 100000, null));</span>
+
+<span class="nc" id="L235">            source.setSystemId(url.toString());</span>
+<span class="nc" id="L236">            readModels(source);</span>
+<span class="nc" id="L237">        } catch (IOException ex) {</span>
+<span class="nc" id="L238">            throw new OpenException(ex);</span>
+<span class="nc" id="L239">        }</span>
+<span class="nc" id="L240">    }</span>
+
+    /**
+     * Read a XMI file from the given inputsource.
+     *
+     * @param source The InputSource. The systemId of the input source should be
+     *                set so that it can be used to resolve external references.
+     * @throws OpenException If an error occur while reading the source
+     */
+    public synchronized void readModels(InputSource source)
+        throws OpenException {
+
+<span class="fc" id="L252">        XmiReader reader = null;</span>
+        try {
+<span class="fc" id="L254">            reader = Model.getXmiReader();</span>
+
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">            if (Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS, false)) {</span>
+                // TODO: Not implemented by eUML
+<span class="nc" id="L258">                reader.setIgnoredElements(new String[] {&quot;UML:Diagram&quot;});</span>
+            } else {
+<span class="fc" id="L260">                reader.setIgnoredElements(null);</span>
+            }
+
+<span class="fc" id="L263">            List&lt;String&gt; searchPath = reader.getSearchPath();</span>
+<span class="fc" id="L264">            String pathList =</span>
+<span class="fc" id="L265">                System.getProperty(&quot;org.argouml.model.modules_search_path&quot;);</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">            if (pathList != null) {</span>
+<span class="nc" id="L267">                String[] paths = pathList.split(&quot;,&quot;);</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">                for (String path : paths) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                    if (!searchPath.contains(path)) {</span>
+<span class="nc" id="L270">                        reader.addSearchPath(path);</span>
+                    }
+                }
+            }
+<span class="fc" id="L274">            reader.addSearchPath(source.getSystemId());</span>
+
+<span class="fc" id="L276">            curModel = null;</span>
+<span class="fc" id="L277">            elementsRead = reader.parse(source, false);</span>
+<span class="pc bpc" id="L278" title="2 of 4 branches missed.">            if (elementsRead != null &amp;&amp; !elementsRead.isEmpty()) {</span>
+<span class="fc" id="L279">                Facade facade = Model.getFacade();</span>
+                Object current;
+<span class="fc" id="L281">                Iterator elements = elementsRead.iterator();</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">                while (elements.hasNext()) {</span>
+<span class="fc" id="L283">                    current = elements.next();</span>
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">                    if (facade.isAModel(current)) {</span>
+<span class="pc bpc" id="L285" title="1 of 2 branches missed.">                        if (LOG.isLoggable(Level.INFO)) {</span>
+<span class="fc" id="L286">                            LOG.log(Level.INFO,</span>
+                                    &quot;Loaded model {0}&quot;,
+<span class="fc" id="L288">                                    facade.getName(current));</span>
+                        }
+<span class="fc bfc" id="L290" title="All 2 branches covered.">                        if (curModel == null) {</span>
+<span class="fc" id="L291">                            curModel = current;</span>
+                        }
+<span class="nc bnc" id="L293" title="All 2 branches missed.">                    } else if (facade.isAProfile(current)) {</span>
+<span class="nc" id="L294">                        LOG.log(Level.INFO,</span>
+<span class="nc" id="L295">                                &quot;Loaded profile '&quot; + facade.getName(current)</span>
+                                + &quot;'&quot;);
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                        if (curModel == null) {</span>
+<span class="nc" id="L298">                            curModel = current;</span>
+                        }
+                    }
+                    // TODO: add stereotype application (eCore AnyType?)
+                }
+            }
+<span class="fc" id="L304">            uUIDRefs =</span>
+<span class="fc" id="L305">                new HashMap&lt;String, Object&gt;(reader.getXMIUUIDToObjectMap());</span>
+<span class="fc" id="L306">        } catch (XmiException ex) {</span>
+<span class="fc" id="L307">            throw new XmiFormatException(ex);</span>
+<span class="nc" id="L308">        } catch (UmlException ex) {</span>
+            // Could this be some other type of internal error that we want
+            // to handle differently?  Don't think so.  - tfm
+<span class="nc" id="L311">            throw new XmiFormatException(ex);</span>
+<span class="fc" id="L312">        }</span>
+<span class="fc" id="L313">        LOG.log(Level.INFO, &quot;=======================================&quot;);</span>
+<span class="fc" id="L314">    }</span>
+
+    /**
+     * Create and register diagrams for activity and statemachines in the
+     * model(s) of the project. If no other diagrams are created, a default
+     * Class Diagram will be created. ArgoUML currently requires at least one
+     * diagram for proper operation.
+     *
+     * TODO: Move to XmiFilePersister (protected)
+     *
+     * @param project
+     *            The project
+     */
+    public void registerDiagrams(Project project) {
+<span class="fc" id="L328">        registerDiagramsInternal(project, elementsRead, true);</span>
+<span class="fc" id="L329">    }</span>
+
+
+    /**
+     * Internal method create diagrams for activity graphs and state machines.
+     * It exists soley to contain common functionality from the two public
+     * methods.  It can be merged into its caller when the deprecated version
+     * of the public method goes away.
+     *
+     * @param project
+     *            The project
+     * @param elements
+     *            Collection of top level model elements to process
+     * @param atLeastOne
+     *            If true, forces at least one diagram to be created.
+     */
+    private void registerDiagramsInternal(Project project, Collection elements,
+            boolean atLeastOne) {
+<span class="fc" id="L347">        Facade facade = Model.getFacade();</span>
+<span class="fc" id="L348">        Collection diagramsElement = new ArrayList();</span>
+<span class="fc" id="L349">        Iterator it = elements.iterator();</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L351">            Object element = it.next();</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">            if (facade.isAModel(element)) {</span>
+<span class="fc" id="L353">                diagramsElement.addAll(Model.getModelManagementHelper()</span>
+<span class="fc" id="L354">                        .getAllModelElementsOfKind(element,</span>
+<span class="fc" id="L355">                                Model.getMetaTypes().getStateMachine()));</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">            } else if (facade.isAStateMachine(element)) {</span>
+<span class="nc" id="L357">                diagramsElement.add(element);</span>
+            }
+<span class="fc" id="L359">        }</span>
+<span class="fc" id="L360">        DiagramFactory diagramFactory = DiagramFactory.getInstance();</span>
+<span class="fc" id="L361">        it = diagramsElement.iterator();</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L363">            Object statemachine = it.next();</span>
+<span class="fc" id="L364">            Object namespace = facade.getNamespace(statemachine);</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">            if (namespace == null) {</span>
+<span class="nc" id="L366">                namespace = facade.getContext(statemachine);</span>
+<span class="nc" id="L367">                Model.getCoreHelper().setNamespace(statemachine, namespace);</span>
+            }
+
+<span class="fc" id="L370">            ArgoDiagram diagram = null;</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">            if (facade.isAActivityGraph(statemachine)) {</span>
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">                if (LOG.isLoggable(Level.INFO)) {</span>
+<span class="fc" id="L373">                    LOG.log(Level.INFO,</span>
+                            &quot;Creating activity diagram for {0}&lt;&lt;{1}&gt;&gt;&quot;,
+                            new Object[] {
+<span class="fc" id="L376">                                facade.getUMLClassName(statemachine),</span>
+<span class="fc" id="L377">                                facade.getName(statemachine)</span>
+                            });
+                }
+<span class="fc" id="L380">                diagram = diagramFactory.createDiagram(</span>
+                        DiagramType.Activity,
+                	namespace,
+                	statemachine);
+            } else {
+<span class="pc bpc" id="L385" title="1 of 2 branches missed.">                if (LOG.isLoggable(Level.INFO)) {</span>
+<span class="fc" id="L386">                    LOG.log(Level.INFO,</span>
+                            &quot;Creating activity diagram for {0}&lt;&lt;{1}&gt;&gt;&quot;,
+                            new Object[] {
+<span class="fc" id="L389">                                facade.getUMLClassName(statemachine),</span>
+<span class="fc" id="L390">                                facade.getName(statemachine)</span>
+                            });
+                }
+
+<span class="fc" id="L394">                diagram = diagramFactory.createDiagram(</span>
+                        DiagramType.State,
+                	namespace,
+                	statemachine);
+            }
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">            if (diagram != null) {</span>
+<span class="fc" id="L400">                project.addMember(diagram);</span>
+            }
+
+<span class="fc" id="L403">        }</span>
+        // ISSUE 3516 : Make sure there is at least one diagram because
+        // ArgoUML requires it for correct operation
+<span class="pc bpc" id="L406" title="1 of 4 branches missed.">        if (atLeastOne &amp;&amp; project.getDiagramCount() &lt; 1) {</span>
+<span class="fc" id="L407">            ArgoDiagram d = diagramFactory.create(</span>
+                    DiagramType.Class, curModel,
+<span class="fc" id="L409">                    project.getProjectSettings().getDefaultDiagramSettings());</span>
+<span class="fc" id="L410">            project.addMember(d);</span>
+        }
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">        if (project.getDiagramCount() &gt;= 1</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">                &amp;&amp; project.getActiveDiagram() == null) {</span>
+<span class="fc" id="L414">            project.setActiveDiagram(</span>
+<span class="fc" id="L415">                    project.getDiagramList().get(0));</span>
+        }
+<span class="fc" id="L417">    }</span>
+
+    /**
+     * @return Returns the elementsRead.
+     */
+    public Collection getElementsRead() {
+<span class="fc" id="L423">        return elementsRead;</span>
+    }
+
+    /**
+     * @param elements The elementsRead to set.
+     */
+    public void setElementsRead(Collection elements) {
+<span class="nc" id="L430">        this.elementsRead = elements;</span>
+<span class="nc" id="L431">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

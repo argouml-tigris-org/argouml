@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrUML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrUML.java</span></div><h1>CrUML.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
+import org.argouml.model.Model;
+import org.argouml.ocl.CriticOclEvaluator;
+import org.argouml.uml.cognitive.UMLToDoItem;
+import org.tigris.gef.ocl.ExpansionException;
+
+/**
+ * &quot;Abstract&quot; Critic subclass that captures commonalities among all
+ * critics in the UML domain.  This class also defines and registers
+ * the categories of design decisions that the critics can
+ * address. IT also deals with particular UMLToDoItems.
+ *
+ * @see org.argouml.cognitive.Designer
+ * @see org.argouml.cognitive.DecisionModel
+ *
+ * @author jrobbins
+ */
+public class CrUML extends Critic {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L69">    private static final Logger LOG =</span>
+<span class="fc" id="L70">        Logger.getLogger(CrUML.class.getName());</span>
+
+   /**
+    * By default looks for the localized strings at the &lt;code&gt;critics&lt;/code&gt;
+    * Resource, but critics defined elsewhere (out of ArgoUML main tree)
+    * may override this parameter
+    */
+<span class="pc" id="L77">    private String localizationPrefix = &quot;critics&quot;;</span>
+
+    /**
+     * The constructor for this class.
+     */
+<span class="fc" id="L82">    public CrUML() {</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * The constructor for this class overriding the default
+     * localization resource.
+     *
+     * @param nonDefaultLocalizationPrefix the overriding localization resource
+     */
+<span class="nc" id="L91">    public CrUML(String nonDefaultLocalizationPrefix) {</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (nonDefaultLocalizationPrefix != null) {</span>
+<span class="nc" id="L93">            this.localizationPrefix = nonDefaultLocalizationPrefix;</span>
+<span class="nc" id="L94">            setupHeadAndDesc();</span>
+        }
+<span class="nc" id="L96">    }</span>
+
+    /**
+     * Set the resources for this critic based on the class name.
+     *
+     * @param key is the class name.
+     */
+    public void setResource(String key) {
+<span class="fc" id="L104">        super.setHeadline(getLocalizedString(key, &quot;-head&quot;));</span>
+<span class="fc" id="L105">        super.setDescription(getLocalizedString(key, &quot;-desc&quot;));</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Returns a localized string for the current critic class.
+     *
+     * @param suffix the suffix of the key
+     * @return the localized string
+     */
+    protected String getLocalizedString(String suffix) {
+<span class="nc" id="L115">        return getLocalizedString(getClassSimpleName(), suffix);</span>
+    }
+
+    /**
+     * Returns a localized string for the given key and suffix.
+     *
+     * @param key the main key
+     * @param suffix the suffix of the key
+     * @return the localized string
+     */
+    protected String getLocalizedString(String key, String suffix) {
+<span class="fc" id="L126">        return Translator.localize(localizationPrefix + &quot;.&quot; + key + suffix);</span>
+    }
+
+    /**
+     * Loads the localized wizard's instruction.
+     *
+     * @return the instructions
+     */
+    protected String getInstructions() {
+<span class="nc" id="L135">        return getLocalizedString(&quot;-ins&quot;);</span>
+    }
+
+    /**
+     * Loads the localized wizard's default suggestion.
+     *
+     * @return the default suggestion
+     */
+    protected String getDefaultSuggestion() {
+<span class="nc" id="L144">        return getLocalizedString(&quot;-sug&quot;);</span>
+    }
+
+    /**
+     * @see org.argouml.cognitive.Critic#setHeadline(java.lang.String)
+     *
+     * Set up the locale specific text for the critic headline
+     * (the one liner that appears in the to-do pane)
+     * and the critic description (the detailed explanation that
+     * appears in the to-do tab of the details pane).
+     *
+     * MVW: Maybe we can make it part of the constructor CrUML()?
+     *
+     * FIXME: why override if nobody uses?
+     */
+    //@Override
+    //public final void setHeadline(String s) {
+        //setupHeadAndDesc();
+    //}
+
+    /**
+     * Set up the locale specific text for the critic headline
+     * (the one liner that appears in the to-do pane)
+     * and the critic description (the detailed explanation that
+     * appears in the to-do tab of the details pane).
+     */
+    public final void setupHeadAndDesc() {
+<span class="fc" id="L171">        setResource(getClassSimpleName());</span>
+<span class="fc" id="L172">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#predicate( java.lang.Object,
+     *      org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(dm)</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                &amp;&amp; Model.getUmlFactory().isRemoved(dm)) {</span>
+<span class="nc" id="L182">            return NO_PROBLEM;</span>
+        } else {
+<span class="nc" id="L184">            return predicate2(dm, dsgr);</span>
+        }
+    }
+
+    /**
+     * This is the decision routine for the critic.
+     *
+     * @param dm is the UML entity that is being checked.
+     * @param dsgr is for future development and can be ignored.
+     *
+     * @return boolean problem found
+     */
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc" id="L197">	return super.predicate(dm, dsgr);</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // display related methods
+    private static final String OCL_START = &quot;&lt;ocl&gt;&quot;;
+    private static final String OCL_END = &quot;&lt;/ocl&gt;&quot;;
+
+    /**
+     * Expand text with ocl brackets in it.
+     * No recursive expansion.
+     *
+     * @return the expanded text
+     * @param res is the text to expand.
+     * @param offs is the elements to replace
+     */
+    @Override
+    public String expand(String res, ListSet offs) {
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        if (offs.size() == 0) {</span>
+<span class="nc" id="L217">	    return res;</span>
+	}
+
+<span class="nc" id="L220">        Object off1 = offs.get(0);</span>
+
+<span class="nc" id="L222">        StringBuffer beginning = new StringBuffer(&quot;&quot;);</span>
+<span class="nc" id="L223">        int matchPos = res.indexOf(OCL_START);</span>
+
+        // replace all occurances of OFFENDER with the name of the
+        // first offender
+<span class="nc bnc" id="L227" title="All 2 branches missed.">        while (matchPos != -1) {</span>
+<span class="nc" id="L228">            int endExpr = res.indexOf(OCL_END, matchPos + 1);</span>
+            // check if there is no OCL_END; if so, the critic expression
+            // is not correct and can not be expanded
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (endExpr == -1) {</span>
+<span class="nc" id="L232">                break;</span>
+            }
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            if (matchPos &gt; 0) {</span>
+<span class="nc" id="L235">                beginning.append(res.substring(0, matchPos));</span>
+            }
+<span class="nc" id="L237">            String expr = res.substring(matchPos + OCL_START.length(), endExpr);</span>
+<span class="nc" id="L238">            String evalStr = null;</span>
+            try {
+                evalStr =
+<span class="nc" id="L241">		    CriticOclEvaluator.getInstance().evalToString(off1, expr);</span>
+<span class="nc" id="L242">            } catch (ExpansionException e) {</span>
+                // Really ought to have a CriticException to throw here.
+<span class="nc" id="L244">                LOG.log(Level.SEVERE, &quot;Failed to evaluate critic expression&quot;, e);</span>
+<span class="nc" id="L245">            }</span>
+<span class="nc bnc" id="L246" title="All 4 branches missed.">            if (expr.endsWith(&quot;&quot;) &amp;&amp; evalStr.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L247">                evalStr = Translator.localize(&quot;misc.name.anon&quot;);</span>
+            }
+<span class="nc" id="L249">            beginning.append(evalStr);</span>
+<span class="nc" id="L250">            res = res.substring(endExpr + OCL_END.length());</span>
+<span class="nc" id="L251">            matchPos = res.indexOf(OCL_START);</span>
+<span class="nc" id="L252">        }</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">        if (beginning.length() == 0) {</span>
+            // return original string if no replacements made
+<span class="nc" id="L255">            return res;</span>
+        } else {
+<span class="nc" id="L257">            return beginning.append(res).toString();</span>
+        }
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(Object, Designer)
+     */
+    @Override
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+<span class="nc" id="L266">	return new UMLToDoItem(this, dm, dsgr);</span>
+    }
+
+    /**
+     * Get the name of the current class.
+     *
+     * @return the name of the current class without any leading packages
+     */
+    private final String getClassSimpleName() {
+        // TODO: This method can be replaced by getClass().getSimpleName()
+        // when Argo drops support for Java versions &lt; 1.5
+<span class="fc" id="L277">        String className = getClass().getName();</span>
+<span class="fc" id="L278">        return className.substring(className.lastIndexOf('.') + 1);</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 1785043010468681602L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

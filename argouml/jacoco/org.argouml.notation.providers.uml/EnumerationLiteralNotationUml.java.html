@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EnumerationLiteralNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">EnumerationLiteralNotationUml.java</span></div><h1>EnumerationLiteralNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.NoSuchElementException;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.EnumerationLiteralNotation;
+import org.argouml.uml.StereotypeUtility;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * The notation for an Enumeration Literal. &lt;p&gt;
+ * 
+ * The supported notation is: &lt;pre&gt;
+ *     [ &quot;&lt;&lt;&quot; stereotype &quot;&gt;&gt;&quot; ] name [ &quot;;&quot; name ]*
+ * &lt;/pre&gt;
+ * This means:&lt;ul&gt;&lt;li&gt; 
+ * The name is not optional (i.e. leaving it blank 
+ * means deletion of the literal). &lt;li&gt;
+ * Multiple literals may be entered at once 
+ * by separating the names with a semicolon. &lt;li&gt; 
+ * Extra literals are inserted after the one being parsed. &lt;li&gt;
+ * A stereotype may precede the name of any literal. &lt;/ul&gt;&lt;p&gt;
+ * 
+ * As explained in issue 5000, the real implemented BNF is something like: 
+ * &lt;pre&gt;
+ *     [&quot;&lt;&lt;&quot; stereotype [&quot;,&quot; stereotype]* &quot;&gt;&gt;&quot;] name [ &quot;;&quot; [&quot;&lt;&lt;&quot; stereotype [&quot;,&quot; stereotype]* &quot;&gt;&gt;&quot;] name]*
+ * &lt;/pre&gt;
+ * 
+ * @author Michiel
+ */
+public class EnumerationLiteralNotationUml extends EnumerationLiteralNotation {
+
+    /**
+     * The constructor.
+     * 
+     * @param enumLiteral the UML element
+     */
+    public EnumerationLiteralNotationUml(Object enumLiteral) {
+<span class="fc" id="L85">        super(enumLiteral);</span>
+<span class="fc" id="L86">    }</span>
+
+    @Override
+    public String getParsingHelp() {
+<span class="fc" id="L90">        return &quot;parsing.help.fig-enumeration-literal&quot;;</span>
+    }
+
+    @Override
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="nc" id="L96">            parseEnumerationLiteralFig(</span>
+<span class="nc" id="L97">                    Model.getFacade().getEnumeration(modelElement),</span>
+                    modelElement, text);
+<span class="nc" id="L99">        } catch (ParseException pe) {</span>
+<span class="nc" id="L100">            String msg = &quot;statusmsg.bar.error.parsing.enumeration-literal&quot;;</span>
+<span class="nc" id="L101">            Object[] args = {</span>
+<span class="nc" id="L102">                pe.getLocalizedMessage(),</span>
+<span class="nc" id="L103">                Integer.valueOf(pe.getErrorOffset()),</span>
+            };
+<span class="nc" id="L105">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L107">                Translator.messageFormat(msg, args)));</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">    }</span>
+    
+    /**
+     * Parse a string representing one or more &quot;;&quot; separated 
+     * enumeration literals.
+     * 
+     * @param enumeration the enumeration that the literal belongs to
+     * @param literal the literal on which the editing will happen
+     * @param text the string to parse
+     * @throws ParseException for invalid input - so that the right 
+     * message may be shown to the user
+     */
+    protected void  parseEnumerationLiteralFig(
+            Object enumeration, Object literal, String text) 
+        throws ParseException {
+        
+<span class="pc bpc" id="L125" title="2 of 4 branches missed.">        if (enumeration == null || literal == null) {</span>
+<span class="nc" id="L126">            return;</span>
+        }
+<span class="fc" id="L128">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="fc" id="L130">        ParseException pex = null;</span>
+<span class="fc" id="L131">        int start = 0;</span>
+<span class="fc" id="L132">        int end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+        
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (end == -1) {</span>
+            /* No text. We may remove the literal. */
+<span class="nc" id="L136">            project.moveToTrash(literal);</span>
+<span class="nc" id="L137">            return;</span>
+        }
+<span class="fc" id="L139">        String s = text.substring(start, end).trim();</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (s.length() == 0) {</span>
+            /* No non-white chars in text? remove literal! */
+<span class="nc" id="L142">            project.moveToTrash(literal);</span>
+<span class="nc" id="L143">            return;</span>
+        }
+<span class="fc" id="L145">        parseEnumerationLiteral(s, literal);</span>
+
+<span class="fc" id="L147">        int i = Model.getFacade().getEnumerationLiterals(enumeration)</span>
+<span class="fc" id="L148">            .indexOf(literal);</span>
+        // check for more literals (';' separated):
+<span class="fc" id="L150">        start = end + 1;</span>
+<span class="fc" id="L151">        end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+<span class="pc bpc" id="L152" title="1 of 4 branches missed.">        while (end &gt; start &amp;&amp; end &lt;= text.length()) {</span>
+<span class="fc" id="L153">            s = text.substring(start, end).trim();</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">            if (s.length() &gt; 0) {</span>
+                // yes, there are more:
+                Object newLiteral = 
+<span class="fc" id="L157">                    Model.getCoreFactory().createEnumerationLiteral();</span>
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">                if (newLiteral != null) {</span>
+                    try {
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">                        if (i != -1) {</span>
+<span class="fc" id="L161">                            Model.getCoreHelper().addLiteral(</span>
+                                    enumeration, ++i, newLiteral);
+                        } else {
+<span class="nc" id="L164">                            Model.getCoreHelper().addLiteral(</span>
+                                    enumeration, 0, newLiteral);
+                        }
+<span class="fc" id="L167">                        parseEnumerationLiteral(s, newLiteral);</span>
+<span class="nc" id="L168">                    } catch (ParseException ex) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                        if (pex == null) {</span>
+<span class="nc" id="L170">                            pex = ex;</span>
+                        }
+<span class="fc" id="L172">                    }</span>
+                }
+            }
+<span class="fc" id="L175">            start = end + 1;</span>
+<span class="fc" id="L176">            end = NotationUtilityUml.indexOfNextCheckedSemicolon(text, start);</span>
+        }
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (pex != null) {</span>
+<span class="nc" id="L179">            throw pex;</span>
+        }
+<span class="fc" id="L181">    }</span>
+
+    protected void parseEnumerationLiteral(String text, Object literal) 
+        throws ParseException {
+<span class="fc" id="L185">        text = text.trim();</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (text.length() == 0) {</span>
+<span class="nc" id="L187">            return;</span>
+        }
+        // strip any trailing semi-colons
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        if (text.charAt(text.length() - 1) == ';') {</span>
+<span class="nc" id="L191">            text = text.substring(0, text.length() - 2);</span>
+        }
+        MyTokenizer st;
+
+<span class="fc" id="L195">        String name = null;</span>
+<span class="fc" id="L196">        StringBuilder stereotype = null;</span>
+        String token;
+
+        try {
+<span class="fc" id="L200">            st = new MyTokenizer(text, &quot;&lt;&lt;,\u00AB,\u00BB,&gt;&gt;&quot;);</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L202">                token = st.nextToken();</span>
+
+<span class="fc bfc" id="L204" title="All 4 branches covered.">                if (&quot;&lt;&lt;&quot;.equals(token) || &quot;\u00AB&quot;.equals(token)) {</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">                    if (stereotype != null) {</span>
+<span class="fc" id="L206">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.twin-stereotypes&quot;;
+<span class="fc" id="L208">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L209">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L212">                    stereotype = new StringBuilder();</span>
+                    while (true) {
+<span class="fc" id="L214">                        token = st.nextToken();</span>
+<span class="fc bfc" id="L215" title="All 4 branches covered.">                        if (&quot;&gt;&gt;&quot;.equals(token) || &quot;\u00BB&quot;.equals(token)) {</span>
+<span class="fc" id="L216">                            break;</span>
+                        }
+<span class="fc" id="L218">                        stereotype.append(token);</span>
+                    }
+                } else {
+<span class="fc bfc" id="L221" title="All 2 branches covered.">                    if (name != null) {</span>
+<span class="fc" id="L222">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.twin-names&quot;;
+<span class="fc" id="L224">                        throw new ParseException(Translator.localize(msg), </span>
+<span class="fc" id="L225">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L228">                    name = token;</span>
+                }
+            }
+<span class="fc" id="L231">        } catch (NoSuchElementException nsee) {</span>
+<span class="fc" id="L232">            String msg = </span>
+                &quot;parsing.error.model-element-name.unexpected-name-element&quot;;
+<span class="fc" id="L234">            throw new ParseException(Translator.localize(msg),</span>
+<span class="fc" id="L235">                    text.length());</span>
+<span class="fc" id="L236">        } catch (ParseException pre) {</span>
+<span class="fc" id="L237">            throw pre;</span>
+<span class="fc" id="L238">        }</span>
+
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        if (name != null) {</span>
+<span class="fc" id="L241">            name = name.trim();</span>
+        }
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        if (name != null) {</span>
+<span class="fc" id="L244">            Model.getCoreHelper().setName(literal, name);</span>
+        }
+
+<span class="fc" id="L247">        StereotypeUtility.dealWithStereotypes(literal, stereotype, false);</span>
+
+<span class="fc" id="L249">        return;</span>
+    }
+
+    private String toString(Object modelElement, boolean useGuillemets) {
+<span class="fc" id="L253">        String nameStr = &quot;&quot;;</span>
+        /* Heuristic algorithm: do not show stereotypes if there is no name. */
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (Model.getFacade().getName(modelElement) != null) {</span>
+<span class="fc" id="L256">            nameStr = NotationUtilityUml.generateStereotype(modelElement, </span>
+                    useGuillemets);
+<span class="fc bfc" id="L258" title="All 2 branches covered.">            if (nameStr.length() &gt; 0) {</span>
+<span class="fc" id="L259">                nameStr += &quot; &quot;;</span>
+            }
+<span class="fc" id="L261">            nameStr += Model.getFacade().getName(modelElement).trim();</span>
+        }
+<span class="fc" id="L263">        return nameStr;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L268">        return toString(modelElement, settings.isUseGuillemets());</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigCompositeState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigCompositeState.java</span></div><h1>FigCompositeState.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.Vector;
+
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display graphics for a UML CompositeState in a diagram.
+ *
+ * @author jrobbins@ics.uci.edu
+ */
+public class FigCompositeState extends FigState {
+
+    private FigRect cover;
+    private FigLine divider;
+
+    
+    /**
+     * Construct a new FigStubState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigCompositeState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L82">        super(owner, bounds, settings);</span>
+<span class="fc" id="L83">        initFigs();</span>
+<span class="fc" id="L84">        updateNameText();</span>
+<span class="fc" id="L85">    }</span>
+
+    private void initFigs() {
+<span class="fc" id="L88">        cover =</span>
+<span class="fc" id="L89">            new FigRRect(getInitialX(), getInitialY(),</span>
+<span class="fc" id="L90">			      getInitialWidth(), getInitialHeight(),</span>
+			      LINE_COLOR, FILL_COLOR);
+
+<span class="fc" id="L93">        getBigPort().setLineWidth(0);</span>
+
+<span class="fc" id="L95">        divider =</span>
+<span class="fc" id="L96">	    new FigLine(getInitialX(),</span>
+<span class="fc" id="L97">			getInitialY() + 2 + getNameFig().getBounds().height + 1,</span>
+<span class="fc" id="L98">			getInitialWidth() - 1,</span>
+<span class="fc" id="L99">			getInitialY() + 2 + getNameFig().getBounds().height + 1,</span>
+			LINE_COLOR);
+
+        // add Figs to the FigNode in back-to-front order
+<span class="fc" id="L103">        addFig(getBigPort());</span>
+<span class="fc" id="L104">        addFig(cover);</span>
+<span class="fc" id="L105">        addFig(getNameFig());</span>
+<span class="fc" id="L106">        addFig(divider);</span>
+<span class="fc" id="L107">        addFig(getInternal());</span>
+
+<span class="fc" id="L109">        setBounds(getBounds());</span>
+<span class="fc" id="L110">    }</span>
+
+    /*
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+<span class="fc" id="L116">        FigCompositeState figClone = (FigCompositeState) super.clone();</span>
+<span class="fc" id="L117">        Iterator it = figClone.getFigs().iterator();</span>
+<span class="fc" id="L118">        figClone.setBigPort((FigRRect) it.next());</span>
+<span class="fc" id="L119">        figClone.cover = (FigRect) it.next();</span>
+<span class="fc" id="L120">        figClone.setNameFig((FigText) it.next());</span>
+<span class="fc" id="L121">        figClone.divider = (FigLine) it.next();</span>
+<span class="fc" id="L122">        figClone.setInternal((FigText) it.next());</span>
+<span class="fc" id="L123">        return figClone;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    public Dimension getMinimumSize() {
+<span class="fc" id="L133">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L134">        Dimension internalDim = getInternal().getMinimumSize();</span>
+
+<span class="fc" id="L136">        int h =</span>
+            SPACE_TOP + nameDim.height
+            + SPACE_MIDDLE + internalDim.height
+            + SPACE_BOTTOM;
+<span class="fc" id="L140">        int w =</span>
+<span class="fc" id="L141">            Math.max(nameDim.width + 2 * MARGIN,</span>
+                     internalDim.width + 2 * MARGIN);
+<span class="fc" id="L143">        return new Dimension(w, h);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
+    public boolean getUseTrapRect() {
+<span class="nc" id="L150">        return true;</span>
+    }
+
+    /*
+     * Override setBounds to keep shapes looking right.
+     *
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    protected void setStandardBounds(int x, int y, int w, int h) {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">        if (getNameFig() == null) {</span>
+<span class="nc" id="L160">            return;</span>
+        }
+
+<span class="fc" id="L163">        Rectangle oldBounds = getBounds();</span>
+<span class="fc" id="L164">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L165">        List regionsList = getEnclosedFigs();</span>
+
+        /* If it is concurrent and contains concurrent regions,
+        the bottom region has a minimum height*/
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">            if (isConcurrent()</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">                    &amp;&amp; !regionsList.isEmpty()</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                    &amp;&amp; regionsList.get(regionsList.size() - 1)</span>
+                        instanceof FigConcurrentRegion) {
+<span class="nc" id="L174">                FigConcurrentRegion f = </span>
+<span class="nc" id="L175">                    ((FigConcurrentRegion) regionsList.get(</span>
+<span class="nc" id="L176">                            regionsList.size() - 1));</span>
+<span class="nc" id="L177">                Rectangle regionBounds = f.getBounds();</span>
+<span class="nc" id="L178">                if ((h - oldBounds.height + regionBounds.height)</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                        &lt;= (f.getMinimumSize().height)) {</span>
+<span class="nc" id="L180">                    h = oldBounds.height;</span>
+<span class="nc" id="L181">                    y = oldBounds.y;</span>
+                }
+            }
+        }
+
+<span class="fc" id="L186">        getNameFig().setBounds(x + MARGIN,</span>
+                y + SPACE_TOP,
+                w - 2 * MARGIN,
+                nameDim.height);
+<span class="fc" id="L190">        divider.setShape(x,</span>
+                y + DIVIDER_Y + nameDim.height,
+                x + w - 1,
+                y + DIVIDER_Y + nameDim.height);
+
+<span class="fc" id="L195">        getInternal().setBounds(</span>
+                x + MARGIN,
+                y + nameDim.height + SPACE_TOP + SPACE_MIDDLE,
+                w - 2 * MARGIN,
+                h - nameDim.height - SPACE_TOP - SPACE_MIDDLE - SPACE_BOTTOM);
+
+<span class="fc" id="L201">        getBigPort().setBounds(x, y, w, h);</span>
+<span class="fc" id="L202">        cover.setBounds(x, y, w, h);</span>
+
+<span class="fc" id="L204">        calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="fc" id="L205">        updateEdges();</span>
+<span class="fc" id="L206">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+
+        /*If it is concurrent and contains concurrent regions,
+        the regions are resized*/
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">            if (isConcurrent()</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                    &amp;&amp; !regionsList.isEmpty()</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                    &amp;&amp; regionsList.get(regionsList.size() - 1)</span>
+                        instanceof FigConcurrentRegion) {
+<span class="nc" id="L215">                FigConcurrentRegion f = ((FigConcurrentRegion) regionsList</span>
+<span class="nc" id="L216">                        .get(regionsList.size() - 1));</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                for (int i = 0; i &lt; regionsList.size() - 1; i++) {</span>
+<span class="nc" id="L218">                    ((FigConcurrentRegion) regionsList.get(i))</span>
+<span class="nc" id="L219">                        .setBounds(x - oldBounds.x, y - oldBounds.y,</span>
+                                w - 2 * FigConcurrentRegion.INSET_HORZ, true);
+                }
+<span class="nc" id="L222">                f.setBounds(x - oldBounds.x,</span>
+                        y - oldBounds.y, 
+                        w - 2 * FigConcurrentRegion.INSET_HORZ, 
+                        h - oldBounds.height, true);
+            }
+        }
+
+<span class="fc" id="L229">    }</span>
+    
+    /*
+     * The returned list of Figs is sorted according layout: from top to bottom.
+     */
+    @Override
+    public Vector&lt;Fig&gt; getEnclosedFigs() {
+<span class="fc" id="L236">        Vector&lt;Fig&gt; enclosedFigs = super.getEnclosedFigs();</span>
+
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        if (isConcurrent()) {</span>
+<span class="nc" id="L239">            TreeMap&lt;Integer, Fig&gt; figsByY = new TreeMap&lt;Integer, Fig&gt;();</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            for (Fig fig : enclosedFigs) {</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                if (fig instanceof FigConcurrentRegion) {</span>
+<span class="nc" id="L242">                    figsByY.put(fig.getY(), fig);</span>
+                }
+<span class="nc" id="L244">            }</span>
+<span class="nc" id="L245">            return new Vector&lt;Fig&gt;(figsByY.values());</span>
+        }
+<span class="fc" id="L247">        return enclosedFigs;</span>
+    }
+    
+    /**
+     * @return true if this is a concurrent state, 
+     * false otherwise, or if the owner is not known
+     */
+    public boolean isConcurrent() {
+<span class="fc" id="L255">        Object owner = getOwner();</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">        if (owner == null) {</span>
+<span class="nc" id="L257">            return false;</span>
+        }
+<span class="fc" id="L259">        return Model.getFacade().isConcurrent(owner);</span>
+    }
+
+    /**
+     * To resize only when a new concurrent region is added,
+     * changing the height.
+     * TODO: Probably shouldn't
+     * exist as this class should be listening for added concurrent regions
+     * and call this internally itself.
+     *
+     * @param h the new height
+     */
+    public void setCompositeStateHeight(int h) {
+<span class="nc bnc" id="L272" title="All 2 branches missed.">        if (getNameFig() == null) {</span>
+<span class="nc" id="L273">            return;</span>
+        }
+<span class="nc" id="L275">        Rectangle oldBounds = getBounds();</span>
+<span class="nc" id="L276">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="nc" id="L277">        int x = oldBounds.x;</span>
+<span class="nc" id="L278">        int y = oldBounds.y;</span>
+<span class="nc" id="L279">        int w = oldBounds.width;</span>
+
+<span class="nc" id="L281">        getInternal().setBounds(</span>
+                x + MARGIN, 
+                y + nameDim.height + 4,
+                w - 2 * MARGIN, 
+                h - nameDim.height - 6);
+<span class="nc" id="L286">        getBigPort().setBounds(x, y, w, h);</span>
+<span class="nc" id="L287">        cover.setBounds(x, y, w, h);</span>
+
+<span class="nc" id="L289">        calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="nc" id="L290">        updateEdges();</span>
+<span class="nc" id="L291">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="nc" id="L292">    }</span>
+
+
+    /*
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L299">        Vector popUpActions = super.getPopUpActions(me);</span>
+        /* Check if multiple items are selected: */
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        boolean ms = TargetManager.getInstance().getTargets().size() &gt; 1;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">        if (!ms) {</span>
+<span class="nc" id="L303">            popUpActions.add(</span>
+<span class="nc" id="L304">                    popUpActions.size() - getPopupAddOffset(),</span>
+                    new ActionAddConcurrentRegion());
+        }
+<span class="nc" id="L307">        return popUpActions;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    public void setLineColor(Color col) {
+<span class="fc" id="L314">        cover.setLineColor(col);</span>
+<span class="fc" id="L315">        divider.setLineColor(col);</span>
+<span class="fc" id="L316">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    public Color getLineColor() {
+<span class="nc" id="L322">        return cover.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    public void setFillColor(Color col) {
+<span class="fc" id="L329">        cover.setFillColor(col);</span>
+<span class="fc" id="L330">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    public Color getFillColor() {
+<span class="nc" id="L336">        return cover.getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    public void setFilled(boolean f) {
+<span class="fc" id="L343">        cover.setFilled(f);</span>
+<span class="fc" id="L344">        getBigPort().setFilled(f);</span>
+<span class="fc" id="L345">    }</span>
+
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L350">        return cover.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+<span class="fc" id="L357">        cover.setLineWidth(w);</span>
+<span class="fc" id="L358">        divider.setLineWidth(w);</span>
+<span class="fc" id="L359">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    public int getLineWidth() {
+<span class="nc" id="L365">        return cover.getLineWidth();</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event processing
+
+    @Override 
+    protected void updateLayout(UmlChangeEvent event) {
+        /* We only handle the case where a region has been removed: */
+<span class="nc bnc" id="L374" title="All 2 branches missed.">        if (!(event instanceof RemoveAssociationEvent)</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">                ||  !&quot;subvertex&quot;.equals(event.getPropertyName())) {</span>
+<span class="nc" id="L376">            return;</span>
+        }
+        
+<span class="nc" id="L379">        final Object removedRegion = event.getOldValue();</span>
+        
+<span class="nc" id="L381">        List&lt;FigConcurrentRegion&gt; regionFigs =</span>
+<span class="nc" id="L382">            ((List&lt;FigConcurrentRegion&gt;) getEnclosedFigs().clone());</span>
+
+<span class="nc" id="L384">        int totHeight = getInitialHeight();</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (!regionFigs.isEmpty()) {</span>
+<span class="nc" id="L386">            Fig removedFig = null;</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">            for (FigConcurrentRegion figRegion : regionFigs) {</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">                if (figRegion.getOwner() == removedRegion) {</span>
+<span class="nc" id="L389">                    removedFig = figRegion;</span>
+<span class="nc" id="L390">                    removeEnclosedFig(figRegion);</span>
+<span class="nc" id="L391">                    break;</span>
+                }
+<span class="nc" id="L393">            }</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            if (removedFig != null) {</span>
+<span class="nc" id="L395">                regionFigs.remove(removedFig);</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">                if (!regionFigs.isEmpty()) {</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">                    for (FigConcurrentRegion figRegion : regionFigs) {</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">                        if (figRegion.getY() &gt; removedFig.getY()) {</span>
+<span class="nc" id="L399">                            figRegion.displace(0, -removedFig.getHeight());</span>
+                        }
+<span class="nc" id="L401">                    }</span>
+<span class="nc" id="L402">                    totHeight = getHeight() - removedFig.getHeight();</span>
+                }
+            }
+        }
+        
+<span class="nc" id="L407">        setBounds(getX(), getY(), getWidth(), totHeight);</span>
+
+        // do we need to 
+<span class="nc" id="L410">        renderingChanged();</span>
+<span class="nc" id="L411">    }</span>
+
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
+     */
+    protected int getInitialHeight() {
+<span class="fc" id="L418">        return 150;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
+     */
+    protected int getInitialWidth() {
+<span class="fc" id="L425">        return 180;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
+     */
+    protected int getInitialX() {
+<span class="fc" id="L432">        return 0;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
+     */
+    protected int getInitialY() {
+<span class="fc" id="L439">        return 0;</span>
+    }
+
+} /* end class FigCompositeState */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

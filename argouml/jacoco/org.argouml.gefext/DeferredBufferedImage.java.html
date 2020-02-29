@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeferredBufferedImage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.gefext</a> &gt; <span class="el_source">DeferredBufferedImage.java</span></div><h1>DeferredBufferedImage.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.gefext;
+
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Composite;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.Raster;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+import java.awt.image.WritableRaster;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.tigris.gef.base.Editor;
+
+/**
+ * Rendered GEF image which uses a band buffer to minimize memory usage for
+ * high resolution images.  Image is rendered on demand in multiple passes
+ * as getData is called.
+ * &lt;p&gt;
+ * NOTE: Only the methods which are called by ImageIO.write have been tested
+ * and proven to work (getMinX/Y, getWidth, getHeight, &amp; getData).  This is
+ * &lt;em&gt;not&lt;/em&gt; a general purpose RenderedImage implementation, so you are on
+ * your own with any others.
+ *
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ * @since ArgoUML 0.26
+ */
+public class DeferredBufferedImage implements RenderedImage {
+
+<span class="nc" id="L73">    private static final Logger LOG =</span>
+<span class="nc" id="L74">        Logger.getLogger(DeferredBufferedImage.class.getName());</span>
+
+    /**
+     * RGB values for background color for image. Set as transparent. Chosen
+     * because it's unlikely to be selected by the user, and leaves the diagram
+     * readable if viewed without transparency.
+     */
+    public static final int TRANSPARENT_BG_COLOR = 0x00efefef;
+
+    /**
+     * Background color
+     */
+<span class="nc" id="L86">    public static final Color BACKGROUND_COLOR =</span>
+            new Color(TRANSPARENT_BG_COLOR, true);
+
+    private static final int BUFFER_HEIGHT = 32;
+
+    private int x, y;
+    private int width;
+    private int height;
+    private int scale;
+    private BufferedImage image;
+    private Editor editor;
+
+    private int scaledBufferHeight;
+    private int y1, y2;
+
+    /**
+     * Construct a new DeferredBufferedImage which will use GEF to render the
+     * current diagram on demand.
+     *
+     * @param drawingArea bounding rectangle of the area to be drawn
+     * @param imageType Type of image to be created (e.g. TYPE_INT_ARGB). Must
+     *                be on an image type which is supported by BufferedImage
+     * @param ed GEF editor to be used for rendering the image
+     * @param scaleFactor Integer scale factor to multiply by when rendering
+     *                image.
+     */
+    public DeferredBufferedImage(Rectangle drawingArea, int imageType,
+<span class="nc" id="L113">            Editor ed, int scaleFactor) {</span>
+
+<span class="nc" id="L115">        editor = ed;</span>
+<span class="nc" id="L116">        scale = scaleFactor;</span>
+
+<span class="nc" id="L118">        x = drawingArea.x;</span>
+<span class="nc" id="L119">        y = drawingArea.y;</span>
+<span class="nc" id="L120">        width = drawingArea.width;</span>
+<span class="nc" id="L121">        height = drawingArea.height;</span>
+
+        // Scale everything up
+<span class="nc" id="L124">        x = x  * scale;</span>
+<span class="nc" id="L125">        y = y  * scale;</span>
+<span class="nc" id="L126">        width = width  * scale;</span>
+<span class="nc" id="L127">        height = height  * scale;</span>
+<span class="nc" id="L128">        scaledBufferHeight = BUFFER_HEIGHT * scale;</span>
+
+        // Create our bandbuffer which is just a small slice of the image
+        // TODO: We used a fixed height buffer now, but we could be smarter and
+        // compute a height which would fit in some memory budget, allowing us
+        // to use taller buffers with narrower images, minimizing the overhead
+        // of multiple rendering passes
+<span class="nc" id="L135">        image = new BufferedImage(width, scaledBufferHeight, imageType);</span>
+
+        // Initialize band buffer bounds
+<span class="nc" id="L138">        y1 = y;</span>
+<span class="nc" id="L139">        y2 = y1;</span>
+<span class="nc" id="L140">    }</span>
+
+
+    public Raster getData() {
+<span class="nc" id="L144">        LOG.log(Level.FINE, &quot;getData with no params&quot;);</span>
+<span class="nc" id="L145">        return getData(new Rectangle(x, y, width, height));</span>
+    }
+
+    public Raster getData(Rectangle clip) {
+//        LOG.log(Level.FINE, &quot;getData Rectangle = &quot; + clip);
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (!isRasterValid(clip)) {</span>
+<span class="nc" id="L151">            LOG.log(Level.FINE, &quot;Raster not valid, computing new raster&quot;);</span>
+<span class="nc" id="L152">            computeRaster(clip);</span>
+        }
+<span class="nc" id="L154">        Rectangle oClip = offsetWindow(clip);</span>
+<span class="nc" id="L155">        Raster ras = image.getData(oClip);</span>
+<span class="nc" id="L156">        Raster translatedRaster = ras.createTranslatedChild(clip.x, clip.y);</span>
+//        LOG.log(Level.FINE, &quot;getData returning raster = &quot; + translatedRaster);
+<span class="nc" id="L158">        return translatedRaster;</span>
+    }
+
+    /**
+     * @param clip clipping rectangle to test
+     * @return true if clip rectangle is completely contained in image raster
+     */
+    private boolean isRasterValid(Rectangle clip) {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (clip.height &gt; scaledBufferHeight) {</span>
+<span class="nc" id="L167">            throw new IndexOutOfBoundsException(</span>
+                    &quot;clip rectangle must fit in band buffer&quot;);
+        }
+<span class="nc bnc" id="L170" title="All 4 branches missed.">        return (clip.y &gt;= y1 &amp;&amp; (clip.y + clip.height - 1) &lt; y2);</span>
+    }
+
+    /**
+     * Rasterize the next slice in the band buffer. Raster will be the full
+     * width of the image and based vertically at the Y value of the current
+     * clip rectangle.
+     *
+     * @param clip clip rectangle of interest
+     */
+    private void computeRaster(Rectangle clip) {
+<span class="nc" id="L181">        LOG.log(Level.FINE, &quot;Computing raster for rectangle {0}&quot;, clip);</span>
+
+        // Create a new graphics context so we start with fresh transforms
+<span class="nc" id="L184">        Graphics2D graphics = image.createGraphics();</span>
+<span class="nc" id="L185">        graphics.scale(1.0 * scale, 1.0 * scale);</span>
+
+        // Fill with our background color
+<span class="nc" id="L188">        graphics.setColor(BACKGROUND_COLOR);</span>
+<span class="nc" id="L189">        Composite c = graphics.getComposite();</span>
+<span class="nc" id="L190">        graphics.setComposite(AlphaComposite.Src);</span>
+<span class="nc" id="L191">        graphics.fillRect(0, 0, width, scaledBufferHeight);</span>
+<span class="nc" id="L192">        graphics.setComposite(c);</span>
+
+        // Translate &amp; clip graphic to match region of interest
+<span class="nc" id="L195">        graphics.setClip(0, 0, width, scaledBufferHeight);</span>
+<span class="nc" id="L196">        graphics.translate(0, -clip.y / scale);</span>
+<span class="nc" id="L197">        y1 = clip.y;</span>
+<span class="nc" id="L198">        y2 = y1 + scaledBufferHeight;</span>
+
+        // Ask GEF to print a band of the diagram (translated &amp; clipped)
+<span class="nc" id="L201">        editor.print(graphics);</span>
+
+        // Make sure it isn't caching anything that should be written
+<span class="nc" id="L204">        graphics.dispose();</span>
+<span class="nc" id="L205">    }</span>
+
+    /**
+     * Return a new clip rectangle which is offset by the base of our band
+     * buffer.
+     *
+     * @param clip clipping rectangle
+     * @return adjusted clipping rectangle
+     */
+    private Rectangle offsetWindow(Rectangle clip) {
+<span class="nc" id="L215">        int baseY = clip.y - y1;</span>
+<span class="nc" id="L216">        return new Rectangle(clip.x, baseY, clip.width,</span>
+<span class="nc" id="L217">                Math.min(clip.height, scaledBufferHeight - baseY));</span>
+    }
+
+
+    /**
+     * Not implemented
+     *
+     * {@inheritDoc}
+     * @see java.awt.image.RenderedImage#copyData(java.awt.image.WritableRaster)
+     */
+    public WritableRaster copyData(WritableRaster outRaster) {
+<span class="nc" id="L228">        throw new UnsupportedOperationException();</span>
+        // This needs to iterate to fill entire output raster if implemented
+//        return image.copyData(outRaster);
+    }
+
+    /**
+     * Not implemented.
+     * {@inheritDoc}
+     *
+     * @see java.awt.image.RenderedImage#getSources()
+     */
+    public Vector&lt;RenderedImage&gt; getSources() {
+<span class="nc" id="L240">        return null;</span>
+    }
+
+    public ColorModel getColorModel() {
+<span class="nc" id="L244">        return image.getColorModel();</span>
+    }
+
+    public int getMinX() {
+<span class="nc" id="L248">        LOG.log(Level.FINE, &quot;getMinX = 0&quot;);</span>
+<span class="nc" id="L249">        return 0;</span>
+    }
+
+    public int getMinY() {
+<span class="nc" id="L253">        LOG.log(Level.FINE, &quot;getMinY = 0&quot;);</span>
+<span class="nc" id="L254">        return 0;</span>
+    }
+
+    public int getMinTileX() {
+<span class="nc" id="L258">        LOG.log(Level.FINE, &quot;getMinTileX = 0&quot;);</span>
+<span class="nc" id="L259">        return 0;</span>
+    }
+
+    public int getMinTileY() {
+<span class="nc" id="L263">        LOG.log(Level.FINE, &quot;getMinTileY = 0&quot;);</span>
+<span class="nc" id="L264">        return 0;</span>
+    }
+
+    public int getNumXTiles() {
+<span class="nc" id="L268">        LOG.log(Level.FINE, &quot;getNumXTiles = 1&quot;);</span>
+<span class="nc" id="L269">        return 1;</span>
+    }
+
+    /**
+     * Untested. Not guaranteed to work.
+     * {@inheritDoc}
+     *
+     * @see java.awt.image.RenderedImage#getNumYTiles()
+     */
+    public int getNumYTiles() {
+<span class="nc" id="L279">        int tiles = (getHeight() + scaledBufferHeight - 1) / scaledBufferHeight;</span>
+<span class="nc" id="L280">        LOG.log(Level.FINE, &quot;getNumYTiles = {0}&quot;, tiles);</span>
+<span class="nc" id="L281">        return tiles;</span>
+    }
+
+    public Object getProperty(String name) {
+<span class="nc" id="L285">        return image.getProperty(name);</span>
+    }
+
+    public String[] getPropertyNames() {
+<span class="nc" id="L289">        return image.getPropertyNames();</span>
+    }
+
+    public SampleModel getSampleModel() {
+<span class="nc" id="L293">        return image.getSampleModel();</span>
+    }
+
+
+    /**
+     * Untested. Not guaranteed to work.
+     * {@inheritDoc}
+     *
+     * @see java.awt.image.RenderedImage#getNumYTiles()
+     */
+
+    public Raster getTile(int tileX, int tileY) {
+<span class="nc" id="L305">        LOG.log(Level.FINE, &quot;getTile x={0}, y = {1}&quot;, new Object[]{tileX, tileY});</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (tileX &lt; getMinTileX()</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">                || tileX &gt;= getMinTileX() + getNumXTiles()</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">                || tileY &lt; getMinTileY()</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                || tileY &gt;= getMinTileY() + getNumYTiles()) {</span>
+<span class="nc" id="L310">            throw new IndexOutOfBoundsException();</span>
+        }
+        // FIXME: Boundary condition at end of image for non-integral
+        // multiples of BUFFER_HEIGHT
+<span class="nc" id="L314">        Rectangle tileBounds = new Rectangle(0, (tileY - getMinTileY()</span>
+                * scaledBufferHeight), width, scaledBufferHeight);
+<span class="nc" id="L316">        return getData(tileBounds);</span>
+    }
+
+    public int getTileGridXOffset() {
+<span class="nc" id="L320">        LOG.log(Level.FINE, &quot;getTileGridXOffset = 0&quot;);</span>
+<span class="nc" id="L321">        return 0;</span>
+    }
+
+    public int getTileGridYOffset() {
+<span class="nc" id="L325">        LOG.log(Level.FINE, &quot;getTileGridYOffset = 0&quot;);</span>
+<span class="nc" id="L326">        return 0;</span>
+    }
+
+    public int getTileWidth() {
+<span class="nc" id="L330">        LOG.log(Level.FINE, &quot;getTileWidth = {0}&quot;, width);</span>
+<span class="nc" id="L331">        return width;</span>
+    }
+
+    public int getTileHeight() {
+<span class="nc" id="L335">        LOG.log(Level.FINE, &quot;getTileHeight = {0}&quot;, scaledBufferHeight);</span>
+<span class="nc" id="L336">        return scaledBufferHeight;</span>
+    }
+
+    public int getWidth() {
+<span class="nc" id="L340">        LOG.log(Level.FINE, &quot;getWidth = {0}&quot;, width);</span>
+<span class="nc" id="L341">        return width;</span>
+    }
+
+    public int getHeight() {
+<span class="nc" id="L345">        LOG.log(Level.FINE, &quot;getHeight = &quot; + height);</span>
+<span class="nc" id="L346">        return height;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

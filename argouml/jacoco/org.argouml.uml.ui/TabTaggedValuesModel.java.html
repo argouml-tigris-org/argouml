@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabTaggedValuesModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabTaggedValuesModel.java</span></div><h1>TabTaggedValuesModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.AbstractTableModel;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+
+/**
+ * The model for the table with the tagged values. Implementation for UML 1.4
+ * and TagDefinitions.
+ *
+ * TODO: This currently only supports TaggedValues with a TagDefinition which
+ * has a type of String.
+ */
+public class TabTaggedValuesModel extends AbstractTableModel implements
+        VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
+
+<span class="fc" id="L73">    private static final Logger LOG =</span>
+<span class="fc" id="L74">        Logger.getLogger(TabTaggedValuesModel.class.getName());</span>
+
+    /**
+     * The ModelElement that is the current target.
+     */
+    private Object target;
+
+    /**
+     * Construct a model to be used by a JTable containing TaggedValues.
+     */
+<span class="fc" id="L84">    public TabTaggedValuesModel() {</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * Set the current target to the given model element.
+     *
+     * @param t the target modelelement
+     */
+    public void setTarget(Object t) {
+<span class="fc" id="L93">        LOG.log(Level.FINE, &quot;Set target to {0} &quot;, t);</span>
+        
+<span class="pc bpc" id="L95" title="3 of 4 branches missed.">        if (t != null &amp;&amp; !Model.getFacade().isAModelElement(t)) {</span>
+<span class="nc" id="L96">            throw new IllegalArgumentException();</span>
+        }
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (target != t) {</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (target != null) {</span>
+<span class="nc" id="L100">                Model.getPump().removeModelEventListener(this, target);</span>
+            }
+<span class="nc" id="L102">            target = t;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">            if (t != null) {</span>
+<span class="nc" id="L104">                Model.getPump().addModelEventListener(this, t,</span>
+                        new String[] {&quot;taggedValue&quot;, &quot;referenceTag&quot;});
+            }
+        }
+        // always fire changes in the case something has changed in the
+        // composition of the taggedValues collection.
+<span class="fc" id="L110">        fireTableDataChanged();</span>
+<span class="fc" id="L111">    }</span>
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
+    public int getColumnCount() {
+<span class="fc" id="L117">        return 2;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
+    @Override
+    public String getColumnName(int c) {
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if (c == 0) {</span>
+<span class="fc" id="L126">            return Translator.localize(&quot;label.taggedvaluespane.tag&quot;);</span>
+        }
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (c == 1) {</span>
+<span class="fc" id="L129">            return Translator.localize(&quot;label.taggedvaluespane.value&quot;);</span>
+        }
+<span class="nc" id="L131">        return &quot;XXX&quot;;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
+    @Override
+    public Class getColumnClass(int c) {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (c == 0) {</span>
+<span class="nc" id="L140">            return (Class) Model.getMetaTypes().getTagDefinition();</span>
+        }
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (c == 1) {</span>
+            // TODO: This will vary based on the type of the TagDefinition
+<span class="nc" id="L144">            return String.class;</span>
+        }
+<span class="nc" id="L146">        return null;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
+    @Override
+    public boolean isCellEditable(int row, int col) {
+<span class="nc" id="L154">        return true;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
+    public int getRowCount() {
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (target == null) {</span>
+<span class="fc" id="L162">            return 0;</span>
+        }
+        try {
+<span class="nc" id="L165">            Collection tvs = Model.getFacade()</span>
+<span class="nc" id="L166">                    .getTaggedValuesCollection(target);</span>
+            // if (tvs == null) return 1;
+<span class="nc" id="L168">            return tvs.size() + 1;</span>
+<span class="nc" id="L169">        } catch (InvalidElementException e) {</span>
+            // Target has been deleted
+<span class="nc" id="L171">            return 0;</span>
+        }
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
+    public Object getValueAt(int row, int col) {
+<span class="nc" id="L179">        Collection tvs = Model.getFacade().getTaggedValuesCollection(target);</span>
+<span class="nc bnc" id="L180" title="All 4 branches missed.">        if (row &gt; tvs.size() || col &gt; 1) {</span>
+<span class="nc" id="L181">            throw new IllegalArgumentException();</span>
+        }
+        // If the row is past the end of our current collection,
+        // return an empty string so they can add a new value
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        if (row == tvs.size()) {</span>
+<span class="nc" id="L186">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L188">        Object[] tva = tvs.toArray();</span>
+<span class="nc" id="L189">        Object tv = tva[row];</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (col == 0) {</span>
+<span class="nc" id="L191">            Object n = Model.getFacade().getTagDefinition(tv);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (n == null) {</span>
+<span class="nc" id="L193">                return &quot;&quot;;</span>
+            }
+<span class="nc" id="L195">            return n;</span>
+        }
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (col == 1) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="nc" id="L199">                String be = Model.getFacade().getValueOfTag(tv);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (be == null) {</span>
+<span class="nc" id="L201">                    return &quot;&quot;;</span>
+                }
+<span class="nc" id="L203">                return be;</span>
+            } else {
+<span class="nc" id="L205">                Object value = Model.getFacade().getValueOfTag(target, tv);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (value instanceof Collection) {</span>
+                    // handle multivalued tagged value
+<span class="nc" id="L208">                    int n = -1;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                    for (int i = 0; i &lt;= row; i++) {</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                        if (tva[i] == tv) {</span>
+<span class="nc" id="L211">                            n++;</span>
+                        }
+                    }
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                    if (n != -1) {</span>
+<span class="nc" id="L215">                        value = ((Collection) value).toArray()[n];</span>
+                    } else {
+<span class="nc" id="L217">                        value = &quot;&quot;;</span>
+                    }
+                }
+<span class="nc" id="L220">                return value.toString();</span>
+            }
+        }
+<span class="nc" id="L223">        return &quot;TV-&quot; + row * 2 + col; // for debugging</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+<span class="nc bnc" id="L231" title="All 4 branches missed.">        if (columnIndex != 0 &amp;&amp; columnIndex != 1) {</span>
+<span class="nc" id="L232">            return;</span>
+        }
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        if (columnIndex == 1 &amp;&amp; aValue == null) {</span>
+            // TODO: Use default value of appropriate type here
+<span class="nc" id="L236">            aValue = &quot;&quot;;</span>
+        }
+
+<span class="nc bnc" id="L239" title="All 6 branches missed.">        if ((aValue == null || &quot;&quot;.equals(aValue)) &amp;&amp; columnIndex == 0) {</span>
+<span class="nc" id="L240">            removeRow(rowIndex);</span>
+<span class="nc" id="L241">            return;</span>
+        }
+
+<span class="nc" id="L244">        Collection tvs = Model.getFacade().getTaggedValuesCollection(target);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (tvs.size() &lt;= rowIndex) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (columnIndex == 0) {</span>
+<span class="nc" id="L247">                addRow(new Object[] {aValue, null});</span>
+            }
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            if (columnIndex == 1) {</span>
+<span class="nc" id="L250">                addRow(new Object[] {null, aValue});</span>
+            }
+        } else {
+<span class="nc" id="L253">            Object tv = getFromCollection(tvs, rowIndex);</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (columnIndex == 0) {</span>
+<span class="nc" id="L255">                Model.getExtensionMechanismsHelper().setType(tv, aValue);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">            } else if (columnIndex == 1) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="nc" id="L258">                    Model.getExtensionMechanismsHelper().setDataValues(tv,</span>
+                            new String[] {(String) aValue});
+                } else {
+<span class="nc" id="L261">                    Object[] tva = tvs.toArray();</span>
+<span class="nc" id="L262">                    Object value = Model.getFacade().getValueOfTag(target, tv);</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">                    if (value instanceof Collection) {</span>
+                        // handle multivalued tagged value
+<span class="nc" id="L265">                        Iterator iter = ((Collection) value).iterator();</span>
+<span class="nc" id="L266">                        Collection values = new ArrayList();</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">                        for (int i = 0; i &lt; tva.length; i++) {</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">                            if (tva[i] == tva[rowIndex]) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                                if (i == rowIndex) {</span>
+<span class="nc" id="L270">                                    values.add(aValue);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">                                    if (iter.hasNext()) {</span>
+<span class="nc" id="L272">                                        iter.next();</span>
+                                    }
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                                } else if (iter.hasNext()) {</span>
+<span class="nc" id="L275">                                    values.add(iter.next());</span>
+                                }
+                            }
+<span class="nc" id="L278">                            value = values;</span>
+                        }
+<span class="nc" id="L280">                    } else {</span>
+<span class="nc" id="L281">                        value = aValue;</span>
+                    }
+<span class="nc" id="L283">                    Model.getExtensionMechanismsHelper().setTaggedValue(</span>
+                            target, tv, value);
+                }
+            }
+<span class="nc" id="L287">            fireTableChanged(new TableModelEvent(this, rowIndex, rowIndex,</span>
+                    columnIndex));
+        }
+<span class="nc" id="L290">    }</span>
+
+    /**
+     * Add a tagged value to the model with the given type and value.
+     *
+     * @param values values for the columns: values[0] contains type for new
+     *            TaggedValue values[1] contains value for new TaggedValue
+     */
+    public void addRow(Object[] values) {
+<span class="nc" id="L299">        Object tagType = values[0];</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            if (tagType == null) {</span>
+<span class="nc" id="L303">                tagType = &quot;&quot;;</span>
+            }
+<span class="nc" id="L305">            String tagValue = (String) values[1];</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">            if (tagValue == null) {</span>
+                // TODO: Use default value of appropriate type for TD
+<span class="nc" id="L308">                tagValue = &quot;&quot;;</span>
+                // tagValue = true;
+            }
+<span class="nc" id="L311">            Object tv = Model.getExtensionMechanismsFactory()</span>
+<span class="nc" id="L312">                    .createTaggedValue();</span>
+
+            // We really shouldn't add it until after it is set up, but we
+            // need it to have an owner for the following method calls
+<span class="nc" id="L316">            Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);</span>
+
+<span class="nc" id="L318">            Model.getExtensionMechanismsHelper().setType(tv, tagType);</span>
+<span class="nc" id="L319">            Model.getExtensionMechanismsHelper().setDataValues(tv,</span>
+                    new String[] {tagValue});
+<span class="nc" id="L321">        } else {</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            if (tagType == null) {</span>
+<span class="nc" id="L323">                return;</span>
+            }
+<span class="nc" id="L325">            Object tagValue = values[1];</span>
+<span class="nc" id="L326">            Model.getExtensionMechanismsHelper()</span>
+<span class="nc" id="L327">                    .addTaggedValue(target, tagType);</span>
+        }
+
+        // Since we aren't sure of ordering, fire event for whole table
+<span class="nc" id="L331">        fireTableChanged(new TableModelEvent(this));</span>
+<span class="nc" id="L332">    }</span>
+
+    /**
+     * Remove the TaggedValue at the given row from the ModelElement.
+     *
+     * @param row row containing TaggedValue to be removed.
+     */
+    public void removeRow(int row) {
+<span class="nc" id="L340">        Collection c = Model.getFacade().getTaggedValuesCollection(target);</span>
+<span class="nc bnc" id="L341" title="All 4 branches missed.">        if ((row &gt;= 0) &amp;&amp; (row &lt; c.size())) {</span>
+<span class="nc" id="L342">            Object element = getFromCollection(c, row);</span>
+<span class="nc" id="L343">            Model.getUmlFactory().delete(element);</span>
+<span class="nc" id="L344">            fireTableChanged(new TableModelEvent(this));</span>
+        }
+<span class="nc" id="L346">    }</span>
+
+    /*
+     * Return the ith element from a Collection.
+     *
+     * @param collection collection to get element from
+     *
+     * @param index index of the element to be returned
+     *
+     * @return the object
+     */
+    static Object getFromCollection(Collection collection, int index) {
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (collection instanceof List) {</span>
+<span class="nc" id="L359">            return ((List) collection).get(index);</span>
+        }
+<span class="nc bnc" id="L361" title="All 4 branches missed.">        if (index &gt;= collection.size() || index &lt; 0) {</span>
+<span class="nc" id="L362">            throw new IndexOutOfBoundsException();</span>
+        }
+<span class="nc" id="L364">        Iterator it = collection.iterator();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        for (int i = 0; i &lt; index; i++) {</span>
+<span class="nc" id="L366">            it.next();</span>
+        }
+<span class="nc" id="L368">        return it.next();</span>
+    }
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
+     * PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        if (&quot;taggedValue&quot;.equals(evt.getPropertyName())</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">                || &quot;referenceTag&quot;.equals(evt.getPropertyName())) {</span>
+<span class="nc" id="L378">            fireTableChanged(new TableModelEvent(this));</span>
+        }
+<span class="nc bnc" id="L380" title="All 4 branches missed.">        if (evt instanceof DeleteInstanceEvent &amp;&amp; evt.getSource() == target) {</span>
+<span class="nc" id="L381">            setTarget(null);</span>
+        }
+<span class="nc" id="L383">    }</span>
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.
+     * PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent pce) {
+<span class="nc" id="L390">        DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);</span>
+<span class="nc" id="L391">        SwingUtilities.invokeLater(delayedNotify);</span>
+<span class="nc" id="L392">    }</span>
+
+    /*
+     * @see
+     * org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.
+     * beans.PropertyChangeEvent)
+     */
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+<span class="nc" id="L400">        fireTableDataChanged();</span>
+<span class="nc" id="L401">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5711005901444956345L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HeapMonitor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">HeapMonitor.java</span></div><h1>HeapMonitor.java</h1><pre class="source lang-java linenums">/* $Id: HeapMonitor.java 19743 2011-10-04 02:47:51Z tfmorris $
+ *****************************************************************************
+ * Copyright (c) 2009-2013 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.MessageFormat;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
+
+/**
+ * Swing component to monitor Java heap usage.
+ * 
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+public class HeapMonitor extends JComponent implements ActionListener {
+
+    // % thresholds for bar color changes
+    private static final int WARN_THRESHOLD = 75;
+    private static final int CRITICAL_THRESHOLD = 90;
+    
+<span class="nc" id="L64">    private static final Color OK_COLOR = new Color(0, 200, 100);</span>
+
+<span class="nc" id="L66">    private static final Color WARN_COLOR = new Color(255, 190, 125);</span>
+
+<span class="nc" id="L68">    private static final Color CRITICAL_COLOR = new Color(255, 70, 70);</span>
+
+<span class="nc" id="L70">    private static final Color CURRENT_USED_COLOR = new Color(0, 0, 0);</span>
+
+<span class="nc" id="L72">    private static final Color CURRENT_HEAP_COLOR = new Color(255, 255, 0);</span>
+
+    private static final long M = 1024 * 1024;
+    
+    // Virtual memory (heap) stats
+    private long free;
+    private long total;
+    private long max;
+    private long used;
+    
+    /**
+     * Construct a graphical JVM heap monitor component.
+     */
+    public HeapMonitor() {
+<span class="nc" id="L86">         super();</span>
+<span class="nc" id="L87">        Dimension size = new Dimension(200, 20);</span>
+<span class="nc" id="L88">        setPreferredSize(size);</span>
+
+        // TODO: Add a button to force garbage collection
+
+<span class="nc" id="L92">        updateStats();</span>
+
+<span class="nc" id="L94">        Timer timer = new Timer(1000, this);</span>
+<span class="nc" id="L95">        timer.start();</span>
+<span class="nc" id="L96">    }</span>
+    
+    public void paint (Graphics g) {        
+<span class="nc" id="L99">        Rectangle bounds = getBounds();</span>
+<span class="nc" id="L100">        int usedX = (int) (used * bounds.width / max);</span>
+<span class="nc" id="L101">        int currentHeapX = (int) (total * bounds.width / max);</span>
+<span class="nc" id="L102">        int warnX = WARN_THRESHOLD * bounds.width / 100;</span>
+<span class="nc" id="L103">        int dangerX = CRITICAL_THRESHOLD * bounds.width / 100;</span>
+        
+<span class="nc" id="L105">        Color savedColor = g.getColor();</span>
+<span class="nc" id="L106">        g.setColor(OK_COLOR);</span>
+<span class="nc" id="L107">        g.fillRect(0, 0, warnX, bounds.height);</span>
+
+<span class="nc" id="L109">        g.setColor(WARN_COLOR);</span>
+<span class="nc" id="L110">        g.fillRect(warnX, 0, dangerX - warnX, bounds.height);</span>
+
+<span class="nc" id="L112">        g.setColor(CRITICAL_COLOR);</span>
+<span class="nc" id="L113">        g.fillRect(dangerX, 0, bounds.width - dangerX, bounds.height);</span>
+
+        // Thin bar to show current used
+<span class="nc" id="L116">        g.setColor(CURRENT_USED_COLOR);</span>
+<span class="nc" id="L117">        g.fillRect(usedX - 2, 0, 2, bounds.height);</span>
+
+        // Thin bar to show current allocated heap size
+<span class="nc" id="L120">        g.setColor(CURRENT_HEAP_COLOR);</span>
+<span class="nc" id="L121">        g.fillRect(currentHeapX - 2, 0, 2, bounds.height);</span>
+
+<span class="nc" id="L123">        g.setColor(getForeground());</span>
+
+<span class="nc" id="L125">        String s = MessageFormat.format(&quot;{0}M used of {1}M max&quot;,</span>
+<span class="nc" id="L126">                new Object[] {(long) (used / M), (long) (max / M) });</span>
+        
+<span class="nc" id="L128">        int x = (bounds.width - g.getFontMetrics().stringWidth(s)) / 2;</span>
+<span class="nc" id="L129">        int y = (bounds.height + g.getFontMetrics().getHeight()) / 2;</span>
+<span class="nc" id="L130">        g.drawString(s, x, y);</span>
+        
+<span class="nc" id="L132">        g.setColor(savedColor);</span>
+       
+<span class="nc" id="L134">    }</span>
+
+    /*
+     * Timer action method.  Periodically update our stats and force a repaint.
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L140">        updateStats();</span>
+<span class="nc" id="L141">        repaint();</span>
+<span class="nc" id="L142">    }</span>
+    
+    private void updateStats() {
+<span class="nc" id="L145">        free = Runtime.getRuntime().freeMemory();</span>
+<span class="nc" id="L146">        total = Runtime.getRuntime().totalMemory();</span>
+<span class="nc" id="L147">        max = Runtime.getRuntime().maxMemory();</span>
+<span class="nc" id="L148">        used = total - free;</span>
+
+<span class="nc" id="L150">        String tip = MessageFormat.format(</span>
+                &quot;Heap use: {0}%  {1}M used of {2}M heap.  Max: {3}M&quot;, 
+<span class="nc" id="L152">                new Object[] {used * 100 / max, (long) (used / M),</span>
+<span class="nc" id="L153">                              (long) (total / M), (long) (max / M)</span>
+                });
+<span class="nc" id="L155">        setToolTipText(tip);</span>
+<span class="nc" id="L156">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

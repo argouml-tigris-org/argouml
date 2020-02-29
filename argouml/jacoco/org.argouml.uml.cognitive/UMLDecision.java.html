@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLDecision.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive</a> &gt; <span class="el_source">UMLDecision.java</span></div><h1>UMLDecision.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive;
+
+import org.argouml.cognitive.Decision;
+
+/**
+ * UMLDecision is a utility class which provides a namespace for standard
+ * decisions in the problem domain of UML Modelling.
+ *
+ * @stereotype utility
+ */
+public class UMLDecision extends Decision {
+    /**
+     * Decision type: INHERITANCE.
+     */
+<span class="fc" id="L53">    public static final UMLDecision INHERITANCE =</span>
+        new UMLDecision(
+            &quot;misc.decision.inheritance&quot;, 1);
+
+    /**
+     * Decision type: CONTAINMENT.
+     */
+<span class="fc" id="L60">    public static final UMLDecision CONTAINMENT =</span>
+        new UMLDecision(
+            &quot;misc.decision.containment&quot;, 1);
+
+    /**
+     * Decision type: PATTERNS.
+     */
+<span class="fc" id="L67">    public static final UMLDecision PATTERNS =</span>
+        new UMLDecision(
+            &quot;misc.decision.design-patterns&quot;, 1); //??
+
+    /**
+     * Decision type: RELATIONSHIPS.
+     */
+<span class="fc" id="L74">    public static final UMLDecision RELATIONSHIPS =</span>
+        new UMLDecision(
+            &quot;misc.decision.relationships&quot;, 1);
+
+    /**
+     * Decision type: STORAGE.
+     */
+<span class="fc" id="L81">    public static final UMLDecision STORAGE =</span>
+        new UMLDecision(
+            &quot;misc.decision.storage&quot;, 1);
+
+    /**
+     * Decision type: BEHAVIOR.
+     */
+<span class="fc" id="L88">    public static final UMLDecision BEHAVIOR =</span>
+        new UMLDecision(
+            &quot;misc.decision.behavior&quot;, 1);
+
+    /**
+     * Decision type: INSTANCIATION.
+     */
+<span class="fc" id="L95">    public static final UMLDecision INSTANCIATION =</span>
+        new UMLDecision(
+            &quot;misc.decision.instantiation&quot;, 1);
+
+    /**
+     * Decision type: NAMING.
+     */
+<span class="fc" id="L102">    public static final UMLDecision NAMING =</span>
+        new UMLDecision(
+            &quot;misc.decision.naming&quot;, 1);
+
+    /**
+     * Decision type: MODULARITY.
+     */
+<span class="fc" id="L109">    public static final UMLDecision MODULARITY =</span>
+        new UMLDecision(
+            &quot;misc.decision.modularity&quot;, 1);
+
+    /**
+     * Decision type: CLASS_SELECTION.
+     */
+<span class="fc" id="L116">    public static final UMLDecision CLASS_SELECTION =</span>
+        new UMLDecision(
+            &quot;misc.decision.class-selection&quot;, 1);
+
+    /**
+     * Decision type: EXPECTED_USAGE.
+     */
+<span class="fc" id="L123">    public static final UMLDecision EXPECTED_USAGE =</span>
+        new UMLDecision(
+            &quot;misc.decision.expected-usage&quot;, 1);
+
+    /**
+     * Decision type: METHODS.
+     */
+<span class="fc" id="L130">    public static final UMLDecision METHODS =</span>
+        new UMLDecision(
+            &quot;misc.decision.methods&quot;, 1); //??
+
+    /**
+     * Decision type: CODE_GEN.
+     */
+<span class="fc" id="L137">    public static final UMLDecision CODE_GEN =</span>
+        new UMLDecision(
+            &quot;misc.decision.code-generation&quot;, 1); //??
+
+    /**
+     * Decision type: PLANNED_EXTENSIONS.
+     */
+<span class="fc" id="L144">    public static final UMLDecision PLANNED_EXTENSIONS =</span>
+        new UMLDecision(
+            &quot;misc.decision.planned-extensions&quot;, 1);
+
+    /**
+     * Decision type: STEREOTYPES.
+     */
+<span class="fc" id="L151">    public static final UMLDecision STEREOTYPES =</span>
+        new UMLDecision(
+            &quot;misc.decision.stereotypes&quot;, 1);
+
+    /**
+     * Decision type: STATE_MACHINES.
+     */
+<span class="fc" id="L158">    public static final UMLDecision STATE_MACHINES =</span>
+        new UMLDecision(
+            &quot;misc.decision.mstate-machines&quot;, 1);
+
+    /**
+     * The constructor.
+     *
+     * @param name the localized decision name key
+     * @param prio the priority
+     */
+    public UMLDecision(String name, int prio) {
+<span class="fc" id="L169">        super(name, prio);</span>
+<span class="fc" id="L170">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShortcutField.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">ShortcutField.java</span></div><h1>ShortcutField.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Collections;
+
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.util.KeyEventUtils;
+
+/**
+ * A special JTextField that records key strokes
+ *
+ * @author nirux
+ */
+public class ShortcutField extends JTextField {
+
+    /**
+     * The UID
+     */
+    private static final long serialVersionUID = -62483698420802557L;
+
+<span class="nc" id="L64">    private EventListenerList listenerList = new EventListenerList();</span>
+
+    /**
+     * Main constructor for ShortcutField
+     * 
+     * @param text      the initial text of the field
+     * @param columns   the number of columns
+     */
+    public ShortcutField(String text, int columns) {
+<span class="nc" id="L73">        super(null, text, columns);</span>
+        
+        // trap focus traversal keys also 
+<span class="nc" id="L76">        this.setFocusTraversalKeys(</span>
+                KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, 
+                Collections.EMPTY_SET); 
+<span class="nc" id="L79">        this.setFocusTraversalKeys(</span>
+                KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, 
+                Collections.EMPTY_SET); 
+ 
+        // let's add the key printing logic
+<span class="nc" id="L84">        this.addKeyListener(new KeyListener() { </span>
+<span class="nc" id="L85">            private int currentKeyCode = 0; </span>
+            public void keyPressed(KeyEvent ke) { 
+<span class="nc" id="L87">                ke.consume(); </span>
+<span class="nc" id="L88">                JTextField tf = (JTextField) ke.getSource(); </span>
+<span class="nc" id="L89">                tf.setText(toString(ke)); </span>
+<span class="nc" id="L90">            } </span>
+ 
+            public void keyReleased(KeyEvent ke) { 
+<span class="nc" id="L93">                ke.consume(); </span>
+<span class="nc" id="L94">                JTextField tf = (JTextField) ke.getSource(); </span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                switch(currentKeyCode) { </span>
+                case KeyEvent.VK_ALT: 
+                case KeyEvent.VK_ALT_GRAPH: 
+                case KeyEvent.VK_CONTROL: 
+                case KeyEvent.VK_SHIFT: 
+<span class="nc" id="L100">                    tf.setText(&quot;&quot;); </span>
+<span class="nc" id="L101">                    return; </span>
+                } 
+<span class="nc" id="L103">            } </span>
+ 
+            public void keyTyped(KeyEvent ke) { 
+<span class="nc" id="L106">                ke.consume(); </span>
+<span class="nc" id="L107">            } </span>
+            
+            private String toString(KeyEvent ke) { 
+<span class="nc" id="L110">                currentKeyCode = ke.getKeyCode(); </span>
+<span class="nc" id="L111">                int keyCode = currentKeyCode; </span>
+<span class="nc" id="L112">                String modifText = </span>
+<span class="nc" id="L113">                    KeyEventUtils.getModifiersText(ke.getModifiers());</span>
+                
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (&quot;&quot;.equals(modifText)) {</span>
+                    // no modifiers - let's check if the key is valid
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                    if (KeyEventUtils.isActionEvent(ke)) {</span>
+<span class="nc" id="L118">                        return KeyEventUtils.getKeyText(keyCode);</span>
+                    } else {
+<span class="nc" id="L120">                        return &quot;&quot;;</span>
+                    }
+                } else {
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                    switch(keyCode) { </span>
+                    case KeyEvent.VK_ALT: 
+                    case KeyEvent.VK_ALT_GRAPH: 
+                    case KeyEvent.VK_CONTROL: 
+                    case KeyEvent.VK_SHIFT: 
+<span class="nc" id="L128">                        return modifText; // middle of shortcut </span>
+                    default: 
+<span class="nc" id="L130">                        modifText += KeyEventUtils.getKeyText(ke.getKeyCode());</span>
+<span class="nc" id="L131">                        fireShortcutChangedEvent(modifText);</span>
+<span class="nc" id="L132">                        return modifText;</span>
+                    }
+                } 
+            } 
+        });
+<span class="nc" id="L137">    }</span>
+
+    /**
+     * Adds a ShortcutChangedListener to the listener list
+     *  
+     * @param listener          the ShortcutChangedListener to be added
+     */
+    public void addShortcutChangedListener(ShortcutChangedListener listener) {
+<span class="nc" id="L145">        listenerList.add(ShortcutChangedListener.class, listener);</span>
+<span class="nc" id="L146">    }</span>
+
+    /**
+     * Inform listeners of any shortcut notifications.
+     * 
+     * @param text      the text of the field
+     */
+    protected void fireShortcutChangedEvent(String text) {
+<span class="nc" id="L154">        ShortcutChangedEvent event = null;</span>
+        // Guaranteed to return a non-null array
+<span class="nc" id="L156">        Object[] listeners = listenerList.getListenerList();</span>
+
+<span class="nc" id="L158">        KeyStroke keyStroke = ShortcutMgr.decodeKeyStroke(text);</span>
+
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (listeners[i] == ShortcutChangedListener.class) {</span>
+                // Lazily create the event:
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                if (event == null) {</span>
+<span class="nc" id="L166">                    event = new ShortcutChangedEvent(this, keyStroke);</span>
+                }
+<span class="nc" id="L168">                ((ShortcutChangedListener) listeners[i + 1])</span>
+<span class="nc" id="L169">                        .shortcutChange(event);</span>
+            }
+        }
+<span class="nc" id="L172">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

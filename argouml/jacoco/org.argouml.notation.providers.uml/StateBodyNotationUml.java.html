@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateBodyNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">StateBodyNotationUml.java</span></div><h1>StateBodyNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.StringTokenizer;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.StateBodyNotation;
+
+/**
+ * UML notation for the body of a state.
+ * 
+ * @author Michiel van der Wulp
+ */
+public class StateBodyNotationUml extends StateBodyNotation {
+
+    /**
+     * The default language for an expression.
+     */
+    private static final String LANGUAGE = &quot;Java&quot;;
+    
+    /**
+     * The constructor.
+     *
+     * @param state the state represented by the notation
+     */
+    public StateBodyNotationUml(Object state) {
+<span class="fc" id="L72">        super(state);</span>
+<span class="fc" id="L73">    }</span>
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="nc" id="L80">            parseStateBody(modelElement, text);</span>
+<span class="nc" id="L81">        } catch (ParseException pe) {</span>
+<span class="nc" id="L82">            String msg = &quot;statusmsg.bar.error.parsing.statebody&quot;;</span>
+<span class="nc" id="L83">            Object[] args = {</span>
+<span class="nc" id="L84">                pe.getLocalizedMessage(),</span>
+<span class="nc" id="L85">                Integer.valueOf(pe.getErrorOffset()),</span>
+            };
+<span class="nc" id="L87">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L89">                    Translator.messageFormat(msg, args)));</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">    }</span>
+
+    /*
+     * @see org.argouml.uml.notation.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="fc" id="L97">        return &quot;parsing.help.fig-statebody&quot;;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+
+<span class="nc" id="L103">        StringBuffer s = new StringBuffer();</span>
+
+<span class="nc" id="L105">        Object entryAction = Model.getFacade().getEntry(modelElement);</span>
+<span class="nc" id="L106">        Object exitAction = Model.getFacade().getExit(modelElement);</span>
+<span class="nc" id="L107">        Object doAction = Model.getFacade().getDoActivity(modelElement);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (entryAction != null) {</span>
+<span class="nc" id="L109">            String entryStr = </span>
+<span class="nc" id="L110">                NotationUtilityUml.generateActionSequence(entryAction);</span>
+<span class="nc" id="L111">            s.append(&quot;entry /&quot;).append(entryStr);</span>
+        }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (doAction != null) {</span>
+<span class="nc" id="L114">            String doStr = NotationUtilityUml.generateActionSequence(doAction);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (s.length() &gt; 0) {</span>
+<span class="nc" id="L116">                s.append(&quot;\n&quot;);</span>
+            }
+<span class="nc" id="L118">            s.append(&quot;do /&quot;).append(doStr);</span>
+
+        }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (exitAction != null) {</span>
+<span class="nc" id="L122">            String exitStr = </span>
+<span class="nc" id="L123">                NotationUtilityUml.generateActionSequence(exitAction);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (s.length() &gt; 0) {</span>
+<span class="nc" id="L125">                s.append(&quot;\n&quot;);</span>
+            }
+<span class="nc" id="L127">            s.append(&quot;exit /&quot;).append(exitStr);</span>
+        }
+        Collection internaltrans =
+<span class="nc" id="L130">            Model.getFacade().getInternalTransitions(modelElement);</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (internaltrans != null) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            for (Object trans : internaltrans) {</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                if (s.length() &gt; 0) {</span>
+<span class="nc" id="L134">                    s.append(&quot;\n&quot;);</span>
+                }
+                /* TODO: Is this a good way of handling nested notation? */
+<span class="nc" id="L137">                s.append((new TransitionNotationUml(trans)).toString(trans,</span>
+                        settings));
+<span class="nc" id="L139">            }</span>
+        }
+<span class="nc" id="L141">        return s.toString();</span>
+    }
+
+    /**
+     * Parse user input for state bodies and assign the individual lines to
+     * according actions or transitions. The user input consists of multiple
+     * lines like:&lt;pre&gt;
+     *   action-label / action-expression
+     * &lt;/pre&gt; or the format of a regular
+     * transition - see parseTransition(). &lt;p&gt;
+     *
+     * &quot;action-label&quot; stands for one of &quot;entry&quot;, &quot;do&quot; and &quot;exit&quot;.
+     * The words &quot;entry&quot;, &quot;do&quot; and &quot;exit&quot; are case-independent.
+     *
+     * @param st  The State object.
+     * @param s   The string to parse.
+     * @throws ParseException when there is a syntax problem,
+     *         e.g. non-matching brackets () or []
+     */
+    protected void parseStateBody(Object st, String s) throws ParseException {
+<span class="fc" id="L161">        boolean foundEntry = false;</span>
+<span class="fc" id="L162">        boolean foundExit = false;</span>
+<span class="fc" id="L163">        boolean foundDo = false;</span>
+
+        /* Generate all the existing internal transitions,
+         * so that we can compare them as text with the newly entered ones.
+         */
+<span class="fc" id="L168">        ModelElementInfoList internalsInfo =</span>
+            new ModelElementInfoList(
+<span class="fc" id="L170">                    Model.getFacade().getInternalTransitions(st));</span>
+
+<span class="fc" id="L172">        StringTokenizer lines = new StringTokenizer(s, &quot;\n\r&quot;);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        while (lines.hasMoreTokens()) {</span>
+<span class="fc" id="L174">            String line = lines.nextToken().trim();</span>
+            /* Now let's check if the new line is already present in
+             * the old list of internal transitions; if it is, then
+             * mark the old one to be retained (i.e. do not create a new one),
+             * if it isn't, continue with parsing:
+             */
+<span class="pc bpc" id="L180" title="1 of 2 branches missed.">            if (!internalsInfo.checkRetain(line)) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                if (line.toLowerCase().startsWith(&quot;entry&quot;)</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                        &amp;&amp; line.substring(5).trim().startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L183">                    parseStateEntryAction(st, line);</span>
+<span class="fc" id="L184">                    foundEntry = true;</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">                } else if (line.toLowerCase().startsWith(&quot;exit&quot;)</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">                        &amp;&amp; line.substring(4).trim().startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L187">                    parseStateExitAction(st, line);</span>
+<span class="fc" id="L188">                    foundExit = true;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                } else if (line.toLowerCase().startsWith(&quot;do&quot;)</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                        &amp;&amp; line.substring(2).trim().startsWith(&quot;/&quot;)) {</span>
+<span class="fc" id="L191">                    parseStateDoAction(st, line);</span>
+<span class="fc" id="L192">                    foundDo = true;</span>
+                } else {
+                    Object t =
+<span class="fc" id="L195">                        Model.getStateMachinesFactory()</span>
+<span class="fc" id="L196">                                .buildInternalTransition(st);</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                    if (t == null) {</span>
+<span class="nc" id="L198">                        continue;</span>
+                    }
+                    /* TODO: If the next line trows an exception, then what
+                     * do we do with the remainder of the
+                     * parsed/to be parsed lines?
+                     */
+                    /* TODO: Is this a good way of handling nested notation?
+                     * The following fails the tests:
+                     * new TransitionNotationUml(t).parse(line);
+                     */
+<span class="fc" id="L208">                    new TransitionNotationUml(t).parseTransition(t, line);</span>
+                    /* Add this new one, and mark it to be retained: */
+<span class="fc" id="L210">                    internalsInfo.add(t, true);</span>
+                }
+            }
+<span class="fc" id="L213">        }</span>
+
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (!foundEntry) {</span>
+<span class="fc" id="L216">            delete(Model.getFacade().getEntry(st));</span>
+        }
+<span class="fc bfc" id="L218" title="All 2 branches covered.">        if (!foundExit) {</span>
+<span class="fc" id="L219">            delete(Model.getFacade().getExit(st));</span>
+        }
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        if (!foundDo) {</span>
+<span class="fc" id="L222">            delete(Model.getFacade().getDoActivity(st));</span>
+        }
+
+        /* Process the final list of internal transitions,
+         * and hook it to the state:
+         */
+<span class="fc" id="L228">        Model.getStateMachinesHelper().setInternalTransitions(st,</span>
+<span class="fc" id="L229">                internalsInfo.finalisedList());</span>
+<span class="fc" id="L230">    }</span>
+
+    /**
+     * This class manages a list of UML modelelements that existed
+     * before and after the parseXxxxx() function was called.
+     * It has all the knowledge to deal with additions and removals.
+     *
+     * @author MVW
+     */
+    class ModelElementInfoList {
+        /**
+         * The list that we maintain.
+         */
+        private Collection&lt;InfoItem&gt; theList;
+
+        /**
+         * An item in a list, maintains all info about one UML object,
+         * its generated version (i.e. textual representation),
+         * and if it needs to be retained after parsing.&lt;p&gt;
+         *
+         * @author MVW
+         */
+        class InfoItem {
+            private TransitionNotationUml generator;
+            private Object umlObject;
+            private boolean retainIt;
+
+            /**
+             * The constructor.
+             * @param obj the UML object
+             */
+<span class="fc" id="L261">            InfoItem(Object obj) {</span>
+<span class="fc" id="L262">                umlObject = obj;</span>
+<span class="fc" id="L263">                generator = new TransitionNotationUml(obj);</span>
+<span class="fc" id="L264">            }</span>
+
+            /**
+             * The constructor.
+             *
+             * @param obj the UML object.
+             * @param r
+             */
+            InfoItem(Object obj, boolean r) {
+<span class="fc" id="L273">                this(obj);</span>
+<span class="fc" id="L274">                retainIt = r;</span>
+<span class="fc" id="L275">            }</span>
+
+            /**
+             * @return the generated string representation
+             */
+            String getGenerated() {
+<span class="fc" id="L281">                return generator.toString();</span>
+            }
+
+            /**
+             * @return the UML Object
+             */
+            Object getUmlObject() {
+<span class="fc" id="L288">                return umlObject;</span>
+            }
+
+            /**
+             * Retain this UML object.
+             */
+            void retain() {
+<span class="nc" id="L295">                retainIt = true;</span>
+<span class="nc" id="L296">            }</span>
+
+            /**
+             * @return true if the UML object is to be retained,
+             *         false if it is to be deleted
+             */
+            boolean isRetained() {
+<span class="fc" id="L303">                return retainIt;</span>
+            }
+        }
+
+        /**
+         * The constructor.
+         *
+         * @param c the collection of the UML objects
+         *          that were present before
+         */
+<span class="fc" id="L313">        ModelElementInfoList(Collection c) {</span>
+<span class="fc" id="L314">            theList = new ArrayList&lt;InfoItem&gt;();</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">            for (Object obj : c) {</span>
+<span class="fc" id="L316">                theList.add(new InfoItem(obj));</span>
+<span class="fc" id="L317">            }</span>
+<span class="fc" id="L318">        }</span>
+
+        /**
+         * @param obj the UML object
+         * @param r true if this UML object needs to be retained
+         */
+        void add(Object obj, boolean r) {
+<span class="fc" id="L325">            theList.add(new InfoItem(obj, r));</span>
+<span class="fc" id="L326">        }</span>
+
+        /**
+         * Check the given textual description,
+         * and if already present in the list, then retain it.
+         * @param line the given textual description
+         * @return true if the item was already present in the list
+         */
+        boolean checkRetain(String line) {
+<span class="fc bfc" id="L335" title="All 2 branches covered.">            for (InfoItem tInfo : theList) {</span>
+<span class="pc bpc" id="L336" title="1 of 2 branches missed.">                if (tInfo.getGenerated().equals(line)) {</span>
+<span class="nc" id="L337">                    tInfo.retain();</span>
+<span class="nc" id="L338">                    return true;</span>
+                }
+<span class="fc" id="L340">            }</span>
+<span class="fc" id="L341">            return false;</span>
+        }
+
+        /**
+         * Finish the procedure, by deleting the UML model items
+         * that are not to be retained, and return a collection
+         * of the ones to be retained.
+         * This method should only be called once!
+         * @return the UML objects that survive.
+         */
+        Collection finalisedList() {
+            // don't forget to remove old internals!
+<span class="fc" id="L353">            Collection&lt;Object&gt; newModelElementsList = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">            for (InfoItem tInfo : theList) {</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">                if (tInfo.isRetained()) {</span>
+<span class="fc" id="L356">                    newModelElementsList.add(tInfo.getUmlObject());</span>
+                } else {
+<span class="fc" id="L358">                    delete(tInfo.getUmlObject());</span>
+                }
+<span class="fc" id="L360">            }</span>
+            // Make next accesses to this instance predictable:
+<span class="fc" id="L362">            theList.clear();</span>
+            // and hook in the new ones:
+<span class="fc" id="L364">            return newModelElementsList;</span>
+        }
+    }
+
+
+    /**
+     * Parse a line of the form: &quot;entry /action&quot; and create an action.
+     * We do not need to check for the presence of the word &quot;entry&quot; - that
+     * is done by the caller.
+     *
+     * @param st  the state object
+     * @param s   the string to be parsed
+     */
+    private void parseStateEntryAction(Object st, String s) {
+<span class="pc bpc" id="L378" title="1 of 2 branches missed.">        if (s.indexOf(&quot;/&quot;) &gt; -1) {</span>
+<span class="fc" id="L379">            s = s.substring(s.indexOf(&quot;/&quot;) + 1).trim();</span>
+        }
+<span class="fc" id="L381">        Object oldEntry = Model.getFacade().getEntry(st);</span>
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        if (oldEntry == null) {</span>
+<span class="fc" id="L383">            Model.getStateMachinesHelper().setEntry(st, buildNewCallAction(s));</span>
+        } else {
+<span class="fc" id="L385">            updateAction(oldEntry, s);</span>
+        }
+<span class="fc" id="L387">    }</span>
+
+    /**
+     * Parse a line of the form: &quot;exit /action&quot; and create an action.
+     * We do not need to check for the presence of the word &quot;exit&quot; - that
+     * is done by the caller.
+     *
+     * @param st
+     *            the state object
+     * @param s
+     *            the string to be parsed
+     */
+    private void parseStateExitAction(Object st, String s) {
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (s.indexOf(&quot;/&quot;) &gt; -1) {</span>
+<span class="fc" id="L401">            s = s.substring(s.indexOf(&quot;/&quot;) + 1).trim();</span>
+        }
+<span class="fc" id="L403">        Object oldExit = Model.getFacade().getExit(st);</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">        if (oldExit == null) {</span>
+<span class="fc" id="L405">            Model.getStateMachinesHelper().setExit(st, buildNewCallAction(s));</span>
+        } else {
+<span class="fc" id="L407">            updateAction(oldExit, s);</span>
+        }
+<span class="fc" id="L409">    }</span>
+
+    /**
+     * Parse a line of the form: &quot;do /action&quot; and create an action.
+     * We do not need to check for the presence of the word &quot;do&quot; - that
+     * is done by the caller.
+     *
+     * @param st  the state object
+     * @param s   the string to be parsed
+     */
+    private void parseStateDoAction(Object st, String s) {
+<span class="pc bpc" id="L420" title="1 of 2 branches missed.">        if (s.indexOf(&quot;/&quot;) &gt; -1) {</span>
+<span class="fc" id="L421">            s = s.substring(s.indexOf(&quot;/&quot;) + 1).trim();</span>
+        }
+<span class="fc" id="L423">        Object oldDo = Model.getFacade().getDoActivity(st);</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">        if (oldDo == null) {</span>
+<span class="fc" id="L425">            Model.getStateMachinesHelper().setDoActivity(st,</span>
+<span class="fc" id="L426">                    buildNewCallAction(s));</span>
+        } else {
+<span class="fc" id="L428">            updateAction(oldDo, s);</span>
+        }
+<span class="fc" id="L430">    }</span>
+
+    /**
+     * This builds a CallAction with default attributes. But without Operation!
+     *
+     * @author MVW
+     * @param s
+     *            string representing the Script of the Action
+     * @return The newly created CallAction.
+     */
+    private Object buildNewCallAction(String s) {
+        Object a =
+<span class="fc" id="L442">            Model.getCommonBehaviorFactory().createCallAction();</span>
+        Object ae =
+<span class="fc" id="L444">            Model.getDataTypesFactory().createActionExpression(LANGUAGE, s);</span>
+<span class="fc" id="L445">        Model.getCommonBehaviorHelper().setScript(a, ae);</span>
+<span class="fc" id="L446">        Model.getCoreHelper().setName(a, &quot;anon&quot;);</span>
+<span class="fc" id="L447">        return a;</span>
+    }
+
+    /**
+     * Update an existing Action with a new Script.
+     *
+     * @author MVW
+     * @param old the Action
+     * @param s   a string representing a new Script for the ActionExpression
+     */
+    private void updateAction(Object old, String s) {
+<span class="fc" id="L458">        Object ae = Model.getFacade().getScript(old); // the ActionExpression</span>
+<span class="fc" id="L459">        String language = LANGUAGE;</span>
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">        if (ae != null) {</span>
+<span class="fc" id="L461">            language = Model.getDataTypesHelper().getLanguage(ae);</span>
+<span class="fc" id="L462">            String body = (String) Model.getFacade().getBody(ae);</span>
+<span class="pc bpc" id="L463" title="1 of 2 branches missed.">            if (body.equals(s)) {</span>
+<span class="fc" id="L464">                return;</span>
+            }
+        }
+<span class="nc" id="L467">        ae = Model.getDataTypesFactory().createActionExpression(language, s);</span>
+<span class="nc" id="L468">        Model.getCommonBehaviorHelper().setScript(old, ae);</span>
+<span class="nc" id="L469">    }</span>
+
+    /**
+     * This deletes modelelements, and swallows null without barking.
+     *
+     * @author Michiel
+     * @param obj
+     *            the modelelement to be deleted
+     */
+    private void delete(Object obj) {
+<span class="fc bfc" id="L479" title="All 2 branches covered.">        if (obj != null) {</span>
+<span class="fc" id="L480">            Model.getUmlFactory().delete(obj);</span>
+        }
+<span class="fc" id="L482">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

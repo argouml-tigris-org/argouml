@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CustomSeparator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">CustomSeparator.java</span></div><h1>CustomSeparator.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+/**
+ * Base class for custom separators.
+ *
+ * &lt;p&gt;It can be instantiated directly, and then works like a separator in the
+ * delimiter string. For that purpose you should use the delimiter string
+ * in MyTokenizer, unless your token is wider than 32 characters.
+ *
+ * &lt;p&gt;You can also subclass this class to provide for more intricate recogition
+ * of the tokens. It is known that this class has been subclassed to recognize
+ * quoted strings, and balanced parentheses.
+ *
+ * &lt;p&gt;You should have this mental image of the tokenizing process:&lt;nl&gt;
+ * &lt;li&gt;Reset is called.
+ * &lt;li&gt;For each character, c, in the sequence being tokenized:&lt;ul&gt;
+ *     &lt;li&gt;addChar(c) is called for each separator in the tokenizer.
+ *     &lt;li&gt;if addChar returns true, break.&lt;/ul&gt;
+ * &lt;li&gt;hasFreePart is checked to see if something follows. If true:&lt;ul&gt;
+ *     &lt;li&gt;endChar(c) is called for each following character.
+ *     &lt;li&gt;if/when endChar returns true, break.&lt;/ul&gt;
+ * &lt;li&gt;tokenLength is checked to see how far back in the sequence the token
+ *     begun. If there are characters before that but after the last token,
+ *     then they are made a token and this token is saved and returned next.
+ * &lt;/nl&gt;
+ *
+ * @author Michael Stockman
+ * @since 0.11.2
+ * @see MyTokenizer
+ */
+public class CustomSeparator {
+    private char pattern[];
+    private char match[];
+
+    /**
+     * This constructor is only availible to subclasses of this class.
+     * If you use it you should also override {@link #addChar addChar}
+     * to recognize when your separator should that control. If you don't,
+     * then you may block all other separators.
+     */
+<span class="fc" id="L79">    protected CustomSeparator() {</span>
+<span class="fc" id="L80">	pattern = new char[0];</span>
+<span class="fc" id="L81">	match = pattern;</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * This constructor creates a new custom separator that matches the
+     * character start. Unless you override {@link #addChar addChar}, the
+     * default behaviour is to return false in addChar until start is
+     * encountered and then hasFreePart returns false.
+     *
+     * @param start The start character.
+     */
+<span class="fc" id="L92">    public CustomSeparator(char start) {</span>
+<span class="fc" id="L93">	pattern = new char[1];</span>
+<span class="fc" id="L94">	pattern[0] = start;</span>
+<span class="fc" id="L95">	match = new char[pattern.length];</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * This constructor creates a new custom separator that matches the
+     * string start. Unless you override {@link #addChar addChar}, the
+     * default behaviour is to return false in addChar until start is
+     * encountered and then hasFreePart returns false.
+     *
+     * @param start The start String.
+     */
+<span class="nc" id="L106">    public CustomSeparator(String start) {</span>
+<span class="nc" id="L107">	pattern = start.toCharArray();</span>
+<span class="nc" id="L108">	match = new char[pattern.length];</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * Called to reset the separator before staring to look for a new
+     * token.
+     */
+    public void reset() {
+	int i;
+<span class="fc bfc" id="L117" title="All 2 branches covered.">	for (i = 0; i &lt; match.length; i++) {</span>
+<span class="fc" id="L118">	    match[i] = 0;</span>
+	}
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Returns the length of the matched token. It is not required to be
+     * meaningful unless addChar has returned true and hasFreePart
+     * returned false or endChar returned true.
+     *
+     * @return The length of the matched token.
+     */
+    public int tokenLength() {
+<span class="fc" id="L130">	return pattern.length;</span>
+    }
+
+    /**
+     * Called to allow you to decide if you want to capure control of
+     * the matching process. If you return true, then
+     * {@link #hasFreePart hasFreePart} will be checked to see if you
+     * expect more things to follow.
+     *
+     * &lt;p&gt;The default behaviour is to return false until the character
+     * or String given as parameter to the constructor has been matched.
+     *
+     * @param c The next character in the sequence being tokenized.
+     * @return true to gain control of the matching, false to continue
+     * matching.
+     */
+    public boolean addChar(char c) {
+	int i;
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">	for (i = 0; i &lt; match.length - 1; i++) {</span>
+<span class="nc" id="L149">	    match[i] = match[i + 1];</span>
+	}
+<span class="fc" id="L151">	match[match.length - 1] = c;</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">	for (i = 0; i &lt; match.length; i++) {</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">	    if (match[i] != pattern[i]) {</span>
+<span class="fc" id="L154">	        return false;</span>
+	    }
+	}
+<span class="fc" id="L157">	return true;</span>
+    }
+
+    /**
+     * Called to check if more characters are expected to follow after
+     * addChar has returned true. If true, then any following characters
+     * will be fed to endChar until endChar returns true.
+     *
+     * &lt;p&gt;The default behaviour is to return false.
+     *
+     * @return true to continue feeding characters to endChar or false.
+     */
+    public boolean hasFreePart() {
+<span class="nc" id="L170">	return false;</span>
+    }
+
+    /**
+     * Called to check if more characters are expected in the free part of
+     * the token.
+     *
+     * @param c The next character in the sequence being tokenized.
+     * @return true to indicate that the token is complete, or false to
+     * continue feeding characters through endChar.
+     */
+    public boolean endChar(char c) {
+<span class="nc" id="L182">	return true;</span>
+    }
+
+    /**
+     * Called to how many characters the CustomSeparator read after
+     * the end of the separator. This allows them to see beyond the
+     * end, but these characters will be fed to the separators again
+     * when looking for the next token so be careful.
+     *
+     * @return the number of characters that were read after the end
+     * of the token had been read.
+     */
+    public int getPeekCount() {
+<span class="fc" id="L195">	return 0;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabStereotype.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabStereotype.java</span></div><h1>TabStereotype.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel ven der Wulp
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.swingext.SpacerPanel;
+import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.StereotypeUtility;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.Vertical;
+
+/**
+ * This the tab in the details pane for displaying the stereotypes applied to a
+ * model element and allowing adding and removal of stereotypes to that list.&lt;p&gt;
+ *
+ * The code for the 2 lists and the buttons to move items
+ * from one side to the other is based on the PerspectiveConfigurator class.
+ */
+public class TabStereotype extends PropPanel implements TabModelTarget {
+
+    /**
+     * Insets in pixels.
+     */
+    private static final int INSET_PX = 3;
+
+<span class="fc" id="L94">    private static String orientation =</span>
+<span class="fc" id="L95">        Configuration.getString(Configuration</span>
+<span class="fc" id="L96">            .makeKey(&quot;layout&quot;, &quot;tabstereotype&quot;));</span>
+
+    private UMLModelElementStereotypeListModel selectedListModel;
+    private UMLModelStereotypeListModel availableListModel;
+
+    private JScrollPane selectedScroll;
+    private JScrollPane availableScroll;
+    private JPanel panel;
+    private JButton addStButton;
+    private JButton removeStButton;
+    private JPanel xferButtons;
+    private JList selectedList;
+    private JList availableList;
+
+    /**
+     * Construct new Stereotype tab.
+     */
+    public TabStereotype() {
+<span class="fc" id="L114">        super(Translator.localize(&quot;tab.stereotype&quot;), (ImageIcon) null);</span>
+<span class="fc" id="L115">        setOrientation((orientation</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">                .equals(&quot;West&quot;) || orientation.equals(&quot;East&quot;)) ? Vertical</span>
+<span class="pc" id="L117">                .getInstance() : Horizontal.getInstance());</span>
+<span class="fc" id="L118">        setIcon(new UpArrowIcon());</span>
+<span class="fc" id="L119">        setLayout(new BorderLayout());</span>
+<span class="fc" id="L120">        remove(getTitleLabel()); // no title looks better</span>
+
+<span class="fc" id="L122">        panel = makePanel();</span>
+<span class="fc" id="L123">        add(panel);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Create a JPanel with everything on it.
+     *
+     * @return a newly created JPanel.
+     */
+    private JPanel makePanel() {
+        // make lists
+<span class="fc" id="L133">        selectedListModel = new UMLModelElementStereotypeListModel();</span>
+<span class="fc" id="L134">        selectedList = new UMLStereotypeList(selectedListModel);</span>
+<span class="fc" id="L135">        selectedScroll = new JScrollPane(selectedList);</span>
+<span class="fc" id="L136">        selectedScroll.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="fc" id="L138">        selectedScroll.setColumnHeaderView(new JLabel(</span>
+<span class="fc" id="L139">                Translator.localize(&quot;label.applied-stereotypes&quot;)));</span>
+
+<span class="fc" id="L141">        availableListModel = new UMLModelStereotypeListModel();</span>
+<span class="fc" id="L142">        availableList = new UMLStereotypeList(availableListModel);</span>
+<span class="fc" id="L143">        availableScroll = new JScrollPane(availableList);</span>
+<span class="fc" id="L144">        availableScroll.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="fc" id="L146">        availableScroll.setColumnHeaderView(new JLabel(</span>
+<span class="fc" id="L147">                Translator.localize(&quot;label.available-stereotypes&quot;)));</span>
+
+        // make buttons
+<span class="fc" id="L150">        addStButton = new JButton(&quot;&gt;&gt;&quot;);</span>
+<span class="fc" id="L151">        addStButton.setToolTipText(Translator.localize(&quot;button.add-stereo&quot;));</span>
+<span class="fc" id="L152">        removeStButton = new JButton(&quot;&lt;&lt;&quot;);</span>
+<span class="fc" id="L153">        removeStButton.setToolTipText(Translator.localize(</span>
+                &quot;button.remove-stereo&quot;));
+<span class="fc" id="L155">        addStButton.setEnabled(false);</span>
+<span class="fc" id="L156">        removeStButton.setEnabled(false);</span>
+<span class="fc" id="L157">        addStButton.setMargin(new Insets(2, 15, 2, 15));</span>
+<span class="fc" id="L158">        removeStButton.setMargin(new Insets(2, 15, 2, 15));</span>
+<span class="fc" id="L159">        addStButton.setPreferredSize(addStButton.getMinimumSize());</span>
+<span class="fc" id="L160">        removeStButton.setPreferredSize(removeStButton.getMinimumSize());</span>
+
+        // make buttons layout
+        BoxLayout box;
+<span class="fc" id="L164">        xferButtons = new JPanel();</span>
+<span class="fc" id="L165">        box = new BoxLayout(xferButtons, BoxLayout.Y_AXIS);</span>
+<span class="fc" id="L166">        xferButtons.setLayout(box);</span>
+<span class="fc" id="L167">        xferButtons.add(new SpacerPanel());</span>
+<span class="fc" id="L168">        xferButtons.add(addStButton);</span>
+<span class="fc" id="L169">        xferButtons.add(new SpacerPanel());</span>
+<span class="fc" id="L170">        xferButtons.add(removeStButton);</span>
+<span class="fc" id="L171">        Dimension dmax = box.maximumLayoutSize(xferButtons);</span>
+<span class="fc" id="L172">        Dimension dmin = box.minimumLayoutSize(xferButtons);</span>
+<span class="fc" id="L173">        xferButtons.setMaximumSize(new Dimension(dmin.width, dmax.height));</span>
+
+        // make listeners
+<span class="fc" id="L176">        addStButton.addActionListener(new AddRemoveListener());</span>
+<span class="fc" id="L177">        removeStButton.addActionListener(new AddRemoveListener());</span>
+<span class="fc" id="L178">        availableList.addListSelectionListener(</span>
+                new AvailableListSelectionListener());
+<span class="fc" id="L180">        selectedList.addListSelectionListener(</span>
+                new SelectedListSelectionListener());
+
+        // put everything together
+<span class="fc" id="L184">        JPanel thePanel = new JPanel();</span>
+<span class="fc" id="L185">        thePanel.setLayout(new BoxLayout(thePanel, BoxLayout.X_AXIS));</span>
+<span class="fc" id="L186">        thePanel.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="fc" id="L188">        thePanel.add(availableScroll);</span>
+<span class="fc" id="L189">        thePanel.add(xferButtons);</span>
+<span class="fc" id="L190">        thePanel.add(Box.createRigidArea(new Dimension(5, 1)));</span>
+<span class="fc" id="L191">        thePanel.add(selectedScroll);</span>
+
+<span class="fc" id="L193">        return thePanel;</span>
+    }
+
+    /**
+     * Checks if the tab should be enabled. Returns true if the target
+     * returned by getTarget is a modelelement or if that target shows up as Fig
+     * on the active diagram and has a modelelement as owner.
+     *
+     * @return true if this tab should be enabled, otherwise false.
+     */
+    public boolean shouldBeEnabled() {
+<span class="nc" id="L204">        Object target = getTarget();</span>
+<span class="nc" id="L205">        return shouldBeEnabled(target);</span>
+    }
+    
+    /*
+     * @see org.argouml.uml.ui.PropPanel#shouldBeEnabled(java.lang.Object)
+     */
+    @Override
+    public boolean shouldBeEnabled(Object target) {
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">        if (target instanceof Fig) {</span>
+<span class="nc" id="L214">            target = ((Fig) target).getOwner();</span>
+        }
+<span class="fc" id="L216">        return Model.getFacade().isAModelElement(target);</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
+    @Override
+    public void setTarget(Object theTarget) {
+<span class="fc" id="L224">        super.setTarget(theTarget);</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L226">            Object me = getModelElement();</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            if (me != null) {</span>
+<span class="nc" id="L228">                selectedListModel.setTarget(me);</span>
+<span class="nc" id="L229">                validate();</span>
+            }
+        }
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Add the currently selected stereotype from the library
+     * to the modelelement.
+     */
+    private void doAddStereotype() {
+<span class="nc" id="L239">        Object stereotype = availableList.getSelectedValue();</span>
+<span class="nc" id="L240">        Object modelElement = TargetManager.getInstance().getModelTarget();</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L242">            return;</span>
+        }
+<span class="nc" id="L244">        Model.getCoreHelper().addStereotype(modelElement, stereotype);</span>
+<span class="nc" id="L245">        ProjectManager.getManager().updateRoots();</span>
+<span class="nc" id="L246">    }</span>
+
+    /**
+     * Add the currently selected stereotype from the library
+     * to the modelelement.
+     */
+    private void doRemoveStereotype() {
+<span class="nc" id="L253">        Object stereotype = selectedList.getSelectedValue();</span>
+<span class="nc" id="L254">        Object modelElement = TargetManager.getInstance().getModelTarget();</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L256">            return;</span>
+        }
+
+<span class="nc" id="L259">        if (Model.getFacade().getStereotypes(modelElement)</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">                .contains(stereotype)) {</span>
+<span class="nc" id="L261">            Model.getCoreHelper().removeStereotype(modelElement, stereotype);</span>
+<span class="nc" id="L262">            ProjectManager.getManager().updateRoots();</span>
+        }
+<span class="nc" id="L264">    }</span>
+
+    /**
+     * The list model for all stereotypes available in all the models - except
+     * the ones already applied.
+     */
+    private static class UMLModelStereotypeListModel
+        extends UMLStereotypeListModel {
+
+        /**
+         * Constructor for UMLModelElementNamespaceListModel.
+         */
+        public UMLModelStereotypeListModel() {
+<span class="fc" id="L277">            super(&quot;stereotype&quot;);</span>
+<span class="fc" id="L278">        }</span>
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+         */
+        protected void buildModelList() {
+<span class="nc" id="L284">            removeAllElements();</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">            if (Model.getFacade().isAModelElement(getTarget())) {</span>
+                Collection s;
+<span class="nc" id="L287">                s = StereotypeUtility.getAvailableStereotypes(getTarget());</span>
+                // now remove the ones already applied.
+<span class="nc" id="L289">                s.removeAll(Model.getFacade().getStereotypes(getTarget()));</span>
+<span class="nc" id="L290">                addAll(s);</span>
+            }
+<span class="nc" id="L292">        }</span>
+        
+        
+        /**
+         * @param e
+         * @return
+         * @see org.argouml.uml.ui.UMLStereotypeListModel#isValidEvent(java.beans.PropertyChangeEvent)
+         * @since 20110215
+         */
+        private boolean isValidEventRemove(PropertyChangeEvent e) {
+<span class="nc" id="L302">            boolean valid = false;</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">            if (!(getChangedElement(e) instanceof Collection)) {</span>
+               
+<span class="nc bnc" id="L305" title="All 4 branches missed.">                if ((e.getNewValue() != null &amp;&amp; e.getOldValue() == null) </span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">                        || isValidElement(getChangedElement(e))) {</span>
+<span class="nc" id="L307">                    valid = true; // we tried to remove a value</span>
+                }
+            } else {
+<span class="nc" id="L310">                Collection col = (Collection) getChangedElement(e);</span>
+<span class="nc" id="L311">                Iterator it = col.iterator();</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                if (!col.isEmpty()) {</span>
+<span class="nc" id="L313">                    valid = true;</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">                    while (it.hasNext()) {</span>
+<span class="nc" id="L315">                        Object o = it.next();</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">                        if (!isValidElement(o)) {</span>
+<span class="nc" id="L317">                            valid = false;</span>
+<span class="nc" id="L318">                            break;</span>
+                        }
+<span class="nc" id="L320">                    }</span>
+                } else {
+<span class="nc bnc" id="L322" title="All 2 branches missed.">                    if (e.getOldValue() instanceof Collection</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">                        &amp;&amp; !((Collection) e.getOldValue()).isEmpty()) {</span>
+<span class="nc" id="L324">                        valid = true;</span>
+                    }
+                }
+            }
+<span class="nc" id="L328">            return valid;</span>
+        }
+        
+        /**
+         * Must be different from the extends class because 
+         * when we add a sterotype=&gt; remove from available
+         *         remove a stereotype=&gt; add to available
+         * Called twices: with a AttributeChangeEvent, and with AddAssociationEvent or RemoveAssociationEvent
+         * 
+         * @param e
+         * 
+         * @see org.argouml.uml.ui.UMLStereotypeListModel#propertyChange(PropertyChangeEvent)
+         * @since 20110215
+         */
+        public void propertyChange(PropertyChangeEvent e) {
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            if (e instanceof AttributeChangeEvent) {</span>
+               // ignored this event
+<span class="nc bnc" id="L345" title="All 2 branches missed.">            } else if (e instanceof AddAssociationEvent) {</span>
+                //Remove the element from Available List
+<span class="nc" id="L347">                boolean valid = false;</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                if (!(getChangedElement(e) instanceof Collection)) {</span>
+<span class="nc" id="L349">                    valid = contains(getChangedElement(e));</span>
+                } else {
+<span class="nc" id="L351">                    Collection col = (Collection) getChangedElement(e);</span>
+<span class="nc" id="L352">                    Iterator it = col.iterator();</span>
+<span class="nc" id="L353">                    valid = true;</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">                    while (it.hasNext()) {</span>
+<span class="nc" id="L355">                        Object o = it.next();</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">                        if (!contains(o)) {</span>
+<span class="nc" id="L357">                            valid = false;</span>
+<span class="nc" id="L358">                            break;</span>
+                        }
+<span class="nc" id="L360">                    }</span>
+                }
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                if (valid) {</span>
+<span class="nc" id="L363">                    Object o = getChangedElement(e);</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                    if (o instanceof Collection) {</span>
+<span class="nc" id="L365">                        Iterator it = ((Collection) o).iterator();</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">                        while (it.hasNext()) {</span>
+<span class="nc" id="L367">                            Object o3 = it.next();</span>
+<span class="nc" id="L368">                            removeElement(o3);</span>
+<span class="nc" id="L369">                        }</span>
+<span class="nc" id="L370">                    } else {</span>
+<span class="nc" id="L371">                        removeElement(o);</span>
+                    }
+                }
+                
+               
+                
+<span class="nc bnc" id="L377" title="All 2 branches missed.">            } else if (e instanceof RemoveAssociationEvent) {</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">                if (isValidEventRemove(e)) {</span>
+<span class="nc" id="L379">                    Object o = getChangedElement(e);</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">                    if (o instanceof Collection) {</span>
+<span class="nc" id="L381">                        ArrayList tempList = new ArrayList((Collection) o);</span>
+<span class="nc" id="L382">                        Iterator it = tempList.iterator();</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                        while (it.hasNext()) {</span>
+<span class="nc" id="L384">                            Object o2 = it.next();</span>
+<span class="nc" id="L385">                            addElement(o2);</span>
+<span class="nc" id="L386">                        }</span>
+<span class="nc" id="L387">                    } else {</span>
+<span class="nc" id="L388">                        addElement(o); </span>
+                    }
+                }
+                
+            }
+<span class="nc" id="L393">        }</span>
+
+        /*
+         * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+         */
+        protected boolean isValidElement(Object element) {
+<span class="nc" id="L399">            return Model.getFacade().isAStereotype(element);</span>
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 7247425177890724453L;
+    }
+
+    /**
+     * Handles pressing the &quot;&gt;&gt;&quot; or &quot;&lt;&lt;&quot; buttons.
+     */
+<span class="fc" id="L411">    private class AddRemoveListener implements ActionListener {</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L418">            Object src = e.getSource();</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">            if (src == addStButton) {</span>
+<span class="nc" id="L420">                doAddStereotype();</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">            } else if (src == removeStButton) {</span>
+<span class="nc" id="L422">                doRemoveStereotype();</span>
+            }
+<span class="nc" id="L424">        }</span>
+    }
+
+    /**
+     * Handles selection changes in the available stereotypes list.
+     */
+<span class="fc" id="L430">    private class AvailableListSelectionListener</span>
+        implements ListSelectionListener {
+        /*
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L436" title="All 2 branches missed.">            if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L437">                return;</span>
+            }
+
+<span class="nc" id="L440">            Object selRule = availableList.getSelectedValue();</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">            addStButton.setEnabled(selRule != null);</span>
+<span class="nc" id="L442">        }</span>
+    }
+
+    /**
+     * Handles selection changes in the stereotypes list.
+     */
+<span class="fc" id="L448">    private class SelectedListSelectionListener</span>
+        implements ListSelectionListener {
+        /*
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L454" title="All 2 branches missed.">            if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L455">                return;</span>
+            }
+
+<span class="nc" id="L458">            Object selRule = selectedList.getSelectedValue();</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            removeStButton.setEnabled(selRule != null);</span>
+<span class="nc" id="L460">        }</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4741653225927138553L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

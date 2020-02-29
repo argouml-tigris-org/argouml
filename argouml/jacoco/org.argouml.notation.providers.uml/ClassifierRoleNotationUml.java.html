@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassifierRoleNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">ClassifierRoleNotationUml.java</span></div><h1>ClassifierRoleNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ClassifierRoleNotation;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * The UML notation for a ClassifierRole. &lt;p&gt;
+ * 
+ * The following is supported: &lt;p&gt;
+ * 
+ * &lt;pre&gt;
+ * baselist := [base] [, base]*
+ * classifierRole := [name] [/ role] [: baselist]
+ * &lt;/pre&gt;
+ *
+ * The &lt;code&gt;role &lt;/code&gt; and &lt;code&gt;baselist&lt;/code&gt; can be given in
+ * any order.&lt;p&gt;
+ * 
+ * The &lt;code&gt;name&lt;/code&gt; is the Instance name, not used for a ClassifierRole.&lt;p&gt;
+ *
+ * This syntax is compatible with the UML 1.3 and 1.4 specification.
+ * 
+ * @author Michiel van der Wulp
+ */
+public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
+
+
+    /**
+     * The Constructor.
+     * 
+     * @param classifierRole the UML ClassifierRole
+     */
+    public ClassifierRoleNotationUml(Object classifierRole) {
+<span class="fc" id="L85">        super(classifierRole);</span>
+<span class="fc" id="L86">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="fc" id="L92">        return &quot;parsing.help.fig-classifierrole&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        try {
+<span class="nc" id="L100">            parseClassifierRole(modelElement, text);</span>
+<span class="nc" id="L101">        } catch (ParseException pe) {</span>
+<span class="nc" id="L102">            String msg = &quot;statusmsg.bar.error.parsing.classifierrole&quot;;</span>
+<span class="nc" id="L103">            Object[] args = {pe.getLocalizedMessage(),</span>
+<span class="nc" id="L104">                             Integer.valueOf(pe.getErrorOffset()), };</span>
+<span class="nc" id="L105">            ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                    ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L107">                    Translator.messageFormat(msg, args)));</span>
+<span class="nc" id="L108">        }</span>
+<span class="nc" id="L109">    }</span>
+    
+    /**
+     * Parses a ClassifierRole represented by the following line of the format:
+     *
+     * &lt;pre&gt;
+     * baselist := [base] [, base]*
+     * classifierRole := [name] [/ role] [: baselist]
+     * &lt;/pre&gt;
+     *
+     * &lt;code&gt;role &lt;/code&gt; and &lt;code&gt;baselist&lt;/code&gt; can be given in
+     * any order.&lt;p&gt;
+     *
+     * This syntax is compatible with the UML 1.3 specification.
+     *
+     * (formerly: &quot;name: base&quot; )
+     *
+     * @param cls the classifier role to apply any changes to
+     * @param s the String to parse
+     * @return the classifier role with the applied changes
+     * @throws ParseException when it detects an error in the attribute string. 
+     *                  See also ParseError.getErrorOffset().
+     */
+    protected Object parseClassifierRole(Object cls, String s)
+        throws ParseException {
+        
+<span class="fc" id="L135">        String name = null;</span>
+        String token;
+<span class="fc" id="L137">        String role = null;</span>
+<span class="fc" id="L138">        String base = null;</span>
+<span class="fc" id="L139">        List&lt;String&gt; bases = null;</span>
+<span class="fc" id="L140">        boolean hasColon = false;</span>
+<span class="fc" id="L141">        boolean hasSlash = false;</span>
+
+        try {
+<span class="fc" id="L144">            MyTokenizer st = new MyTokenizer(s, &quot; ,\t,/,:,\\,&quot;);</span>
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L147">                token = st.nextToken();</span>
+<span class="pc bpc" id="L148" title="1 of 4 branches missed.">                if (&quot; &quot;.equals(token) || &quot;\t&quot;.equals(token)) {</span>
+                    /* Do nothing. */
+<span class="fc bfc" id="L150" title="All 2 branches covered.">                } else if (&quot;/&quot;.equals(token)) {</span>
+<span class="fc" id="L151">                    hasSlash = true;</span>
+<span class="fc" id="L152">                    hasColon = false;</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                    if (base != null) {</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                        if (bases == null) {</span>
+<span class="nc" id="L156">                            bases = new ArrayList&lt;String&gt;();</span>
+                        }
+<span class="fc" id="L158">                        bases.add(base);</span>
+                    }
+<span class="fc" id="L160">                    base = null;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">                } else if (&quot;:&quot;.equals(token)) {</span>
+<span class="fc" id="L162">                    hasColon = true;</span>
+<span class="fc" id="L163">                    hasSlash = false;</span>
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">                    if (bases == null) {</span>
+<span class="fc" id="L166">                        bases = new ArrayList&lt;String&gt;();</span>
+                    }
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">                    if (base != null) {</span>
+<span class="nc" id="L169">                        bases.add(base);</span>
+                    }
+<span class="fc" id="L171">                    base = null;</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">                } else if (&quot;,&quot;.equals(token)) {</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">                    if (base != null) {</span>
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">                        if (bases == null) {</span>
+<span class="nc" id="L175">                            bases = new ArrayList&lt;String&gt;();</span>
+                        }
+<span class="fc" id="L177">                        bases.add(base);</span>
+                    }
+<span class="fc" id="L179">                    base = null;</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">                } else if (hasColon) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                    if (base != null) {</span>
+<span class="fc" id="L182">                    	String msg = &quot;parsing.error.classifier.extra-test&quot;;</span>
+<span class="fc" id="L183">                        throw new ParseException(</span>
+<span class="fc" id="L184">                                Translator.localize(msg), </span>
+<span class="fc" id="L185">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L188">                    base = token;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                } else if (hasSlash) {</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                    if (role != null) {</span>
+<span class="fc" id="L191">                    	String msg = &quot;parsing.error.classifier.extra-test&quot;;</span>
+<span class="fc" id="L192">                        throw new ParseException(</span>
+<span class="fc" id="L193">                                Translator.localize(msg), </span>
+<span class="fc" id="L194">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L197">                    role = token;</span>
+                } else {
+<span class="fc bfc" id="L199" title="All 2 branches covered.">                    if (name != null) {</span>
+<span class="fc" id="L200">                    	String msg = &quot;parsing.error.classifier.extra-test&quot;;</span>
+<span class="fc" id="L201">                        throw new ParseException(</span>
+<span class="fc" id="L202">                                Translator.localize(msg), </span>
+<span class="fc" id="L203">                                st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L206">                    name = token;</span>
+                }
+            }
+<span class="nc" id="L209">        } catch (NoSuchElementException nsee) {</span>
+<span class="nc" id="L210">            String msg = &quot;parsing.error.classifier.unexpected-end-attribute&quot;;</span>
+<span class="nc" id="L211">            throw new ParseException(Translator.localize(msg), s.length());</span>
+<span class="fc" id="L212">        }</span>
+
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (base != null) {</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">            if (bases == null) {</span>
+<span class="nc" id="L216">                bases = new ArrayList&lt;String&gt;();</span>
+            }
+<span class="fc" id="L218">            bases.add(base);</span>
+        }
+
+        // TODO: What to do about object name???
+        //    if (name != null)
+        //      ;
+
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">        if (role != null) {</span>
+<span class="fc" id="L226">            Model.getCoreHelper().setName(cls, role.trim());</span>
+        }
+
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (bases != null) {</span>
+            // Remove bases that aren't there anymore
+
+            // copy - can't iterate modify live collection while iterating it
+<span class="fc" id="L233">            Collection b = new ArrayList(Model.getFacade().getBases(cls));</span>
+<span class="fc" id="L234">            Iterator it = b.iterator();</span>
+            Object c;
+<span class="fc" id="L236">            Object ns = Model.getFacade().getNamespace(cls);</span>
+<span class="pc bpc" id="L237" title="3 of 4 branches missed.">            if (ns != null &amp;&amp; Model.getFacade().getNamespace(ns) != null) {</span>
+<span class="nc" id="L238">                ns = Model.getFacade().getNamespace(ns);</span>
+            } else {
+<span class="fc" id="L240">                ns = Model.getFacade().getRoot(cls);</span>
+            }
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L244">                c = it.next();</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">                if (!bases.contains(Model.getFacade().getName(c))) {</span>
+<span class="fc" id="L246">                    Model.getCollaborationsHelper().removeBase(cls, c);</span>
+                }
+            }
+
+<span class="fc" id="L250">            it = bases.iterator();</span>
+        addBases:
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L253">                String d = ((String) it.next()).trim();</span>
+
+<span class="fc" id="L255">                Iterator it2 = b.iterator();</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">                while (it2.hasNext()) {</span>
+<span class="fc" id="L257">                    c = it2.next();</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">                    if (d.equals(Model.getFacade().getName(c))) {</span>
+<span class="fc" id="L259">                        continue addBases;</span>
+                    }
+                }
+<span class="fc" id="L262">                c = NotationUtilityUml.getType(d, ns);</span>
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">                if (Model.getFacade().isACollaboration(</span>
+<span class="fc" id="L264">                        Model.getFacade().getNamespace(c))) {</span>
+<span class="nc" id="L265">                    Model.getCoreHelper().setNamespace(c, ns);</span>
+                }
+<span class="fc" id="L267">                Model.getCollaborationsHelper().addBase(cls, c);</span>
+<span class="fc" id="L268">            }</span>
+        }
+        
+<span class="fc" id="L271">        return cls;</span>
+    }
+
+    private String toString(Object modelElement) {
+<span class="fc" id="L275">        String nameString = Model.getFacade().getName(modelElement);</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">        if (nameString == null) { </span>
+<span class="fc" id="L277">            nameString = &quot;&quot;;</span>
+        }
+<span class="fc" id="L279">        nameString = nameString.trim();</span>
+        // Loop through all base classes, building a comma separated list
+<span class="fc" id="L281">        StringBuilder baseString = NotationUtilityUml.formatNameList(</span>
+<span class="fc" id="L282">                Model.getFacade().getBases(modelElement));</span>
+<span class="fc" id="L283">        baseString = new StringBuilder(baseString.toString().trim());       </span>
+        // Build the final string
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (nameString.length() != 0) {</span>
+<span class="fc" id="L286">            nameString = &quot;/&quot; + nameString;</span>
+        }
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">        if (baseString.length() != 0) {</span>
+<span class="nc" id="L289">            baseString = baseString.insert(0, &quot;:&quot;);</span>
+        }
+<span class="fc" id="L291">        return nameString + baseString.toString();</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L296">        return toString(modelElement);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

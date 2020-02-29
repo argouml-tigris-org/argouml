@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TargetEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.targetmanager</a> &gt; <span class="el_source">TargetEvent.java</span></div><h1>TargetEvent.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2002-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.targetmanager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EventObject;
+import java.util.List;
+
+/**
+ * An event indicating that the target of ArgoUML has changed
+ * from the old set of Targets to the new set of Targets.
+ * 
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class TargetEvent extends EventObject {
+
+    /**
+     * Indicates that a total new set of targets is set.
+     */
+    public static final String TARGET_SET = &quot;set&quot;;
+
+    /**
+     * Indicates that a target is being added to the list of targets.
+     */
+    public static final String TARGET_ADDED = &quot;added&quot;;
+
+    /**
+     * Indicates that a target is being removed from the list of targets.
+     */
+    public static final String TARGET_REMOVED = &quot;removed&quot;;
+
+    /**
+     * The name of the event.
+     */
+    private String theEventName;
+
+    /**
+     * The old targets before the change took place.
+     */
+    private Object[] theOldTargets;
+
+    /**
+     * The new targets after the change took place.
+     */
+    private Object[] theNewTargets;
+
+    /**
+     * Constructs a new TargetEvent.
+     * 
+     * @param source The source that fired the TargetEvent, will always be the
+     *                TargetManager
+     * @param tEName The name of the TargetEvent, can be TARGET_SET,
+     *                TARGET_REMOVED or TARGET_ADDED
+     * @param oldTargets The old targets before the change took place
+     * @param newTargets The new targets after the change took place
+     */
+    public TargetEvent(Object source, String tEName,
+		       Object[] oldTargets, Object[] newTargets) {
+<span class="fc" id="L97">	super(source);</span>
+<span class="fc" id="L98">	theEventName = tEName;</span>
+<span class="fc" id="L99">        theOldTargets = oldTargets;</span>
+<span class="fc" id="L100">        theNewTargets = newTargets;</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Getter for the name.
+     * @return the name of the event
+     */
+    public String getName() {
+<span class="nc" id="L108">	return theEventName;</span>
+    }
+
+    /**
+     * Getter for the old targets.
+     * @return an object array with the old targets
+     */
+    public Object[] getOldTargets() {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">	return theOldTargets == null ? new Object[] {} : theOldTargets;</span>
+    }
+
+    /**
+     * Getter for the new targets.
+     * @return an object array with the new targets
+     */
+    public Object[] getNewTargets() {
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        return theNewTargets == null ? new Object[] {} : theNewTargets;</span>
+    }
+
+    /**
+     * Helper for getting the new target.
+     * @return the zero'th element in _newTargets, or null
+     */
+    public Object getNewTarget() {
+<span class="pc bpc" id="L132" title="1 of 4 branches missed.">        return theNewTargets == null</span>
+            || theNewTargets.length &lt; 1 ? null : theNewTargets[0];
+    }
+
+    /**
+     * Gets the targets that are removed from the selection.
+     * @return the removed targets
+     */
+    public Collection getRemovedTargetCollection() {
+<span class="nc" id="L141">        List removedTargets = new ArrayList();</span>
+<span class="nc" id="L142">        List oldTargets = Arrays.asList(theOldTargets);</span>
+<span class="nc" id="L143">        List newTargets = Arrays.asList(theNewTargets);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        for (Object o : oldTargets) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (!newTargets.contains(o)) {</span>
+<span class="nc" id="L146">                removedTargets.add(o);</span>
+            }
+<span class="nc" id="L148">        }</span>
+<span class="nc" id="L149">        return removedTargets;</span>
+    }
+
+    /**
+     * Gets the targets that are removed from the selection.
+     * @return the removed targets
+     */
+    public Object[] getRemovedTargets() {
+<span class="nc" id="L157">        return getRemovedTargetCollection().toArray();</span>
+    }
+
+    /**
+     * Returns the targets that are added to the selection.
+     * @return the added targets
+     */
+    public Collection getAddedTargetCollection() {
+<span class="fc" id="L165">        List addedTargets = new ArrayList();</span>
+<span class="fc" id="L166">        List oldTargets = Arrays.asList(theOldTargets);</span>
+<span class="fc" id="L167">        List newTargets = Arrays.asList(theNewTargets);</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        for (Object o : newTargets) {</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">            if (!oldTargets.contains(o)) {</span>
+<span class="fc" id="L170">                addedTargets.add(o);</span>
+            }
+<span class="fc" id="L172">        }</span>
+<span class="fc" id="L173">        return addedTargets;</span>
+    }
+
+    /**
+     * Returns the targets that are added to the selection.
+     * @return the added targets
+     */
+    public Object[] getAddedTargets() {
+<span class="fc" id="L181">        return getAddedTargetCollection().toArray();</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -307886693486269426L;
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

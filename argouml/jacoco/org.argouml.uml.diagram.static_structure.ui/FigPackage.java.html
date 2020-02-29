@@ -1,0 +1,1174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigPackage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">FigPackage.java</span></div><h1>FigPackage.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.StereotypeContainer;
+import org.argouml.uml.diagram.VisibilityContainer;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.ArgoFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display graphics for a UML package in a class diagram,
+ * consisting of a &quot;tab&quot; and a &quot;body&quot;. &lt;p&gt;
+ *
+ * The tab of the Package Fig is build of 2 pieces:
+ * the stereotypes at the top, and the name below it. &lt;p&gt;
+ *
+ * The name box covers the whole tab, i.e. its size
+ * is always equal to the total size of the tab.
+ * It is not transparent, and has a line border.
+ * Its text sits at the bottom of the fig, to leave room for stereotypes. &lt;p&gt;
+ *
+ * The stereotype fig is transparent, and sits at the top
+ * inside the name fig. It is drawn on top of the name fig box. &lt;p&gt;
+ *
+ * The tab of the Package Fig can only be resized by the user horizontally.
+ * The body can be resized horizontally and vertically by the user. &lt;p&gt;
+ *
+ * Double clicking on the body has a special consequence:
+ * the user is asked if he wants to create a new class diagram
+ * for this package. &lt;p&gt;
+ *
+ * ArgoUML does not support the option of showing the name
+ * of the package in the body,
+ * as described in the UML standard (chapter Notation - Package). &lt;p&gt;
+ *
+ * Neither does ArgoUML currently support showing properties in the tab,
+ * see issue 1214. &lt;p&gt;
+ *
+ * In front of the name, ArgoUML may optionally show the visibility.
+ */
+public class FigPackage extends FigNodeModelElement
+    implements StereotypeContainer, VisibilityContainer {
+
+<span class="fc" id="L119">    private static final Logger LOG =</span>
+<span class="fc" id="L120">        Logger.getLogger(FigPackage.class.getName());</span>
+
+    /** The minimal height of the name. */
+    private static final int MIN_HEIGHT = 21;
+    /** The minimal width of the name. */
+    private static final int MIN_WIDTH = 50;
+
+    /** The initial width of the outer box. */
+<span class="fc" id="L128">    private int width = 140;</span>
+    /** The initial height of the outer box. */
+<span class="fc" id="L130">    private int height = 100;</span>
+
+    /** The width of the cut out area at the right top corner. */
+<span class="fc" id="L133">    private int indentX = 50;</span>
+
+<span class="fc" id="L135">    private int textH = 20;</span>
+
+    /**
+     * The total height of the tab.
+     */
+<span class="fc" id="L140">    private int tabHeight = 20;</span>
+
+    private FigPackageFigText body;
+    private PackageBackground background;
+
+    private FigPoly figPoly;
+
+    /**
+     * Flag that indicates if the user wants any stereotype to be shown.
+     * It corresponds to the check-mark on the Presentation tab.
+     * There is no relation with the actual presence of any stereotypes.
+     * This setting has Fig-scope, hence it is saved with the Fig layout data.
+     */
+<span class="fc" id="L153">    private boolean stereotypeVisible = true;</span>
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L157">        PackagePortFigRect ppfr =</span>
+            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight);
+<span class="fc" id="L159">        ppfr.setFilled(false);</span>
+<span class="fc" id="L160">        ppfr.setLineWidth(0);</span>
+<span class="fc" id="L161">        return ppfr;</span>
+    }
+
+    private void initialize() {
+<span class="fc" id="L165">        body.setEditable(false);</span>
+
+<span class="fc" id="L167">        background = new PackageBackground(0, 0, width, height, indentX, tabHeight);</span>
+
+<span class="fc" id="L169">        getNameFig().setBounds(0, 0, width - indentX, textH + 2);</span>
+<span class="fc" id="L170">        getNameFig().setJustification(FigText.JUSTIFY_LEFT);</span>
+
+        // Set properties of the stereotype box.
+        // Initially not set to be displayed, but this will be changed
+        // when we try to render it, if we find we have a stereotype.
+
+<span class="fc" id="L176">        getStereotypeFig().setVisible(false);</span>
+
+        // add Figs to the FigNode in back-to-front order
+<span class="fc" id="L179">        addFig(getBigPort());</span>
+<span class="fc" id="L180">        addFig(background);</span>
+<span class="fc" id="L181">        addFig(getNameFig());</span>
+<span class="fc" id="L182">        addFig(getStereotypeFig());</span>
+<span class="fc" id="L183">        addFig(body);</span>
+
+<span class="fc" id="L185">        setBlinkPorts(false); //make port invisible unless mouse enters</span>
+
+        // Make all the parts match the main fig
+<span class="fc" id="L188">        setFilled(true);</span>
+<span class="fc" id="L189">        setFillColor(FILL_COLOR);</span>
+<span class="fc" id="L190">        setLineColor(LINE_COLOR);</span>
+<span class="fc" id="L191">        setLineWidth(LINE_WIDTH);</span>
+
+<span class="fc" id="L193">        updateEdges();</span>
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Construct a package figure with the given owner, bounds, and rendering
+     * settings. This constructor is used by the PGML parser.
+     *
+     * @param owner owning model element
+     * @param bounds position and size or null if fig hasn't been placed
+     * @param settings rendering settings
+     */
+    public FigPackage(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L206">        super(owner, bounds, settings);</span>
+
+        // Create a Body that reacts to double-clicks and jumps to a diagram.
+<span class="fc" id="L209">        body = new FigPackageFigText(getOwner(),</span>
+<span class="fc" id="L210">                new Rectangle(0, textH, width, height - textH), getSettings());</span>
+
+<span class="fc" id="L212">        initialize();</span>
+
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (bounds != null) {</span>
+<span class="fc" id="L215">            setLocation(bounds.x, bounds.y);</span>
+        }
+<span class="fc" id="L217">        setBounds(getBounds());</span>
+<span class="fc" id="L218">    }</span>
+
+    /*
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() {
+<span class="nc" id="L225">        FigPackage figClone = (FigPackage) super.clone();</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        for (Fig thisFig : (List&lt;Fig&gt;) getFigs()) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            if (thisFig == body) {</span>
+<span class="nc" id="L228">                figClone.body = (FigPackageFigText) thisFig;</span>
+            }
+<span class="nc" id="L230">        }</span>
+<span class="nc" id="L231">        return figClone;</span>
+    }
+
+    /**
+     * @return Returns the fig for the symbol.
+     */
+    protected FigPoly getFigPoly() {
+<span class="fc" id="L238">        return figPoly;</span>
+    }
+
+    /**
+     * @param figPoly The fig for the symbol to set.
+     */
+    protected void setFigPoly(FigPoly figPoly) {
+<span class="fc" id="L245">        this.figPoly = figPoly;</span>
+<span class="fc" id="L246">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+<span class="fc" id="L253">        super.setLineColor(col);</span>
+<span class="fc" id="L254">        getStereotypeFig().setLineColor(null);</span>
+<span class="fc" id="L255">        getNameFig().setLineColor(col);</span>
+<span class="fc" id="L256">        body.setLineColor(col);</span>
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">        if (figPoly != null) {</span>
+<span class="nc" id="L258">            figPoly.setLineColor(col);</span>
+        }
+<span class="fc" id="L260">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L267">        return body.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L275">        return background.getFillColor();</span>
+    }
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L280">        return background.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+        // There are 2 boxes showing lines: the tab and the body.
+<span class="fc" id="L289">        getNameFig().setLineWidth(w);</span>
+<span class="fc" id="L290">        body.setLineWidth(w);</span>
+<span class="fc" id="L291">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="fc" id="L298">        return body.getLineWidth();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    @Override
+    protected void updateStereotypeText() {
+<span class="fc" id="L306">        Object modelElement = getOwner();</span>
+
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L309">            return;</span>
+        }
+
+<span class="fc" id="L312">        Rectangle rect = getBounds();</span>
+
+        /* check if any stereotype is defined */
+<span class="pc bpc" id="L315" title="1 of 2 branches missed.">        if (Model.getFacade().getStereotypes(modelElement).isEmpty()) {</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">            if (getStereotypeFig().isVisible()) {</span>
+<span class="nc" id="L317">                getNameFig().setTopMargin(0);</span>
+<span class="nc" id="L318">                getStereotypeFig().setVisible(false);</span>
+            } // else nothing changed
+        } else {
+            /* we got at least one stereotype */
+            /* This populates the stereotypes area: */
+<span class="nc" id="L323">            super.updateStereotypeText();</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (!isStereotypeVisible()) {</span>
+                // the user wants to hide them
+<span class="nc" id="L326">                getNameFig().setTopMargin(0);</span>
+<span class="nc" id="L327">                getStereotypeFig().setVisible(false);</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            } else if (!getStereotypeFig().isVisible()) {</span>
+<span class="nc" id="L329">                getNameFig().setTopMargin(</span>
+<span class="nc" id="L330">                        getStereotypeFig().getMinimumSize().height);</span>
+<span class="nc" id="L331">                getStereotypeFig().setVisible(true);</span>
+            } // else nothing changed
+        }
+
+<span class="fc" id="L335">        forceRepaintShadow();</span>
+<span class="fc" id="L336">        setBounds(rect.x, rect.y, rect.width, rect.height);</span>
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * Override ancestor behaviour by always calling setBounds even if the
+     * size hasn't changed. Without this override the Package bounds draw
+     * incorrectly. This is not the best fix but is a workaround until the
+     * true cause is known. See issue 6135.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    protected void updateBounds() {
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">        if (!isCheckSize()) {</span>
+<span class="nc" id="L349">            return;</span>
+        }
+<span class="fc" id="L351">        Rectangle bbox = getBounds();</span>
+<span class="fc" id="L352">        Dimension minSize = getMinimumSize();</span>
+<span class="fc" id="L353">        bbox.width = Math.max(bbox.width, minSize.width);</span>
+<span class="fc" id="L354">        bbox.height = Math.max(bbox.height, minSize.height);</span>
+<span class="fc" id="L355">        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);</span>
+<span class="fc" id="L356">    }</span>
+
+    /**
+     * USED BY PGML.tee.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    @Override
+    public String classNameAndBounds() {
+<span class="nc" id="L365">        return super.classNameAndBounds()</span>
+<span class="nc" id="L366">                + &quot;stereotypeVisible=&quot; + isStereotypeVisible()</span>
+                + &quot;;&quot;
+<span class="nc" id="L368">                + &quot;visibilityVisible=&quot; + isVisibilityVisible();</span>
+    }
+
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
+    @Override
+    public boolean getUseTrapRect() {
+<span class="nc" id="L377">        return true;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    @Override
+    public Dimension getMinimumSize() {
+        // Use &quot;aSize&quot; to build up the minimum size. Start with the size of the
+        // name fig and build up.
+<span class="fc" id="L387">        Dimension aSize = new Dimension(getNameFig().getMinimumSize());</span>
+
+<span class="fc bfc" id="L389" title="All 2 branches covered.">        if (figPoly != null) {</span>
+            /* The figPoly is located at the right of the name text.
+             * The nameFig size is increased, so that it fits its text,
+             * and the figPoly next to the text, all within the boundaries
+             * of the nameFig. */
+<span class="fc" id="L394">            Dimension symbol = figPoly.getSize();</span>
+<span class="fc" id="L395">            aSize.width += symbol.width;</span>
+<span class="fc" id="L396">            aSize.height = Math.max(aSize.height, symbol.height);</span>
+        }
+
+<span class="fc" id="L399">        aSize.height = Math.max(aSize.height, MIN_HEIGHT);</span>
+<span class="fc" id="L400">        aSize.width = Math.max(aSize.width, MIN_WIDTH);</span>
+
+        // If we have any number of stereotypes displayed, then allow
+        // some space for that (only width, height is included in nameFig):
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">        if (isStereotypeVisible()) {</span>
+<span class="fc" id="L405">            Dimension st = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L406">            aSize.width =</span>
+<span class="fc" id="L407">		Math.max(aSize.width, st.width);</span>
+        }
+
+        // take into account the tab is not as wide as the body:
+<span class="fc" id="L411">        aSize.width += indentX + 1;</span>
+
+        // we want at least some of the package body to be displayed
+<span class="fc" id="L414">        aSize.height += 28 + 2 * getLineWidth();</span>
+
+        // And now aSize has the answer
+<span class="fc" id="L417">        return aSize;</span>
+    }
+
+    /**
+     * Sets the bounds, but the size will be at least the one returned by
+     * {@link #getMinimumSize()}.&lt;p&gt;
+     *
+     * If the required height is bigger, then the additional height is
+     * not distributed among all figs (i.e. compartments),
+     * but goes into the body. Hence, the
+     * accumulated height of all visible figs equals the demanded height&lt;p&gt;.
+     *
+     * Some of this has &quot;magic numbers&quot; hardcoded in. In particular there is
+     * a knowledge that the minimum height of a name compartment is 21
+     * pixels. This height is needed to be able to display the &quot;Clarifier&quot;
+     * inside the name compartment.
+     *
+     * @param xa  Desired X coordinate of upper left corner
+     *
+     * @param ya  Desired Y coordinate of upper left corner
+     *
+     * @param w  Desired width of the FigClass
+     *
+     * @param h  Desired height of the FigClass
+     */
+    @Override
+    protected void setStandardBounds(int xa, int ya, int w, int h) {
+        // Save our old boundaries (needed later), and get minimum size
+        // info. &quot;aSize&quot; will be used to maintain a running calculation of our
+        // size at various points.
+
+<span class="fc" id="L448">        Rectangle oldBounds = getBounds();</span>
+
+        // The new size can not be smaller than the minimum.
+<span class="fc" id="L451">        Dimension minimumSize = getMinimumSize();</span>
+<span class="fc" id="L452">        int newW = Math.max(w, minimumSize.width);</span>
+<span class="fc" id="L453">        int newH = Math.max(h, minimumSize.height);</span>
+
+        // Now resize all sub-figs, including not displayed figs. Start by the
+        // name. We override the getMinimumSize if it is less than our view (21
+        // pixels hardcoded!). Add in the shared extra, plus in this case the
+        // correction.
+
+<span class="fc" id="L460">        Dimension nameMin = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L461">        int minNameHeight = Math.max(nameMin.height, MIN_HEIGHT);</span>
+
+        // Now sort out the stereotype display. If the stereotype is displayed,
+        // move the upper boundary of the name compartment up and set new
+        // bounds for the name and the stereotype compartments and the
+        // stereoLineBlinder that blanks out the line between the two
+
+<span class="fc" id="L468">        int currentY = ya;</span>
+
+<span class="fc" id="L470">        int tabWidth = newW - indentX;</span>
+
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        if (isStereotypeVisible()) {</span>
+<span class="fc" id="L473">            Dimension stereoMin = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L474">            getNameFig().setTopMargin(stereoMin.height);</span>
+<span class="fc" id="L475">            getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);</span>
+
+<span class="fc" id="L477">            getStereotypeFig().setBounds(xa, ya,</span>
+                tabWidth, stereoMin.height + 1);
+
+<span class="pc bpc" id="L480" title="1 of 2 branches missed.">            if (tabWidth &lt; stereoMin.width + 1) {</span>
+<span class="nc" id="L481">                tabWidth = stereoMin.width + 2;</span>
+            }
+<span class="fc" id="L483">        } else {</span>
+<span class="nc" id="L484">            getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);</span>
+        }
+
+        // Advance currentY to where the start of the body box is,
+        // remembering that it overlaps the next box by 1 pixel. Calculate the
+        // size of the body box, and update the Y pointer past it if it is
+        // displayed.
+
+<span class="fc" id="L492">        currentY += minNameHeight - 1; // -1 for 1 pixel overlap</span>
+<span class="fc" id="L493">        body.setBounds(xa, currentY, newW, newH + ya - currentY);</span>
+
+<span class="fc" id="L495">        tabHeight = currentY - ya;</span>
+        // set bounds of big box
+
+<span class="fc" id="L498">        getBigPort().setBounds(xa, ya, newW, newH);</span>
+
+<span class="fc bfc" id="L500" title="All 2 branches covered.">        if (figPoly != null) {</span>
+            /* The figPoly is located at the right edge of the nameFig.
+             * The nameFig size is such that it at least fits its text,
+             * and the figPoly next to the text.
+             * Making the package bigger, causes the figPoly to stick to
+             * the right edge.*/
+<span class="fc" id="L506">            Rectangle previousBounds = figPoly.getBounds();</span>
+<span class="fc" id="L507">            Rectangle name = getNameFig().getBounds();</span>
+<span class="fc" id="L508">            int nx = name.x + name.width - figPoly.getWidth()</span>
+<span class="fc" id="L509">                - getLineWidth() - getNameFig().getRightMargin();</span>
+<span class="fc" id="L510">            int ny = name.y + getLineWidth() + getNameFig().getTopMargin();</span>
+<span class="fc" id="L511">            figPoly.translate((nx - previousBounds.x),</span>
+                    ny - previousBounds.y);
+        }
+
+        // Now force calculation of the bounds of the figure, update the edges
+        // and trigger anyone who's listening to see if the &quot;bounds&quot; property
+        // has changed.
+
+<span class="fc" id="L519">        background.setBounds(xa, ya, w, h);</span>
+
+<span class="fc" id="L521">        calcBounds();</span>
+<span class="fc" id="L522">        updateEdges();</span>
+<span class="fc" id="L523">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L524">    }</span>
+
+    /**
+     * Build a collection of menu items relevant for a right-click
+     * popup menu on a Package.
+     *
+     * @param     me     a mouse event
+     * @return          a collection of menu items
+     */
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L535">        Vector popUpActions = super.getPopUpActions(me);</span>
+
+        // Modifier ...
+<span class="nc" id="L538">        popUpActions.add(</span>
+<span class="nc" id="L539">                popUpActions.size() - getPopupAddOffset(),</span>
+<span class="nc" id="L540">                buildModifierPopUp(ABSTRACT | LEAF | ROOT));</span>
+
+        // Visibility ...
+<span class="nc" id="L543">        popUpActions.add(</span>
+<span class="nc" id="L544">                popUpActions.size() - getPopupAddOffset(),</span>
+<span class="nc" id="L545">                buildVisibilityPopUp());</span>
+
+<span class="nc" id="L547">        return popUpActions;</span>
+    }
+
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+<span class="nc" id="L552">        ArgoJMenu showMenu = super.buildShowPopUp();</span>
+        /* Only show the menuitems if they make sense: */
+<span class="nc" id="L554">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L555">        List&lt;Fig&gt; figs = ce.getSelectionManager().getFigs();</span>
+<span class="nc" id="L556">        boolean sOn = false;</span>
+<span class="nc" id="L557">        boolean sOff = false;</span>
+<span class="nc" id="L558">        boolean vOn = false;</span>
+<span class="nc" id="L559">        boolean vOff = false;</span>
+<span class="nc bnc" id="L560" title="All 2 branches missed.">        for (Fig f : figs) {</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">            if (f instanceof StereotypeContainer) {</span>
+<span class="nc" id="L562">                boolean v = ((StereotypeContainer) f).isStereotypeVisible();</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">                if (v) {</span>
+<span class="nc" id="L564">                    sOn = true;</span>
+                } else {
+<span class="nc" id="L566">                    sOff = true;</span>
+                }
+<span class="nc" id="L568">                v = ((VisibilityContainer) f).isVisibilityVisible();</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">                if (v) {</span>
+<span class="nc" id="L570">                    vOn = true;</span>
+                } else {
+<span class="nc" id="L572">                    vOff = true;</span>
+                }
+            }
+<span class="nc" id="L575">        }</span>
+
+<span class="nc bnc" id="L577" title="All 2 branches missed.">        if (sOn) {</span>
+<span class="nc" id="L578">            showMenu.add(new HideStereotypeAction());</span>
+        }
+
+<span class="nc bnc" id="L581" title="All 2 branches missed.">        if (sOff) {</span>
+<span class="nc" id="L582">            showMenu.add(new ShowStereotypeAction());</span>
+        }
+
+<span class="nc bnc" id="L585" title="All 2 branches missed.">        if (vOn) {</span>
+<span class="nc" id="L586">            showMenu.add(new HideVisibilityAction());</span>
+        }
+
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        if (vOff) {</span>
+<span class="nc" id="L590">            showMenu.add(new ShowVisibilityAction());</span>
+        }
+
+<span class="nc" id="L593">        return showMenu;</span>
+    }
+
+    /**
+     * Change the visibility of the stereotypes of all Figs.
+     *
+     * @param value true if it needs to become visible
+     */
+    private void doStereotype(boolean value) {
+<span class="nc" id="L602">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L603">        List&lt;Fig&gt; figs = ce.getSelectionManager().getFigs();</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">        for (Fig f : figs) {</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">            if (f instanceof StereotypeContainer) {</span>
+<span class="nc" id="L606">                ((StereotypeContainer) f).setStereotypeVisible(value);</span>
+            }
+<span class="nc bnc" id="L608" title="All 2 branches missed.">            if (f instanceof FigNodeModelElement) {</span>
+<span class="nc" id="L609">                ((FigNodeModelElement) f).forceRepaintShadow();</span>
+<span class="nc" id="L610">                ((ArgoFig) f).renderingChanged();</span>
+            }
+<span class="nc" id="L612">            f.damage();</span>
+<span class="nc" id="L613">        }</span>
+<span class="nc" id="L614">    }</span>
+
+    /**
+     * Change the visibility of the Visibility of all Figs.
+     *
+     * @param value true if it needs to become visible
+     */
+    private void doVisibility(boolean value) {
+<span class="nc" id="L622">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L623">        List&lt;Fig&gt; figs = ce.getSelectionManager().getFigs();</span>
+<span class="nc bnc" id="L624" title="All 2 branches missed.">        for (Fig f : figs) {</span>
+<span class="nc bnc" id="L625" title="All 2 branches missed.">            if (f instanceof VisibilityContainer) {</span>
+<span class="nc" id="L626">                ((VisibilityContainer) f).setVisibilityVisible(value);</span>
+            }
+<span class="nc" id="L628">            f.damage();</span>
+<span class="nc" id="L629">        }</span>
+<span class="nc" id="L630">    }</span>
+
+    /**
+     * A text fig for the body of a a Package
+     * which does not contain any text,
+     * but solely exists to trigger a jump to a diagram for
+     * the named package when double clicked.
+     */
+    class FigPackageFigText extends ArgoFigText {
+
+    	// For some strange reason, it no longer works to use LOG from
+        // the outer class. It fails with the error:
+        // &quot;The type org.apache.commons.logging.Log cannot be resolved.
+        // It is indirectly referenced from required .class files.&quot;
+<span class="fc" id="L644">        private final Logger LOG1 =</span>
+<span class="fc" id="L645">                Logger.getLogger(FigPackage.class.getName());</span>
+
+        /**
+         * Construct a text fig for a Package which will jump to diagram for
+         * the named package when double clicked.
+         *
+         * @param owner owning UML element
+         * @param bounds position and size
+         * @param settings render settings
+         */
+        public FigPackageFigText(Object owner, Rectangle bounds,
+<span class="fc" id="L656">                DiagramSettings settings) {</span>
+<span class="fc" id="L657">            super(owner, bounds, settings, false);</span>
+<span class="fc" id="L658">        }</span>
+
+	/**
+	 * TODO: mvw: Would it not be better if this code
+	 * would go in startTextEditor(), not overruling mouseClicked().
+	 * But we made this fig not editable,
+	 * to stop it from reacting on key-presses.
+	 * Anyhow - this is a hack - abusing a FigText - GEF does
+	 * not really support double-clicking on a Fig to trigger some action.
+	 */
+	@Override
+	public void mouseClicked(MouseEvent me) {
+
+<span class="nc" id="L671">	    String lsDefaultName = &quot;main&quot;;</span>
+
+	    // TODO: This code appears to be designed to jump to the diagram
+	    // containing the contents of the package that was double clicked
+	    // but it looks like it's always searching for the name &quot;main&quot;
+	    // instead of the package name.
+	    // TODO: But in any case, it should be delegating this work to
+	    // to something that knows about the diagrams and they contents -tfm
+<span class="nc bnc" id="L679" title="All 2 branches missed.">	    if (me.getClickCount() &gt;= 2) {</span>
+<span class="nc" id="L680">		Object lPkg = FigPackage.this.getOwner();</span>
+<span class="nc bnc" id="L681" title="All 2 branches missed.">		if (lPkg != null) {</span>
+<span class="nc" id="L682">		    Object lNS = lPkg;</span>
+
+<span class="nc" id="L684">		    Project lP = getProject();</span>
+
+<span class="nc" id="L686">		    List&lt;ArgoDiagram&gt; diags = lP.getDiagramList();</span>
+<span class="nc" id="L687">		    ArgoDiagram lFirst = null;</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">		    for (ArgoDiagram lDiagram : diags) {</span>
+<span class="nc" id="L689">			Object lDiagramNS = lDiagram.getNamespace();</span>
+<span class="nc bnc" id="L690" title="All 4 branches missed.">			if ((lNS == null &amp;&amp; lDiagramNS == null)</span>
+<span class="nc bnc" id="L691" title="All 2 branches missed.">			    || (lNS.equals(lDiagramNS))) {</span>
+			    /* save first */
+<span class="nc bnc" id="L693" title="All 2 branches missed.">			    if (lFirst == null) {</span>
+<span class="nc" id="L694">				lFirst = lDiagram;</span>
+			    }
+
+<span class="nc bnc" id="L697" title="All 2 branches missed.">			    if (lDiagram.getName() != null</span>
+<span class="nc bnc" id="L698" title="All 2 branches missed.">				&amp;&amp; lDiagram.getName().startsWith(</span>
+				        lsDefaultName)) {
+<span class="nc" id="L700">			        me.consume();</span>
+<span class="nc" id="L701">				super.mouseClicked(me);</span>
+<span class="nc" id="L702">				TargetManager.getInstance().setTarget(lDiagram);</span>
+<span class="nc" id="L703">				return;</span>
+			    }
+			}
+<span class="nc" id="L706">		    } /*while*/</span>
+
+		    /* If we get here then we didn't get the
+		     * default diagram.
+                     */
+<span class="nc bnc" id="L711" title="All 2 branches missed.">		    if (lFirst != null) {</span>
+<span class="nc" id="L712">			me.consume();</span>
+<span class="nc" id="L713">			super.mouseClicked(me);</span>
+
+<span class="nc" id="L715">			TargetManager.getInstance().setTarget(lFirst);</span>
+<span class="nc" id="L716">			return;</span>
+		    }
+
+		    /* Try to create a new class diagram.
+                     */
+<span class="nc" id="L721">		    me.consume();</span>
+<span class="nc" id="L722">		    super.mouseClicked(me);</span>
+		    try {
+<span class="nc" id="L724">		        createClassDiagram(lNS, lsDefaultName, lP);</span>
+<span class="nc" id="L725">		    } catch (Exception ex) {</span>
+<span class="nc" id="L726">                        LOG1.log(Level.SEVERE, &quot;consume caused: &quot;, ex);</span>
+<span class="nc" id="L727">		    }</span>
+
+<span class="nc" id="L729">		    return;</span>
+
+		} /*if package */
+	    } /* if doubleclicks */
+<span class="nc" id="L733">	    super.mouseClicked(me);</span>
+<span class="nc" id="L734">	}</span>
+
+	public void setFilled(boolean f) {
+<span class="fc" id="L737">	    super.setFilled(false);</span>
+<span class="fc" id="L738">	}</span>
+
+        public void setFillColor(Color c) {
+<span class="fc" id="L741">            super.setFillColor(c);</span>
+<span class="fc" id="L742">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -1355316218065323634L;
+    }
+
+    private void createClassDiagram(
+            Object namespace,
+            String defaultName,
+            Project project) throws PropertyVetoException {
+
+        String namespaceDescr;
+<span class="nc bnc" id="L756" title="All 2 branches missed.">        if (namespace != null</span>
+<span class="nc bnc" id="L757" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().getName(namespace) != null) {</span>
+<span class="nc" id="L758">            namespaceDescr = Model.getFacade().getName(namespace);</span>
+        } else {
+<span class="nc" id="L760">            namespaceDescr = Translator.localize(&quot;misc.name.anon&quot;);</span>
+        }
+
+<span class="nc" id="L763">        String dialogText = &quot;Add new class diagram to &quot; + namespaceDescr + &quot;?&quot;;</span>
+<span class="nc" id="L764">        int option =</span>
+<span class="nc" id="L765">            JOptionPane.showConfirmDialog(</span>
+                null,
+                dialogText,
+                &quot;Add new class diagram?&quot;,
+                JOptionPane.YES_NO_OPTION);
+
+<span class="nc bnc" id="L771" title="All 2 branches missed.">        if (option == JOptionPane.YES_OPTION) {</span>
+
+            ArgoDiagram classDiagram =
+<span class="nc" id="L774">                DiagramFactory.getInstance().</span>
+<span class="nc" id="L775">                    createDiagram(DiagramType.Class, namespace, null);</span>
+
+<span class="nc" id="L777">            String diagramName = defaultName + &quot;_&quot; + classDiagram.getName();</span>
+
+<span class="nc" id="L779">            project.addMember(classDiagram);</span>
+
+<span class="nc" id="L781">            TargetManager.getInstance().setTarget(classDiagram);</span>
+            /* change prefix */
+<span class="nc" id="L783">            classDiagram.setName(diagramName);</span>
+<span class="nc" id="L784">            ExplorerEventAdaptor.getInstance().structureChanged();</span>
+        }
+<span class="nc" id="L786">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
+     */
+    public boolean isStereotypeVisible() {
+<span class="fc" id="L792">        return stereotypeVisible;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
+     */
+    public void setStereotypeVisible(boolean isVisible) {
+<span class="fc" id="L799">        stereotypeVisible = isVisible;</span>
+<span class="fc" id="L800">        renderingChanged();</span>
+<span class="fc" id="L801">        damage();</span>
+<span class="fc" id="L802">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.VisibilityContainer#isVisibilityVisible()
+     */
+    public boolean isVisibilityVisible() {
+<span class="nc" id="L808">        return getNotationSettings().isShowVisibilities();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.VisibilityContainer#setVisibilityVisible(boolean)
+     */
+    public void setVisibilityVisible(boolean isVisible) {
+<span class="fc" id="L815">        getNotationSettings().setShowVisibilities(isVisible);</span>
+<span class="fc" id="L816">        renderingChanged();</span>
+<span class="fc" id="L817">        damage();</span>
+<span class="fc" id="L818">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
+     */
+    @Override
+    protected void textEditStarted(FigText ft) {
+
+<span class="nc bnc" id="L826" title="All 2 branches missed.">        if (ft == getNameFig()) {</span>
+<span class="nc" id="L827">            showHelp(&quot;parsing.help.fig-package&quot;);</span>
+        }
+<span class="nc" id="L829">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    @Override
+    public Point getClosestPoint(Point anotherPt) {
+<span class="fc" id="L836">        Rectangle r = getBounds();</span>
+<span class="fc" id="L837">        int[] xs = {</span>
+            r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+            r.x + r.width,   r.x + r.width,  r.x,            r.x,
+        };
+<span class="fc" id="L841">        int[] ys = {</span>
+            r.y, r.y,                     r.y + tabHeight,
+            r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+        };
+<span class="fc" id="L845">        Point p =</span>
+<span class="fc" id="L846">            Geometry.ptClosestTo(</span>
+                xs,
+                ys,
+                7,
+                anotherPt);
+<span class="fc" id="L851">        return p;</span>
+    }
+
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+
+<span class="nc bnc" id="L857" title="All 2 branches missed.">	if (mee instanceof RemoveAssociationEvent</span>
+<span class="nc bnc" id="L858" title="All 2 branches missed.">		&amp;&amp; &quot;ownedElement&quot;.equals(mee.getPropertyName())</span>
+<span class="nc bnc" id="L859" title="All 2 branches missed.">		&amp;&amp; mee.getSource() == getOwner()) {</span>
+	    // A model element has been removed from this packages namespace
+	    // If the Fig representing that model element is on the same
+	    // diagram as this package then make sure it is not enclosed by
+	    // this package.
+	    // TODO: In my view the Fig representing the model element should be
+	    // removed from the diagram. Yet to be agreed. Bob.
+<span class="nc bnc" id="L866" title="All 2 branches missed.">	    if ((mee.getNewValue() == null)</span>
+<span class="nc bnc" id="L867" title="All 2 branches missed.">                &amp;&amp; LOG.isLoggable(Level.INFO)) {</span>
+
+<span class="nc" id="L869">                LOG.log(Level.INFO,</span>
+<span class="nc" id="L870">                        Model.getFacade().getName(mee.getOldValue())</span>
+                        + &quot; has been removed from the namespace of &quot;
+<span class="nc" id="L872">                        + Model.getFacade().getName(getOwner())</span>
+<span class="nc" id="L873">                        + &quot; by notice of &quot; + mee.toString());</span>
+	    }
+
+<span class="nc" id="L876">	    LayerPerspective layer = (LayerPerspective) getLayer();</span>
+<span class="nc" id="L877">	    Fig f = layer.presentationFor(mee.getOldValue());</span>
+<span class="nc bnc" id="L878" title="All 4 branches missed.">	    if (f != null &amp;&amp; f.getEnclosingFig() == this) {</span>
+<span class="nc" id="L879">		removeEnclosedFig(f);</span>
+<span class="nc" id="L880">		f.setEnclosingFig(null);</span>
+	    }
+	}
+<span class="nc" id="L883">	super.modelChanged(mee);</span>
+<span class="nc" id="L884">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3617092272529451041L;
+
+    private class HideStereotypeAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            &quot;menu.popup.show.hide-stereotype&quot;;
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L901">        HideStereotypeAction() {</span>
+<span class="nc" id="L902">            super(Translator.localize(ACTION_KEY),</span>
+<span class="nc" id="L903">                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));</span>
+<span class="nc" id="L904">        }</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L911">            super.actionPerformed(ae);</span>
+<span class="nc" id="L912">            doStereotype(false);</span>
+<span class="nc" id="L913">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            1999499813643610674L;
+    }
+
+    private class ShowStereotypeAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            &quot;menu.popup.show.show-stereotype&quot;;
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L932">        ShowStereotypeAction() {</span>
+<span class="nc" id="L933">            super(Translator.localize(ACTION_KEY),</span>
+<span class="nc" id="L934">                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));</span>
+<span class="nc" id="L935">        }</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L942">            super.actionPerformed(ae);</span>
+<span class="nc" id="L943">            doStereotype(true);</span>
+<span class="nc" id="L944">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            -4327161642276705610L;
+    }
+
+    private class HideVisibilityAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            &quot;menu.popup.show.hide-visibility&quot;;
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L963">        HideVisibilityAction() {</span>
+<span class="nc" id="L964">            super(Translator.localize(ACTION_KEY),</span>
+<span class="nc" id="L965">                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));</span>
+<span class="nc" id="L966">        }</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L973">            super.actionPerformed(ae);</span>
+<span class="nc" id="L974">            doVisibility(false);</span>
+<span class="nc" id="L975">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            8574809709777267866L;
+    }
+
+    private class ShowVisibilityAction extends UndoableAction {
+        /**
+         * The key for the action name.
+         */
+        private static final String ACTION_KEY =
+            &quot;menu.popup.show.show-visibility&quot;;
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L994">        ShowVisibilityAction() {</span>
+<span class="nc" id="L995">            super(Translator.localize(ACTION_KEY),</span>
+<span class="nc" id="L996">                    ResourceLoaderWrapper.lookupIcon(ACTION_KEY));</span>
+<span class="nc" id="L997">        }</span>
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         *         java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L1004">            super.actionPerformed(ae);</span>
+<span class="nc" id="L1005">            doVisibility(true);</span>
+<span class="nc" id="L1006">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID =
+            7722093402948975834L;
+    }
+
+    private class PackageBackground extends FigPoly {
+
+        int indentX;
+        int tabHeight;
+
+        /**
+         * The constructor.
+         *
+         * @param x The x.
+         * @param y The y.
+         * @param w The width.
+         * @param h The height.
+         * @param ix The indent.
+         * @param th The tab height.
+         */
+<span class="fc" id="L1030">        public PackageBackground(int x, int y, int w, int h, int ix, int th) {</span>
+<span class="fc" id="L1031">            super(x, y);</span>
+<span class="fc" id="L1032">            addPoint(x + ix - 1, y);</span>
+<span class="fc" id="L1033">            addPoint(x + ix - 1, y + th);</span>
+<span class="fc" id="L1034">            addPoint(x + w - 1, y + th);</span>
+<span class="fc" id="L1035">            addPoint(x + w - 1, y + h);</span>
+<span class="fc" id="L1036">            addPoint(x, y + h);</span>
+<span class="fc" id="L1037">            addPoint(x, y);</span>
+<span class="fc" id="L1038">            setFilled(true);</span>
+<span class="fc" id="L1039">            this.indentX = ix;</span>
+<span class="fc" id="L1040">            tabHeight = 30;</span>
+<span class="fc" id="L1041">        }</span>
+
+        /*
+         * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+         */
+        @Override
+        public Point getClosestPoint(Point anotherPt) {
+<span class="nc" id="L1048">            Rectangle r = getBounds();</span>
+<span class="nc" id="L1049">            int[] xs = {</span>
+                r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+                r.x + r.width,   r.x + r.width,  r.x,            r.x,
+            };
+<span class="nc" id="L1053">            int[] ys = {</span>
+                r.y, r.y,                     r.y + tabHeight,
+                r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+            };
+<span class="nc" id="L1057">            Point p =</span>
+<span class="nc" id="L1058">                Geometry.ptClosestTo(</span>
+                    xs,
+                    ys,
+                    7,
+                    anotherPt);
+<span class="nc" id="L1063">            return p;</span>
+        };
+
+        public void setBoundsImpl(
+                final int x,
+                final int y,
+                final int w,
+                final int h) {
+
+<span class="fc" id="L1072">            final int labelWidth = getNameBounds().width;</span>
+<span class="fc" id="L1073">            final int labelHeight = getNameBounds().height;</span>
+
+<span class="fc" id="L1075">            final int xs[] = new int[7];</span>
+<span class="fc" id="L1076">            final int ys[] = new int[7];</span>
+<span class="fc" id="L1077">            xs[0] = x;</span>
+<span class="fc" id="L1078">            ys[0] = y;</span>
+
+<span class="fc" id="L1080">            xs[1] = x + labelWidth - 1;</span>
+<span class="fc" id="L1081">            ys[1] = y;</span>
+
+<span class="fc" id="L1083">            xs[2] = x + labelWidth - 1;</span>
+<span class="fc" id="L1084">            ys[2] = y + labelHeight - 1;</span>
+
+<span class="fc" id="L1086">            xs[3] = x + w - 1;</span>
+<span class="fc" id="L1087">            ys[3] = y + labelHeight - 1;</span>
+
+<span class="fc" id="L1089">            xs[4] = x + w - 1;</span>
+<span class="fc" id="L1090">            ys[4] = y + h - 1;</span>
+
+<span class="fc" id="L1092">            xs[5] = x;</span>
+<span class="fc" id="L1093">            ys[5] = y + h - 1;</span>
+
+<span class="fc" id="L1095">            xs[6] = x;</span>
+<span class="fc" id="L1096">            ys[6] = y;</span>
+
+<span class="fc" id="L1098">            Polygon p = new Polygon(xs, ys, 7);</span>
+
+<span class="fc" id="L1100">            super.setPolygon(p);</span>
+<span class="fc" id="L1101">            setFilled(true);</span>
+<span class="fc" id="L1102">            setLineWidth(0);</span>
+<span class="fc" id="L1103">        }</span>
+
+        public void setLineWidth(int w) {
+<span class="fc" id="L1106">            super.setLineWidth(0);</span>
+<span class="fc" id="L1107">        }</span>
+    }
+
+} /* end class FigPackage */
+
+/**
+ * The bigport needs to overrule the getClosestPoint,
+ * because it is the port of this FigNode.
+ *
+ * @author mvw@tigris.org
+ */
+class PackagePortFigRect extends FigRect {
+    private int indentX;
+    private int tabHeight;
+
+    /**
+     * The constructor.
+     *
+     * @param x The x.
+     * @param y The y.
+     * @param w The width.
+     * @param h The height.
+     * @param ix The indent.
+     * @param th The tab height.
+     */
+    public PackagePortFigRect(int x, int y, int w, int h, int ix, int th) {
+<span class="fc" id="L1133">        super(x, y, w, h, null, null);</span>
+<span class="fc" id="L1134">        this.indentX = ix;</span>
+<span class="fc" id="L1135">        tabHeight = th;</span>
+<span class="fc" id="L1136">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+     */
+    @Override
+    public Point getClosestPoint(Point anotherPt) {
+<span class="nc" id="L1143">        Rectangle r = getBounds();</span>
+<span class="nc" id="L1144">        int[] xs = {</span>
+            r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+            r.x + r.width,   r.x + r.width,  r.x,            r.x,
+        };
+<span class="nc" id="L1148">        int[] ys = {</span>
+            r.y, r.y,                     r.y + tabHeight,
+            r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+        };
+<span class="nc" id="L1152">        Point p =</span>
+<span class="nc" id="L1153">            Geometry.ptClosestTo(</span>
+                xs,
+                ys,
+                7,
+                anotherPt);
+<span class="nc" id="L1158">        return p;</span>
+    }
+
+    public void setFilled(boolean f) {
+<span class="fc" id="L1162">        super.setFilled(false);</span>
+<span class="fc" id="L1163">    }</span>
+
+    public void setFillColor(Color c) {
+<span class="fc" id="L1166">        super.setFillColor(null);</span>
+<span class="fc" id="L1167">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -7083102131363598065L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

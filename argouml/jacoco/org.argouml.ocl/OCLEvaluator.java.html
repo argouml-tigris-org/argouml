@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OCLEvaluator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ocl</a> &gt; <span class="el_source">OCLEvaluator.java</span></div><h1>OCLEvaluator.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ocl;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.profile.internal.ocl.ModelInterpreter;
+import org.argouml.profile.internal.ocl.OclExpressionEvaluator;
+import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
+import org.tigris.gef.ocl.ExpansionException;
+
+
+/**
+ * OCLEvaluator is responsible for evaluating simple OCL expressions.
+ * Such expressions are for example used in the critiques.&lt;p&gt;
+ *
+ * @stereotype singleton
+ * @deprecated use {@link DefaultOclEvaluator} instead - maurelio1234
+ */
+@Deprecated
+public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
+
+<span class="fc" id="L65">    private OclExpressionEvaluator evaluator = new DefaultOclEvaluator();</span>
+<span class="fc" id="L66">    private HashMap&lt;String, Object&gt; vt = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L67">    private ModelInterpreter modelInterpreter = new Uml14ModelInterpreter();</span>
+    
+    /**
+     * The constructor.
+     *
+     */
+<span class="fc" id="L73">    public OCLEvaluator() {</span>
+<span class="fc" id="L74">    }</span>
+
+    /*
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
+     * java.lang.String)
+     */
+    protected synchronized String evalToString(Object self, String expr)
+        throws ExpansionException {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (&quot;self&quot;.equals(expr)) {</span>
+<span class="nc" id="L83">            expr = &quot;self.name&quot;;</span>
+        }
+               
+<span class="nc" id="L86">        vt.clear();</span>
+<span class="nc" id="L87">        vt.put(&quot;self&quot;, self);</span>
+        try {
+<span class="nc" id="L89">            return value2String(evaluator.evaluate(vt, modelInterpreter, expr));</span>
+<span class="nc" id="L90">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L91">            return &quot;&lt;ocl&gt;invalid expression&lt;/ocl&gt;&quot;;</span>
+        }
+    }
+
+    /*
+     * @see org.tigris.gef.ocl.OCLEvaluator#evalToString(java.lang.Object,
+     * java.lang.String, java.lang.String)
+     */
+    protected synchronized String evalToString(
+            Object self,
+            String expr,
+            String sep)
+    	throws ExpansionException {
+
+<span class="nc" id="L105">        _scratchBindings.put(&quot;self&quot;, self);</span>
+<span class="nc" id="L106">        java.util.List values = eval(_scratchBindings, expr);</span>
+<span class="nc" id="L107">        _strBuf.setLength(0);</span>
+<span class="nc" id="L108">        Iterator iter = values.iterator();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L110">            Object v = value2String(iter.next());</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (!&quot;&quot;.equals(v)) {</span>
+<span class="nc" id="L113">                _strBuf.append(v);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                if (iter.hasNext()) {</span>
+<span class="nc" id="L115">                    _strBuf.append(sep);</span>
+                }
+            }
+<span class="nc" id="L118">        }</span>
+<span class="nc" id="L119">        return _strBuf.toString();</span>
+    }
+
+    private String value2String(Object v) {
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (Model.getFacade().isAExpression(v)) {</span>
+<span class="nc" id="L124">            v = Model.getFacade().getBody(v);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">            if (&quot;&quot;.equals(v)) {</span>
+<span class="nc" id="L126">                v = &quot;(unspecified)&quot;;</span>
+            }
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        } else if (Model.getFacade().isAUMLElement(v)) {</span>
+<span class="nc" id="L129">            v = Model.getFacade().getName(v);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (&quot;&quot;.equals(v)) {</span>
+<span class="nc" id="L131">                v = Translator.localize(&quot;misc.name.anon&quot;);</span>
+            }
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        } else if (v instanceof Collection) {</span>
+<span class="nc" id="L134">            String acc = &quot;[&quot;;</span>
+<span class="nc" id="L135">            Collection collection = (Collection) v;</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            for (Object object : collection) {</span>
+<span class="nc" id="L138">                acc += value2String(object) + &quot;,&quot;;</span>
+<span class="nc" id="L139">            }        </span>
+<span class="nc" id="L140">            acc += &quot;]&quot;;</span>
+<span class="nc" id="L141">            v = acc;</span>
+        }
+<span class="nc" id="L143">        return &quot;&quot; + v;</span>
+    }
+}  // end of OCLEvaluator
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

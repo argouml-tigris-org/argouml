@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StartBrowser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util.osdep</a> &gt; <span class="el_source">StartBrowser.java</span></div><h1>StartBrowser.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    andrea_nironi
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util.osdep;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+/**
+ * @stereotype utility
+ */
+<span class="nc" id="L51">public class StartBrowser {</span>
+    /** logger */
+<span class="nc" id="L53">    private static final Logger LOG =</span>
+<span class="nc" id="L54">        Logger.getLogger(StartBrowser.class.getName());</span>
+
+    /**
+     * Open an URL in the system's default browser.
+     *
+     * @param url string containing the given URL
+     */
+    public static void openUrl(String url) {
+	try {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">	    if (OsUtil.isWin32()) {</span>
+<span class="nc" id="L64">		Runtime.getRuntime().exec(</span>
+                        &quot;rundll32 url.dll,FileProtocolHandler &quot; + url);
+	    }
+<span class="nc bnc" id="L67" title="All 2 branches missed.">	    else if (OsUtil.isMac()) {</span>
+		try {
+<span class="nc" id="L69">		    ClassLoader cl = ClassLoader.getSystemClassLoader();</span>
+<span class="nc" id="L70">		    Class c = cl.loadClass(&quot;com.apple.mrj.MRJFileUtils&quot;);</span>
+<span class="nc" id="L71">		    Class[] argtypes = {</span>
+			String.class,
+		    };
+<span class="nc" id="L74">		    Method m = c.getMethod(&quot;openURL&quot;, argtypes);</span>
+<span class="nc" id="L75">		    Object[] args = {</span>
+			url,
+		    };
+<span class="nc" id="L78">		    m.invoke(c.newInstance(), args);</span>
+<span class="nc" id="L79">		} catch (Exception cnfe) {</span>
+<span class="nc" id="L80">                    LOG.log(Level.SEVERE, &quot;&quot;, cnfe);</span>
+<span class="nc" id="L81">                    LOG.log(Level.INFO, &quot;Trying a default browser (netscape)&quot;);</span>
+<span class="nc" id="L82">		    String[] commline = {</span>
+			&quot;netscape&quot;, url,
+		    };
+<span class="nc" id="L85">		    Runtime.getRuntime().exec(commline);</span>
+<span class="nc" id="L86">		}</span>
+	    }
+	    else {
+<span class="nc" id="L89">                Runtime.getRuntime().exec(&quot;firefox &quot; + url);</span>
+	    }
+	}
+<span class="nc" id="L92">	catch (IOException ioe) {</span>
+	    // Didn't work.
+<span class="nc" id="L94">            LOG.log(Level.SEVERE, &quot;&quot;, ioe);</span>
+<span class="nc" id="L95">	}</span>
+
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Open an URL in the system's default browser.
+     *
+     * @param url the URL to open
+     */
+    public static void openUrl(URL url) {
+<span class="nc" id="L105">        openUrl(url.toString());</span>
+<span class="nc" id="L106">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

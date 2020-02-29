@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Init.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.checklist</a> &gt; <span class="el_source">Init.java</span></div><h1>Init.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.checklist;
+
+import org.argouml.cognitive.checklist.CheckItem;
+import org.argouml.cognitive.checklist.CheckManager;
+import org.argouml.cognitive.checklist.Checklist;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+
+
+/**
+ * Registers Checklists for different kinds of model elements. If you
+ * add a new checklist, a line must be added here.
+ *
+ * @see org.argouml.cognitive.checklist.CheckManager
+ */
+<span class="nc" id="L54">public class Init {</span>
+    /**
+     * static initializer, register all appropriate critics.
+     */
+    public static void init() {
+<span class="nc" id="L59">	createChecklists();</span>
+<span class="nc" id="L60">    }</span>
+
+
+    /**
+     * Creat a check item (an UMLCheckItem) corresponding to the given key.
+     * and add it to the given checklist.
+     *
+     * @param category to add the item to.
+     * @param key to get the localized string.
+     * @param checklist to add the item to.
+     */
+    private static void newCheckItem(String category, String key,
+				     Checklist checklist) {
+<span class="nc" id="L73">	CheckItem checkitem =</span>
+<span class="nc" id="L74">	    new UMLCheckItem(category, Translator.localize(key));</span>
+<span class="nc" id="L75">	checklist.add(checkitem);</span>
+<span class="nc" id="L76">    }</span>
+
+    /**
+     * Create all check lists.&lt;p&gt;
+     *
+     * This is the new implementation and a change from the old implementation
+     * in that the source code (i.e. this function) contains knowledge on
+     * what to check.&lt;p&gt;
+     *
+     * The purpose of this is to allow the ArgoUML project to jointly develop
+     * the knowledge database and let the internationalizations be just
+     * internationalizations.&lt;p&gt;
+     *
+     * When adding a new check list or an item to an existing check list you
+     * will have to:&lt;ol&gt;
+     * &lt;li&gt;Add the lines in this function.
+     * &lt;li&gt;Add the tags for the new items to the i18n property file
+     *     (checklist.properties).
+     * &lt;li&gt;Notify the localization teams.
+     * &lt;/ol&gt;
+     */
+    private static void createChecklists() {
+	//
+	// This function will, by design, contain long lists of i18n keys.
+	// It might be tempting to shorten these by constructing them from
+	// the parts but please then consider that we might loose the
+	// possibility to build tools to statically check the property files
+	// against this file.
+	//
+	Checklist cl;
+	String cat;
+
+	// Class
+<span class="nc" id="L109">	cl = new Checklist();</span>
+
+<span class="nc" id="L111">	cat = Translator.localize(&quot;checklist.class.naming&quot;);</span>
+<span class="nc" id="L112">	newCheckItem(cat, &quot;checklist.class.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L113">	newCheckItem(cat, &quot;checklist.class.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L114">	newCheckItem(cat, &quot;checklist.class.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L116">	cat = Translator.localize(&quot;checklist.class.encoding&quot;);</span>
+<span class="nc" id="L117">	newCheckItem(cat, &quot;checklist.class.encoding.convert-to-attribute&quot;, cl);</span>
+<span class="nc" id="L118">	newCheckItem(cat, &quot;checklist.class.encoding.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L119">	newCheckItem(cat, &quot;checklist.class.encoding.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L121">	cat = Translator.localize(&quot;checklist.class.value&quot;);</span>
+<span class="nc" id="L122">	newCheckItem(cat, &quot;checklist.class.value.start-with-meaningful-values&quot;,</span>
+		     cl);
+<span class="nc" id="L124">	newCheckItem(cat, &quot;checklist.class.value.convert-to-invariant&quot;, cl);</span>
+<span class="nc" id="L125">	newCheckItem(cat,</span>
+		 &quot;checklist.class.value.establish-invariant-in-constructors&quot;,
+		 cl);
+<span class="nc" id="L128">	newCheckItem(cat, &quot;checklist.class.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L130">	cat = Translator.localize(&quot;checklist.class.location&quot;);</span>
+<span class="nc" id="L131">	newCheckItem(cat, &quot;checklist.class.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L132">	newCheckItem(cat, &quot;checklist.class.location.planned-subclasses&quot;, cl);</span>
+<span class="nc" id="L133">	newCheckItem(cat, &quot;checklist.class.location.eliminate-from-model&quot;, cl);</span>
+<span class="nc" id="L134">	newCheckItem(cat,</span>
+	        &quot;checklist.class.location.eliminates-or-affects-something-else&quot;,
+		cl);
+
+<span class="nc" id="L138">	cat = Translator.localize(&quot;checklist.class.updates&quot;);</span>
+<span class="nc" id="L139">        newCheckItem(cat, &quot;checklist.class.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L140">	newCheckItem(cat, &quot;checklist.class.updates.affects-something-else&quot;, cl);</span>
+
+<span class="nc" id="L142">	CheckManager.register(Model.getMetaTypes().getUMLClass(), cl);</span>
+
+
+	// Attribute
+<span class="nc" id="L146">	cl = new Checklist();</span>
+
+<span class="nc" id="L148">	cat = Translator.localize(&quot;checklist.attribute.naming&quot;);</span>
+<span class="nc" id="L149">	newCheckItem(cat, &quot;checklist.attribute.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L150">	newCheckItem(cat, &quot;checklist.attribute.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L151">	newCheckItem(cat, &quot;checklist.attribute.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L153">	cat = Translator.localize(&quot;checklist.attribute.encoding&quot;);</span>
+<span class="nc" id="L154">	newCheckItem(cat, &quot;checklist.attribute.encoding.is-too-restrictive&quot;,</span>
+		     cl);
+<span class="nc" id="L156">	newCheckItem(cat,</span>
+		     &quot;checklist.attribute.encoding.allow-impossible-values&quot;,
+		     cl);
+<span class="nc" id="L159">	newCheckItem(cat, &quot;checklist.attribute.encoding.combine-with-other&quot;,</span>
+		     cl);
+<span class="nc" id="L161">	newCheckItem(cat, &quot;checklist.attribute.encoding.break-into-parts&quot;, cl);</span>
+<span class="nc" id="L162">	newCheckItem(cat, &quot;checklist.attribute.encoding.is-computable&quot;, cl);</span>
+
+<span class="nc" id="L164">	cat = Translator.localize(&quot;checklist.attribute.value&quot;);</span>
+<span class="nc" id="L165">	newCheckItem(cat, &quot;checklist.attribute.value.default-value&quot;, cl);</span>
+<span class="nc" id="L166">	newCheckItem(cat, &quot;checklist.attribute.value.correct-default-value&quot;,</span>
+		     cl);
+<span class="nc" id="L168">	newCheckItem(cat, &quot;checklist.attribute.value.is-correctness-checkable&quot;,</span>
+		     cl);
+
+<span class="nc" id="L171">	cat = Translator.localize(&quot;checklist.attribute.location&quot;);</span>
+<span class="nc" id="L172">	newCheckItem(cat, &quot;checklist.attribute.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L173">	newCheckItem(cat, &quot;checklist.attribute.location.move-up-hierarchy&quot;, cl);</span>
+<span class="nc" id="L174">	newCheckItem(cat, &quot;checklist.attribute.location.include-all&quot;, cl);</span>
+<span class="nc" id="L175">	newCheckItem(cat, &quot;checklist.attribute.location.could-be-eliminated&quot;,</span>
+		     cl);
+<span class="nc" id="L177">	newCheckItem(cat,</span>
+	    &quot;checklist.attribute.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L181">	cat = Translator.localize(&quot;checklist.attribute.updates&quot;);</span>
+<span class="nc" id="L182">        newCheckItem(cat, &quot;checklist.attribute.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L183">	newCheckItem(cat, &quot;checklist.attribute.updates.affects-something-else&quot;,</span>
+		     cl);
+<span class="nc" id="L185">	newCheckItem(cat,</span>
+		     &quot;checklist.attribute.updates.exists-method-for-update&quot;,
+		     cl);
+<span class="nc" id="L188">	newCheckItem(cat,</span>
+	    &quot;checklist.attribute.updates.exists-method-for-specific-value&quot;,
+	    cl);
+
+<span class="nc" id="L192">	CheckManager.register(Model.getMetaTypes().getAttribute(), cl);</span>
+
+
+	// Operation
+<span class="nc" id="L196">	cl = new Checklist();</span>
+
+<span class="nc" id="L198">	cat = Translator.localize(&quot;checklist.operation.naming&quot;);</span>
+<span class="nc" id="L199">	newCheckItem(cat, &quot;checklist.operation.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L200">	newCheckItem(cat, &quot;checklist.operation.naming.is-verb&quot;, cl);</span>
+<span class="nc" id="L201">	newCheckItem(cat, &quot;checklist.operation.naming.misinterpret&quot;, cl);</span>
+<span class="nc" id="L202">	newCheckItem(cat, &quot;checklist.operation.naming.do-just-one-thing&quot;, cl);</span>
+
+<span class="nc" id="L204">	cat = Translator.localize(&quot;checklist.operation.encoding&quot;);</span>
+<span class="nc" id="L205">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.encoding.is-returntype-too-restrictive&quot;,
+	    cl);
+<span class="nc" id="L208">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.encoding.does-returntype-allow-impossible-&quot;
+            + &quot;values&quot;, cl);
+<span class="nc" id="L211">	newCheckItem(cat,</span>
+            &quot;checklist.operation.encoding.combine-with-other&quot;, cl);
+<span class="nc" id="L213">	newCheckItem(cat, &quot;checklist.operation.encoding.break-into-parts&quot;, cl);</span>
+<span class="nc" id="L214">	newCheckItem(cat, &quot;checklist.operation.encoding.break-into-series&quot;, cl);</span>
+<span class="nc" id="L215">	newCheckItem(cat, &quot;checklist.operation.encoding.reduce-number-of-calls&quot;,</span>
+		     cl);
+
+<span class="nc" id="L218">	cat = Translator.localize(&quot;checklist.operation.value&quot;);</span>
+<span class="nc" id="L219">	newCheckItem(cat, &quot;checklist.operation.value.handle-all-inputs&quot;, cl);</span>
+<span class="nc" id="L220">	newCheckItem(cat, &quot;checklist.operation.value.are-special-cases&quot;, cl);</span>
+<span class="nc" id="L221">	newCheckItem(cat, &quot;checklist.operation.value.is-correctness-checkable&quot;,</span>
+		     cl);
+<span class="nc" id="L223">	newCheckItem(cat,</span>
+		     &quot;checklist.operation.value.express-preconditions-possible&quot;,
+		     cl);
+<span class="nc" id="L226">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.value.express-postconditions-possible&quot;,
+	    cl);
+<span class="nc" id="L229">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.value.how-behave-preconditions-violated&quot;,
+	    cl);
+<span class="nc" id="L232">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.value.how-behave-postconditions-not-achieved&quot;,
+	    cl);
+
+<span class="nc" id="L236">	cat = Translator.localize(&quot;checklist.operation.location&quot;);</span>
+<span class="nc" id="L237">	newCheckItem(cat, &quot;checklist.operation.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L238">	newCheckItem(cat, &quot;checklist.operation.location.move-up-hierarchy&quot;, cl);</span>
+<span class="nc" id="L239">	newCheckItem(cat, &quot;checklist.operation.location.include-all&quot;, cl);</span>
+<span class="nc" id="L240">	newCheckItem(cat, &quot;checklist.operation.location.could-be-eliminated&quot;,</span>
+		     cl);
+<span class="nc" id="L242">	newCheckItem(cat,</span>
+	    &quot;checklist.operation.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L246">	CheckManager.register(Model.getMetaTypes().getOperation(), cl);</span>
+
+
+
+	// Association
+<span class="nc" id="L251">	cl = new Checklist();</span>
+
+<span class="nc" id="L253">	cat = Translator.localize(&quot;checklist.association.naming&quot;);</span>
+<span class="nc" id="L254">	newCheckItem(cat, &quot;checklist.association.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L255">	newCheckItem(cat, &quot;checklist.association.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L256">	newCheckItem(cat, &quot;checklist.association.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L258">	cat = Translator.localize(&quot;checklist.association.encoding&quot;);</span>
+<span class="nc" id="L259">	newCheckItem(cat, &quot;checklist.association.encoding.convert-to-attribute&quot;,</span>
+		     cl);
+<span class="nc" id="L261">	newCheckItem(cat, &quot;checklist.association.encoding.do-just-one-thing&quot;,</span>
+		     cl);
+<span class="nc" id="L263">	newCheckItem(cat, &quot;checklist.association.encoding.break-into-parts&quot;,</span>
+		     cl);
+
+<span class="nc" id="L266">	cat = Translator.localize(&quot;checklist.association.value&quot;);</span>
+<span class="nc" id="L267">	newCheckItem(cat,</span>
+		     &quot;checklist.association.value.start-with-meaningful-values&quot;,
+		     cl);
+<span class="nc" id="L270">	newCheckItem(cat, &quot;checklist.association.value.convert-to-invariant&quot;,</span>
+		     cl);
+<span class="nc" id="L272">	newCheckItem(cat,</span>
+	    &quot;checklist.association.value.establish-invariant-in-constructors&quot;,
+	    cl);
+<span class="nc" id="L275">	newCheckItem(cat, &quot;checklist.association.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L277">	cat = Translator.localize(&quot;checklist.association.location&quot;);</span>
+<span class="nc" id="L278">	newCheckItem(cat, &quot;checklist.association.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L279">	newCheckItem(cat, &quot;checklist.association.location.planned-subclasses&quot;,</span>
+		     cl);
+<span class="nc" id="L281">	newCheckItem(cat, &quot;checklist.association.location.eliminate-from-model&quot;,</span>
+		     cl);
+<span class="nc" id="L283">	newCheckItem(cat,</span>
+	    &quot;checklist.association.location.eliminates-or-affects-&quot;
+            + &quot;something-else&quot;, cl);
+
+<span class="nc" id="L287">	cat = Translator.localize(&quot;checklist.association.updates&quot;);</span>
+<span class="nc" id="L288">	newCheckItem(cat, &quot;checklist.association.updates.reasons-for-update&quot;,</span>
+		     cl);
+<span class="nc" id="L290">	newCheckItem(cat,</span>
+            &quot;checklist.association.updates.affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L294">	CheckManager.register(Model.getMetaTypes().getAssociation(), cl);</span>
+
+
+	// Interface
+<span class="nc" id="L298">	cl = new Checklist();</span>
+
+<span class="nc" id="L300">	cat = Translator.localize(&quot;checklist.interface.naming&quot;);</span>
+<span class="nc" id="L301">	newCheckItem(cat, &quot;checklist.interface.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L302">	newCheckItem(cat, &quot;checklist.interface.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L303">	newCheckItem(cat, &quot;checklist.interface.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L305">	cat = Translator.localize(&quot;checklist.interface.encoding&quot;);</span>
+<span class="nc" id="L306">	newCheckItem(cat, &quot;checklist.interface.encoding.convert-to-attribute&quot;,</span>
+		     cl);
+<span class="nc" id="L308">	newCheckItem(cat, &quot;checklist.interface.encoding.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L309">	newCheckItem(cat, &quot;checklist.interface.encoding.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L311">	cat = Translator.localize(&quot;checklist.interface.value&quot;);</span>
+<span class="nc" id="L312">	newCheckItem(cat,</span>
+		     &quot;checklist.interface.value.start-with-meaningful-values&quot;,
+		     cl);
+<span class="nc" id="L315">	newCheckItem(cat, &quot;checklist.interface.value.convert-to-invariant&quot;, cl);</span>
+<span class="nc" id="L316">	newCheckItem(cat,</span>
+	    &quot;checklist.interface.value.establish-invariant-in-constructors&quot;,
+	    cl);
+<span class="nc" id="L319">	newCheckItem(cat, &quot;checklist.interface.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L321">	cat = Translator.localize(&quot;checklist.interface.location&quot;);</span>
+<span class="nc" id="L322">	newCheckItem(cat, &quot;checklist.interface.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L323">	newCheckItem(cat, &quot;checklist.interface.location.planned-subclasses&quot;,</span>
+		     cl);
+<span class="nc" id="L325">	newCheckItem(cat, &quot;checklist.interface.location.eliminate-from-model&quot;,</span>
+		     cl);
+<span class="nc" id="L327">	newCheckItem(cat,</span>
+	    &quot;checklist.interface.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L331">	cat = Translator.localize(&quot;checklist.interface.updates&quot;);</span>
+<span class="nc" id="L332">	newCheckItem(cat, &quot;checklist.interface.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L333">	newCheckItem(cat, &quot;checklist.interface.updates.affects-something-else&quot;,</span>
+		     cl);
+
+<span class="nc" id="L336">	CheckManager.register(Model.getMetaTypes().getInterface(), cl);</span>
+
+
+	// Instance
+<span class="nc bnc" id="L340" title="All 2 branches missed.">	if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L341">            cl = new Checklist();</span>
+    
+<span class="nc" id="L343">            cat = Translator.localize(&quot;checklist.instance.general&quot;);</span>
+<span class="nc" id="L344">            newCheckItem(cat, &quot;checklist.instance.general.describe-clearly&quot;, cl);</span>
+    
+<span class="nc" id="L346">            cat = Translator.localize(&quot;checklist.instance.naming&quot;);</span>
+<span class="nc" id="L347">            newCheckItem(cat, &quot;checklist.instance.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L348">            newCheckItem(cat, &quot;checklist.instance.naming.denotes-state&quot;, cl);</span>
+<span class="nc" id="L349">            newCheckItem(cat, &quot;checklist.instance.naming.misinterpret&quot;, cl);</span>
+    
+<span class="nc" id="L351">            cat = Translator.localize(&quot;checklist.instance.structure&quot;);</span>
+<span class="nc" id="L352">            newCheckItem(cat, &quot;checklist.instance.structure.merged-with-other&quot;, cl);</span>
+<span class="nc" id="L353">            newCheckItem(cat, &quot;checklist.instance.structure.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L354">            newCheckItem(cat, &quot;checklist.instance.structure.break-into-parts&quot;, cl);</span>
+<span class="nc" id="L355">            newCheckItem(cat,</span>
+                &quot;checklist.instance.structure.can-write-characteristic-equation&quot;,
+                cl);
+<span class="nc" id="L358">            newCheckItem(cat, &quot;checklist.instance.structure.belong&quot;, cl);</span>
+<span class="nc" id="L359">            newCheckItem(cat, &quot;checklist.instance.structure.make-internal&quot;, cl);</span>
+<span class="nc" id="L360">            newCheckItem(cat,</span>
+                &quot;checklist.instance.structure.is-state-in-another-machine-&quot;
+                + &quot;exclusive&quot;, cl);
+    
+<span class="nc" id="L364">            cat = Translator.localize(&quot;checklist.instance.actions&quot;);</span>
+<span class="nc" id="L365">            newCheckItem(cat, &quot;checklist.instance.actions.list-entry-actions&quot;, cl);</span>
+<span class="nc" id="L366">            newCheckItem(cat,</span>
+                &quot;checklist.instance.actions.update-attribute-on-entry&quot;,
+                cl);
+<span class="nc" id="L369">            newCheckItem(cat, &quot;checklist.instance.actions.list-exit-action&quot;, cl);</span>
+<span class="nc" id="L370">            newCheckItem(cat, &quot;checklist.instance.actions.update-attribute-on-exit&quot;,</span>
+                cl);
+<span class="nc" id="L372">            newCheckItem(cat, &quot;checklist.instance.actions.list-do-action&quot;, cl);</span>
+<span class="nc" id="L373">            newCheckItem(cat, &quot;checklist.instance.actions.maintained-state&quot;, cl);</span>
+<span class="nc" id="L374">            cat = Translator.localize(&quot;checklist.instance.transitions&quot;);</span>
+<span class="nc" id="L375">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.need-another-transition-into&quot;,
+                cl);
+<span class="nc" id="L378">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.use-all-transitions-into&quot;,
+                cl);
+<span class="nc" id="L381">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.combine-with-other-incoming&quot;,
+                cl);
+<span class="nc" id="L384">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.need-another-transition-out-of&quot;,
+                cl);
+<span class="nc" id="L387">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.use-all-transitions-out-of&quot;,
+                cl);
+<span class="nc" id="L390">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.are-transitions-out-of-exclusive&quot;,
+                cl);
+<span class="nc" id="L393">            newCheckItem(cat,</span>
+                &quot;checklist.instance.transitions.combine-with-other-outgoing&quot;,
+                cl);
+<span class="nc" id="L396">            CheckManager.register(Model.getMetaTypes().getInstance(), cl);</span>
+	}
+
+	// Link
+<span class="nc" id="L400">	cl = new Checklist();</span>
+
+<span class="nc" id="L402">	cat = Translator.localize(&quot;checklist.link.naming&quot;);</span>
+<span class="nc" id="L403">	newCheckItem(cat, &quot;checklist.link.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L404">	newCheckItem(cat, &quot;checklist.link.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L405">	newCheckItem(cat, &quot;checklist.link.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L407">	cat = Translator.localize(&quot;checklist.link.encoding&quot;);</span>
+<span class="nc" id="L408">	newCheckItem(cat, &quot;checklist.link.encoding.convert-to-attribute&quot;, cl);</span>
+<span class="nc" id="L409">	newCheckItem(cat, &quot;checklist.link.encoding.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L410">	newCheckItem(cat, &quot;checklist.link.encoding.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L412">	cat = Translator.localize(&quot;checklist.link.value&quot;);</span>
+<span class="nc" id="L413">	newCheckItem(cat, &quot;checklist.link.value.start-with-meaningful-values&quot;,</span>
+		     cl);
+<span class="nc" id="L415">	newCheckItem(cat, &quot;checklist.link.value.convert-to-invariant&quot;, cl);</span>
+<span class="nc" id="L416">	newCheckItem(cat,</span>
+		     &quot;checklist.link.value.establish-invariant-in-constructors&quot;,
+		     cl);
+<span class="nc" id="L419">	newCheckItem(cat, &quot;checklist.link.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L421">	cat = Translator.localize(&quot;checklist.link.location&quot;);</span>
+<span class="nc" id="L422">	newCheckItem(cat, &quot;checklist.link.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L423">	newCheckItem(cat, &quot;checklist.link.location.planned-subclasses&quot;, cl);</span>
+<span class="nc" id="L424">	newCheckItem(cat, &quot;checklist.link.location.eliminate-from-model&quot;, cl);</span>
+<span class="nc" id="L425">	newCheckItem(cat,</span>
+	    &quot;checklist.link.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L429">	cat = Translator.localize(&quot;checklist.link.updates&quot;);</span>
+<span class="nc" id="L430">	newCheckItem(cat, &quot;checklist.link.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L431">	newCheckItem(cat, &quot;checklist.link.updates.affects-something-else&quot;, cl);</span>
+
+<span class="nc" id="L433">	CheckManager.register(Model.getMetaTypes().getLink(), cl);</span>
+
+
+	// State
+<span class="nc" id="L437">	cl = new Checklist();</span>
+
+<span class="nc" id="L439">	cat = Translator.localize(&quot;checklist.state.naming&quot;);</span>
+<span class="nc" id="L440">	newCheckItem(cat, &quot;checklist.state.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L441">	newCheckItem(cat, &quot;checklist.state.naming.denotes-state&quot;, cl);</span>
+<span class="nc" id="L442">	newCheckItem(cat, &quot;checklist.state.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L444">	cat = Translator.localize(&quot;checklist.state.structure&quot;);</span>
+<span class="nc" id="L445">	newCheckItem(cat, &quot;checklist.state.structure.merged-with-other&quot;, cl);</span>
+<span class="nc" id="L446">	newCheckItem(cat, &quot;checklist.state.structure.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L447">	newCheckItem(cat, &quot;checklist.state.structure.break-into-parts&quot;, cl);</span>
+<span class="nc" id="L448">	newCheckItem(cat,</span>
+	    &quot;checklist.state.structure.can-write-characteristic-equation&quot;,
+	    cl);
+<span class="nc" id="L451">	newCheckItem(cat, &quot;checklist.state.structure.belong&quot;, cl);</span>
+<span class="nc" id="L452">	newCheckItem(cat, &quot;checklist.state.structure.make-internal&quot;, cl);</span>
+<span class="nc" id="L453">	newCheckItem(cat,</span>
+	    &quot;checklist.state.structure.is-state-in-another-machine-exclusive&quot;,
+	    cl);
+
+<span class="nc" id="L457">	cat = Translator.localize(&quot;checklist.state.actions&quot;);</span>
+<span class="nc" id="L458">	newCheckItem(cat, &quot;checklist.state.actions.list-entry-actions&quot;, cl);</span>
+<span class="nc" id="L459">	newCheckItem(cat, &quot;checklist.state.actions.update-attribute-on-entry&quot;,</span>
+		     cl);
+<span class="nc" id="L461">	newCheckItem(cat, &quot;checklist.state.actions.list-exit-action&quot;, cl);</span>
+<span class="nc" id="L462">	newCheckItem(cat, &quot;checklist.state.actions.update-attribute-on-exit&quot;,</span>
+		     cl);
+<span class="nc" id="L464">	newCheckItem(cat, &quot;checklist.state.actions.list-do-action&quot;, cl);</span>
+<span class="nc" id="L465">	newCheckItem(cat, &quot;checklist.state.actions.maintained-state&quot;, cl);</span>
+
+<span class="nc" id="L467">	cat = Translator.localize(&quot;checklist.state.transitions&quot;);</span>
+<span class="nc" id="L468">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.need-another-transition-into&quot;,
+	    cl);
+<span class="nc" id="L471">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.use-all-transitions-into&quot;,
+	    cl);
+<span class="nc" id="L474">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.combine-with-other-incoming&quot;,
+	    cl);
+<span class="nc" id="L477">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.need-another-transition-out-of&quot;,
+	    cl);
+<span class="nc" id="L480">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.use-all-transitions-out-of&quot;,
+	    cl);
+<span class="nc" id="L483">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.are-transitions-out-of-exclusive&quot;,
+	    cl);
+<span class="nc" id="L486">	newCheckItem(cat,</span>
+	    &quot;checklist.state.transitions.combine-with-other-outgoing&quot;,
+	    cl);
+
+<span class="nc" id="L490">	CheckManager.register(Model.getMetaTypes().getState(), cl);</span>
+
+
+	// Transition
+<span class="nc" id="L494">	cl = new Checklist();</span>
+
+<span class="nc" id="L496">	cat = Translator.localize(&quot;checklist.transition.structure&quot;);</span>
+<span class="nc" id="L497">	newCheckItem(cat, &quot;checklist.transition.structure.start-somewhere-else&quot;,</span>
+		     cl);
+<span class="nc" id="L499">	newCheckItem(cat, &quot;checklist.transition.structure.end-somewhere-else&quot;,</span>
+		     cl);
+<span class="nc" id="L501">	newCheckItem(cat,</span>
+		     &quot;checklist.transition.structure.need-another-like-this&quot;,
+		     cl);
+<span class="nc" id="L504">	newCheckItem(cat,</span>
+		     &quot;checklist.transition.structure.unneeded-because-of-this&quot;,
+		     cl);
+
+<span class="nc" id="L508">	cat = Translator.localize(&quot;checklist.transition.trigger&quot;);</span>
+<span class="nc" id="L509">	newCheckItem(cat, &quot;checklist.transition.trigger.needed&quot;, cl);</span>
+<span class="nc" id="L510">	newCheckItem(cat, &quot;checklist.transition.trigger.happen-too-often&quot;, cl);</span>
+<span class="nc" id="L511">	newCheckItem(cat, &quot;checklist.transition.trigger.happen-too-rarely&quot;, cl);</span>
+
+<span class="nc" id="L513">	cat = Translator.localize(&quot;checklist.transition.guard&quot;);</span>
+<span class="nc" id="L514">	newCheckItem(cat, &quot;checklist.transition.guard.taken-too-often&quot;, cl);</span>
+<span class="nc" id="L515">	newCheckItem(cat, &quot;checklist.transition.guard.is-too-restrictive&quot;, cl);</span>
+<span class="nc" id="L516">	newCheckItem(cat, &quot;checklist.transition.guard.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L518">	cat = Translator.localize(&quot;checklist.transition.actions&quot;);</span>
+<span class="nc" id="L519">	newCheckItem(cat, &quot;checklist.transition.actions.should-have&quot;, cl);</span>
+<span class="nc" id="L520">	newCheckItem(cat, &quot;checklist.transition.actions.should-have-exit&quot;, cl);</span>
+<span class="nc" id="L521">	newCheckItem(cat, &quot;checklist.transition.actions.should-have-entry&quot;, cl);</span>
+<span class="nc" id="L522">	newCheckItem(cat, &quot;checklist.transition.actions.is-precondition-met&quot;,</span>
+		     cl);
+<span class="nc" id="L524">	newCheckItem(cat,</span>
+	    &quot;checklist.transition.actions.is-postcondition-consistant-with-&quot;
+            + &quot;destination&quot;, cl);
+
+<span class="nc" id="L528">	CheckManager.register(Model.getMetaTypes().getTransition(), cl);</span>
+
+
+	// Use Case
+<span class="nc" id="L532">	cl = new Checklist();</span>
+
+<span class="nc" id="L534">	cat = Translator.localize(&quot;checklist.usecase.naming&quot;);</span>
+<span class="nc" id="L535">	newCheckItem(cat, &quot;checklist.usecase.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L536">	newCheckItem(cat, &quot;checklist.usecase.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L537">	newCheckItem(cat, &quot;checklist.usecase.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L539">	cat = Translator.localize(&quot;checklist.usecase.encoding&quot;);</span>
+<span class="nc" id="L540">	newCheckItem(cat, &quot;checklist.usecase.encoding.convert-to-attribute&quot;,</span>
+		     cl);
+<span class="nc" id="L542">	newCheckItem(cat, &quot;checklist.usecase.encoding.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L543">	newCheckItem(cat, &quot;checklist.usecase.encoding.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L545">	cat = Translator.localize(&quot;checklist.usecase.value&quot;);</span>
+<span class="nc" id="L546">	newCheckItem(cat,</span>
+		     &quot;checklist.usecase.value.start-with-meaningful-values&quot;,
+		     cl);
+<span class="nc" id="L549">	newCheckItem(cat, &quot;checklist.usecase.value.convert-to-invariant&quot;, cl);</span>
+<span class="nc" id="L550">	newCheckItem(cat,</span>
+	    &quot;checklist.usecase.value.establish-invariant-in-constructors&quot;,
+	    cl);
+<span class="nc" id="L553">	newCheckItem(cat, &quot;checklist.usecase.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L555">	cat = Translator.localize(&quot;checklist.usecase.location&quot;);</span>
+<span class="nc" id="L556">	newCheckItem(cat, &quot;checklist.usecase.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L557">	newCheckItem(cat, &quot;checklist.usecase.location.planned-subclasses&quot;, cl);</span>
+<span class="nc" id="L558">	newCheckItem(cat, &quot;checklist.usecase.location.eliminate-from-model&quot;,</span>
+		     cl);
+<span class="nc" id="L560">	newCheckItem(cat,</span>
+	    &quot;checklist.usecase.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L564">	cat = Translator.localize(&quot;checklist.usecase.updates&quot;);</span>
+<span class="nc" id="L565">	newCheckItem(cat, &quot;checklist.usecase.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L566">	newCheckItem(cat, &quot;checklist.usecase.updates.affects-something-else&quot;,</span>
+		     cl);
+
+<span class="nc" id="L569">	CheckManager.register(Model.getMetaTypes().getUseCase(), cl);</span>
+
+
+	// Actor
+<span class="nc" id="L573">	cl = new Checklist();</span>
+
+<span class="nc" id="L575">	cat = Translator.localize(&quot;checklist.actor.naming&quot;);</span>
+<span class="nc" id="L576">	newCheckItem(cat, &quot;checklist.actor.naming.describe-clearly&quot;, cl);</span>
+<span class="nc" id="L577">	newCheckItem(cat, &quot;checklist.actor.naming.is-noun&quot;, cl);</span>
+<span class="nc" id="L578">	newCheckItem(cat, &quot;checklist.actor.naming.misinterpret&quot;, cl);</span>
+
+<span class="nc" id="L580">	cat = Translator.localize(&quot;checklist.actor.encoding&quot;);</span>
+<span class="nc" id="L581">	newCheckItem(cat, &quot;checklist.actor.encoding.convert-to-attribute&quot;, cl);</span>
+<span class="nc" id="L582">	newCheckItem(cat, &quot;checklist.actor.encoding.do-just-one-thing&quot;, cl);</span>
+<span class="nc" id="L583">	newCheckItem(cat, &quot;checklist.actor.encoding.break-into-parts&quot;, cl);</span>
+
+<span class="nc" id="L585">	cat = Translator.localize(&quot;checklist.actor.value&quot;);</span>
+<span class="nc" id="L586">	newCheckItem(cat, &quot;checklist.actor.value.start-with-meaningful-values&quot;,</span>
+		     cl);
+<span class="nc" id="L588">	newCheckItem(cat, &quot;checklist.actor.value.convert-to-invariant&quot;, cl);</span>
+<span class="nc" id="L589">	newCheckItem(cat,</span>
+	    &quot;checklist.actor.value.establish-invariant-in-constructors&quot;,
+	    cl);
+<span class="nc" id="L592">	newCheckItem(cat, &quot;checklist.actor.value.maintain-invariant&quot;, cl);</span>
+
+<span class="nc" id="L594">	cat = Translator.localize(&quot;checklist.actor.location&quot;);</span>
+<span class="nc" id="L595">	newCheckItem(cat, &quot;checklist.actor.location.move-somewhere&quot;, cl);</span>
+<span class="nc" id="L596">	newCheckItem(cat, &quot;checklist.actor.location.planned-subclasses&quot;, cl);</span>
+<span class="nc" id="L597">	newCheckItem(cat, &quot;checklist.actor.location.eliminate-from-model&quot;, cl);</span>
+<span class="nc" id="L598">	newCheckItem(cat,</span>
+            &quot;checklist.actor.location.eliminates-or-affects-something-else&quot;,
+	    cl);
+
+<span class="nc" id="L602">	cat = Translator.localize(&quot;checklist.actor.updates&quot;);</span>
+<span class="nc" id="L603">	newCheckItem(cat, &quot;checklist.actor.updates.reasons-for-update&quot;, cl);</span>
+<span class="nc" id="L604">	newCheckItem(cat, &quot;checklist.actor.updates.affects-something-else&quot;, cl);</span>
+
+<span class="nc" id="L606">	CheckManager.register(Model.getMetaTypes().getActor(), cl);</span>
+
+<span class="nc" id="L608">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

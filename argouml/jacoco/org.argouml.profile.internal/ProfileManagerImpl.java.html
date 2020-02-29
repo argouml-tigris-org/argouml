@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileManagerImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal</a> &gt; <span class="el_source">ProfileManagerImpl.java</span></div><h1>ProfileManagerImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Agency;
+import org.argouml.cognitive.Critic;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileManager;
+import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.UserDefinedProfileHelper;
+import org.argouml.uml.cognitive.critics.ProfileCodeGeneration;
+import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
+
+/**
+ * Default &lt;code&gt;ProfileManager&lt;/code&gt; implementation.
+ *
+ * @author Marcos Aurelio
+ */
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">public class ProfileManagerImpl implements ProfileManager {</span>
+
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(ProfileManagerImpl.class.getName());</span>
+
+    private static final String DIRECTORY_SEPARATOR = &quot;*&quot;;
+
+    /**
+     * The configuration key for the default profiles.
+     */
+<span class="fc" id="L82">    public static final ConfigurationKey KEY_DEFAULT_PROFILES = Configuration</span>
+<span class="fc" id="L83">            .makeKey(&quot;profiles&quot;, &quot;default&quot;);</span>
+
+    /**
+     * The configuration key for the search directories.
+     */
+<span class="fc" id="L88">    public static final ConfigurationKey KEY_DEFAULT_DIRECTORIES = Configuration</span>
+<span class="fc" id="L89">            .makeKey(&quot;profiles&quot;, &quot;directories&quot;);</span>
+
+    /**
+     * Avoids recursive configuration update when loading configuration.
+     */
+<span class="fc" id="L94">    private boolean disableConfigurationUpdate = false;</span>
+
+<span class="fc" id="L96">    private List&lt;Profile&gt; profiles = new ArrayList&lt;Profile&gt;();</span>
+
+<span class="fc" id="L98">    private List&lt;Profile&gt; defaultProfiles = new ArrayList&lt;Profile&gt;();</span>
+
+<span class="fc" id="L100">    private List&lt;String&gt; searchDirectories = new ArrayList&lt;String&gt;();</span>
+
+    private ProfileUML profileUML;
+
+    private ProfileGoodPractices profileGoodPractices;
+
+    private ProfileCodeGeneration profileCodeGeneration;
+
+    private DependencyResolver&lt;File&gt; resolver;
+
+    /**
+     * Constructor - includes initialization of built-in default profiles.
+     */
+<span class="fc" id="L113">    public ProfileManagerImpl() {</span>
+        try {
+<span class="fc" id="L115">            disableConfigurationUpdate = true;</span>
+
+<span class="fc" id="L117">            profileUML = new ProfileUML();</span>
+<span class="fc" id="L118">            profileGoodPractices = new ProfileGoodPractices();</span>
+<span class="fc" id="L119">            profileCodeGeneration = new ProfileCodeGeneration(</span>
+                    profileGoodPractices);
+
+<span class="fc" id="L122">            registerProfileInternal(profileUML);</span>
+<span class="fc" id="L123">            addToDefaultProfiles(profileUML);</span>
+                // the UML Profile is always present and default
+
+            // register the built-in profiles
+<span class="fc" id="L127">            registerProfileInternal(profileGoodPractices);</span>
+<span class="fc" id="L128">            registerProfileInternal(profileCodeGeneration);</span>
+<span class="fc" id="L129">            registerProfileInternal(new ProfileMeta());</span>
+
+<span class="nc" id="L131">        } catch (ProfileException e) {</span>
+            // TODO: Why is this throwing a generic runtime exception?!?!
+<span class="nc" id="L133">            throw new RuntimeException(e);</span>
+        } finally {
+<span class="fc" id="L135">            disableConfigurationUpdate = false;</span>
+        }
+<span class="fc" id="L137">        createUserDefinedProfilesDependencyResolver();</span>
+<span class="fc" id="L138">        loadDirectoriesFromConfiguration();</span>
+<span class="fc" id="L139">        refreshRegisteredProfiles();</span>
+<span class="fc" id="L140">        loadDefaultProfilesfromConfiguration();</span>
+<span class="fc" id="L141">    }</span>
+
+    private void createUserDefinedProfilesDependencyResolver() {
+<span class="fc" id="L144">        final ProfileManager profileManager = this;</span>
+<span class="fc" id="L145">        DependencyChecker&lt;File&gt; checker = new DependencyChecker&lt;File&gt;() {</span>
+            public boolean check(File file) {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">                boolean found = findUserDefinedProfile(file) != null;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">                if (!found) {</span>
+<span class="fc" id="L149">                    UserDefinedProfile udp = null;</span>
+                    try {
+<span class="fc" id="L151">                        udp = new UserDefinedProfile(file, profileManager);</span>
+<span class="fc" id="L152">                        registerProfileInternal(udp);</span>
+<span class="fc" id="L153">                        found = true;</span>
+
+<span class="fc" id="L155">                        LOG.log(Level.FINE,</span>
+                                &quot;UserDefinedProfile for file {0} registered.&quot;,
+<span class="fc" id="L157">                                file.getAbsolutePath());</span>
+
+<span class="nc" id="L159">                    } catch (ProfileException e) {</span>
+                        // if an exception is raised file is unusable
+<span class="nc" id="L161">                        LOG.log(Level.INFO,</span>
+                                &quot;Failed to load user defined profile &quot;
+<span class="nc" id="L163">                                + file.getAbsolutePath() + &quot;.&quot;,</span>
+                                e);
+<span class="fc" id="L165">                    }</span>
+                }
+<span class="fc" id="L167">                return found;</span>
+            }
+        };
+<span class="fc" id="L170">        resolver = new DependencyResolver&lt;File&gt;(checker);</span>
+<span class="fc" id="L171">    }</span>
+
+    private void loadDefaultProfilesfromConfiguration() {
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (!disableConfigurationUpdate) {</span>
+<span class="fc" id="L175">            disableConfigurationUpdate = true;</span>
+
+<span class="fc" id="L177">            String defaultProfilesList = Configuration</span>
+<span class="fc" id="L178">                    .getString(KEY_DEFAULT_PROFILES);</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            if (defaultProfilesList.equals(&quot;&quot;)) {</span>
+                // if the list does not exist add the code generation and
+                // good practices profiles as default
+<span class="fc" id="L182">                addToDefaultProfiles(profileGoodPractices);</span>
+<span class="fc" id="L183">                addToDefaultProfiles(profileCodeGeneration);</span>
+            } else {
+<span class="fc" id="L185">                StringTokenizer tokenizer = new StringTokenizer(</span>
+                        defaultProfilesList, DIRECTORY_SEPARATOR, false);
+
+<span class="fc bfc" id="L188" title="All 2 branches covered.">                while (tokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L189">                    String desc = tokenizer.nextToken();</span>
+<span class="fc" id="L190">                    Profile p = null;</span>
+
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">                    if (desc.charAt(0) == 'U') {</span>
+<span class="nc" id="L193">                        String fileName = desc.substring(1);</span>
+                        File file;
+                        try {
+<span class="nc" id="L196">                            file = new File(new URI(fileName));</span>
+
+<span class="nc" id="L198">                            p = findUserDefinedProfile(file);</span>
+
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                            if (p == null) {</span>
+                                try {
+<span class="nc" id="L202">                                    p = new UserDefinedProfile(file, this);</span>
+<span class="nc" id="L203">                                    registerProfileInternal(p);</span>
+<span class="nc" id="L204">                                } catch (ProfileException e) {</span>
+<span class="nc" id="L205">                                    LOG.log(Level.SEVERE,</span>
+                                            &quot;Error loading profile: &quot; + file,
+                                            e);
+<span class="nc" id="L208">                                }</span>
+                            }
+<span class="nc" id="L210">                        } catch (URISyntaxException e1) {</span>
+<span class="nc" id="L211">                            LOG.log(Level.SEVERE,</span>
+                                    &quot;Invalid path for Profile: &quot; + fileName,
+                                    e1);
+<span class="nc" id="L214">                        } catch (Throwable e2) {</span>
+<span class="nc" id="L215">                            LOG.log(Level.SEVERE,</span>
+                                    &quot;Error loading profile: &quot; + fileName, e2);
+<span class="nc" id="L217">                        }</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">                    } else if (desc.charAt(0) == 'C') {</span>
+<span class="fc" id="L219">                        String profileIdentifier = desc.substring(1);</span>
+<span class="fc" id="L220">                        p = lookForRegisteredProfile(profileIdentifier);</span>
+                    }
+<span class="fc bfc" id="L222" title="All 2 branches covered.">                    if (p != null) {</span>
+<span class="fc" id="L223">                        addToDefaultProfiles(p);</span>
+                    }
+<span class="fc" id="L225">                }</span>
+            }
+<span class="fc" id="L227">            disableConfigurationUpdate = false;</span>
+        }
+<span class="fc" id="L229">    }</span>
+
+    private void updateDefaultProfilesConfiguration() {
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        if (!disableConfigurationUpdate) {</span>
+<span class="fc" id="L233">            StringBuffer buf = new StringBuffer();</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">            for (Profile p : defaultProfiles) {</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">                if (p instanceof UserDefinedProfile) {</span>
+<span class="nc" id="L236">                    buf.append(&quot;U&quot;</span>
+<span class="nc" id="L237">                            + ((UserDefinedProfile) p).getModelFile()</span>
+<span class="nc" id="L238">                                    .toURI().toASCIIString());</span>
+                } else {
+<span class="fc" id="L240">                    buf.append(&quot;C&quot; + p.getProfileIdentifier());</span>
+                }
+<span class="fc" id="L242">                buf.append(DIRECTORY_SEPARATOR);</span>
+<span class="fc" id="L243">            }</span>
+<span class="fc" id="L244">            Configuration.setString(KEY_DEFAULT_PROFILES, buf.toString());</span>
+        }
+<span class="fc" id="L246">    }</span>
+
+    private void loadDirectoriesFromConfiguration() {
+<span class="fc" id="L249">        disableConfigurationUpdate = true;</span>
+<span class="fc" id="L250">        StringTokenizer tokenizer =</span>
+            new StringTokenizer(
+<span class="fc" id="L252">                    Configuration.getString(KEY_DEFAULT_DIRECTORIES),</span>
+                    DIRECTORY_SEPARATOR, false);
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        while (tokenizer.hasMoreTokens()) {</span>
+<span class="fc" id="L255">            searchDirectories.add(tokenizer.nextToken());</span>
+        }
+<span class="fc" id="L257">        disableConfigurationUpdate = false;</span>
+<span class="fc" id="L258">    }</span>
+
+    private void updateSearchDirectoriesConfiguration() {
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (!disableConfigurationUpdate) {</span>
+<span class="fc" id="L262">            StringBuffer buf = new StringBuffer();</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">            for (String s : searchDirectories) {</span>
+<span class="fc" id="L264">                buf.append(s).append(DIRECTORY_SEPARATOR);</span>
+<span class="fc" id="L265">            }</span>
+<span class="fc" id="L266">            Configuration.setString(KEY_DEFAULT_DIRECTORIES, buf.toString());</span>
+        }
+<span class="fc" id="L268">    }</span>
+
+    public List&lt;Profile&gt; getRegisteredProfiles() {
+<span class="fc" id="L271">        return profiles;</span>
+    }
+
+    public void registerProfile(Profile p) {
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">        if (registerProfileInternal(p)) {</span>
+            // this profile could have not been loaded when
+            // the default profile configuration
+            // was loaded at first, so we need to do it again
+<span class="fc" id="L279">            loadDefaultProfilesfromConfiguration();</span>
+        }
+<span class="fc" id="L281">        resolver.resolve();</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * @param p the profile to register.
+     * @return true if there should be an attempt to load the default profiles
+     * from the configuration.
+     */
+    private boolean registerProfileInternal(Profile p) {
+
+        try {
+<span class="fc" id="L292">            boolean loadDefaultProfilesFromConfiguration = false;</span>
+<span class="pc bpc" id="L293" title="2 of 4 branches missed.">            if (p != null &amp;&amp; !profiles.contains(p)) {</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">                if (p instanceof UserDefinedProfile</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">                        || getProfileForClass(p.getClass().getName()) == null) {</span>
+<span class="fc" id="L296">                    loadDefaultProfilesFromConfiguration = true;</span>
+<span class="fc" id="L297">                    profiles.add(p);</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">                    for (Critic critic : p.getCritics()) {</span>
+<span class="fc bfc" id="L299" title="All 2 branches covered.">                        for (Object meta : critic.getCriticizedDesignMaterials()) {</span>
+<span class="fc" id="L300">                            Agency.register(critic, meta);</span>
+<span class="fc" id="L301">                        }</span>
+<span class="fc" id="L302">                        critic.setEnabled(false);</span>
+<span class="fc" id="L303">                    }</span>
+                }
+            }
+<span class="fc" id="L306">            return loadDefaultProfilesFromConfiguration;</span>
+<span class="nc" id="L307">        } catch (RuntimeException e) {</span>
+            // TODO: Better if we wrap in a ProfileException and throw that
+<span class="nc" id="L309">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L310">                    &quot;Error registering profile &quot; + p.getDisplayName());</span>
+<span class="nc" id="L311">            throw e;</span>
+        }
+    }
+
+    public void removeProfile(Profile p) {
+<span class="pc bpc" id="L316" title="1 of 4 branches missed.">        if (p != null &amp;&amp; p != profileUML) {</span>
+<span class="fc" id="L317">            profiles.remove(p);</span>
+<span class="fc" id="L318">            defaultProfiles.remove(p);</span>
+        }
+        try {
+<span class="fc" id="L321">            Collection packages = p.getLoadedPackages();</span>
+<span class="pc bpc" id="L322" title="1 of 4 branches missed.">            if (packages != null &amp;&amp; !packages.isEmpty()) {</span>
+                // We assume profile is contained in a single extent
+<span class="fc" id="L324">                Model.getUmlFactory().deleteExtent(packages.iterator().next());</span>
+            }
+<span class="nc" id="L326">        } catch (ProfileException e) {</span>
+            // Nothing to delete if we couldn't get the packages
+<span class="fc" id="L328">        }</span>
+<span class="fc" id="L329">    }</span>
+
+    private static final String OLD_PROFILE_PACKAGE = &quot;org.argouml.uml.profile&quot;;
+
+    private static final String NEW_PROFILE_PACKAGE =
+        &quot;org.argouml.profile.internal&quot;;
+
+    public Profile getProfileForClass(String profileClass) {
+<span class="fc" id="L337">        Profile found = null;</span>
+
+        // If we found an old-style name, update it to the new package name
+<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (profileClass != null</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">                &amp;&amp; profileClass.startsWith(OLD_PROFILE_PACKAGE)) {</span>
+<span class="nc" id="L342">            profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,</span>
+                    NEW_PROFILE_PACKAGE);
+        }
+
+        // Make sure the names didn't change again
+<span class="pc bpc" id="L347" title="2 of 4 branches missed.">        assert profileUML.getClass().getName().startsWith(NEW_PROFILE_PACKAGE);</span>
+
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">            if (p.getClass().getName().equals(profileClass)) {</span>
+<span class="fc" id="L351">                found = p;</span>
+<span class="fc" id="L352">                break;</span>
+            }
+<span class="fc" id="L354">        }</span>
+<span class="fc" id="L355">        return found;</span>
+    }
+
+    public void addToDefaultProfiles(Profile p) {
+<span class="pc bpc" id="L359" title="2 of 4 branches missed.">        if (p != null &amp;&amp; profiles.contains(p)</span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">                &amp;&amp; !defaultProfiles.contains(p)) {</span>
+<span class="fc" id="L361">            defaultProfiles.add(p);</span>
+<span class="fc" id="L362">            updateDefaultProfilesConfiguration();</span>
+        }
+<span class="fc" id="L364">    }</span>
+
+    public List&lt;Profile&gt; getDefaultProfiles() {
+<span class="fc" id="L367">        return Collections.unmodifiableList(defaultProfiles);</span>
+    }
+
+    public void removeFromDefaultProfiles(Profile p) {
+<span class="pc bpc" id="L371" title="3 of 6 branches missed.">        if (p != null &amp;&amp; p != profileUML &amp;&amp; profiles.contains(p)) {</span>
+<span class="fc" id="L372">            defaultProfiles.remove(p);</span>
+<span class="fc" id="L373">            updateDefaultProfilesConfiguration();</span>
+        }
+<span class="fc" id="L375">    }</span>
+
+    public void addSearchPathDirectory(String path) {
+<span class="pc bpc" id="L378" title="2 of 4 branches missed.">        if (path != null &amp;&amp; !searchDirectories.contains(path)) {</span>
+<span class="fc" id="L379">            searchDirectories.add(path);</span>
+<span class="fc" id="L380">            updateSearchDirectoriesConfiguration();</span>
+            try {
+<span class="fc" id="L382">                Model.getXmiReader().addSearchPath(path);</span>
+<span class="nc" id="L383">            } catch (UmlException e) {</span>
+<span class="nc" id="L384">                LOG.log(Level.SEVERE,</span>
+                        &quot;Couldn't retrive XMI Reader from Model.&quot;, e);
+<span class="fc" id="L386">            }</span>
+        }
+<span class="fc" id="L388">    }</span>
+
+    public List&lt;String&gt; getSearchPathDirectories() {
+<span class="nc" id="L391">        return Collections.unmodifiableList(searchDirectories);</span>
+    }
+
+    public void removeSearchPathDirectory(String path) {
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        if (path != null) {</span>
+<span class="fc" id="L396">            searchDirectories.remove(path);</span>
+<span class="fc" id="L397">            updateSearchDirectoriesConfiguration();</span>
+            try {
+<span class="fc" id="L399">                Model.getXmiReader().removeSearchPath(path);</span>
+<span class="nc" id="L400">            } catch (UmlException e) {</span>
+<span class="nc" id="L401">                LOG.log(Level.SEVERE,</span>
+                        &quot;Couldn't retrive XMI Reader from Model.&quot;, e);
+<span class="fc" id="L403">            }</span>
+        }
+<span class="fc" id="L405">    }</span>
+
+    public void refreshRegisteredProfiles() {
+<span class="fc" id="L408">        ArrayList&lt;File&gt; dirs = new ArrayList&lt;File&gt;();</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        for (String dirName : searchDirectories) {</span>
+<span class="fc" id="L410">            File dir = new File(dirName);</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">            if (dir.exists()) {</span>
+<span class="nc" id="L412">                dirs.add(dir);</span>
+            }
+<span class="fc" id="L414">        }</span>
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">        if (!dirs.isEmpty()) {</span>
+            // TODO: Allow .zargo as profile as well?
+<span class="nc" id="L417">            List&lt;File&gt; profileFiles = UserDefinedProfileHelper.getFileList(</span>
+<span class="nc" id="L418">                dirs.toArray(new File[0]));</span>
+<span class="nc" id="L419">            loadProfiles(profileFiles);</span>
+        }
+<span class="fc" id="L421">    }</span>
+
+    void loadProfiles(List&lt;File&gt; profileFiles) {
+<span class="fc" id="L424">        resolver.resolve(profileFiles);</span>
+<span class="fc" id="L425">    }</span>
+
+    private Profile findUserDefinedProfile(File file) {
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">            if (p instanceof UserDefinedProfile) {</span>
+<span class="fc" id="L430">                UserDefinedProfile udp = (UserDefinedProfile) p;</span>
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">                if (file.equals(udp.getModelFile())) {</span>
+<span class="nc" id="L432">                    return udp;</span>
+                }
+            }
+<span class="fc" id="L435">        }</span>
+<span class="fc" id="L436">        return null;</span>
+    }
+
+    public Profile getUMLProfile() {
+<span class="fc" id="L440">        return profileUML;</span>
+    }
+
+    /*
+     * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
+     */
+    public Profile lookForRegisteredProfile(String value) {
+<span class="pc bpc" id="L447" title="1 of 2 branches missed.">        if (value != null) {</span>
+<span class="fc" id="L448">            List&lt;Profile&gt; registeredProfiles = getRegisteredProfiles();</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">            for (Profile profile : registeredProfiles) {</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">                if (value.equalsIgnoreCase(profile.getProfileIdentifier())) {</span>
+<span class="fc" id="L451">                    return profile;</span>
+                }
+<span class="fc" id="L453">            }</span>
+        }
+<span class="fc" id="L455">        return null;</span>
+    }
+
+    /*
+     * @param pc
+     * @see org.argouml.profile.ProfileManager#applyConfiguration(org.argouml.kernel.ProfileConfiguration)
+     */
+    public void applyConfiguration(ProfileConfiguration pc) {
+<span class="fc bfc" id="L463" title="All 2 branches covered.">        for (Profile p : this.profiles) {</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">            for (Critic c : p.getCritics()) {</span>
+<span class="fc" id="L465">                c.setEnabled(false);</span>
+<span class="fc" id="L466">                Configuration.setBoolean(c.getCriticKey(), false);</span>
+<span class="fc" id="L467">            }</span>
+<span class="fc" id="L468">        }</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        for (Profile p : pc.getProfiles()) {</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">            for (Critic c : p.getCritics()) {</span>
+<span class="fc" id="L471">                c.setEnabled(true);</span>
+<span class="fc" id="L472">                Configuration.setBoolean(c.getCriticKey(), true);</span>
+<span class="fc" id="L473">            }</span>
+<span class="fc" id="L474">        }</span>
+<span class="fc" id="L475">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

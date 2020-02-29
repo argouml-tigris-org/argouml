@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoFacade.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ocl</a> &gt; <span class="el_source">ArgoFacade.java</span></div><h1>ArgoFacade.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ocl;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+
+import tudresden.ocl.check.OclTypeException;
+import tudresden.ocl.check.types.Any;
+import tudresden.ocl.check.types.Basic;
+import tudresden.ocl.check.types.Type;
+import tudresden.ocl.check.types.Type2;
+
+/**
+ * Provides a facade of the ArgoUml uml model for the OCL compiler.&lt;p&gt;
+ *
+ * Note:
+ * In this file we have two different Collections active:
+ * java.util.Collection and tudresden.ocl.check.types.Collection. Be
+ * sure to explicitly specify what you mean every time.
+ * import java.util.Collection;
+ * import tudresden.ocl.check.types.Collection;
+ */
+public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
+
+    /**
+     * The target that this instance is connected to.
+     */
+    private Object target;
+
+    /**
+     * Construtor.
+     *
+     * @param t The target to create this facade for.
+     */
+<span class="nc" id="L78">    public ArgoFacade(Object t) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">	if (Model.getFacade().isAClassifier(t)) {</span>
+<span class="nc" id="L80">	    target = t;</span>
+	}
+<span class="nc" id="L82">    }</span>
+
+    /*
+     * @see tudresden.ocl.check.types.ModelFacade#getClassifier(java.lang.String)
+     */
+    public Any getClassifier(String name) {
+<span class="nc" id="L88">	Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc bnc" id="L90" title="All 4 branches missed.">	if (target != null &amp;&amp; Model.getFacade().getName(target).equals(name)) {</span>
+<span class="nc" id="L91">	    return new ArgoAny(target);</span>
+	}
+<span class="nc" id="L93">        Object classifier = p.findTypeInModel(name, p.getModel());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (classifier == null) {</span>
+            /**
+             * Added search in defined types 2001-10-18 STEFFEN ZSCHALER.
+             */
+<span class="nc" id="L98">            classifier = p.findType(name, false);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (classifier == null) {</span>
+<span class="nc" id="L100">                throw new OclTypeException(&quot;cannot find classifier: &quot; + name);</span>
+            }
+        }
+<span class="nc" id="L103">        return new ArgoAny(classifier);</span>
+    }
+}
+
+/**
+ * A class that is the wrapper for any type.
+ */
+class ArgoAny implements Any, Type2 {
+    /**
+     * Logger for the ArgoAny class.
+     */
+<span class="nc" id="L114">    private static final Logger LOG = Logger.getLogger(ArgoAny.class.getName());</span>
+
+    private Object classifier;
+
+    /**
+     * Constructor.
+     *
+     * @param cl The ArgoUML classifier.
+     */
+<span class="nc" id="L123">    ArgoAny(Object cl) {</span>
+<span class="nc" id="L124">	classifier = cl;</span>
+<span class="nc" id="L125">    }</span>
+
+    /*
+     * @see tudresden.ocl.check.types.Type#navigateQualified(
+     *         java.lang.String, tudresden.ocl.check.types.Type[])
+     */
+    public Type navigateQualified(String name, Type[] qualifiers)
+	throws OclTypeException {
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">	if (classifier == null) {</span>
+<span class="nc" id="L135">	    throw new OclTypeException(&quot;attempting to access features of Void&quot;);</span>
+	}
+
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">	if (qualifiers != null) {</span>
+<span class="nc" id="L140">	    throw new OclTypeException(&quot;qualified associations &quot;</span>
+				       + &quot;not supported yet!&quot;);
+	}
+
+<span class="nc" id="L144">	Type type = Basic.navigateAnyQualified(name, this, qualifiers);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">	if (type != null)  {</span>
+<span class="nc" id="L146">	    return type;</span>
+	}
+
+<span class="nc" id="L149">	Object foundAssocType = null, foundAttribType = null; // MClassifiers</span>
+<span class="nc" id="L150">	boolean isSet = false, isSequence = false; // cannot be Bag</span>
+
+	// first search for appropriate attributes
+	Collection attributes =
+<span class="nc" id="L154">	    Model.getCoreHelper().getAttributesInh(classifier);</span>
+<span class="nc" id="L155">	Iterator iter = attributes.iterator();</span>
+<span class="nc bnc" id="L156" title="All 4 branches missed.">	while (iter.hasNext() &amp;&amp; foundAttribType == null) {</span>
+<span class="nc" id="L157">	    Object attr = iter.next();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">	    if (Model.getFacade().getName(attr).equals(name)) {</span>
+<span class="nc" id="L159">		foundAttribType = Model.getFacade().getType(attr);</span>
+	    }
+<span class="nc" id="L161">	}</span>
+
+	// look for associations
+	Collection associationEnds =
+<span class="nc" id="L165">	    Model.getCoreHelper().getAssociateEndsInh(classifier);</span>
+<span class="nc" id="L166">	Iterator asciter = associationEnds.iterator();</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">	while (asciter.hasNext() &amp;&amp; foundAssocType == null) {</span>
+<span class="nc" id="L168">	    Object ae = asciter.next(); //MAssociationEnd</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">	    if (Model.getFacade().getName(ae) != null</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">		&amp;&amp; name.equals(Model.getFacade().getName(ae))) {</span>
+
+<span class="nc" id="L172">		foundAssocType = Model.getFacade().getType(ae);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">	    } else if (Model.getFacade().getName(ae) == null</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">		       || Model.getFacade().getName(ae).equals(&quot;&quot;)) {</span>
+
+		String oppositeName =
+<span class="nc" id="L177">		    Model.getFacade().getName(Model.getFacade().getType(ae));</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (oppositeName != null) {</span>
+
+<span class="nc" id="L180">		    String lowerOppositeName =</span>
+<span class="nc" id="L181">			oppositeName.substring(0, 1).toLowerCase();</span>
+<span class="nc" id="L182">		    lowerOppositeName += oppositeName.substring(1);</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		    if (lowerOppositeName.equals(name)) {</span>
+<span class="nc" id="L184">		        foundAssocType = Model.getFacade().getType(ae);</span>
+		    }
+		}
+	    }
+<span class="nc bnc" id="L188" title="All 2 branches missed.">	    if (foundAssocType != null) {</span>
+<span class="nc" id="L189">		Object multiplicity = Model.getFacade().getMultiplicity(ae);</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">		if (multiplicity != null</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		    &amp;&amp; (Model.getFacade().getUpper(multiplicity) &gt; 1</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">			|| Model.getFacade().getUpper(multiplicity)</span>
+                           == -1)) {
+<span class="nc bnc" id="L194" title="All 2 branches missed.">		    if (Model.getExtensionMechanismsHelper().hasStereotype(ae,</span>
+		            &quot;ordered&quot;)) {
+<span class="nc" id="L196">                        isSequence = true;</span>
+                    } else {
+<span class="nc" id="L198">                        isSet = true;</span>
+                    }
+		}
+	    }
+<span class="nc" id="L202">	}</span>
+
+<span class="nc bnc" id="L204" title="All 4 branches missed.">	if (foundAssocType != null &amp;&amp; foundAttribType != null) {</span>
+<span class="nc" id="L205">	    throw new OclTypeException(&quot;cannot access feature &quot; + name</span>
+<span class="nc" id="L206">				       + &quot; of classifier &quot; + toString()</span>
+				       + &quot; because both an attribute and &quot;
+				       + &quot;an association end of this name &quot;
+				       + &quot;where found&quot;);
+	}
+
+	Object foundType;
+<span class="nc bnc" id="L213" title="All 2 branches missed.">	if (foundAssocType == null) {</span>
+<span class="nc" id="L214">	    foundType = foundAttribType;</span>
+	} else {
+<span class="nc" id="L216">	    foundType = foundAssocType;</span>
+	}
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">	if (foundType == null) {</span>
+<span class="nc" id="L220">	    throw new OclTypeException(&quot;attribute &quot; + name</span>
+				       + &quot; not found in classifier &quot;
+<span class="nc" id="L222">				       + toString());</span>
+	}
+
+<span class="nc" id="L225">	Type result = getOclRepresentation(foundType);</span>
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">	if (isSet) {</span>
+<span class="nc" id="L228">	    result =</span>
+		new tudresden.ocl.check.types.Collection(
+		        tudresden.ocl.check.types.Collection.SET,
+			result);
+	}
+<span class="nc bnc" id="L233" title="All 2 branches missed.">	if (isSequence) {</span>
+<span class="nc" id="L234">	    result =</span>
+		new tudresden.ocl.check.types.Collection(
+			tudresden.ocl.check.types.Collection.SEQUENCE,
+			result);
+	}
+
+<span class="nc" id="L240">	return result;</span>
+    }
+
+    /*
+     * @see tudresden.ocl.check.types.Type2#navigateParameterizedQuery(
+     *         java.lang.String, tudresden.ocl.check.types.Type[])
+     */
+    public Type navigateParameterizedQuery (String name, Type[] qualifiers)
+	throws OclTypeException {
+<span class="nc" id="L249">	return internalNavigateParameterized(name, qualifiers, true);</span>
+    }
+
+    /*
+     * @see tudresden.ocl.check.types.Type#navigateParameterized(
+     *         java.lang.String, tudresden.ocl.check.types.Type[])
+     */
+    public Type navigateParameterized (String name, Type[] qualifiers)
+	throws OclTypeException {
+<span class="nc" id="L258">	return internalNavigateParameterized(name, qualifiers, false);</span>
+    }
+
+    private Type internalNavigateParameterized(final String name,
+                                              final Type[] params,
+                                              boolean fCheckIsQuery)
+	throws OclTypeException {
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">	if (classifier == null) {</span>
+<span class="nc" id="L267">	    throw new OclTypeException(&quot;attempting to access features of Void&quot;);</span>
+	}
+
+<span class="nc" id="L270">	Type type = Basic.navigateAnyParameterized(name, params);</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">	if (type != null) {</span>
+<span class="nc" id="L272">	    return type;</span>
+	}
+
+<span class="nc" id="L275">	Object foundOp = null; //MOperation</span>
+	java.util.Collection operations =
+<span class="nc" id="L277">                Model.getFacade().getOperations(classifier);</span>
+<span class="nc" id="L278">	Iterator iter = operations.iterator();</span>
+<span class="nc bnc" id="L279" title="All 4 branches missed.">	while (iter.hasNext() &amp;&amp; foundOp == null) {</span>
+<span class="nc" id="L280">	    Object op = iter.next();</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">	    if (operationMatchesCall(op, name, params)) {</span>
+<span class="nc" id="L282">		foundOp = op;</span>
+	    }
+<span class="nc" id="L284">	}</span>
+
+<span class="nc bnc" id="L286" title="All 2 branches missed.">	if (foundOp == null) {</span>
+<span class="nc" id="L287">	    throw new OclTypeException(&quot;operation &quot; + name</span>
+				       + &quot; not found in classifier &quot;
+<span class="nc" id="L289">				       + toString());</span>
+	}
+
+<span class="nc bnc" id="L292" title="All 2 branches missed.">	if (fCheckIsQuery) {</span>
+	    /* Query checking added 05/21/01, sz9 */
+<span class="nc bnc" id="L294" title="All 2 branches missed.">	    if (!Model.getFacade().isQuery(foundOp)) {</span>
+<span class="nc" id="L295">		throw new OclTypeException(&quot;Non-query operations cannot &quot;</span>
+					   + &quot;be used in OCL expressions. (&quot;
+					   + name + &quot;)&quot;);
+	    }
+	}
+
+        Collection returnParams =
+<span class="nc" id="L302">            Model.getCoreHelper().getReturnParameters(foundOp);</span>
+        Object rp;
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        if (returnParams.size() == 0) {</span>
+<span class="nc" id="L305">            rp = null;</span>
+        } else {
+<span class="nc" id="L307">            rp = returnParams.iterator().next();</span>
+        }
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (returnParams.size() &gt; 1)  {</span>
+<span class="nc" id="L310">            LOG.log(Level.WARNING, &quot;OCL compiler only handles one return parameter&quot;</span>
+<span class="nc" id="L311">                    + &quot; - Found &quot; + returnParams.size()</span>
+<span class="nc" id="L312">                    + &quot; for &quot; + Model.getFacade().getName(foundOp));</span>
+        }
+
+<span class="nc bnc" id="L315" title="All 4 branches missed.">	if (rp == null || Model.getFacade().getType(rp) == null) {</span>
+<span class="nc" id="L316">            LOG.log(Level.WARNING, &quot;WARNING: supposing return type void!&quot;);</span>
+<span class="nc" id="L317">	    return new ArgoAny(null);</span>
+	}
+<span class="nc" id="L319">	Object returnType = Model.getFacade().getType(rp);</span>
+
+<span class="nc" id="L321">	return getOclRepresentation(returnType);</span>
+    }
+
+    /*
+     * @see tudresden.ocl.check.types.Type#conformsTo(tudresden.ocl.check.types.Type)
+     */
+    public boolean conformsTo(Type type) {
+<span class="nc bnc" id="L328" title="All 2 branches missed.">	if (type instanceof ArgoAny) {</span>
+<span class="nc" id="L329">	    ArgoAny other = (ArgoAny) type;</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">	    return equals(type)</span>
+<span class="nc" id="L331">		|| Model.getCoreHelper()</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">		    .getAllSupertypes(classifier).contains(other.classifier);</span>
+	}
+<span class="nc" id="L334">        return false;</span>
+    }
+
+    /*
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object o) {
+<span class="nc" id="L341">	ArgoAny any = null;</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">	if (o instanceof ArgoAny) {</span>
+<span class="nc" id="L343">	    any = (ArgoAny) o;</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">	    return (any.classifier == classifier);</span>
+	}
+<span class="nc" id="L346">	return false;</span>
+    }
+
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+<span class="nc bnc" id="L353" title="All 2 branches missed.">	if (classifier == null) {</span>
+<span class="nc" id="L354">	    return 0;</span>
+	}
+<span class="nc" id="L356">	return classifier.hashCode();</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+<span class="nc bnc" id="L363" title="All 2 branches missed.">	if (classifier == null) {</span>
+<span class="nc" id="L364">	    return &quot;Void&quot;;</span>
+	}
+<span class="nc" id="L366">	return Model.getFacade().getName(classifier);</span>
+    }
+
+    /*
+     * @see tudresden.ocl.check.types.Type#hasState(java.lang.String)
+     */
+    public boolean hasState(String name) {
+<span class="nc" id="L373">        LOG.log(Level.WARNING,</span>
+                &quot;ArgoAny.hasState() has been called, but is &quot;
+                + &quot;not implemented yet!&quot;);
+<span class="nc" id="L376">	return false;</span>
+    }
+
+    protected Type getOclRepresentation(Object foundType) {
+<span class="nc" id="L380">	Type result = null;</span>
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">	if (Model.getFacade().getName(foundType).equals(&quot;int&quot;)</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">	    || Model.getFacade().getName(foundType).equals(&quot;Integer&quot;)) {</span>
+<span class="nc" id="L384">	    result = Basic.INTEGER;</span>
+	}
+
+<span class="nc bnc" id="L387" title="All 2 branches missed.">	if (Model.getFacade().getName(foundType).equals(&quot;float&quot;)</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">	    || Model.getFacade().getName(foundType).equals(&quot;double&quot;)) {</span>
+<span class="nc" id="L389">	    result = Basic.REAL;</span>
+	}
+
+<span class="nc bnc" id="L392" title="All 2 branches missed.">	if (Model.getFacade().getName(foundType).equals(&quot;bool&quot;)</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">	    || Model.getFacade().getName(foundType).equals(&quot;Boolean&quot;)</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">	    || Model.getFacade().getName(foundType).equals(&quot;boolean&quot;)) {</span>
+<span class="nc" id="L395">	    result = Basic.BOOLEAN;</span>
+	}
+
+<span class="nc bnc" id="L398" title="All 2 branches missed.">	if (Model.getFacade().getName(foundType).equals(&quot;String&quot;)) {</span>
+<span class="nc" id="L399">	    result = Basic.STRING;</span>
+	}
+
+<span class="nc bnc" id="L402" title="All 2 branches missed.">	if (result == null) {</span>
+<span class="nc" id="L403">	    result = new ArgoAny(foundType);</span>
+	}
+
+<span class="nc" id="L406">	return result;</span>
+    }
+
+    /**
+     * @param operation The operation.
+     * @param callName The name that we are trying to match.
+     * @param callParams The parameters that we are trying to match.
+     * @return &lt;code&gt;true&lt;/code&gt; if the given Operation names and parameters
+     *	       match the given name and parameters.
+     */
+    protected boolean operationMatchesCall(Object operation,
+					   String callName,
+					   Type[] callParams) {
+<span class="nc bnc" id="L419" title="All 2 branches missed.">	if (!callName.equals(Model.getFacade().getName(operation))) {</span>
+<span class="nc" id="L420">	    return false;</span>
+	}
+
+        Collection operationParameters =
+<span class="nc" id="L424">                Model.getFacade().getParameters(operation);</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">	if (!Model.getFacade().isReturn(</span>
+<span class="nc" id="L426">                        operationParameters.iterator().next())) {</span>
+<span class="nc" id="L427">            LOG.log(Level.WARNING,</span>
+                &quot;ArgoFacade$ArgoAny expects the first operation parameter &quot;
+		+ &quot;to be the return type; this isn't the case&quot;
+	    );
+	}
+<span class="nc bnc" id="L432" title="All 2 branches missed.">	if (!(Model.getFacade().isReturn(operationParameters.iterator().next())</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">	      &amp;&amp; operationParameters.size() == (callParams.length + 1))) {</span>
+<span class="nc" id="L434">	    return false;</span>
+	}
+<span class="nc" id="L436">	Iterator paramIter = operationParameters.iterator();</span>
+<span class="nc" id="L437">	paramIter.next(); // skip first parameter == return type</span>
+<span class="nc" id="L438">	int index = 0;</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">	while (paramIter.hasNext()) {</span>
+<span class="nc" id="L440">	    Object nextParam = paramIter.next();</span>
+	    Object paramType =
+<span class="nc" id="L442">                    Model.getFacade().getType(nextParam); //MClassifier</span>
+<span class="nc" id="L443">	    Type operationParam = getOclRepresentation(paramType);</span>
+<span class="nc bnc" id="L444" title="All 2 branches missed.">	    if (!callParams[index].conformsTo(operationParam)) {</span>
+<span class="nc" id="L445">		return false;</span>
+	    }
+<span class="nc" id="L447">	    index++;</span>
+<span class="nc" id="L448">	}</span>
+<span class="nc" id="L449">	return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

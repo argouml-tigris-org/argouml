@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLStereotypeListModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLStereotypeListModel.java</span></div><h1>UMLStereotypeListModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2002-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JPopupMenu;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * The model for a list that contains ModelElements. The state of the Element is
+ * still kept in the model subsystem itself. This list is only to be used as the
+ * model for some GUI element like UMLLinkedList.
+ *
+ * @since Oct 2, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+abstract class UMLStereotypeListModel extends DefaultListModel
+        implements TargetListener, PropertyChangeListener {
+
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(UMLStereotypeListModel.class.getName());</span>
+
+<span class="pc" id="L77">    private String eventName = null;</span>
+<span class="pc" id="L78">    private Object listTarget = null;</span>
+
+    /**
+     * Flag to indicate wether list events should be fired
+     */
+<span class="pc" id="L83">    private boolean fireListEvents = true;</span>
+
+    /**
+     * Flag to indicate wether the model is being build
+     */
+<span class="pc" id="L88">    private boolean buildingModel = false;</span>
+
+    /**
+     * The type of model elements this list model is designed to hold.
+     */
+    private Object metaType;
+
+    /**
+     * Indicates that drops onto this list should connect in the opposite
+     * way to standard.
+     */
+    private boolean reverseDropConnection;
+
+    /**
+     * Constructor to be used if the subclass does not depend on the
+     * MELementListener methods and setTarget method implemented in this
+     * class.
+     */
+    public UMLStereotypeListModel() {
+<span class="nc" id="L107">        super();</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     */
+    public UMLStereotypeListModel(String name) {
+<span class="fc" id="L117">        super();</span>
+<span class="fc" id="L118">        eventName = name;</span>
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     * @param theMetaType the type of model element that the list model
+     *                 is designed to contain.
+     */
+    public UMLStereotypeListModel(String name, Object theMetaType) {
+<span class="nc" id="L130">        super();</span>
+<span class="nc" id="L131">        this.metaType = theMetaType;</span>
+<span class="nc" id="L132">        eventName = name;</span>
+<span class="nc" id="L133">    }</span>
+
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     * @param theMetaType the type of model element that the list model
+     *                 is designed to contain.
+     * @param reverseTheDropConnection tells the JList to reverse the
+     *              connection made and drop during dnd.
+     */
+    public UMLStereotypeListModel(
+	    String name,
+	    Object theMetaType,
+	    boolean reverseTheDropConnection) {
+<span class="nc" id="L149">        super();</span>
+<span class="nc" id="L150">        this.metaType = theMetaType;</span>
+<span class="nc" id="L151">        eventName = name;</span>
+<span class="nc" id="L152">        this.reverseDropConnection = reverseTheDropConnection;</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Get the type of objects that this list model is designed to contain.
+     * @return metaType the meta type.
+     */
+    public Object getMetaType() {
+<span class="nc" id="L160">	return metaType;</span>
+    }
+
+    public boolean isReverseDropConnection() {
+<span class="nc" id="L164">	return reverseDropConnection;</span>
+    }
+
+    /**
+     * @param building The buildingModel to set.
+     */
+    protected void setBuildingModel(boolean building) {
+<span class="nc" id="L171">        this.buildingModel = building;</span>
+<span class="nc" id="L172">    }</span>
+
+    /**
+     * @param t the list target to set
+     */
+    protected void setListTarget(Object t) {
+<span class="nc" id="L178">        this.listTarget = t;</span>
+<span class="nc" id="L179">    }</span>
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     *
+     * TODO: This should be reviewed to see if it can be improved with a view
+     * towards removing some of the overrriding methods used as workarounds for
+     * differences between NSUML and MDR - tfm - 20060302
+     */
+    public void propertyChange(PropertyChangeEvent e) {
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (e instanceof AttributeChangeEvent) {</span>
+            try {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                if (isValidEvent(e)) {</span>
+<span class="nc" id="L192">                    rebuildModelList();</span>
+                }
+<span class="nc" id="L194">            } catch (InvalidElementException iee) {</span>
+<span class="nc" id="L195">                return;</span>
+<span class="nc" id="L196">            }</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        } else if (e instanceof AddAssociationEvent) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (isValidEvent(e)) {</span>
+<span class="nc" id="L199">                Object o = getChangedElement(e);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (o instanceof Collection) {</span>
+<span class="nc" id="L201">                    ArrayList tempList = new ArrayList((Collection) o);</span>
+<span class="nc" id="L202">                    Iterator it = tempList.iterator();</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">                    while (it.hasNext()) {</span>
+<span class="nc" id="L204">                        Object o2 = it.next();</span>
+<span class="nc" id="L205">                        addElement(o2);</span>
+<span class="nc" id="L206">                    }</span>
+<span class="nc" id="L207">                } else {</span>
+                    /* TODO: If this is an ordered list, then you have to
+                        add in the right location! */
+<span class="nc" id="L210">                    addElement(o);</span>
+                }
+<span class="nc" id="L212">            }</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        } else if (e instanceof RemoveAssociationEvent) {</span>
+<span class="nc" id="L214">            boolean valid = false;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (!(getChangedElement(e) instanceof Collection)) {</span>
+<span class="nc" id="L216">                valid = contains(getChangedElement(e));</span>
+            } else {
+<span class="nc" id="L218">                Collection col = (Collection) getChangedElement(e);</span>
+<span class="nc" id="L219">                Iterator it = col.iterator();</span>
+<span class="nc" id="L220">                valid = true;</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L222">                    Object o = it.next();</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                    if (!contains(o)) {</span>
+<span class="nc" id="L224">                        valid = false;</span>
+<span class="nc" id="L225">                        break;</span>
+                    }
+<span class="nc" id="L227">                }</span>
+            }
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (valid) {</span>
+<span class="nc" id="L230">                Object o = getChangedElement(e);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">                if (o instanceof Collection) {</span>
+<span class="nc" id="L232">                    Iterator it = ((Collection) o).iterator();</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                    while (it.hasNext()) {</span>
+<span class="nc" id="L234">                        Object o3 = it.next();</span>
+<span class="nc" id="L235">                        removeElement(o3);</span>
+<span class="nc" id="L236">                    }</span>
+<span class="nc" id="L237">                } else {</span>
+<span class="nc" id="L238">                    removeElement(o);</span>
+                }
+            }
+        }
+<span class="nc" id="L242">    }</span>
+
+    /**
+     * Delete and rebuild the model list from scratch.
+     */
+    private void rebuildModelList() {
+<span class="nc" id="L248">        removeAllElements();</span>
+<span class="nc" id="L249">        buildingModel = true;</span>
+        try {
+<span class="nc" id="L251">            buildModelList();</span>
+<span class="nc" id="L252">        } catch (InvalidElementException exception) {</span>
+            /*
+             * This can throw an exception if the target has been
+             * deleted. We don't want to try locking the repository
+             * because this is called from the event delivery thread and
+             * could cause a deadlock. Instead catch the exception and
+             * leave the model empty.
+             */
+<span class="nc" id="L260">            LOG.log(Level.FINE, &quot;buildModelList threw exception for target &quot;+ getTarget() + &quot;: &quot;,</span>
+                    exception);
+        } finally {
+<span class="nc" id="L263">            buildingModel = false;</span>
+        }
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (getSize() &gt; 0) {</span>
+<span class="nc" id="L266">            fireIntervalAdded(this, 0, getSize() - 1);</span>
+        }
+<span class="nc" id="L268">    }</span>
+
+    /**
+     * Builds the list of elements. Called from targetChanged every time the
+     * target of the proppanel is changed. Usually the method setAllElements is
+     * called with the result.
+     */
+    protected abstract void buildModelList();
+
+    /**
+     * Utility method to set the elements of this list to the contents of the
+     * given collection.
+     * @param col the given collection
+     */
+    protected void setAllElements(Collection col) {
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (!isEmpty()) {</span>
+<span class="nc" id="L284">            removeAllElements();</span>
+        }
+<span class="nc" id="L286">        addAll(col);</span>
+<span class="nc" id="L287">    }</span>
+
+    /**
+     * Utility method to add a collection of elements to the model
+     * @param col the given collection
+     */
+    protected void addAll(Collection col) {
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (col.size() == 0) {</span>
+<span class="nc" id="L295">            return;</span>
+        }
+<span class="nc" id="L297">        Iterator it = col.iterator();</span>
+<span class="nc" id="L298">        fireListEvents = false;</span>
+<span class="nc bnc" id="L299" title="All 2 branches missed.">        int intervalStart = getSize() == 0 ? 0 : getSize() - 1;</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L301">            Object o = it.next();</span>
+<span class="nc" id="L302">            addElement(o);</span>
+<span class="nc" id="L303">        }</span>
+<span class="nc" id="L304">        fireListEvents = true;</span>
+<span class="nc" id="L305">        fireIntervalAdded(this, intervalStart, getSize() - 1);</span>
+<span class="nc" id="L306">    }</span>
+
+    /**
+     * Utility method to get the target. Sets the target if the target is null
+     * via the method setTarget().
+     * @return MModelElement
+     */
+    public Object getTarget() {
+<span class="nc" id="L314">        return listTarget;</span>
+    }
+
+    /**
+     * Utility method to get the changed element from some event e
+     * @param e the event
+     * @return Object the changed element
+     */
+    protected Object getChangedElement(PropertyChangeEvent e) {
+<span class="nc bnc" id="L323" title="All 2 branches missed.">        if (e instanceof AssociationChangeEvent) {</span>
+<span class="nc" id="L324">            return ((AssociationChangeEvent) e).getChangedValue();</span>
+        }
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        if (e instanceof AttributeChangeEvent) {</span>
+<span class="nc" id="L327">            return ((AttributeChangeEvent) e).getSource();</span>
+        }
+<span class="nc" id="L329">        return e.getNewValue();</span>
+    }
+
+    /*
+     * @see javax.swing.DefaultListModel#contains(java.lang.Object)
+     */
+    public boolean contains(Object elem) {
+<span class="nc bnc" id="L336" title="All 2 branches missed.">        if (super.contains(elem)) {</span>
+<span class="nc" id="L337">            return true;</span>
+        }
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        if (elem instanceof Collection) {</span>
+<span class="nc" id="L340">            Iterator it = ((Collection) elem).iterator();</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">                if (!super.contains(it.next())) {</span>
+<span class="nc" id="L343">                    return false;</span>
+                }
+            }
+<span class="nc" id="L346">            return true;</span>
+        }
+<span class="nc" id="L348">        return false;</span>
+    }
+
+    /**
+     * Sets the target. If the old target is a ModelElement, it also removes
+     * the model from the element listener list of the target. If the new target
+     * is instanceof ModelElement, the model is added as element listener to the
+     * new target. &lt;p&gt;
+     *
+     * This function is called when the user changes the target.
+     * Hence, this shall not result in any UML model changes.
+     * Hence, we block firing list events completely by setting
+     * buildingModel to true for the duration of this function. &lt;p&gt;
+     *
+     * This function looks a lot like the one in UMLComboBoxModel2.
+     *
+     * @param theNewTarget the new target
+     */
+    public void setTarget(Object theNewTarget) {
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        theNewTarget = theNewTarget instanceof Fig</span>
+<span class="nc" id="L368">            ? ((Fig) theNewTarget).getOwner() : theNewTarget;</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">        if (Model.getFacade().isAUMLElement(theNewTarget)</span>
+                || theNewTarget instanceof Diagram) {
+<span class="nc bnc" id="L371" title="All 2 branches missed.">            if (Model.getFacade().isAUMLElement(listTarget)) {</span>
+<span class="nc" id="L372">                Model.getPump().removeModelEventListener(this, listTarget,</span>
+                        eventName);
+                // Allow listening to other elements:
+<span class="nc" id="L375">                removeOtherModelEventListeners(listTarget);</span>
+            }
+
+<span class="nc bnc" id="L378" title="All 2 branches missed.">            if (Model.getFacade().isAUMLElement(theNewTarget)) {</span>
+<span class="nc" id="L379">                listTarget = theNewTarget;</span>
+<span class="nc" id="L380">                Model.getPump().addModelEventListener(this, listTarget,</span>
+                        eventName);
+                // Allow listening to other elements:
+<span class="nc" id="L383">                addOtherModelEventListeners(listTarget);</span>
+
+<span class="nc" id="L385">                rebuildModelList();</span>
+
+            } else {
+<span class="nc" id="L388">                listTarget = null;</span>
+<span class="nc" id="L389">                removeAllElements();</span>
+            }
+        }
+<span class="nc" id="L392">    }</span>
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     *
+     * @param oldTarget the UML modelelement
+     */
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        /* Do nothing by default. */
+<span class="nc" id="L402">    }</span>
+
+    /**
+     * This function allows subclasses to listen to more modelelements.
+     * The given target is guaranteed to be a UML modelelement.
+     *
+     * @param newTarget the UML modelelement
+     */
+    protected void addOtherModelEventListeners(Object newTarget) {
+        /* Do nothing by default. */
+<span class="nc" id="L412">    }</span>
+
+    /**
+     * Returns true if the given element is valid, i.e. it may be added to the
+     * list of elements.
+     *
+     * @param element the element to be tested
+     * @return true if valid
+     */
+    protected abstract boolean isValidElement(Object element);
+
+    /**
+     * Returns true if some event is valid. An event is valid if the
+     * element changed in the event is valid. This is determined via a
+     * call to isValidElement.  This method can be overriden by
+     * subclasses if they cannot determine if it is a valid event just
+     * by checking the changed element.
+     *
+     * @param e the event
+     * @return boolean true if valid
+     */
+    protected boolean isValidEvent(PropertyChangeEvent e) {
+<span class="nc" id="L434">        boolean valid = false;</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        if (!(getChangedElement(e) instanceof Collection)) {</span>
+            // TODO: Considering all delete events to be valid like below
+            // is going to cause lots of unecessary work and some problems
+<span class="nc bnc" id="L438" title="All 4 branches missed.">            if ((e.getNewValue() == null &amp;&amp; e.getOldValue() != null)</span>
+                    // Don't test changed element if it was deleted
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                    || isValidElement(getChangedElement(e))) {</span>
+<span class="nc" id="L441">                valid = true; // we tried to remove a value</span>
+            }
+        } else {
+<span class="nc" id="L444">            Collection col = (Collection) getChangedElement(e);</span>
+<span class="nc" id="L445">            Iterator it = col.iterator();</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">            if (!col.isEmpty()) {</span>
+<span class="nc" id="L447">                valid = true;</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L449">                    Object o = it.next();</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">                    if (!isValidElement(o)) {</span>
+<span class="nc" id="L451">                        valid = false;</span>
+<span class="nc" id="L452">                        break;</span>
+                    }
+<span class="nc" id="L454">                }</span>
+            } else {
+<span class="nc bnc" id="L456" title="All 2 branches missed.">                if (e.getOldValue() instanceof Collection</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">                    &amp;&amp; !((Collection) e.getOldValue()).isEmpty()) {</span>
+<span class="nc" id="L458">                    valid = true;</span>
+                }
+            }
+        }
+<span class="nc" id="L462">        return valid;</span>
+    }
+
+    /*
+     * @see javax.swing.DefaultListModel#addElement(java.lang.Object)
+     */
+    public void addElement(Object obj) {
+<span class="nc bnc" id="L469" title="All 4 branches missed.">        if (obj != null &amp;&amp; !contains(obj)) {</span>
+<span class="nc" id="L470">            super.addElement(obj);</span>
+        }
+<span class="nc" id="L472">    }</span>
+
+    /**
+     * Returns the eventName. This method is only here for testing goals.
+     * @return String
+     */
+    String getEventName() {
+<span class="nc" id="L479">        return eventName;</span>
+    }
+
+    /**
+     * Sets the eventName. The eventName is the name of the
+     * MElementEvent to which the list should listen. The list is
+     * registred with UMLModelEventPump and only gets events that have
+     * a name like eventName.  This method should be called in the
+     * constructor of every subclass.
+     *
+     * @param theEventName The eventName to set
+     */
+    protected void setEventName(String theEventName) {
+<span class="nc" id="L492">        eventName = theEventName;</span>
+<span class="nc" id="L493">    }</span>
+
+    /*
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L499">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L500">    }</span>
+
+    /*
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L506">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L507">    }</span>
+
+    /*
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L513">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L514">    }</span>
+
+    /*
+     * @see javax.swing.AbstractListModel#fireContentsChanged(
+     *          Object, int, int)
+     */
+    protected void fireContentsChanged(Object source, int index0, int index1) {
+<span class="nc bnc" id="L521" title="All 4 branches missed.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="nc" id="L522">            super.fireContentsChanged(source, index0, index1);</span>
+        }
+<span class="nc" id="L524">    }</span>
+
+    /*
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(
+     *          Object, int, int)
+     */
+    protected void fireIntervalAdded(Object source, int index0, int index1) {
+<span class="nc bnc" id="L531" title="All 4 branches missed.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="nc" id="L532">            super.fireIntervalAdded(source, index0, index1);</span>
+        }
+<span class="nc" id="L534">    }</span>
+
+    /*
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(
+     *          Object, int, int)
+     */
+    protected void fireIntervalRemoved(Object source, int index0, int index1) {
+<span class="nc bnc" id="L541" title="All 4 branches missed.">        if (fireListEvents &amp;&amp; !buildingModel) {</span>
+<span class="nc" id="L542">            super.fireIntervalRemoved(source, index0, index1);</span>
+        }
+<span class="nc" id="L544">    }</span>
+
+    /**
+     * Override this if you want a popup menu.
+     * See for an example UMLModelElementOrderedListModel2.
+     *
+     * @param popup the popup menu
+     * @param index the selected item in the list at the moment
+     *              the mouse was clicked
+     * @return true if a popup menu is created, and needs to be shown
+     */
+    public boolean buildPopup(JPopupMenu popup, int index) {
+<span class="nc" id="L556">        return false;</span>
+    }
+
+    protected boolean hasPopup() {
+<span class="nc" id="L560">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

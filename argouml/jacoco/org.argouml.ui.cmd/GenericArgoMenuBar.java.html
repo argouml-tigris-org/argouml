@@ -1,0 +1,1205 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenericArgoMenuBar.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">GenericArgoMenuBar.java</span></div><h1>GenericArgoMenuBar.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    andreas
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996,2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.critics.ui.ActionOpenCritics;
+import org.argouml.cognitive.ui.ActionAutoCritique;
+import org.argouml.cognitive.ui.ActionOpenDecisions;
+import org.argouml.cognitive.ui.ActionOpenGoals;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.ActionExportXMI;
+import org.argouml.ui.ActionImportXMI;
+import org.argouml.ui.ActionProjectSettings;
+import org.argouml.ui.ActionSettings;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ArgoToolbarManager;
+import org.argouml.ui.ProjectActions;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.ZoomSliderButton;
+import org.argouml.ui.explorer.ActionPerspectiveConfig;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionActivityDiagram;
+import org.argouml.uml.ui.ActionClassDiagram;
+import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.ActionDeploymentDiagram;
+import org.argouml.uml.ui.ActionGenerateAll;
+import org.argouml.uml.ui.ActionGenerateProjectCode;
+import org.argouml.uml.ui.ActionGenerationSettings;
+import org.argouml.uml.ui.ActionImportFromSources;
+import org.argouml.uml.ui.ActionLayout;
+import org.argouml.uml.ui.ActionOpenProject;
+import org.argouml.uml.ui.ActionRevertToSaved;
+import org.argouml.uml.ui.ActionSaveAllGraphics;
+import org.argouml.uml.ui.ActionSaveGraphics;
+import org.argouml.uml.ui.ActionSaveProjectAs;
+import org.argouml.uml.ui.ActionSequenceDiagram;
+import org.argouml.uml.ui.ActionStateDiagram;
+import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.argouml.util.osdep.OSXAdapter;
+import org.argouml.util.osdep.OsUtil;
+import org.tigris.gef.base.AlignAction;
+import org.tigris.gef.base.DistributeAction;
+import org.tigris.gef.base.ReorderAction;
+import org.tigris.toolbar.ToolBarFactory;
+
+/**
+ * GenericArgoMenuBar defines the menu bar for all operating systems which do
+ * not explicitly ask for a different kind of menu bar, such as Mac OS X.
+ * &lt;p&gt;
+ *
+ * Menu's and the mnemonics of menu's and the menuitems are separated in the
+ * PropertyResourceBundle &lt;em&gt;menu.properties&lt;/em&gt;.
+ * &lt;p&gt;
+ *
+ * menu items are separated in the PropertyResourceBundle
+ * &lt;em&gt;action.properties&lt;/em&gt;.
+ * &lt;p&gt;
+ *
+ * The key's in menu.properties have the following structure:
+ *
+ * &lt;pre&gt;
+ *   menu:                    [file].[name of menu]
+ *    e.g:                    menu.file
+ *
+ *   mnemonics of menu's:     [file].[name of menu].mnemonic
+ *    e.g:                    menu.file.mnemonic
+ *
+ *   mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
+ *    e.g:                    menu.item.new.mnemonic
+ * &lt;/pre&gt;
+ *
+ * TODO: Add registration for new menu items.
+ * @deprecated in 0.29.2 by Bob Tarling. This class will be moved and made
+ * private in future. Use MenuBarFactory.createApplicationMenuBar
+ */
+public class GenericArgoMenuBar extends JMenuBar implements
+        TargetListener {
+
+<span class="nc" id="L137">    private static final Logger LOG =</span>
+<span class="nc" id="L138">        Logger.getLogger(GenericArgoMenuBar.class.getName());</span>
+
+<span class="nc" id="L140">    private static List&lt;JMenu&gt; moduleMenus = new ArrayList&lt;JMenu&gt;();</span>
+
+<span class="nc" id="L142">    private static List&lt;Action&gt; moduleCreateDiagramActions =</span>
+        new ArrayList&lt;Action&gt;();
+
+<span class="nc" id="L145">    private Collection&lt;Action&gt; disableableActions = new ArrayList&lt;Action&gt;();</span>
+
+    /**
+     * The zoom factor - defaults to 90%/110%
+     */
+    public static final double ZOOM_FACTOR = 0.9;
+
+    /**
+     * Name and prepareKey-Strings of/for the i18n menu.properties. Prefix for
+     * menu-keys.
+     */
+    private static final String MENU = &quot;menu.&quot;;
+
+    /**
+     * Prefix for menuitem-keys.
+     */
+    private static final String MENUITEM = &quot;menu.item.&quot;;
+
+    /**
+     * The toolbars.
+     */
+    private JToolBar fileToolbar;
+
+    private JToolBar editToolbar;
+
+    private JToolBar viewToolbar;
+
+    private JToolBar createDiagramToolbar;
+
+    /**
+     * Most recently used project list.
+     */
+    private LastRecentlyUsedMenuList mruList;
+
+    /**
+     * Edit menu.
+     */
+    private JMenu edit;
+
+    /**
+     * The Select menu is a submenu of Edit.
+     */
+    private JMenu select;
+
+    /**
+     * View under which is the Goto Diagram, Find, Zoom, Adjust grid etc.
+     */
+    private ArgoJMenu view;
+
+    /**
+     * Toolbar:create diagram.
+     */
+    private JMenu createDiagramMenu;
+
+    /**
+     * Currently not used by core ArgoUML.
+     */
+    private JMenu tools;
+
+    /**
+     * Supports java generation, modules for php and html/javadocs are planned
+     * feel free to contribute here!
+     */
+    private JMenu generate;
+
+    /**
+     * This should be invoked automatically when importing sources.
+     */
+    private ArgoJMenu arrange;
+
+    /**
+     * The critique menu.
+     */
+    private ArgoJMenu critique;
+
+    /**
+     * It needs it. Currently there is only system information and an about
+     * text. Hyperlinking to online docs at argouml.org is considered to be a
+     * basic improvement.
+     */
+    private JMenu help;
+
+    private Action navigateTargetForwardAction;
+
+    private Action navigateTargetBackAction;
+
+    // References to actions that we need for Mac hack
+    private ActionSettings settingsAction;
+    private ActionAboutArgoUML aboutAction;
+    private ActionExit exitAction;
+    private ActionOpenProject openAction;
+    private ActionLayout layoutAction;
+
+    /**
+     * The constructor.
+     */
+<span class="nc" id="L241">    public GenericArgoMenuBar() {</span>
+<span class="nc" id="L242">        initActions();</span>
+<span class="nc" id="L243">        initMenus();</span>
+<span class="nc" id="L244">        initModulesUI();</span>
+<span class="nc" id="L245">        registerForMacEvents();</span>
+<span class="nc" id="L246">    }</span>
+
+    private void initActions() {
+<span class="nc" id="L249">        navigateTargetForwardAction = new NavigateTargetForwardAction();</span>
+<span class="nc" id="L250">        disableableActions.add(navigateTargetForwardAction);</span>
+<span class="nc" id="L251">        navigateTargetBackAction = new NavigateTargetBackAction();</span>
+<span class="nc" id="L252">        disableableActions.add(navigateTargetBackAction);</span>
+<span class="nc" id="L253">        layoutAction = new ActionLayout();</span>
+<span class="nc" id="L254">        disableableActions.add(layoutAction);</span>
+
+<span class="nc" id="L256">        TargetManager.getInstance().addTargetListener(this);</span>
+        /* This next line added to solve issue 5755.
+         * Bring the enabled/disabled state of the actions in line with the
+         * last target change that happened before we registered as listener. */
+<span class="nc" id="L260">        setTarget();</span>
+<span class="nc" id="L261">    }</span>
+
+    /**
+     * This should be a user specified option. New laws for handicapped people
+     * who cannot use the mouse require software developers in US to make all
+     * components of User interface accessible through keyboard
+     *
+     * @param item
+     *            is the JMenuItem to do this for.
+     * @param key
+     *            is the key that we do this for.
+     */
+    protected static final void setMnemonic(JMenuItem item, String key) {
+<span class="nc" id="L274">        String propertykey = &quot;&quot;;</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if (item instanceof JMenu) {</span>
+<span class="nc" id="L276">            propertykey = MENU + prepareKey(key) + &quot;.mnemonic&quot;;</span>
+        } else {
+<span class="nc" id="L278">            propertykey = MENUITEM + prepareKey(key) + &quot;.mnemonic&quot;;</span>
+        }
+
+<span class="nc" id="L281">        String localMnemonic = Translator.localize(propertykey);</span>
+<span class="nc" id="L282">        char mnemonic = ' ';</span>
+<span class="nc bnc" id="L283" title="All 4 branches missed.">        if (localMnemonic != null &amp;&amp; localMnemonic.length() == 1) {</span>
+<span class="nc" id="L284">            mnemonic = localMnemonic.charAt(0);</span>
+        }
+<span class="nc" id="L286">        item.setMnemonic(mnemonic);</span>
+<span class="nc" id="L287">    }</span>
+
+    /**
+     * @param key
+     *            the key to localize
+     * @return the localized string
+     */
+    protected static final String menuLocalize(String key) {
+<span class="nc" id="L295">        return Translator.localize(MENU + prepareKey(key));</span>
+    }
+
+    /**
+     * @param key the key to localize
+     * @return the localized string
+     */
+    static final String menuItemLocalize(String key) {
+<span class="nc" id="L303">        return Translator.localize(MENUITEM + prepareKey(key));</span>
+    }
+
+    /**
+     * Construct the ordinary all purpose Argo Menu Bar.
+     */
+    protected void initMenus() {
+<span class="nc" id="L310">        initMenuFile();</span>
+<span class="nc" id="L311">        initMenuEdit();</span>
+<span class="nc" id="L312">        initMenuView();</span>
+<span class="nc" id="L313">        initMenuCreate();</span>
+<span class="nc" id="L314">        initMenuArrange();</span>
+<span class="nc" id="L315">        initMenuGeneration();</span>
+<span class="nc" id="L316">        initMenuCritique();</span>
+<span class="nc" id="L317">        initMenuTools();</span>
+<span class="nc" id="L318">        initMenuHelp();</span>
+<span class="nc" id="L319">    }</span>
+
+    private void initModulesUI () {
+<span class="nc" id="L322">        initModulesMenus();</span>
+<span class="nc" id="L323">        initModulesActions();</span>
+<span class="nc" id="L324">    }</span>
+
+    /**
+     * Build the menu &quot;File&quot;.
+     */
+    private void initMenuFile() {
+<span class="nc" id="L330">        Collection&lt;Action&gt; toolbarTools = new ArrayList&lt;Action&gt;();</span>
+<span class="nc" id="L331">        JMenu file = new JMenu(menuLocalize(&quot;File&quot;));</span>
+<span class="nc" id="L332">        add(file);</span>
+<span class="nc" id="L333">        setMnemonic(file, &quot;File&quot;);</span>
+<span class="nc" id="L334">        JMenuItem newItem = file.add(new ActionNew());</span>
+<span class="nc" id="L335">        setMnemonic(newItem, &quot;New&quot;);</span>
+<span class="nc" id="L336">        ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);</span>
+<span class="nc" id="L337">        toolbarTools.add((new ActionNew()));</span>
+<span class="nc" id="L338">        JMenuItem newProfileItem = file.add(new ActionNewProfile());</span>
+<span class="nc" id="L339">        ShortcutMgr.assignAccelerator(newProfileItem, null);</span>
+<span class="nc" id="L340">        toolbarTools.add((new ActionNewProfile()));</span>
+<span class="nc" id="L341">        openAction = new ActionOpenProject();</span>
+<span class="nc" id="L342">        JMenuItem openProjectItem = file.add(openAction);</span>
+<span class="nc" id="L343">        setMnemonic(openProjectItem, &quot;Open&quot;);</span>
+<span class="nc" id="L344">        ShortcutMgr.assignAccelerator(openProjectItem,</span>
+                ShortcutMgr.ACTION_OPEN_PROJECT);
+<span class="nc" id="L346">        toolbarTools.add(new ActionOpenProject());</span>
+<span class="nc" id="L347">        file.addSeparator();</span>
+
+<span class="nc" id="L349">        JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance()</span>
+<span class="nc" id="L350">                .getSaveAction());</span>
+<span class="nc" id="L351">        setMnemonic(saveProjectItem, &quot;Save&quot;);</span>
+<span class="nc" id="L352">        ShortcutMgr.assignAccelerator(saveProjectItem,</span>
+                ShortcutMgr.ACTION_SAVE_PROJECT);
+<span class="nc" id="L354">        toolbarTools.add((ProjectBrowser.getInstance().getSaveAction()));</span>
+<span class="nc" id="L355">        JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());</span>
+<span class="nc" id="L356">        setMnemonic(saveProjectAsItem, &quot;SaveAs&quot;);</span>
+<span class="nc" id="L357">        ShortcutMgr.assignAccelerator(saveProjectAsItem,</span>
+                ShortcutMgr.ACTION_SAVE_PROJECT_AS);
+<span class="nc" id="L359">        JMenuItem revertToSavedItem = file.add(new ActionRevertToSaved());</span>
+<span class="nc" id="L360">        setMnemonic(revertToSavedItem, &quot;Revert To Saved&quot;);</span>
+<span class="nc" id="L361">        ShortcutMgr.assignAccelerator(revertToSavedItem,</span>
+                ShortcutMgr.ACTION_REVERT_TO_SAVED);
+<span class="nc" id="L363">        file.addSeparator();</span>
+
+<span class="nc" id="L365">        ShortcutMgr.assignAccelerator(file.add(new ActionImportXMI()),</span>
+                ShortcutMgr.ACTION_IMPORT_XMI);
+<span class="nc" id="L367">        ShortcutMgr.assignAccelerator(file.add(new ActionExportXMI()),</span>
+                ShortcutMgr.ACTION_EXPORT_XMI);
+
+<span class="nc" id="L370">        JMenuItem importFromSources = file.add(ActionImportFromSources</span>
+<span class="nc" id="L371">                .getInstance());</span>
+<span class="nc" id="L372">        setMnemonic(importFromSources, &quot;Import&quot;);</span>
+<span class="nc" id="L373">        ShortcutMgr.assignAccelerator(importFromSources,</span>
+                ShortcutMgr.ACTION_IMPORT_FROM_SOURCES);
+<span class="nc" id="L375">        file.addSeparator();</span>
+
+<span class="nc" id="L377">        Action a = new ActionProjectSettings();</span>
+<span class="nc" id="L378">        toolbarTools.add(a);</span>
+
+<span class="nc" id="L380">        JMenuItem pageSetupItem = file.add(new ActionPageSetup());</span>
+<span class="nc" id="L381">        setMnemonic(pageSetupItem, &quot;PageSetup&quot;);</span>
+<span class="nc" id="L382">        ShortcutMgr.assignAccelerator(pageSetupItem,</span>
+                ShortcutMgr.ACTION_PAGE_SETUP);
+
+<span class="nc" id="L385">        JMenuItem printItem = file.add(new ActionPrint());</span>
+<span class="nc" id="L386">        setMnemonic(printItem, &quot;Print&quot;);</span>
+<span class="nc" id="L387">        ShortcutMgr.assignAccelerator(printItem, ShortcutMgr.ACTION_PRINT);</span>
+<span class="nc" id="L388">        toolbarTools.add((new ActionPrint()));</span>
+<span class="nc" id="L389">        JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());</span>
+<span class="nc" id="L390">        setMnemonic(saveGraphicsItem, &quot;SaveGraphics&quot;);</span>
+<span class="nc" id="L391">        ShortcutMgr.assignAccelerator(saveGraphicsItem,</span>
+                ShortcutMgr.ACTION_SAVE_GRAPHICS);
+
+<span class="nc" id="L394">        ShortcutMgr.assignAccelerator(file.add(new ActionSaveAllGraphics()),</span>
+                ShortcutMgr.ACTION_SAVE_ALL_GRAPHICS);
+
+<span class="nc" id="L397">        file.addSeparator();</span>
+
+<span class="nc" id="L399">        JMenu notation = (JMenu) file.add(new ActionNotation().getMenu());</span>
+<span class="nc" id="L400">        setMnemonic(notation, &quot;Notation&quot;);</span>
+
+<span class="nc" id="L402">        JMenuItem propertiesItem = file.add(new ActionProjectSettings());</span>
+<span class="nc" id="L403">        ShortcutMgr.assignAccelerator(propertiesItem,</span>
+                ShortcutMgr.ACTION_PROJECT_SETTINGS);
+
+<span class="nc" id="L406">        file.addSeparator();</span>
+
+        // add last recently used list _before_ exit menu
+<span class="nc" id="L409">        mruList = new LastRecentlyUsedMenuList(file);</span>
+
+        // and exit menu entry starting with separator.
+<span class="nc" id="L412">        exitAction = new ActionExit();</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">        if (!OsUtil.isMacOSX()) {</span>
+<span class="nc" id="L414">            file.addSeparator();</span>
+<span class="nc" id="L415">            JMenuItem exitItem = file.add(exitAction);</span>
+<span class="nc" id="L416">            setMnemonic(exitItem, &quot;Exit&quot;);</span>
+            /* The &quot;Close window&quot; shortcut (ALT+F4) actually can't
+             * be registered as a shortcut,
+             * because it closes the configuration dialog! */
+<span class="nc" id="L420">            exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,</span>
+                    InputEvent.ALT_MASK));
+        }
+
+<span class="nc" id="L424">        fileToolbar = (new ToolBarFactory(toolbarTools)).createToolBar();</span>
+<span class="nc" id="L425">        fileToolbar.setName(Translator.localize(&quot;misc.toolbar.file&quot;));</span>
+<span class="nc" id="L426">        fileToolbar.setFloatable(true);</span>
+<span class="nc" id="L427">    }</span>
+
+    /**
+     * Build the menu &quot;Edit&quot;.
+     */
+    private void initMenuEdit() {
+
+<span class="nc" id="L434">        edit = add(new JMenu(menuLocalize(&quot;Edit&quot;)));</span>
+<span class="nc" id="L435">        setMnemonic(edit, &quot;Edit&quot;);</span>
+
+// Comment out when we are ready to release undo/redo
+//        JMenuItem undoItem = edit.add(
+//                ProjectActions.getInstance().getUndoAction());
+//        setMnemonic(undoItem, &quot;Undo&quot;);
+//        ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
+//
+//        JMenuItem redoItem = edit.add(
+//                ProjectActions.getInstance().getRedoAction());
+//        setMnemonic(redoItem, &quot;Redo&quot;);
+//        ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
+//
+//        edit.addSeparator();
+
+<span class="nc" id="L450">        select = new JMenu(menuLocalize(&quot;Select&quot;));</span>
+<span class="nc" id="L451">        setMnemonic(select, &quot;Select&quot;);</span>
+<span class="nc" id="L452">        edit.add(select);</span>
+
+<span class="nc" id="L454">        JMenuItem selectAllItem = select.add(new ActionSelectAll());</span>
+<span class="nc" id="L455">        setMnemonic(selectAllItem, &quot;Select All&quot;);</span>
+<span class="nc" id="L456">        ShortcutMgr.assignAccelerator(selectAllItem,</span>
+                ShortcutMgr.ACTION_SELECT_ALL);
+<span class="nc" id="L458">        select.addSeparator();</span>
+<span class="nc" id="L459">        JMenuItem backItem = select.add(navigateTargetBackAction);</span>
+<span class="nc" id="L460">        setMnemonic(backItem, &quot;Navigate Back&quot;);</span>
+<span class="nc" id="L461">        ShortcutMgr.assignAccelerator(backItem,</span>
+                ShortcutMgr.ACTION_NAVIGATE_BACK);
+<span class="nc" id="L463">        JMenuItem forwardItem = select.add(navigateTargetForwardAction);</span>
+<span class="nc" id="L464">        setMnemonic(forwardItem, &quot;Navigate Forward&quot;);</span>
+<span class="nc" id="L465">        ShortcutMgr.assignAccelerator(forwardItem,</span>
+                ShortcutMgr.ACTION_NAVIGATE_FORWARD);
+<span class="nc" id="L467">        select.addSeparator();</span>
+
+<span class="nc" id="L469">        JMenuItem selectInvert = select.add(new ActionSelectInvert());</span>
+<span class="nc" id="L470">        setMnemonic(selectInvert, &quot;Invert Selection&quot;);</span>
+<span class="nc" id="L471">        ShortcutMgr.assignAccelerator(selectInvert,</span>
+                ShortcutMgr.ACTION_SELECT_INVERT);
+
+<span class="nc" id="L474">        edit.addSeparator();</span>
+
+        // JMenuItem cutItem = edit.add(ActionCut.getInstance());
+        // setMnemonic(cutItem, &quot;Cut&quot;);
+        // setAccelerator(cutItem, ctrlX);
+        //
+        // JMenuItem copyItem = edit.add(ActionCopy.getInstance());
+        // setMnemonic(copyItem, &quot;Copy&quot;);
+        // setAccelerator(copyItem, ctrlC);
+        //
+        // JMenuItem pasteItem = edit.add(ActionPaste.getInstance());
+        // setMnemonic(pasteItem, &quot;Paste&quot;);
+        // setAccelerator(pasteItem, ctrlV);
+        //
+        // edit.addSeparator();
+
+<span class="nc" id="L490">        Action removeFromDiagram = ProjectActions.getInstance()</span>
+<span class="nc" id="L491">                .getRemoveFromDiagramAction();</span>
+<span class="nc" id="L492">        JMenuItem removeItem = edit.add(removeFromDiagram);</span>
+
+<span class="nc" id="L494">        setMnemonic(removeItem, &quot;Remove from Diagram&quot;);</span>
+<span class="nc" id="L495">        ShortcutMgr.assignAccelerator(removeItem,</span>
+                ShortcutMgr.ACTION_REMOVE_FROM_DIAGRAM);
+
+<span class="nc" id="L498">        JMenuItem deleteItem = edit.add(ActionDeleteModelElements</span>
+<span class="nc" id="L499">                .getTargetFollower());</span>
+<span class="nc" id="L500">        setMnemonic(deleteItem, &quot;Delete from Model&quot;);</span>
+<span class="nc" id="L501">        ShortcutMgr.assignAccelerator(deleteItem,</span>
+                ShortcutMgr.ACTION_DELETE_MODEL_ELEMENTS);
+
+<span class="nc" id="L504">        edit.addSeparator();</span>
+
+<span class="nc" id="L506">        ShortcutMgr.assignAccelerator(edit.add(new ActionPerspectiveConfig()),</span>
+                ShortcutMgr.ACTION_PERSPECTIVE_CONFIG);
+
+<span class="nc" id="L509">        settingsAction = new ActionSettings();</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">        if (!OsUtil.isMacOSX()) {</span>
+<span class="nc" id="L511">            JMenuItem settingsItem = edit.add(settingsAction);</span>
+<span class="nc" id="L512">            setMnemonic(settingsItem, &quot;Settings&quot;);</span>
+<span class="nc" id="L513">            ShortcutMgr.assignAccelerator(settingsItem,</span>
+                    ShortcutMgr.ACTION_SETTINGS);
+        }
+<span class="nc" id="L516">    }</span>
+
+
+    /**
+     * Build the menu &quot;View&quot;.
+     */
+    private void initMenuView() {
+
+<span class="nc" id="L524">        view = (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey(&quot;View&quot;)));</span>
+<span class="nc" id="L525">        setMnemonic(view, &quot;View&quot;);</span>
+
+<span class="nc" id="L527">        JMenuItem gotoDiagram = view.add(new ActionGotoDiagram());</span>
+<span class="nc" id="L528">        setMnemonic(gotoDiagram, &quot;Goto-Diagram&quot;);</span>
+<span class="nc" id="L529">        ShortcutMgr.assignAccelerator(gotoDiagram,</span>
+                ShortcutMgr.ACTION_GO_TO_DIAGRAM);
+
+<span class="nc" id="L532">        JMenuItem findItem = view.add(new ActionFind());</span>
+<span class="nc" id="L533">        setMnemonic(findItem, &quot;Find&quot;);</span>
+<span class="nc" id="L534">        ShortcutMgr.assignAccelerator(findItem, ShortcutMgr.ACTION_FIND);</span>
+
+<span class="nc" id="L536">        view.addSeparator();</span>
+
+<span class="nc" id="L538">        JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize(&quot;Zoom&quot;)));</span>
+<span class="nc" id="L539">        setMnemonic(zoom, &quot;Zoom&quot;);</span>
+
+<span class="nc" id="L541">        ZoomActionProxy zoomOutAction = new ZoomActionProxy(ZOOM_FACTOR);</span>
+<span class="nc" id="L542">        JMenuItem zoomOut = zoom.add(zoomOutAction);</span>
+<span class="nc" id="L543">        setMnemonic(zoomOut, &quot;Zoom Out&quot;);</span>
+<span class="nc" id="L544">        ShortcutMgr.assignAccelerator(zoomOut, ShortcutMgr.ACTION_ZOOM_OUT);</span>
+
+<span class="nc" id="L546">        JMenuItem zoomReset = zoom.add(new ZoomActionProxy(0.0));</span>
+<span class="nc" id="L547">        setMnemonic(zoomReset, &quot;Zoom Reset&quot;);</span>
+<span class="nc" id="L548">        ShortcutMgr.assignAccelerator(zoomReset, ShortcutMgr.ACTION_ZOOM_RESET);</span>
+
+<span class="nc" id="L550">        ZoomActionProxy zoomInAction =</span>
+            new ZoomActionProxy((1.0) / (ZOOM_FACTOR));
+<span class="nc" id="L552">        JMenuItem zoomIn = zoom.add(zoomInAction);</span>
+<span class="nc" id="L553">        setMnemonic(zoomIn, &quot;Zoom In&quot;);</span>
+<span class="nc" id="L554">        ShortcutMgr.assignAccelerator(zoomIn, ShortcutMgr.ACTION_ZOOM_IN);</span>
+
+<span class="nc" id="L556">        view.addSeparator();</span>
+
+<span class="nc" id="L558">        JMenu grid = (JMenu) view.add(new JMenu(menuLocalize(&quot;Adjust Grid&quot;)));</span>
+<span class="nc" id="L559">        setMnemonic(grid, &quot;Adjust Grid&quot;);</span>
+<span class="nc" id="L560">        List&lt;Action&gt; gridActions =</span>
+<span class="nc" id="L561">            ActionAdjustGrid.createAdjustGridActions(false);</span>
+<span class="nc" id="L562">        ButtonGroup groupGrid = new ButtonGroup();</span>
+<span class="nc" id="L563">        ActionAdjustGrid.setGroup(groupGrid);</span>
+<span class="nc bnc" id="L564" title="All 2 branches missed.">        for ( Action cmdAG : gridActions) {</span>
+<span class="nc" id="L565">            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAG);</span>
+<span class="nc" id="L566">            groupGrid.add(mi);</span>
+<span class="nc" id="L567">            JMenuItem adjustGrid = grid.add(mi);</span>
+<span class="nc" id="L568">            setMnemonic(adjustGrid, (String) cmdAG.getValue(Action.NAME));</span>
+<span class="nc" id="L569">            ShortcutMgr.assignAccelerator(adjustGrid,</span>
+<span class="nc" id="L570">                    ShortcutMgr.ACTION_ADJUST_GRID + cmdAG.getValue(&quot;ID&quot;));</span>
+<span class="nc" id="L571">        }</span>
+
+<span class="nc" id="L573">        JMenu snap = (JMenu) view.add(new JMenu(menuLocalize(&quot;Adjust Snap&quot;)));</span>
+<span class="nc" id="L574">        setMnemonic(snap, &quot;Adjust Snap&quot;);</span>
+<span class="nc" id="L575">        List&lt;Action&gt; snapActions = ActionAdjustSnap.createAdjustSnapActions();</span>
+<span class="nc" id="L576">        ButtonGroup groupSnap = new ButtonGroup();</span>
+<span class="nc" id="L577">        ActionAdjustSnap.setGroup(groupSnap);</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">        for ( Action cmdAS : snapActions) {</span>
+<span class="nc" id="L579">            JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAS);</span>
+<span class="nc" id="L580">            groupSnap.add(mi);</span>
+<span class="nc" id="L581">            JMenuItem adjustSnap = snap.add(mi);</span>
+<span class="nc" id="L582">            setMnemonic(adjustSnap, (String) cmdAS.getValue(Action.NAME));</span>
+<span class="nc" id="L583">            ShortcutMgr.assignAccelerator(adjustSnap,</span>
+<span class="nc" id="L584">                    ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue(&quot;ID&quot;));</span>
+<span class="nc" id="L585">        }</span>
+
+<span class="nc" id="L587">        Action pba  = new ActionAdjustPageBreaks();</span>
+<span class="nc" id="L588">        JMenuItem adjustPageBreaks = view.add(pba);</span>
+<span class="nc" id="L589">        setMnemonic(adjustPageBreaks, &quot;Adjust Pagebreaks&quot;);</span>
+<span class="nc" id="L590">        ShortcutMgr.assignAccelerator(adjustPageBreaks,</span>
+                ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);
+
+<span class="nc" id="L593">        view.addSeparator();</span>
+<span class="nc" id="L594">        JMenu menuToolbars = ArgoToolbarManager.getInstance().getMenu();</span>
+<span class="nc" id="L595">        menuToolbars.setText(menuLocalize(&quot;toolbars&quot;));</span>
+<span class="nc" id="L596">        setMnemonic(menuToolbars, &quot;toolbars&quot;);</span>
+<span class="nc" id="L597">        view.add(menuToolbars);</span>
+<span class="nc" id="L598">        view.addSeparator();</span>
+
+<span class="nc" id="L600">        JMenuItem showSaved = view.add(new ActionShowXMLDump());</span>
+<span class="nc" id="L601">        setMnemonic(showSaved, &quot;Show Saved&quot;);</span>
+<span class="nc" id="L602">        ShortcutMgr.assignAccelerator(showSaved,</span>
+                ShortcutMgr.ACTION_SHOW_XML_DUMP);
+<span class="nc" id="L604">    }</span>
+
+    /**
+     * Build the menu &quot;Create&quot; and the toolbar for diagram creation. These are
+     * build together to guarantee that the same items are present in both, and
+     * in the same sequence.
+     * &lt;p&gt;
+     *
+     * The sequence of these items was determined by issue 1821.
+     */
+    protected void initMenuCreate() {
+<span class="nc" id="L615">        Collection&lt;Action&gt; toolbarTools = new ArrayList&lt;Action&gt;();</span>
+<span class="nc" id="L616">        createDiagramMenu = add(new JMenu(menuLocalize(&quot;Create Diagram&quot;)));</span>
+<span class="nc" id="L617">        setMnemonic(createDiagramMenu, &quot;Create Diagram&quot;);</span>
+<span class="nc" id="L618">        JMenuItem usecaseDiagram = createDiagramMenu</span>
+<span class="nc" id="L619">                .add(new ActionUseCaseDiagram());</span>
+<span class="nc" id="L620">        setMnemonic(usecaseDiagram, &quot;Usecase Diagram&quot;);</span>
+<span class="nc" id="L621">        toolbarTools.add((new ActionUseCaseDiagram()));</span>
+<span class="nc" id="L622">        ShortcutMgr.assignAccelerator(usecaseDiagram,</span>
+                ShortcutMgr.ACTION_USE_CASE_DIAGRAM);
+
+<span class="nc" id="L625">        JMenuItem classDiagram =</span>
+<span class="nc" id="L626">            createDiagramMenu.add(new ActionClassDiagram());</span>
+<span class="nc" id="L627">        setMnemonic(classDiagram, &quot;Class Diagram&quot;);</span>
+<span class="nc" id="L628">        toolbarTools.add((new ActionClassDiagram()));</span>
+<span class="nc" id="L629">        ShortcutMgr.assignAccelerator(classDiagram,</span>
+                ShortcutMgr.ACTION_CLASS_DIAGRAM);
+
+<span class="nc" id="L632">        JMenuItem sequenzDiagram =</span>
+<span class="nc" id="L633">            createDiagramMenu.add(new ActionSequenceDiagram());</span>
+<span class="nc" id="L634">        setMnemonic(sequenzDiagram, &quot;Sequenz Diagram&quot;);</span>
+<span class="nc" id="L635">        toolbarTools.add((new ActionSequenceDiagram()));</span>
+<span class="nc" id="L636">        ShortcutMgr.assignAccelerator(sequenzDiagram,</span>
+                ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
+
+<span class="nc" id="L639">        JMenuItem collaborationDiagram =</span>
+<span class="nc" id="L640">            createDiagramMenu.add(new ActionCollaborationDiagram());</span>
+<span class="nc" id="L641">        setMnemonic(collaborationDiagram, &quot;Collaboration Diagram&quot;);</span>
+<span class="nc" id="L642">        toolbarTools.add((new ActionCollaborationDiagram()));</span>
+<span class="nc" id="L643">        ShortcutMgr.assignAccelerator(collaborationDiagram,</span>
+                ShortcutMgr.ACTION_COLLABORATION_DIAGRAM);
+
+<span class="nc" id="L646">        JMenuItem stateDiagram =</span>
+<span class="nc" id="L647">            createDiagramMenu.add(new ActionStateDiagram());</span>
+<span class="nc" id="L648">        setMnemonic(stateDiagram, &quot;State Diagram&quot;);</span>
+<span class="nc" id="L649">        toolbarTools.add((new ActionStateDiagram()));</span>
+<span class="nc" id="L650">        ShortcutMgr.assignAccelerator(stateDiagram,</span>
+                ShortcutMgr.ACTION_STATE_DIAGRAM);
+
+<span class="nc" id="L653">        JMenuItem activityDiagram =</span>
+<span class="nc" id="L654">            createDiagramMenu.add(new ActionActivityDiagram());</span>
+<span class="nc" id="L655">        setMnemonic(activityDiagram, &quot;Activity Diagram&quot;);</span>
+<span class="nc" id="L656">        toolbarTools.add((new ActionActivityDiagram()));</span>
+<span class="nc" id="L657">        ShortcutMgr.assignAccelerator(activityDiagram,</span>
+                ShortcutMgr.ACTION_ACTIVITY_DIAGRAM);
+
+<span class="nc" id="L660">        JMenuItem deploymentDiagram =</span>
+<span class="nc" id="L661">            createDiagramMenu.add(new ActionDeploymentDiagram());</span>
+<span class="nc" id="L662">        setMnemonic(deploymentDiagram, &quot;Deployment Diagram&quot;);</span>
+<span class="nc" id="L663">        toolbarTools.add((new ActionDeploymentDiagram()));</span>
+<span class="nc" id="L664">        ShortcutMgr.assignAccelerator(deploymentDiagram,</span>
+                ShortcutMgr.ACTION_DEPLOYMENT_DIAGRAM);
+
+<span class="nc" id="L667">        createDiagramToolbar =</span>
+<span class="nc" id="L668">            (new ToolBarFactory(toolbarTools)).createToolBar();</span>
+<span class="nc" id="L669">        createDiagramToolbar.setName(</span>
+<span class="nc" id="L670">                Translator.localize(&quot;misc.toolbar.create-diagram&quot;));</span>
+<span class="nc" id="L671">        createDiagramToolbar.setFloatable(true);</span>
+<span class="nc" id="L672">    }</span>
+
+    /**
+     * Build the menu &quot;Arrange&quot;.
+     */
+    private void initMenuArrange() {
+<span class="nc" id="L678">        arrange = (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey(&quot;Arrange&quot;)));</span>
+<span class="nc" id="L679">        setMnemonic(arrange, &quot;Arrange&quot;);</span>
+
+<span class="nc" id="L681">        JMenu align = (JMenu) arrange.add(new JMenu(menuLocalize(&quot;Align&quot;)));</span>
+<span class="nc" id="L682">        setMnemonic(align, &quot;Align&quot;);</span>
+<span class="nc" id="L683">        JMenu distribute = (JMenu) arrange.add(new JMenu(</span>
+<span class="nc" id="L684">                menuLocalize(&quot;Distribute&quot;)));</span>
+<span class="nc" id="L685">        setMnemonic(distribute, &quot;Distribute&quot;);</span>
+<span class="nc" id="L686">        JMenu reorder = (JMenu) arrange.add(new JMenu(menuLocalize(&quot;Reorder&quot;)));</span>
+<span class="nc" id="L687">        setMnemonic(reorder, &quot;Reorder&quot;);</span>
+
+<span class="nc" id="L689">        JMenuItem preferredSize = arrange.add(new CmdSetPreferredSize());</span>
+<span class="nc" id="L690">        setMnemonic(preferredSize, &quot;Preferred Size&quot;);</span>
+<span class="nc" id="L691">        ShortcutMgr.assignAccelerator(preferredSize,</span>
+                ShortcutMgr.ACTION_PREFERRED_SIZE);
+
+<span class="nc" id="L694">        arrange.add(layoutAction);</span>
+
+        // This used to be deferred, but it's only 30-40 msec of work.
+<span class="nc" id="L697">        initAlignMenu(align);</span>
+<span class="nc" id="L698">        initDistributeMenu(distribute);</span>
+<span class="nc" id="L699">        initReorderMenu(reorder);</span>
+<span class="nc" id="L700">    }</span>
+
+    /**
+     * Initialize submenus of the Align menu.
+     *
+     * @param align
+     *            the Align menu
+     */
+    private static void initAlignMenu(JMenu align) {
+<span class="nc" id="L709">        AlignAction a = new AlignAction(AlignAction.ALIGN_TOPS);</span>
+<span class="nc" id="L710">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L711">                ResourceLoaderWrapper.lookupIcon(&quot;AlignTops&quot;));</span>
+<span class="nc" id="L712">        JMenuItem alignTops = align.add(a);</span>
+<span class="nc" id="L713">        setMnemonic(alignTops, &quot;align tops&quot;);</span>
+<span class="nc" id="L714">        ShortcutMgr.assignAccelerator(alignTops, ShortcutMgr.ACTION_ALIGN_TOPS);</span>
+
+<span class="nc" id="L716">        a = new AlignAction(</span>
+                AlignAction.ALIGN_BOTTOMS);
+<span class="nc" id="L718">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L719">                ResourceLoaderWrapper.lookupIcon(&quot;AlignBottoms&quot;));</span>
+<span class="nc" id="L720">        JMenuItem alignBottoms = align.add(a);</span>
+<span class="nc" id="L721">        setMnemonic(alignBottoms, &quot;align bottoms&quot;);</span>
+<span class="nc" id="L722">        ShortcutMgr.assignAccelerator(alignBottoms,</span>
+                ShortcutMgr.ACTION_ALIGN_BOTTOMS);
+
+<span class="nc" id="L725">        a = new AlignAction(</span>
+                AlignAction.ALIGN_RIGHTS);
+<span class="nc" id="L727">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L728">                ResourceLoaderWrapper.lookupIcon(&quot;AlignRights&quot;));</span>
+<span class="nc" id="L729">        JMenuItem alignRights = align.add(a);</span>
+<span class="nc" id="L730">        setMnemonic(alignRights, &quot;align rights&quot;);</span>
+<span class="nc" id="L731">        ShortcutMgr.assignAccelerator(alignRights,</span>
+                ShortcutMgr.ACTION_ALIGN_RIGHTS);
+
+<span class="nc" id="L734">        a = new AlignAction(</span>
+                AlignAction.ALIGN_LEFTS);
+<span class="nc" id="L736">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L737">                ResourceLoaderWrapper.lookupIcon(&quot;AlignLefts&quot;));</span>
+<span class="nc" id="L738">        JMenuItem alignLefts = align.add(a);</span>
+<span class="nc" id="L739">        setMnemonic(alignLefts, &quot;align lefts&quot;);</span>
+<span class="nc" id="L740">        ShortcutMgr.assignAccelerator(alignLefts,</span>
+                ShortcutMgr.ACTION_ALIGN_LEFTS);
+
+<span class="nc" id="L743">        a = new AlignAction(</span>
+                AlignAction.ALIGN_H_CENTERS);
+<span class="nc" id="L745">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L746">                ResourceLoaderWrapper.lookupIcon(&quot;AlignHorizontalCenters&quot;));</span>
+<span class="nc" id="L747">        JMenuItem alignHCenters = align.add(a);</span>
+<span class="nc" id="L748">        setMnemonic(alignHCenters,</span>
+                &quot;align horizontal centers&quot;);
+<span class="nc" id="L750">        ShortcutMgr.assignAccelerator(alignHCenters,</span>
+                ShortcutMgr.ACTION_ALIGN_H_CENTERS);
+
+<span class="nc" id="L753">        a = new AlignAction(</span>
+                AlignAction.ALIGN_V_CENTERS);
+<span class="nc" id="L755">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L756">                ResourceLoaderWrapper.lookupIcon(&quot;AlignVerticalCenters&quot;));</span>
+<span class="nc" id="L757">        JMenuItem alignVCenters = align.add(a);</span>
+<span class="nc" id="L758">        setMnemonic(alignVCenters, &quot;align vertical centers&quot;);</span>
+<span class="nc" id="L759">        ShortcutMgr.assignAccelerator(alignVCenters,</span>
+                ShortcutMgr.ACTION_ALIGN_V_CENTERS);
+
+<span class="nc" id="L762">        a = new AlignAction(</span>
+                AlignAction.ALIGN_TO_GRID);
+<span class="nc" id="L764">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L765">                ResourceLoaderWrapper.lookupIcon(&quot;AlignToGrid&quot;));</span>
+<span class="nc" id="L766">        JMenuItem alignToGrid = align.add(a);</span>
+<span class="nc" id="L767">        setMnemonic(alignToGrid, &quot;align to grid&quot;);</span>
+<span class="nc" id="L768">        ShortcutMgr.assignAccelerator(alignToGrid,</span>
+                ShortcutMgr.ACTION_ALIGN_TO_GRID);
+<span class="nc" id="L770">    }</span>
+
+    /**
+     * Initialize submenus of the Distribute menu.
+     *
+     * @param distribute
+     *            the Distribute menu
+     */
+    private static void initDistributeMenu(JMenu distribute) {
+<span class="nc" id="L779">        DistributeAction a = new DistributeAction(</span>
+                DistributeAction.H_SPACING);
+<span class="nc" id="L781">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L782">                ResourceLoaderWrapper.lookupIcon(</span>
+                        &quot;DistributeHorizontalSpacing&quot;));
+<span class="nc" id="L784">        JMenuItem distributeHSpacing = distribute.add(a);</span>
+<span class="nc" id="L785">        setMnemonic(distributeHSpacing,</span>
+                &quot;distribute horizontal spacing&quot;);
+<span class="nc" id="L787">        ShortcutMgr.assignAccelerator(distributeHSpacing,</span>
+                ShortcutMgr.ACTION_DISTRIBUTE_H_SPACING);
+
+<span class="nc" id="L790">        a = new DistributeAction(</span>
+                DistributeAction.H_CENTERS);
+<span class="nc" id="L792">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L793">                ResourceLoaderWrapper.lookupIcon(</span>
+                        &quot;DistributeHorizontalCenters&quot;));
+<span class="nc" id="L795">        JMenuItem distributeHCenters = distribute.add(a);</span>
+<span class="nc" id="L796">        setMnemonic(distributeHCenters,</span>
+                &quot;distribute horizontal centers&quot;);
+<span class="nc" id="L798">        ShortcutMgr.assignAccelerator(distributeHCenters,</span>
+                ShortcutMgr.ACTION_DISTRIBUTE_H_CENTERS);
+
+<span class="nc" id="L801">        a = new DistributeAction(</span>
+                DistributeAction.V_SPACING);
+<span class="nc" id="L803">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L804">                ResourceLoaderWrapper.lookupIcon(&quot;DistributeVerticalSpacing&quot;));</span>
+<span class="nc" id="L805">        JMenuItem distributeVSpacing = distribute.add(a);</span>
+<span class="nc" id="L806">        setMnemonic(distributeVSpacing,</span>
+                &quot;distribute vertical spacing&quot;);
+<span class="nc" id="L808">        ShortcutMgr.assignAccelerator(distributeVSpacing,</span>
+                ShortcutMgr.ACTION_DISTRIBUTE_V_SPACING);
+
+<span class="nc" id="L811">        a = new DistributeAction(</span>
+                DistributeAction.V_CENTERS);
+<span class="nc" id="L813">        a.putValue(Action.SMALL_ICON,</span>
+<span class="nc" id="L814">                ResourceLoaderWrapper.lookupIcon(&quot;DistributeVerticalCenters&quot;));</span>
+<span class="nc" id="L815">        JMenuItem distributeVCenters = distribute.add(a);</span>
+<span class="nc" id="L816">        setMnemonic(distributeVCenters,</span>
+                &quot;distribute vertical centers&quot;);
+<span class="nc" id="L818">        ShortcutMgr.assignAccelerator(distributeVCenters,</span>
+                ShortcutMgr.ACTION_DISTRIBUTE_V_CENTERS);
+<span class="nc" id="L820">    }</span>
+
+    /**
+     * Initialize the submenus for the Reorder menu.
+     *
+     * @param reorder
+     *            the main Reorder menu
+     */
+    private static void initReorderMenu(JMenu reorder) {
+<span class="nc" id="L829">        JMenuItem reorderBringForward = reorder.add(new ReorderAction(</span>
+<span class="nc" id="L830">                Translator.localize(&quot;action.bring-forward&quot;),</span>
+<span class="nc" id="L831">                ResourceLoaderWrapper.lookupIcon(&quot;Forward&quot;),</span>
+                ReorderAction.BRING_FORWARD));
+<span class="nc" id="L833">        setMnemonic(reorderBringForward,</span>
+                &quot;reorder bring forward&quot;);
+<span class="nc" id="L835">        ShortcutMgr.assignAccelerator(reorderBringForward,</span>
+                ShortcutMgr.ACTION_REORDER_FORWARD);
+
+<span class="nc" id="L838">        JMenuItem reorderSendBackward = reorder.add(new ReorderAction(</span>
+<span class="nc" id="L839">                Translator.localize(&quot;action.send-backward&quot;),</span>
+<span class="nc" id="L840">                ResourceLoaderWrapper.lookupIcon(&quot;Backward&quot;),</span>
+                ReorderAction.SEND_BACKWARD));
+<span class="nc" id="L842">        setMnemonic(reorderSendBackward,</span>
+                &quot;reorder send backward&quot;);
+<span class="nc" id="L844">        ShortcutMgr.assignAccelerator(reorderSendBackward,</span>
+                ShortcutMgr.ACTION_REORDER_BACKWARD);
+
+<span class="nc" id="L847">        JMenuItem reorderBringToFront = reorder.add(new ReorderAction(</span>
+<span class="nc" id="L848">                Translator.localize(&quot;action.bring-to-front&quot;),</span>
+<span class="nc" id="L849">                ResourceLoaderWrapper.lookupIcon(&quot;ToFront&quot;),</span>
+                ReorderAction.BRING_TO_FRONT));
+<span class="nc" id="L851">        setMnemonic(reorderBringToFront,</span>
+                &quot;reorder bring to front&quot;);
+<span class="nc" id="L853">        ShortcutMgr.assignAccelerator(reorderBringToFront,</span>
+                ShortcutMgr.ACTION_REORDER_TO_FRONT);
+
+<span class="nc" id="L856">        JMenuItem reorderSendToBack = reorder.add(new ReorderAction(</span>
+<span class="nc" id="L857">                Translator.localize(&quot;action.send-to-back&quot;),</span>
+<span class="nc" id="L858">                ResourceLoaderWrapper.lookupIcon(&quot;ToBack&quot;),</span>
+                ReorderAction.SEND_TO_BACK));
+<span class="nc" id="L860">        setMnemonic(reorderSendToBack,</span>
+                &quot;reorder send to back&quot;);
+<span class="nc" id="L862">        ShortcutMgr.assignAccelerator(reorderSendToBack,</span>
+                ShortcutMgr.ACTION_REORDER_TO_BACK);
+<span class="nc" id="L864">    }</span>
+
+
+    /**
+     * Build the menu &quot;Generation&quot;.
+     */
+    private void initMenuGeneration() {
+
+        // KeyStroke f7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+
+<span class="nc" id="L874">        generate = add(new JMenu(menuLocalize(&quot;Generation&quot;)));</span>
+<span class="nc" id="L875">        setMnemonic(generate, &quot;Generation&quot;);</span>
+<span class="nc" id="L876">        JMenuItem genAllItem = generate.add(new ActionGenerateAll());</span>
+<span class="nc" id="L877">        setMnemonic(genAllItem, &quot;action.generate-code&quot;);</span>
+<span class="nc" id="L878">        ShortcutMgr.assignAccelerator(genAllItem,</span>
+                ShortcutMgr.ACTION_GENERATE_ALL_CLASSES);
+<span class="nc" id="L880">        generate.addSeparator();</span>
+<span class="nc" id="L881">        JMenuItem genProject = generate.add(new ActionGenerateProjectCode());</span>
+<span class="nc" id="L882">        setMnemonic(genProject, &quot;action.generate-code-for-project&quot;);</span>
+<span class="nc" id="L883">        ShortcutMgr.assignAccelerator(genProject,</span>
+                ShortcutMgr.ACTION_GENERATE_PROJECT_CODE);
+<span class="nc" id="L885">        JMenuItem generationSettings = generate</span>
+<span class="nc" id="L886">                .add(new ActionGenerationSettings());</span>
+<span class="nc" id="L887">        setMnemonic(generationSettings, &quot;action.settings-for-project-code-generation&quot;);</span>
+<span class="nc" id="L888">        ShortcutMgr.assignAccelerator(generationSettings,</span>
+                ShortcutMgr.ACTION_GENERATION_SETTINGS);
+        // generate.add(Actions.GenerateWeb);
+<span class="nc" id="L891">    }</span>
+
+    /**
+     * Build the menu &quot;Critique&quot;.
+     */
+    private void initMenuCritique() {
+        // TODO: This creates a dependency on the Critics subsystem.
+        // Instead that subsystem should register its desired menus and actions.
+<span class="nc" id="L899">        critique =</span>
+<span class="nc" id="L900">            (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey(&quot;Critique&quot;)));</span>
+<span class="nc" id="L901">        setMnemonic(critique, &quot;Critique&quot;);</span>
+<span class="nc" id="L902">        JMenuItem toggleAutoCritique = critique</span>
+<span class="nc" id="L903">                .addCheckItem(new ActionAutoCritique());</span>
+<span class="nc" id="L904">        setMnemonic(toggleAutoCritique, &quot;Toggle Auto Critique&quot;);</span>
+<span class="nc" id="L905">        ShortcutMgr.assignAccelerator(toggleAutoCritique,</span>
+                ShortcutMgr.ACTION_AUTO_CRITIQUE);
+<span class="nc" id="L907">        critique.addSeparator();</span>
+<span class="nc" id="L908">        JMenuItem designIssues = critique.add(new ActionOpenDecisions());</span>
+<span class="nc" id="L909">        setMnemonic(designIssues, &quot;Design Issues&quot;);</span>
+<span class="nc" id="L910">        ShortcutMgr.assignAccelerator(designIssues,</span>
+                ShortcutMgr.ACTION_OPEN_DECISIONS);
+<span class="nc" id="L912">        JMenuItem designGoals = critique.add(new ActionOpenGoals());</span>
+<span class="nc" id="L913">        setMnemonic(designGoals, &quot;Design Goals&quot;);</span>
+<span class="nc" id="L914">        ShortcutMgr.assignAccelerator(designGoals,</span>
+                ShortcutMgr.ACTION_OPEN_GOALS);
+<span class="nc" id="L916">        JMenuItem browseCritics = critique.add(new ActionOpenCritics());</span>
+<span class="nc" id="L917">        setMnemonic(browseCritics, &quot;Browse Critics&quot;);</span>
+<span class="nc" id="L918">        ShortcutMgr.assignAccelerator(designIssues,</span>
+                ShortcutMgr.ACTION_OPEN_CRITICS);
+<span class="nc" id="L920">    }</span>
+
+    /**
+     * Build the menu &quot;Tools&quot;.
+     */
+    private void initMenuTools() {
+<span class="nc" id="L926">        tools = new JMenu(menuLocalize(&quot;Tools&quot;));</span>
+<span class="nc" id="L927">        setMnemonic(tools, &quot;Tools&quot;);</span>
+
+        // TODO: Add empty placeholder here?
+
+<span class="nc" id="L931">        add(tools);</span>
+
+<span class="nc" id="L933">    }</span>
+
+    /**
+     * Build the menu &quot;Help&quot;.
+     */
+    private void initMenuHelp() {
+<span class="nc" id="L939">        help = new JMenu(menuLocalize(&quot;Help&quot;));</span>
+<span class="nc" id="L940">        setMnemonic(help, &quot;Help&quot;);</span>
+<span class="nc bnc" id="L941" title="All 2 branches missed.">        if (help.getItemCount() &gt; 0) {</span>
+<span class="nc" id="L942">            help.insertSeparator(0);</span>
+        }
+
+        // Add the help menu item.
+<span class="nc" id="L946">        JMenuItem argoHelp = help.add(new ActionHelp());</span>
+<span class="nc" id="L947">        setMnemonic(argoHelp, &quot;ArgoUML help&quot;);</span>
+<span class="nc" id="L948">        ShortcutMgr.assignAccelerator(argoHelp, ShortcutMgr.ACTION_HELP);</span>
+<span class="nc" id="L949">        help.addSeparator();</span>
+
+<span class="nc" id="L951">        JMenuItem systemInfo = help.add(new ActionSystemInfo());</span>
+<span class="nc" id="L952">        setMnemonic(systemInfo, &quot;System Information&quot;);</span>
+<span class="nc" id="L953">        ShortcutMgr.assignAccelerator(systemInfo,</span>
+                ShortcutMgr.ACTION_SYSTEM_INFORMATION);
+
+<span class="nc" id="L956">        aboutAction = new ActionAboutArgoUML();</span>
+<span class="nc bnc" id="L957" title="All 2 branches missed.">        if (!OsUtil.isMacOSX()) {</span>
+<span class="nc" id="L958">            help.addSeparator();</span>
+<span class="nc" id="L959">            JMenuItem aboutArgoUML = help.add(aboutAction);</span>
+<span class="nc" id="L960">            setMnemonic(aboutArgoUML, &quot;About ArgoUML&quot;);</span>
+<span class="nc" id="L961">            ShortcutMgr.assignAccelerator(aboutArgoUML,</span>
+                    ShortcutMgr.ACTION_ABOUT_ARGOUML);
+        }
+
+        // setHelpMenu(help);
+<span class="nc" id="L966">        add(help);</span>
+<span class="nc" id="L967">    }</span>
+
+    private void initModulesMenus() {
+<span class="nc bnc" id="L970" title="All 2 branches missed.">        for (JMenu menu : moduleMenus) {</span>
+<span class="nc" id="L971">            add(menu);</span>
+<span class="nc" id="L972">        }</span>
+<span class="nc" id="L973">    }</span>
+
+    private void initModulesActions() {
+<span class="nc bnc" id="L976" title="All 2 branches missed.">        for (Action action : moduleCreateDiagramActions) {</span>
+<span class="nc" id="L977">            createDiagramToolbar.add(action);</span>
+<span class="nc" id="L978">        }</span>
+<span class="nc" id="L979">    }</span>
+
+    /**
+     * Get the create diagram toolbar.
+     *
+     * @return Value of property _createDiagramToolbar.
+     */
+    public JToolBar getCreateDiagramToolbar() {
+<span class="nc" id="L987">        return createDiagramToolbar;</span>
+    }
+
+    /**
+     * Get the create diagram menu. Provided to allow plugins
+     * to appeand their own actions to this menu.
+     *
+     * @return Value of property createDiagramMenu
+     */
+    public JMenu getCreateDiagramMenu() {
+<span class="nc" id="L997">        return createDiagramMenu;</span>
+    }
+
+    /**
+     * Get the edit toolbar.
+     *
+     * @return the edit toolbar.
+     */
+    public JToolBar getEditToolbar() {
+<span class="nc bnc" id="L1006" title="All 2 branches missed.">        if (editToolbar == null) {</span>
+            /* Create the edit toolbar based on the Menu.
+             * All menuItems that have an Icon are presumed to
+             * be based upon an Action,
+             * and these Actions are used in the toolbar.  */
+<span class="nc" id="L1011">            Collection&lt;Action&gt; c = new ArrayList&lt;Action&gt;();</span>
+<span class="nc bnc" id="L1012" title="All 2 branches missed.">            for (Object mi : edit.getMenuComponents()) {</span>
+<span class="nc bnc" id="L1013" title="All 2 branches missed.">                if (mi instanceof JMenuItem) {</span>
+<span class="nc bnc" id="L1014" title="All 2 branches missed.">                    if (((JMenuItem) mi).getIcon() != null) {</span>
+<span class="nc" id="L1015">                        c.add(((JMenuItem) mi).getAction());</span>
+                    }
+                }
+            }
+<span class="nc" id="L1019">            editToolbar = (new ToolBarFactory(c)).createToolBar();</span>
+<span class="nc" id="L1020">            editToolbar.setName(Translator.localize(&quot;misc.toolbar.edit&quot;));</span>
+<span class="nc" id="L1021">            editToolbar.setFloatable(true);</span>
+        }
+<span class="nc" id="L1023">        return editToolbar;</span>
+    }
+
+    /**
+     * Getter for the file toolbar.
+     *
+     * @return the file toolbar.
+     *
+     */
+    public JToolBar getFileToolbar() {
+<span class="nc" id="L1033">        return fileToolbar;</span>
+    }
+
+    /**
+     * Getter for the view toolbar.
+     *
+     * @return the view toolbar.
+     */
+    public JToolBar getViewToolbar() {
+<span class="nc bnc" id="L1042" title="All 2 branches missed.">        if (viewToolbar == null) {</span>
+<span class="nc" id="L1043">            Collection&lt;Object&gt; c = new ArrayList&lt;Object&gt;();</span>
+            //Component or Action
+<span class="nc" id="L1045">            c.add(new ActionFind());</span>
+<span class="nc" id="L1046">            c.add(new ZoomSliderButton());</span>
+<span class="nc" id="L1047">            viewToolbar = (new ToolBarFactory(c)).createToolBar();</span>
+<span class="nc" id="L1048">            viewToolbar.setName(Translator.localize(&quot;misc.toolbar.view&quot;));</span>
+<span class="nc" id="L1049">            viewToolbar.setFloatable(true);</span>
+        }
+<span class="nc" id="L1051">        return viewToolbar;</span>
+    }
+
+    /**
+     * Prepares one part of the key for menu- or/and menuitem-mnemonics used in
+     * menu.properties.
+     *
+     * The method changes the parameter key to lower cases. Spaces in the
+     * parameter key are changed to hyphens.
+     *
+     * @param key
+     * @return the prepared key
+     */
+    private static String prepareKey(String key) {
+<span class="nc" id="L1065">        return key.toLowerCase().replace(' ', '-');</span>
+    }
+
+    /**
+     * Adds the entry to the mru list.
+     *
+     * @param filename
+     *            of the project
+     *
+     * TODO: This should listen for file save events rather than being called
+     * directly - tfm.
+     */
+    public void addFileSaved(String filename) {
+<span class="nc" id="L1078">        mruList.addEntry(filename);</span>
+<span class="nc" id="L1079">    }</span>
+
+    /**
+     * Getter for the Tools menu.
+     *
+     * @return The Tools menu.
+     */
+    public JMenu getTools() {
+<span class="nc" id="L1087">        return tools;</span>
+    }
+
+    /**
+     * Getter for the Generation menu.
+     *
+     * @return The Generation menu.
+     */
+    public JMenu getGeneration() {
+<span class="nc" id="L1096">	return generate;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2904074534530273119L;
+
+    /**
+     * Target changed - update the actions that depend on the target.
+     */
+    private void setTarget() {
+<span class="nc" id="L1108">        SwingUtilities.invokeLater(new Runnable() {</span>
+            public void run() {
+<span class="nc bnc" id="L1110" title="All 2 branches missed.">                for (Action action : disableableActions) {</span>
+<span class="nc" id="L1111">                    action.setEnabled(action.isEnabled());</span>
+<span class="nc" id="L1112">                }</span>
+<span class="nc" id="L1113">            }</span>
+        });
+<span class="nc" id="L1115">    }</span>
+
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L1118">        setTarget();</span>
+<span class="nc" id="L1119">    }</span>
+
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L1122">        setTarget();</span>
+<span class="nc" id="L1123">    }</span>
+
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L1126">        setTarget();</span>
+<span class="nc" id="L1127">    }</span>
+
+    /**
+     * Add a new menu to the main toolbar.
+     *
+     * @param menu the menu to be added
+     */
+    public static void registerMenuItem(JMenu menu) {
+<span class="nc" id="L1135">        moduleMenus.add(menu);</span>
+<span class="nc" id="L1136">    }</span>
+
+    /**
+     * Add a new Action to the Create Diagram toolbar.  This can be used to
+     * register create actions for new diagram types by plugin modules.
+     *
+     * @param action the create action to be registered.
+     */
+    public static void registerCreateDiagramAction(Action action) {
+<span class="nc" id="L1145">        moduleCreateDiagramActions.add(action);</span>
+<span class="nc" id="L1146">    }</span>
+
+    private void registerForMacEvents() {
+<span class="nc" id="L1149">        LOG.log(Level.INFO, &quot;Determining if Mac OS to set special handlers&quot;);</span>
+<span class="nc bnc" id="L1150" title="All 2 branches missed.">        if (OsUtil.isMacOSX()) {</span>
+<span class="nc" id="L1151">            LOG.log(Level.INFO, &quot;System is Mac OS - setting special handlers&quot;);</span>
+            try {
+                // Generate and register the OSXAdapter, passing the methods
+                // we wish to use as delegates for various
+                // com.apple.eawt.ApplicationListener methods
+<span class="nc" id="L1156">                LOG.log(Level.INFO, &quot;Registering Quit handler for Mac&quot;);</span>
+<span class="nc" id="L1157">                OSXAdapter.setQuitHandler(this, getClass().getMethod(</span>
+                        &quot;macQuit&quot;, (Class[]) null));
+<span class="nc" id="L1159">                LOG.log(Level.INFO, &quot;Registering About handler for Mac&quot;);</span>
+<span class="nc" id="L1160">                OSXAdapter.setAboutHandler(this, getClass().getMethod(</span>
+                        &quot;macAbout&quot;, (Class[]) null));
+<span class="nc" id="L1162">                LOG.log(Level.INFO, &quot;Registering Preferences handler for Mac&quot;);</span>
+<span class="nc" id="L1163">                OSXAdapter.setPreferencesHandler(this, getClass()</span>
+<span class="nc" id="L1164">                        .getMethod(&quot;macPreferences&quot;, (Class[]) null));</span>
+<span class="nc" id="L1165">                LOG.log(Level.INFO, &quot;Registering File handler for Mac&quot;);</span>
+<span class="nc" id="L1166">                OSXAdapter.setFileHandler(this, getClass().getMethod(</span>
+                        &quot;macOpenFile&quot;, new Class[] {String.class}));
+<span class="nc" id="L1168">                LOG.log(Level.INFO, &quot;All Mac handlers set&quot;);</span>
+<span class="nc" id="L1169">            } catch (Exception e) {</span>
+<span class="nc" id="L1170">                LOG.log(Level.SEVERE, &quot;Error while loading the OSXAdapter:&quot;, e);</span>
+<span class="nc" id="L1171">            }</span>
+        }
+<span class="nc" id="L1173">    }</span>
+
+    /**
+     * Internal use only.  Do not use.
+     */
+    public boolean macQuit() {
+<span class="nc" id="L1179">        LOG.log(Level.INFO, &quot;Quit has been chosen on a Mac&quot;);</span>
+<span class="nc" id="L1180">        return ProjectBrowser.getInstance().tryExit();</span>
+    }
+
+    /**
+     * Internal use only.  Do not use.
+     */
+    public void macAbout() {
+<span class="nc" id="L1187">        aboutAction.actionPerformed(null);</span>
+<span class="nc" id="L1188">    }</span>
+
+    /**
+     * Internal use only.  Do not use.
+     */
+    public void macPreferences() {
+<span class="nc" id="L1194">        settingsAction.actionPerformed(null);</span>
+<span class="nc" id="L1195">    }</span>
+
+    /**
+     * Internal use only.  Do not use.
+     * @param filename name of file to be opened
+     */
+    public void macOpenFile(String filename) {
+<span class="nc" id="L1202">        openAction.doCommand(filename);</span>
+<span class="nc" id="L1203">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

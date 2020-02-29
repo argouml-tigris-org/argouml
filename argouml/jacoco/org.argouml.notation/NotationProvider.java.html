@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation</a> &gt; <span class="el_source">NotationProvider.java</span></div><h1>NotationProvider.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+
+/**
+ * A class that implements this abstract class manages a text
+ * shown on a diagram. This means it is able to generate
+ * text that represents one or more UML objects.
+ * And when the user has edited this text, the model may be adapted
+ * by parsing the text.
+ * Additionally, a help text for the parsing is provided,
+ * so that the user knows the syntax.
+ *
+ * @author Michiel van der Wulp
+ */
+<span class="fc" id="L64">public abstract class NotationProvider implements PropertyChangeListener {</span>
+
+<span class="fc" id="L66">    private static final Logger LOG =</span>
+<span class="fc" id="L67">        Logger.getLogger(NotationProvider.class.getName());</span>
+    private NotationRenderer renderer;
+
+    /**
+     * A collection of properties of listeners registered for this notation.
+     * Each entry is a 2 element array containing the element and the property
+     * name(s) for which a listener is registered. This facilitates easy removal
+     * of a complex set of listeners.
+     */
+<span class="fc" id="L76">    private final Collection&lt;Object[]&gt; listeners = new ArrayList&lt;Object[]&gt;();</span>
+
+    /**
+     * @return a i18 key that represents a help string
+     *         giving an explanation to the user of the syntax
+     */
+    public abstract String getParsingHelp();
+
+    /**
+     * Parses the given text, and adapts the modelElement and
+     * maybe related elements accordingly.
+     *
+     * @param modelElement the modelelement to adapt
+     * @param text the string given by the user to be parsed
+     * to adapt the model
+     */
+    public abstract void parse(Object modelElement, String text);
+
+    /**
+     * Generate a string representation for the given model element.
+     *
+     * @param modelElement the base UML element
+     * @param settings settings that control rendering of the text
+     * @return the string written in the correct notation
+     */
+    public abstract String toString(Object modelElement,
+            NotationSettings settings);
+
+    /**
+     * Initialize the appropriate model change listeners
+     * for the given modelelement to the given listener.
+     * Overrule this when you need more than
+     * listening to all events from the base modelelement.
+     *
+     * @param modelElement the modelelement that we provide
+     * notation for
+     */
+    public void initialiseListener(Object modelElement) {
+<span class="fc" id="L114">        addElementListener(modelElement);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Clean out the listeners registered before.
+     * &lt;p&gt;
+     * The default implementation is to remove all listeners
+     * that were remembered by the utility functions below.
+     */
+    public void cleanListener() {
+<span class="fc" id="L124">        removeAllElementListeners();</span>
+<span class="fc" id="L125">    }</span>
+
+    /**
+     * Update the set of listeners based on the given event. &lt;p&gt;
+     *
+     * The default implementation just removes all listeners, and then
+     * re-initializes completely - this is method 1.
+     * A more efficient way would be to dissect
+     * the propertyChangeEvent, and only adapt the listeners
+     * that need to be adapted - this is method 2. &lt;p&gt;
+     *
+     * Method 2 is explained by the code below that is commented out.
+     * Method 1 is the easiest to implement, since at every arrival of an event,
+     * we just remove all old listeners, and then inspect the current model,
+     * and add listeners where we need them. I.e. the advantage is
+     * that we only need to traverse the model structure in one location, i.e.
+     * the initialiseListener() method.
+     *
+     * @param modelElement the modelelement that we provide
+     * notation for
+     * @param pce the received event, that we base the changes on
+     */
+    public void updateListener(Object modelElement, PropertyChangeEvent pce) {
+        // e.g. for an operation:
+        // if pce.getSource() == modelElement
+        // &amp;&amp; event.propertyName = &quot;parameter&quot;
+        //     if event instanceof AddAssociationEvent
+        //         Get the parameter instance from event.newValue
+        //         Call model to add listener on parameter on change
+        //             of &quot;name&quot;, &quot;type&quot;
+        //     else if event instanceof RemoveAssociationEvent
+        //         Get the parameter instance from event.oldValue
+        //         Call model to remove listener on parameter on change
+        //             of &quot;name&quot;, &quot;type&quot;
+        //     end if
+        // end if
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">        if (Model.getUmlFactory().isRemoved(modelElement)) {</span>
+<span class="nc" id="L162">            LOG.log(Level.WARNING, &quot;Encountered deleted object during delete of &quot;</span>
+                    + modelElement);
+<span class="nc" id="L164">            return;</span>
+        }
+<span class="fc" id="L166">        cleanListener();</span>
+<span class="fc" id="L167">        initialiseListener(modelElement);</span>
+<span class="fc" id="L168">    }</span>
+
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (renderer != null) {</span>
+<span class="fc" id="L172">            Object owner = renderer.getOwner(this);</span>
+<span class="pc bpc" id="L173" title="2 of 4 branches missed.">            if ((owner == evt.getSource())</span>
+                    &amp;&amp; (evt instanceof DeleteInstanceEvent)) {
+<span class="nc" id="L175">                return;</span>
+            }
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">            if (owner != null) {</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">                if (Model.getUmlFactory().isRemoved(owner)) {</span>
+<span class="nc" id="L179">                    LOG.log(Level.WARNING, &quot;Encountered deleted object during delete of &quot;</span>
+                            + owner);
+<span class="nc" id="L181">                    return;</span>
+                }
+<span class="fc" id="L183">                renderer.notationRenderingChanged(this,</span>
+<span class="fc" id="L184">                        toString(owner, renderer.getNotationSettings(this)));</span>
+<span class="pc bpc" id="L185" title="2 of 4 branches missed.">                if (evt instanceof AddAssociationEvent</span>
+                        || evt instanceof RemoveAssociationEvent) {
+<span class="nc" id="L187">                    initialiseListener(owner);</span>
+                }
+            }
+        }
+<span class="fc" id="L191">    }</span>
+
+    /*
+     * Add an element listener and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener,
+            Object element) {
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        if (Model.getUmlFactory().isRemoved(element)) {</span>
+<span class="nc" id="L203">            LOG.log(Level.WARNING, &quot;Encountered deleted object during delete of &quot; + element);</span>
+<span class="nc" id="L204">            return;</span>
+        }
+<span class="fc" id="L206">        Object[] entry = new Object[] {element, null};</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        if (!listeners.contains(entry)) {</span>
+<span class="fc" id="L208">            listeners.add(entry);</span>
+<span class="fc" id="L209">            Model.getPump().addModelEventListener(listener, element);</span>
+        } else {
+<span class="nc" id="L211">            LOG.log(Level.WARNING, &quot;Attempted duplicate registration of event listener&quot;</span>
+                    + &quot; - Element: &quot; + element + &quot; Listener: &quot; + listener);
+        }
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Utility function to add a listener for an array of property names
+     * and remember the registration.
+     *
+     * @param element element to listen for changes on
+     */
+    public final void addElementListener(Object element) {
+<span class="fc" id="L223">        addElementListener(this, element);</span>
+<span class="fc" id="L224">    }</span>
+
+    /*
+     * Utility function to add a listener for a given property name
+     * and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            name of property to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener,
+            Object element, String property) {
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">        if (Model.getUmlFactory().isRemoved(element)) {</span>
+<span class="nc" id="L240">            LOG.log(Level.WARNING, &quot;Encountered deleted object during delete of &quot; + element);</span>
+<span class="nc" id="L241">            return;</span>
+        }
+<span class="fc" id="L243">        Object[] entry = new Object[] {element, property};</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">        if (!listeners.contains(entry)) {</span>
+<span class="fc" id="L245">            listeners.add(entry);</span>
+<span class="fc" id="L246">            Model.getPump().addModelEventListener(listener, element, property);</span>
+        } else {
+<span class="nc" id="L248">            LOG.log(Level.FINE, &quot;Attempted duplicate registration of event listener&quot;</span>
+                    + &quot; - Element: {0} Listener: {1}&quot;, new Object[]{element, listener});
+        }
+<span class="fc" id="L251">    }</span>
+
+    /**
+     * Utility function to add a listener for an array of property names
+     * and remember the registration.
+     *
+     * @param element element to listen for changes on
+     * @param property name of property to listen for changes of
+     */
+    public final void addElementListener(Object element, String property) {
+<span class="fc" id="L261">        addElementListener(this, element, property);</span>
+<span class="fc" id="L262">    }</span>
+
+    /*
+     * Utility function to add a listener for an array of property names
+     * and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            array of property names (Strings) to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener,
+     *      Object, String)
+     */
+    protected final void addElementListener(PropertyChangeListener listener,
+            Object element, String[] property) {
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">        if (Model.getUmlFactory().isRemoved(element)) {</span>
+<span class="nc" id="L278">            LOG.log(Level.WARNING, &quot;Encountered deleted object during delete of &quot; + element);</span>
+<span class="nc" id="L279">            return;</span>
+        }
+<span class="fc" id="L281">        Object[] entry = new Object[] {element, property};</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">        if (!listeners.contains(entry)) {</span>
+<span class="fc" id="L283">            listeners.add(entry);</span>
+<span class="fc" id="L284">            Model.getPump().addModelEventListener(listener, element, property);</span>
+        } else {
+<span class="nc" id="L286">            LOG.log(Level.FINE,</span>
+                    &quot;Attempted duplicate registration of event listener&quot;
+                    + &quot; - Element: &quot; + element + &quot; Listener: &quot; + listener);
+        }
+<span class="fc" id="L290">    }</span>
+
+    /**
+     * Utility function to add a listener for an array of property names
+     * and remember the registration.
+     *
+     * @param element element to listen for changes on
+     * @param property array of property names (Strings)
+     * to listen for changes of
+     */
+    public final void addElementListener(Object element, String[] property) {
+<span class="fc" id="L301">        addElementListener(this, element, property);</span>
+<span class="fc" id="L302">    }</span>
+
+    /*
+     * Utility function to remove an element listener
+     * and adapt the remembered list of registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected final void removeElementListener(PropertyChangeListener listener,
+            Object element) {
+<span class="nc" id="L314">        listeners.remove(new Object[] {element, null});</span>
+<span class="nc" id="L315">        Model.getPump().removeModelEventListener(listener, element);</span>
+<span class="nc" id="L316">    }</span>
+
+    /**
+     * Utility function to remove an element listener
+     * and adapt the remembered list of registration.
+     *
+     * @param element element to listen for changes on
+     */
+    public final void removeElementListener(Object element) {
+<span class="nc" id="L325">        removeElementListener(this, element);</span>
+<span class="nc" id="L326">    }</span>
+
+    /*
+     * Utility function to unregister all listeners
+     * registered through addElementListener.
+     *
+     * @see #addElementListener(Object, String)
+     */
+    protected final void removeAllElementListeners(
+            PropertyChangeListener listener) {
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        for (Object[] lis : listeners) {</span>
+<span class="fc" id="L337">            Object property = lis[1];</span>
+<span class="fc bfc" id="L338" title="All 2 branches covered.">            if (property == null) {</span>
+<span class="fc" id="L339">                Model.getPump().removeModelEventListener(listener, lis[0]);</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">            } else if (property instanceof String[]) {</span>
+<span class="fc" id="L341">                Model.getPump().removeModelEventListener(listener, lis[0],</span>
+                        (String[]) property);
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">            } else if (property instanceof String) {</span>
+<span class="fc" id="L344">                Model.getPump().removeModelEventListener(listener, lis[0],</span>
+                        (String) property);
+            } else {
+<span class="nc" id="L347">                throw new RuntimeException(</span>
+                        &quot;Internal error in removeAllElementListeners&quot;);
+            }
+<span class="fc" id="L350">        }</span>
+<span class="fc" id="L351">        listeners.clear();</span>
+<span class="fc" id="L352">    }</span>
+
+    /**
+     * Utility function to unregister all listeners
+     * registered through addElementListener.
+     */
+    public final void removeAllElementListeners() {
+<span class="fc" id="L359">        removeAllElementListeners(this);</span>
+<span class="fc" id="L360">    }</span>
+
+    /**
+     * @param nr the NotationRenderer
+     */
+    void setRenderer(NotationRenderer nr) {
+<span class="fc" id="L366">        renderer = nr;</span>
+<span class="fc" id="L367">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

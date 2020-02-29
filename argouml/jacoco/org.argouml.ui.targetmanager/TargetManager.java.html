@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TargetManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.targetmanager</a> &gt; <span class="el_source">TargetManager.java</span></div><h1>TargetManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2002-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.targetmanager;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.management.ListenerNotFoundException;
+import javax.management.Notification;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationListener;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * The manager of the target of ArgoUML.
+ * The target of ArgoUML is the element currently selected by the user.
+ * This can either be an instance of a meta-class (an
+ * Interface or a Class for example) but it can also be a diagram
+ * or anything that is shown
+ * on a diagram.&lt;p&gt;
+ *
+ * There can be multiple targets in case
+ * someone selected multiple items in the explorer or on the diagram.
+ * This can be done by shift-clicking or Ctrl-clicking items,
+ * or by drawing a box on the diagram around the items to select.&lt;p&gt;
+ *
+ * In case multiple targets are selected, the target manager will add each
+ * target to the beginning of the list of targets. This way,
+ * the first item of the list is the last selected item.
+ * Most functions in ArgoUML work on all selected items.
+ * However, a few (intentionally) only work on one target,
+ * such as the properties panels.
+ * These functions have 2 ways of retrieving the target they should work on:
+ * &lt;ul&gt;
+ * &lt;li&gt;1. Use the functions that return one target only,
+ * such as getTarget(), getModelTarget(), getFigTarget().
+ * &lt;li&gt;2. Use the first item in the list returned by
+ * getTargets(), getModelTargets(). &lt;/ul&gt;&lt;p&gt;
+ *
+ * Remark: There is currently no function getFigs(),
+ * returning a list of selected figs.
+ * But you can obtain such a list from GEF. &lt;p&gt;
+ *
+ * The purpose of the targetmanager is to have a central spot where we
+ * manage the list of current targets.&lt;p&gt;
+ *
+ * Via an event mechanism this manager makes sure that all objects interested
+ * in knowing wether the selection changed are acknowledged. &lt;p&gt;
+ *
+ * Note in particular that null is an invalid target.&lt;p&gt;
+ *
+ * Thanks to the architecture of ArgoUML of Modelelements and Figs,
+ * one rule has been decided upon (by mvw@tigris.org):&lt;ul&gt;
+ * &lt;li&gt;The list of targets shall not contain any Fig that has an owner.
+ * Instead, the owner is enlisted.
+ * &lt;/ul&gt;
+ *
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public final class TargetManager {
+
+    /**
+     * The manager of the history of targets. Every time the user (or
+     * the program) selects a new target, this is recorded in the
+     * history. Via navigateBack and navigateForward, the user can
+     * browse through the history just like in an ordinary internet
+     * browser.
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    private final class HistoryManager implements TargetListener {
+
+        private static final int MAX_SIZE = 100;
+
+        /**
+         * The history with targets.
+         */
+<span class="fc" id="L128">        private List history = new ArrayList();</span>
+
+        /**
+         * Flag to indicate if the current settarget was instantiated by a
+         * navigateBack action.
+         */
+        private boolean navigateBackward;
+
+        /**
+         * The pointer to the current target in the history.
+         */
+<span class="fc" id="L139">        private int currentTarget = -1;</span>
+
+        /**
+         * The listener to UML model changes.
+         * Deleted model elements are removed
+         * from the history list.
+         */
+<span class="fc" id="L146">        private Remover umlListener = new HistoryRemover();</span>
+
+        /**
+         * Default constructor that registrates the history manager as target
+         * listener with the target manager.
+         *
+         */
+<span class="fc" id="L153">        private HistoryManager() {</span>
+<span class="fc" id="L154">            addTargetListener(this);</span>
+<span class="fc" id="L155">        }</span>
+
+        /**
+         * Puts some target into the history (if needed). Updates both
+         * the history as the pointer to indicate the target.
+         * @param target The target to put into the history
+         */
+        private void putInHistory(Object target) {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (currentTarget &gt; -1) {</span>
+                // only targets we didn't have allready count
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">                Object theModelTarget =</span>
+<span class="pc" id="L166">                    target instanceof Fig ? ((Fig) target).getOwner() : target;</span>
+<span class="fc" id="L167">                Object oldTarget =</span>
+<span class="fc" id="L168">                    ((WeakReference) history.get(currentTarget)).get();</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">                oldTarget =</span>
+                    oldTarget instanceof Fig
+<span class="pc" id="L171">		    ? ((Fig) oldTarget).getOwner()</span>
+		    : oldTarget;
+<span class="fc bfc" id="L173" title="All 2 branches covered.">                if (oldTarget == theModelTarget) {</span>
+<span class="fc" id="L174">                    return;</span>
+                }
+            }
+<span class="pc bpc" id="L177" title="2 of 4 branches missed.">            if (target != null &amp;&amp; !navigateBackward) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">                if (currentTarget + 1 == history.size()) {</span>
+<span class="fc" id="L179">                    umlListener.addListener(target);</span>
+<span class="fc" id="L180">                    history.add(new WeakReference(target));</span>
+<span class="fc" id="L181">                    currentTarget++;</span>
+<span class="fc" id="L182">                    resize();</span>
+                } else {
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">                    WeakReference ref =</span>
+                        currentTarget &gt; -1
+<span class="pc" id="L186">			? (WeakReference) history.get(currentTarget)</span>
+			: null;
+<span class="pc bpc" id="L188" title="2 of 4 branches missed.">                    if (currentTarget == -1 || !ref.get().equals(target)) {</span>
+<span class="fc" id="L189">                        int size = history.size();</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                        for (int i = currentTarget + 1; i &lt; size; i++) {</span>
+<span class="fc" id="L191">                            umlListener.removeListener(</span>
+<span class="fc" id="L192">                                    history.remove(currentTarget + 1));</span>
+                        }
+<span class="fc" id="L194">                        history.add(new WeakReference(target));</span>
+<span class="fc" id="L195">                        umlListener.addListener(target);</span>
+<span class="fc" id="L196">                        currentTarget++;</span>
+                    }
+                }
+
+            }
+<span class="fc" id="L201">        }</span>
+
+        /**
+         * Resizes the history if it's grown too big.
+         *
+         */
+        private void resize() {
+<span class="fc" id="L208">            int size = history.size();</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            if (size &gt; MAX_SIZE) {</span>
+<span class="fc" id="L210">                int oversize = size - MAX_SIZE;</span>
+<span class="fc" id="L211">                int halfsize = size / 2;</span>
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">                if (currentTarget &gt; halfsize &amp;&amp; oversize &lt; halfsize) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                    for (int i = 0; i &lt; oversize; i++) {</span>
+<span class="fc" id="L214">                        umlListener.removeListener(</span>
+<span class="fc" id="L215">                                history.remove(0));</span>
+                    }
+<span class="fc" id="L217">                    currentTarget -= oversize;</span>
+                }
+            }
+<span class="fc" id="L220">        }</span>
+
+        /**
+         * Navigate one target forward in history. Throws an
+         * illegalstateException if not possible.
+         *
+         */
+        private void navigateForward() {
+<span class="fc bfc" id="L228" title="All 2 branches covered.">            if (currentTarget &gt;= history.size() - 1) {</span>
+<span class="fc" id="L229">                throw new IllegalStateException(</span>
+			&quot;NavigateForward is not allowed &quot;
+			+ &quot;since the targetpointer is pointing at &quot;
+			+ &quot;the upper boundary &quot;
+			+ &quot;of the history&quot;);
+            }
+<span class="fc" id="L235">            setTarget(((WeakReference) history.get(++currentTarget)).get());</span>
+<span class="fc" id="L236">        }</span>
+
+        /**
+         * Navigate one step back in history. Throws an illegalstateexception if
+         * not possible.
+         *
+         */
+        private void navigateBackward() {
+<span class="fc bfc" id="L244" title="All 2 branches covered.">            if (currentTarget == 0) {</span>
+<span class="fc" id="L245">                throw new IllegalStateException(</span>
+		        &quot;NavigateBackward is not allowed &quot;
+			+ &quot;since the targetpointer is pointing at &quot;
+			+ &quot;the lower boundary &quot;
+			+ &quot;of the history&quot;);
+            }
+<span class="fc" id="L251">            navigateBackward = true;</span>
+            // If nothing selected, go to last selected target
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">            if (targets.size() == 0) {</span>
+<span class="nc" id="L254">                setTarget(((WeakReference) history.get(currentTarget)).get());</span>
+            } else {
+<span class="fc" id="L256">                setTarget(((WeakReference) history.get(--currentTarget)).get());</span>
+            }
+<span class="fc" id="L258">            navigateBackward = false;</span>
+<span class="fc" id="L259">        }</span>
+
+        /**
+         * Checks if it's possible to navigate back.
+         *
+         * @return true if it's possible to navigate back.
+         */
+        private boolean navigateBackPossible() {
+<span class="fc bfc" id="L267" title="All 2 branches covered.">            return currentTarget &gt; 0;</span>
+        }
+
+        /**
+         * Checks if it's possible to navigate forward.
+         *
+         * @return true if it's possible to navigate forward
+         */
+        private boolean navigateForwardPossible() {
+<span class="fc bfc" id="L276" title="All 2 branches covered.">            return currentTarget &lt; history.size() - 1;</span>
+        }
+
+        /**
+         * Listener for additions of targets to the selected targets.
+         * On addition of targets we put them in the history.
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+         * org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+<span class="fc" id="L286">            Object[] addedTargets = e.getAddedTargets();</span>
+            // we put the targets 'backwards' in the history
+            // since the first target in the addedTargets array is
+            // the first one selected.
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            for (int i = addedTargets.length - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L291">                putInHistory(addedTargets[i]);</span>
+            }
+<span class="fc" id="L293">        }</span>
+
+        /**
+         * Listener for the removal of targets from the selection.
+         * On removal of a target from the selection we do nothing
+         * with respect to the history of targets.
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+<span class="fc" id="L302">        }</span>
+
+        /**
+         * Listener for the selection of a whole bunch of targets
+         * in one go (or just one). Puts all the new
+         * targets in the history starting with the 'newest' target.
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+<span class="fc" id="L311">            Object[] newTargets = e.getNewTargets();</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">            for (int i = newTargets.length - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L313">                putInHistory(newTargets[i]);</span>
+            }
+<span class="fc" id="L315">        }</span>
+
+        /**
+         * Cleans the history in total.
+         *
+         */
+        private void clean() {
+<span class="fc" id="L322">            umlListener.removeAllListeners(history);</span>
+<span class="fc" id="L323">            history = new ArrayList();</span>
+<span class="fc" id="L324">            currentTarget = -1;</span>
+<span class="fc" id="L325">        }</span>
+
+        private void removeHistoryTarget(Object o) {
+<span class="fc bfc" id="L328" title="All 2 branches covered.">            if (o instanceof Diagram) {</span>
+<span class="fc" id="L329">                Iterator it = ((Diagram) o).getEdges().iterator();</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L331">                    removeHistoryTarget(it.next());</span>
+                }
+<span class="fc" id="L333">                it = ((Diagram) o).getNodes().iterator();</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L335">                    removeHistoryTarget(it.next());</span>
+                }
+            }
+<span class="fc" id="L338">            ListIterator it = history.listIterator();</span>
+<span class="fc bfc" id="L339" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L340">                WeakReference ref = (WeakReference) it.next();</span>
+<span class="fc" id="L341">                Object historyObject = ref.get();</span>
+<span class="fc bfc" id="L342" title="All 2 branches covered.">                if (Model.getFacade().isAModelElement(o)) {</span>
+<span class="pc bpc" id="L343" title="1 of 2 branches missed.">                    historyObject =</span>
+                        historyObject instanceof Fig
+<span class="pc" id="L345">			? ((Fig) historyObject).getOwner()</span>
+			: historyObject;
+
+                }
+<span class="fc bfc" id="L349" title="All 2 branches covered.">                if (o == historyObject) {</span>
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">                    if (history.indexOf(ref) &lt;= currentTarget) {</span>
+<span class="fc" id="L351">                        currentTarget--;</span>
+                    }
+<span class="fc" id="L353">                    it.remove();</span>
+                }
+
+                // cannot break here since an object can be multiple
+                // times in history
+<span class="fc" id="L358">            }</span>
+<span class="fc" id="L359">        }</span>
+
+    }
+    /**
+     * The log4j logger to log messages to.
+     */
+<span class="fc" id="L365">    private static final Logger LOG =</span>
+<span class="fc" id="L366">        Logger.getLogger(TargetManager.class.getName());</span>
+
+    /**
+     * The singleton instance.
+     */
+<span class="fc" id="L371">    private static TargetManager instance = new TargetManager();</span>
+
+    /**
+     * The targets.
+     */
+<span class="fc" id="L376">    private List targets = new ArrayList();</span>
+
+    /**
+     * Cache for the modeltarget. See getModelTarget.
+     */
+    private Object modelTarget;
+
+    /**
+     * Cache for the figTarget. See getFigTarget.
+     */
+    private Fig figTarget;
+
+    /**
+     * The list with targetlisteners.
+     */
+<span class="fc" id="L391">    private EventListenerList listenerList = new EventListenerList();</span>
+
+    /**
+     * The history manager of argouml. Via the historymanager browser behaviour
+     * is emulated.
+     */
+<span class="fc" id="L397">    private HistoryManager historyManager = new HistoryManager();</span>
+
+    /**
+     * The listener to UML model changes.
+     * Deleted model elements are removed
+     * from the target list.
+     */
+<span class="fc" id="L404">    private Remover umlListener = new TargetRemover();</span>
+
+    /**
+     * Flag to indicate that there is a setTarget method running.
+     */
+<span class="fc" id="L409">    private boolean inTransaction = false;</span>
+
+    /**
+     * Singleton retrieval method.
+     * @return the targetmanager
+     */
+    public static TargetManager getInstance() {
+<span class="fc" id="L416">        return instance;</span>
+    }
+
+    /**
+     * Singleton constructor should remain private.
+     */
+<span class="fc" id="L422">    private TargetManager() {</span>
+<span class="fc" id="L423">    }</span>
+
+    /**
+     * Sets the targets to the single given object. If there are targets at the
+     * moment of calling this method, these will be removed as targets. To
+     * all interested targetlisteners, a TargetEvent will be fired. If the
+     * new target o equals the current target, no events will be fired, nor will
+     * the target be (re)set.
+     * @param o The new target, null clears all targets.
+     */
+    public synchronized void setTarget(Object o) {
+<span class="fc bfc" id="L434" title="All 2 branches covered.">	if (isInTargetTransaction()) {</span>
+<span class="fc" id="L435">            return;</span>
+        }
+
+<span class="fc bfc" id="L438" title="All 4 branches covered.">	if ((targets.size() == 0 &amp;&amp; o == null)</span>
+<span class="fc bfc" id="L439" title="All 4 branches covered.">	        || (targets.size() == 1 &amp;&amp; targets.get(0).equals(o))) {</span>
+<span class="fc" id="L440">            return;</span>
+        }
+
+<span class="fc" id="L443">	startTargetTransaction();</span>
+
+<span class="fc" id="L445">	Object[] oldTargets = targets.toArray();</span>
+<span class="fc" id="L446">        umlListener.removeAllListeners(targets);</span>
+<span class="fc" id="L447">	targets.clear();</span>
+
+<span class="fc bfc" id="L449" title="All 2 branches covered.">	if (o != null) {</span>
+            Object newTarget;
+<span class="fc bfc" id="L451" title="All 2 branches covered.">            if (o instanceof Diagram) { // Needed for Argo startup :-(</span>
+<span class="fc" id="L452">                newTarget = o;</span>
+            } else {
+<span class="fc" id="L454">	        newTarget = getOwner(o);</span>
+            }
+<span class="fc" id="L456">            targets.add(newTarget);</span>
+<span class="fc" id="L457">            umlListener.addListener(newTarget);</span>
+        }
+<span class="fc" id="L459">	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);</span>
+
+<span class="fc" id="L461">        endTargetTransaction();</span>
+<span class="fc" id="L462">    }</span>
+
+    private void internalOnSetTarget(String eventName, Object[] oldTargets) {
+<span class="fc" id="L465">	TargetEvent event =</span>
+<span class="fc" id="L466">	    new TargetEvent(this, eventName, oldTargets, targets.toArray());</span>
+
+<span class="fc bfc" id="L468" title="All 2 branches covered.">	if (targets.size() &gt; 0) {</span>
+<span class="fc" id="L469">	    figTarget = determineFigTarget(targets.get(0));</span>
+<span class="fc" id="L470">	    modelTarget = determineModelTarget(targets.get(0));</span>
+	} else {
+<span class="fc" id="L472">	    figTarget = null;</span>
+<span class="fc" id="L473">	    modelTarget = null;</span>
+	}
+
+<span class="fc bfc" id="L476" title="All 2 branches covered.">	if (TargetEvent.TARGET_SET.equals(eventName)) {</span>
+<span class="fc" id="L477">	    fireTargetSet(event);</span>
+<span class="fc" id="L478">	    return;</span>
+<span class="fc bfc" id="L479" title="All 2 branches covered.">	} else if (TargetEvent.TARGET_ADDED.equals(eventName)) {</span>
+<span class="fc" id="L480">	    fireTargetAdded(event);</span>
+<span class="fc" id="L481">	    return;</span>
+<span class="pc bpc" id="L482" title="1 of 2 branches missed.">	} else if (TargetEvent.TARGET_REMOVED.equals(eventName)) {</span>
+<span class="fc" id="L483">	    fireTargetRemoved(event);</span>
+<span class="fc" id="L484">	    return;</span>
+	}
+
+<span class="nc" id="L487">        LOG.log(Level.SEVERE, &quot;Unknown eventName: &quot; + eventName);</span>
+<span class="nc" id="L488">    }</span>
+
+    /**
+     * Returns the current primary target, the first selected object.
+     *
+     * The value will be that of the new primary target during a targetSet/
+     * targetAdded/targetRemoved notification, since they are just that,
+     * notifications that the target(s) has just changed.
+     *
+     * @return The current target, or null if no target is selected
+     */
+    public synchronized Object getTarget() {
+<span class="fc bfc" id="L500" title="All 2 branches covered.">	return targets.size() &gt; 0 ? targets.get(0) : null;</span>
+    }
+
+    /**
+     * Sets the given collection to the current targets. If the collection
+     * equals the current targets, then does nothing. When setting
+     * the targets, a TargetEvent will be fired to each interested listener.
+     * Note that the first element returned by an Iterator on targetList
+     * will be taken to be the primary target (see getTarget()), and that
+     * an event will be fired also in case that that element would not equal
+     * the element returned by getTarget().
+     * Note also that any nulls within the Collection will be ignored.
+     *
+     * @param targetsCollection The new targets list.
+     */
+    public synchronized void setTargets(Collection targetsCollection) {
+	Iterator ntarg;
+
+<span class="fc bfc" id="L518" title="All 2 branches covered.">	if (isInTargetTransaction()) {</span>
+<span class="fc" id="L519">            return;</span>
+        }
+
+<span class="fc" id="L522">        Collection targetsList = new ArrayList();</span>
+<span class="fc bfc" id="L523" title="All 2 branches covered.">        if (targetsCollection != null) {</span>
+<span class="fc" id="L524">            targetsList.addAll(targetsCollection);</span>
+        }
+
+        /* Remove duplicates and take care of getOwner()
+         * and remove nulls: */
+<span class="fc" id="L529">        List modifiedList = new ArrayList();</span>
+<span class="fc" id="L530">        Iterator it = targetsList.iterator();</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L532">            Object o = it.next();</span>
+<span class="fc" id="L533">            o = getOwner(o);</span>
+<span class="fc bfc" id="L534" title="All 4 branches covered.">            if ((o != null) &amp;&amp; !modifiedList.contains(o)) {</span>
+<span class="fc" id="L535">                modifiedList.add(o);</span>
+            }
+<span class="fc" id="L537">        }</span>
+<span class="fc" id="L538">        targetsList = modifiedList;</span>
+
+<span class="fc" id="L540">	Object[] oldTargets = null;</span>
+
+	// check if there are new elements in the list
+	// if the old and new list are of the same size
+	// set the oldTargets to the correct selection
+<span class="fc bfc" id="L545" title="All 2 branches covered.">	if (targetsList.size() == targets.size()) {</span>
+<span class="fc" id="L546">	    boolean first = true;</span>
+<span class="fc" id="L547">	    ntarg = targetsList.iterator();</span>
+
+<span class="fc bfc" id="L549" title="All 2 branches covered.">	    while (ntarg.hasNext()) {</span>
+<span class="fc" id="L550">		Object targ = ntarg.next();</span>
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">		if (targ == null) {</span>
+<span class="nc" id="L552">                    continue;</span>
+                }
+<span class="fc bfc" id="L554" title="All 4 branches covered.">		if (!targets.contains(targ)</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">		    || (first &amp;&amp; targ != getTarget())) {</span>
+<span class="fc" id="L556">		    oldTargets = targets.toArray();</span>
+<span class="fc" id="L557">		    break;</span>
+		}
+<span class="fc" id="L559">                first = false;</span>
+<span class="fc" id="L560">	    }</span>
+<span class="fc" id="L561">	} else {</span>
+<span class="fc" id="L562">            oldTargets = targets.toArray();</span>
+        }
+
+<span class="fc bfc" id="L565" title="All 2 branches covered.">	if (oldTargets == null) {</span>
+<span class="fc" id="L566">            return;</span>
+        }
+
+<span class="fc" id="L569">	startTargetTransaction();</span>
+
+<span class="fc" id="L571">        umlListener.removeAllListeners(targets);</span>
+<span class="fc" id="L572">	targets.clear();</span>
+
+	// implement set-like behaviour. The same element
+	// may not be added more then once.
+<span class="fc" id="L576">	ntarg = targetsList.iterator();</span>
+<span class="fc bfc" id="L577" title="All 2 branches covered.">	while (ntarg.hasNext()) {</span>
+<span class="fc" id="L578">	    Object targ = ntarg.next();</span>
+<span class="pc bpc" id="L579" title="1 of 2 branches missed.">	    if (targets.contains(targ)) {</span>
+<span class="nc" id="L580">                continue;</span>
+            }
+<span class="fc" id="L582">	    targets.add(targ);</span>
+<span class="fc" id="L583">            umlListener.addListener(targ);</span>
+<span class="fc" id="L584">	}</span>
+
+<span class="fc" id="L586">	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);</span>
+
+<span class="fc" id="L588">	endTargetTransaction();</span>
+<span class="fc" id="L589">    }</span>
+
+    /**
+     * Adds a target to the targets list. If the target is already in
+     * the targets list then does nothing. Otherwise the
+     * target will be added and an appropriate TargetEvent will be
+     * fired to all interested listeners. Since null can never be a target,
+     * adding null will never do anything.
+     * @param target the target to be added.
+     */
+    public synchronized void addTarget(Object target) {
+<span class="pc bpc" id="L600" title="1 of 2 branches missed.">        if (target instanceof TargetListener) {</span>
+<span class="nc" id="L601">            LOG.log(Level.WARNING,</span>
+                    &quot;addTarget method received a TargetListener, &quot;
+                    + &quot;perhaps addTargetListener was intended! - &quot; + target);
+        }
+<span class="fc bfc" id="L605" title="All 2 branches covered.">	if (isInTargetTransaction()) {</span>
+<span class="fc" id="L606">            return;</span>
+        }
+<span class="fc" id="L608">        Object newTarget = getOwner(target);</span>
+
+<span class="fc bfc" id="L610" title="All 2 branches covered.">        if (target == null</span>
+<span class="fc bfc" id="L611" title="All 2 branches covered.">                || targets.contains(target)</span>
+<span class="pc bpc" id="L612" title="1 of 2 branches missed.">                || targets.contains(newTarget)) {</span>
+<span class="fc" id="L613">            return;</span>
+        }
+
+<span class="fc" id="L616">	startTargetTransaction();</span>
+
+<span class="fc" id="L618">	Object[] oldTargets = targets.toArray();</span>
+<span class="fc" id="L619">	targets.add(0, newTarget);</span>
+<span class="fc" id="L620">        umlListener.addListener(newTarget);</span>
+
+<span class="fc" id="L622">	internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);</span>
+
+<span class="fc" id="L624">	endTargetTransaction();</span>
+<span class="fc" id="L625">    }</span>
+
+    /**
+     * Removes the target from the targets list. Does nothing if the target
+     * does not exist in the targets list. Fires an appropriate TargetEvent to
+     * all interested listeners. Since null can never be a target, removing
+     * null will never do anything.
+     * @param target The target to remove.
+     */
+    public synchronized void removeTarget(Object target) {
+<span class="fc bfc" id="L635" title="All 2 branches covered.">        if (isInTargetTransaction()) {</span>
+<span class="fc" id="L636">            return;</span>
+        }
+
+<span class="fc bfc" id="L639" title="All 2 branches covered.">	if (target == null /*|| !targets.contains(target)*/) {</span>
+<span class="fc" id="L640">            return;</span>
+        }
+
+<span class="fc" id="L643">	startTargetTransaction();</span>
+
+<span class="fc" id="L645">	Object[] oldTargets = targets.toArray();</span>
+<span class="fc" id="L646">        Collection c = getOwnerAndAllFigs(target);</span>
+//	targets.remove(target);
+<span class="fc" id="L648">        targets.removeAll(c);</span>
+<span class="fc" id="L649">        umlListener.removeAllListeners(c);</span>
+
+<span class="fc bfc" id="L651" title="All 2 branches covered.">        if (targets.size() != oldTargets.length) {</span>
+<span class="fc" id="L652">            internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);</span>
+        }
+
+<span class="fc" id="L655">	endTargetTransaction();</span>
+<span class="fc" id="L656">    }</span>
+
+    private Collection getOwnerAndAllFigs(Object o) {
+<span class="fc" id="L659">        Collection c = new ArrayList();</span>
+<span class="fc" id="L660">        c.add(o);</span>
+<span class="fc bfc" id="L661" title="All 2 branches covered.">        if (o instanceof Fig) {</span>
+<span class="pc bpc" id="L662" title="1 of 2 branches missed.">            if (((Fig) o).getOwner() != null) {</span>
+<span class="fc" id="L663">                o = ((Fig) o).getOwner();</span>
+<span class="fc" id="L664">                c.add(o);</span>
+            }
+        }
+<span class="pc bpc" id="L667" title="1 of 2 branches missed.">        if (!(o instanceof Fig)) {</span>
+<span class="fc" id="L668">            Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L669">            Collection col = p.findAllPresentationsFor(o);</span>
+<span class="pc bpc" id="L670" title="2 of 4 branches missed.">            if (col != null &amp;&amp; !col.isEmpty()) {</span>
+<span class="nc" id="L671">                c.addAll(col);</span>
+            }
+        }
+<span class="fc" id="L674">        return c;</span>
+    }
+
+    /**
+     * @param o the object
+     * @return the owner of the fig, or if it didn't exist, the object itself
+     */
+    public Object getOwner(Object o) {
+<span class="fc bfc" id="L682" title="All 2 branches covered.">        if (o instanceof Fig) {</span>
+<span class="pc bpc" id="L683" title="1 of 2 branches missed.">            if (((Fig) o).getOwner() != null) {</span>
+<span class="fc" id="L684">                o = ((Fig) o).getOwner();</span>
+            }
+        }
+<span class="fc" id="L687">        return o;</span>
+    }
+
+    /**
+     * Returns a list of all targets. Returns an empty list
+     * if there are no targets. If there are several targets then the first
+     * Object by an Iterator on the returned List or the zero'th Object
+     * in an array on this List is guaranteed to be the object returned
+     * by {@link #getSingleTarget()}.
+     *
+     * The value will be that of the new target(s) during a targetSet/
+     * targetAdded/targetRemoved notification, since they are just that,
+     * notifications that the target(s) has just changed.
+     *
+     * @return A list with all targets.
+     */
+    public synchronized List getTargets() {
+<span class="fc" id="L704">        return Collections.unmodifiableList(targets);</span>
+    }
+
+    /**
+     * If there is only one target, then it is returned.
+     * Otherwise null.
+     *
+     * @return the one and only target
+     */
+    public synchronized Object getSingleTarget() {
+<span class="fc bfc" id="L714" title="All 2 branches covered.">        return targets.size() == 1 ? targets.get(0) : null;</span>
+    }
+
+    /**
+     * @return the target from the model
+     */
+    public synchronized Collection getModelTargets() {
+<span class="nc" id="L721">        ArrayList t = new ArrayList();</span>
+<span class="nc" id="L722">        Iterator iter = getTargets().iterator();</span>
+<span class="nc bnc" id="L723" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L724">            t.add(determineModelTarget(iter.next()));</span>
+        }
+<span class="nc" id="L726">        return t;</span>
+    }
+
+    /**
+     * If there is only one model target, then it is returned.
+     * Otherwise null.
+     *
+     * @return the single model target
+     */
+    public synchronized Object getSingleModelTarget() {
+<span class="nc" id="L736">        int i = 0;</span>
+<span class="nc" id="L737">        Iterator iter = getTargets().iterator();</span>
+<span class="nc bnc" id="L738" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc bnc" id="L739" title="All 2 branches missed.">            if (determineModelTarget(iter.next()) != null) {</span>
+<span class="nc" id="L740">                i++;</span>
+            }
+<span class="nc bnc" id="L742" title="All 2 branches missed.">            if (i &gt; 1) {</span>
+<span class="nc" id="L743">                break;</span>
+            }
+        }
+<span class="nc bnc" id="L746" title="All 2 branches missed.">        if (i == 1) {</span>
+<span class="nc" id="L747">            return modelTarget;</span>
+        }
+<span class="nc" id="L749">        return null;</span>
+    }
+
+    /**
+     * Adds a listener.
+     * @param listener the listener to add
+     */
+    public void addTargetListener(TargetListener listener) {
+<span class="fc" id="L757">        listenerList.add(TargetListener.class, listener);</span>
+<span class="fc" id="L758">    }</span>
+
+    /**
+     * Removes a listener.
+     * @param listener the listener to remove
+     */
+    public void removeTargetListener(TargetListener listener) {
+<span class="fc" id="L765">        listenerList.remove(TargetListener.class, listener);</span>
+<span class="fc" id="L766">    }</span>
+
+    private void fireTargetSet(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+<span class="fc" id="L770">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc bfc" id="L771" title="All 2 branches covered.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+	    try {
+<span class="pc bpc" id="L773" title="1 of 2 branches missed.">	        if (listeners[i] == TargetListener.class) {</span>
+	            // Lazily create the event:
+<span class="fc" id="L775">	            ((TargetListener) listeners[i + 1]).targetSet(targetEvent);</span>
+	        }
+<span class="nc" id="L777">	    } catch (RuntimeException e) {</span>
+<span class="nc" id="L778">                LOG.log(Level.SEVERE, &quot;While calling targetSet for &quot;</span>
+	                + targetEvent
+	                + &quot; in &quot;
+	                + listeners[i + 1]
+	                            + &quot; an error is thrown.&quot;,
+	                            e);
+<span class="nc" id="L784">                e.printStackTrace();</span>
+<span class="fc" id="L785">            }</span>
+        }
+<span class="fc" id="L787">    }</span>
+
+    private void fireTargetAdded(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+<span class="fc" id="L791">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc bfc" id="L792" title="All 2 branches covered.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+	    try {
+<span class="pc bpc" id="L794" title="1 of 2 branches missed.">		if (listeners[i] == TargetListener.class) {</span>
+		    // Lazily create the event:
+<span class="fc" id="L796">		    ((TargetListener) listeners[i + 1])</span>
+<span class="fc" id="L797">		        .targetAdded(targetEvent);</span>
+		}
+<span class="nc" id="L799">	    } catch (RuntimeException e) {</span>
+<span class="nc" id="L800">                LOG.log(Level.SEVERE,</span>
+                        &quot;While calling targetAdded for &quot;
+                        + targetEvent + &quot; in &quot; + listeners[i + 1]
+                        + &quot; an error is thrown.&quot;,
+                        e);
+<span class="nc" id="L805">                e.printStackTrace();</span>
+<span class="fc" id="L806">	    }</span>
+        }
+<span class="fc" id="L808">    }</span>
+
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+<span class="fc" id="L812">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc bfc" id="L813" title="All 2 branches covered.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+	    try {
+<span class="pc bpc" id="L815" title="1 of 2 branches missed.">		if (listeners[i] == TargetListener.class) {</span>
+		    // Lazily create the event:
+<span class="fc" id="L817">		    ((TargetListener) listeners[i + 1])</span>
+<span class="fc" id="L818">		        .targetRemoved(targetEvent);</span>
+		}
+<span class="nc" id="L820">	    } catch (RuntimeException e) {</span>
+<span class="nc" id="L821">                LOG.log(Level.WARNING, &quot;While calling targetRemoved for &quot;</span>
+                        + targetEvent + &quot; in &quot; + listeners[i + 1]
+                        + &quot; an error is thrown.&quot;,
+                        e);
+<span class="fc" id="L825">	    }</span>
+        }
+<span class="fc" id="L827">    }</span>
+
+    private void startTargetTransaction() {
+<span class="fc" id="L830">        inTransaction = true;</span>
+<span class="fc" id="L831">    }</span>
+
+    private boolean isInTargetTransaction() {
+<span class="fc" id="L834">        return inTransaction;</span>
+    }
+
+    private void endTargetTransaction() {
+<span class="fc" id="L838">        inTransaction = false;</span>
+<span class="fc" id="L839">    }</span>
+
+    /**
+     * Convenience method to return the target as fig. If the current
+     * target (retrieved by getTarget) is either a fig itself or the
+     * owner of a fig this fig will be returned. Otherwise null will
+     * be returned.
+     * @return the target in it's 'fig-form'
+     */
+    public Fig getFigTarget() {
+<span class="fc" id="L849">        return figTarget;</span>
+    }
+
+    /**
+     * Calculates the most probable 'fig-form' of some target. Beware:
+     * The result does NOT depend on the current diagram!
+     *
+     * @param target the target to calculate the 'fig-form' for.
+     * @return The fig-form.
+     */
+    private Fig determineFigTarget(Object target) {
+<span class="pc bpc" id="L860" title="1 of 2 branches missed.">        if (!(target instanceof Fig)) {</span>
+
+<span class="fc" id="L862">            Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L863">            Collection col = p.findFigsForMember(target);</span>
+<span class="pc bpc" id="L864" title="1 of 4 branches missed.">            if (col == null || col.isEmpty()) {</span>
+<span class="fc" id="L865">                target = null;</span>
+            } else {
+<span class="fc" id="L867">                target = col.iterator().next();</span>
+            }
+        }
+
+<span class="fc bfc" id="L871" title="All 2 branches covered.">        return target instanceof Fig ? (Fig) target : null;</span>
+    }
+
+    /**
+     * Returns the target in it's 'modelform'. If the target retrieved
+     * by getTarget is an UMLDiagram or a UML element the target will
+     * be returned. If the target is a fig but owned by a modelelement
+     * that modelelement will be returned.  Otherwise null will be
+     * returned.
+     *
+     * @return the target in it's 'modelform'.
+     */
+    public Object getModelTarget() {
+<span class="fc" id="L884">        return modelTarget;</span>
+
+    }
+
+    /**
+     * Calculates the modeltarget.
+     * @param target The target to calculate the modeltarget for
+     * @return The modeltarget
+     */
+    private Object determineModelTarget(Object target) {
+<span class="pc bpc" id="L894" title="1 of 2 branches missed.">        if (target instanceof Fig) {</span>
+<span class="nc" id="L895">            Object owner = ((Fig) target).getOwner();</span>
+<span class="nc bnc" id="L896" title="All 2 branches missed.">            if (Model.getFacade().isAUMLElement(owner)) {</span>
+<span class="nc" id="L897">                target = owner;</span>
+            }
+        }
+<span class="fc bfc" id="L900" title="All 2 branches covered.">        return target instanceof Diagram</span>
+<span class="fc bfc" id="L901" title="All 2 branches covered.">            || Model.getFacade().isAUMLElement(target) ? target : null;</span>
+
+    }
+
+    /**
+     * Navigates the target pointer one target forward. This implements together
+     * with navigateBackward browser like functionality.
+     * @throws IllegalStateException If the target pointer is at the end of the
+     * history.
+     */
+    public void navigateForward() throws IllegalStateException {
+<span class="fc" id="L912">        historyManager.navigateForward();</span>
+<span class="fc" id="L913">        LOG.log(Level.FINE, &quot;Navigate forward&quot;);</span>
+<span class="fc" id="L914">    }</span>
+
+    /**
+     * Navigates the target pointer one target backward. This
+     * implements together with navigateForward browser like
+     * functionality
+     * @throws IllegalStateException If the target pointer is at the
+     * beginning of the history.
+     */
+    public void navigateBackward() throws IllegalStateException {
+<span class="fc" id="L924">        historyManager.navigateBackward();</span>
+<span class="fc" id="L925">        LOG.log(Level.FINE, &quot;Navigate backward&quot;);</span>
+
+<span class="fc" id="L927">    }</span>
+
+    /**
+     * Checks if it's possible to navigate forward.
+     * @return true if it is possible to navigate forward.
+     */
+    public boolean navigateForwardPossible() {
+<span class="fc" id="L934">        return historyManager.navigateForwardPossible();</span>
+    }
+
+    /**
+     * Checks if it's possible to navigate backward.
+     *
+     * @return true if it's possible to navigate backward
+     */
+    public boolean navigateBackPossible() {
+<span class="fc" id="L943">        return historyManager.navigateBackPossible();</span>
+    }
+
+    /**
+     * Cleans the history. Needed for the JUnit tests and when instantiating a
+     * new project.
+     */
+    public void cleanHistory() {
+<span class="fc" id="L951">        historyManager.clean();</span>
+<span class="fc" id="L952">    }</span>
+
+    /**
+     * @param o the object to be removed
+     */
+    public void removeHistoryElement(Object o) {
+<span class="nc" id="L958">        historyManager.removeHistoryTarget(o);</span>
+<span class="nc" id="L959">    }</span>
+
+    /**
+     * The listener to removals of UML model elements,
+     * diagrams and CommentEdges.
+     * Deleted elements are removed
+     * from the target list and/or from the history.
+     *
+     * @author michiel
+     */
+    private abstract class Remover implements PropertyChangeListener,
+        NotificationListener
+    {
+
+<span class="fc" id="L973">        protected Remover() {</span>
+            // Listen for the removal of diagrams from project
+<span class="fc" id="L975">            ProjectManager.getManager().addPropertyChangeListener(this);</span>
+<span class="fc" id="L976">        }</span>
+
+        private void addListener(Object o) {
+<span class="fc bfc" id="L979" title="All 2 branches covered.">            if (Model.getFacade().isAModelElement(o)) {</span>
+<span class="fc" id="L980">                Model.getPump().addModelEventListener(this, o, &quot;remove&quot;);</span>
+<span class="fc bfc" id="L981" title="All 2 branches covered.">            } else if (o instanceof Diagram) {</span>
+                // Figs on a diagram without an owning model element
+<span class="fc" id="L983">                ((Diagram) o).addPropertyChangeListener(this);</span>
+<span class="pc bpc" id="L984" title="1 of 2 branches missed.">            } else if (o instanceof NotificationEmitter) {</span>
+                // CommentEdge - the owner of a FigEdgeNote
+<span class="nc" id="L986">                ((NotificationEmitter) o).addNotificationListener(</span>
+                        this, null, o);
+            }
+<span class="fc" id="L989">        }</span>
+
+        private void removeListener(Object o) {
+<span class="fc bfc" id="L992" title="All 2 branches covered.">            if (Model.getFacade().isAModelElement(o)) {</span>
+<span class="fc" id="L993">                Model.getPump().removeModelEventListener(this, o, &quot;remove&quot;);</span>
+<span class="fc bfc" id="L994" title="All 2 branches covered.">            } else if (o instanceof Diagram) {</span>
+<span class="fc" id="L995">                ((Diagram) o).removePropertyChangeListener(this);</span>
+<span class="pc bpc" id="L996" title="1 of 2 branches missed.">            } else if (o instanceof NotificationEmitter) {</span>
+                try {
+<span class="nc" id="L998">                    ((NotificationEmitter) o).removeNotificationListener(this);</span>
+<span class="nc" id="L999">                } catch (ListenerNotFoundException e) {</span>
+<span class="nc" id="L1000">                    LOG.log(Level.SEVERE,</span>
+                            &quot;Notification Listener for CommentEdge not found&quot;,
+                            e);
+<span class="nc" id="L1003">                }</span>
+            }
+<span class="fc" id="L1005">        }</span>
+
+        private void removeAllListeners(Collection c) {
+<span class="fc" id="L1008">            Iterator i = c.iterator();</span>
+<span class="fc bfc" id="L1009" title="All 2 branches covered.">            while (i.hasNext()) {</span>
+<span class="fc" id="L1010">                removeListener(i.next());</span>
+            }
+<span class="fc" id="L1012">        }</span>
+
+        /*
+         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">            if (&quot;remove&quot;.equals(evt.getPropertyName())) {</span>
+<span class="fc" id="L1019">                remove(evt.getSource());</span>
+            }
+<span class="fc" id="L1021">        }</span>
+
+        /*
+         * @see javax.management.NotificationListener#handleNotification(javax.management.Notification, java.lang.Object)
+         */
+        public void handleNotification(Notification notification,
+                Object handback) {
+<span class="nc bnc" id="L1028" title="All 2 branches missed.">            if (&quot;remove&quot;.equals(notification.getType())) {</span>
+<span class="nc" id="L1029">                remove(notification.getSource());</span>
+            }
+
+<span class="nc" id="L1032">        }</span>
+
+        protected abstract void remove(Object obj);
+    }
+
+<span class="fc" id="L1037">    private class TargetRemover extends Remover {</span>
+        protected void remove(Object obj) {
+<span class="fc" id="L1039">            removeTarget(obj);</span>
+<span class="fc" id="L1040">        }</span>
+    }
+
+<span class="fc" id="L1043">    private class HistoryRemover extends Remover {</span>
+        protected void remove(Object obj) {
+<span class="fc" id="L1045">            historyManager.removeHistoryTarget(obj);</span>
+<span class="fc" id="L1046">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

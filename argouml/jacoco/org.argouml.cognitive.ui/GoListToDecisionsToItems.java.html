@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GoListToDecisionsToItems.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">GoListToDecisionsToItems.java</span></div><h1>GoListToDecisionsToItems.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
+
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+
+
+/**
+ * Rule for sorting the ToDo list: Decision -&gt; Item.
+ *
+ */
+<span class="nc" id="L57">public class GoListToDecisionsToItems extends AbstractGoList2 {</span>
+
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
+
+
+    /*
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
+    public Object getChild(Object parent, int index) {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">	if (parent instanceof ToDoList) {</span>
+<span class="nc" id="L68">	    return getDecisionList().get(index);</span>
+	}
+<span class="nc bnc" id="L70" title="All 2 branches missed.">	if (parent instanceof Decision) {</span>
+<span class="nc" id="L71">            Decision dec = (Decision) parent;</span>
+            List&lt;ToDoItem&gt; itemList = 
+<span class="nc" id="L73">                Designer.theDesigner().getToDoList().getToDoItemList();</span>
+<span class="nc" id="L74">            synchronized (itemList) {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">                for (ToDoItem item : itemList) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">                    if (item.getPoster().supports(dec)) {</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                        if (index == 0) {</span>
+<span class="nc" id="L78">                            return item;</span>
+                        }
+<span class="nc" id="L80">                        index--;</span>
+                    }
+<span class="nc" id="L82">                }</span>
+<span class="nc" id="L83">            }</span>
+        }
+
+<span class="nc" id="L86">	throw new IndexOutOfBoundsException(&quot;getChild shouldn't get here &quot;</span>
+					    + &quot;GoListToDecisionsToItems&quot;);
+    }
+
+    private int getChildCountCond(Object parent, boolean stopafterone) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">	if (parent instanceof ToDoList) {</span>
+<span class="nc" id="L92">	    return getDecisionList().size();</span>
+	}
+<span class="nc bnc" id="L94" title="All 2 branches missed.">	if (parent instanceof Decision) {</span>
+<span class="nc" id="L95">	    Decision dec = (Decision) parent;</span>
+<span class="nc" id="L96">            int count = 0;</span>
+            List&lt;ToDoItem&gt; itemList = 
+<span class="nc" id="L98">                Designer.theDesigner().getToDoList().getToDoItemList();</span>
+<span class="nc" id="L99">            synchronized (itemList) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                for (ToDoItem item : itemList) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">                    if (item.getPoster().supports(dec)) {</span>
+<span class="nc" id="L102">                        count++;</span>
+                    }
+<span class="nc bnc" id="L104" title="All 4 branches missed.">                    if (stopafterone &amp;&amp; count &gt; 0) {</span>
+<span class="nc" id="L105">                        break;</span>
+                    }
+<span class="nc" id="L107">                }</span>
+<span class="nc" id="L108">            }</span>
+<span class="nc" id="L109">	    return count;</span>
+	}
+<span class="nc" id="L111">	return 0;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
+    public int getChildCount(Object parent) {
+<span class="nc" id="L118">        return getChildCountCond(parent, false);</span>
+    }
+
+    /**
+     * @param parent the object to check its offspring
+     * @return the nr of children
+     */
+    private boolean hasChildren(Object parent) {
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        return getChildCountCond(parent, true) &gt; 0;</span>
+    }
+
+
+    /*
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
+     * java.lang.Object)
+     */
+    public int getIndexOfChild(Object parent, Object child) {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">	if (parent instanceof ToDoList) {</span>
+<span class="nc" id="L136">	    return getDecisionList().indexOf(child);</span>
+	}
+<span class="nc bnc" id="L138" title="All 2 branches missed.">	if (parent instanceof Decision) {</span>
+	    // instead of making a new list, decrement index, return when
+	    // found and index == 0
+<span class="nc" id="L141">	    List&lt;ToDoItem&gt; candidates = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="nc" id="L142">	    Decision dec = (Decision) parent;</span>
+            List&lt;ToDoItem&gt; itemList = 
+<span class="nc" id="L144">                Designer.theDesigner().getToDoList().getToDoItemList();</span>
+<span class="nc" id="L145">            synchronized (itemList) {</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                for (ToDoItem item : itemList) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                    if (item.getPoster().supports(dec)) {</span>
+<span class="nc" id="L148">                        candidates.add(item);</span>
+                    }
+<span class="nc" id="L150">                }</span>
+<span class="nc" id="L151">            }</span>
+<span class="nc" id="L152">	    return candidates.indexOf(child);</span>
+	}
+<span class="nc" id="L154">	return -1;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
+    public boolean isLeaf(Object node) {
+<span class="nc bnc" id="L161" title="All 2 branches missed.">	if (node instanceof ToDoList) {</span>
+<span class="nc" id="L162">            return false;</span>
+        }
+<span class="nc bnc" id="L164" title="All 4 branches missed.">	if (node instanceof Decision &amp;&amp; hasChildren(node)) {</span>
+<span class="nc" id="L165">            return false;</span>
+        }
+<span class="nc" id="L167">	return true;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     * javax.swing.tree.TreePath, java.lang.Object)
+     */
+<span class="nc" id="L174">    public void valueForPathChanged(TreePath path, Object newValue) { }</span>
+
+    /*
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
+<span class="nc" id="L179">    public void addTreeModelListener(TreeModelListener l) { }</span>
+
+    /*
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
+<span class="nc" id="L184">    public void removeTreeModelListener(TreeModelListener l) { }</span>
+
+    /**
+     * @return the decisions
+     */    
+    public List&lt;Decision&gt; getDecisionList() {
+<span class="nc" id="L190">        return Designer.theDesigner().getDecisionModel().getDecisionList();</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

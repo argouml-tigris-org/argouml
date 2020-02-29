@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OldZargoFilePersister.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">OldZargoFilePersister.java</span></div><h1>OldZargoFilePersister.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.ocl.OCLExpander;
+import org.argouml.util.FileConstants;
+import org.tigris.gef.ocl.TemplateReader;
+
+/**
+ * To persist to and from zargo (zipped file) storage containing seperate
+ * xmi, argo, plgml and todo zip entries.
+ * @author Bob Tarling
+ * TODO: Review use of this against ZargoFilePersister - Bob
+ */
+class OldZargoFilePersister extends ZargoFilePersister {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(OldZargoFilePersister.class.getName());</span>
+
+    /**
+     * This is the old version of the ArgoUML tee file which does not contain
+     * the detail of member elements.
+     */
+    private static final String ARGO_MINI_TEE =
+        &quot;/org/argouml/persistence/argo.tee&quot;;
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L87">    public OldZargoFilePersister() {</span>
+<span class="fc" id="L88">    }</span>
+
+    /*
+     * @see org.argouml.persistence.AbstractFilePersister#getDesc()
+     */
+    protected String getDesc() {
+<span class="fc" id="L94">        return Translator.localize(&quot;combobox.filefilter.zargo&quot;);</span>
+    }
+
+    /*
+     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     */
+    public boolean isSaveEnabled() {
+<span class="nc" id="L101">        return true;</span>
+    }
+
+    /**
+     * Save the project in &quot;.zargo&quot; format.
+     *
+     * @param file
+     *            The file to write.
+     * @param project
+     *            the project to save
+     * @throws SaveException
+     *             when anything goes wrong
+     * @throws InterruptedException     if the thread is interrupted
+     *
+     * @see org.argouml.persistence.ProjectFilePersister#save(
+     *      org.argouml.kernel.Project, java.io.File)
+     */
+    public void doSave(Project project, File file) throws SaveException,
+    InterruptedException {
+
+        /* Retain the previous project file even when the save operation
+         * crashes in the middle. Also create a backup file after saving. */
+<span class="fc" id="L123">        boolean doSafeSaves = useSafeSaves();</span>
+
+<span class="fc" id="L125">        ProgressMgr progressMgr = new ProgressMgr();</span>
+<span class="fc" id="L126">        progressMgr.setNumberOfPhases(4);</span>
+<span class="fc" id="L127">        progressMgr.nextPhase();</span>
+
+<span class="fc" id="L129">        File lastArchiveFile = new File(file.getAbsolutePath() + &quot;~&quot;);</span>
+<span class="fc" id="L130">        File tempFile = null;</span>
+
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">        if (doSafeSaves) {</span>
+            try {
+<span class="fc" id="L134">                tempFile = createTempFile(file);</span>
+<span class="nc" id="L135">            } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L136">                throw new SaveException(Translator.localize(</span>
+                        &quot;optionpane.save-project-exception-cause1&quot;), e);
+<span class="nc" id="L138">            } catch (IOException e) {</span>
+<span class="nc" id="L139">                throw new SaveException(Translator.localize(</span>
+                        &quot;optionpane.save-project-exception-cause2&quot;), e);
+<span class="fc" id="L141">            }</span>
+        }
+
+<span class="fc" id="L144">        BufferedWriter writer = null;</span>
+        try {
+
+<span class="fc" id="L147">            project.setFile(file);</span>
+<span class="fc" id="L148">            project.setVersion(ApplicationVersion.getVersion());</span>
+<span class="fc" id="L149">            project.setPersistenceVersion(PERSISTENCE_VERSION);</span>
+
+<span class="fc" id="L151">            ZipOutputStream stream =</span>
+                new ZipOutputStream(new FileOutputStream(file));
+<span class="fc" id="L153">            writer =</span>
+                new BufferedWriter(new OutputStreamWriter(stream, &quot;UTF-8&quot;));
+
+            // Save the .argo entry
+            // TODO: Cyclic dependency with PersistenceManager
+            // move PersistenceManager..getProjectBaseName() someplace else
+<span class="fc" id="L159">            ZipEntry zipEntry =</span>
+<span class="fc" id="L160">                new ZipEntry(PersistenceManager.getInstance()</span>
+<span class="fc" id="L161">                            .getProjectBaseName(project)</span>
+                        + FileConstants.UNCOMPRESSED_FILE_EXT);
+<span class="fc" id="L163">            stream.putNextEntry(zipEntry);</span>
+
+            Hashtable templates =
+<span class="fc" id="L166">                TemplateReader.getInstance().read(ARGO_MINI_TEE);</span>
+<span class="fc" id="L167">            OCLExpander expander = new OCLExpander(templates);</span>
+<span class="fc" id="L168">            expander.expand(writer, project);</span>
+
+<span class="fc" id="L170">            writer.flush();</span>
+
+<span class="fc" id="L172">            stream.closeEntry();</span>
+
+<span class="fc" id="L174">            int counter = 0;</span>
+<span class="fc" id="L175">            int size = project.getMembers().size();</span>
+<span class="fc" id="L176">            Collection&lt;String&gt; names = new ArrayList&lt;String&gt;();</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L178">                ProjectMember projectMember = project.getMembers().get(i);</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">                if (!(projectMember.getType().equalsIgnoreCase(&quot;xmi&quot;))) {</span>
+                    
+<span class="fc" id="L181">                    LOG.log(Level.INFO,</span>
+<span class="fc" id="L182">                            &quot;Saving member: {0}&quot;, projectMember.getZipName());</span>
+
+<span class="fc" id="L184">                    String name = projectMember.getZipName();</span>
+<span class="fc" id="L185">                    String originalName = name;</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">                    while (names.contains(name)) {</span>
+                        /* Issue 4806 explains why we need this! */
+<span class="nc" id="L188">                        name = ++counter + originalName;</span>
+                    }
+<span class="fc" id="L190">                    names.add(name);</span>
+<span class="fc" id="L191">                    stream.putNextEntry(new ZipEntry(name));</span>
+<span class="fc" id="L192">                    MemberFilePersister persister =</span>
+<span class="fc" id="L193">                        getMemberFilePersister(projectMember);</span>
+<span class="fc" id="L194">                    persister.save(projectMember, stream);</span>
+<span class="fc" id="L195">                    stream.flush();</span>
+<span class="fc" id="L196">                    stream.closeEntry();</span>
+                }
+            }
+
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L201">                ProjectMember projectMember = project.getMembers().get(i);</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">                if (projectMember.getType().equalsIgnoreCase(&quot;xmi&quot;)) {</span>
+                    
+<span class="fc" id="L204">                    LOG.log(Level.INFO,</span>
+                            &quot;Saving member of type: {0}&quot;,
+<span class="fc" id="L206">                            projectMember.getType());</span>
+
+<span class="fc" id="L208">                    stream.putNextEntry(</span>
+<span class="fc" id="L209">                            new ZipEntry(projectMember.getZipName()));</span>
+<span class="fc" id="L210">                    OldModelMemberFilePersister persister =</span>
+                        new OldModelMemberFilePersister();
+<span class="fc" id="L212">                    persister.save(projectMember, stream);</span>
+<span class="fc" id="L213">                    stream.flush();</span>
+                }
+            }
+
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if (doSafeSaves) {</span>
+                // if save did not raise an exception
+                // and name+&quot;#&quot; exists move name+&quot;#&quot; to name+&quot;~&quot;
+                // this is the correct backup file
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">                if (lastArchiveFile.exists()) {</span>
+<span class="nc" id="L222">                    lastArchiveFile.delete();</span>
+                }
+<span class="pc bpc" id="L224" title="1 of 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
+<span class="fc" id="L225">                    tempFile.renameTo(lastArchiveFile);</span>
+                }
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">                if (tempFile.exists()) {</span>
+<span class="nc" id="L228">                    tempFile.delete();</span>
+                }
+            }
+
+<span class="fc" id="L232">            progressMgr.nextPhase();</span>
+
+<span class="nc" id="L234">        } catch (Exception e) {</span>
+<span class="nc" id="L235">            LOG.log(Level.SEVERE, &quot;Exception occured during save attempt&quot;, e);</span>
+            try {
+<span class="nc" id="L237">                writer.close();</span>
+<span class="nc" id="L238">            } catch (Exception ex) {</span>
+                // Do nothing.
+<span class="nc" id="L240">            }</span>
+
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            if (doSafeSaves) {</span>
+                // frank: in case of exception
+                // delete name and mv name+&quot;#&quot; back to name if name+&quot;#&quot; exists
+                // this is the &quot;rollback&quot; to old file
+<span class="nc" id="L246">                file.delete();</span>
+<span class="nc" id="L247">                tempFile.renameTo(file);</span>
+            }
+            // we have to give a message to user and set the system to unsaved!
+<span class="nc" id="L250">            throw new SaveException(e);</span>
+<span class="fc" id="L251">        }</span>
+
+        try {
+<span class="fc" id="L254">            writer.close();</span>
+<span class="nc" id="L255">        } catch (IOException ex) {</span>
+<span class="nc" id="L256">            LOG.log(Level.SEVERE, &quot;Failed to close save output writer&quot;, ex);</span>
+<span class="fc" id="L257">        }</span>
+<span class="fc" id="L258">    }</span>
+
+    /**
+     * The .zargo save format is able to save. We must override
+     * UmlFilePersister which has turned this off (suggests a need for some
+     * refactoring here)
+     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     *
+     * @return boolean
+     */
+    public boolean isLoadEnabled() {
+<span class="nc" id="L269">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

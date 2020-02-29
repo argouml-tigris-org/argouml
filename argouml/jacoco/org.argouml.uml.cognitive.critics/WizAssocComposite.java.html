@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizAssocComposite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">WizAssocComposite.java</span></div><h1>WizAssocComposite.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JPanel;
+
+import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+
+/**
+ * A non-modal wizard to assist the user in changing aggregation of an
+ * association.
+ * &lt;p&gt;
+ *
+ * Earlier version always imposed composite aggregation. This version allows the
+ * user to choose.
+ * &lt;p&gt;
+ *
+ * &lt;em&gt;Note&lt;/em&gt;. This only applies to binary associations. A separate wizard
+ * is needed for 3-way (or more) associations.
+ * &lt;p&gt;
+ *
+ * @see &quot;ArgoUML User Manual: Two Aggregate ends (roles) in binary Association&quot;
+ * @author jrobbins@ics.uci.edu
+ */
+public class WizAssocComposite extends UMLWizard {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L73">    private static final Logger LOG =</span>
+<span class="nc" id="L74">        Logger.getLogger(WizAssocComposite.class.getName());</span>
+
+    /**
+     * The initial instructions on the Step 1 screen. May be set to a different
+     * string through {@link #setInstructions(String)}.
+     * &lt;p&gt;
+     */
+<span class="nc" id="L81">    private String instructions = Translator</span>
+<span class="nc" id="L82">            .localize(&quot;critics.WizAssocComposite-ins&quot;);</span>
+
+    /**
+     * Contains the {@link WizStepChoice} that is used to get the user's desired
+     * options. Not created until we get to that step.
+     * &lt;p&gt;
+     */
+<span class="nc" id="L89">    private WizStepChoice step1Choice = null;</span>
+
+    /**
+     * The Association {@link WizStepChoice} that triggered the critic. Null
+     * until set when it is first needed.
+     * &lt;p&gt;
+     */
+<span class="nc" id="L96">    private Object triggerAssociation = null;</span>
+
+    /**
+     * Constructor for the wizard. Currently does nothing.
+     * &lt;p&gt;
+     */
+<span class="nc" id="L102">    public WizAssocComposite() {</span>
+<span class="nc" id="L103">    }</span>
+
+    /**
+     * Tries to identify the Association that triggered the critic.
+     * &lt;p&gt;
+     *
+     * The first time it is called, it will initialise the trigger from the
+     * ToDoItem. If there, it is assumed to be the first trigger of the ToDoItem
+     * and to be an association. If found, the value is stored in the private
+     * field {@link #triggerAssociation}.
+     * &lt;p&gt;
+     *
+     * On all subsequent calls, if a non-null value is found in {@link
+     * #triggerAssociation} that is returned.
+     * &lt;p&gt;
+     *
+     * @return the Association that triggered the critic, or &lt;code&gt;null&lt;/code&gt;
+     *         if there was none.
+     */
+    private Object getTriggerAssociation() {
+
+        // If we don't have it, find the trigger. If this fails it will keep
+        // its default value of null
+
+<span class="nc bnc" id="L127" title="All 4 branches missed.">        if ((triggerAssociation == null) &amp;&amp; (getToDoItem() != null)) {</span>
+<span class="nc" id="L128">            triggerAssociation = getModelElement();</span>
+        }
+
+<span class="nc" id="L131">        return triggerAssociation;</span>
+    }
+
+    /**
+     * Returns a list of options to be used in creating a {@link
+     * WizStepChoice} that will exercise the options.
+     * &lt;p&gt;
+     *
+     * We provide five options, shared aggregation in each direction, composite
+     * aggregation in each direction and no aggregation at all.
+     * &lt;p&gt;
+     *
+     * It is possible that a very malicious user could delete the triggering
+     * association just before we get to this point. For now we don't bother to
+     * trap this. It will raise an exception, and then everything will carry on
+     * happily.
+     * &lt;p&gt;
+     *
+     * @return A {@link List} of the options or &lt;code&gt;null&lt;/code&gt; if the
+     *         association that triggered the critic is no longer there.
+     */
+    private List&lt;String&gt; buildOptions() {
+
+        // The association that triggered the critic. Its just possible the
+        // association is no longer there, in which case we return null
+
+<span class="nc" id="L157">        Object asc = getTriggerAssociation();</span>
+
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (asc == null) {</span>
+<span class="nc" id="L160">            return null;</span>
+        }
+
+<span class="nc" id="L163">        List&lt;String&gt; result = new ArrayList&lt;String&gt;();</span>
+
+        // Get the ends from the association (we know there are two), and the
+        // types associated with them.
+
+<span class="nc" id="L168">        Iterator iter = Model.getFacade().getConnections(asc).iterator();</span>
+
+<span class="nc" id="L170">        Object ae0 = iter.next();</span>
+<span class="nc" id="L171">        Object ae1 = iter.next();</span>
+
+<span class="nc" id="L173">        Object cls0 = Model.getFacade().getType(ae0);</span>
+<span class="nc" id="L174">        Object cls1 = Model.getFacade().getType(ae1);</span>
+
+        // Get the names of the two ends. If there are none (i.e they are
+        // currently anonymous), use the ArgoUML convention of &quot;(anon)&quot; for the
+        // names
+
+<span class="nc" id="L180">        String start = Translator.localize(&quot;misc.name.anon&quot;);</span>
+<span class="nc" id="L181">        String end = Translator.localize(&quot;misc.name.anon&quot;);</span>
+
+<span class="nc bnc" id="L183" title="All 4 branches missed.">        if ((cls0 != null) &amp;&amp; (Model.getFacade().getName(cls0) != null)</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                &amp;&amp; (!(Model.getFacade().getName(cls0).equals(&quot;&quot;)))) {</span>
+<span class="nc" id="L185">            start = Model.getFacade().getName(cls0);</span>
+        }
+
+<span class="nc bnc" id="L188" title="All 4 branches missed.">        if ((cls1 != null) &amp;&amp; (Model.getFacade().getName(cls1) != null)</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                &amp;&amp; (!(Model.getFacade().getName(cls1).equals(&quot;&quot;)))) {</span>
+<span class="nc" id="L190">            end = Model.getFacade().getName(cls1);</span>
+        }
+
+        // Now create the five options
+
+<span class="nc" id="L195">        result.add(start</span>
+<span class="nc" id="L196">                + Translator.localize(&quot;critics.WizAssocComposite-option1&quot;)</span>
+                + end);
+<span class="nc" id="L198">        result.add(start</span>
+<span class="nc" id="L199">                + Translator.localize(&quot;critics.WizAssocComposite-option2&quot;)</span>
+                + end);
+
+<span class="nc" id="L202">        result.add(end</span>
+<span class="nc" id="L203">                + Translator.localize(&quot;critics.WizAssocComposite-option1&quot;)</span>
+                + start);
+<span class="nc" id="L205">        result.add(end</span>
+<span class="nc" id="L206">                + Translator.localize(&quot;critics.WizAssocComposite-option2&quot;)</span>
+                + start);
+
+<span class="nc" id="L209">        result.add(Translator.localize(&quot;critics.WizAssocComposite-option3&quot;));</span>
+
+<span class="nc" id="L211">        return result;</span>
+    }
+
+    /**
+     * Set the initial instruction string for the choice. May be called by the
+     * creator of the wizard to override the default.
+     * &lt;p&gt;
+     *
+     * @param s
+     *            The new instructions.
+     */
+    public void setInstructions(String s) {
+<span class="nc" id="L223">        instructions = s;</span>
+<span class="nc" id="L224">    }</span>
+
+    /**
+     * Create a {@link JPanel} for the given step.
+     * &lt;p&gt;
+     * We use a {@link WizStepChoice} to handle the choice selection for the
+     * user. We only create the panel once, saving it in a private field
+     * (&lt;code&gt;_step1Choice&lt;/code&gt;) for subsequent use.
+     * &lt;p&gt;
+     * &lt;em&gt;Note&lt;/em&gt;. If the association has been deleted, then we may not be
+     * able to create a list of options. Under these circumstances we also
+     * return null.
+     * &lt;p&gt;
+     *
+     * @param newStep The index of the step for which a panel is needed.
+     * @return The created {@link JPanel} or &lt;code&gt;null&lt;/code&gt; if no options
+     *         were available.
+     * @see org.argouml.cognitive.critics.Wizard
+     */
+    public JPanel makePanel(int newStep) {
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        switch (newStep) {</span>
+
+        case 1:
+
+            // First step. Create the panel if not already done and options are
+            // available. Otherwise it retains its default value of null.
+
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (step1Choice == null) {</span>
+<span class="nc" id="L253">                List&lt;String&gt; opts = buildOptions();</span>
+
+<span class="nc bnc" id="L255" title="All 2 branches missed.">                if (opts != null) {</span>
+<span class="nc" id="L256">                    step1Choice = new WizStepChoice(this, instructions, opts);</span>
+<span class="nc" id="L257">                    step1Choice.setTarget(getToDoItem());</span>
+                }
+            }
+
+<span class="nc" id="L261">            return step1Choice;</span>
+
+        default:
+        }
+
+        // Default (any other step) is to return nothing
+
+<span class="nc" id="L268">        return null;</span>
+    }
+
+    /**
+     * Take action at the completion of a step.
+     * &lt;p&gt;
+     *
+     * The guideline for ArgoUML non-modal wizards is to act immediately, not
+     * wait for the finish. This method may also be invoked when finish is
+     * triggered for any steps whose panels didn't get created.
+     * &lt;p&gt;
+     *
+     * The observation is that this seems to be trigged when there is any change
+     * on the panel (e.g choosing an option), not just when &quot;next&quot; is pressed.
+     * Coded accordingly
+     * &lt;p&gt;
+     *
+     * We allow for the association that caused the problem having by now been
+     * deleted, and hence an exception may be raised. We catch this politely.
+     * &lt;p&gt;
+     *
+     * @param oldStep
+     *            The index of the step just completed (0 for the first
+     *            information panel)
+     *
+     * @see org.argouml.cognitive.critics.Wizard
+     */
+    public void doAction(int oldStep) {
+
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        switch (oldStep) {</span>
+
+        case 1:
+
+            // Just completed the first step where we make our choices. First
+            // see if we have a choice. We always should, so print a rude
+            // message if we don't
+
+<span class="nc" id="L305">            int choice = -1;</span>
+
+<span class="nc bnc" id="L307" title="All 2 branches missed.">            if (step1Choice != null) {</span>
+<span class="nc" id="L308">                choice = step1Choice.getSelectedIndex();</span>
+            }
+
+<span class="nc bnc" id="L311" title="All 2 branches missed.">            if (choice == -1) {</span>
+<span class="nc" id="L312">                LOG.log(Level.WARNING, &quot;WizAssocComposite: nothing selected, &quot;</span>
+                        + &quot;should not get here&quot;);
+<span class="nc" id="L314">                return;</span>
+            }
+
+            // It is quite possible that the cause of the problem has by now
+            // been deleted, in which case we will throw an exception if we try
+            // to change things. Catch this tidily.
+
+            try {
+
+                // Set the appropriate aggregation on each end
+
+<span class="nc" id="L325">                Iterator iter = Model.getFacade().getConnections(</span>
+<span class="nc" id="L326">                        getTriggerAssociation()).iterator();</span>
+
+<span class="nc" id="L328">                Object ae0 = iter.next();</span>
+<span class="nc" id="L329">                Object ae1 = iter.next();</span>
+
+<span class="nc bnc" id="L331" title="All 6 branches missed.">                switch (choice) {</span>
+
+                case 0:
+
+                    // Start is a composite aggregation of end
+
+<span class="nc" id="L337">                    Model.getCoreHelper().setAggregation1(ae0,</span>
+<span class="nc" id="L338">                            Model.getAggregationKind().getComposite());</span>
+<span class="nc" id="L339">                    Model.getCoreHelper().setAggregation1(ae1,</span>
+<span class="nc" id="L340">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L341">                    break;</span>
+
+                case 1:
+
+                    // Start is a shared aggregation of end
+
+<span class="nc" id="L347">                    Model.getCoreHelper().setAggregation1(ae0,</span>
+<span class="nc" id="L348">                            Model.getAggregationKind().getAggregate());</span>
+<span class="nc" id="L349">                    Model.getCoreHelper().setAggregation1(ae1,</span>
+<span class="nc" id="L350">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L351">                    break;</span>
+
+                case 2:
+
+                    // End is a composite aggregation of start
+
+<span class="nc" id="L357">                    Model.getCoreHelper().setAggregation1(ae0,</span>
+<span class="nc" id="L358">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L359">                    Model.getCoreHelper().setAggregation1(ae1,</span>
+<span class="nc" id="L360">                            Model.getAggregationKind().getComposite());</span>
+<span class="nc" id="L361">                    break;</span>
+
+                case 3:
+
+                    // End is a shared aggregation of start
+<span class="nc" id="L366">                    Model.getCoreHelper().setAggregation1(ae0,</span>
+<span class="nc" id="L367">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L368">                    Model.getCoreHelper().setAggregation1(ae1,</span>
+<span class="nc" id="L369">                            Model.getAggregationKind().getAggregate());</span>
+<span class="nc" id="L370">                    break;</span>
+
+                case 4:
+
+                    // No aggregation
+<span class="nc" id="L375">                    Model.getCoreHelper().setAggregation1(ae0,</span>
+<span class="nc" id="L376">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L377">                    Model.getCoreHelper().setAggregation1(ae1,</span>
+<span class="nc" id="L378">                            Model.getAggregationKind().getNone());</span>
+<span class="nc" id="L379">                    break;</span>
+
+                default:
+                }
+<span class="nc" id="L383">            } catch (Exception pve) {</span>
+
+                // Someone took our association away.
+
+<span class="nc" id="L387">                LOG.log(Level.SEVERE,</span>
+                        &quot;WizAssocComposite: could not set &quot; + &quot;aggregation.&quot;,
+                        pve);
+<span class="nc" id="L390">            }</span>
+
+        default:
+        }
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * Determine if we have sufficient information to finish.
+     * &lt;p&gt;
+     * We can't finish if our parent
+     * {@link org.argouml.cognitive.critics.Wizard} can't finish.
+     * &lt;p&gt;
+     * We can finish if we're on step 0.
+     * &lt;p&gt;
+     * We can finish if we're on step 1 and have made a choice.
+     * &lt;p&gt;
+     *
+     * @return &lt;code&gt;true&lt;/code&gt; if we can finish, otherwise
+     *         &lt;code&gt;false&lt;/code&gt;.
+     * @see org.argouml.cognitive.critics.Wizard
+     */
+    @Override
+    public boolean canFinish() {
+
+        // Can't finish if our parent can't
+
+<span class="nc bnc" id="L416" title="All 2 branches missed.">        if (!super.canFinish()) {</span>
+<span class="nc" id="L417">            return false;</span>
+        }
+
+        // Can finish if it's step 0
+
+<span class="nc bnc" id="L422" title="All 2 branches missed.">        if (getStep() == 0) {</span>
+<span class="nc" id="L423">            return true;</span>
+        }
+
+        // Can finish if we're on step1 and have actually made a choice
+
+<span class="nc bnc" id="L428" title="All 4 branches missed.">        if ((getStep() == 1) &amp;&amp; (step1Choice != null)</span>
+<span class="nc bnc" id="L429" title="All 2 branches missed.">                &amp;&amp; (step1Choice.getSelectedIndex() != -1)) {</span>
+<span class="nc" id="L430">            return true;</span>
+        }
+
+        // Otherwise we can't finish
+
+<span class="nc" id="L435">        return false;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

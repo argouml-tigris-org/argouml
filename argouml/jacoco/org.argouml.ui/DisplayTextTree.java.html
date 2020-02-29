@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DisplayTextTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">DisplayTextTree.java</span></div><h1>DisplayTextTree.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JTree;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.ui.UMLTreeCellRenderer;
+
+/**
+ * This is the JTree that is the GUI component view of the UML model
+ * navigation (the explorer) and the todo list.
+ */
+public class DisplayTextTree extends JTree {
+
+<span class="nc" id="L76">    private static final Logger LOG =</span>
+<span class="nc" id="L77">        Logger.getLogger(DisplayTextTree.class.getName());</span>
+
+    /**
+     * A Map helping the tree maintain a consistent expanded paths state.
+     *
+     * &lt;pre&gt;
+     *  keys are the current TreeModel of this Tree
+     *  values are Lists of currently expanded paths.
+     * &lt;/pre&gt;
+     */
+    private Hashtable&lt;TreeModel, List&lt;TreePath&gt;&gt; expandedPathsInModel;
+
+    private boolean reexpanding;
+
+    /**
+     * This determines if stereotypes are to be shown in the explorer.
+     */
+    private boolean showStereotype;
+
+    /**
+     * Sets the label renderer, line style angled, enable tooltips,
+     * sets row height to 18 pixels.
+     */
+    public DisplayTextTree() {
+
+<span class="nc" id="L102">        super();</span>
+
+        /* MVW: We should use default font sizes as much as possible.
+         * BTW, this impacts only the width, and reduces readibility:
+         */
+//        setFont(LookAndFeelMgr.getInstance().getSmallFont());
+
+<span class="nc" id="L109">        setCellRenderer(new UMLTreeCellRenderer());</span>
+<span class="nc" id="L110">        setRootVisible(false);</span>
+<span class="nc" id="L111">        setShowsRootHandles(true);</span>
+
+        // This enables tooltips for tree; this one won't be shown:
+<span class="nc" id="L114">        setToolTipText(&quot;Tree&quot;);</span>
+
+        /* The default (16) puts the icons too close together: */
+<span class="nc" id="L117">        setRowHeight(18);</span>
+
+<span class="nc" id="L119">        expandedPathsInModel = new Hashtable&lt;TreeModel, List&lt;TreePath&gt;&gt;();</span>
+<span class="nc" id="L120">        reexpanding = false;</span>
+<span class="nc" id="L121">    }</span>
+
+    // ------------ methods that override JTree methods ---------
+
+    /**
+     * Override the default JTree implementation to display the appropriate text
+     * for any object that will be displayed in the todo list. &lt;p&gt;
+     *
+     * This is used for the Todo list as well as the Explorer list.
+     *
+     * @param value
+     *            the given object
+     * @param selected
+     *            ignored
+     * @param expanded
+     *            ignored
+     * @param leaf
+     *            ignored
+     * @param row
+     *            ignored
+     * @param hasFocus
+     *            ignored
+     *
+     * @return the value converted to text.
+     *
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object, boolean,
+     *      boolean, boolean, int, boolean)
+     */
+    public String convertValueToText(Object value, boolean selected,
+            boolean expanded, boolean leaf, int row, boolean hasFocus) {
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (value instanceof ToDoItem) {</span>
+<span class="nc" id="L153">            return ((ToDoItem) value).getHeadline();</span>
+        }
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (value instanceof ToDoList) {</span>
+            // TODO: Localize
+<span class="nc" id="L157">            return &quot;ToDoList&quot;;</span>
+        }
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(value)) {</span>
+<span class="nc" id="L161">            String name = null;</span>
+            try {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                if (Model.getFacade().isATransition(value)) {</span>
+<span class="nc" id="L164">                    name = formatTransitionLabel(value);</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                } else if (Model.getFacade().isAExtensionPoint(value)) {</span>
+<span class="nc" id="L166">                    name = formatExtensionPoint(value);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                } else if (Model.getFacade().isAComment(value)) {</span>
+<span class="nc" id="L168">                    name = (String) Model.getFacade().getBody(value);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                } else if (Model.getFacade().isATaggedValue(value)) {</span>
+<span class="nc" id="L170">                    name = formatTaggedValueLabel(value);</span>
+                } else {
+<span class="nc" id="L172">                    name = getModelElementDisplayName(value);</span>
+                }
+
+                /*
+                 * If the name is too long or multi-line (e.g. for comments)
+                 * then we reduce to the first line or 80 chars.
+                 */
+                // TODO: Localize
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                if (name != null</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                        &amp;&amp; name.indexOf(&quot;\n&quot;) &lt; 80</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                        &amp;&amp; name.indexOf(&quot;\n&quot;) &gt; -1) {</span>
+<span class="nc" id="L183">                    name = name.substring(0, name.indexOf(&quot;\n&quot;)) + &quot;...&quot;;</span>
+<span class="nc bnc" id="L184" title="All 4 branches missed.">                } else if (name != null &amp;&amp; name.length() &gt; 80) {</span>
+<span class="nc" id="L185">                    name = name.substring(0, 80) + &quot;...&quot;;</span>
+                }
+
+                // Look for stereotype
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                if (showStereotype) {</span>
+                    Collection&lt;Object&gt; stereos =
+<span class="nc" id="L191">                        Model.getFacade().getStereotypes(value);</span>
+<span class="nc" id="L192">                    name += &quot; &quot; + generateStereotype(stereos);</span>
+<span class="nc bnc" id="L193" title="All 4 branches missed.">                    if (name != null &amp;&amp; name.length() &gt; 80) {</span>
+<span class="nc" id="L194">                        name = name.substring(0, 80) + &quot;...&quot;;</span>
+                    }
+                }
+<span class="nc" id="L197">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L198">                name = Translator.localize(&quot;misc.name.deleted&quot;);</span>
+<span class="nc" id="L199">            }</span>
+
+<span class="nc" id="L201">            return name;</span>
+        }
+
+        // TODO: This duplicates code in Facade.toString(), but this version
+        // is localized, so we'll leave it for now.
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (Model.getFacade().isAElementImport(value)) {</span>
+            try {
+<span class="nc" id="L208">                Object me = Model.getFacade().getImportedElement(value);</span>
+<span class="nc" id="L209">                String typeName = Model.getFacade().getUMLClassName(me);</span>
+<span class="nc" id="L210">                String elemName = convertValueToText(me, selected,</span>
+                        expanded, leaf, row,
+                        hasFocus);
+<span class="nc" id="L213">                String alias = Model.getFacade().getAlias(value);</span>
+<span class="nc bnc" id="L214" title="All 4 branches missed.">                if (alias != null &amp;&amp; alias.length() &gt; 0) {</span>
+<span class="nc" id="L215">                    Object[] args = {typeName, elemName, alias};</span>
+<span class="nc" id="L216">                    return Translator.localize(</span>
+                            &quot;misc.name.element-import.alias&quot;, args);
+                } else {
+<span class="nc" id="L219">                    Object[] args = {typeName, elemName};</span>
+<span class="nc" id="L220">                    return Translator.localize(</span>
+                            &quot;misc.name.element-import&quot;, args);
+                }
+<span class="nc" id="L223">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L224">                return Translator.localize(&quot;misc.name.deleted&quot;);</span>
+            }
+        }
+
+        // Use default formatting for any other type of UML element
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        if (Model.getFacade().isAUMLElement(value)) {</span>
+            try {
+<span class="nc" id="L231">                return Model.getFacade().toString(value);</span>
+<span class="nc" id="L232">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L233">                return Translator.localize(&quot;misc.name.deleted&quot;);</span>
+            }
+        }
+
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (Model.getFacade().isAAppliedProfileElement(value)) {</span>
+<span class="nc" id="L238">            return Model.getFacade().getName(value);</span>
+        }
+
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (value instanceof ArgoDiagram) {</span>
+<span class="nc" id="L242">            return ((ArgoDiagram) value).getName();</span>
+        }
+
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (value != null) {</span>
+<span class="nc" id="L246">            return value.toString();</span>
+        }
+<span class="nc" id="L248">        return &quot;-&quot;;</span>
+    }
+
+    private String formatExtensionPoint(Object value) {
+<span class="nc" id="L252">        NotationSettings settings = getNotationSettings();</span>
+        NotationProvider notationProvider = NotationProviderFactory2
+<span class="nc" id="L254">                .getInstance().getNotationProvider(</span>
+                        NotationProviderFactory2.TYPE_EXTENSION_POINT, value,
+<span class="nc" id="L256">                        Notation.findNotation(settings.getNotationLanguage()));</span>
+<span class="nc" id="L257">        String name = notationProvider.toString(value, settings);</span>
+<span class="nc" id="L258">        return name;</span>
+    }
+
+    private static NotationSettings getNotationSettings() {
+<span class="nc" id="L262">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+        NotationSettings settings;
+<span class="nc bnc" id="L264" title="All 2 branches missed.">        if (p != null) {</span>
+<span class="nc" id="L265">            settings = p.getProjectSettings().getNotationSettings();</span>
+        } else {
+<span class="nc" id="L267">            settings = NotationSettings.getDefaultSettings();</span>
+        }
+<span class="nc" id="L269">        return settings;</span>
+    }
+
+    private String formatTaggedValueLabel(Object value) {
+        String name;
+<span class="nc" id="L274">        String tagName = Model.getFacade().getTag(value);</span>
+<span class="nc bnc" id="L275" title="All 4 branches missed.">        if (tagName == null || tagName.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L276">            name = MessageFormat.format(</span>
+<span class="nc" id="L277">                    Translator.localize(&quot;misc.unnamed&quot;),</span>
+                    new Object[] {
+<span class="nc" id="L279">                        Model.getFacade().getUMLClassName(value)</span>
+                    });
+        }
+        Collection referenceValues =
+<span class="nc" id="L283">            Model.getFacade().getReferenceValue(value);</span>
+        Collection dataValues =
+<span class="nc" id="L285">            Model.getFacade().getDataValue(value);</span>
+        Iterator i;
+<span class="nc bnc" id="L287" title="All 2 branches missed.">        if (referenceValues.size() &gt; 0) {</span>
+<span class="nc" id="L288">            i = referenceValues.iterator();</span>
+        } else {
+<span class="nc" id="L290">            i = dataValues.iterator();</span>
+        }
+<span class="nc" id="L292">        String theValue = &quot;&quot;;</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        if (i.hasNext()) {</span>
+<span class="nc" id="L294">            theValue = i.next().toString();</span>
+        }
+<span class="nc bnc" id="L296" title="All 2 branches missed.">        if (i.hasNext()) {</span>
+<span class="nc" id="L297">            theValue += &quot; , ...&quot;;</span>
+        }
+<span class="nc" id="L299">        name = (tagName + &quot; = &quot; + theValue);</span>
+<span class="nc" id="L300">        return name;</span>
+    }
+
+    /**
+     * Generate the text to represent a Transition.
+     *
+     * @param value a Transition UML object
+     * @return a representation of the Transition with trigger, guard
+     * and effect
+     */
+    private String formatTransitionLabel(Object value) {
+        String name;
+<span class="nc" id="L312">        name = Model.getFacade().getName(value);</span>
+<span class="nc" id="L313">        NotationSettings settings = getNotationSettings();</span>
+        NotationProvider notationProvider =
+<span class="nc" id="L315">            NotationProviderFactory2.getInstance()</span>
+<span class="nc" id="L316">                .getNotationProvider(</span>
+                        NotationProviderFactory2.TYPE_TRANSITION,
+                        value,
+<span class="nc" id="L319">                        Notation.findNotation(settings.getNotationLanguage()));</span>
+<span class="nc" id="L320">        String signature = notationProvider.toString(value,</span>
+<span class="nc" id="L321">                NotationSettings.getDefaultSettings());</span>
+<span class="nc bnc" id="L322" title="All 4 branches missed.">        if (name != null &amp;&amp; name.length() &gt; 0) {</span>
+<span class="nc" id="L323">            name += &quot;: &quot; + signature;</span>
+        } else {
+<span class="nc" id="L325">            name = signature;</span>
+        }
+<span class="nc" id="L327">        return name;</span>
+    }
+
+    /**
+     * @param st a collection of stereotypes
+     * @return a string representing the given stereotype(s)
+     */
+    public static String generateStereotype(Collection&lt;Object&gt; st) {
+<span class="nc" id="L335">        return NotationUtilityUml.generateStereotype(st,</span>
+<span class="nc" id="L336">                getNotationSettings().isUseGuillemets());</span>
+    }
+
+    /**
+     * Create a string representing the given modelelement. Normally this is
+     * just the name, but if the element is not named, something like
+     * &quot;anonymous Classifier&quot; is returned with i18n applied.
+     *
+     * @param modelElement the given element
+     * @return a recognizable name for the element
+     * (guaranteed with length &gt; 0)
+     */
+    public static final String getModelElementDisplayName(Object modelElement) {
+<span class="nc" id="L349">        String name = &quot;&quot;;</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">        if (Model.getFacade().isANamedElement(modelElement)) {</span>
+<span class="nc" id="L351">            name = Model.getFacade().getName(modelElement);</span>
+<span class="nc bnc" id="L352" title="All 4 branches missed.">            if (name == null || name.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L353">                name = MessageFormat.format(</span>
+<span class="nc" id="L354">                        Translator.localize(&quot;misc.unnamed&quot;),</span>
+                        new Object[] {
+<span class="nc" id="L356">                            Model.getFacade().getUMLClassName(modelElement)</span>
+                        }
+                );
+            }
+        } else {
+<span class="nc" id="L361">            name = Model.getFacade().getUMLClassName(modelElement);</span>
+        }
+<span class="nc" id="L363">        return name;</span>
+    }
+
+    /**
+     * Tree Model Expansion notification.&lt;p&gt;
+     *
+     * @param path
+     *            a Tree node insertion event
+     */
+    public void fireTreeExpanded(TreePath path) {
+
+<span class="nc" id="L374">        super.fireTreeExpanded(path);</span>
+
+<span class="nc" id="L376">        LOG.log(Level.FINE, &quot;fireTreeExpanded&quot;);</span>
+<span class="nc bnc" id="L377" title="All 4 branches missed.">        if (reexpanding || path == null) {</span>
+<span class="nc" id="L378">            return;</span>
+        }
+<span class="nc" id="L380">        List&lt;TreePath&gt; expanded = getExpandedPaths();</span>
+<span class="nc" id="L381">        expanded.remove(path);</span>
+<span class="nc" id="L382">        expanded.add(path);</span>
+<span class="nc" id="L383">    }</span>
+
+    /*
+     * @see javax.swing.JTree#fireTreeCollapsed(javax.swing.tree.TreePath)
+     */
+    public void fireTreeCollapsed(TreePath path) {
+
+<span class="nc" id="L390">        super.fireTreeCollapsed(path);</span>
+
+<span class="nc" id="L392">        LOG.log(Level.FINE, &quot;fireTreeCollapsed&quot;);</span>
+<span class="nc bnc" id="L393" title="All 4 branches missed.">        if (path == null || expandedPathsInModel == null) {</span>
+<span class="nc" id="L394">            return;</span>
+        }
+<span class="nc" id="L396">        List&lt;TreePath&gt; expanded = getExpandedPaths();</span>
+<span class="nc" id="L397">        expanded.remove(path);</span>
+<span class="nc" id="L398">    }</span>
+
+    /*
+     * @see javax.swing.JTree#setModel(javax.swing.tree.TreeModel)
+     */
+    public void setModel(TreeModel newModel) {
+
+<span class="nc" id="L405">        LOG.log(Level.FINE, &quot;setModel&quot;);</span>
+<span class="nc" id="L406">        Object r = newModel.getRoot();</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">        if (r != null) {</span>
+<span class="nc" id="L408">            super.setModel(newModel);</span>
+        }
+<span class="nc" id="L410">        reexpand();</span>
+<span class="nc" id="L411">    }</span>
+
+    // ------------- other methods ------------------
+
+    /**
+     * Called in reexpand().
+     *
+     * @return a List containing all expanded paths
+     */
+    protected List&lt;TreePath&gt; getExpandedPaths() {
+
+<span class="nc" id="L422">        LOG.log(Level.FINE, &quot;getExpandedPaths&quot;);</span>
+<span class="nc" id="L423">        TreeModel tm = getModel();</span>
+<span class="nc" id="L424">        List&lt;TreePath&gt; res = expandedPathsInModel.get(tm);</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        if (res == null) {</span>
+<span class="nc" id="L426">            res = new ArrayList&lt;TreePath&gt;();</span>
+<span class="nc" id="L427">            expandedPathsInModel.put(tm, res);</span>
+        }
+<span class="nc" id="L429">        return res;</span>
+    }
+
+    /**
+     * We re-expand the ones that were open before to maintain the same viewable
+     * tree.
+     *
+     * called by doForceUpdate(), setModel()
+     */
+    private void reexpand() {
+
+<span class="nc" id="L440">        LOG.log(Level.FINE, &quot;reexpand&quot;);</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">        if (expandedPathsInModel == null) {</span>
+<span class="nc" id="L442">            return;</span>
+        }
+
+<span class="nc" id="L445">        reexpanding = true;</span>
+
+<span class="nc bnc" id="L447" title="All 2 branches missed.">        for (TreePath path : getExpandedPaths()) {</span>
+<span class="nc" id="L448">            expandPath(path);</span>
+<span class="nc" id="L449">        }</span>
+<span class="nc" id="L450">        reexpanding = false;</span>
+<span class="nc" id="L451">    }</span>
+
+    /**
+     * @param show true if stereotypes have to be shown
+     */
+    protected void setShowStereotype(boolean show) {
+<span class="nc" id="L457">        this.showStereotype = show;</span>
+<span class="nc" id="L458">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 949560309817566838L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

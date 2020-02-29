@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionNewEvent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui.behavior.state_machines</a> &gt; <span class="el_source">ActionNewEvent.java</span></div><h1>ActionNewEvent.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+// $header$
+package org.argouml.uml.ui.behavior.state_machines;
+
+import java.awt.event.ActionEvent;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+
+/**
+ * Abstract action to create new events.
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public abstract class ActionNewEvent extends AbstractActionNewModelElement {
+
+    /**
+     * The constant defining the role the event to be created plays for its
+     * parent. For example, if one wishes to create a trigger event for a
+     * transition, this is filled with &quot;trigger&quot;. The values are defined in the
+     * interface Roles
+     */
+    public static final String ROLE = &quot;role&quot;;
+
+    /**
+     *
+     *
+     */
+    public static interface Roles {
+
+        /**
+         * The trigger for some transition
+         */
+        public static final  String TRIGGER = &quot;trigger&quot;;
+
+        /**
+         * The deferrable event key
+         */
+        public static final String DEFERRABLE_EVENT = &quot;deferrable-event&quot;;
+
+    }
+    /**
+     * Constructor for ActionNewEvent.
+     */
+    protected ActionNewEvent() {
+<span class="nc" id="L85">        super();</span>
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * Implementors should create a concrete event like an instance of
+     * SignalEvent in this method.
+     * @param ns the namespace
+     * @return Object
+     */
+    protected abstract Object createEvent(Object ns);
+
+    /**
+     * Creates the event, sets its role and namespace,
+     * and navigates towards it.
+     *
+     * {@inheritDoc}
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L103">        super.actionPerformed(e);</span>
+<span class="nc" id="L104">        Object target = getTarget();</span>
+        Object model =
+<span class="nc" id="L106">        	ProjectManager.getManager().getCurrentProject().getModel();</span>
+<span class="nc" id="L107">        Object ns = Model.getStateMachinesHelper()</span>
+<span class="nc" id="L108">        		.findNamespaceForEvent(target, model);</span>
+<span class="nc" id="L109">        Object event = createEvent(ns);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (getValue(ROLE).equals(Roles.TRIGGER)) {</span>
+<span class="nc" id="L111">            Model.getStateMachinesHelper()</span>
+<span class="nc" id="L112">                        .setEventAsTrigger(target, event);</span>
+        }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (getValue(ROLE).equals(Roles.DEFERRABLE_EVENT)) {</span>
+<span class="nc" id="L115">            Model.getStateMachinesHelper()</span>
+<span class="nc" id="L116">                        .addDeferrableEvent(target, event);</span>
+        }
+<span class="nc" id="L118">        TargetManager.getInstance().setTarget(event);</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * @param role the role the event plays
+     * @param t the transition or state to get the event for
+     * @return the event
+     */
+    public static Object getAction(String role, Object t) {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (role.equals(Roles.TRIGGER)) {</span>
+<span class="nc" id="L128">            return Model.getFacade().getTrigger(t);</span>
+        }
+<span class="nc" id="L130">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TreeModelComposite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">TreeModelComposite.java</span></div><h1>TreeModelComposite.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+/**
+ * This class is the TreeModel for the navigator and todo list panels.&lt;p&gt;
+ *
+ * It is called &lt;strong&gt;Composite&lt;/strong&gt; because there are a set of rules
+ * that determine how to link parents to children in the tree. Those
+ * rules can now be found in PerspectiveSupport.&lt;p&gt;
+ */
+public class TreeModelComposite extends TreeModelSupport implements TreeModel {
+
+<span class="nc" id="L56">    private static final Logger LOG =</span>
+<span class="nc" id="L57">        Logger.getLogger(TreeModelComposite.class.getName());</span>
+
+    /** The root of the model. */
+    private Object root;
+
+    /**
+     * The constructor.
+     *
+     * @param name the name that will be localized
+     */
+    public TreeModelComposite(String name) {
+<span class="nc" id="L68">        super(name);</span>
+<span class="nc" id="L69">    }</span>
+
+
+    /*
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
+    public Object getRoot() {
+<span class="nc" id="L76">        return root;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
+    public Object getChild(Object parent, int index) {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        for (TreeModel tm : getGoRuleList()) {</span>
+<span class="nc" id="L84">            int childCount = tm.getChildCount(parent);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (index &lt; childCount) {</span>
+<span class="nc" id="L86">                return tm.getChild(parent, index);</span>
+            }
+<span class="nc" id="L88">            index -= childCount;</span>
+<span class="nc" id="L89">        }</span>
+<span class="nc" id="L90">        return null;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
+    public int getChildCount(Object parent) {
+<span class="nc" id="L97">        int childCount = 0;</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        for (TreeModel tm : getGoRuleList()) {</span>
+<span class="nc" id="L99">            childCount += tm.getChildCount(parent);</span>
+<span class="nc" id="L100">        }</span>
+<span class="nc" id="L101">        return childCount;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
+     * java.lang.Object)
+     */
+    public int getIndexOfChild(Object parent, Object child) {
+<span class="nc" id="L109">        int childCount = 0;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (TreeModel tm : getGoRuleList()) {</span>
+<span class="nc" id="L111">            int childIndex = tm.getIndexOfChild(parent, child);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (childIndex != -1) {</span>
+<span class="nc" id="L113">                return childIndex + childCount;</span>
+            }
+<span class="nc" id="L115">            childCount += tm.getChildCount(parent);</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">        LOG.log(Level.FINE, &quot;child not found!&quot;);</span>
+
+        //The child is sometimes not found when the tree is being updated
+<span class="nc" id="L120">        return -1;</span>
+    }
+
+    /*
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
+    public boolean isLeaf(Object node) {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (TreeModel tm : getGoRuleList()) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (!tm.isLeaf(node)) {</span>
+<span class="nc" id="L129">                return false;</span>
+            }
+<span class="nc" id="L131">        }</span>
+<span class="nc" id="L132">        return true;</span>
+    }
+
+
+    /*
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath, java.lang.Object)
+     */
+    public void valueForPathChanged(TreePath path, Object newValue) {
+        //  Empty implementation - not used.
+<span class="nc" id="L141">    }</span>
+
+
+    /**
+     * @param r the root of the model
+     */
+    public void setRoot(Object r) {
+<span class="nc" id="L148">        root = r;</span>
+<span class="nc" id="L149">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

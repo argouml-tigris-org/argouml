@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StylePanelFigText.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">StylePanelFigText.java</span></div><h1>StylePanelFigText.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.Color;
+import java.awt.event.ItemEvent;
+
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+
+import org.argouml.i18n.Translator;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.ui.ColorRenderer;
+
+/**
+ * StylePanel class which provides additional parameters for changing Text
+ * elements provided by GEF.
+ *  TODO: i18n
+ */
+public class StylePanelFigText extends StylePanelFig {
+
+    /**
+     * TODO: These can not simply be translated...
+     */
+<span class="nc" id="L63">    private static final String[] FONT_NAMES = {</span>
+	&quot;dialog&quot;, &quot;serif&quot;, &quot;sanserif&quot;,
+	&quot;monospaced&quot;,
+    };
+
+<span class="nc" id="L68">    private static final Integer[] COMMON_SIZES = {</span>
+<span class="nc" id="L69">	Integer.valueOf(8), Integer.valueOf(9),</span>
+<span class="nc" id="L70">	Integer.valueOf(10), Integer.valueOf(12), </span>
+<span class="nc" id="L71">        Integer.valueOf(16), Integer.valueOf(18),</span>
+<span class="nc" id="L72">	Integer.valueOf(24), Integer.valueOf(36), </span>
+<span class="nc" id="L73">        Integer.valueOf(48), Integer.valueOf(72),</span>
+<span class="nc" id="L74">	Integer.valueOf(96),</span>
+    };
+
+<span class="nc" id="L77">    private static final String[] STYLES = {</span>
+	&quot;Plain&quot;, &quot;Bold&quot;, &quot;Italic&quot;,
+	&quot;Bold-Italic&quot;,
+    };
+
+<span class="nc" id="L82">    private static final String[] JUSTIFIES = {</span>
+	&quot;Left&quot;, &quot;Right&quot;, &quot;Center&quot;,
+    };
+
+<span class="nc" id="L86">    private JLabel fontLabel = new JLabel(</span>
+<span class="nc" id="L87">            Translator.localize(&quot;label.stylepane.font&quot;) + &quot;: &quot;);</span>
+
+<span class="nc" id="L89">    private JComboBox fontField = new JComboBox(FONT_NAMES);</span>
+
+<span class="nc" id="L91">    private JLabel sizeLabel = new JLabel(</span>
+<span class="nc" id="L92">            Translator.localize(&quot;label.stylepane.size&quot;) + &quot;: &quot;);</span>
+
+<span class="nc" id="L94">    private JComboBox sizeField = new JComboBox(COMMON_SIZES);</span>
+
+<span class="nc" id="L96">    private JLabel styleLabel = new JLabel(</span>
+<span class="nc" id="L97">            Translator.localize(&quot;label.stylepane.style&quot;) + &quot;: &quot;);</span>
+
+<span class="nc" id="L99">    private JComboBox styleField = new JComboBox(STYLES);</span>
+
+<span class="nc" id="L101">    private JLabel justLabel = new JLabel(</span>
+<span class="nc" id="L102">            Translator.localize(&quot;label.stylepane.justify&quot;) + &quot;: &quot;);</span>
+
+<span class="nc" id="L104">    private JComboBox justField = new JComboBox(JUSTIFIES);</span>
+
+<span class="nc" id="L106">    private JLabel textColorLabel = new JLabel(</span>
+<span class="nc" id="L107">            Translator.localize(&quot;label.stylepane.text-color&quot;) + &quot;: &quot;);</span>
+
+<span class="nc" id="L109">    private JComboBox textColorField = new JComboBox();</span>
+
+    /**
+     * Construct default style panel for text elements.
+     */
+    public StylePanelFigText() {
+<span class="nc" id="L115">        super();</span>
+
+<span class="nc" id="L117">        fontField.addItemListener(this);</span>
+<span class="nc" id="L118">        sizeField.addItemListener(this);</span>
+<span class="nc" id="L119">        styleField.addItemListener(this);</span>
+<span class="nc" id="L120">        justField.addItemListener(this);</span>
+<span class="nc" id="L121">        textColorField.addItemListener(this);</span>
+
+<span class="nc" id="L123">        textColorField.setRenderer(new ColorRenderer());</span>
+
+<span class="nc" id="L125">        textColorLabel.setLabelFor(textColorField);</span>
+<span class="nc" id="L126">        add(textColorLabel);</span>
+<span class="nc" id="L127">        add(textColorField);</span>
+
+<span class="nc" id="L129">        addSeperator();</span>
+
+<span class="nc" id="L131">        fontLabel.setLabelFor(fontField);</span>
+<span class="nc" id="L132">        add(fontLabel);</span>
+<span class="nc" id="L133">        add(fontField);</span>
+
+<span class="nc" id="L135">        sizeLabel.setLabelFor(sizeField);</span>
+<span class="nc" id="L136">        add(sizeLabel);</span>
+<span class="nc" id="L137">        add(sizeField);</span>
+
+<span class="nc" id="L139">        styleLabel.setLabelFor(styleField);</span>
+<span class="nc" id="L140">        add(styleLabel);</span>
+<span class="nc" id="L141">        add(styleField);</span>
+
+<span class="nc" id="L143">        justLabel.setLabelFor(justField);</span>
+<span class="nc" id="L144">        add(justLabel);</span>
+<span class="nc" id="L145">        add(justField);</span>
+
+<span class="nc" id="L147">        initChoices2();</span>
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * Second part of the default style panel construction.
+     */
+    protected void initChoices2() {
+<span class="nc" id="L154">        textColorField.addItem(Color.black);</span>
+<span class="nc" id="L155">        textColorField.addItem(Color.white);</span>
+<span class="nc" id="L156">        textColorField.addItem(Color.gray);</span>
+<span class="nc" id="L157">        textColorField.addItem(Color.lightGray);</span>
+<span class="nc" id="L158">        textColorField.addItem(Color.darkGray);</span>
+<span class="nc" id="L159">        textColorField.addItem(Color.red);</span>
+<span class="nc" id="L160">        textColorField.addItem(Color.blue);</span>
+<span class="nc" id="L161">        textColorField.addItem(Color.green);</span>
+<span class="nc" id="L162">        textColorField.addItem(Color.orange);</span>
+<span class="nc" id="L163">        textColorField.addItem(Color.pink);</span>
+<span class="nc" id="L164">        textColorField.addItem(getCustomItemName());</span>
+
+<span class="nc" id="L166">    }</span>
+
+    /**
+     * Refresh the style panel when the Fig has been altered.
+     *
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (TargetManager.getInstance().getTargets().size() &gt; 1) {</span>
+            // See issue 6109 - if we have multiple targets this method
+            // can result in a feedback problem where selecting a target
+            // changes the selection colour in the combo and as a result
+            // that trigger a change of colour of all selected Figs
+<span class="nc" id="L179">            return;</span>
+        }
+<span class="nc" id="L181">        super.refresh();</span>
+<span class="nc" id="L182">        FigText ft = (FigText) getPanelTarget();</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        if (ft == null) {</span>
+<span class="nc" id="L184">            return;</span>
+        }
+<span class="nc" id="L186">        String fontName = ft.getFontFamily().toLowerCase();</span>
+<span class="nc" id="L187">        int size = ft.getFontSize();</span>
+<span class="nc" id="L188">        String styleName = STYLES[0];</span>
+
+<span class="nc" id="L190">        fontField.setSelectedItem(fontName);</span>
+<span class="nc" id="L191">        sizeField.setSelectedItem(Integer.valueOf(size));</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (ft.getBold()) {</span>
+<span class="nc" id="L193">            styleName = STYLES[1];</span>
+        }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (ft.getItalic()) {</span>
+<span class="nc" id="L196">            styleName = STYLES[2];</span>
+        }
+<span class="nc bnc" id="L198" title="All 4 branches missed.">        if (ft.getBold() &amp;&amp; ft.getItalic()) {</span>
+<span class="nc" id="L199">            styleName = STYLES[3];</span>
+        }
+<span class="nc" id="L201">        styleField.setSelectedItem(styleName);</span>
+
+<span class="nc" id="L203">        String justName = JUSTIFIES[0];</span>
+<span class="nc" id="L204">        int justCode = ft.getJustification();</span>
+<span class="nc bnc" id="L205" title="All 4 branches missed.">        if (justCode &gt;= 0 &amp;&amp; justCode &lt;= JUSTIFIES.length) {</span>
+<span class="nc" id="L206">            justName = JUSTIFIES[justCode];</span>
+        }
+<span class="nc" id="L208">        justField.setSelectedItem(justName);</span>
+
+<span class="nc" id="L210">        Color c = ft.getTextColor();</span>
+<span class="nc" id="L211">        textColorField.setSelectedItem(c);</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">        if (c != null &amp;&amp; !textColorField.getSelectedItem().equals(c)) {</span>
+<span class="nc" id="L213">            textColorField.insertItemAt(c, textColorField.getItemCount() - 1);</span>
+<span class="nc" id="L214">            textColorField.setSelectedItem(c);</span>
+        }
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        if (ft.isFilled()) {</span>
+<span class="nc" id="L218">            Color fc = ft.getFillColor();</span>
+<span class="nc" id="L219">            getFillField().setSelectedItem(fc);</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">            if (fc != null &amp;&amp; !getFillField().getSelectedItem().equals(fc)) {</span>
+<span class="nc" id="L221">                getFillField().insertItemAt(fc,</span>
+<span class="nc" id="L222">                                            getFillField().getItemCount() - 1);</span>
+<span class="nc" id="L223">                getFillField().setSelectedItem(fc);</span>
+            }
+<span class="nc" id="L225">        } else {</span>
+<span class="nc" id="L226">            getFillField().setSelectedIndex(0);</span>
+        }
+<span class="nc" id="L228">    }</span>
+
+    /**
+     * Set the font of the text element to the selected value.
+     */
+    protected void setTargetFont() {
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (getPanelTarget() == null) {</span>
+<span class="nc" id="L235">            return;</span>
+        }
+<span class="nc" id="L237">        String fontStr = (String) fontField.getSelectedItem();</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (fontStr.length() == 0) {</span>
+<span class="nc" id="L239">            return;</span>
+        }
+<span class="nc" id="L241">        ((FigText) getPanelTarget()).setFontFamily(fontStr);</span>
+<span class="nc" id="L242">        getPanelTarget().endTrans();</span>
+<span class="nc" id="L243">    }</span>
+
+    /**
+     * Change font size of the text element according to the selected value.
+     */
+    protected void setTargetSize() {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (getPanelTarget() == null) {</span>
+<span class="nc" id="L250">            return;</span>
+        }
+<span class="nc" id="L252">        Integer size = (Integer) sizeField.getSelectedItem();</span>
+<span class="nc" id="L253">        ((FigText) getPanelTarget()).setFontSize(size.intValue());</span>
+<span class="nc" id="L254">        getPanelTarget().endTrans();</span>
+<span class="nc" id="L255">    }</span>
+
+    /**
+     * Change style of the text element (bold/italic) according to the selected
+     * value.
+     */
+    protected void setTargetStyle() {
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (getPanelTarget() == null) {</span>
+<span class="nc" id="L263">            return;</span>
+        }
+<span class="nc" id="L265">        String styleStr = (String) styleField.getSelectedItem();</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (styleStr == null) {</span>
+<span class="nc" id="L267">            return;</span>
+        }
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        boolean bold = (styleStr.indexOf(&quot;Bold&quot;) != -1);</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        boolean italic = (styleStr.indexOf(&quot;Italic&quot;) != -1);</span>
+<span class="nc" id="L271">        ((FigText) getPanelTarget()).setBold(bold);</span>
+<span class="nc" id="L272">        ((FigText) getPanelTarget()).setItalic(italic);</span>
+<span class="nc" id="L273">        getPanelTarget().endTrans();</span>
+<span class="nc" id="L274">    }</span>
+
+    /**
+     * Change the justification of the text according to the selected value.
+     */
+    protected void setTargetJustification() {
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (getPanelTarget() == null) {</span>
+<span class="nc" id="L281">            return;</span>
+        }
+<span class="nc" id="L283">        String justStr = (String) justField.getSelectedItem();</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (justStr == null) {</span>
+<span class="nc" id="L285">            return;</span>
+        }
+<span class="nc" id="L287">        ((FigText) getPanelTarget()).setJustificationByName(justStr);</span>
+<span class="nc" id="L288">        getPanelTarget().endTrans();</span>
+<span class="nc" id="L289">    }</span>
+
+
+
+    /**
+     * Change the color of the text element according to the selected value.
+     */
+    protected void setTargetTextColor() {
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (getPanelTarget() == null) {</span>
+<span class="nc" id="L298">            return;</span>
+        }
+<span class="nc" id="L300">        Object c = textColorField.getSelectedItem();</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (c instanceof Color) {</span>
+<span class="nc" id="L302">            ((FigText) getPanelTarget()).setTextColor((Color) c);</span>
+        }
+<span class="nc" id="L304">        getPanelTarget().endTrans();</span>
+<span class="nc" id="L305">    }</span>
+
+    /*
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+<span class="nc" id="L311">        Object src = e.getSource();</span>
+<span class="nc" id="L312">        Fig target = getPanelTarget();</span>
+<span class="nc bnc" id="L313" title="All 4 branches missed.">        if (e.getStateChange() == ItemEvent.SELECTED</span>
+                &amp;&amp; target instanceof FigText) {
+<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (src == fontField) {</span>
+<span class="nc" id="L316">                setTargetFont();</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">            } else if (src == sizeField) {</span>
+<span class="nc" id="L318">                setTargetSize();</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">            } else if (src == styleField) {</span>
+<span class="nc" id="L320">                setTargetStyle();</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">            } else if (src == justField) {</span>
+<span class="nc" id="L322">                setTargetJustification();</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">            } else if (src == textColorField) {</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">                if (e.getItem() == getCustomItemName()) {</span>
+<span class="nc" id="L325">                    handleCustomColor(textColorField, </span>
+                            &quot;label.stylepane.custom-text-color&quot;,
+<span class="nc" id="L327">                            ((FigText) target).getTextColor());</span>
+                }
+<span class="nc" id="L329">                setTargetTextColor();</span>
+            } else {
+<span class="nc" id="L331">                super.itemStateChanged(e);</span>
+            }
+        }
+<span class="nc" id="L334">    }</span>
+
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2019248527481196634L;
+} /* end class StylePanelFigText */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StringNamespace.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.util.namespace</a> &gt; <span class="el_source">StringNamespace.java</span></div><h1>StringNamespace.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.util.namespace;
+
+import java.util.Iterator;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * A StringNamespace is a string based namespace (StringNamespaceElement)
+ * object. It faciliates creation of these objects via a number of helper
+ * methods.
+ *
+ * @author mkl
+ */
+public class StringNamespace implements Namespace, Cloneable {
+
+<span class="fc" id="L55">    private static final Logger LOG =</span>
+<span class="fc" id="L56">        Logger.getLogger(StringNamespace.class.getName());</span>
+
+<span class="fc" id="L58">    private Stack ns = new Stack();</span>
+
+<span class="fc" id="L60">    private String token = JAVA_NS_TOKEN;</span>
+
+    /**
+     * Constructor.
+     *
+     * The empty namespace with java token by default.
+     */
+<span class="fc" id="L67">    public StringNamespace() {</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * empty namespace with given default token.
+     *
+     * @param theToken
+     *            the scope seperator to use
+     */
+    public StringNamespace(String theToken) {
+<span class="fc" id="L77">        this();</span>
+<span class="fc" id="L78">        this.token = theToken;</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * construct a namespace from an array of strings with default scope token.
+     *
+     * @param elements
+     *            an array of strings which represent the namespace.
+     */
+    public StringNamespace(String[] elements) {
+<span class="nc" id="L88">        this(elements, JAVA_NS_TOKEN);</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * construct a namespace from strings with given scope token.
+     *
+     * @param elements
+     *            an array of strings which represent the namespace.
+     * @param theToken
+     *            scope token to use
+     */
+    public StringNamespace(String[] elements, String theToken) {
+<span class="fc" id="L100">        this(theToken);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="fc" id="L102">            pushNamespaceElement(new StringNamespaceElement(elements[i]));</span>
+        }
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Construct a namespace from NamespaceElements with given scope token.
+     *
+     * @param elements
+     *            array of NamespaceElements
+     * @param theToken
+     *            scope token
+     */
+    public StringNamespace(NamespaceElement[] elements, String theToken) {
+<span class="nc" id="L115">        this(theToken);</span>
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="nc" id="L118">            pushNamespaceElement(new StringNamespaceElement(elements[i]</span>
+<span class="nc" id="L119">                    .toString()));</span>
+        }
+<span class="nc" id="L121">    }</span>
+
+    /**
+     * Construct a namespace from NamespaceElements with default scope token.
+     *
+     * @param elements
+     *            array of NamespaceElements
+     */
+    public StringNamespace(NamespaceElement[] elements) {
+<span class="nc" id="L130">        this(elements, JAVA_NS_TOKEN);</span>
+<span class="nc" id="L131">    }</span>
+
+    /*
+     * @see Namespace#pushNamespaceElement(NamespaceElement)
+     */
+    public void pushNamespaceElement(NamespaceElement element) {
+<span class="fc" id="L137">        ns.push(element);</span>
+<span class="fc" id="L138">    }</span>
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#peekNamespaceElement()
+     */
+    public NamespaceElement peekNamespaceElement() {
+<span class="fc" id="L144">        return (NamespaceElement) ns.peek();</span>
+    }
+
+    /**
+     * Store the next namespace element.
+     *
+     * @see org.argouml.uml.util.namespace.Namespace#popNamespaceElement()
+     * @param element The element to store.
+     */
+    public void pushNamespaceElement(String element) {
+<span class="fc" id="L154">        ns.push(new StringNamespaceElement(element));</span>
+<span class="fc" id="L155">    }</span>
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#popNamespaceElement()
+     */
+    public NamespaceElement popNamespaceElement() {
+<span class="fc" id="L161">        return (NamespaceElement) ns.pop();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#getBaseNamespace()
+     */
+    public Namespace getBaseNamespace() {
+<span class="nc" id="L168">        StringNamespace result = null;</span>
+        try {
+<span class="nc" id="L170">            result = (StringNamespace) this.clone();</span>
+<span class="nc" id="L171">        } catch (CloneNotSupportedException e) {</span>
+<span class="nc" id="L172">            LOG.log(Level.FINE, &quot;&quot;, e);</span>
+<span class="nc" id="L173">            return null;</span>
+<span class="nc" id="L174">        }</span>
+<span class="nc" id="L175">        result.popNamespaceElement();</span>
+<span class="nc" id="L176">        return result;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#getCommonNamespace(
+     *         org.argouml.uml.util.namespace.Namespace)
+     */
+    public Namespace getCommonNamespace(Namespace namespace) {
+<span class="fc" id="L184">        Iterator i = iterator();</span>
+<span class="fc" id="L185">        Iterator j = namespace.iterator();</span>
+<span class="fc" id="L186">        StringNamespace result = new StringNamespace(token);</span>
+
+<span class="pc bpc" id="L188" title="1 of 4 branches missed.">        for (; i.hasNext() &amp;&amp; j.hasNext();) {</span>
+<span class="fc" id="L189">            NamespaceElement elem1 = (NamespaceElement) i.next();</span>
+<span class="fc" id="L190">            NamespaceElement elem2 = (NamespaceElement) j.next();</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">            if (elem1.toString().equals(elem2.toString())) {</span>
+<span class="fc" id="L192">                result.pushNamespaceElement(elem1);</span>
+            }
+<span class="fc" id="L194">        }</span>
+
+<span class="fc" id="L196">        return result;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#iterator()
+     */
+    public Iterator iterator() {
+<span class="fc" id="L203">        return ns.iterator();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#isEmpty()
+     */
+    public boolean isEmpty() {
+<span class="fc" id="L210">        return ns.isEmpty();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#setDefaultScopeToken(java.lang.String)
+     */
+    public void setDefaultScopeToken(String theToken) {
+<span class="nc" id="L217">        this.token = theToken;</span>
+<span class="nc" id="L218">    }</span>
+
+    /**
+     * parse a fully qualified namespace to create a Namespace object.
+     *
+     * @param fqn
+     *            string representation of namespace
+     * @param token
+     *            the token of the namespace
+     * @return a namespace object
+     */
+    public static Namespace parse(String fqn, String token) {
+
+<span class="fc" id="L231">        String myFqn = fqn;</span>
+<span class="fc" id="L232">        StringNamespace sns = new StringNamespace(token);</span>
+<span class="fc" id="L233">        int i = myFqn.indexOf(token);</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        while (i &gt; -1) {</span>
+<span class="fc" id="L235">            sns.pushNamespaceElement(myFqn.substring(0, i));</span>
+<span class="fc" id="L236">            myFqn = myFqn.substring(i + token.length());</span>
+<span class="fc" id="L237">            i = myFqn.indexOf(token);</span>
+        }
+<span class="fc bfc" id="L239" title="All 2 branches covered.">        if (myFqn.length() &gt; 0) {</span>
+<span class="fc" id="L240">            sns.pushNamespaceElement(myFqn);</span>
+        }
+<span class="fc" id="L242">        return sns;</span>
+    }
+
+    /**
+     * parse the name of a (java) class.
+     *
+     * @param c
+     *            the class
+     * @return the namespace object
+     */
+    public static Namespace parse(Class c) {
+<span class="fc" id="L253">        return parse(c.getName(), JAVA_NS_TOKEN);</span>
+    }
+
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+<span class="nc" id="L260">        return toString(JAVA_NS_TOKEN).hashCode();</span>
+    }
+
+    /**
+     * Two namespaces are equal when they are namespaces and have the same
+     * string representation.
+     *
+     * @param namespace
+     *            the namespace to compare with
+     * @return true if equal
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object namespace) {
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (namespace instanceof Namespace) {</span>
+<span class="nc" id="L275">            String ns1 = this.toString(JAVA_NS_TOKEN);</span>
+<span class="nc" id="L276">            String ns2 = ((Namespace) namespace).toString(JAVA_NS_TOKEN);</span>
+<span class="nc" id="L277">            return ns1.equals(ns2);</span>
+        }
+<span class="nc" id="L279">        return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.util.namespace.Namespace#toString(java.lang.String)
+     */
+    public String toString(String theToken) {
+<span class="fc" id="L286">        StringBuffer result = new StringBuffer();</span>
+<span class="fc" id="L287">        Iterator i = ns.iterator();</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">        while (i.hasNext()) {</span>
+<span class="fc" id="L289">            result.append(i.next());</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">            if (i.hasNext()) {</span>
+<span class="fc" id="L291">                result.append(theToken);</span>
+            }
+        }
+<span class="fc" id="L294">        return result.toString();</span>
+    }
+
+    /*
+     * Create a string representation using the default scope token.
+     *
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+<span class="fc" id="L303">        return toString(token);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

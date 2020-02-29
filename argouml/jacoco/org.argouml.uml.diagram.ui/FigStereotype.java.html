@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigStereotype.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">FigStereotype.java</span></div><h1>FigStereotype.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Rectangle;
+
+import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Fig to show one stereotype within a FigStereotypesGroup.
+ * &lt;p&gt;
+ * The stereotype is not editable on the fig, hence we
+ * do not use a Notation Provider. &lt;p&gt;
+ * This Fig listens to model changes regarding the name of the stereotype.
+ *
+ * @author Bob Tarling
+ */
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">public class FigStereotype extends FigSingleLineText {</span>
+
+    /**
+     * Construct a fig for a Stereotype or a keyword (which visually resembles a
+     * stereotype).
+     * 
+     * @param owner owning UML element or null if this fig is being used for a
+     *            keyword.
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigStereotype(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L72">        super(owner, bounds, settings, true,</span>
+                new String[] {&quot;name&quot;});
+<span class="pc bpc" id="L74" title="2 of 4 branches missed.">        assert owner != null;</span>
+<span class="fc" id="L75">        initialize();</span>
+<span class="fc" id="L76">        setText();</span>
+<span class="fc" id="L77">    }</span>
+
+    private void initialize() {
+<span class="fc" id="L80">        setEditable(false);</span>
+<span class="fc" id="L81">        setTextColor(TEXT_COLOR);</span>
+<span class="fc" id="L82">        setTextFilled(false);</span>
+<span class="fc" id="L83">        setJustification(FigText.JUSTIFY_CENTER);</span>
+<span class="fc" id="L84">        setRightMargin(3);</span>
+<span class="fc" id="L85">        setLeftMargin(3);</span>
+<span class="fc" id="L86">    }</span>
+
+    /* Force the line-width to 0, since the FigGroup that contains the 
+     * stereotype may want to show a border, but we don't. */
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L92">        super.setLineWidth(0);</span>
+<span class="fc" id="L93">    }</span>
+
+    // Called by propertyChange
+    protected void updateLayout(UmlChangeEvent event) {
+<span class="nc bnc" id="L97" title="All 4 branches missed.">        assert event != null;</span>
+
+<span class="nc" id="L99">        Rectangle oldBounds = getBounds();</span>
+
+<span class="nc" id="L101">        setText(); // this does a calcBounds()</span>
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (oldBounds != getBounds()) {</span>
+<span class="nc" id="L104">            setBounds(getBounds());</span>
+        }
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (getGroup() != null ) {</span>
+            /* TODO: Why do I need to do this? */
+<span class="nc" id="L109">            getGroup().calcBounds();</span>
+<span class="nc" id="L110">            getGroup().setBounds(getGroup().getBounds());</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            if (oldBounds != getBounds()) {</span>
+<span class="nc" id="L112">                Fig sg = getGroup().getGroup();</span>
+                /* TODO: Why do I need to do this? */
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                if (sg != null) {</span>
+<span class="nc" id="L115">                    sg.calcBounds();</span>
+<span class="nc" id="L116">                    sg.setBounds(sg.getBounds());</span>
+                }
+            }
+        }
+        /* Test-case for the above code: 
+         * Draw a class. 
+         * Create a stereotype for it by clicking on the prop-panel tool, and 
+         * name it.
+         * Remove the class from the diagram.
+         * Drag the class from the explorer on the diagram.
+         * Select the stereotype in the explorer, and change
+         * its name in the prop-panel to something longer.
+         * The longer name does not make the class Fig wider 
+         * unless the above code is added.*/
+<span class="nc" id="L130">        damage();</span>
+<span class="nc" id="L131">    }</span>
+
+    @Override
+    protected void setText() {
+<span class="fc" id="L135">        setText(Model.getFacade().getName(getOwner()));</span>
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * Add guillemets to any text set to this Fig.
+     * {@inheritDoc}
+     */
+    public void setText(String text) {
+<span class="fc" id="L143">        super.setText(NotationUtilityUml.formatStereotype(text,</span>
+<span class="fc" id="L144">                getSettings().getNotationSettings().isUseGuillemets()));</span>
+<span class="fc" id="L145">        damage();</span>
+<span class="fc" id="L146">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

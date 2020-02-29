@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractArgoJPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.application.api</a> &gt; <span class="el_source">AbstractArgoJPanel.java</span></div><h1>AbstractArgoJPanel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.application.api;
+
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+
+import org.argouml.i18n.Translator;
+import org.argouml.util.ArgoFrame;
+import org.tigris.swidgets.Orientable;
+import org.tigris.swidgets.Orientation;
+
+/**
+ * A subclass of JPanel that can act as a tab in the DetailsPane or
+ * MultiEditorPane. Added functionality:&lt;p&gt;
+ *
+ * Spawning: When the tab is double-clicked, this JPanel will generate a
+ * separate window of the same size and with the same contents. This is almost
+ * like &quot;tearing off&quot; a tab.&lt;p&gt;
+ *
+ * TODO: Spawning of windows disabled in spawn()&lt;p&gt;
+ *
+ * Title: This JPanel keeps track of its own title.&lt;p&gt;
+ *
+ * Icon: This JPanel keeps track of its own icon; i.e. an arrow pointing to
+ * the panel that it gives details of.&lt;p&gt;
+ *
+ * Orientation: This JPanel is Orientable.&lt;p&gt;
+ *
+ * Cloning: This JPanel may be cloned.&lt;p&gt;
+ *
+ * This class used to be named TabSpawnable.
+ * Renamed since it is not a Tab, but a Panel, and being spawnable is
+ * not any more its main purpose.
+ */
+public abstract class AbstractArgoJPanel extends JPanel
+    implements Cloneable, Orientable {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L86">    private static final Logger LOG =</span>
+<span class="fc" id="L87">        Logger.getLogger(AbstractArgoJPanel.class.getName());</span>
+
+    private static final int OVERLAPP = 30;
+
+<span class="fc" id="L91">    private String title = Translator.localize(&quot;tab.untitled&quot;);</span>
+
+<span class="fc" id="L93">    private Icon icon = null;</span>
+
+    /**
+     * if true, remove tab from parent JTabbedPane.
+     */
+<span class="fc" id="L98">    private boolean tear = false;</span>
+
+    private Orientation orientation;
+
+    /**
+     * @return the orientation
+     */
+    public Orientation getOrientation() {
+<span class="nc" id="L106">        return orientation;</span>
+    }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+
+    /**
+     * The constructor.
+     *
+     */
+    public AbstractArgoJPanel() {
+<span class="nc" id="L116">        this(Translator.localize(&quot;tab.untitled&quot;), false);</span>
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param theTitle The name as a localized string.
+     */
+    // TODO: Review all callers to make sure that they localize the title
+    public AbstractArgoJPanel(String theTitle) {
+<span class="fc" id="L126">        this(theTitle, false);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param theTitle The name (a localized string).
+     * @param t if true, remove tab from parent JTabbedPane
+     */
+    // TODO: Review all callers to make sure that they localize the title
+    // In process by Harold Braun 20070912
+<span class="fc" id="L137">    public AbstractArgoJPanel(String theTitle, boolean t) {</span>
+<span class="fc" id="L138">        setTitle(theTitle);</span>
+<span class="fc" id="L139">        tear = t;</span>
+<span class="fc" id="L140">    }</span>
+
+    /**
+     * This is not a real clone since it doesn't copy anything from the object
+     * it is cloning. The {@link #spawn} method copies the title and in
+     * some cases also the Target.
+     *
+     * @return the new object or null if not possible.
+     */
+    public Object clone() {
+        try {
+<span class="nc" id="L151">            return this.getClass().newInstance();</span>
+<span class="nc" id="L152">        } catch (Exception ex) {</span>
+<span class="nc" id="L153">            LOG.log(Level.SEVERE, &quot;exception in clone()&quot;, ex);</span>
+        }
+<span class="nc" id="L155">        return null;</span>
+    }
+
+    /*
+     * @see org.tigris.swidgets.Orientable#setOrientation(Orientation)
+     */
+    public void setOrientation(Orientation o) {
+<span class="fc" id="L162">        this.orientation = o;</span>
+<span class="fc" id="L163">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * @return The title of the panel, a localized string.
+     */
+    public String getTitle() {
+<span class="fc" id="L172">        return title;</span>
+    }
+
+    /**
+     * @param t The title, a localized string.
+     */
+    public void setTitle(String t) {
+<span class="fc" id="L179">        title = t;</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * @return the icon to be shown for this panel
+     */
+    public Icon getIcon() {
+<span class="fc" id="L186">        return icon;</span>
+    }
+
+    /**
+     * @param theIcon this icon will be shown in front of the title
+     */
+    public void setIcon(Icon theIcon) {
+<span class="fc" id="L193">        this.icon = theIcon;</span>
+<span class="fc" id="L194">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // actions
+
+    /**
+     * This should take its inspiration from
+     * {@link org.tigris.gef.base.CmdSpawn}.&lt;p&gt;
+     *
+     * The spawned/cloned tab will be a JFrame. Currently this feature is
+     * disabled for ArgoUML, except for the find dialog.
+     * Code should behave though as if spawning might work at a
+     * later stage.
+     *
+     * @return a copy of the frame or null if not clone-able.
+     */
+    public AbstractArgoJPanel spawn() {
+
+<span class="nc" id="L212">        JDialog f = new JDialog(ArgoFrame.getFrame());</span>
+<span class="nc" id="L213">        f.getContentPane().setLayout(new BorderLayout());</span>
+        // TODO: Once we have fixed all subclasses the title will
+        // always be localized so this localization can be removed.
+<span class="nc" id="L216">        f.setTitle(Translator.localize(title));</span>
+<span class="nc" id="L217">        AbstractArgoJPanel newPanel = (AbstractArgoJPanel) clone();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (newPanel == null) {</span>
+<span class="nc" id="L219">	    return null; //failed to clone</span>
+	}
+
+        // TODO: Once we have fixed all subclasses the title will
+        // always be localized so this localization can be removed.
+<span class="nc" id="L224">        newPanel.setTitle(Translator.localize(title));</span>
+
+<span class="nc" id="L226">        f.getContentPane().add(newPanel, BorderLayout.CENTER);</span>
+<span class="nc" id="L227">        Rectangle bounds = getBounds();</span>
+<span class="nc" id="L228">        bounds.height += OVERLAPP * 2;</span>
+<span class="nc" id="L229">        f.setBounds(bounds);</span>
+
+<span class="nc" id="L231">        Point loc = new Point(0, 0);</span>
+<span class="nc" id="L232">        SwingUtilities.convertPointToScreen(loc, this);</span>
+<span class="nc" id="L233">        loc.y -= OVERLAPP;</span>
+<span class="nc" id="L234">        f.setLocation(loc);</span>
+<span class="nc" id="L235">        f.setVisible(true);</span>
+
+<span class="nc bnc" id="L237" title="All 4 branches missed.">        if (tear &amp;&amp; (getParent() instanceof JTabbedPane)) {</span>
+<span class="nc" id="L238">	    ((JTabbedPane) getParent()).remove(this);</span>
+	}
+
+<span class="nc" id="L241">        return newPanel;</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

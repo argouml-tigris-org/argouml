@@ -1,0 +1,1277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationUtilityUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">NotationUtilityUml.java</span></div><h1>NotationUtilityUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.Facade;
+import org.argouml.model.Model;
+import org.argouml.uml.StereotypeUtility;
+import org.argouml.util.CustomSeparator;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * This class is a utility for the UML notation.
+ *
+ * @author Michiel van der Wulp
+ */
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">public final class NotationUtilityUml {</span>
+    /**
+     * The array of special properties for attributes.
+     */
+    static PropertySpecialString[] attributeSpecialStrings;
+
+    /**
+     * The list of CustomSeparators to use when tokenizing attributes.
+     */
+    static List&lt;CustomSeparator&gt; attributeCustomSep;
+
+    /**
+     * The array of special properties for operations.
+     */
+    static PropertySpecialString[] operationSpecialStrings;
+
+    /**
+     * The List of CustomSeparators to use when tokenizing attributes.
+     */
+    static final List&lt;CustomSeparator&gt; operationCustomSep;
+
+    /**
+     * The list of CustomSeparators to use when tokenizing parameters.
+     */
+    private static final List&lt;CustomSeparator&gt; parameterCustomSep;
+
+    private static final String LIST_SEPARATOR = &quot;, &quot;;
+
+    /**
+     * The character with a meaning as a visibility at the start
+     * of an attribute.
+     */
+    static final String VISIBILITYCHARS = &quot;+#-~&quot;;
+
+    /**
+     * The constructor.
+     */
+<span class="nc" id="L102">    public NotationUtilityUml() { }</span>
+
+    /* TODO: Can we put the static block within the init()? */
+    static {
+<span class="fc" id="L106">        attributeSpecialStrings = new PropertySpecialString[2];</span>
+
+<span class="fc" id="L108">        attributeCustomSep = new ArrayList&lt;CustomSeparator&gt;();</span>
+<span class="fc" id="L109">        attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L110">        attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L111">        attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);</span>
+
+<span class="fc" id="L113">        operationSpecialStrings = new PropertySpecialString[8];</span>
+
+<span class="fc" id="L115">        operationCustomSep = new ArrayList&lt;CustomSeparator&gt;();</span>
+<span class="fc" id="L116">        operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L117">        operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L118">        operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);</span>
+
+<span class="fc" id="L120">        parameterCustomSep = new ArrayList&lt;CustomSeparator&gt;();</span>
+<span class="fc" id="L121">        parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L122">        parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);</span>
+<span class="fc" id="L123">        parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);</span>
+<span class="fc" id="L124">    }</span>
+
+    static void init() {
+<span class="fc" id="L127">        int assPos = 0;</span>
+<span class="fc" id="L128">        attributeSpecialStrings[assPos++] =</span>
+            new PropertySpecialString(&quot;frozen&quot;,
+<span class="fc" id="L130">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">                        if (Model.getFacade().isAStructuralFeature(element)) {</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">                            if (value == null) { </span>
+                                /* the text was: {frozen} */
+<span class="fc" id="L135">                                Model.getCoreHelper().setReadOnly(element, true);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">                            } else if (&quot;false&quot;.equalsIgnoreCase(value)) {</span>
+                                /* the text was: {frozen = false} */
+<span class="nc" id="L138">                                Model.getCoreHelper().setReadOnly(element, false);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">                            } else if (&quot;true&quot;.equalsIgnoreCase(value)) {</span>
+                                /* the text was: {frozen = true} */
+<span class="nc" id="L141">                                Model.getCoreHelper().setReadOnly(element, true);</span>
+                            }
+                        }
+<span class="fc" id="L144">                    }</span>
+                });
+        
+        // TODO: AddOnly has been removed in UML 2.x, so we should phase out
+        // support of it - tfm - 20070529
+<span class="fc" id="L149">        attributeSpecialStrings[assPos++] =</span>
+            new PropertySpecialString(&quot;addonly&quot;,
+<span class="fc" id="L151">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                        if (Model.getFacade().isAStructuralFeature(element)) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                            if (&quot;false&quot;.equalsIgnoreCase(value)) {</span>
+<span class="nc" id="L155">                                Model.getCoreHelper().setReadOnly(element, true);</span>
+                            } else {
+<span class="nc" id="L157">                                Model.getCoreHelper().setChangeability(element,</span>
+<span class="nc" id="L158">                                    Model.getChangeableKind().getAddOnly());</span>
+                            }
+                        }
+<span class="nc" id="L161">                    }</span>
+                });
+
+<span class="pc bpc" id="L164" title="2 of 4 branches missed.">        assert assPos == attributeSpecialStrings.length;</span>
+
+<span class="fc" id="L166">        operationSpecialStrings = new PropertySpecialString[8];</span>
+<span class="fc" id="L167">        int ossPos = 0;</span>
+<span class="fc" id="L168">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;sequential&quot;,
+<span class="fc" id="L170">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="nc" id="L173">                            Model.getCoreHelper().setConcurrency(element,</span>
+<span class="nc" id="L174">                                Model.getConcurrencyKind().getSequential());</span>
+                        }
+<span class="nc" id="L176">                    }</span>
+                });
+<span class="fc" id="L178">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;guarded&quot;,
+<span class="fc" id="L180">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="nc" id="L182">                        Object kind = Model.getConcurrencyKind().getGuarded();</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="nc" id="L184">                            kind = Model.getConcurrencyKind().getSequential();</span>
+                        }
+<span class="nc bnc" id="L186" title="All 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="nc" id="L187">                            Model.getCoreHelper().setConcurrency(element, kind);</span>
+                        }
+<span class="nc" id="L189">                    }</span>
+                });
+<span class="fc" id="L191">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;concurrent&quot;,
+<span class="fc" id="L193">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+                        Object kind =
+<span class="nc" id="L196">                            Model.getConcurrencyKind().getConcurrent();</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="nc" id="L198">                            kind = Model.getConcurrencyKind().getSequential();</span>
+                        }
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="nc" id="L201">                            Model.getCoreHelper().setConcurrency(element, kind);</span>
+                        }
+<span class="nc" id="L203">                    }</span>
+                });
+<span class="fc" id="L205">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;concurrency&quot;,
+<span class="fc" id="L207">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+                        Object kind =
+<span class="nc" id="L210">                            Model.getConcurrencyKind().getSequential();</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                        if (&quot;guarded&quot;.equalsIgnoreCase(value)) {</span>
+<span class="nc" id="L212">                            kind = Model.getConcurrencyKind().getGuarded();</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                        } else if (&quot;concurrent&quot;.equalsIgnoreCase(value)) {</span>
+<span class="nc" id="L214">                            kind = Model.getConcurrencyKind().getConcurrent();</span>
+                        }
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="nc" id="L217">                            Model.getCoreHelper().setConcurrency(element, kind);</span>
+                        }
+<span class="nc" id="L219">                    }</span>
+                });
+<span class="fc" id="L221">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;abstract&quot;,
+<span class="fc" id="L223">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="fc" id="L225">                        boolean isAbstract = true;</span>
+<span class="pc bpc" id="L226" title="2 of 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="fc" id="L227">                            isAbstract = false;</span>
+                        }
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="fc" id="L230">                            Model.getCoreHelper().setAbstract(</span>
+                                    element,
+                                    isAbstract);
+                        }
+<span class="fc" id="L234">                    }</span>
+                });
+<span class="fc" id="L236">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;leaf&quot;,
+<span class="fc" id="L238">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="fc" id="L240">                        boolean isLeaf = true;</span>
+<span class="pc bpc" id="L241" title="3 of 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="nc" id="L242">                            isLeaf = false;</span>
+                        }
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="fc" id="L245">                            Model.getCoreHelper().setLeaf(element, isLeaf);</span>
+                        }
+<span class="fc" id="L247">                    }</span>
+                });
+<span class="fc" id="L249">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;query&quot;,
+<span class="fc" id="L251">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="fc" id="L253">                        boolean isQuery = true;</span>
+<span class="pc bpc" id="L254" title="3 of 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="nc" id="L255">                            isQuery = false;</span>
+                        }
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">                        if (Model.getFacade().isABehavioralFeature(element)) {</span>
+<span class="fc" id="L258">                            Model.getCoreHelper().setQuery(element, isQuery);</span>
+                        }
+<span class="fc" id="L260">                    }</span>
+                });
+<span class="fc" id="L262">        operationSpecialStrings[ossPos++] =</span>
+            new PropertySpecialString(&quot;root&quot;,
+<span class="fc" id="L264">                new PropertyOperation() {</span>
+                    public void found(Object element, String value) {
+<span class="fc" id="L266">                        boolean isRoot = true;</span>
+<span class="pc bpc" id="L267" title="3 of 4 branches missed.">                        if (value != null &amp;&amp; value.equalsIgnoreCase(&quot;false&quot;)) {</span>
+<span class="nc" id="L268">                            isRoot = false;</span>
+                        }
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                        if (Model.getFacade().isAOperation(element)) {</span>
+<span class="fc" id="L271">                            Model.getCoreHelper().setRoot(element, isRoot);</span>
+                        }
+<span class="fc" id="L273">                    }</span>
+                });
+
+<span class="pc bpc" id="L276" title="2 of 4 branches missed.">        assert ossPos == operationSpecialStrings.length;</span>
+<span class="fc" id="L277">    }</span>
+
+    /**
+     * Parse a string on the format:
+     * &lt;pre&gt;
+     *     [ &amp;lt;&amp;lt; stereotype &amp;gt;&amp;gt;] [+|-|#|~] [full_pathname ::] [name]
+     * &lt;/pre&gt;
+     * 
+     * @param me   The ModelElement &lt;em&gt;text&lt;/em&gt; describes.
+     * @param text A String on the above format.
+     * @throws ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    protected static void parseModelElement(Object me, String text)
+        throws ParseException {
+        MyTokenizer st;
+
+<span class="nc" id="L295">        List&lt;String&gt; path = null;</span>
+<span class="nc" id="L296">        String name = null;</span>
+<span class="nc" id="L297">        StringBuilder stereotype = null;</span>
+        String token;
+
+        try {
+<span class="nc" id="L301">            st = new MyTokenizer(text, &quot;&lt;&lt;,\u00AB,\u00BB,&gt;&gt;,::&quot;);</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L303">                token = st.nextToken();</span>
+
+<span class="nc bnc" id="L305" title="All 4 branches missed.">                if (&quot;&lt;&lt;&quot;.equals(token) || &quot;\u00AB&quot;.equals(token)) {</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">                    if (stereotype != null) {</span>
+<span class="nc" id="L307">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.twin-stereotypes&quot;;
+<span class="nc" id="L309">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L310">                                st.getTokenIndex());</span>
+                    }
+
+<span class="nc" id="L313">                    stereotype = new StringBuilder();</span>
+                    while (true) {
+<span class="nc" id="L315">                        token = st.nextToken();</span>
+<span class="nc bnc" id="L316" title="All 4 branches missed.">                        if (&quot;&gt;&gt;&quot;.equals(token) || &quot;\u00BB&quot;.equals(token)) {</span>
+<span class="nc" id="L317">                            break;</span>
+                        }
+<span class="nc" id="L319">                        stereotype.append(token);</span>
+                    }
+<span class="nc bnc" id="L321" title="All 2 branches missed.">                } else if (&quot;::&quot;.equals(token)) {</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">                    if (name != null) {</span>
+<span class="nc" id="L323">                        name = name.trim();</span>
+                    }
+
+<span class="nc bnc" id="L326" title="All 6 branches missed.">                    if (path != null &amp;&amp; (name == null || &quot;&quot;.equals(name))) {</span>
+<span class="nc" id="L327">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.anon-qualifiers&quot;;
+<span class="nc" id="L329">                        throw new ParseException(Translator.localize(msg), </span>
+<span class="nc" id="L330">                                st.getTokenIndex());</span>
+                    }
+
+<span class="nc bnc" id="L333" title="All 2 branches missed.">                    if (path == null) {</span>
+<span class="nc" id="L334">                        path = new ArrayList&lt;String&gt;();</span>
+                    }
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                    if (name != null) {</span>
+<span class="nc" id="L337">                        path.add(name);</span>
+                    }
+<span class="nc" id="L339">                    name = null;</span>
+                } else {
+<span class="nc bnc" id="L341" title="All 2 branches missed.">                    if (name != null) {</span>
+<span class="nc" id="L342">                        String msg = </span>
+                            &quot;parsing.error.model-element-name.twin-names&quot;;
+<span class="nc" id="L344">                        throw new ParseException(Translator.localize(msg), </span>
+<span class="nc" id="L345">                                st.getTokenIndex());</span>
+                    }
+
+<span class="nc" id="L348">                    name = token;</span>
+                }
+            }
+<span class="nc" id="L351">        } catch (NoSuchElementException nsee) {</span>
+<span class="nc" id="L352">            String msg = </span>
+                &quot;parsing.error.model-element-name.unexpected-name-element&quot;;
+<span class="nc" id="L354">            throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L355">                    text.length());</span>
+<span class="nc" id="L356">        } catch (ParseException pre) {</span>
+<span class="nc" id="L357">            throw pre;</span>
+<span class="nc" id="L358">        }</span>
+
+<span class="nc bnc" id="L360" title="All 2 branches missed.">        if (name != null) {</span>
+<span class="nc" id="L361">            name = name.trim();</span>
+        }
+
+<span class="nc bnc" id="L364" title="All 6 branches missed.">        if (path != null &amp;&amp; (name == null || &quot;&quot;.equals(name))) {</span>
+<span class="nc" id="L365">            String msg = &quot;parsing.error.model-element-name.must-end-with-name&quot;;</span>
+<span class="nc" id="L366">            throw new ParseException(Translator.localize(msg), 0);</span>
+        }
+
+<span class="nc bnc" id="L369" title="All 4 branches missed.">        if (name != null &amp;&amp; name.startsWith(&quot;+&quot;)) {</span>
+<span class="nc" id="L370">            name = name.substring(1).trim();</span>
+<span class="nc" id="L371">            Model.getCoreHelper().setVisibility(me,</span>
+<span class="nc" id="L372">                            Model.getVisibilityKind().getPublic());</span>
+        }
+<span class="nc bnc" id="L374" title="All 4 branches missed.">        if (name != null &amp;&amp; name.startsWith(&quot;-&quot;)) {</span>
+<span class="nc" id="L375">            name = name.substring(1).trim();</span>
+<span class="nc" id="L376">            Model.getCoreHelper().setVisibility(me,</span>
+<span class="nc" id="L377">                            Model.getVisibilityKind().getPrivate());</span>
+        }
+<span class="nc bnc" id="L379" title="All 4 branches missed.">        if (name != null &amp;&amp; name.startsWith(&quot;#&quot;)) {</span>
+<span class="nc" id="L380">            name = name.substring(1).trim();</span>
+<span class="nc" id="L381">            Model.getCoreHelper().setVisibility(me,</span>
+<span class="nc" id="L382">                            Model.getVisibilityKind().getProtected());</span>
+        }
+<span class="nc bnc" id="L384" title="All 4 branches missed.">        if (name != null &amp;&amp; name.startsWith(&quot;~&quot;)) {</span>
+<span class="nc" id="L385">            name = name.substring(1).trim();</span>
+<span class="nc" id="L386">            Model.getCoreHelper().setVisibility(me,</span>
+<span class="nc" id="L387">                            Model.getVisibilityKind().getPackage());</span>
+        }
+<span class="nc bnc" id="L389" title="All 2 branches missed.">        if (name != null) {</span>
+<span class="nc" id="L390">            Model.getCoreHelper().setName(me, name);</span>
+        }
+
+<span class="nc" id="L393">        StereotypeUtility.dealWithStereotypes(me, stereotype, false);</span>
+
+<span class="nc bnc" id="L395" title="All 2 branches missed.">        if (path != null) {</span>
+            Object nspe =
+<span class="nc" id="L397">                Model.getModelManagementHelper().getElement(</span>
+                        path,
+<span class="nc" id="L399">                        Model.getFacade().getRoot(me));</span>
+
+<span class="nc bnc" id="L401" title="All 4 branches missed.">            if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {</span>
+<span class="nc" id="L402">                String msg = </span>
+                        &quot;parsing.error.model-element-name.namespace-unresolved&quot;;
+<span class="nc" id="L404">                throw new ParseException(Translator.localize(msg), </span>
+                        0);
+            }
+<span class="nc bnc" id="L407" title="All 2 branches missed.">            if (!Model.getCoreHelper().isValidNamespace(me, nspe)) {</span>
+<span class="nc" id="L408">                String msg = </span>
+                        &quot;parsing.error.model-element-name.namespace-invalid&quot;;
+<span class="nc" id="L410">                throw new ParseException(Translator.localize(msg), </span>
+                        0);
+            }
+
+<span class="nc" id="L414">            Model.getCoreHelper().addOwnedElement(nspe, me);</span>
+        }
+<span class="nc" id="L416">    }</span>
+    
+    /**
+     * Utility function to determine the presence of a key. 
+     * The default is false.
+     * 
+     * @param key the string for the key
+     * @param map the Map to check for the presence 
+     * and value of the key
+     * @return true if the value for the key is true, otherwise false
+     */
+    public static boolean isValue(final String key, final Map map) {
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (map == null) {</span>
+<span class="nc" id="L429">            return false;</span>
+        }
+<span class="nc" id="L431">        Object o = map.get(key);</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">        if (!(o instanceof Boolean)) {</span>
+<span class="nc" id="L433">            return false;</span>
+        }
+<span class="nc" id="L435">        return ((Boolean) o).booleanValue();</span>
+    }
+    
+    /**
+     * Returns a visibility String either for a VisibilityKind or a model
+     * element.
+     * 
+     * @param o a modelelement or a visibilitykind
+     * @return a string. May be the empty string, but guaranteed not to be null
+     */
+    public static String generateVisibility2(Object o) {
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L447">            return &quot;&quot;;</span>
+        }
+<span class="pc bpc" id="L449" title="1 of 2 branches missed.">        if (Model.getFacade().isANamedElement(o)) {</span>
+<span class="pc bpc" id="L450" title="1 of 2 branches missed.">            if (Model.getFacade().isPublic(o)) {</span>
+<span class="fc" id="L451">                return &quot;+&quot;;</span>
+            }
+<span class="nc bnc" id="L453" title="All 2 branches missed.">            if (Model.getFacade().isPrivate(o)) {</span>
+<span class="nc" id="L454">                return &quot;-&quot;;</span>
+            }
+<span class="nc bnc" id="L456" title="All 2 branches missed.">            if (Model.getFacade().isProtected(o)) {</span>
+<span class="nc" id="L457">                return &quot;#&quot;;</span>
+            }
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if (Model.getFacade().isPackage(o)) {</span>
+<span class="nc" id="L460">                return &quot;~&quot;;</span>
+            }
+        }
+<span class="nc bnc" id="L463" title="All 2 branches missed.">        if (Model.getFacade().isAVisibilityKind(o)) {</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">            if (Model.getVisibilityKind().getPublic().equals(o)) {</span>
+<span class="nc" id="L465">                return &quot;+&quot;;</span>
+            }
+<span class="nc bnc" id="L467" title="All 2 branches missed.">            if (Model.getVisibilityKind().getPrivate().equals(o)) {</span>
+<span class="nc" id="L468">                return &quot;-&quot;;</span>
+            }
+<span class="nc bnc" id="L470" title="All 2 branches missed.">            if (Model.getVisibilityKind().getProtected().equals(o)) {</span>
+<span class="nc" id="L471">                return &quot;#&quot;;</span>
+            }
+<span class="nc bnc" id="L473" title="All 2 branches missed.">            if (Model.getVisibilityKind().getPackage().equals(o)) {</span>
+<span class="nc" id="L474">                return &quot;~&quot;;</span>
+            }
+        }
+<span class="nc" id="L477">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * @param modelElement the UML element to generate for
+     * @return a string which represents the path
+     */
+    protected static String generatePath(Object modelElement) {
+<span class="fc" id="L485">        StringBuilder s = new StringBuilder();</span>
+<span class="fc" id="L486">        Object p = modelElement;</span>
+<span class="fc" id="L487">        Stack&lt;String&gt; stack = new Stack&lt;String&gt;();</span>
+<span class="fc" id="L488">        Object ns = Model.getFacade().getNamespace(p);</span>
+<span class="pc bpc" id="L489" title="1 of 4 branches missed.">        while (ns != null &amp;&amp; !Model.getFacade().isAModel(ns)) {</span>
+<span class="fc" id="L490">            stack.push(Model.getFacade().getName(ns));</span>
+<span class="fc" id="L491">            ns = Model.getFacade().getNamespace(ns);</span>
+        }
+<span class="fc bfc" id="L493" title="All 2 branches covered.">        while (!stack.isEmpty()) {</span>
+<span class="fc" id="L494">            s.append(stack.pop() + &quot;::&quot;);</span>
+        }
+
+<span class="pc bpc" id="L497" title="1 of 4 branches missed.">        if (s.length() &gt; 0 &amp;&amp; !(s.lastIndexOf(&quot;:&quot;) == s.length() - 1)) {</span>
+<span class="nc" id="L498">            s.append(&quot;::&quot;);</span>
+        }
+<span class="fc" id="L500">        return s.toString();</span>
+    }
+
+    /**
+     * Parses a parameter list and aligns the parameter list in op to that
+     * specified in param. A parameter list generally has the following syntax:
+     *
+     * &lt;pre&gt;
+     * param := [inout] [name] [: type] [= initial value]
+     * list := [param] [, param]*
+     * &lt;/pre&gt;
+     *
+     * &lt;code&gt;inout&lt;/code&gt; is optional and if omitted the old value preserved.
+     * If no value has been assigned, then &lt;code&gt;in &lt;/code&gt; is assumed.&lt;p&gt;
+     *
+     * &lt;code&gt;name&lt;/code&gt;, &lt;code&gt;type&lt;/code&gt; and &lt;code&gt;initial value&lt;/code&gt;
+     * are optional and if omitted the old value preserved.&lt;p&gt;
+     *
+     * &lt;code&gt;type&lt;/code&gt; and &lt;code&gt;initial value&lt;/code&gt; can be given
+     * in any order.&lt;p&gt;
+     *
+     * Unspecified properties is carried over by position, so if a parameter is
+     * inserted into the list, then it will inherit properties from the
+     * parameter that was there before for unspecified properties.&lt;p&gt;
+     *
+     * This syntax is compatible with the UML 1.3 specification.
+     *
+     * @param op
+     *            The operation the parameter list belongs to.
+     * @param param
+     *            The parameter list, without enclosing parentheses.
+     * @param paramOffset
+     *            The offset to the beginning of the parameter list. Used for
+     *            error reports.
+     * @throws java.text.ParseException
+     *             when it detects an error in the attribute string. See also
+     *             ParseError.getErrorOffset().
+     */
+    static void parseParamList(Object op, String param, int paramOffset)
+        throws ParseException {
+<span class="fc" id="L540">        MyTokenizer st =</span>
+            new MyTokenizer(param, &quot; ,\t,:,=,\\,&quot;, parameterCustomSep);
+        // Copy returned parameters because it will be a live collection for MDR
+<span class="fc" id="L543">        Collection origParam =</span>
+<span class="fc" id="L544">            new ArrayList(Model.getFacade().getParameters(op));</span>
+<span class="fc" id="L545">        Object ns = Model.getFacade().getRoot(op);</span>
+<span class="fc bfc" id="L546" title="All 2 branches covered.">        if (Model.getFacade().isAOperation(op)) {</span>
+<span class="fc" id="L547">            Object ow = Model.getFacade().getOwner(op);</span>
+
+<span class="pc bpc" id="L549" title="2 of 4 branches missed.">            if (ow != null &amp;&amp; Model.getFacade().getNamespace(ow) != null) {</span>
+<span class="fc" id="L550">                ns = Model.getFacade().getNamespace(ow);</span>
+            }
+        }
+
+<span class="fc" id="L554">        Iterator it = origParam.iterator();</span>
+<span class="fc bfc" id="L555" title="All 2 branches covered.">        while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L556">            String kind = null;</span>
+<span class="fc" id="L557">            String name = null;</span>
+            String tok;
+<span class="fc" id="L559">            String type = null;</span>
+<span class="fc" id="L560">            StringBuilder value = null;</span>
+<span class="fc" id="L561">            Object p = null;</span>
+<span class="fc" id="L562">            boolean hasColon = false;</span>
+<span class="fc" id="L563">            boolean hasEq = false;</span>
+
+<span class="pc bpc" id="L565" title="1 of 4 branches missed.">            while (it.hasNext() &amp;&amp; p == null) {</span>
+<span class="fc" id="L566">                p = it.next();</span>
+<span class="pc bpc" id="L567" title="1 of 2 branches missed.">                if (Model.getFacade().isReturn(p)) {</span>
+<span class="fc" id="L568">                    p = null;</span>
+                }
+            }
+
+<span class="fc bfc" id="L572" title="All 2 branches covered.">            while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L573">                tok = st.nextToken();</span>
+
+<span class="fc bfc" id="L575" title="All 2 branches covered.">                if (&quot;,&quot;.equals(tok)) {</span>
+<span class="fc" id="L576">                    break;</span>
+<span class="pc bpc" id="L577" title="1 of 4 branches missed.">                } else if (&quot; &quot;.equals(tok) || &quot;\t&quot;.equals(tok)) {</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">                    if (hasEq) {</span>
+<span class="fc" id="L579">                        value.append(tok);</span>
+                    }
+<span class="fc bfc" id="L581" title="All 2 branches covered.">                } else if (&quot;:&quot;.equals(tok)) {</span>
+<span class="fc" id="L582">                    hasColon = true;</span>
+<span class="fc" id="L583">                    hasEq = false;</span>
+<span class="fc bfc" id="L584" title="All 2 branches covered.">                } else if (&quot;=&quot;.equals(tok)) {</span>
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">                    if (value != null) {</span>
+<span class="nc" id="L586">                    	String msg =</span>
+                            &quot;parsing.error.notation-utility.two-default-values&quot;;
+<span class="nc" id="L588">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L589">                                paramOffset + st.getTokenIndex());</span>
+                    }
+<span class="fc" id="L591">                    hasEq = true;</span>
+<span class="fc" id="L592">                    hasColon = false;</span>
+<span class="fc" id="L593">                    value = new StringBuilder();</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">                } else if (hasColon) {</span>
+<span class="pc bpc" id="L595" title="1 of 2 branches missed.">                    if (type != null) {</span>
+<span class="nc" id="L596">                        String msg = &quot;parsing.error.notation-utility.two-types&quot;;</span>
+<span class="nc" id="L597">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L598">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="pc bpc" id="L601" title="2 of 4 branches missed.">                    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\&quot;') {</span>
+<span class="nc" id="L602">                        String msg =</span>
+                            &quot;parsing.error.notation-utility.type-quoted&quot;;
+<span class="nc" id="L604">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L605">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="pc bpc" id="L608" title="1 of 2 branches missed.">                    if (tok.charAt(0) == '(') {</span>
+<span class="nc" id="L609">                        String msg =</span>
+                            &quot;parsing.error.notation-utility.type-expr&quot;;
+<span class="nc" id="L611">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L612">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L615">                    type = tok;</span>
+<span class="fc bfc" id="L616" title="All 2 branches covered.">                } else if (hasEq) {</span>
+<span class="fc" id="L617">                    value.append(tok);</span>
+                } else {
+<span class="pc bpc" id="L619" title="1 of 4 branches missed.">                    if (name != null &amp;&amp; kind != null) {</span>
+<span class="nc" id="L620">                        String msg =</span>
+                            &quot;parsing.error.notation-utility.extra-text&quot;;
+<span class="nc" id="L622">                        throw new ParseException(Translator.localize(msg),</span>
+<span class="nc" id="L623">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="pc bpc" id="L626" title="2 of 4 branches missed.">                    if (tok.charAt(0) == '\'' || tok.charAt(0) == '\&quot;') {</span>
+<span class="nc" id="L627">                        String msg =</span>
+                            &quot;parsing.error.notation-utility.name-kind-quoted&quot;;
+<span class="nc" id="L629">                        throw new ParseException(</span>
+<span class="nc" id="L630">                                Translator.localize(msg),</span>
+<span class="nc" id="L631">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="pc bpc" id="L634" title="1 of 2 branches missed.">                    if (tok.charAt(0) == '(') {</span>
+<span class="nc" id="L635">                        String msg =</span>
+                            &quot;parsing.error.notation-utility.name-kind-expr&quot;;
+<span class="nc" id="L637">                        throw new ParseException(</span>
+<span class="nc" id="L638">                                Translator.localize(msg),</span>
+<span class="nc" id="L639">                                paramOffset + st.getTokenIndex());</span>
+                    }
+
+<span class="fc" id="L642">                    kind = name;</span>
+<span class="fc" id="L643">                    name = tok;</span>
+                }
+            }
+
+<span class="pc bpc" id="L647" title="1 of 2 branches missed.">            if (p == null) {</span>
+                /* Leave the type undefined (see issue 6145): */
+<span class="fc" id="L649">                p = Model.getCoreFactory().buildParameter(op, null);</span>
+            }
+
+<span class="pc bpc" id="L652" title="1 of 2 branches missed.">            if (name != null) {</span>
+<span class="fc" id="L653">                Model.getCoreHelper().setName(p, name.trim());</span>
+            }
+
+<span class="fc bfc" id="L656" title="All 2 branches covered.">            if (kind != null) {</span>
+<span class="fc" id="L657">                setParamKind(p, kind.trim());</span>
+            }
+
+<span class="fc bfc" id="L660" title="All 2 branches covered.">            if (type != null) {</span>
+<span class="fc" id="L661">                Model.getCoreHelper().setType(p, getType(type.trim(), ns));</span>
+            }
+
+<span class="fc bfc" id="L664" title="All 2 branches covered.">            if (value != null) {</span>
+                // TODO: Find a better default language
+                // TODO: We should know the notation language, since it is us
+                Project project =
+<span class="fc" id="L668">                    ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L669">                ProjectSettings ps = project.getProjectSettings();</span>
+<span class="fc" id="L670">                String notationLanguage = ps.getNotationLanguage();</span>
+
+                Object initExpr =
+<span class="fc" id="L673">                    Model.getDataTypesFactory()</span>
+<span class="fc" id="L674">                        .createExpression(</span>
+                                notationLanguage,
+<span class="fc" id="L676">                                value.toString().trim());</span>
+<span class="fc" id="L677">                Model.getCoreHelper().setDefaultValue(p, initExpr);</span>
+            }
+<span class="fc" id="L679">        }</span>
+
+<span class="fc bfc" id="L681" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L682">            Object p = it.next();</span>
+<span class="fc bfc" id="L683" title="All 2 branches covered.">            if (!Model.getFacade().isReturn(p)) {</span>
+<span class="fc" id="L684">                Model.getCoreHelper().removeParameter(op, p);</span>
+<span class="fc" id="L685">                Model.getUmlFactory().delete(p);</span>
+            }
+<span class="fc" id="L687">        }</span>
+<span class="fc" id="L688">    }</span>
+
+    /**
+     * Set a parameters kind according to a string description of
+     * that kind.
+     * @param parameter the parameter
+     * @param description the string description
+     */
+    private static void setParamKind(Object parameter, String description) {
+        Object kind;
+<span class="fc bfc" id="L698" title="All 2 branches covered.">        if (&quot;out&quot;.equalsIgnoreCase(description)) {</span>
+<span class="fc" id="L699">            kind = Model.getDirectionKind().getOutParameter();</span>
+<span class="fc bfc" id="L700" title="All 2 branches covered.">        } else if (&quot;inout&quot;.equalsIgnoreCase(description)) {</span>
+<span class="fc" id="L701">            kind = Model.getDirectionKind().getInOutParameter();</span>
+        } else {
+<span class="fc" id="L703">            kind = Model.getDirectionKind().getInParameter();</span>
+        }
+<span class="fc" id="L705">        Model.getCoreHelper().setKind(parameter, kind);</span>
+<span class="fc" id="L706">    }</span>
+
+    /**
+     * Finds the classifier associated with the type named in name.
+     *
+     * @param name
+     *            The name of the type to get.
+     * @param defaultSpace
+     *            The default name-space to place the type in.
+     * @return The classifier associated with the name.
+     */
+    static Object getType(String name, Object defaultSpace) {
+<span class="fc" id="L718">        Object type = null;</span>
+<span class="fc" id="L719">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+        // Should we be getting this from the GUI? BT 11 aug 2002
+<span class="fc" id="L721">        type = p.findType(name, false);</span>
+<span class="fc bfc" id="L722" title="All 2 branches covered.">        if (type == null) { // no type defined yet</span>
+<span class="fc" id="L723">            type = Model.getCoreFactory().buildClass(name,</span>
+                    defaultSpace);
+        }
+<span class="fc" id="L726">        return type;</span>
+    }
+
+    /**
+     * Applies a List of name/value pairs of properties to a model element.
+     * The name is treated as the tag of a tagged value unless it is one of the
+     * PropertySpecialStrings, in which case the action of the
+     * PropertySpecialString is invoked.
+     *
+     * @param elem
+     *            An model element to apply the properties to.
+     * @param prop
+     *            A List with name, value pairs of properties.
+     * @param spec
+     *            An array of PropertySpecialStrings to use.
+     */
+    static void setProperties(Object elem, List&lt;String&gt; prop,
+            PropertySpecialString[] spec) {
+        String name;
+        String value;
+        int i, j;
+
+    nextProp:
+<span class="fc bfc" id="L749" title="All 2 branches covered.">        for (i = 0; i + 1 &lt; prop.size(); i += 2) {</span>
+<span class="fc" id="L750">            name = prop.get(i);</span>
+<span class="fc" id="L751">            value = prop.get(i + 1);</span>
+
+<span class="pc bpc" id="L753" title="1 of 2 branches missed.">            if (name == null) {</span>
+<span class="nc" id="L754">                continue;</span>
+            }
+
+<span class="fc" id="L757">            name = name.trim();</span>
+<span class="fc bfc" id="L758" title="All 2 branches covered.">            if (value != null) {</span>
+<span class="fc" id="L759">                value = value.trim();</span>
+            }
+
+            /* If the current property occurs a second time
+             * in the given list of properties, then skip it: */
+<span class="fc bfc" id="L764" title="All 2 branches covered.">            for (j = i + 2; j &lt; prop.size(); j += 2) {</span>
+<span class="fc" id="L765">                String s = prop.get(j);</span>
+<span class="pc bpc" id="L766" title="2 of 4 branches missed.">                if (s != null &amp;&amp; name.equalsIgnoreCase(s.trim())) {</span>
+<span class="nc" id="L767">                    continue nextProp;</span>
+                }
+            }
+
+<span class="pc bpc" id="L771" title="1 of 2 branches missed.">            if (spec != null) {</span>
+<span class="fc bfc" id="L772" title="All 2 branches covered.">                for (j = 0; j &lt; spec.length; j++) {</span>
+<span class="fc bfc" id="L773" title="All 2 branches covered.">                    if (spec[j].invoke(elem, name, value)) {</span>
+<span class="fc" id="L774">                        continue nextProp;</span>
+                    }
+                }
+            }
+
+<span class="fc" id="L779">            Model.getCoreHelper().setTaggedValue(elem, name, value);</span>
+        }
+<span class="fc" id="L781">    }</span>
+
+    /**
+     * Make the given UML object derived or not. The UML standard 
+     * defines &quot;derived&quot; as a tagged value for any ModelElement.
+     * 
+     * @param umlObject the UML ModelElement to be adapted (null is not 
+     * allowed)
+     * @param derived boolean flag for derived according the UML standard
+     */
+    static void setDerived(Object umlObject, boolean derived) {
+        /* This code was copied from ActionBooleanTaggedValue: */
+<span class="fc" id="L793">        String tagName = Facade.DERIVED_TAG;</span>
+<span class="fc" id="L794">        Object taggedValue = Model.getFacade().getTaggedValue(umlObject, tagName);</span>
+<span class="fc bfc" id="L795" title="All 2 branches covered.">        if (derived) {</span>
+<span class="fc bfc" id="L796" title="All 2 branches covered.">            if (taggedValue == null) {</span>
+                /* This automatically pulls in a TagDefinition from the profile: */
+                taggedValue =
+<span class="fc" id="L799">                        Model.getExtensionMechanismsFactory().buildTaggedValue(</span>
+                                tagName, &quot;true&quot;);
+                /* We need to extend the ExtensionMechanismsFactory so that 
+                 * we can replace the above deprecated call with something like this: */
+//                Model.getExtensionMechanismsFactory().buildTaggedValue(
+//                        tagName, new String[] {&quot;true&quot;}, Model.getFacade().getRoot(umlObject));
+
+<span class="fc" id="L806">                Model.getExtensionMechanismsHelper().addTaggedValue(</span>
+                        umlObject, taggedValue);
+            } else {
+                /* The TV existed, but maybe it was not &quot;true&quot;: */
+                /* TODO: For UML2: Check if the type of the TV is String. */
+<span class="fc" id="L811">                Model.getExtensionMechanismsHelper().setDataValues(</span>
+                        taggedValue, new String[] {&quot;true&quot;});
+            }
+        } else {
+<span class="fc bfc" id="L815" title="All 2 branches covered.">            if (taggedValue != null) {</span>
+                /* There are 2 possibilities: either (1) we follow the traditional notation 
+                 * philosophy, and set the tagged value to false, or (2) we restore to 
+                 * the pristine situation and delete the taggedValue (whatever the 
+                 * value was). I chose the latter (mvw).*/
+                /* This would be solution (1): 
+                 * Model.getExtensionMechanismsHelper().setDataValues(
+                 *      taggedValue, new String[] {&quot;false&quot;});
+                 */
+<span class="fc" id="L824">                Model.getUmlFactory().delete(taggedValue);</span>
+            }
+        }
+<span class="fc" id="L827">    }</span>
+
+    /**
+     * Interface specifying the operation to take when a
+     * PropertySpecialString is matched.
+     *
+     * @author Michael Stockman
+     * @since 0.11.2
+     * @see PropertySpecialString
+     */
+    interface PropertyOperation {
+        /**
+         * Invoked by PropertySpecialString when it has matched a property name.
+         *
+         * @param element
+         *            The element on which the property was set.
+         * @param value
+         *            The value of the property,
+         *            may be null if no value was given.
+         */
+        void found(Object element, String value);
+    }
+
+    /**
+     * Declares a string that should take special action when it is found
+     * as a property in
+     * {@link ParserDisplay#setProperties ParserDisplay.setProperties}.&lt;p&gt;
+     *
+     * &lt;em&gt;Example:&lt;/em&gt;
+     *
+     * &lt;pre&gt;
+     * attributeSpecialStrings[0] =
+     *     new PropertySpecialString(&amp;quot;frozen&amp;quot;,
+     *         new PropertyOperation() {
+     *             public void found(Object element, String value) {
+     *                 if (Model.getFacade().isAStructuralFeature(element))
+     *                     Model.getFacade().setChangeable(element,
+     *                          (value != null &amp;amp;&amp;amp; value
+     *                             .equalsIgnoreCase(&amp;quot;false&amp;quot;)));
+     *             }
+     *         });
+     * &lt;/pre&gt;
+     *
+     * Taken from the (former) ParserDisplay constructor.
+     * It creates a PropertySpecialString that is invoken when the String
+     * &quot;frozen&quot; is found as a property name. Then
+     * the found mehod in the anonymous inner class
+     * defined on the 2nd line is invoked and performs
+     * a custom action on the element on which the property was
+     * specified by the user. In this case it does a setChangeability
+     * on an attribute instead of setting a tagged value,
+     * which would not have the desired effect.
+     *
+     * @author Michael Stockman
+     * @since 0.11.2
+     * @see PropertyOperation
+     * @see ParserDisplay#setProperties
+     */
+    static class PropertySpecialString {
+        private String name;
+
+        private PropertyOperation op;
+
+        /**
+         * Constructs a new PropertySpecialString that will invoke the
+         * action in propop when {@link #invoke(Object, String, String)} is
+         * called with name equal to str and then return true from invoke.
+         *
+         * @param str
+         *            The name of this PropertySpecialString.
+         * @param propop
+         *            An object containing the method to invoke on a match.
+         */
+<span class="fc" id="L900">        public PropertySpecialString(String str, PropertyOperation propop) {</span>
+<span class="fc" id="L901">            name = str;</span>
+<span class="fc" id="L902">            op = propop;</span>
+<span class="fc" id="L903">        }</span>
+
+        /**
+         * Called by {@link NotationUtilityUml#setProperties(Object, 
+         * java.util.Vector, PropertySpecialString[])} while 
+         * searching for an action to
+         * invoke for a property. If it returns true, then setProperties
+         * may assume that all required actions have been taken and stop
+         * searching.
+         *
+         * @param pname
+         *            The name of a property.
+         * @param value
+         *            The value of a property.
+         * @param element
+         *            A model element to apply the properties to.
+         * @return &lt;code&gt;true&lt;/code&gt; if an action is performed, otherwise
+         *         &lt;code&gt;false&lt;/code&gt;.
+         */
+        boolean invoke(Object element, String pname, String value) {
+<span class="fc bfc" id="L923" title="All 2 branches covered.">            if (!name.equalsIgnoreCase(pname)) {</span>
+<span class="fc" id="L924">                return false;</span>
+            }
+<span class="fc" id="L926">            op.found(element, value);</span>
+<span class="fc" id="L927">            return true;</span>
+        }
+    }
+
+    /**
+     * Checks for ';' in Strings or chars in ';' separated tokens in order to
+     * return an index to the next attribute or operation substring, -1
+     * otherwise (a ';' inside a String or char delimiters is ignored).
+     *
+     * @param s The string to search.
+     * @param start The position to start at.
+     * @return the index to the next attribute
+     */
+    static int indexOfNextCheckedSemicolon(String s, int start) {
+<span class="pc bpc" id="L941" title="2 of 6 branches missed.">        if (s == null || start &lt; 0 || start &gt;= s.length()) {</span>
+<span class="fc" id="L942">            return -1;</span>
+        }
+        int end;
+<span class="fc" id="L945">        boolean inside = false;</span>
+<span class="fc" id="L946">        boolean backslashed = false;</span>
+        char c;
+<span class="fc bfc" id="L948" title="All 2 branches covered.">        for (end = start; end &lt; s.length(); end++) {</span>
+<span class="fc" id="L949">            c = s.charAt(end);</span>
+<span class="pc bpc" id="L950" title="1 of 4 branches missed.">            if (!inside &amp;&amp; c == ';') {</span>
+<span class="fc" id="L951">                return end;</span>
+<span class="pc bpc" id="L952" title="3 of 6 branches missed.">            } else if (!backslashed &amp;&amp; (c == '\'' || c == '\&quot;')) {</span>
+<span class="nc bnc" id="L953" title="All 2 branches missed.">                inside = !inside;</span>
+            }
+<span class="pc bpc" id="L955" title="2 of 4 branches missed.">            backslashed = (!backslashed &amp;&amp; c == '\\');</span>
+        }
+<span class="fc" id="L957">        return end;</span>
+    }
+
+    /**
+     * Finds a visibility for the visibility specified by name. If no known
+     * visibility can be deduced, private visibility is used.
+     *
+     * @param name
+     *            The Java name of the visibility.
+     * @return A visibility corresponding to name.
+     */
+    static Object getVisibility(String name) {
+<span class="fc bfc" id="L969" title="All 4 branches covered.">        if (&quot;+&quot;.equals(name) || &quot;public&quot;.equals(name)) {</span>
+<span class="fc" id="L970">            return Model.getVisibilityKind().getPublic();</span>
+<span class="fc bfc" id="L971" title="All 4 branches covered.">        } else if (&quot;#&quot;.equals(name) || &quot;protected&quot;.equals(name)) {</span>
+<span class="fc" id="L972">            return Model.getVisibilityKind().getProtected();</span>
+<span class="pc bpc" id="L973" title="2 of 4 branches missed.">        } else if (&quot;~&quot;.equals(name) || &quot;package&quot;.equals(name)) {</span>
+<span class="nc" id="L974">            return Model.getVisibilityKind().getPackage();</span>
+        } else {
+            /* if (&quot;-&quot;.equals(name) || &quot;private&quot;.equals(name)) */
+<span class="fc" id="L977">            return Model.getVisibilityKind().getPrivate();</span>
+        }
+    }
+
+    /**
+     * Generate the text for one or more stereotype(s).
+     * 
+     * @param st One of:
+     *            &lt;ul&gt;
+     *            &lt;li&gt;a stereotype UML object&lt;/li&gt;
+     *            &lt;li&gt;a string&lt;/li&gt;
+     *            &lt;li&gt;a collection of stereotypes&lt;/li&gt;
+     *            &lt;li&gt;a modelelement of which the stereotypes are retrieved&lt;/li&gt;
+     *            &lt;/ul&gt;
+     * @param useGuillemets true if Unicode double angle bracket quote
+     *            characters should be used.
+     * @return fully formatted string with list of stereotypes separated by
+     *         commas and surround in brackets
+     */
+    public static String generateStereotype(Object st, boolean useGuillemets) {
+<span class="pc bpc" id="L997" title="1 of 2 branches missed.">        if (st == null) {</span>
+<span class="nc" id="L998">            return &quot;&quot;;</span>
+        }
+
+<span class="fc bfc" id="L1001" title="All 2 branches covered.">        if (st instanceof String) {</span>
+<span class="fc" id="L1002">            return formatStereotype((String) st, useGuillemets);</span>
+        }
+<span class="pc bpc" id="L1004" title="1 of 2 branches missed.">        if (Model.getFacade().isAStereotype(st)) {</span>
+<span class="nc" id="L1005">            return formatStereotype(Model.getFacade().getName(st),</span>
+                    useGuillemets);
+        }
+
+<span class="fc bfc" id="L1009" title="All 2 branches covered.">        if (Model.getFacade().isAModelElement(st)) {</span>
+<span class="fc" id="L1010">            st = Model.getFacade().getStereotypes(st);</span>
+        }
+        
+<span class="pc bpc" id="L1013" title="1 of 2 branches missed.">        if (st instanceof Collection) {</span>
+<span class="fc" id="L1014">            String result = null;</span>
+<span class="fc" id="L1015">            boolean found = false;</span>
+<span class="fc bfc" id="L1016" title="All 2 branches covered.">            for (Object stereotype : (Collection) st) {</span>
+<span class="fc" id="L1017">                String name =  Model.getFacade().getName(stereotype);</span>
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">                if (!found) {</span>
+<span class="fc" id="L1019">                    result = name;</span>
+<span class="fc" id="L1020">                    found = true;</span>
+                } else {
+                    // Allow concatenation order and separator to be localized
+<span class="fc" id="L1023">                    result = Translator.localize(&quot;misc.stereo.concatenate&quot;,</span>
+                            new Object[] {result, name});
+                }
+<span class="fc" id="L1026">            }</span>
+<span class="fc bfc" id="L1027" title="All 2 branches covered.">            if (found) {</span>
+<span class="fc" id="L1028">                return formatStereotype(result, useGuillemets);</span>
+            }
+        }
+<span class="fc" id="L1031">        return &quot;&quot;;</span>
+    }
+    
+    /**
+     * Create a string representation of a stereotype, keyword or comma separate
+     * list of names. This method just wraps the string in &lt;&lt;angle brackets&gt;&gt; or
+     * guillemets (double angle bracket characters) depending on the setting
+     * of the flag &lt;code&gt;useGuillemets&lt;/code&gt;.
+     * 
+     * @param name the name of the stereotype
+     * @param useGuillemets true if Unicode double angle bracket quote
+     *            characters should be used.
+     * @return the string representation
+     */
+    public static String formatStereotype(String name, boolean useGuillemets) {
+<span class="pc bpc" id="L1046" title="2 of 4 branches missed.">        if (name == null || name.length() == 0) {</span>
+<span class="nc" id="L1047">            return &quot;&quot;;</span>
+        }
+
+<span class="fc" id="L1050">        String key = &quot;misc.stereo.guillemets.&quot;</span>
+<span class="fc" id="L1051">                + Boolean.toString(useGuillemets);</span>
+<span class="fc" id="L1052">        return Translator.localize(key, new Object[] {name});</span>
+    }
+    
+
+    /**
+     * Generates the representation of a parameter on the display (diagram). The
+     * string to be returned will have the following syntax:
+     * &lt;p&gt;
+     * 
+     * kind name : type-expression = default-value
+     * 
+     * @see org.argouml.notation.NotationProvider2#generateParameter(java.lang.Object)
+     */
+    static String generateParameter(Object parameter) {
+<span class="fc" id="L1066">        StringBuffer s = new StringBuffer();</span>
+<span class="fc" id="L1067">        s.append(generateKind(Model.getFacade().getKind(parameter)));</span>
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">        if (s.length() &gt; 0) {</span>
+<span class="fc" id="L1069">            s.append(&quot; &quot;);</span>
+        }
+<span class="fc" id="L1071">        s.append(Model.getFacade().getName(parameter));</span>
+        String classRef =
+<span class="fc" id="L1073">            generateClassifierRef(Model.getFacade().getType(parameter));</span>
+<span class="pc bpc" id="L1074" title="1 of 2 branches missed.">        if (classRef.length() &gt; 0) {</span>
+<span class="fc" id="L1075">            s.append(&quot; : &quot;);</span>
+<span class="fc" id="L1076">            s.append(classRef);</span>
+        }
+        String defaultValue =
+<span class="fc" id="L1079">            generateExpression(Model.getFacade().getDefaultValue(parameter));</span>
+<span class="fc bfc" id="L1080" title="All 2 branches covered.">        if (defaultValue.length() &gt; 0) {</span>
+<span class="fc" id="L1081">            s.append(&quot; = &quot;);</span>
+<span class="fc" id="L1082">            s.append(defaultValue);</span>
+        }
+<span class="fc" id="L1084">        return s.toString();</span>
+    }
+
+    private static String generateExpression(Object expr) {
+<span class="fc bfc" id="L1088" title="All 2 branches covered.">        if (Model.getFacade().isAExpression(expr)) {</span>
+<span class="fc" id="L1089">            return generateUninterpreted(</span>
+<span class="fc" id="L1090">                    (String) Model.getFacade().getBody(expr));</span>
+<span class="pc bpc" id="L1091" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAConstraint(expr)) {</span>
+<span class="nc" id="L1092">            return generateExpression(Model.getFacade().getBody(expr));</span>
+        }
+<span class="fc" id="L1094">        return &quot;&quot;;</span>
+    }
+
+    private static String generateUninterpreted(String un) {
+<span class="fc bfc" id="L1098" title="All 2 branches covered.">        if (un == null) {</span>
+<span class="fc" id="L1099">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L1101">        return un;</span>
+    }
+
+    private static String generateClassifierRef(Object cls) {
+<span class="pc bpc" id="L1105" title="1 of 2 branches missed.">        if (cls == null) {</span>
+<span class="nc" id="L1106">            return &quot;&quot;;</span>
+        }
+<span class="fc" id="L1108">        return Model.getFacade().getName(cls);</span>
+    }
+
+    private static String generateKind(Object /*Parameter etc.*/ kind) {
+<span class="fc" id="L1112">        StringBuffer s = new StringBuffer();</span>
+        // TODO: I18N
+<span class="pc bpc" id="L1114" title="1 of 2 branches missed.">        if (kind == null /* &quot;in&quot; is the default */</span>
+<span class="fc bfc" id="L1115" title="All 2 branches covered.">                || kind == Model.getDirectionKind().getInParameter()) {</span>
+<span class="fc" id="L1116">            s.append(/*&quot;in&quot;*/ &quot;&quot;); /* See issue 3421. */</span>
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">        } else if (kind == Model.getDirectionKind().getInOutParameter()) {</span>
+<span class="fc" id="L1118">            s.append(&quot;inout&quot;);</span>
+<span class="pc bpc" id="L1119" title="1 of 2 branches missed.">        } else if (kind == Model.getDirectionKind().getReturnParameter()) {</span>
+            // return nothing
+<span class="pc bpc" id="L1121" title="1 of 2 branches missed.">        } else if (kind == Model.getDirectionKind().getOutParameter()) {</span>
+<span class="fc" id="L1122">            s.append(&quot;out&quot;);</span>
+        }
+<span class="fc" id="L1124">        return s.toString();</span>
+    }
+
+    /**
+     * @param tv a tagged value
+     * @return a string that represents the tagged value
+     */
+    static String generateTaggedValue(Object tv) {
+<span class="nc bnc" id="L1132" title="All 2 branches missed.">        if (tv == null) {</span>
+<span class="nc" id="L1133">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L1135">        return Model.getFacade().getTagOfTag(tv)</span>
+            + &quot;=&quot;
+<span class="nc" id="L1137">            + generateUninterpreted(Model.getFacade().getValueOfTag(tv));</span>
+    }
+
+    /**
+     * Generate the text of a multiplicity.
+     * 
+     * @param element a multiplicity or an element which has a multiplicity
+     * @param showSingularMultiplicity if false return the empty string for 1..1
+     *            multiplicities.
+     * @return a string containing the formatted multiplicity,
+     * or the empty string
+     */
+    public static String generateMultiplicity(Object element, 
+            boolean showSingularMultiplicity) {
+        Object multiplicity;
+<span class="nc bnc" id="L1152" title="All 2 branches missed.">        if (Model.getFacade().isAMultiplicity(element)) { </span>
+<span class="nc" id="L1153">            multiplicity = element;</span>
+<span class="nc bnc" id="L1154" title="All 2 branches missed.">        } else if (Model.getFacade().isAUMLElement(element)) {</span>
+<span class="nc" id="L1155">            multiplicity = Model.getFacade().getMultiplicity(element);</span>
+        } else {
+<span class="nc" id="L1157">            throw new IllegalArgumentException();</span>
+        }
+        // it can still be null if the UML element 
+        // did not have a multiplicity defined.
+<span class="nc bnc" id="L1161" title="All 2 branches missed.">        if (multiplicity != null) {</span>
+<span class="nc" id="L1162">            int upper = Model.getFacade().getUpper(multiplicity);</span>
+<span class="nc" id="L1163">            int lower = Model.getFacade().getLower(multiplicity);</span>
+<span class="nc bnc" id="L1164" title="All 6 branches missed.">            if (lower != 1 || upper != 1 || showSingularMultiplicity) {</span>
+                // TODO: I18N
+<span class="nc" id="L1166">                return Model.getFacade().toString(multiplicity);</span>
+            }
+        }
+<span class="nc" id="L1169">        return &quot;&quot;;</span>
+    }
+    
+    /**
+     * @param umlAction the action
+     * @return the generated text (never null)
+     */
+    static String generateAction(Object umlAction) {
+        Collection c;
+        Iterator it;
+        String s;
+        StringBuilder p;
+        boolean first;
+<span class="fc bfc" id="L1182" title="All 2 branches covered.">        if (umlAction == null) {</span>
+<span class="fc" id="L1183">            return &quot;&quot;;</span>
+        }
+
+<span class="fc" id="L1186">        Object script = Model.getFacade().getScript(umlAction);</span>
+
+<span class="pc bpc" id="L1188" title="1 of 4 branches missed.">        if ((script != null) &amp;&amp; (Model.getFacade().getBody(script) != null)) {</span>
+<span class="fc" id="L1189">            s = Model.getFacade().getBody(script).toString();</span>
+        } else {
+<span class="fc" id="L1191">            s = &quot;&quot;;</span>
+        }
+
+<span class="fc" id="L1194">        p = new StringBuilder();</span>
+<span class="fc" id="L1195">        c = Model.getFacade().getActualArguments(umlAction);</span>
+<span class="pc bpc" id="L1196" title="1 of 2 branches missed.">        if (c != null) {</span>
+<span class="fc" id="L1197">            it = c.iterator();</span>
+<span class="fc" id="L1198">            first = true;</span>
+<span class="fc bfc" id="L1199" title="All 2 branches covered.">            while (it.hasNext()) {</span>
+<span class="fc" id="L1200">                Object arg = it.next();</span>
+<span class="pc bpc" id="L1201" title="1 of 2 branches missed.">                if (!first) {</span>
+                    // TODO: I18N
+<span class="nc" id="L1203">                    p.append(&quot;, &quot;);</span>
+                }
+
+<span class="pc bpc" id="L1206" title="1 of 2 branches missed.">                if (Model.getFacade().getValue(arg) != null) {</span>
+<span class="fc" id="L1207">                    p.append(generateExpression(</span>
+<span class="fc" id="L1208">                            Model.getFacade().getValue(arg)));</span>
+                }
+<span class="fc" id="L1210">                first = false;</span>
+<span class="fc" id="L1211">            }</span>
+        }
+<span class="fc bfc" id="L1213" title="All 4 branches covered.">        if (s.length() == 0 &amp;&amp; p.length() == 0) {</span>
+<span class="fc" id="L1214">            return &quot;&quot;;</span>
+        }
+
+        /* If there are no arguments, then do not show the ().
+         * This solves issue 1758.
+         * Arguments are not supported anyhow in the UI yet.
+         * These brackets are easily confused with the brackets
+         * for the Operation of a CallAction.
+         */
+<span class="fc bfc" id="L1223" title="All 2 branches covered.">        if (p.length() == 0) {</span>
+<span class="fc" id="L1224">            return s;</span>
+        }
+
+        // TODO: I18N
+<span class="fc" id="L1228">        return s + &quot; (&quot; + p + &quot;)&quot;;</span>
+    }
+
+    /**
+     * Generate a textual representation of the given Action or ActionSequence 
+     * according the UML standard notation.
+     * 
+     * @param a the UML Action or ActionSequence
+     * @return the generated textual representation 
+     * of the given action(sequence).
+     * This value is guaranteed NOT null.
+     */
+    public static String generateActionSequence(Object a) {
+<span class="pc bpc" id="L1241" title="1 of 2 branches missed.">        if (Model.getFacade().isAActionSequence(a)) {</span>
+<span class="nc" id="L1242">            StringBuffer str = new StringBuffer(&quot;&quot;);</span>
+<span class="nc" id="L1243">            Collection actions = Model.getFacade().getActions(a);</span>
+<span class="nc" id="L1244">            Iterator i = actions.iterator();</span>
+<span class="nc bnc" id="L1245" title="All 2 branches missed.">            if (i.hasNext()) {</span>
+<span class="nc" id="L1246">                str.append(generateAction(i.next()));</span>
+            }
+<span class="nc bnc" id="L1248" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L1249">                str.append(&quot;; &quot;);</span>
+<span class="nc" id="L1250">                str.append(generateAction(i.next()));</span>
+            }
+<span class="nc" id="L1252">            return str.toString();</span>
+        } else {
+<span class="fc" id="L1254">            return generateAction(a);</span>
+        }
+    }
+    
+    static StringBuilder formatNameList(Collection modelElements) {
+<span class="fc" id="L1259">        return formatNameList(modelElements, LIST_SEPARATOR);</span>
+    }
+
+    static StringBuilder formatNameList(Collection modelElements, 
+            String separator) {
+<span class="fc" id="L1264">        StringBuilder result = new StringBuilder();</span>
+<span class="fc bfc" id="L1265" title="All 2 branches covered.">        for (Object element : modelElements) {</span>
+<span class="fc" id="L1266">            String name = Model.getFacade().getName(element);</span>
+            // TODO: Any special handling for null names? append will use &quot;null&quot;
+<span class="fc" id="L1268">            result.append(name).append(separator);</span>
+<span class="fc" id="L1269">        }</span>
+<span class="fc bfc" id="L1270" title="All 2 branches covered.">        if (result.length() &gt;= separator.length()) {</span>
+<span class="fc" id="L1271">            result.delete(result.length() - separator.length(), </span>
+<span class="fc" id="L1272">                    result.length());</span>
+        }
+<span class="fc" id="L1274">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

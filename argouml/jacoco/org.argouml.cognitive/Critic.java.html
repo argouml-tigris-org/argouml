@@ -1,0 +1,1052 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Critic.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">Critic.java</span></div><h1>Critic.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Observable;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.critics.SnoozeOrder;
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+
+/**
+ * &quot;Abstract&quot; base class for design critics.  Each subclass should define
+ * its own predicate method and define its own relevance tags. &lt;p&gt;
+ *
+ * A critic supports design goals and decisions, which can be adjusted
+ * accordingly. It will post todo items which may or may not be relevant to
+ * the particular designer.&lt;p&gt;
+ *
+ * Steps to follow when adding a critic are listed in the Argo
+ * cookbook under &lt;a HREF=&quot;../cookbook.html#define_critic&quot;&gt;
+ * define_critic&lt;/a&gt;.
+ *
+ * @author Jason Robbins
+ */
+public class Critic
+    extends Observable
+    implements Poster, Serializable {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L81">    private static final Logger LOG = Logger.getLogger(Critic.class.getName());</span>
+
+    ////////////////////////////////////////////////////////////////
+    // constants
+
+    /**
+     * PROBLEM_FOUND is used for the result of the check of a critic.
+     */
+    public static final boolean PROBLEM_FOUND = true;
+
+    /**
+     * NO_PROBLEM is used for the result of the check of a critic.
+     */
+    public static final boolean NO_PROBLEM = false;
+
+    /**
+     * The keys of some predefined control records.
+     */
+    private static final String ENABLED = &quot;enabled&quot;;
+    private static final String SNOOZE_ORDER = &quot;snoozeOrder&quot;;
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L105">    public static final String KT_DESIGNERS =</span>
+<span class="fc" id="L106">	Translator.localize(&quot;misc.knowledge.designers&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L111">    public static final String KT_CORRECTNESS =</span>
+<span class="fc" id="L112">	Translator.localize(&quot;misc.knowledge.correctness&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L117">    public static final String KT_COMPLETENESS =</span>
+<span class="fc" id="L118">	Translator.localize(&quot;misc.knowledge.completeness&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L123">    public static final String KT_CONSISTENCY =</span>
+<span class="fc" id="L124">	Translator.localize(&quot;misc.knowledge.consistency&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L129">    public static final String KT_SYNTAX =</span>
+<span class="fc" id="L130">	Translator.localize(&quot;misc.knowledge.syntax&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L135">    public static final String KT_SEMANTICS =</span>
+<span class="fc" id="L136">	Translator.localize(&quot;misc.knowledge.semantics&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L141">    public static final String KT_OPTIMIZATION =</span>
+<span class="fc" id="L142">	Translator.localize(&quot;misc.knowledge.optimization&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L147">    public static final String KT_PRESENTATION =</span>
+<span class="fc" id="L148">	Translator.localize(&quot;misc.knowledge.presentation&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L153">    public static final String KT_ORGANIZATIONAL =</span>
+<span class="fc" id="L154">	Translator.localize(&quot;misc.knowledge.organizational&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L159">    public static final String KT_EXPERIENCIAL =</span>
+<span class="fc" id="L160">	Translator.localize(&quot;misc.knowledge.experiential&quot;);</span>
+
+    /**
+     * Type of knowledge that critics can deliver.
+     */
+<span class="fc" id="L165">    public static final String KT_TOOL =</span>
+<span class="fc" id="L166">	Translator.localize(&quot;misc.knowledge.tool&quot;);</span>
+
+    /**
+     * This function calculates the default URL to describe this critic.
+     *
+     * @return the URL in string format
+     */
+    public final String defaultMoreInfoURL() {
+<span class="fc" id="L174">	String clsName = getClass().getName();</span>
+<span class="fc" id="L175">	clsName = clsName.substring(clsName.lastIndexOf(&quot;.&quot;) + 1);</span>
+<span class="fc" id="L176">	String singleVersionURL =</span>
+<span class="fc" id="L177">	    Translator.localize(&quot;tab.help.path.manualcritic&quot;)</span>
+	    + &quot;manual-&quot;
+<span class="fc" id="L179">	    + ApplicationVersion.getStableVersion()</span>
+	    + &quot;-single/argomanual.html&quot;;
+<span class="fc" id="L181">	return singleVersionURL + &quot;#critics.&quot; + clsName;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+    /**
+     * The priority of the ToDoItem produced.
+     */
+    private int priority;
+
+    /**
+     * The headline of the ToDoItem produced.
+     */
+    private String headline;
+
+    /**
+     * The description of the ToDoItem produced.
+     */
+    private String description;
+
+    /**
+     * The moreInfoURL of the ToDoItem produced.
+     */
+    private String moreInfoURL;
+
+    /**
+     * The icon representing the resource.
+     */
+<span class="fc" id="L210">    public static final Icon DEFAULT_CLARIFIER =</span>
+	ResourceLoaderWrapper
+<span class="fc" id="L212">	    .lookupIconResource(&quot;PostIt0&quot;);</span>
+
+<span class="fc" id="L214">    private Icon clarifier = DEFAULT_CLARIFIER;</span>
+
+    /**
+     * The decision category that this critic is relevant to. The idea
+     * of each critic being relevant to exactly one type of decision
+     * is a very simple one.  Subclasses that have more sophisticated
+     * decision relevance logic should override isRelevantToDecisions.
+     * You can also define new ControlMech's. &lt;p&gt;
+     *
+     * Decision categories are defined in the DecisionModel of a
+     * particular domain.
+     *
+     * @see ControlMech
+     */
+    private String decisionCategory;
+
+<span class="fc" id="L230">    private List&lt;Decision&gt; supportedDecisions = new ArrayList&lt;Decision&gt;();</span>
+
+<span class="fc" id="L232">    private List&lt;Goal&gt; supportedGoals = new ArrayList&lt;Goal&gt;();</span>
+
+    /**
+     * The decision type of this critic.  For example, correctness,
+     * completeness, consistency, alternative, presentation,
+     * optimization, organizational, tool critics, etc.
+     */
+    private String criticType;
+
+    /**
+     * Internal flag that stores the end result of all ControlMech
+     * evaluations of this critic.
+     */
+<span class="fc" id="L245">    private boolean isActive = true;</span>
+
+    /**
+     * Control records used in determining if this Critic should be
+     * active.
+     */
+<span class="fc" id="L251">    private Hashtable&lt;String, Object&gt; controlRecs =</span>
+        new Hashtable&lt;String, Object&gt;();
+
+<span class="fc" id="L254">    private ListSet&lt;String&gt; knowledgeTypes = new ListSet&lt;String&gt;();</span>
+<span class="fc" id="L255">    private long triggerMask = 0L;</span>
+
+    ////////////////////////////////////////////////////////////////
+    // constructor
+
+    /**
+     * Construct a new critic instance.  Typically only one instance of
+     * each critic class is created and stored in a static variable, as
+     * per the Singleton pattern.  Each domain extension should define
+     * a static initializer block to make one instance of each critic and
+     * call {@link Agency#register(Critic, Object)} with that instance.
+     */
+<span class="fc" id="L267">    public Critic() {</span>
+	/* TODO:  THIS IS A HACK.
+	 * A much better way of doing this would be not to start
+	 * the critic in the first place.
+	 */
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">	if (Configuration.getBoolean(getCriticKey(), true)) {</span>
+<span class="fc" id="L273">	    addControlRec(ENABLED, Boolean.TRUE);</span>
+<span class="fc" id="L274">	    isActive = true;</span>
+	} else {
+<span class="nc" id="L276">	    addControlRec(ENABLED, Boolean.FALSE);</span>
+<span class="nc" id="L277">	    isActive = false;</span>
+	}
+<span class="fc" id="L279">	addControlRec(SNOOZE_ORDER, new SnoozeOrder());</span>
+<span class="fc" id="L280">	criticType = &quot;correctness&quot;;</span>
+<span class="fc" id="L281">	knowledgeTypes.add(KT_CORRECTNESS);</span>
+<span class="fc" id="L282">	decisionCategory = &quot;Checking&quot;;</span>
+
+<span class="fc" id="L284">	moreInfoURL = defaultMoreInfoURL();</span>
+<span class="fc" id="L285">	description = Translator.localize(&quot;misc.critic.no-description&quot;);</span>
+<span class="fc" id="L286">	headline = Translator.messageFormat(&quot;misc.critic.default-headline&quot;,</span>
+<span class="fc" id="L287">	        new Object[] {getClass().getName()});</span>
+<span class="fc" id="L288">	priority = ToDoItem.MED_PRIORITY;</span>
+<span class="fc" id="L289">    }</span>
+
+    /**
+     * Returns the {@link org.argouml.configuration.ConfigurationKey}
+     * that the critic uses to determine if it is enabled or disabled.&lt;p&gt;
+     *
+     * The string resulting from the ConfigurationKey
+     * &lt;code&gt;argo.critic.critic_category.critic_name&lt;/code&gt;.&lt;p&gt;
+     *
+     * &lt;code&gt;critic_category&lt;/code&gt; would describe the type of critic and is
+     * taken from {@link #getCriticCategory}.&lt;p&gt;
+     *
+     * &lt;code&gt;critic_name&lt;/code&gt; would describe the function of the critic
+     * and is taken from {@link #getCriticName}.&lt;p&gt;
+     *
+     * Some examples:&lt;p&gt;
+     * &lt;ul&gt;
+     * &lt;li&gt;argo.critic.layout.Overlap
+     * &lt;li&gt;argo.critic.uml.ReservedWord
+     * &lt;li&gt;argo.critic.java.ReservedWord
+     * &lt;li&gt;argo.critic.idl.ReservedWord
+     * &lt;/ul&gt;
+     *
+     * @see org.argouml.configuration.Configuration#makeKey(String,
+     *         String, String)
+     * @see #getCriticCategory
+     * @see #getCriticName
+     *
+     * @since 0.9.4
+     *
+     * @return the key
+     */
+    public ConfigurationKey getCriticKey() {
+<span class="fc" id="L322">	return Configuration.makeKey(&quot;critic&quot;,</span>
+<span class="fc" id="L323">				     getCriticCategory(),</span>
+<span class="fc" id="L324">				     getCriticName());</span>
+    }
+
+    /**
+     * Returns a default critic category.
+     * Critics should override this
+     * to provide specific classification information.
+     *
+     * @since 0.9.4
+     *
+     * @return a default category
+     */
+    public String getCriticCategory() {
+<span class="fc" id="L337">	return Translator.localize(&quot;misc.critic.unclassified&quot;);</span>
+    }
+
+    /**
+     * Returns a default critic name.
+     * By default this is the simple class name.
+     * Critic implementations should override this
+     * to provide a better (more descriptive) string.
+     *
+     * @since 0.9.4
+     *
+     * @return a default critic name
+     */
+    public String getCriticName() {
+<span class="fc" id="L351">	return getClass().getName()</span>
+<span class="fc" id="L352">	    .substring(getClass().getName().lastIndexOf(&quot;.&quot;) + 1);</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // critiquing
+
+    /**
+     * Examine the given Object and Designer and, if
+     * appropriate, produce one or more ToDoItem's and add them to the
+     * offending design material's and the Designer's ToDoList. By
+     * default this is basically a simple if-statement that relies on
+     * predicate() to determine if there is some appropriate feedback,
+     * and toDoItem() to produce the ToDoItem.
+     *
+     * The predicate() and toDoItem() pair of methods is simple and
+     * convient for many critics. More sophisticated critics that
+     * produce more than one ToDoItem per critiquing, or that produce
+     * ToDoItem's that contain information that was already computed in
+     * the predicate, should override critique. If you override this
+     * method, you should call super.critique().
+     *
+     * @see Critic#predicate
+     * @see Critic#toDoItem
+     *
+     * @param dm            the design material
+     * @param dsgr          the designer
+     */
+    public void critique(Object dm, Designer dsgr) {
+	// The following debug line is now the single most memory consuming
+	// line in the whole of ArgoUML. It allocates approximately 18% of
+	// all memory allocated.
+	// Suggestions for solutions:
+  // Check if there is a LOG.log(Level.FINE,String, String) method that can
+	// be used instead.
+	// Use two calls.
+	// For now I (Linus) just comment it out.
+  // LOG.log(Level.FINE, &quot;applying critic: &quot; + _headline);
+<span class="nc bnc" id="L389" title="All 2 branches missed.">	if (predicate(dm, dsgr)) {</span>
+      // LOG.log(Level.FINE, &quot;predicate() returned true, creating ToDoItem&quot;);
+<span class="nc" id="L391">	    ToDoItem item = toDoItem(dm, dsgr);</span>
+<span class="nc" id="L392">	    postItem(item, dm, dsgr);</span>
+	}
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * @param item the todo item
+     * @param dm the designmaterial/offender to be informed
+     * @param dsgr the designer
+     */
+    public void postItem(ToDoItem item, Object dm, Designer dsgr) {
+<span class="nc bnc" id="L402" title="All 2 branches missed.">	if (dm instanceof Offender) {</span>
+<span class="nc" id="L403">	    ((Offender) dm).inform(item);</span>
+	}
+<span class="nc" id="L405">	dsgr.inform(item);</span>
+<span class="nc" id="L406">    }</span>
+
+
+
+    /**
+     * Perform the Critic's analysis of the design. Subclasses should test
+     * the given Object to make sure that it is the type of
+     * object that is expected.  Each object in the design registers its
+     * own critics with the run-time system. The dm parameter is bound
+     * to each design object that registered this critic, one per
+     * call. Returning true means that feedback should be delivered to
+     * the Designer. By convention, subclasses should return their
+     * superclass predicate method if their own predicate would
+     * return false.
+     *
+     * @param dm the design material, which is to be checked
+     * @param dsgr the designer
+     * @return the critic result
+     */
+    public boolean predicate(Object dm, Designer dsgr) {
+<span class="fc" id="L426">	return false;</span>
+    }
+
+    /**
+     * Return true iff the given ToDoItem is still valid and should be
+     * kept in the given designers ToDoList. Critics that are not
+     * enabled should always return false so that their ToDoItems will
+     * be removed. Subclasses of Critic that supply multiple offenders
+     * should always override this method. &lt;p&gt;
+     *
+     * By default this method basically asks the critic to again
+     * critique the offending Object and then it checks if the
+     * resulting ToDoItem is the same as the one already posted. This is
+     * simple and it works fine for light-weight critics. Critics that
+     * expend a lot of computational effort in making feedback that can
+     * be easily check to see if it still holds, should override this
+     * method. &lt;p&gt;
+     *
+     * TODO: Maybe ToDoItem should carry some data to make
+     * this method more efficient.
+     *
+     * {@inheritDoc}
+     */
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+<span class="nc bnc" id="L450" title="All 2 branches missed.">	if (!isActive()) {</span>
+<span class="nc" id="L451">      LOG.log(Level.WARNING, &quot;got to stillvalid while not active&quot;);</span>
+<span class="nc" id="L452">	    return false;</span>
+	}
+<span class="nc bnc" id="L454" title="All 2 branches missed.">	if (i.getOffenders().size() != 1) {</span>
+<span class="nc" id="L455">	    return true;</span>
+	}
+<span class="nc bnc" id="L457" title="All 2 branches missed.">	if (predicate(i.getOffenders().get(0), dsgr)) {</span>
+	    // Now we know that this critic is still valid. What we need to
+	    // figure out is if the corresponding to-do item is still valid.
+	    // The to-do item is to be replaced if the name of some offender
+	    // has changed that affects its description or if the contents
+	    // of the list of offenders has changed.
+	    // We check that by creating a new ToDoItem and then verifying
+	    // that it looks exactly the same.
+	    // This really creates a lot of to-do items that goes to waste.
+<span class="nc" id="L466">	    ToDoItem item = toDoItem(i.getOffenders().get(0), dsgr);</span>
+<span class="nc" id="L467">	    return (item.equals(i));</span>
+	}
+<span class="nc" id="L469">	return false;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Decision)
+     */
+    public boolean supports(Decision d) {
+<span class="nc" id="L476">	return supportedDecisions.contains(d);</span>
+    }
+
+    public List&lt;Decision&gt; getSupportedDecisions() {
+<span class="fc" id="L480">        return supportedDecisions;</span>
+    }
+
+    /**
+     * @param d the decision
+     */
+    public void addSupportedDecision(Decision d) {
+<span class="fc" id="L487">	supportedDecisions.add(d);</span>
+<span class="fc" id="L488">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.Poster#supports(org.argouml.cognitive.Goal)
+     */
+    public boolean supports(Goal g) {
+<span class="nc" id="L494">        return supportedGoals.contains(g);</span>
+    }
+
+    public List&lt;Goal&gt; getSupportedGoals() {
+<span class="nc" id="L498">        return supportedGoals;</span>
+    }
+    /**
+     * @param g the goal
+     */
+    public void addSupportedGoal(Goal g) {
+<span class="fc" id="L504">	supportedGoals.add(g);</span>
+<span class="fc" id="L505">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.Poster#containsKnowledgeType(java.lang.String)
+     */
+    public boolean containsKnowledgeType(String type) {
+<span class="nc" id="L511">	return knowledgeTypes.contains(type);</span>
+    }
+
+    /**
+     * @param type the knowledgetype
+     */
+    public void addKnowledgeType(String type) {
+<span class="fc" id="L518">	knowledgeTypes.add(type);</span>
+<span class="fc" id="L519">    }</span>
+
+    /**
+     * @return the knowledgetypes
+     */
+    public ListSet&lt;String&gt; getKnowledgeTypes() {
+<span class="nc" id="L525">        return knowledgeTypes;</span>
+    }
+
+    /**
+     * @param kt the knowledgetypes
+     */
+    public void setKnowledgeTypes(ListSet&lt;String&gt; kt) {
+<span class="nc" id="L532">        knowledgeTypes = kt;</span>
+<span class="nc" id="L533">    }</span>
+
+    /**
+     * Reset all knowledgetypes, and add the given one.
+     *
+     * @param t1 the only knowledgetype in string format
+     */
+    public void setKnowledgeTypes(String t1) {
+<span class="fc" id="L541">	knowledgeTypes = new ListSet&lt;String&gt;();</span>
+<span class="fc" id="L542">	addKnowledgeType(t1);</span>
+<span class="fc" id="L543">    }</span>
+
+    /**
+     * Reset all knowledgetypes, and add the given ones.
+     *
+     * @param t1 a knowledgetype in string format
+     * @param t2 a knowledgetype in string format
+     */
+    public void setKnowledgeTypes(String t1, String t2) {
+<span class="fc" id="L552">	knowledgeTypes = new ListSet&lt;String&gt;();</span>
+<span class="fc" id="L553">	addKnowledgeType(t1);</span>
+<span class="fc" id="L554">	addKnowledgeType(t2);</span>
+<span class="fc" id="L555">    }</span>
+
+    /**
+     * Reset all knowledgetypes, and add the given ones.
+     *
+     * @param t1 a knowledgetype in string format
+     * @param t2 a knowledgetype in string format
+     * @param t3 a knowledgetype in string format
+     */
+    public void setKnowledgeTypes(String t1, String t2, String t3) {
+<span class="nc" id="L565">	knowledgeTypes = new ListSet&lt;String&gt;();</span>
+<span class="nc" id="L566">	addKnowledgeType(t1);</span>
+<span class="nc" id="L567">	addKnowledgeType(t2);</span>
+<span class="nc" id="L568">	addKnowledgeType(t3);</span>
+<span class="nc" id="L569">    }</span>
+
+    /**
+     * @param s the reason
+     * @return the code for the given reason
+     */
+    public static int reasonCodeFor(String s) {
+<span class="fc" id="L576">	return 1 &lt;&lt; (s.hashCode() % 62);</span>
+    }
+
+    /**
+     * @return the trigger mask
+     */
+    public long getTriggerMask() {
+<span class="nc" id="L583">        return triggerMask;</span>
+    }
+
+    /**
+     * @param s the trigger to be added (is ORed into the mask)
+     */
+    public void addTrigger(String s) {
+<span class="fc" id="L590">	int newCode = reasonCodeFor(s);</span>
+<span class="fc" id="L591">	triggerMask |= newCode;</span>
+<span class="fc" id="L592">    }</span>
+
+    /**
+     * @param patternCode the mask to be checked
+     * @return true if it matches a trigger
+     */
+    public boolean matchReason(long patternCode) {
+<span class="nc bnc" id="L599" title="All 4 branches missed.">	return (triggerMask == 0) || ((triggerMask &amp; patternCode) != 0);</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#expand(java.lang.String, org.argouml.cognitive.ListSet)
+     */
+    public String expand(String desc, ListSet offs) {
+<span class="fc" id="L606">        return desc;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
+    public Icon getClarifier() {
+<span class="nc" id="L613">	return clarifier;</span>
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // criticism control
+
+    /**
+     * Reply true iff this Critic can execute. This fact is normally
+     * determined by a ControlMech.
+     *
+     * @return true iff this Critic can execute
+     */
+<span class="fc" id="L626">    public boolean isActive() { return isActive; }</span>
+
+    /**
+     * Make this critic active. From now on it can be applied to a
+     * design material in critiquing.
+     */
+    public void beActive() {
+<span class="pc bpc" id="L633" title="1 of 2 branches missed.">	if (!isActive) {</span>
+<span class="fc" id="L634">	    Configuration.setBoolean(getCriticKey(), true);</span>
+<span class="fc" id="L635">            isActive = true;</span>
+<span class="fc" id="L636">            setChanged();</span>
+<span class="fc" id="L637">            notifyObservers(this);</span>
+	}
+<span class="fc" id="L639">    }</span>
+
+    /**
+     * Make this critic inactive. From now on it will be idle and will
+     * not be applied to a design material in critiquing.
+     */
+    public void beInactive() {
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">	if (isActive) {</span>
+<span class="fc" id="L647">	    Configuration.setBoolean(getCriticKey(), false);</span>
+<span class="fc" id="L648">            isActive = false;</span>
+<span class="fc" id="L649">            setChanged();</span>
+<span class="fc" id="L650">            notifyObservers(this);</span>
+	}
+<span class="fc" id="L652">    }</span>
+
+
+
+    /**
+     * Add some attribute used by ControlMech to determine if this
+     * Critic should be active. Critics store control record so that
+     * stateful ControlMech's do not need to store a parallel data
+     * structure. But Critic's do not directy use or modify this
+     * data.
+     *
+     * @param name          the key
+     * @param controlData   the value
+     * @return              the previous value of the specified key
+     *                     in this hashtable, or &lt;code&gt;null&lt;/code&gt;
+     *                     if it did not have one
+     */
+    public Object addControlRec(String name, Object controlData) {
+<span class="fc" id="L670">	return controlRecs.put(name, controlData);</span>
+    }
+
+    /**
+     * Reply the named control record, or null if not defined.
+     *
+     * @param name the key
+     * @return the value
+     */
+    public Object getControlRec(String name) {
+<span class="fc" id="L680">	return controlRecs.get(name);</span>
+    }
+
+    /**
+     * This is a convient method for accessing one well-known control
+     * record. The enabled control record is a boolean that the user can
+     * turn on or off to manually enable or disable this Critic. It is
+     * normally combined with other ControlMech determinations with a
+     * logic-and.
+     *
+     * @return true if enabled
+     */
+    public boolean isEnabled() {
+<span class="pc bpc" id="L693" title="1 of 2 branches missed.">        if (this.getCriticName() != null</span>
+<span class="pc bpc" id="L694" title="1 of 2 branches missed.">                &amp;&amp; this.getCriticName().equals(&quot;CrNoGuard&quot;)) {</span>
+<span class="nc" id="L695">            System.currentTimeMillis();</span>
+        }
+<span class="fc" id="L697">	return  ((Boolean) getControlRec(ENABLED)).booleanValue();</span>
+    }
+
+    /**
+     * @param e the value to be set for the key ENABLED
+     */
+    public void setEnabled(boolean e) {
+<span class="fc bfc" id="L704" title="All 2 branches covered.">	Boolean enabledBool = e ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="fc" id="L705">	addControlRec(ENABLED, enabledBool);</span>
+<span class="fc" id="L706">    }</span>
+
+    /**
+     * Reply the SnoozeOrder that is defined for this critic.
+     *
+     * @return the snooze order
+     */
+    public SnoozeOrder snoozeOrder() {
+<span class="fc" id="L714">	return (SnoozeOrder) getControlRec(SNOOZE_ORDER);</span>
+    }
+
+    /**
+     * Disable this Critic for the next few minutes.
+     */
+<span class="fc" id="L720">    public void snooze() { snoozeOrder().snooze(); }</span>
+
+    /**
+     * Lift any previous SnoozeOrder.
+     */
+<span class="fc" id="L725">    public void unsnooze() { snoozeOrder().unsnooze(); }</span>
+
+    /**
+     * Checks if the critic is currently snoozed.
+     * @return true if the critic is snoozed
+     */
+    public boolean isSnoozed() {
+<span class="nc" id="L732">        return snoozeOrder().getSnoozed();</span>
+    }
+
+    /**
+     * Reply true if this Critic is relevant to the decisions that
+     * the Designer is considering. By default just asks the Designer if
+     * he/she is considering my decisionCategory. Really this is
+     * something for a ControlMech to compute, but if a subclass of
+     * Critic encapsulates some information you may need to override
+     * this method.
+     *
+     * @param dsgr the designer
+     * @return true if relevant
+     */
+    public boolean isRelevantToDecisions(Designer dsgr) {
+<span class="fc bfc" id="L747" title="All 2 branches covered.">        for (Decision d : getSupportedDecisions()) {</span>
+        /* TODO: Make use of the constants defined in the ToDoItem class! */
+<span class="pc bpc" id="L749" title="1 of 4 branches missed.">	    if (d.getPriority() &gt; 0 &amp;&amp; d.getPriority() &lt;= getPriority()) {</span>
+<span class="fc" id="L750">		return true;</span>
+            }
+<span class="fc" id="L752">	}</span>
+<span class="fc" id="L753">	return false;</span>
+    }
+
+    /**
+     * Reply true iff this Critic is relevant to the goals that the
+     * Designer is trying to achieve. By default, all Critic's are
+     * relevant regardless of the GoalModel. Really this is something for a
+     * ControlMech to compute, but if a subclass of Critic encapsulates
+     * some information you may need to override this method. &lt;p&gt;
+     *
+     * TODO: I would like a better default action, but goals
+     * are typed and their values must be interpreted by critics. They
+     * are not as generic as the DecisionModel.
+     *
+     * @param dsgr the designer
+     * @return true if relevant
+     */
+    public boolean isRelevantToGoals(Designer dsgr) {
+<span class="fc" id="L771">	return true;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // corrective automations, wizards
+
+    /**
+     * Create a new Wizard to help the user fix the identified problem. This
+     * version assumes subclasses override getWizClass to return the appropriate
+     * Class of wizard. Critic subclasses that need to initialize their wizard
+     * might override this to call super.makeWizard() and then work with the
+     * result.
+     *
+     * @param item
+     *           the todo item
+     * @return the wizard
+     */
+    public Wizard makeWizard(ToDoItem item) {
+<span class="nc" id="L789">        Class wizClass = getWizardClass(item);</span>
+        // if wizClass is not a subclass of Wizard, print a warning
+<span class="nc bnc" id="L791" title="All 2 branches missed.">        if (wizClass != null) {</span>
+            try {
+<span class="nc" id="L793">                Wizard w = (Wizard) wizClass.newInstance();</span>
+<span class="nc" id="L794">                w.setToDoItem(item);</span>
+<span class="nc" id="L795">                initWizard(w);</span>
+<span class="nc" id="L796">                return w;</span>
+<span class="nc" id="L797">            } catch (IllegalAccessException illEx) {</span>
+<span class="nc" id="L798">                LOG.log(Level.SEVERE, &quot;Could not access wizard: &quot;, illEx);</span>
+<span class="nc" id="L799">            } catch (InstantiationException instEx) {</span>
+<span class="nc" id="L800">                LOG.log(Level.SEVERE, &quot;Could not instantiate wizard: &quot;, instEx);</span>
+<span class="nc" id="L801">            }</span>
+        }
+<span class="nc" id="L803">        return null;</span>
+    }
+
+    /**
+     * Return the Class of wizard that can fix the problem identifed by
+     * this critic.
+     * This method returns null, subclasses with wizards should override it.
+     *
+     * @param item the todo item
+     * @return null if no wizard is defined.
+     */
+    public Class getWizardClass(ToDoItem item) {
+<span class="nc" id="L815">        return null;</span>
+    }
+
+
+    /**
+     * Initialize a newly created wizard with information found by the
+     * critic.  This is called right after the wizard is made in
+     * makeWizard() and after the wizard's ToDoItem is set.  Any critic
+     * that supports wizards should probably override this method, and
+     * call super initWizard() first.
+     *
+     * @param w the wizard
+     */
+    public void initWizard(Wizard w) {
+<span class="nc" id="L829">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * Reply a string used to determine if this critic would be
+     * relevant to current design decisions. Strings returned from here
+     * are compared to strings in the DecisionModel.
+     *
+     * @return the decision category
+     */
+    public String getDecisionCategory() {
+<span class="nc" id="L842">        return decisionCategory;</span>
+    }
+
+    /**
+     * Set the decisionCategory, usually done in the constructor. I
+     * have not yet thought of a case where dynamically changing the
+     * Critic's decisionCategory is useful.
+     *
+     * @param c the category
+     */
+    protected void setDecisionCategory(String c) {
+<span class="nc" id="L853">        decisionCategory = c;</span>
+<span class="nc" id="L854">    }</span>
+
+    /**
+     * Reply a string used to contol critics according to
+     * type. Examples include: correctness, completeness, consistency,
+     * optimization, presentation, and alternative.
+     *
+     * @return the critic knowledge type
+     */
+    public String getCriticType() {
+<span class="nc" id="L864">        return criticType;</span>
+    }
+
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
+     * @param dm the design material
+     * @param dsgr the designer
+     * @return the headline
+     */
+    public String getHeadline(Object dm, Designer dsgr) {
+<span class="nc" id="L875">	return getHeadline();</span>
+    }
+
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
+     * @param offenders the set of offenders
+     * @param dsgr the designer
+     * @return the headline
+     */
+    public String getHeadline(ListSet offenders, Designer dsgr) {
+<span class="nc" id="L886">	return getHeadline(offenders.get(0), dsgr);</span>
+    }
+
+    /**
+     * Reply the headline used in feedback produced by this Critic.
+     *
+     * @return the headline
+     */
+    public String getHeadline() {
+<span class="fc" id="L895">        return headline;</span>
+    }
+
+    /**
+     * Set the headline used in feedback produced by this Critic.
+     *
+     * @param h the headline
+     */
+    public void setHeadline(String h) {
+<span class="fc" id="L904">        headline = h;</span>
+<span class="fc" id="L905">    }</span>
+
+    /**
+     * Reply the priority used in feedback produced by this Critic.
+     *
+     * @param offenders the offenders
+     * @param dsgr the designer
+     * @return the priority
+     */
+    public int getPriority(ListSet offenders, Designer dsgr) {
+<span class="nc" id="L915">	return priority;</span>
+    }
+
+    /**
+     * @param p the priority
+     */
+    public void setPriority(int p) {
+<span class="fc" id="L922">        priority = p;</span>
+<span class="fc" id="L923">    }</span>
+
+    /**
+     * @return the priority
+     */
+    public int getPriority() {
+<span class="fc" id="L929">	return priority;</span>
+    }
+
+    /**
+     * Reply the description used in feedback produced by this Critic.
+     *
+     * @param offenders the offenders
+     * @param dsgr the designer
+     * @return the description
+     */
+    public String getDescription(ListSet offenders, Designer dsgr) {
+<span class="nc" id="L940">	return description;</span>
+    }
+
+    /**
+     * @param d the description
+     */
+    public void setDescription(String d) {
+<span class="fc" id="L947">        description = d;</span>
+<span class="fc" id="L948">    }</span>
+
+    /**
+     * @return the description
+     */
+    public String getDescriptionTemplate() {
+<span class="nc" id="L954">	return description;</span>
+    }
+
+    /**
+     * Reply the moreInfoURL used in feedback produced by this Critic.
+     *
+     * @param offenders the offenders
+     * @param dsgr the designer
+     * @return the more-info-url
+     */
+    public String getMoreInfoURL(ListSet offenders, Designer dsgr) {
+<span class="nc" id="L965">	return moreInfoURL;</span>
+    }
+
+    /**
+     * @param m the more-info-url
+     */
+    public void setMoreInfoURL(String m) {
+<span class="fc" id="L972">        moreInfoURL = m;</span>
+<span class="fc" id="L973">    }</span>
+
+    /**
+     * @return the more-info-url
+     */
+    public String getMoreInfoURL() {
+<span class="nc" id="L979">	return getMoreInfoURL(null, null);</span>
+    }
+
+    /**
+     *  Get the design materials to be criticized by this critic
+     *
+     * @return the design materials
+     */
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L988">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L989">        return ret;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // design feedback
+
+    /**
+     * Reply the ToDoItem that the designer should see iff predicate()
+     * returns true. By default it just fills in the fields of the
+     * ToDoItem from accessor methods of this Critic. Critic Subclasses
+     * may override this method or the accessor methods to add computed
+     * fields to the ToDoItem.
+     *
+     * TODO: Critic's may want to add new fields to a
+     * ToDoItem to make stillValid more efficent.
+     *
+     * @see Critic#critique
+     *
+     * @param dm the offender
+     * @param dsgr the designer
+     * @return ToDoItem
+     */
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+<span class="nc" id="L1012">	return new ToDoItem(this, dm, dsgr);</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // issue resolution
+
+    /*
+     * TODO: Not implemented yet. The idea is that some
+     * problems identified by Critic's can be fixed with certain design
+     * manipulations (or transforms) that can be applied automatically
+     * to resolve the problem. This method replies true iff the given
+     * problem can be fixed. The fixIt() method actually does the fix.
+     *
+     * @see org.argouml.cognitive.Poster#canFixIt(org.argouml.cognitive.ToDoItem)
+     * Also
+     * @see Critic#fixIt
+     */
+    public boolean canFixIt(ToDoItem item) {
+<span class="nc" id="L1030">	return false;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#fixIt(org.argouml.cognitive.ToDoItem, java.lang.Object)
+     */
+    public void fixIt(ToDoItem item, Object arg) {
+<span class="nc" id="L1037">    }</span>
+
+
+    /*
+     * Reply a string that describes this Critic. Identical to getCriticName()
+     *
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+	//return getCriticName();
+<span class="nc" id="L1048">        return getHeadline();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
