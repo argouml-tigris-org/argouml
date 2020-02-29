@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollaborationsHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CollaborationsHelperMDRImpl.java</span></div><h1>CollaborationsHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.CollaborationsHelper;
+import org.argouml.model.CoreHelper;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
+import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
+import org.omg.uml.behavioralelements.collaborations.AssociationRole;
+import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.Interaction;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.UmlAssociation;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Helper class for UML BehavioralElements::Collaborations Package.
+ * &lt;p&gt;
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * Derived from NSUML implementation by:
+ * @author Thierry Lach
+ */
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">class CollaborationsHelperMDRImpl implements CollaborationsHelper {</span>
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+<span class="fc" id="L91">    private static final Logger LOG =</span>
+<span class="fc" id="L92">        Logger.getLogger(CollaborationsHelperMDRImpl.class.getName());</span>
+
+    /**
+     * Constructor.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L100">    CollaborationsHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L101">        modelImpl = implementation;</span>
+<span class="fc" id="L102">    }</span>
+
+
+    public Collection&lt;ClassifierRole&gt; getAllClassifierRoles(Object ns) {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L107">            throw new IllegalArgumentException();</span>
+        }
+
+        try {
+<span class="nc" id="L111">            List&lt;ClassifierRole&gt; list = new ArrayList&lt;ClassifierRole&gt;();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            for (Object o : ((Namespace) ns).getOwnedElement()) {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                if (o instanceof Namespace) {</span>
+<span class="nc" id="L114">                    list.addAll(getAllClassifierRoles(o));</span>
+                }
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if (o instanceof ClassifierRole) {</span>
+<span class="nc" id="L117">                    list.add((ClassifierRole) o);</span>
+                }
+<span class="nc" id="L119">            }</span>
+<span class="nc" id="L120">            return list;</span>
+<span class="nc" id="L121">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L122">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public Collection getAllPossibleAssociationRoles(Object roleArg) {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (!(roleArg instanceof ClassifierRole)) {</span>
+<span class="nc" id="L129">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L132">        ClassifierRole role = (ClassifierRole) roleArg;</span>
+
+        try {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if (role.getBase().isEmpty()) {</span>
+<span class="nc" id="L136">                return Collections.emptyList();</span>
+            }
+<span class="nc" id="L138">            Set associations = new HashSet();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">            for (Classifier base : role.getBase()) {</span>
+<span class="nc" id="L140">                associations.addAll(</span>
+<span class="nc" id="L141">                        modelImpl.getCoreHelper().getAssociations(base));</span>
+<span class="nc" id="L142">            }</span>
+<span class="nc" id="L143">            return associations;</span>
+<span class="nc" id="L144">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L145">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public Collection&lt;Classifier&gt; getClassifierRoles(Object role) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (role == null) {</span>
+<span class="nc" id="L152">            return Collections.emptySet();</span>
+        }
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        if (!(role instanceof ClassifierRole)) {</span>
+<span class="nc" id="L156">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L159">        List&lt;Classifier&gt; roles = new ArrayList&lt;Classifier&gt;();</span>
+        try {
+            Collection&lt;AssociationEnd&gt; associationEnds =
+<span class="nc" id="L162">                Model.getFacade().getAssociationEnds(role);</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">            if (!associationEnds.isEmpty()) {</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                for (AssociationEnd end : associationEnds) {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                    if (end instanceof AssociationEndRole) {</span>
+<span class="nc" id="L166">                        UmlAssociation assoc = end.getAssociation();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                        for (AssociationEnd end2 : assoc.getConnection()) {</span>
+<span class="nc" id="L168">                            Classifier classifier = end2.getParticipant();</span>
+<span class="nc bnc" id="L169" title="All 4 branches missed.">                            if (classifier != role</span>
+                                    &amp;&amp; classifier instanceof ClassifierRole) {
+<span class="nc" id="L171">                                roles.add(classifier);</span>
+                            }
+<span class="nc" id="L173">                        }</span>
+                    }
+<span class="nc" id="L175">                }</span>
+            }
+<span class="nc" id="L177">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L178">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L179">        }</span>
+<span class="nc" id="L180">        return roles;</span>
+    }
+
+
+    public Object getAssociationRole(Object afrom, Object ato) {
+<span class="nc bnc" id="L185" title="All 4 branches missed.">        if (afrom == null || ato == null) {</span>
+<span class="nc" id="L186">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L188">        ClassifierRole from = (ClassifierRole) afrom;</span>
+<span class="nc" id="L189">        ClassifierRole to = (ClassifierRole) ato;</span>
+
+        try {
+            Collection&lt;AssociationEnd&gt; ends =
+<span class="nc" id="L193">                Model.getFacade().getAssociationEnds(from);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">            for (AssociationEnd end : ends) {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                if (end instanceof AssociationEndRole) {</span>
+<span class="nc" id="L196">                    UmlAssociation assoc = end.getAssociation();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                    for (AssociationEnd end2 : assoc.getConnection()) {</span>
+<span class="nc" id="L198">                        Classifier classifier = end2.getParticipant();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                        if (classifier == to) {</span>
+<span class="nc" id="L200">                            return assoc;</span>
+                        }
+<span class="nc" id="L202">                    }</span>
+                }
+<span class="nc" id="L204">            }</span>
+<span class="nc" id="L205">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L206">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L207">        }</span>
+<span class="nc" id="L208">        return null;</span>
+    }
+
+
+    public Collection&lt;Message&gt; getAllPossibleActivators(Object ames) {
+<span class="nc" id="L213">        Message mes = (Message) ames;</span>
+<span class="nc bnc" id="L214" title="All 4 branches missed.">        if (mes == null || mes.getInteraction() == null) {</span>
+<span class="nc" id="L215">            return Collections.unmodifiableCollection(Collections.EMPTY_LIST);</span>
+        }
+
+        try {
+<span class="nc" id="L219">            Interaction inter = mes.getInteraction();</span>
+<span class="nc" id="L220">            Collection&lt;Message&gt; predecessors = mes.getPredecessor();</span>
+<span class="nc" id="L221">            Collection&lt;Message&gt; allMessages = inter.getMessage();</span>
+<span class="nc" id="L222">            List&lt;Message&gt; list = new ArrayList&lt;Message&gt;();</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            for (Message m : allMessages) {</span>
+<span class="nc bnc" id="L224" title="All 4 branches missed.">                if (!predecessors.contains(m) &amp;&amp; mes != m</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                        &amp;&amp; !hasAsActivator(m, mes)</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">                        &amp;&amp; !m.getPredecessor().contains(mes)) {</span>
+<span class="nc" id="L227">                    list.add(m);</span>
+                }
+<span class="nc" id="L229">            }</span>
+<span class="nc" id="L230">            return list;</span>
+<span class="nc" id="L231">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L232">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public boolean hasAsActivator(Object message, Object activator) {
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (!(message instanceof Message)) {</span>
+<span class="nc" id="L239">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (!(activator instanceof Message)) {</span>
+<span class="nc" id="L242">            throw new IllegalArgumentException();</span>
+        }
+
+        try {
+<span class="nc" id="L246">            Message messActivator = ((Message) message).getActivator();</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            if (messActivator == null) {</span>
+<span class="nc" id="L248">                return false;</span>
+            }
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (messActivator == activator</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">                    || messActivator.getPredecessor().contains(activator)) {</span>
+<span class="nc" id="L252">                return true;</span>
+            }
+<span class="nc" id="L254">            return hasAsActivator(messActivator, activator);</span>
+<span class="nc" id="L255">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L256">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public void setActivator(Object ames, Object anactivator) {
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (ames == null) {</span>
+<span class="nc" id="L263">            throw new IllegalArgumentException(&quot;message is null&quot;);</span>
+        }
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (!(ames instanceof Message)) {</span>
+<span class="nc" id="L266">            throw new IllegalArgumentException(&quot;message&quot;);</span>
+        }
+<span class="nc bnc" id="L268" title="All 4 branches missed.">        if (anactivator != null &amp;&amp; !(anactivator instanceof Message)) {</span>
+<span class="nc" id="L269">            throw new IllegalArgumentException(</span>
+                    &quot;An activator must be a message&quot;);
+        }
+<span class="nc" id="L272">        Message mes = (Message) ames;</span>
+<span class="nc" id="L273">        Message activator = (Message) anactivator;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (mes == activator) {</span>
+<span class="nc" id="L275">            throw new IllegalArgumentException(&quot;In setActivator: message may &quot;</span>
+                    + &quot;not be equal to activator&quot;);
+        }
+
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (activator != null) {</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">            if (mes.getInteraction() != activator.getInteraction()) {</span>
+<span class="nc" id="L281">                throw new IllegalArgumentException(</span>
+                        &quot;In setActivator: interaction &quot;
+                                + &quot;of message should equal &quot;
+                                + &quot;interaction of activator&quot;);
+            }
+            // we must find out if the activator itself does not have
+            // message as it's activator
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            if (hasAsActivator(activator, mes)) {</span>
+<span class="nc" id="L289">                throw new IllegalArgumentException(</span>
+                        &quot;In setActivator: message may &quot;
+                                + &quot;not be the activator for &quot;
+                                + &quot;the original activator&quot;);
+            }
+            // An activator can't also be a predecessor of a message
+<span class="nc bnc" id="L295" title="All 2 branches missed.">            if (mes.getPredecessor().contains(activator)) {</span>
+<span class="nc" id="L296">                mes.getPredecessor().remove(activator);</span>
+            }
+        }
+<span class="nc" id="L299">        List&lt;Message&gt; listToChange = new ArrayList&lt;Message&gt;();</span>
+<span class="nc" id="L300">        Collection&lt;Message&gt; predecessors = mes.getPredecessor();</span>
+<span class="nc" id="L301">        listToChange.addAll(predecessors);</span>
+<span class="nc" id="L302">        listToChange.add(mes);</span>
+<span class="nc" id="L303">        Interaction inter = mes.getInteraction();</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">        for (Message mes2 : inter.getMessage()) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            if (mes2.getPredecessor().contains(mes)) {</span>
+<span class="nc" id="L306">                listToChange.add(mes2);</span>
+            }
+<span class="nc" id="L308">        }</span>
+        // This causes problems. It can make multiple return messages
+        // refer to the same activator even if not returning to the same
+        // classifier role as the activator emenates from.
+        // I'm not sure that changing the activator of one message
+        // should amend any other messages but this is certainly changing
+        // too many - Bob.
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        for (Message mes2 : listToChange) {</span>
+<span class="nc" id="L316">            mes2.setActivator(activator);</span>
+<span class="nc" id="L317">        }</span>
+
+<span class="nc" id="L319">    }</span>
+
+
+    public Collection&lt;Message&gt; getAllPossiblePredecessors(Object amessage) {
+<span class="nc" id="L323">        Message message = (Message) amessage;</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">        if (message == null) {</span>
+<span class="nc" id="L325">            throw new IllegalArgumentException(</span>
+                    &quot;In getAllPossiblePredecessors: &quot;
+                            + &quot;argument message is null&quot;);
+        }
+
+        try {
+<span class="nc" id="L331">            Interaction inter = message.getInteraction();</span>
+<span class="nc" id="L332">            List&lt;Message&gt; list = new ArrayList&lt;Message&gt;();</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">            for (Message mes : inter.getMessage()) {</span>
+<span class="nc bnc" id="L334" title="All 4 branches missed.">                if (mes.getActivator() == message.getActivator()</span>
+                        &amp;&amp; message != mes
+<span class="nc bnc" id="L336" title="All 2 branches missed.">                        &amp;&amp; !mes.getPredecessor().contains(message)</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">                        &amp;&amp; !message.getPredecessor().contains(message)) {</span>
+<span class="nc" id="L338">                    list.add(mes);</span>
+                }
+<span class="nc" id="L340">            }</span>
+<span class="nc" id="L341">            return list;</span>
+<span class="nc" id="L342">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L343">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public void addBase(Object arole, Object abase) {
+<span class="nc" id="L349">        ClassifierRole role = (ClassifierRole) arole;</span>
+<span class="nc" id="L350">        Classifier base = (Classifier) abase;</span>
+<span class="nc bnc" id="L351" title="All 4 branches missed.">        if (role == null || base == null) {</span>
+<span class="nc" id="L352">            throw new IllegalArgumentException(&quot;In addBase: either the role &quot;</span>
+                    + &quot;or the base is null&quot;);
+        }
+<span class="nc" id="L355">        role.getBase().add(base);</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">        if (modelImpl.getFacade().getBases(role).size() == 1) {</span>
+<span class="nc" id="L357">            role.getAvailableContents().clear();</span>
+<span class="nc" id="L358">            role.getAvailableContents().addAll(base.getOwnedElement());</span>
+<span class="nc" id="L359">            role.getAvailableFeature().clear();</span>
+<span class="nc" id="L360">            role.getAvailableFeature().addAll(base.getFeature());</span>
+        } else {
+<span class="nc bnc" id="L362" title="All 2 branches missed.">            for (ModelElement elem : base.getOwnedElement()) {</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">                if (!role.getAvailableContents().contains(elem)) {</span>
+<span class="nc" id="L364">                    role.getAvailableContents().add(elem);</span>
+                }
+<span class="nc" id="L366">            }</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">            for (Feature feature : base.getFeature()) {</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">                if (!role.getAvailableFeature().contains(feature)) {</span>
+<span class="nc" id="L369">                    role.getAvailableFeature().add(feature);</span>
+                }
+<span class="nc" id="L371">            }</span>
+        }
+<span class="nc" id="L373">    }</span>
+
+    public void setBases(Object role, Collection bases) {
+<span class="nc bnc" id="L376" title="All 4 branches missed.">        if (role == null || bases == null) {</span>
+<span class="nc" id="L377">            throw new IllegalArgumentException(&quot;In setBases: either the role &quot;</span>
+                    + &quot;or the collection bases is &quot; + &quot;null&quot;);
+        }
+<span class="nc" id="L380">        CollectionHelper.update(((ClassifierRole) role).getBase(), bases);</span>
+<span class="nc" id="L381">    }</span>
+
+
+    public Collection&lt;Feature&gt; allAvailableFeatures(Object arole) {
+<span class="nc" id="L385">        LOG.log(Level.INFO, &quot;allAvailableFeatures start&quot;);</span>
+
+<span class="nc bnc" id="L387" title="All 2 branches missed.">        if (arole instanceof ClassifierRole) {</span>
+            try {
+<span class="nc" id="L389">                List&lt;Feature&gt; returnList = new ArrayList&lt;Feature&gt;();</span>
+<span class="nc" id="L390">                ClassifierRole role = (ClassifierRole) arole;</span>
+                for (ModelElement genElem
+<span class="nc bnc" id="L392" title="All 2 branches missed.">                        : CoreHelperMDRImpl.getAllParents(role)) {</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">                    if (genElem instanceof ClassifierRole) {</span>
+<span class="nc" id="L394">                        returnList.addAll(allAvailableFeatures(genElem));</span>
+                    }
+<span class="nc" id="L396">                }</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">                for (Classifier classifier : role.getBase()) {</span>
+<span class="nc" id="L398">                    returnList.addAll(classifier.getFeature());</span>
+<span class="nc" id="L399">                }</span>
+<span class="nc" id="L400">                LOG.log(Level.INFO, &quot;allAvailableFeatures {0}&quot;, returnList.size());</span>
+<span class="nc" id="L401">                return returnList;</span>
+<span class="nc" id="L402">            } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L403">                throw new InvalidElementException(e);</span>
+            }
+        }
+<span class="nc" id="L406">        throw new IllegalArgumentException(&quot;Cannot get available features on &quot;</span>
+                + arole);
+    }
+
+
+    public Collection allAvailableContents(Object arole) {
+<span class="nc" id="L412">        LOG.log(Level.INFO, &quot;allAvailableContents start&quot;);</span>
+        try {
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (arole instanceof ClassifierRole) {</span>
+<span class="nc" id="L415">                List returnList = new ArrayList();</span>
+<span class="nc" id="L416">                ClassifierRole role = (ClassifierRole) arole;</span>
+                for (ModelElement genElem
+<span class="nc bnc" id="L418" title="All 2 branches missed.">                        : CoreHelperMDRImpl.getAllParents(role)) {</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                    if (genElem instanceof ClassifierRole) {</span>
+<span class="nc" id="L420">                        returnList.addAll(allAvailableContents(genElem));</span>
+                    }
+<span class="nc" id="L422">                }</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">                for (Classifier baseClassifier : role.getBase()) {</span>
+<span class="nc" id="L424">                    returnList.addAll(baseClassifier.getOwnedElement());</span>
+<span class="nc" id="L425">                }</span>
+<span class="nc" id="L426">                LOG.log(Level.INFO, &quot;allAvailableFeatures {0}&quot;, returnList.size());</span>
+<span class="nc" id="L427">                return returnList;</span>
+            }
+<span class="nc" id="L429">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L430">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L431">        }</span>
+<span class="nc" id="L432">        throw new IllegalArgumentException(&quot;Cannot get available contents on &quot;</span>
+                + arole);
+    }
+
+
+    public Collection getAllPossibleBases(Object role) {
+        try {
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            if (role instanceof ClassifierRole) {</span>
+<span class="nc" id="L440">                return getAllPossibleBases((ClassifierRole) role);</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">            } else if (role instanceof AssociationRole) {</span>
+<span class="nc" id="L442">                return getAllPossibleBases((AssociationRole) role);</span>
+            } else {
+<span class="nc" id="L444">                throw new IllegalArgumentException(&quot;Illegal type &quot; + role);</span>
+            }
+<span class="nc" id="L446">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L447">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+    /**
+     * Returns all possible bases for some AssociationRole taking into account
+     * the wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
+     * &lt;p&gt;
+     * Beware: this function does not return the actual base!
+     * Which is by design; there are easier ways to retrieve the actual base.
+     *
+     * @param aRole
+     *            the given associationrole
+     * @return Collection all possible bases
+     */
+    private Collection getAllPossibleBases(AssociationRole aRole) {
+<span class="nc" id="L463">        Set&lt;UmlAssociation&gt; ret = new HashSet&lt;UmlAssociation&gt;();</span>
+<span class="nc bnc" id="L464" title="All 4 branches missed.">        if (aRole == null || aRole.getNamespace() == null) {</span>
+<span class="nc" id="L465">            return ret;</span>
+        }
+
+        // find the bases of the connected classifierroles so that we can see
+        // what associations are between them. If there are bases then the
+        // associations between those bases form the possible bases. Otherwise
+        // the bases are formed by all associations in the namespace of the
+        // collaboration
+<span class="nc" id="L473">        Set&lt;Classifier&gt; bases = new HashSet&lt;Classifier&gt;();</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">        for (AssociationEnd end : aRole.getConnection()) {</span>
+<span class="nc bnc" id="L475" title="All 4 branches missed.">            assert end instanceof AssociationEndRole;</span>
+<span class="nc" id="L476">            ClassifierRole type = (ClassifierRole) end.getParticipant();</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">            if (type != null) {</span>
+<span class="nc" id="L478">                bases.addAll(type.getBase());</span>
+            }
+<span class="nc" id="L480">        }</span>
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if (bases.isEmpty()) {</span>
+<span class="nc" id="L482">            ModelManagementHelper mmh = modelImpl.getModelManagementHelper();</span>
+<span class="nc" id="L483">            Namespace ns =</span>
+<span class="nc" id="L484">                ((Collaboration) aRole.getNamespace()).getNamespace();</span>
+<span class="nc" id="L485">            ret.addAll(</span>
+<span class="nc" id="L486">                    mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));</span>
+<span class="nc" id="L487">            ret.removeAll(mmh.getAllModelElementsOfKind(ns,</span>
+                    AssociationRole.class));
+<span class="nc" id="L489">        } else {</span>
+<span class="nc" id="L490">            CoreHelper ch = modelImpl.getCoreHelper();</span>
+            /* This double 'for' loop may be optimised as follows:
+             * - Use arrays in stead of a Set for bases
+             * - Have the second loop start from the element after base1
+             * ... but I chose not to do this, since the gain is small,
+             * and this is only used for a lazily filled combo.
+             * BTW: This is also used by Notation.*/
+<span class="nc bnc" id="L497" title="All 2 branches missed.">            for (Classifier base1 : bases)  {</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">                for (Classifier base2 : bases) {</span>
+                    // include associations to self - see issue 5602
+<span class="nc" id="L500">                    ret.addAll(ch.getAssociations(base1, base2));</span>
+<span class="nc" id="L501">                }</span>
+<span class="nc" id="L502">            }</span>
+        }
+        // An Association can only have a single unnamed ClassifierRole, so
+<span class="nc" id="L505">        Collection&lt;UmlAssociation&gt; listToRemove = new ArrayList&lt;UmlAssociation&gt;();</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">        for (UmlAssociation association : ret) {</span>
+<span class="nc" id="L507">            Collection&lt;AssociationRole&gt; associationRoles =</span>
+                ((org.omg.uml.UmlPackage) (association)
+<span class="nc" id="L509">                    .refOutermostPackage()).getCollaborations()</span>
+<span class="nc" id="L510">                    .getABaseAssociationRole().getAssociationRole(association);</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            if (associationRoles.isEmpty()) {</span>
+<span class="nc" id="L512">                continue;</span>
+            }
+            // if we are unnamed eliminate all classifiers which are already
+            // the base of some role
+<span class="nc bnc" id="L516" title="All 4 branches missed.">            if (aRole.getName() == null || aRole.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L517">                listToRemove.add(association);</span>
+            } else {
+                // eliminate Classifiers which already have an unnamed role
+<span class="nc bnc" id="L520" title="All 2 branches missed.">                for (AssociationRole ar : associationRoles) {</span>
+<span class="nc bnc" id="L521" title="All 4 branches missed.">                    if (ar.getName() == null || ar.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L522">                        listToRemove.add(association);</span>
+                    }
+<span class="nc" id="L524">                }</span>
+            }
+<span class="nc" id="L526">        }</span>
+<span class="nc" id="L527">        ret.removeAll(listToRemove);</span>
+
+<span class="nc" id="L529">        return ret;</span>
+    }
+
+    /**
+     * Returns all possible bases for some classifierrole taking into account
+     * the wellformednessrules as defined in section 2.10.3 of the UML 1.4 spec.
+     * &lt;p&gt;
+     *
+     * @param role
+     *            the given classifierrole
+     * @return Collection all possible bases
+     */
+    private Collection getAllPossibleBases(ClassifierRole role) {
+<span class="nc bnc" id="L542" title="All 4 branches missed.">        if (role == null || modelImpl.getFacade().getNamespace(role) == null) {</span>
+<span class="nc" id="L543">            return Collections.EMPTY_SET;</span>
+        }
+<span class="nc" id="L545">        Collaboration collaboration = (Collaboration) role.getNamespace();</span>
+<span class="nc" id="L546">        Namespace ns = collaboration.getNamespace();</span>
+<span class="nc" id="L547">        ModelManagementHelper mmh = modelImpl.getModelManagementHelper();</span>
+<span class="nc" id="L548">        Collection&lt;Classifier&gt; returnList = mmh.getAllModelElementsOfKind(ns,</span>
+                Classifier.class);
+        // WFR 2.10.3.3 #4
+<span class="nc" id="L551">        returnList.removeAll(mmh.getAllModelElementsOfKind(ns,</span>
+                ClassifierRole.class));
+
+        // A Classifier can only have a single unnamed ClassifierRole, so
+        // TODO: This probably belongs in a critic instead of here
+<span class="nc" id="L556">        Collection&lt;Classifier&gt; listToRemove = new ArrayList&lt;Classifier&gt;();</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">        for (Classifier classifier : returnList) {</span>
+<span class="nc" id="L558">            Collection&lt;ClassifierRole&gt; classifierRoles =</span>
+                ((org.omg.uml.UmlPackage) (classifier)
+<span class="nc" id="L560">                    .refOutermostPackage()).getCollaborations()</span>
+<span class="nc" id="L561">                    .getAClassifierRoleBase().getClassifierRole(classifier);</span>
+<span class="nc bnc" id="L562" title="All 2 branches missed.">            if (classifierRoles.isEmpty()) {</span>
+<span class="nc" id="L563">                continue;</span>
+            }
+            // if we are unnamed eliminate all classifiers which are already
+            // the base of some role
+<span class="nc bnc" id="L567" title="All 4 branches missed.">            if (role.getName() == null || role.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L568">                listToRemove.add(classifier);</span>
+            } else {
+                // eliminate Classifiers which already have an unnamed role
+<span class="nc bnc" id="L571" title="All 2 branches missed.">                for (ClassifierRole cr : classifierRoles) {</span>
+<span class="nc bnc" id="L572" title="All 4 branches missed.">                    if (cr.getName() == null || cr.getName().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L573">                        listToRemove.add(classifier);</span>
+                    }
+<span class="nc" id="L575">                }</span>
+            }
+<span class="nc" id="L577">        }</span>
+<span class="nc" id="L578">        returnList.removeAll(listToRemove);</span>
+
+        /* We need to verify that ns is a Package,
+         * if not - find its parent package!
+         * Otherwise this causes an exception when creating
+         * a sequence diagram for a ClassifierRole.*/
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if (!(ns instanceof UmlPackage)) {</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">            while (ns != null) {</span>
+<span class="nc" id="L586">                ns = ns.getNamespace();</span>
+<span class="nc bnc" id="L587" title="All 2 branches missed.">                if (ns instanceof UmlPackage) {</span>
+<span class="nc" id="L588">                    break;</span>
+                }
+            }
+        }
+        // now get all classifiers imported from other packages
+        // TODO: This should probably happen automatically in
+        // getAllModelElementsOfKind() - tfm
+<span class="nc bnc" id="L595" title="All 2 branches missed.">        if (modelImpl.getFacade().isAPackage(ns)) {</span>
+<span class="nc" id="L596">            returnList.addAll(getAllImportedClassifiers(ns));</span>
+        }
+
+<span class="nc" id="L599">        return returnList;</span>
+    }
+
+    /**
+     * Return a collection of classifiers that are imported from other packages
+     * into the given namespace.
+     *
+     * @param obj the given namespace
+     * @return a collection of classifiers
+     */
+    private Collection&lt;Classifier&gt; getAllImportedClassifiers(Object obj) {
+<span class="nc" id="L610">        Collection c = modelImpl.getModelManagementHelper()</span>
+<span class="nc" id="L611">                        .getAllImportedElements(obj);</span>
+<span class="nc" id="L612">        return filterClassifiers(c);</span>
+    }
+
+    private Collection&lt;Classifier&gt; filterClassifiers(Collection in) {
+<span class="nc" id="L616">        Collection&lt;Classifier&gt; out = new ArrayList&lt;Classifier&gt;();</span>
+<span class="nc bnc" id="L617" title="All 2 branches missed.">        for (Object o : in) {</span>
+<span class="nc bnc" id="L618" title="All 4 branches missed.">            if (o instanceof Classifier &amp;&amp; !(o instanceof ClassifierRole))</span>
+<span class="nc" id="L619">                out.add((Classifier) o);</span>
+<span class="nc" id="L620">        }</span>
+<span class="nc" id="L621">        return out;</span>
+    }
+
+
+    public void setBase(Object arole, Object abase) {
+<span class="nc bnc" id="L626" title="All 2 branches missed.">        if (arole == null) {</span>
+<span class="nc" id="L627">            throw new IllegalArgumentException(&quot;role is null&quot;);</span>
+        }
+<span class="nc bnc" id="L629" title="All 2 branches missed.">        if (arole instanceof AssociationRole) {</span>
+<span class="nc" id="L630">            AssociationRole role = (AssociationRole) arole;</span>
+<span class="nc" id="L631">            UmlAssociation base = (UmlAssociation) abase;</span>
+
+            // TODO: Must we calculate the whole list?
+<span class="nc bnc" id="L634" title="All 4 branches missed.">            if (base != null &amp;&amp; !getAllPossibleBases(role).contains(base)) {</span>
+<span class="nc" id="L635">                throw new IllegalArgumentException(&quot;base is not allowed for &quot;</span>
+                        + &quot;this role&quot;);
+            }
+<span class="nc" id="L638">            role.setBase(base);</span>
+<span class="nc" id="L639">            ClassifierRole sender = (ClassifierRole) modelImpl.getCoreHelper()</span>
+<span class="nc" id="L640">                    .getSource(role);</span>
+<span class="nc" id="L641">            ClassifierRole receiver = (ClassifierRole) modelImpl</span>
+<span class="nc" id="L642">                    .getCoreHelper().getDestination(role);</span>
+<span class="nc" id="L643">            Collection&lt;Classifier&gt; senderBases = sender.getBase();</span>
+<span class="nc" id="L644">            Collection&lt;Classifier&gt; receiverBases = receiver.getBase();</span>
+
+<span class="nc" id="L646">            AssociationEndRole senderRole = (AssociationEndRole) modelImpl.</span>
+<span class="nc" id="L647">                getCoreHelper().getAssociationEnd(sender, role);</span>
+<span class="nc" id="L648">            AssociationEndRole receiverRole = (AssociationEndRole) modelImpl.</span>
+<span class="nc" id="L649">                getCoreHelper().getAssociationEnd(receiver, role);</span>
+
+<span class="nc bnc" id="L651" title="All 2 branches missed.">            if (base != null) {</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">                for (AssociationEnd end : base.getConnection()) {</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">                    if (senderBases.contains(end.getParticipant())) {</span>
+<span class="nc" id="L654">                        senderRole.setBase(end);</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">                    } else if (receiverBases.contains(end.getParticipant())) {</span>
+<span class="nc" id="L656">                        receiverRole.setBase(end);</span>
+                    }
+<span class="nc" id="L658">                }</span>
+            }
+
+<span class="nc" id="L661">            return;</span>
+<span class="nc bnc" id="L662" title="All 2 branches missed.">        } else if (arole instanceof AssociationEndRole) {</span>
+<span class="nc" id="L663">            AssociationEndRole role = (AssociationEndRole) arole;</span>
+<span class="nc" id="L664">            AssociationEnd base = (AssociationEnd) abase;</span>
+
+<span class="nc" id="L666">            role.setBase(base);</span>
+
+<span class="nc" id="L668">            return;</span>
+        }
+
+<span class="nc" id="L671">        throw new IllegalArgumentException(&quot;role&quot;);</span>
+    }
+
+
+    public boolean isAddingCollaborationAllowed(Object context) {
+<span class="nc bnc" id="L676" title="All 4 branches missed.">        return (</span>
+                context instanceof Classifier
+                || context instanceof Operation
+                //|| context instanceof Collaboration
+                //|| context instanceof Model
+                );
+    }
+
+
+    public void removeBase(Object handle, Object c) {
+        try {
+<span class="nc bnc" id="L687" title="All 4 branches missed.">            if (handle instanceof ClassifierRole &amp;&amp; c instanceof Classifier) {</span>
+<span class="nc" id="L688">                ((ClassifierRole) handle).getBase().remove(c);</span>
+
+<span class="nc" id="L690">                return;</span>
+            }
+<span class="nc" id="L692">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L693">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L694">        }</span>
+<span class="nc" id="L695">        throw new IllegalArgumentException(</span>
+                &quot;There must be a ClassifierRole and a Classifier&quot;);
+    }
+
+
+    public void removeConstrainingElement(Object handle, Object constraint) {
+        try {
+<span class="nc bnc" id="L702" title="All 4 branches missed.">            if (handle instanceof Collaboration</span>
+                    &amp;&amp; constraint instanceof ModelElement) {
+<span class="nc" id="L704">                Collaboration collab = (Collaboration) handle;</span>
+<span class="nc" id="L705">                collab.getConstrainingElement().remove(constraint);</span>
+
+<span class="nc" id="L707">                return;</span>
+            }
+<span class="nc" id="L709">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L710">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L711">        }</span>
+<span class="nc" id="L712">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or constraint: &quot; + constraint);
+    }
+
+
+    public void removeMessage(Object handle, Object message) {
+        try {
+<span class="nc bnc" id="L719" title="All 4 branches missed.">            if (handle instanceof Interaction &amp;&amp; message instanceof Message) {</span>
+<span class="nc" id="L720">                ((Interaction) handle).getMessage().remove(message);</span>
+<span class="nc" id="L721">                return;</span>
+            }
+<span class="nc bnc" id="L723" title="All 4 branches missed.">            if (handle instanceof AssociationRole</span>
+                    &amp;&amp; message instanceof Message) {
+<span class="nc" id="L725">                ((AssociationRole) handle).getMessage().remove(message);</span>
+<span class="nc" id="L726">                return;</span>
+            }
+<span class="nc" id="L728">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L729">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L730">        }</span>
+<span class="nc" id="L731">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or message: &quot; + message);
+    }
+
+
+    public void removeSuccessor(Object handle, Object mess) {
+        try {
+<span class="nc bnc" id="L738" title="All 4 branches missed.">            if (handle instanceof Message &amp;&amp; mess instanceof Message) {</span>
+<span class="nc" id="L739">                ((org.omg.uml.UmlPackage) ((Message) handle)</span>
+<span class="nc" id="L740">                        .refOutermostPackage()).getCollaborations()</span>
+<span class="nc" id="L741">                        .getAPredecessorSuccessor().remove((Message) handle,</span>
+                                (Message) mess);
+<span class="nc" id="L743">                return;</span>
+            }
+<span class="nc" id="L745">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L746">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L747">        }</span>
+<span class="nc" id="L748">        throw new IllegalArgumentException(&quot;predecessor: &quot; + handle</span>
+                + &quot; or successor: &quot; + mess);
+    }
+
+
+    public void removePredecessor(Object handle, Object message) {
+        try {
+<span class="nc bnc" id="L755" title="All 4 branches missed.">            if (handle instanceof Message &amp;&amp; message instanceof Message) {</span>
+<span class="nc" id="L756">                ((Message) handle).getPredecessor().remove(message);</span>
+<span class="nc" id="L757">                return;</span>
+            }
+<span class="nc" id="L759">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L760">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L761">        }</span>
+<span class="nc" id="L762">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or message: &quot; + message);
+    }
+
+
+    public void addConstrainingElement(Object handle, Object constraint) {
+<span class="nc bnc" id="L768" title="All 4 branches missed.">        if (handle instanceof Collaboration</span>
+                &amp;&amp; constraint instanceof ModelElement) {
+<span class="nc" id="L770">            ((Collaboration) handle).getConstrainingElement().add(</span>
+                    (ModelElement) constraint);
+<span class="nc" id="L772">            return;</span>
+        }
+
+<span class="nc" id="L775">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or constraint: &quot; + constraint);
+    }
+
+
+    public void addInstance(Object classifierRole, Object instance) {
+<span class="nc bnc" id="L781" title="All 4 branches missed.">        if (classifierRole instanceof ClassifierRole</span>
+                &amp;&amp; instance instanceof Instance) {
+<span class="nc" id="L783">            ((ClassifierRole) classifierRole).getConformingInstance().add(</span>
+                    (Instance) instance);
+        }
+<span class="nc" id="L786">        throw new IllegalArgumentException(&quot;classifierRole: &quot; + classifierRole</span>
+                + &quot; or instance: &quot; + instance);
+    }
+
+
+    public void addMessage(Object handle, Object elem) {
+<span class="nc bnc" id="L792" title="All 4 branches missed.">        if (handle instanceof Interaction &amp;&amp; elem instanceof Message) {</span>
+<span class="nc" id="L793">            final Message message = (Message) elem;</span>
+<span class="nc" id="L794">            final Interaction interaction = (Interaction) handle;</span>
+<span class="nc" id="L795">            final Interaction oldInteraction = message.getInteraction();</span>
+
+<span class="nc bnc" id="L797" title="All 2 branches missed.">            if (oldInteraction != null) {</span>
+<span class="nc" id="L798">                oldInteraction.getMessage().remove(message);</span>
+            }
+<span class="nc" id="L800">            interaction.getMessage().add(message);</span>
+<span class="nc" id="L801">            return;</span>
+        }
+<span class="nc bnc" id="L803" title="All 4 branches missed.">        if (handle instanceof AssociationRole &amp;&amp; elem instanceof Message) {</span>
+<span class="nc" id="L804">            ((AssociationRole) handle).getMessage().add((Message) elem);</span>
+<span class="nc" id="L805">            return;</span>
+        }
+<span class="nc" id="L807">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or elem: &quot;</span>
+                + elem);
+    }
+
+
+    public void addSuccessor(Object handle, Object mess) {
+<span class="nc bnc" id="L813" title="All 4 branches missed.">        if (handle instanceof Message &amp;&amp; mess instanceof Message) {</span>
+<span class="nc" id="L814">            ((Message) mess).getPredecessor().add((Message) handle);</span>
+<span class="nc" id="L815">            return;</span>
+        }
+
+<span class="nc" id="L818">        throw new IllegalArgumentException(&quot;predecessor: &quot; + handle</span>
+                + &quot; or successor: &quot; + mess);
+    }
+
+
+    public void addPredecessor(Object handle, Object predecessor) {
+<span class="nc bnc" id="L824" title="All 8 branches missed.">        if (handle != null &amp;&amp; handle instanceof Message &amp;&amp; predecessor != null</span>
+                &amp;&amp; predecessor instanceof Message) {
+<span class="nc" id="L826">            ((Message) handle).getPredecessor().add((Message) predecessor);</span>
+<span class="nc" id="L827">            return;</span>
+        }
+<span class="nc" id="L829">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or predecessor: &quot; + predecessor);
+    }
+
+
+    public void setAction(Object handle, Object action) {
+<span class="nc bnc" id="L835" title="All 6 branches missed.">        if (handle instanceof Message</span>
+                &amp;&amp; (action == null || action instanceof Action)) {
+<span class="nc" id="L837">            ((Message) handle).setAction((Action) action);</span>
+<span class="nc" id="L838">            return;</span>
+        }
+<span class="nc" id="L840">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or action: &quot;</span>
+                + action);
+    }
+
+
+    public void setContext(Object handle, Object col) {
+<span class="nc bnc" id="L846" title="All 6 branches missed.">        if (handle instanceof Interaction</span>
+                &amp;&amp; (col instanceof Collaboration || col == null)) {
+<span class="nc" id="L848">            ((Interaction) handle).setContext((Collaboration) col);</span>
+
+<span class="nc" id="L850">            return;</span>
+        }
+<span class="nc" id="L852">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or col: &quot;</span>
+                + col);
+    }
+
+
+    public void setSuccessors(Object handle, Collection messages) {
+<span class="nc bnc" id="L858" title="All 2 branches missed.">        if (handle instanceof Message) {</span>
+            Collection currentMessages =
+<span class="nc" id="L860">                Model.getFacade().getSuccessors(handle);</span>
+<span class="nc bnc" id="L861" title="All 2 branches missed.">            if (!currentMessages.isEmpty()) {</span>
+<span class="nc" id="L862">                Collection successors = new ArrayList(currentMessages);</span>
+<span class="nc bnc" id="L863" title="All 2 branches missed.">                for (Object msg : successors) {</span>
+<span class="nc" id="L864">                    removeSuccessor(handle, msg);</span>
+<span class="nc" id="L865">                }</span>
+            }
+<span class="nc bnc" id="L867" title="All 2 branches missed.">            for (Object msg : messages) {</span>
+<span class="nc" id="L868">                addSuccessor(handle, msg);</span>
+<span class="nc" id="L869">            }</span>
+<span class="nc" id="L870">            return;</span>
+        }
+
+<span class="nc" id="L873">        throw new IllegalArgumentException(&quot;predecessor: &quot; + handle</span>
+                + &quot; or messages: &quot; + messages);
+    }
+
+    public void setMessageSort(Object message, Object messageSort) {
+<span class="nc" id="L878">        setAction(message, messageSort);</span>
+<span class="nc" id="L879">    }</span>
+
+    public void setPredecessors(Object handle, Collection predecessors) {
+<span class="nc bnc" id="L882" title="All 2 branches missed.">        if (handle instanceof Message) {</span>
+<span class="nc" id="L883">            CollectionHelper.update(</span>
+<span class="nc" id="L884">                    ((Message) handle).getPredecessor(), predecessors);</span>
+<span class="nc" id="L885">            return;</span>
+        }
+<span class="nc" id="L887">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or predecessors: &quot; + predecessors);
+    }
+
+
+    public void setRepresentedClassifier(Object handle, Object classifier) {
+<span class="nc bnc" id="L893" title="All 6 branches missed.">        if (handle instanceof Collaboration</span>
+                &amp;&amp; ((classifier == null) || classifier instanceof Classifier)) {
+<span class="nc" id="L895">            ((Collaboration) handle).</span>
+<span class="nc" id="L896">                setRepresentedClassifier((Classifier) classifier);</span>
+<span class="nc" id="L897">            return;</span>
+        }
+<span class="nc" id="L899">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or classifier: &quot; + classifier);
+    }
+
+
+    public void setRepresentedOperation(Object handle, Object operation) {
+<span class="nc bnc" id="L905" title="All 6 branches missed.">        if (handle instanceof Collaboration</span>
+                &amp;&amp; ((operation == null) || operation instanceof Operation)) {
+<span class="nc" id="L907">            ((Collaboration) handle).</span>
+<span class="nc" id="L908">                setRepresentedOperation((Operation) operation);</span>
+
+<span class="nc" id="L910">            return;</span>
+        }
+<span class="nc" id="L912">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or operation: &quot; + operation);
+    }
+
+
+    public void setSender(Object handle, Object sender) {
+<span class="nc bnc" id="L918" title="All 6 branches missed.">        if (handle instanceof Message</span>
+                &amp;&amp; (sender instanceof ClassifierRole || sender == null)) {
+<span class="nc" id="L920">            ((Message) handle).setSender((ClassifierRole) sender);</span>
+<span class="nc" id="L921">            return;</span>
+        }
+<span class="nc bnc" id="L923" title="All 4 branches missed.">        if (handle instanceof Stimulus &amp;&amp; sender instanceof Instance) {</span>
+<span class="nc" id="L924">            ((Stimulus) handle).setSender((Instance) sender);</span>
+<span class="nc" id="L925">            return;</span>
+        }
+<span class="nc" id="L927">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or sender: &quot;</span>
+                + sender);
+    }
+
+
+    public void removeInteraction(Object collab, Object interaction) {
+        try {
+<span class="nc bnc" id="L934" title="All 4 branches missed.">            if (collab instanceof Collaboration</span>
+                    &amp;&amp; interaction instanceof Interaction) {
+<span class="nc" id="L936">                ((Collaboration) collab).getInteraction().remove(interaction);</span>
+<span class="nc" id="L937">                return;</span>
+            }
+<span class="nc" id="L939">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L940">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L941">        }</span>
+<span class="nc" id="L942">        throw new IllegalArgumentException(&quot;collab: &quot; + collab</span>
+                + &quot; or interaction: &quot; + interaction);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

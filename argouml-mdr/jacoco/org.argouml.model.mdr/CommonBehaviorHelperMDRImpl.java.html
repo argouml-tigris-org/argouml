@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonBehaviorHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CommonBehaviorHelperMDRImpl.java</span></div><h1>CommonBehaviorHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file were previously released using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.CommonBehaviorHelper;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
+import org.omg.uml.behavioralelements.commonbehavior.CallAction;
+import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
+import org.omg.uml.behavioralelements.commonbehavior.CreateAction;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.SendAction;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.Guard;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.foundation.datatypes.ActionExpression;
+import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.foundation.datatypes.IterationExpression;
+import org.omg.uml.foundation.datatypes.ObjectSetExpression;
+
+/**
+ * The CommonBehaviorHelper for the MDR ModelImplementation.
+ * &lt;p&gt;
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * 
+ */
+class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
+
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Default constructor
+     * 
+     * @param implementation
+     *            The model implementation
+     */
+<span class="fc" id="L101">    public CommonBehaviorHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L102">        this.modelImpl = implementation;</span>
+<span class="fc" id="L103">    }</span>
+
+
+    public Object getSource(Object link) {
+        try {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (link instanceof Link) {</span>
+<span class="nc" id="L109">                return modelImpl.getCoreHelper().getSource(link);</span>
+            }
+<span class="nc" id="L111">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L112">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L113">        }</span>
+<span class="nc" id="L114">        throw new IllegalArgumentException(&quot;Argument is not a link&quot;);</span>
+    }
+
+
+    public Object getDestination(Object link) {
+        try {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (link instanceof Link) {</span>
+<span class="nc" id="L121">                return modelImpl.getCoreHelper().getDestination(link);</span>
+            }
+<span class="nc" id="L123">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L124">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L125">        }</span>
+<span class="nc" id="L126">        throw new IllegalArgumentException(&quot;Argument is not a link&quot;);</span>
+    }
+
+
+    public void removeActualArgument(Object handle, Object argument) {
+        try {
+<span class="nc bnc" id="L132" title="All 4 branches missed.">            if (handle instanceof Action &amp;&amp; argument instanceof Argument) {</span>
+<span class="nc" id="L133">                ((Action) handle).getActualArgument().remove(argument);</span>
+<span class="nc" id="L134">                return;</span>
+            }
+<span class="nc" id="L136">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L137">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L138">        }</span>
+<span class="nc" id="L139">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + argument);
+    }
+
+
+    public void setActualArguments(Object action, List arguments) {
+        try {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            if (action instanceof Action) {</span>
+<span class="nc" id="L147">                ((Action) action).getActualArgument().clear();</span>
+<span class="nc" id="L148">                ((Action) action).getActualArgument().addAll(arguments);</span>
+<span class="nc" id="L149">                return;</span>
+            }
+<span class="nc" id="L151">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L152">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L153">        }</span>
+<span class="nc" id="L154">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + action</span>
+                + &quot; or &quot; + arguments);
+    }
+
+
+    public void removeClassifier(Object handle, Object classifier) {
+        try {
+<span class="nc bnc" id="L161" title="All 4 branches missed.">            if (handle instanceof Instance </span>
+                    &amp;&amp; classifier instanceof Classifier) {
+<span class="nc" id="L163">                ((Instance) handle).getClassifier().remove(classifier);</span>
+<span class="nc" id="L164">                return;</span>
+            }
+<span class="nc" id="L166">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L167">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + classifier);
+    }
+
+
+    public void removeContext(Object handle, Object context) {
+        try {
+<span class="nc bnc" id="L176" title="All 4 branches missed.">            if (handle instanceof Signal</span>
+                    &amp;&amp; context instanceof BehavioralFeature) {
+<span class="nc" id="L178">                ((org.omg.uml.UmlPackage) ((Signal) handle)</span>
+<span class="nc" id="L179">                        .refOutermostPackage()).getCommonBehavior()</span>
+<span class="nc" id="L180">                        .getAContextRaisedSignal().remove(</span>
+                                (BehavioralFeature) context, (Signal) handle);
+<span class="nc" id="L182">                return;</span>
+            }
+<span class="nc" id="L184">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L185">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L186">        }</span>
+<span class="nc" id="L187">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + context);
+    }
+
+
+    public void removeReception(Object handle, Object reception) {
+        try {
+<span class="nc bnc" id="L194" title="All 4 branches missed.">            if (handle instanceof Signal &amp;&amp; reception instanceof Reception) {</span>
+                // TODO: Doing this violates the minimal cardinality of 1
+                // if we allow it we at least need a critic to warn about it
+<span class="nc" id="L197">                ((Reception) reception).setSignal(null);</span>
+<span class="nc" id="L198">                return;</span>
+            }
+<span class="nc" id="L200">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L201">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L202">        }</span>
+<span class="nc" id="L203">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + reception);
+    }
+
+
+    public void addActualArgument(Object handle, Object argument) {
+<span class="nc bnc" id="L209" title="All 4 branches missed.">        if (handle instanceof Action &amp;&amp; argument instanceof Argument) {</span>
+<span class="nc" id="L210">            ((Action) handle).getActualArgument().add((Argument) argument);</span>
+<span class="nc" id="L211">            return;</span>
+        }
+<span class="nc" id="L213">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + argument);
+    }
+
+
+    public void addActualArgument(Object handle, int position, 
+            Object argument) {
+<span class="nc bnc" id="L220" title="All 4 branches missed.">        if (handle instanceof Action &amp;&amp; argument instanceof Argument) {</span>
+            try {
+<span class="nc" id="L222">                ((Action) handle).getActualArgument().add(position,</span>
+                        (Argument) argument);
+<span class="nc" id="L224">            } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L225">                throw new InvalidElementException(e);</span>
+<span class="nc" id="L226">            }</span>
+        } else {
+<span class="nc" id="L228">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L230">    }</span>
+
+
+    public void addClassifier(Object handle, Object classifier) {
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        if (handle instanceof Instance &amp;&amp; classifier instanceof Classifier) {</span>
+<span class="nc" id="L235">            ((Instance) handle).getClassifier().add((Classifier) classifier);</span>
+<span class="nc" id="L236">            return;</span>
+        }
+<span class="nc" id="L238">        throw new IllegalArgumentException(&quot;Unrecognized object &quot; + handle</span>
+                + &quot; or &quot; + classifier);
+    }
+
+    /**
+     * Add a context to a Signal.
+     * 
+     * @param handle The signal
+     * @param behavorialFeature The behavorialFeature 
+     */
+    private void addContext(Object handle, Object behavorialFeature) {
+<span class="nc bnc" id="L249" title="All 4 branches missed.">        if (handle instanceof Signal</span>
+                &amp;&amp; behavorialFeature instanceof BehavioralFeature) {
+<span class="nc" id="L251">            ((org.omg.uml.UmlPackage) ((Signal) handle).refOutermostPackage())</span>
+<span class="nc" id="L252">                    .getCommonBehavior().getAContextRaisedSignal().add(</span>
+                            (BehavioralFeature) behavorialFeature,
+                            (Signal) handle);
+<span class="nc" id="L255">            return;</span>
+        }
+<span class="nc" id="L257">    }</span>
+
+    /**
+     * Add a Reception to a Signal.
+     * 
+     * @param handle The signal
+     * @param rec The Reception 
+     */
+    private void addReception(Object handle, Object rec) {
+<span class="nc bnc" id="L266" title="All 4 branches missed.">        if (handle instanceof Signal</span>
+                &amp;&amp; rec instanceof Reception) {
+<span class="nc" id="L268">            ((Reception) rec).setSignal((Signal) handle);</span>
+<span class="nc" id="L269">            return;</span>
+        }
+<span class="nc" id="L271">    }</span>
+
+
+    public void addStimulus(Object handle, Object stimulus) {
+<span class="nc bnc" id="L275" title="All 6 branches missed.">        if (handle != null &amp;&amp; stimulus != null </span>
+                &amp;&amp; stimulus instanceof Stimulus) {
+<span class="nc bnc" id="L277" title="All 2 branches missed.">            if (handle instanceof Action) {</span>
+<span class="nc" id="L278">                ((Stimulus) stimulus).setDispatchAction((Action) handle);</span>
+<span class="nc" id="L279">                return;</span>
+            }
+<span class="nc bnc" id="L281" title="All 2 branches missed.">            if (handle instanceof Link) {</span>
+<span class="nc" id="L282">                ((Stimulus) stimulus).setCommunicationLink((Link) handle);</span>
+<span class="nc" id="L283">                return;</span>
+            }
+        }
+<span class="nc" id="L286">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or stimulus: &quot; + stimulus);
+    }
+
+
+    public void setAsynchronous(Object handle, boolean value) {
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (handle instanceof Action) {</span>
+<span class="nc" id="L293">            ((Action) handle).setAsynchronous(value);</span>
+<span class="nc" id="L294">            return;</span>
+        }
+<span class="nc" id="L296">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setOperation(Object handle, Object operation) {
+<span class="nc bnc" id="L301" title="All 6 branches missed.">        if (handle instanceof CallAction</span>
+                &amp;&amp; (operation == null || operation instanceof Operation)) {
+<span class="nc" id="L303">            ((CallAction) handle).setOperation((Operation) operation);</span>
+<span class="nc" id="L304">            return;</span>
+        }
+<span class="nc bnc" id="L306" title="All 6 branches missed.">        if (handle instanceof CallEvent </span>
+                &amp;&amp; (operation == null || operation instanceof Operation)) {
+<span class="nc" id="L308">            ((CallEvent) handle).setOperation((Operation) operation);</span>
+<span class="nc" id="L309">            return;</span>
+        }
+<span class="nc" id="L311">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or operation: &quot; + operation);
+    }
+
+
+    public void setClassifiers(Object handle, Collection classifiers) {
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if (handle instanceof Instance) {</span>
+<span class="nc" id="L318">            ((Instance) handle).getClassifier().retainAll(classifiers);</span>
+<span class="nc" id="L319">            ((Instance) handle).getClassifier().addAll(classifiers);            </span>
+<span class="nc" id="L320">            return;</span>
+        }
+<span class="nc" id="L322">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setCommunicationLink(Object handle, Object c) {
+<span class="nc bnc" id="L327" title="All 4 branches missed.">        if (handle instanceof Stimulus &amp;&amp; c instanceof Link) {</span>
+<span class="nc" id="L328">            ((Stimulus) handle).setCommunicationLink((Link) c);</span>
+<span class="nc" id="L329">            return;</span>
+        }
+<span class="nc" id="L331">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or c: &quot; + c);</span>
+    }
+
+
+    public void setComponentInstance(Object handle, Object c) {
+<span class="nc bnc" id="L336" title="All 6 branches missed.">        if (handle instanceof Instance</span>
+                &amp;&amp; (c == null || c instanceof ComponentInstance)) {
+<span class="nc" id="L338">            ((Instance) handle).setComponentInstance((ComponentInstance) c);</span>
+<span class="nc" id="L339">            return;</span>
+        }
+<span class="nc" id="L341">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or c: &quot; + c);</span>
+    }
+
+
+    public void setContexts(Object handle, Collection c) {
+<span class="nc bnc" id="L346" title="All 2 branches missed.">        if (handle instanceof Signal) {</span>
+<span class="nc" id="L347">            Collection actualContexts = Model.getFacade().getContexts(handle);</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">            if (!actualContexts.isEmpty()) {</span>
+<span class="nc" id="L349">                Collection contexts = new ArrayList(actualContexts);</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">                for (Object context : contexts) {</span>
+<span class="nc" id="L351">                    removeContext(handle, context);</span>
+<span class="nc" id="L352">                }</span>
+            }
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            for (Object context : c) {</span>
+<span class="nc" id="L355">                addContext(handle, context);</span>
+<span class="nc" id="L356">            }</span>
+<span class="nc" id="L357">            return;</span>
+        }
+<span class="nc" id="L359">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setDispatchAction(Object handle, Object value) {
+<span class="nc bnc" id="L364" title="All 6 branches missed.">        if (handle instanceof Stimulus</span>
+                &amp;&amp; (value == null || value instanceof Action)) {
+<span class="nc" id="L366">            ((Stimulus) handle).setDispatchAction((Action) value);</span>
+<span class="nc" id="L367">            return;</span>
+        }
+<span class="nc" id="L369">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setInstance(Object handle, Object inst) {
+<span class="nc bnc" id="L375" title="All 4 branches missed.">        if (inst == null || inst instanceof Instance) {</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">            if (handle instanceof LinkEnd) {</span>
+<span class="nc" id="L377">                ((LinkEnd) handle).setInstance((Instance) inst);</span>
+<span class="nc" id="L378">                return;</span>
+            }
+<span class="nc bnc" id="L380" title="All 2 branches missed.">            if (handle instanceof AttributeLink) {</span>
+<span class="nc" id="L381">                ((AttributeLink) handle).setInstance((Instance) inst);</span>
+<span class="nc" id="L382">                return;</span>
+            }
+        }
+<span class="nc" id="L385">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or inst: &quot;</span>
+                + inst);
+    }
+
+    /*
+     * @see org.argouml.model.CommonBehaviorHelper#setNodeInstance(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public void setNodeInstance(Object handle, Object nodeInstance) {
+<span class="nc bnc" id="L394" title="All 4 branches missed.">        if (handle instanceof ComponentInstance</span>
+                &amp;&amp; nodeInstance instanceof NodeInstance) {
+<span class="nc" id="L396">            ((ComponentInstance) handle).</span>
+<span class="nc" id="L397">                    setNodeInstance((NodeInstance) nodeInstance);</span>
+<span class="nc" id="L398">            return;</span>
+<span class="nc bnc" id="L399" title="All 4 branches missed.">        } else if (handle instanceof ComponentInstance </span>
+                &amp;&amp; nodeInstance == null) {
+            // TODO: Check if this is ok (this is literally adapted from NSUML)
+<span class="nc" id="L402">            ((ComponentInstance) handle).setNodeInstance(null);</span>
+<span class="nc" id="L403">            return;</span>
+        }
+
+<span class="nc" id="L406">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or nodeInstance: &quot; + nodeInstance);
+    }
+
+    /*
+     * @see org.argouml.model.CommonBehaviorHelper#setReceiver(java.lang.Object,
+     *      java.lang.Object)
+     */
+    public void setReceiver(Object handle, Object receiver) {
+<span class="nc bnc" id="L415" title="All 6 branches missed.">        if (handle instanceof Message</span>
+                &amp;&amp; (receiver instanceof ClassifierRole || receiver == null)) {
+<span class="nc" id="L417">            ((Message) handle).setReceiver((ClassifierRole) receiver);</span>
+<span class="nc" id="L418">            return;</span>
+        }
+<span class="nc bnc" id="L420" title="All 4 branches missed.">        if (handle instanceof Stimulus &amp;&amp; receiver instanceof Instance) {</span>
+<span class="nc" id="L421">            ((Stimulus) handle).setReceiver((Instance) receiver);</span>
+<span class="nc" id="L422">            return;</span>
+        }
+<span class="nc" id="L424">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or receiver: &quot; + receiver);
+    }
+
+
+    public void setReception(Object handle, Collection c) {
+<span class="nc bnc" id="L430" title="All 2 branches missed.">        if (handle instanceof Signal) {</span>
+            Collection actualReceptions = 
+<span class="nc" id="L432">                Model.getFacade().getReceptions(handle);</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">            if (!actualReceptions.isEmpty()) {</span>
+<span class="nc" id="L434">                Collection receptions = new ArrayList(actualReceptions);</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">                for (Object reception : receptions) {</span>
+<span class="nc" id="L436">                    removeReception(handle, reception);</span>
+<span class="nc" id="L437">                }</span>
+            }
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            for (Object reception : c) {</span>
+<span class="nc" id="L440">                addReception(handle, reception);</span>
+<span class="nc" id="L441">            }</span>
+<span class="nc" id="L442">            return;</span>
+        }
+<span class="nc" id="L444">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setRecurrence(Object handle, Object expr) {
+<span class="nc" id="L449">        Action action = (Action) handle;</span>
+<span class="nc" id="L450">        IterationExpression oldExpr = action.getRecurrence();</span>
+<span class="nc" id="L451">        IterationExpression newExpr = (IterationExpression) expr;</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">        if (!equal(oldExpr, newExpr)) {</span>
+<span class="nc" id="L453">            action.setRecurrence(newExpr);</span>
+<span class="nc bnc" id="L454" title="All 2 branches missed.">            if (oldExpr != null) {</span>
+<span class="nc" id="L455">                Model.getUmlFactory().delete(oldExpr);</span>
+            }
+        }
+<span class="nc" id="L458">    }</span>
+
+    private boolean equal(Expression expr1, Expression expr2) {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (expr1 == null) {</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">            if (expr2 == null) {</span>
+<span class="nc" id="L463">                return true;</span>
+            } else {
+<span class="nc" id="L465">                return false;</span>
+            }
+        } else {
+<span class="nc" id="L468">            return expr1.equals(expr2);</span>
+        }
+    }
+
+    public void setScript(Object handle, Object expr) {
+<span class="nc bnc" id="L473" title="All 6 branches missed.">        if (handle instanceof Action</span>
+                &amp;&amp; (expr == null || expr instanceof ActionExpression)) {
+<span class="nc" id="L475">            Action a = (Action) handle;</span>
+<span class="nc" id="L476">            ActionExpression oldae =a.getScript();</span>
+<span class="nc" id="L477">            ActionExpression newae = (ActionExpression) expr;</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">            if (equal(oldae,newae)) {</span>
+<span class="nc" id="L479">                return;</span>
+            }
+<span class="nc" id="L481">            a.setScript(newae);</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">            if (oldae != null) {</span>
+                /* Throw away the old actionExpression (see issue 6145):  */
+<span class="nc" id="L484">                modelImpl.getUmlFactory().delete(oldae);</span>
+            }
+<span class="nc" id="L486">            return;</span>
+        }
+<span class="nc" id="L488">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or expr: &quot;</span>
+                + expr);
+    }
+
+
+    public void setSender(Object handle, Object sender) {
+<span class="nc bnc" id="L494" title="All 6 branches missed.">        if (handle instanceof Message</span>
+                &amp;&amp; (sender instanceof ClassifierRole || sender == null)) {
+<span class="nc" id="L496">            ((Message) handle).setSender((ClassifierRole) sender);</span>
+<span class="nc" id="L497">            return;</span>
+        }
+<span class="nc bnc" id="L499" title="All 4 branches missed.">        if (handle instanceof Stimulus &amp;&amp; sender instanceof Instance) {</span>
+<span class="nc" id="L500">            ((Stimulus) handle).setSender((Instance) sender);</span>
+<span class="nc" id="L501">            return;</span>
+        }
+<span class="nc" id="L503">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or sender: &quot;</span>
+                + sender);
+    }
+
+
+    public void setSignal(Object handle, Object signal) {
+<span class="nc bnc" id="L509" title="All 4 branches missed.">        if (signal == null || signal instanceof Signal) {</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">            if (handle instanceof SendAction) {</span>
+<span class="nc" id="L511">                ((SendAction) handle).setSignal((Signal) signal);</span>
+<span class="nc" id="L512">                return;</span>
+            }
+<span class="nc bnc" id="L514" title="All 2 branches missed.">            if (handle instanceof Reception) {</span>
+<span class="nc" id="L515">                ((Reception) handle).setSignal((Signal) signal);</span>
+<span class="nc" id="L516">                return;</span>
+            }
+<span class="nc bnc" id="L518" title="All 2 branches missed.">            if (handle instanceof SignalEvent) {</span>
+<span class="nc" id="L519">                ((SignalEvent) handle).setSignal((Signal) signal);</span>
+<span class="nc" id="L520">                return;</span>
+            }
+        }
+<span class="nc" id="L523">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or signal: &quot;</span>
+                + signal);
+    }
+
+
+    public void setSpecification(Object handle, String specification) {
+<span class="nc bnc" id="L529" title="All 2 branches missed.">        if (handle instanceof Reception) {</span>
+<span class="nc" id="L530">            ((Reception) handle).setSpecification(specification);</span>
+<span class="nc" id="L531">            return;</span>
+        }
+<span class="nc" id="L533">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setTarget(Object handle, Object element) {
+<span class="nc bnc" id="L538" title="All 4 branches missed.">        if (handle instanceof Action </span>
+                &amp;&amp; element instanceof ObjectSetExpression) {
+<span class="nc" id="L540">            Action action = (Action) handle;</span>
+<span class="nc" id="L541">            ObjectSetExpression oldExpr = action.getTarget();</span>
+<span class="nc" id="L542">            ObjectSetExpression newExpr = (ObjectSetExpression) element;</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">            if (!equal(oldExpr, newExpr)) {</span>
+<span class="nc" id="L544">                action.setTarget(newExpr);</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">                if (oldExpr != null) {</span>
+<span class="nc" id="L546">                    Model.getUmlFactory().delete(oldExpr);</span>
+                }
+            }            
+<span class="nc" id="L549">            return;</span>
+        }
+<span class="nc bnc" id="L551" title="All 6 branches missed.">        if (handle instanceof Transition &amp;&amp; </span>
+                (element == null || element instanceof StateVertex)) {
+<span class="nc" id="L553">            ((Transition) handle).setTarget((StateVertex) element);</span>
+<span class="nc" id="L554">            return;</span>
+        }
+<span class="nc" id="L556">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or element: &quot; + element);
+    }
+
+
+    public void setTransition(Object handle, Object trans) {
+<span class="nc bnc" id="L562" title="All 2 branches missed.">        if (trans instanceof Transition) {</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">            if (handle instanceof Guard) {</span>
+<span class="nc" id="L564">                ((Guard) handle).setTransition((Transition) trans);</span>
+<span class="nc" id="L565">                return;</span>
+            }
+<span class="nc bnc" id="L567" title="All 2 branches missed.">            if (handle instanceof Action) {</span>
+<span class="nc" id="L568">                ((Transition) trans).setEffect((Action) handle);</span>
+<span class="nc" id="L569">                return;</span>
+            }
+        }
+<span class="nc" id="L572">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or trans: &quot;</span>
+                + trans);
+    }
+
+
+    public void setValue(Object handle, Object value) {
+<span class="nc bnc" id="L578" title="All 2 branches missed.">        if (handle instanceof Argument) {</span>
+<span class="nc" id="L579">            ((Argument) handle).setValue((Expression) value);</span>
+<span class="nc" id="L580">            Argument argument = (Argument) handle;</span>
+<span class="nc" id="L581">            Expression oldExpr = argument.getValue();</span>
+<span class="nc" id="L582">            Expression newExpr = (Expression) value;</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">            if (!equal(oldExpr, newExpr)) {</span>
+<span class="nc" id="L584">                argument.setValue(newExpr);</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">                if (oldExpr != null) {</span>
+<span class="nc" id="L586">                    Model.getUmlFactory().delete(oldExpr);</span>
+                }
+            }
+<span class="nc" id="L589">            return;</span>
+        }
+<span class="nc bnc" id="L591" title="All 2 branches missed.">        if (handle instanceof AttributeLink) {</span>
+<span class="nc" id="L592">            ((AttributeLink) handle).setValue((Instance) value);</span>
+<span class="nc" id="L593">            return;</span>
+        }
+<span class="nc bnc" id="L595" title="All 4 branches missed.">        if (handle instanceof TaggedValue &amp;&amp; value instanceof String) {</span>
+<span class="nc" id="L596">            modelImpl.getExtensionMechanismsHelper().setDataValues(handle,</span>
+                    new String[] {(String) value});
+<span class="nc" id="L598">            return;</span>
+        }
+<span class="nc" id="L600">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot;, value:&quot;</span>
+                + value);
+    }
+
+
+    public Classifier getInstantiation(Object createaction) {
+        try {
+<span class="nc bnc" id="L607" title="All 2 branches missed.">            if (createaction instanceof CreateAction) {</span>
+<span class="nc" id="L608">                return ((CreateAction) createaction).getInstantiation();</span>
+            }
+<span class="nc" id="L610">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L611">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L612">        }</span>
+<span class="nc" id="L613">        throw new IllegalArgumentException(&quot;handle: &quot; + createaction);</span>
+    }
+
+
+    public void setInstantiation(Object createaction, Object instantiation) {
+<span class="nc bnc" id="L618" title="All 2 branches missed.">        if (createaction instanceof CreateAction) {</span>
+<span class="nc bnc" id="L619" title="All 2 branches missed.">            if (instantiation instanceof Classifier) {</span>
+<span class="nc" id="L620">                ((CreateAction) createaction).setInstantiation(</span>
+                        (Classifier) instantiation);
+<span class="nc" id="L622">                return;</span>
+            }
+<span class="nc bnc" id="L624" title="All 2 branches missed.">            if (instantiation == null)</span>
+<span class="nc" id="L625">                ((CreateAction) createaction).setInstantiation(null);</span>
+<span class="nc" id="L626">            return;</span>
+        }
+<span class="nc" id="L628">        throw new IllegalArgumentException(&quot;handle: &quot; + createaction</span>
+                + &quot;, value:&quot; + instantiation);
+
+    }
+
+
+    public Object getActionOwner(Object action) {
+<span class="nc bnc" id="L635" title="All 2 branches missed.">        if (!(action instanceof Action)) {</span>
+<span class="nc" id="L636">            throw new IllegalArgumentException();</span>
+        }
+
+        try {
+<span class="nc bnc" id="L640" title="All 2 branches missed.">            if (Model.getFacade().getStimuli(action) != null) {</span>
+<span class="nc" id="L641">                Iterator iter = Model.getFacade().getStimuli(action).iterator();</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">                if (iter.hasNext()) {</span>
+<span class="nc" id="L643">                    return iter.next();</span>
+                }
+            }
+<span class="nc bnc" id="L646" title="All 2 branches missed.">            if (Model.getFacade().getMessages(action) != null) {</span>
+                Iterator iter = 
+<span class="nc" id="L648">                    Model.getFacade().getMessages(action).iterator();</span>
+<span class="nc bnc" id="L649" title="All 2 branches missed.">                if (iter.hasNext()) {</span>
+<span class="nc" id="L650">                    return iter.next();</span>
+                }
+            }
+<span class="nc bnc" id="L653" title="All 2 branches missed.">            if (Model.getFacade().getTransition(action) != null) {</span>
+<span class="nc" id="L654">                return Model.getFacade().getTransition(action);</span>
+            }
+<span class="nc" id="L656">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L657">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L658">        }</span>
+<span class="nc" id="L659">        return null;</span>
+    }
+
+    public void addAction(Object handle, Object action) {
+<span class="nc bnc" id="L663" title="All 4 branches missed.">        if (!(handle instanceof ActionSequence) </span>
+                || !(action instanceof Action)) {
+<span class="nc" id="L665">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L668">            ((ActionSequence) handle).getAction().add((Action) action);</span>
+<span class="nc" id="L669">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L670">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L671">        }</span>
+<span class="nc" id="L672">    }</span>
+
+    public void addAction(Object handle, int position, Object action) {
+<span class="nc bnc" id="L675" title="All 4 branches missed.">        if (!(handle instanceof ActionSequence) </span>
+                || !(action instanceof Action)) {
+<span class="nc" id="L677">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L680">            ((ActionSequence) handle).getAction()</span>
+<span class="nc" id="L681">                    .add(position, (Action) action);</span>
+<span class="nc" id="L682">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L683">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L684">        } </span>
+<span class="nc" id="L685">    }</span>
+
+    public void removeAction(Object handle, Object action) {
+<span class="nc bnc" id="L688" title="All 4 branches missed.">        if (!(handle instanceof ActionSequence) </span>
+                || !(action instanceof Action)) {
+<span class="nc" id="L690">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L693">            ((ActionSequence) handle).getAction().remove(action);</span>
+<span class="nc" id="L694">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L695">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L696">        }</span>
+<span class="nc" id="L697">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

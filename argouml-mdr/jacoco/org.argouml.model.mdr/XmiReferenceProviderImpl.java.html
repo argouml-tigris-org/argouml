@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmiReferenceProviderImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">XmiReferenceProviderImpl.java</span></div><h1>XmiReferenceProviderImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Map;
+
+import javax.jmi.reflect.RefObject;
+
+import org.netbeans.api.xmi.XMIReferenceProvider;
+
+/**
+ * Custom reference provider for MDR XMI Writer.
+ *
+ * Returns our internal ID to be used when writing the xmi.id field
+ *
+ * @author Tom Morris
+ */
+class XmiReferenceProviderImpl implements XMIReferenceProvider {
+    
+    private Map&lt;String, XmiReference&gt; mofIdToXmiId;
+
+<span class="fc" id="L58">    private boolean topSystemIdSaved = false;</span>
+<span class="fc" id="L59">    private String topSystemId = null;</span>
+    
+    /**
+     * Create a new reference provider which uses the given map for lookups.
+     * 
+     * @param idMap
+     */
+<span class="fc" id="L66">    XmiReferenceProviderImpl(Map&lt;String, XmiReference&gt; idMap) {</span>
+<span class="fc" id="L67">        mofIdToXmiId = idMap;</span>
+<span class="fc" id="L68">    }</span>
+
+    /*
+     * @see org.netbeans.api.xmi.XMIReferenceProvider#getReference(javax.jmi.reflect.RefObject)
+     */
+    public XMIReferenceProvider.XMIReference getReference(RefObject object) {
+<span class="nc" id="L74">        String mofId = object.refMofId();</span>
+        
+        // Look for an existing reference matching our MofID
+<span class="nc" id="L77">        XmiReference ref = mofIdToXmiId.get(mofId);</span>
+
+        // Remember the system id of our root document so that we can write
+        // out profiles and linked models to a different file if requested
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (!topSystemIdSaved) {</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">            if (ref == null) {</span>
+<span class="nc" id="L83">                topSystemId = null;</span>
+            } else {
+<span class="nc" id="L85">                topSystemId = ref.getSystemId();</span>
+            }
+<span class="nc" id="L87">            topSystemIdSaved = true;</span>
+        }
+        
+        // Anything not found is newly created, so return a null SystemID
+        // indicating that it is in the parent document. 
+        // TODO: This assumption will be invalid if/when we allow editing of
+        // linked sub-models
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (ref == null) {</span>
+<span class="nc" id="L95">            return new XMIReferenceProvider.XMIReference(null, mofId);</span>
+        } else {
+<span class="nc" id="L97">            String systemId = ref.getSystemId();</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">            if (topSystemId != null &amp;&amp; topSystemId.equals(systemId)) {</span>
+<span class="nc" id="L99">                systemId = null;</span>
+            }
+<span class="nc" id="L101">            return new XMIReferenceProvider.XMIReference(systemId, </span>
+<span class="nc" id="L102">                    ref.getXmiId());</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

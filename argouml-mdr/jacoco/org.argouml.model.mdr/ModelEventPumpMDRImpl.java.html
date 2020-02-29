@@ -1,0 +1,1125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelEventPumpMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ModelEventPumpMDRImpl.java</span></div><h1>ModelEventPumpMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2005-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.model.Association;
+import javax.jmi.model.AssociationEnd;
+import javax.jmi.model.Attribute;
+import javax.jmi.model.GeneralizableElement;
+import javax.jmi.model.ModelElement;
+import javax.jmi.model.ModelPackage;
+import javax.jmi.model.MofClass;
+import javax.jmi.model.NameNotFoundException;
+import javax.jmi.model.Reference;
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefAssociation;
+import javax.jmi.reflect.RefBaseObject;
+import javax.jmi.reflect.RefObject;
+
+import org.argouml.model.AbstractModelEventPump;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.NotImplementedException;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.model.UmlChangeListener;
+import org.netbeans.api.mdr.MDRManager;
+import org.netbeans.api.mdr.MDRepository;
+import org.netbeans.api.mdr.events.AssociationEvent;
+import org.netbeans.api.mdr.events.AttributeEvent;
+import org.netbeans.api.mdr.events.InstanceEvent;
+import org.netbeans.api.mdr.events.MDRChangeEvent;
+import org.netbeans.api.mdr.events.MDRPreChangeListener;
+import org.netbeans.api.mdr.events.TransactionEvent;
+import org.netbeans.api.mdr.events.VetoChangeException;
+
+/**
+ * The ModelEventPump for the MDR implementation.&lt;p&gt;
+ *
+ * This implements three different event dispatching interfaces
+ * which support a variety of different types of listener registration.
+ * We keep a single event listener registered with the repository
+ * for all events and then re-dispatch events to those listeners
+ * who have requested them.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ */
+class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
+        MDRPreChangeListener {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L107">    private static final Logger LOG =</span>
+<span class="fc" id="L108">        Logger.getLogger(ModelEventPumpMDRImpl.class.getName());</span>
+
+    private static final boolean VETO_READONLY_CHANGES = true;
+
+    private MDRModelImplementation modelImpl;
+
+<span class="fc" id="L114">    private Object registrationMutex = new Byte[0];</span>
+
+    private MDRepository repository;
+
+<span class="fc" id="L118">    private Boolean eventCountMutex = new Boolean(false);</span>
+<span class="fc" id="L119">    private int pendingEvents = 0;</span>
+
+    private Thread eventThread;
+
+    /**
+     * Map of Element/attribute tuples and the listeners they have registered.
+     */
+<span class="fc" id="L126">    private Registry&lt;PropertyChangeListener&gt; elements =</span>
+        new Registry&lt;PropertyChangeListener&gt;();
+
+    /**
+     * Map of Class/attribute tuples and the listeners they have registered.
+     */
+<span class="fc" id="L132">    private Registry&lt;PropertyChangeListener&gt; listenedClasses =</span>
+        new Registry&lt;PropertyChangeListener&gt;();
+
+    /**
+     * Map of subtypes for all types in our metamodel.
+     */
+    private Map&lt;String, Collection&lt;String&gt;&gt; subtypeMap;
+
+    /**
+     * Map of all valid property names (association end names &amp; attribute names)
+     * for each class.
+     */
+    private Map&lt;String, Collection&lt;String&gt;&gt; propertyNameMap;
+
+    /**
+     * Constructor.
+     *
+     * @param implementation The implementation.
+     */
+    public ModelEventPumpMDRImpl(MDRModelImplementation implementation) {
+<span class="nc" id="L152">        this(implementation, MDRManager.getDefault().getDefaultRepository());</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param implementation The implementation.
+     * @param repo The repository.
+     */
+    public ModelEventPumpMDRImpl(MDRModelImplementation implementation,
+            MDRepository repo) {
+<span class="fc" id="L163">        super();</span>
+<span class="fc" id="L164">        modelImpl = implementation;</span>
+<span class="fc" id="L165">        repository = repo;</span>
+<span class="fc" id="L166">        subtypeMap = buildTypeMap(modelImpl.getModelPackage());</span>
+<span class="fc" id="L167">        propertyNameMap = buildPropertyNameMap(modelImpl.getModelPackage());</span>
+<span class="fc" id="L168">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void addModelEventListener(PropertyChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (listener == null) {</span>
+<span class="nc" id="L177">            throw new IllegalArgumentException(&quot;A listener must be supplied&quot;);</span>
+        }
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L181">            throw new IllegalArgumentException(</span>
+                    &quot;A model element must be supplied&quot;);
+        }
+
+<span class="nc" id="L185">        registerModelEvent(listener, modelElement, propertyNames);</span>
+<span class="nc" id="L186">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void addModelEventListener(UmlChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+<span class="nc" id="L194">        throw new NotImplementedException();</span>
+    }
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object)
+     */
+    public void addModelEventListener(PropertyChangeListener listener,
+            Object modelElement) {
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (listener == null) {</span>
+<span class="nc" id="L204">            throw new IllegalArgumentException(&quot;A listener must be supplied&quot;);</span>
+        }
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L208">            throw new IllegalArgumentException(</span>
+                    &quot;A model element must be supplied&quot;);
+        }
+
+<span class="nc" id="L212">        registerModelEvent(listener, modelElement, null);</span>
+<span class="nc" id="L213">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void removeModelEventListener(PropertyChangeListener listener,
+            Object modelelement, String[] propertyNames) {
+<span class="nc" id="L221">        unregisterModelEvent(listener, modelelement, propertyNames);</span>
+<span class="nc" id="L222">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void removeModelEventListener(UmlChangeListener listener,
+            Object modelelement, String[] propertyNames) {
+<span class="nc" id="L230">        throw new NotImplementedException();</span>
+    }
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object)
+     */
+    public void removeModelEventListener(PropertyChangeListener listener,
+            Object modelelement) {
+<span class="nc" id="L239">        unregisterModelEvent(listener, modelelement, null);</span>
+<span class="nc" id="L240">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#addClassModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void addClassModelEventListener(PropertyChangeListener listener,
+            Object modelClass, String[] propertyNames) {
+<span class="nc" id="L248">        registerClassEvent(listener, modelClass, propertyNames);</span>
+<span class="nc" id="L249">    }</span>
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#removeClassModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void removeClassModelEventListener(PropertyChangeListener listener,
+            Object modelClass, String[] propertyNames) {
+<span class="nc" id="L257">        unregisterClassEvent(listener, modelClass, propertyNames);</span>
+<span class="nc" id="L258">    }</span>
+
+    /**
+     * Detect a change event in MDR and convert this to a change event from the
+     * model interface.  We also keep track of the number of pending changes so
+     * that we can implement a simple flush interface.&lt;p&gt;
+     *
+     * The conversions are according to this table.
+     * &lt;pre&gt;
+     * MDR Event         MDR Event Type            Propogated Event
+     *
+     * InstanceEvent     EVENT_INSTANCE_DELETE     DeleteInstanceEvent
+     * AttributeEvent    EVENT_ATTRIBUTE_SET       AttributeChangeEvent
+     * AssociationEvent  EVENT_ASSOCIATION_ADD     AddAssociationEvent
+     * AssociationEvent  EVENT_ASSOCIATION_REMOVE  RemoveAssociationEvent
+     * &lt;/pre&gt;
+     * Any other events are ignored and not propogated beyond the model
+     * subsystem.
+     *
+     * @param mdrEvent Change event from MDR
+     * @see org.netbeans.api.mdr.events.MDRChangeListener#change
+     */
+    public void change(MDRChangeEvent mdrEvent) {
+
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        if (eventThread == null) {</span>
+<span class="fc" id="L283">            eventThread = Thread.currentThread();</span>
+        }
+
+        // TODO: This should be done after all events are delivered, but leave
+        // it here for now to avoid last minute synchronization problems
+<span class="fc" id="L288">        decrementEvents();</span>
+
+        // Quick exit if it's a transaction event
+        // (we get a lot of them and they are all ignored)
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (mdrEvent instanceof TransactionEvent) {</span>
+<span class="fc" id="L293">            return;</span>
+        }
+
+<span class="fc" id="L296">        List&lt;UmlChangeEvent&gt; events = new ArrayList&lt;UmlChangeEvent&gt;();</span>
+
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if (mdrEvent instanceof AttributeEvent) {</span>
+<span class="fc" id="L299">            AttributeEvent ae = (AttributeEvent) mdrEvent;</span>
+<span class="fc" id="L300">            events.add(new AttributeChangeEvent(ae.getSource(),</span>
+<span class="fc" id="L301">                    ae.getAttributeName(), ae.getOldElement(),</span>
+<span class="fc" id="L302">                    ae.getNewElement(), mdrEvent));</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        } else if (mdrEvent instanceof InstanceEvent</span>
+<span class="pc bpc" id="L304" title="1 of 2 branches missed.">                &amp;&amp; mdrEvent.isOfType(InstanceEvent.EVENT_INSTANCE_DELETE)) {</span>
+<span class="nc" id="L305">            InstanceEvent ie = (InstanceEvent) mdrEvent;</span>
+<span class="nc" id="L306">            events.add(new DeleteInstanceEvent(ie.getSource(),</span>
+                    &quot;remove&quot;, null, null, mdrEvent));
+            // Clean up index entries
+<span class="nc" id="L309">            String mofid = ((InstanceEvent)mdrEvent).getInstance().refMofId();</span>
+<span class="nc" id="L310">            modelImpl.removeElement(mofid);</span>
+<span class="pc bfc" id="L311" title="All 2 branches covered.">        } else if (mdrEvent instanceof AssociationEvent) {</span>
+<span class="fc" id="L312">            AssociationEvent ae = (AssociationEvent) mdrEvent;</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">            if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {</span>
+<span class="fc" id="L314">                events.add(new AddAssociationEvent(</span>
+<span class="fc" id="L315">                        ae.getNewElement(),</span>
+<span class="fc" id="L316">                        mapPropertyName(ae.getEndName()),</span>
+<span class="fc" id="L317">                        ae.getOldElement(), // will always be null</span>
+<span class="fc" id="L318">                        ae.getFixedElement(),</span>
+<span class="fc" id="L319">                        ae.getFixedElement(),</span>
+                        mdrEvent));
+                // Create a change event for the corresponding property
+<span class="fc" id="L322">                events.add(new AttributeChangeEvent(</span>
+<span class="fc" id="L323">                        ae.getNewElement(),</span>
+<span class="fc" id="L324">                        mapPropertyName(ae.getEndName()),</span>
+<span class="fc" id="L325">                        ae.getOldElement(), // will always be null</span>
+<span class="fc" id="L326">                        ae.getFixedElement(),</span>
+                        mdrEvent));
+                // Create an event for the other end of the association
+<span class="fc" id="L329">                events.add(new AddAssociationEvent(</span>
+<span class="fc" id="L330">                        ae.getFixedElement(),</span>
+<span class="fc" id="L331">                        otherAssocEnd(ae),</span>
+<span class="fc" id="L332">                        ae.getOldElement(), // will always be null</span>
+<span class="fc" id="L333">                        ae.getNewElement(),</span>
+<span class="fc" id="L334">                        ae.getNewElement(),</span>
+                        mdrEvent));
+                // and a change event for that end
+<span class="fc" id="L337">                events.add(new AttributeChangeEvent(</span>
+<span class="fc" id="L338">                        ae.getFixedElement(),</span>
+<span class="fc" id="L339">                        otherAssocEnd(ae),</span>
+<span class="fc" id="L340">                        ae.getOldElement(), // will always be null</span>
+<span class="fc" id="L341">                        ae.getNewElement(),</span>
+                        mdrEvent));
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            } else if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</span>
+<span class="nc" id="L344">                events.add(new RemoveAssociationEvent(</span>
+<span class="nc" id="L345">                        ae.getOldElement(),</span>
+<span class="nc" id="L346">                        mapPropertyName(ae.getEndName()),</span>
+<span class="nc" id="L347">                        ae.getFixedElement(),</span>
+<span class="nc" id="L348">                        ae.getNewElement(), // will always be null</span>
+<span class="nc" id="L349">                        ae.getFixedElement(),</span>
+                        mdrEvent));
+                // Create a change event for the associated property
+<span class="nc" id="L352">                events.add(new AttributeChangeEvent(</span>
+<span class="nc" id="L353">                        ae.getOldElement(),</span>
+<span class="nc" id="L354">                        mapPropertyName(ae.getEndName()),</span>
+<span class="nc" id="L355">                        ae.getFixedElement(),</span>
+<span class="nc" id="L356">                        ae.getNewElement(), // will always be null</span>
+                        mdrEvent));
+                // Create an event for the other end of the association
+<span class="nc" id="L359">                events.add(new RemoveAssociationEvent(</span>
+<span class="nc" id="L360">                        ae.getFixedElement(),</span>
+<span class="nc" id="L361">                        otherAssocEnd(ae),</span>
+<span class="nc" id="L362">                        ae.getOldElement(),</span>
+<span class="nc" id="L363">                        ae.getNewElement(), // will always be null</span>
+<span class="nc" id="L364">                        ae.getOldElement(),</span>
+                        mdrEvent));
+                // Create a change event for the associated property
+<span class="nc" id="L367">                events.add(new AttributeChangeEvent(</span>
+<span class="nc" id="L368">                        ae.getFixedElement(),</span>
+<span class="nc" id="L369">                        otherAssocEnd(ae),</span>
+<span class="nc" id="L370">                        ae.getOldElement(),</span>
+<span class="nc" id="L371">                        ae.getNewElement(), // will always be null</span>
+                        mdrEvent));
+<span class="nc bnc" id="L373" title="All 2 branches missed.">            } else if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_SET)) {</span>
+<span class="nc" id="L374">                LOG.log(Level.SEVERE, &quot;Unexpected EVENT_ASSOCIATION_SET received&quot;);</span>
+            } else {
+<span class="nc" id="L376">                LOG.log(Level.SEVERE, &quot;Unknown association event type &quot; + ae.getType());</span>
+            }
+<span class="fc" id="L378">        } else {</span>
+<span class="fc" id="L379">            String name = mdrEvent.getClass().getName();</span>
+            // Cut down on debugging noise
+<span class="fc bfc" id="L381" title="All 2 branches covered.">            if (!name.endsWith(&quot;CreateInstanceEvent&quot;)) {</span>
+<span class="fc" id="L382">                LOG.log(Level.FINE, &quot;Ignoring MDR event &quot; + mdrEvent);</span>
+            }
+        }
+
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        for (UmlChangeEvent event : events) {</span>
+<span class="fc" id="L387">            fire(event);</span>
+            // Unregister deleted instances after all events have been delivered
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">            if (event instanceof DeleteInstanceEvent) {</span>
+<span class="nc" id="L390">                elements.unregister(null, ((RefBaseObject) event.getSource())</span>
+<span class="nc" id="L391">                        .refMofId(), null);</span>
+            }
+<span class="fc" id="L393">        }</span>
+<span class="fc" id="L394">    }</span>
+
+    private boolean isReadOnly(RefBaseObject object) {
+<span class="fc" id="L397">        return modelImpl.isReadOnly(object.refOutermostPackage());</span>
+    }
+
+    /**
+     * @param e Event from MDR indicating a planned change.
+     * @see org.netbeans.api.mdr.events.MDRPreChangeListener#plannedChange
+     */
+    public void plannedChange(MDRChangeEvent e) {
+
+        if (VETO_READONLY_CHANGES) {
+<span class="fc bfc" id="L407" title="All 2 branches covered.">            if (e instanceof InstanceEvent) {</span>
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">                if (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {</span>
+<span class="fc" id="L409">                    RefBaseObject element = (RefBaseObject) ((InstanceEvent) e)</span>
+<span class="fc" id="L410">                            .getSource();</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">                    if (isReadOnly(element)) {</span>
+<span class="nc" id="L412">                        throw new VetoChangeException(e.getSource(), null);</span>
+                    }
+<span class="fc" id="L414">                } else {</span>
+<span class="nc" id="L415">                    RefObject element = ((InstanceEvent) e).getInstance();</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">                    if (isReadOnly(element)) {</span>
+<span class="nc" id="L417">                        throw new VetoChangeException(e.getSource(), element);</span>
+                    }
+<span class="nc" id="L419">                }</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            } else if (e instanceof AssociationEvent) {</span>
+                // TODO: association changes are too hard to check easily
+                // we don't know which end of the association is significant
+                // without checking the metamodel for navigability of the ends
+//                RefObject element = ((AssociationEvent) e).getFixedElement();
+//                if (isReadOnly(element)) {
+//                    throw new VetoChangeException(element, element);
+//                }
+<span class="fc bfc" id="L428" title="All 2 branches covered.">            } else if (e instanceof AttributeEvent) {</span>
+<span class="fc" id="L429">                RefObject element = (RefObject) ((AttributeEvent) e)</span>
+<span class="fc" id="L430">                        .getSource();</span>
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">                if (isReadOnly(element)) {</span>
+<span class="nc" id="L432">                    throw new VetoChangeException(element, element);</span>
+                }
+            }
+        }
+
+<span class="fc" id="L437">        synchronized (eventCountMutex) {</span>
+<span class="fc" id="L438">            pendingEvents++;</span>
+<span class="fc" id="L439">        }</span>
+
+        // Prototypical logging code that can be enabled and modified to
+        // discover who's creating certain types of events
+//        if (/* LOG.isDebugEnabled() &amp;&amp; */ e instanceof AssociationEvent) {
+//            AssociationEvent ae = (AssociationEvent) e;
+//            if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)
+//                    &amp;&amp; &quot;namespace&quot;.equals(ae.getEndName())
+//                    /* &amp;&amp; ae.getFixedElement() instanceof UmlPackage */) {
+//                LOG.log(Level.FINE, &quot;Removing element &quot; + ae.getOldElement()
+//                        + &quot; from package &quot; + ae.getFixedElement());
+//            }
+//        }
+<span class="fc" id="L452">    }</span>
+
+    /**
+     * @param e
+     *            MDR event which was announced to plannedChange then
+     *            subsequently cancelled.
+     * @see org.netbeans.api.mdr.events.MDRPreChangeListener#changeCancelled
+     */
+    public void changeCancelled(MDRChangeEvent e) {
+<span class="nc" id="L461">        decrementEvents();</span>
+<span class="nc" id="L462">    }</span>
+
+    /**
+     * Decrement count of outstanding events and wake
+     * any waiters when it becomes zero.
+     */
+    private void decrementEvents() {
+
+<span class="fc" id="L470">        synchronized (eventCountMutex) {</span>
+<span class="fc" id="L471">            pendingEvents--;</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">            if (pendingEvents &lt;= 0) {</span>
+<span class="fc" id="L473">                eventCountMutex.notifyAll();</span>
+            }
+<span class="fc" id="L475">        }</span>
+<span class="fc" id="L476">    }</span>
+
+    /**
+     * Fire an event to any registered listeners.
+     */
+    private void fire(UmlChangeEvent event) {
+<span class="fc" id="L482">        String mofId = ((RefBaseObject) event.getSource()).refMofId();</span>
+<span class="fc" id="L483">        String className  = getClassName(event.getSource());</span>
+
+        // Any given listener is only called once even if it is
+        // registered for multiple relevant matches
+<span class="fc" id="L487">        Set&lt;PropertyChangeListener&gt; listeners =</span>
+                new HashSet&lt;PropertyChangeListener&gt;();
+<span class="fc" id="L489">        synchronized (registrationMutex) {</span>
+<span class="fc" id="L490">            listeners.addAll(elements.getMatches(mofId, event</span>
+<span class="fc" id="L491">                    .getPropertyName()));</span>
+
+            // This will include all subtypes registered
+<span class="fc" id="L494">            listeners.addAll(listenedClasses.getMatches(className, event</span>
+<span class="fc" id="L495">                    .getPropertyName()));</span>
+<span class="fc" id="L496">        }</span>
+
+<span class="pc bpc" id="L498" title="1 of 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L499">            LOG.log(Level.FINE, &quot;Firing &quot;</span>
+<span class="nc" id="L500">                    + modelImpl.getMetaTypes().getName(event)</span>
+                    + &quot; source &quot;
+<span class="nc" id="L502">                    + modelImpl.getMetaTypes().getName(</span>
+<span class="nc" id="L503">                            event.getSource())</span>
+<span class="nc" id="L504">                    + &quot; [&quot; + ((RefBaseObject) event.getSource()).refMofId()</span>
+<span class="nc" id="L505">                    + &quot;].&quot;  + event.getPropertyName()</span>
+<span class="nc" id="L506">                    + &quot;,&quot; + formatElement(event.getOldValue())</span>
+<span class="nc" id="L507">                    + &quot;-&gt;&quot; + formatElement(event.getNewValue()));</span>
+        }
+
+<span class="pc bpc" id="L510" title="1 of 2 branches missed.">        if (!listeners.isEmpty()) {</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            for (PropertyChangeListener pcl : listeners) {</span>
+                if (false /*(LOG.isDebugEnabled()*/) {
+                    LOG.log(Level.FINE, &quot;Firing event on &quot; + pcl.getClass().getName()
+                            + &quot;[&quot; + pcl + &quot;]&quot;);
+                }
+<span class="nc" id="L516">                pcl.propertyChange(event);</span>
+<span class="nc" id="L517">            }</span>
+        } else {
+            // For debugging you probably want either this
+            // OR the logging for every event which is fired - not both
+            if (false/*LOG.isDebugEnabled()*/) {
+                LOG.log(Level.FINE, &quot;No listener for &quot;
+                        + modelImpl.getMetaTypes().getName(event)
+                        + &quot; source &quot;
+                        + modelImpl.getMetaTypes().getName(
+                                event.getSource())
+                        + &quot; [&quot;
+                        + ((RefBaseObject) event.getSource()).refMofId() + &quot;].&quot;
+                        + event.getPropertyName() + &quot;,&quot; + event.getOldValue()
+                        + &quot;-&gt;&quot; + event.getNewValue());
+            }
+        }
+<span class="fc" id="L533">    }</span>
+
+
+    /**
+     * Register a listener for a Model Event.  The ModelElement's
+     * MofID is used as the string to match against.
+     */
+    private void registerModelEvent(PropertyChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+<span class="nc bnc" id="L542" title="All 4 branches missed.">        if (listener == null || modelElement == null) {</span>
+<span class="nc" id="L543">            throw new IllegalArgumentException(&quot;Neither listener (&quot; + listener</span>
+                    + &quot;) or modelElement (&quot; + modelElement
+                    + &quot;) can be null! [Property names: &quot; + propertyNames + &quot;]&quot;);
+        }
+
+        // Fetch the key before going in synchronized mode
+<span class="nc" id="L549">        String mofId = ((RefBaseObject) modelElement).refMofId();</span>
+        try {
+<span class="nc" id="L551">            verifyAttributeNames(((RefBaseObject) modelElement).refMetaObject(),</span>
+                    propertyNames);
+<span class="nc" id="L553">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L554">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L555">        }</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L557">            LOG.log(Level.FINE, &quot;Register [&quot;</span>
+<span class="nc" id="L558">                    + &quot; element:&quot; + formatElement(modelElement)</span>
+<span class="nc" id="L559">                    + &quot;, properties:&quot; + formatArray(propertyNames)</span>
+                    + &quot;, listener:&quot; + listener
+                    + &quot;]&quot;);
+        }
+<span class="nc" id="L563">        synchronized (registrationMutex) {</span>
+<span class="nc" id="L564">            elements.register(listener, mofId, propertyNames);</span>
+<span class="nc" id="L565">        }</span>
+<span class="nc" id="L566">    }</span>
+
+    /**
+     * Unregister a listener for a Model Event.
+     */
+    private void unregisterModelEvent(PropertyChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+<span class="nc bnc" id="L573" title="All 4 branches missed.">        if (listener == null || modelElement == null) {</span>
+<span class="nc" id="L574">            LOG.log(Level.SEVERE, &quot;Attempt to unregister null listener(&quot; + listener</span>
+                    + &quot;) or modelElement (&quot; + modelElement
+                    + &quot;)! [Property names: &quot; + propertyNames + &quot;]&quot;);
+<span class="nc" id="L577">            return;</span>
+        }
+<span class="nc bnc" id="L579" title="All 2 branches missed.">        if (!(modelElement instanceof RefBaseObject)) {</span>
+<span class="nc" id="L580">            LOG.log(Level.SEVERE, &quot;Ignoring non-RefBaseObject received by &quot;</span>
+                    + &quot;unregisterModelEvent - &quot; + modelElement);
+<span class="nc" id="L582">            return;</span>
+        }
+<span class="nc" id="L584">        String mofId = ((RefBaseObject) modelElement).refMofId();</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L586">            LOG.log(Level.FINE, &quot;Unregister [&quot;</span>
+<span class="nc" id="L587">                    + &quot; element:&quot; + formatElement(modelElement)</span>
+<span class="nc" id="L588">                    + &quot;, properties:&quot; + formatArray(propertyNames)</span>
+                    + &quot;, listener:&quot; + listener
+                    + &quot;]&quot;);
+        }
+<span class="nc" id="L592">        synchronized (registrationMutex) {</span>
+<span class="nc" id="L593">            elements.unregister(listener, mofId, propertyNames);</span>
+<span class="nc" id="L594">        }</span>
+<span class="nc" id="L595">    }</span>
+
+    /**
+     * Register a listener for metamodel Class (and all its
+     * subclasses), optionally qualified by a list of
+     * property names.
+     *
+     * TODO: verify that property/event names are legal for
+     * this class in the metamodel
+     */
+    private void registerClassEvent(PropertyChangeListener listener,
+            Object modelClass, String[] propertyNames) {
+
+<span class="nc bnc" id="L608" title="All 2 branches missed.">        if (modelClass instanceof Class) {</span>
+<span class="nc" id="L609">            String className = getClassName(modelClass);</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">            if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L611">                LOG.log(Level.FINE, &quot;Register class [&quot;</span>
+<span class="nc" id="L612">                        + modelImpl.getMetaTypes().getName(modelClass)</span>
+<span class="nc" id="L613">                        + &quot;properties:&quot; + formatArray(propertyNames)</span>
+                        + &quot;, listener:&quot; + listener + &quot;]&quot;);
+            }
+<span class="nc" id="L616">            Collection&lt;String&gt; subtypes = subtypeMap.get(className);</span>
+<span class="nc" id="L617">            verifyAttributeNames(className, propertyNames);</span>
+<span class="nc" id="L618">            synchronized (registrationMutex) {</span>
+<span class="nc" id="L619">                listenedClasses.register(listener, className, propertyNames);</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">                for (String subtype : subtypes) {</span>
+<span class="nc" id="L621">                    listenedClasses.register(listener, subtype, propertyNames);</span>
+<span class="nc" id="L622">                }</span>
+<span class="nc" id="L623">            }</span>
+<span class="nc" id="L624">            return;</span>
+        }
+<span class="nc" id="L626">        throw new IllegalArgumentException(</span>
+                &quot;Don't know how to register class event for object &quot;
+                        + modelClass);
+    }
+
+
+    /**
+     * Unregister a listener for a class and its subclasses.
+     */
+    private void unregisterClassEvent(PropertyChangeListener listener,
+            Object modelClass, String[] propertyNames) {
+<span class="nc bnc" id="L637" title="All 2 branches missed.">        if (modelClass instanceof Class) {</span>
+<span class="nc" id="L638">            String className = getClassName(modelClass);</span>
+<span class="nc bnc" id="L639" title="All 2 branches missed.">            if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L640">                LOG.log(Level.FINE,</span>
+                        &quot;Unregister class [&quot; + className
+<span class="nc" id="L642">                        + &quot;, properties:&quot; + formatArray(propertyNames)</span>
+                        + &quot;, listener:&quot; + listener + &quot;]&quot;);
+            }
+<span class="nc" id="L645">            Collection&lt;String&gt; subtypes = subtypeMap.get(className);</span>
+<span class="nc" id="L646">            synchronized (registrationMutex) {</span>
+<span class="nc" id="L647">                listenedClasses.unregister(listener, className, propertyNames);</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">                for (String subtype : subtypes) {</span>
+<span class="nc" id="L649">                    listenedClasses.unregister(listener, subtype,</span>
+                            propertyNames);
+<span class="nc" id="L651">                }</span>
+<span class="nc" id="L652">            }</span>
+<span class="nc" id="L653">            return;</span>
+        }
+<span class="nc" id="L655">        throw new IllegalArgumentException(</span>
+                &quot;Don't know how to unregister class event for object &quot;
+                        + modelClass);
+    }
+
+    private String getClassName(Object elementOrClass) {
+<span class="fc" id="L661">        return modelImpl.getMetaTypes().getName(elementOrClass);</span>
+    }
+
+    /*
+     * @see org.argouml.model.ModelEventPump#startPumpingEvents()
+     */
+    public void startPumpingEvents() {
+<span class="fc" id="L668">        LOG.log(Level.FINE, &quot;Start pumping events&quot;);</span>
+<span class="fc" id="L669">        repository.addListener(this);</span>
+<span class="fc" id="L670">    }</span>
+
+    /*
+     * @see org.argouml.model.ModelEventPump#stopPumpingEvents()
+     */
+    public void stopPumpingEvents() {
+<span class="fc" id="L676">        LOG.log(Level.FINE, &quot;Stop pumping events&quot;);</span>
+<span class="fc" id="L677">        repository.removeListener(this);</span>
+<span class="fc" id="L678">    }</span>
+
+    /*
+     * @see org.argouml.model.ModelEventPump#flushModelEvents()
+     */
+    public void flushModelEvents() {
+        while (true) {
+<span class="nc" id="L685">            synchronized (eventCountMutex) {</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">                if (pendingEvents &lt;= 0</span>
+                        // Don't wait on ourselves, we'll deadlock!
+                        // TODO: We might want to throw an exception here
+<span class="nc bnc" id="L689" title="All 2 branches missed.">                        || Thread.currentThread().equals(eventThread)) {</span>
+<span class="nc" id="L690">                    return;</span>
+                }
+                try {
+<span class="nc" id="L693">                    eventCountMutex.wait();</span>
+<span class="nc" id="L694">                } catch (InterruptedException e) {</span>
+<span class="nc" id="L695">                    LOG.log(Level.SEVERE, &quot;Interrupted while waiting in flushModelEvents&quot;);</span>
+<span class="nc" id="L696">                }</span>
+<span class="nc" id="L697">            }</span>
+        }
+
+    }
+
+    /**
+     * Get name of opposite end of association using
+     * reflection on metamodel.
+     */
+    private String otherAssocEnd(AssociationEvent ae) {
+<span class="fc" id="L707">        RefAssociation ra = (RefAssociation) ae.getSource();</span>
+<span class="fc" id="L708">        Association a = (Association) ra.refMetaObject();</span>
+<span class="fc" id="L709">        AssociationEnd aend = null;</span>
+        try {
+<span class="fc" id="L711">            aend = (AssociationEnd) a.lookupElementExtended(ae.getEndName());</span>
+<span class="nc" id="L712">        } catch (NameNotFoundException e) {</span>
+<span class="nc" id="L713">            LOG.log(Level.SEVERE, &quot;Failed to find other end of association : &quot;</span>
+<span class="nc" id="L714">                    + ae.getSource() + &quot; -&gt; &quot; + ae.getEndName());</span>
+<span class="nc" id="L715">            return null;</span>
+<span class="fc" id="L716">        }</span>
+<span class="fc" id="L717">        return aend.otherEnd().getName();</span>
+    }
+
+
+    /**
+     * Map from UML 1.4 names to UML 1.3 names
+     * expected by ArgoUML.&lt;p&gt;
+     *
+     * Note: It would have less performance impact to do the
+     * mapping during listener registration, but ArgoUML
+     * depends on the value in the event.
+     */
+    private static String mapPropertyName(String name) {
+
+        // TODO: We don't want to do this once we have dropped UML1.3
+        // Map UML 1.4 names to UML 1.3 equivalents
+<span class="fc bfc" id="L733" title="All 2 branches covered.">        if (&quot;typedParameter&quot;.equals(name)) {</span>
+<span class="fc" id="L734">            return &quot;parameter&quot;;</span>
+        }
+<span class="fc bfc" id="L736" title="All 2 branches covered.">        if (&quot;typedFeature&quot;.equals(name)) {</span>
+<span class="fc" id="L737">            return &quot;feature&quot;;</span>
+        }
+<span class="fc" id="L739">        return name;</span>
+    }
+
+    /**
+     * Formatters for debug output.
+     */
+    private String formatArray(String[] array) {
+<span class="nc bnc" id="L746" title="All 2 branches missed.">        if (array == null) {</span>
+<span class="nc" id="L747">            return null;</span>
+        }
+<span class="nc" id="L749">        String result = &quot;[&quot;;</span>
+<span class="nc bnc" id="L750" title="All 2 branches missed.">        for (int i = 0; i &lt; array.length; i++) {</span>
+<span class="nc" id="L751">            result = result + array[i] + &quot;, &quot;;</span>
+        }
+<span class="nc" id="L753">        return result.substring(0, result.length() - 2) + &quot;]&quot;;</span>
+    }
+
+    private String formatElement(Object element) {
+        try {
+<span class="nc bnc" id="L758" title="All 2 branches missed.">            if (element instanceof RefBaseObject) {</span>
+<span class="nc" id="L759">                return modelImpl.getMetaTypes().getName(element)</span>
+<span class="nc" id="L760">                        + &quot;&lt;&quot; + ((RefBaseObject) element).refMofId() + &quot;&gt;&quot;;</span>
+<span class="nc bnc" id="L761" title="All 2 branches missed.">            } else if (element != null) {</span>
+<span class="nc" id="L762">                return element.toString();</span>
+            }
+<span class="nc" id="L764">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L765">            return modelImpl.getMetaTypes().getName(element)</span>
+                    + &quot;&lt;deleted&gt;&quot;;
+<span class="nc" id="L767">        }</span>
+<span class="nc" id="L768">        return null;</span>
+    }
+
+
+    /**
+     * Traverse metamodel and build list of subtypes for every metatype.
+     */
+    private Map&lt;String, Collection&lt;String&gt;&gt; buildTypeMap(ModelPackage extent) {
+<span class="fc" id="L776">        Map&lt;String, Collection&lt;String&gt;&gt; names =</span>
+            new HashMap&lt;String, Collection&lt;String&gt;&gt;();
+<span class="fc bfc" id="L778" title="All 2 branches covered.">        for (Object metaclass : extent.getMofClass().refAllOfClass()) {</span>
+<span class="fc" id="L779">            ModelElement element = (ModelElement) metaclass;</span>
+<span class="fc" id="L780">            String name = element.getName();</span>
+<span class="pc bpc" id="L781" title="1 of 2 branches missed.">            if (names.containsKey(name)) {</span>
+<span class="nc" id="L782">                LOG.log(Level.SEVERE,</span>
+                        &quot;Found duplicate class '&quot; + name + &quot;' in metamodel&quot;);
+            } else {
+<span class="fc" id="L785">                names.put(name, getSubtypes(extent, element));</span>
+                // LOG.log(Level.FINE, &quot; Class &quot; + name + &quot; has subtypes : &quot;
+                // + names.get(name));
+            }
+<span class="fc" id="L789">        }</span>
+<span class="fc" id="L790">        return names;</span>
+    }
+
+    /**
+     * Recursive method to get all subtypes.
+     *
+     * TODO: Does this have a scalability problem?
+     */
+    private Collection&lt;String&gt; getSubtypes(ModelPackage extent,
+            ModelElement me) {
+<span class="fc" id="L800">        Collection&lt;String&gt; allSubtypes = new HashSet&lt;String&gt;();</span>
+<span class="pc bpc" id="L801" title="1 of 2 branches missed.">        if (me instanceof GeneralizableElement) {</span>
+<span class="fc" id="L802">            GeneralizableElement ge = (GeneralizableElement) me;</span>
+<span class="fc" id="L803">            Collection&lt;ModelElement&gt; subtypes = extent.getGeneralizes()</span>
+<span class="fc" id="L804">                    .getSubtype(ge);</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">            for (ModelElement st : subtypes) {</span>
+<span class="fc" id="L806">                allSubtypes.add(st.getName());</span>
+<span class="fc" id="L807">                allSubtypes.addAll(getSubtypes(extent, st));</span>
+<span class="fc" id="L808">            }</span>
+        }
+<span class="fc" id="L810">        return allSubtypes;</span>
+    }
+
+    /**
+     * Traverse metamodel and build list of names for all attributes and
+     * reference ends.
+     */
+    private Map&lt;String, Collection&lt;String&gt;&gt; buildPropertyNameMap(
+            ModelPackage extent) {
+<span class="fc" id="L819">        Map&lt;String, Collection&lt;String&gt;&gt; names =</span>
+                new HashMap&lt;String, Collection&lt;String&gt;&gt;();
+<span class="fc bfc" id="L821" title="All 2 branches covered.">        for (Reference reference : (Collection&lt;Reference&gt;) extent</span>
+<span class="fc" id="L822">                .getReference().refAllOfClass()) {</span>
+<span class="fc" id="L823">            mapAssociationEnd(names, reference.getExposedEnd());</span>
+<span class="fc" id="L824">            mapAssociationEnd(names, reference.getReferencedEnd());</span>
+<span class="fc" id="L825">        }</span>
+<span class="fc bfc" id="L826" title="All 2 branches covered.">        for (Attribute attribute : (Collection&lt;Attribute&gt;) extent</span>
+<span class="fc" id="L827">                .getAttribute().refAllOfClass()) {</span>
+<span class="fc" id="L828">            mapPropertyName(names, attribute.getContainer(),</span>
+<span class="fc" id="L829">                    attribute.getName());</span>
+<span class="fc" id="L830">        }</span>
+<span class="fc" id="L831">        return names;</span>
+    }
+
+    private void mapAssociationEnd(Map&lt;String, Collection&lt;String&gt;&gt; names,
+            AssociationEnd end) {
+<span class="fc" id="L836">        ModelElement type = end.otherEnd().getType();</span>
+<span class="fc" id="L837">        mapPropertyName(names, type, end.getName());</span>
+<span class="fc" id="L838">    }</span>
+
+    private boolean mapPropertyName(Map&lt;String, Collection&lt;String&gt;&gt; names,
+            ModelElement type, String propertyName) {
+<span class="fc" id="L842">        String typeName = type.getName();</span>
+<span class="fc" id="L843">        boolean added = mapPropertyName(names, typeName, propertyName);</span>
+
+<span class="fc" id="L845">        Collection&lt;String&gt; subtypes = subtypeMap.get(typeName);</span>
+<span class="pc bpc" id="L846" title="1 of 2 branches missed.">        if (subtypes != null) {</span>
+<span class="fc bfc" id="L847" title="All 2 branches covered.">            for (String subtype : subtypes) {</span>
+<span class="fc" id="L848">                added &amp;= mapPropertyName(names, subtype, propertyName);</span>
+<span class="fc" id="L849">            }</span>
+        }
+
+<span class="fc" id="L852">        return added;</span>
+    }
+
+    private boolean mapPropertyName(Map&lt;String, Collection&lt;String&gt;&gt; names,
+            String typeName, String propertyName) {
+<span class="fc bfc" id="L857" title="All 2 branches covered.">        if (!names.containsKey(typeName)) {</span>
+<span class="fc" id="L858">            names.put(typeName, new HashSet&lt;String&gt;());</span>
+        }
+<span class="fc" id="L860">        boolean added = names.get(typeName).add(propertyName);</span>
+<span class="fc bfc" id="L861" title="All 2 branches covered.">        if (!added) {</span>
+            // Because we map both ends of an association we'll see many
+            // names twice
+//                LOG.log(Level.FINE, &quot;Duplicate property name found - {0}:{1}&quot;, new Object[]{typeName, propertyName});
+        } else {
+<span class="fc" id="L866">            LOG.log(Level.FINE, &quot;Added property name - {0}:{1}&quot;, new Object[]{typeName, propertyName});</span>
+        }
+<span class="fc" id="L868">        return added;</span>
+    }
+
+    /**
+     * Check whether given attribute names exist for this
+     * metatype in the metamodel.  Throw exception if not found.
+     */
+    private void verifyAttributeNames(String className, String[] attributes) {
+        // convert classname to RefObject
+<span class="nc" id="L877">        RefObject ro = null;</span>
+<span class="nc" id="L878">        verifyAttributeNames(ro, attributes);</span>
+<span class="nc" id="L879">    }</span>
+
+    /**
+     * Check whether given attribute names exist for this
+     * metatype in the metamodel.  Throw exception if not found.
+     */
+    private void verifyAttributeNames(RefObject metaobject,
+            String[] attributes) {
+        // Only do verification if debug level logging is on
+        // TODO: Should we leave this on always? - tfm
+<span class="nc bnc" id="L889" title="All 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc bnc" id="L890" title="All 4 branches missed.">            if (metaobject == null || attributes == null) {</span>
+<span class="nc" id="L891">                return;</span>
+            }
+            // If we don't have a MofClass, see if we can get one from the
+            // instance
+<span class="nc bnc" id="L895" title="All 2 branches missed.">            if (!(metaobject instanceof MofClass)) {</span>
+<span class="nc" id="L896">                metaobject = metaobject.refMetaObject();</span>
+            }
+
+            // If we still don't have a MofClass, something's wrong
+<span class="nc bnc" id="L900" title="All 2 branches missed.">            if (!(metaobject instanceof MofClass)) {</span>
+<span class="nc" id="L901">                throw new IllegalArgumentException(</span>
+                        &quot;Argument must be MofClass or instance of MofClass&quot;);
+            }
+
+<span class="nc" id="L905">            MofClass metaclass = (MofClass) metaobject;</span>
+<span class="nc" id="L906">            Collection&lt;String&gt; names = propertyNameMap.get(metaclass.getName());</span>
+<span class="nc bnc" id="L907" title="All 2 branches missed.">            if (names == null) {</span>
+<span class="nc" id="L908">                names = Collections.emptySet();</span>
+            }
+
+<span class="nc bnc" id="L911" title="All 2 branches missed.">            for (String attribute : attributes) {</span>
+<span class="nc bnc" id="L912" title="All 2 branches missed.">                if (!names.contains(attribute)</span>
+<span class="nc bnc" id="L913" title="All 2 branches missed.">                        &amp;&amp; !&quot;remove&quot;.equals(attribute)) {</span>
+
+                    // TODO: We also have code registering for the names of
+                    // a tagged value like &quot;derived&quot;
+<span class="nc" id="L917">                    LOG.log(Level.SEVERE,</span>
+                            &quot;Property '&quot; + attribute
+                             + &quot;' for class '&quot;
+<span class="nc" id="L920">                             + metaclass.getName()</span>
+                             + &quot;' doesn't exist in metamodel&quot;);
+//                    throw new IllegalArgumentException(&quot;Property '&quot;
+//                            + attribute + &quot;' doesn't exist in metamodel&quot;);
+                }
+            }
+        }
+<span class="nc" id="L927">    }</span>
+
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List getDebugInfo() {
+<span class="nc" id="L932">        List info = new ArrayList();</span>
+<span class="nc" id="L933">        info.add(&quot;Event Listeners&quot;);</span>
+<span class="nc" id="L934">        for (Iterator it = elements.registry.entrySet().iterator();</span>
+<span class="nc bnc" id="L935" title="All 2 branches missed.">                it.hasNext(); ) {</span>
+<span class="nc" id="L936">            Map.Entry entry = (Map.Entry) it.next();</span>
+<span class="nc" id="L937">            String item = entry.getKey().toString();</span>
+<span class="nc" id="L938">            List modelElementNode = newDebugNode(getDebugDescription(item));</span>
+<span class="nc" id="L939">            info.add(modelElementNode);</span>
+<span class="nc" id="L940">            Map propertyMap = (Map) entry.getValue();</span>
+<span class="nc" id="L941">            for (Iterator propertyIterator = propertyMap.entrySet().iterator();</span>
+<span class="nc bnc" id="L942" title="All 2 branches missed.">                    propertyIterator.hasNext();) {</span>
+<span class="nc" id="L943">                Map.Entry propertyEntry = (Map.Entry) propertyIterator.next();</span>
+<span class="nc" id="L944">                List propertyNode =</span>
+<span class="nc" id="L945">                    newDebugNode(propertyEntry.getKey().toString());</span>
+<span class="nc" id="L946">                modelElementNode.add(propertyNode);</span>
+
+<span class="nc" id="L948">                List listenerList = (List) propertyEntry.getValue();</span>
+<span class="nc" id="L949">                for (Iterator listIt = listenerList.iterator();</span>
+<span class="nc bnc" id="L950" title="All 2 branches missed.">                        listIt.hasNext(); ) {</span>
+<span class="nc" id="L951">                    Object listener = listIt.next();</span>
+<span class="nc" id="L952">                    List listenerNode =</span>
+<span class="nc" id="L953">                        newDebugNode(</span>
+<span class="nc" id="L954">                                listener.getClass().getName());</span>
+<span class="nc" id="L955">                    propertyNode.add(listenerNode);</span>
+<span class="nc" id="L956">                }</span>
+<span class="nc" id="L957">            }</span>
+<span class="nc" id="L958">        }</span>
+
+<span class="nc" id="L960">        return info;</span>
+    }
+
+    private List&lt;String&gt; newDebugNode(String name) {
+<span class="nc" id="L964">        List&lt;String&gt; list = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L965">        list.add(name);</span>
+<span class="nc" id="L966">        return list;</span>
+    }
+
+    private String getDebugDescription(String mofId) {
+<span class="nc" id="L970">        Object modelElement = repository.getByMofId(mofId);</span>
+<span class="nc" id="L971">        String name = Model.getFacade().getName(modelElement);</span>
+<span class="nc bnc" id="L972" title="All 4 branches missed.">        if (name != null &amp;&amp; name.trim().length() != 0) {</span>
+<span class="nc" id="L973">            return &quot;\&quot;&quot; + name + &quot;\&quot; - &quot; + modelElement.toString();</span>
+        } else {
+<span class="nc" id="L975">            return modelElement.toString();</span>
+        }
+    }
+
+}
+
+
+/**
+ * A simple typed registry which supports two levels of string keys.
+ *
+ * @param &lt;T&gt; type of object to be registered
+ * @author Tom Morris
+ */
+class Registry&lt;T&gt; {
+
+<span class="fc" id="L990">    private static final Logger LOG = Logger.getLogger(Registry.class.getName());</span>
+
+    Map&lt;String, Map&lt;String, List&lt;T&gt;&gt;&gt; registry;
+
+    /**
+     * Construct a new registry for the given type of object.
+     */
+<span class="fc" id="L997">    Registry() {</span>
+<span class="fc" id="L998">        registry = Collections</span>
+<span class="fc" id="L999">                .synchronizedMap(new HashMap&lt;String, Map&lt;String, List&lt;T&gt;&gt;&gt;());</span>
+<span class="fc" id="L1000">    }</span>
+
+    /**
+     * Register an object with given keys(s) in the registry. The object is
+     * registered in multiple locations for quick lookup. During matching an
+     * object registered without subkeys will match any subkey. Multiple calls
+     * with the same item and key pair will only result in a single registration
+     * being made.
+     *
+     * @param item object to be registered
+     * @param key primary key for registration
+     * @param subkeys array of subkeys. If null, register under primary key
+     *                only. The special value of the empty string (&quot;&quot;) must not
+     *                be used as a subkey by the caller.
+     */
+    void register(T item, String key,
+            String[] subkeys) {
+
+        // Lookup primary key, creating new entry if needed
+<span class="fc" id="L1019">        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</span>
+<span class="fc bfc" id="L1020" title="All 2 branches covered.">        if (entry == null) {</span>
+<span class="fc" id="L1021">            entry = new HashMap&lt;String, List&lt;T&gt;&gt;();</span>
+<span class="fc" id="L1022">            registry.put(key, entry);</span>
+        }
+
+        // If there are no subkeys, register using our special value
+        // to indicate that this is a primary key only registration
+<span class="pc bpc" id="L1027" title="1 of 4 branches missed.">        if (subkeys == null || subkeys.length &lt; 1) {</span>
+<span class="fc" id="L1028">            subkeys =</span>
+                new String[] {
+                    &quot;&quot;,
+                };
+        }
+
+<span class="fc bfc" id="L1034" title="All 2 branches covered.">        for (int i = 0; i &lt; subkeys.length; i++) {</span>
+<span class="fc" id="L1035">            List&lt;T&gt; list = entry.get(subkeys[i]);</span>
+<span class="fc bfc" id="L1036" title="All 2 branches covered.">            if (list == null) {</span>
+<span class="fc" id="L1037">                list = new ArrayList&lt;T&gt;();</span>
+<span class="fc" id="L1038">                entry.put(subkeys[i], list);</span>
+            }
+<span class="pc bpc" id="L1040" title="1 of 2 branches missed.">            if (!list.contains(item)) {</span>
+<span class="fc" id="L1041">                list.add(item);</span>
+            } else {
+<span class="nc" id="L1043">                LOG.log(Level.FINE, &quot;Duplicate registration attempt for {0}: {1} Listener: {2}&quot;,</span>
+                        new Object[]{key,subkeys,item});
+            }
+        }
+<span class="fc" id="L1047">    }</span>
+
+    /**
+     * Unregister an item or all items which match key set.
+     *
+     * @param item object to be unregistered.  If null, unregister all
+     * matching objects.
+     * @param key primary key for registration
+     * @param subkeys array of subkeys.  If null, unregister under primary
+     * key only.
+     */
+    void unregister(T item, String key, String[] subkeys) {
+<span class="fc" id="L1059">        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</span>
+<span class="pc bpc" id="L1060" title="1 of 2 branches missed.">        if (entry == null) {</span>
+<span class="nc" id="L1061">            return;</span>
+        }
+
+<span class="pc bpc" id="L1064" title="1 of 4 branches missed.">        if (subkeys != null &amp;&amp; subkeys.length &gt; 0) {</span>
+<span class="fc bfc" id="L1065" title="All 2 branches covered.">            for (int i = 0; i &lt; subkeys.length; i++) {</span>
+<span class="fc" id="L1066">                lookupRemoveItem(entry, subkeys[i], item);</span>
+            }
+        } else {
+<span class="fc bfc" id="L1069" title="All 2 branches covered.">            if (item == null) {</span>
+<span class="fc" id="L1070">                registry.remove(key);</span>
+            } else {
+<span class="fc" id="L1072">                lookupRemoveItem(entry, &quot;&quot;, item);</span>
+            }
+        }
+<span class="fc" id="L1075">    }</span>
+
+    private void lookupRemoveItem(Map&lt;String, List&lt;T&gt;&gt; map, String key,
+            T item) {
+<span class="fc" id="L1079">        List&lt;T&gt; list = map.get(key);</span>
+<span class="pc bpc" id="L1080" title="1 of 2 branches missed.">        if (list == null) {</span>
+<span class="nc" id="L1081">            return;</span>
+        }
+<span class="pc bpc" id="L1083" title="1 of 2 branches missed.">        if (item == null) {</span>
+<span class="nc" id="L1084">            map.remove(key);</span>
+<span class="nc" id="L1085">            return;</span>
+        }
+<span class="pc bpc" id="L1087" title="1 of 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc bnc" id="L1088" title="All 2 branches missed.">            if (!list.contains(item)) {</span>
+<span class="nc" id="L1089">                LOG.log(Level.FINE,</span>
+                        &quot;Attempt to unregister non-existant registration {0} Listener: {1}&quot;,
+                        new Object[]{key, item});
+            }
+        }
+<span class="fc bfc" id="L1094" title="All 2 branches covered.">        while (list.contains(item)) {</span>
+<span class="fc" id="L1095">            list.remove(item);</span>
+        }
+<span class="fc bfc" id="L1097" title="All 2 branches covered.">        if (list.isEmpty()) {</span>
+<span class="fc" id="L1098">            map.remove(key);</span>
+        }
+<span class="fc" id="L1100">    }</span>
+
+    /**
+     * Return a list of items which have been registered for given key(s).
+     * Returns items registered both for the key/subkey pair as well as
+     * those registered just for the primary key.
+     * @param key
+     * @param subkey
+     * @return collection of items previously registered.
+     */
+    Collection&lt;T&gt; getMatches(String key, String subkey) {
+<span class="fc" id="L1111">        List&lt;T&gt; results = new ArrayList&lt;T&gt;();</span>
+<span class="fc" id="L1112">        Map&lt;String, List&lt;T&gt;&gt; entry = registry.get(key);</span>
+<span class="fc bfc" id="L1113" title="All 2 branches covered.">        if (entry != null) {</span>
+<span class="fc bfc" id="L1114" title="All 2 branches covered.">            if (entry.containsKey(subkey)) {</span>
+<span class="fc" id="L1115">                results.addAll(entry.get(subkey));</span>
+            }
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">            if (entry.containsKey(&quot;&quot;)) {</span>
+<span class="fc" id="L1118">                results.addAll(entry.get(&quot;&quot;));</span>
+            }
+        }
+<span class="fc" id="L1121">        return results;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

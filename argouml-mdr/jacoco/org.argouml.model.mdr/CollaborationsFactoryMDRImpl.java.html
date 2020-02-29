@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollaborationsFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CollaborationsFactoryMDRImpl.java</span></div><h1>CollaborationsFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009,2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Tom Morris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.CollaborationsFactory;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
+import org.omg.uml.behavioralelements.collaborations.AssociationRole;
+import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.CollaborationsPackage;
+import org.omg.uml.behavioralelements.collaborations.Interaction;
+import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.datatypes.AggregationKind;
+import org.omg.uml.foundation.datatypes.AggregationKindEnum;
+
+/**
+ * Factory to create UML classes for the UML BehaviorialElements::Collaborations
+ * package.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * @author Thierry Lach (did derivation from NSUML implementation)
+ */
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR</span>
+        implements CollaborationsFactory {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L89">    CollaborationsFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L90">        modelImpl = implementation;</span>
+<span class="fc" id="L91">    }</span>
+
+    public AssociationEndRole createAssociationEndRole() {
+<span class="nc" id="L94">        AssociationEndRole myAssociationEndRole =</span>
+<span class="nc" id="L95">            getCollabPkg().getAssociationEndRole().createAssociationEndRole();</span>
+<span class="nc" id="L96">        super.initialize(myAssociationEndRole);</span>
+<span class="nc" id="L97">        return myAssociationEndRole;</span>
+    }
+    
+    private CollaborationsPackage getCollabPkg() {
+<span class="nc" id="L101">        return modelImpl.getUmlPackage().getCollaborations();</span>
+    }
+
+
+    public AssociationRole createAssociationRole() {
+<span class="nc" id="L106">        AssociationRole myAssociationRole =</span>
+<span class="nc" id="L107">            getCollabPkg().getAssociationRole().createAssociationRole();</span>
+<span class="nc" id="L108">        super.initialize(myAssociationRole);</span>
+<span class="nc" id="L109">        return myAssociationRole;</span>
+    }
+
+
+    public ClassifierRole createClassifierRole() {
+<span class="nc" id="L114">        return createLifeline();</span>
+    }
+
+
+    public Collaboration createCollaboration() {
+<span class="nc" id="L119">        Collaboration myCollaboration =</span>
+<span class="nc" id="L120">            getCollabPkg().getCollaboration().createCollaboration();</span>
+<span class="nc" id="L121">        super.initialize(myCollaboration);</span>
+<span class="nc" id="L122">        return myCollaboration;</span>
+    }
+
+
+    public CollaborationInstanceSet createCollaborationInstanceSet() {
+<span class="nc" id="L127">        CollaborationInstanceSet obj =</span>
+<span class="nc" id="L128">            getCollabPkg().getCollaborationInstanceSet()</span>
+<span class="nc" id="L129">                .createCollaborationInstanceSet();</span>
+<span class="nc" id="L130">        super.initialize(obj);</span>
+<span class="nc" id="L131">        return obj;</span>
+    }
+
+
+    public Interaction createInteraction() {
+<span class="nc" id="L136">        Interaction myInteraction =</span>
+<span class="nc" id="L137">            getCollabPkg().getInteraction().createInteraction();</span>
+<span class="nc" id="L138">        super.initialize(myInteraction);</span>
+<span class="nc" id="L139">        return myInteraction;</span>
+    }
+
+
+    public InteractionInstanceSet createInteractionInstanceSet() {
+<span class="nc" id="L144">        InteractionInstanceSet obj =</span>
+<span class="nc" id="L145">            getCollabPkg().getInteractionInstanceSet()</span>
+<span class="nc" id="L146">                .createInteractionInstanceSet();</span>
+<span class="nc" id="L147">        super.initialize(obj);</span>
+<span class="nc" id="L148">        return obj;</span>
+    }
+
+    public ClassifierRole createLifeline() {
+<span class="nc" id="L152">        ClassifierRole myClassifierRole =</span>
+<span class="nc" id="L153">            getCollabPkg().getClassifierRole().createClassifierRole();</span>
+<span class="nc" id="L154">        super.initialize(myClassifierRole);</span>
+<span class="nc" id="L155">        return myClassifierRole;</span>
+    }
+
+    
+    public Message createMessage() {
+<span class="nc" id="L160">        Message myMessage =</span>
+<span class="nc" id="L161">            getCollabPkg().getMessage().createMessage();</span>
+<span class="nc" id="L162">        super.initialize(myMessage);</span>
+<span class="nc" id="L163">        return myMessage;</span>
+    }
+
+
+    public ClassifierRole buildClassifierRole(Object collaboration) {
+<span class="nc" id="L168">        Collaboration myCollaboration = (Collaboration) collaboration;</span>
+<span class="nc" id="L169">        ClassifierRole classifierRole = createClassifierRole();</span>
+<span class="nc" id="L170">        classifierRole.setNamespace(myCollaboration);</span>
+<span class="nc" id="L171">        modelImpl.getCoreHelper().setMultiplicity(classifierRole, 1, 1);</span>
+<span class="nc" id="L172">        return classifierRole;</span>
+    }
+
+
+    public Object buildCollaboration(Object handle) {
+<span class="nc" id="L177">        Namespace namespace = (Namespace) handle;</span>
+<span class="nc" id="L178">        Collaboration modelelement = createCollaboration();</span>
+<span class="nc" id="L179">        modelelement.setNamespace(namespace);</span>
+<span class="nc" id="L180">        modelelement.setName(&quot;newCollaboration&quot;);</span>
+<span class="nc" id="L181">        modelelement.setAbstract(false);</span>
+<span class="nc" id="L182">        return modelelement;</span>
+    }
+
+
+    public Object buildCollaboration(Object namespace,
+            Object representedElement) {
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (!(namespace instanceof Namespace)) {</span>
+<span class="nc" id="L189">            throw new IllegalArgumentException(&quot;Argument is not &quot;</span>
+                    + &quot;a namespace&quot;);
+        }
+
+<span class="nc bnc" id="L193" title="All 4 branches missed.">        if (representedElement instanceof Classifier</span>
+                || representedElement instanceof Operation) {
+
+<span class="nc" id="L196">            Collaboration collaboration =</span>
+<span class="nc" id="L197">                (Collaboration) buildCollaboration(namespace);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">            if (representedElement instanceof Classifier) {</span>
+<span class="nc" id="L199">                collaboration.</span>
+<span class="nc" id="L200">                setRepresentedClassifier((Classifier) representedElement);</span>
+
+<span class="nc" id="L202">                return collaboration;</span>
+            }
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            if (representedElement instanceof Operation) {</span>
+<span class="nc" id="L205">                collaboration.</span>
+<span class="nc" id="L206">                setRepresentedOperation((Operation) representedElement);</span>
+
+<span class="nc" id="L208">                return collaboration;</span>
+            }
+        }
+<span class="nc" id="L211">        throw new IllegalArgumentException(&quot;Represented element must be&quot;</span>
+                + &quot; Collaboration or Operation&quot;);
+    }
+
+
+    public Interaction buildInteraction(Object handle) {
+<span class="nc" id="L217">        Collaboration collab = (Collaboration) handle;</span>
+<span class="nc" id="L218">        Interaction inter = createInteraction();</span>
+<span class="nc" id="L219">        inter.setContext(collab);</span>
+<span class="nc" id="L220">        inter.setName(&quot;newInteraction&quot;);</span>
+<span class="nc" id="L221">        return inter;</span>
+    }
+    
+    public ClassifierRole buildLifeline(Object collaboration) {
+<span class="nc" id="L225">        Collaboration myCollaboration = (Collaboration) collaboration;</span>
+<span class="nc" id="L226">        ClassifierRole classifierRole = createClassifierRole();</span>
+<span class="nc" id="L227">        classifierRole.setNamespace(myCollaboration);</span>
+<span class="nc" id="L228">        modelImpl.getCoreHelper().setMultiplicity(classifierRole, 1, 1);</span>
+<span class="nc" id="L229">        return classifierRole;</span>
+    }
+    
+
+    public AssociationEndRole buildAssociationEndRole(Object atype) {
+<span class="nc" id="L234">        ClassifierRole type = (ClassifierRole) atype;</span>
+<span class="nc" id="L235">        AssociationEndRole end = createAssociationEndRole();</span>
+<span class="nc" id="L236">        end.setParticipant(type);</span>
+<span class="nc" id="L237">        return end;</span>
+    }
+
+    public AssociationRole buildAssociationRole(Object from, Object to) {
+<span class="nc" id="L241">        return buildAssociationRole((ClassifierRole) from, (ClassifierRole) to);</span>
+    }
+    
+    /**
+     * Internal type-checked version of buildAssociationRole.
+     */
+    private AssociationRole buildAssociationRole(ClassifierRole from,
+            ClassifierRole to) {
+<span class="nc" id="L249">        Collaboration collaboration = (Collaboration) from.getNamespace();</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        if (collaboration == null </span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">                || !collaboration.equals(to.getNamespace())) {</span>
+<span class="nc" id="L252">            throw new IllegalArgumentException(&quot;ClassifierRoles must be in&quot;</span>
+                    + &quot; same non-null namespace&quot;);
+        }
+<span class="nc" id="L255">        AssociationRole role = createAssociationRole();</span>
+<span class="nc" id="L256">        role.setNamespace(collaboration);</span>
+        // The 4-arg version of this method depends on this ordering.
+        // Don't change it!
+<span class="nc" id="L259">        role.getConnection().add(buildAssociationEndRole(from));</span>
+<span class="nc" id="L260">        role.getConnection().add(buildAssociationEndRole(to));</span>
+<span class="nc" id="L261">        return role;</span>
+    }
+
+
+    @Deprecated
+    public AssociationRole buildAssociationRole(Object from, Object agg1, Object to,
+            Object agg2, Boolean unidirectional) {
+<span class="nc bnc" id="L268" title="All 2 branches missed.">        if (unidirectional == null) {</span>
+<span class="nc" id="L269">            return buildAssociationRole(from, agg1, to, agg2, false);</span>
+        } else {
+<span class="nc" id="L271">            return buildAssociationRole(from, agg1, to, agg2, </span>
+<span class="nc" id="L272">                    unidirectional.booleanValue());</span>
+        }
+    }
+
+    
+    public AssociationRole buildAssociationRole(Object from, Object agg1,
+            Object to, Object agg2, boolean unidirectional) {
+
+<span class="nc" id="L280">        AggregationKind ak1 = checkAggregationKind(agg1);</span>
+<span class="nc" id="L281">        AggregationKind ak2 = checkAggregationKind(agg2);</span>
+        
+<span class="nc" id="L283">        AssociationRole role = buildAssociationRole((ClassifierRole) from, </span>
+                (ClassifierRole) to);
+
+<span class="nc" id="L286">        AssociationEndRole end =</span>
+<span class="nc" id="L287">                (AssociationEndRole) role.getConnection().get(0);</span>
+<span class="nc" id="L288">        end.setAggregation(ak1);</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        end.setNavigable(!unidirectional);</span>
+
+<span class="nc" id="L291">        end = (AssociationEndRole) role.getConnection().get(1);</span>
+<span class="nc" id="L292">        end.setAggregation(ak2);</span>
+<span class="nc" id="L293">        end.setNavigable(true); // probably redundant - just in case</span>
+
+<span class="nc" id="L295">        return role;</span>
+    }
+    
+    /**
+     * Checks that aggregationKind is valid and promotes null
+     * to AK_NONE.
+     * @param aggregationKind Candidate AggregationKind or null
+     * @return valid checked AggregationKind
+     */
+    private AggregationKind checkAggregationKind(Object aggregationKind) {
+<span class="nc bnc" id="L305" title="All 2 branches missed.">        if (aggregationKind == null) {</span>
+<span class="nc" id="L306">            aggregationKind = AggregationKindEnum.AK_NONE;</span>
+        }
+<span class="nc" id="L308">        return (AggregationKind) aggregationKind;</span>
+    }
+
+
+    public AssociationRole buildAssociationRole(Object link) {
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (!(link instanceof Link)) {</span>
+<span class="nc" id="L314">            throw new IllegalArgumentException(&quot;Argument is not a link&quot;);</span>
+        }
+
+<span class="nc" id="L317">        Object from = modelImpl.getCoreHelper().getSource(link);</span>
+<span class="nc" id="L318">        Object to = modelImpl.getCoreHelper().getDestination(link);</span>
+<span class="nc" id="L319">        Object classifierRoleFrom =</span>
+<span class="nc" id="L320">            modelImpl.getFacade().getClassifiers(from).iterator().next();</span>
+<span class="nc" id="L321">        Object classifierRoleTo =</span>
+<span class="nc" id="L322">            modelImpl.getFacade().getClassifiers(to).iterator().next();</span>
+<span class="nc" id="L323">        Object collaboration =</span>
+<span class="nc" id="L324">            modelImpl.getFacade().getNamespace(classifierRoleFrom);</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">        if (collaboration != modelImpl.getFacade().getNamespace(</span>
+                classifierRoleTo)) {
+<span class="nc" id="L327">            throw new IllegalStateException(&quot;ClassifierRoles do not belong &quot;</span>
+                    + &quot;to the same collaboration&quot;);
+        }
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        if (collaboration == null) {</span>
+<span class="nc" id="L331">            throw new IllegalStateException(&quot;Collaboration may not be &quot;</span>
+                    + &quot;null&quot;);
+        }
+<span class="nc" id="L334">        AssociationRole associationRole = createAssociationRole();</span>
+<span class="nc" id="L335">        modelImpl.getCoreHelper().setNamespace(associationRole, collaboration);</span>
+<span class="nc" id="L336">        modelImpl.getCoreHelper().addLink(associationRole, link);</span>
+<span class="nc" id="L337">        return associationRole;</span>
+    }
+
+    /**
+     * Builds a message within some interaction related to some assocationrole.
+     * The message is added as the last in the interaction sequence.
+     * Furthermore, the message is added as the last to the list of messages
+     * already attached to the role. Effectively, the already attached messages
+     * become predecessors of this message.
+     * TODO: This sets the activator as a side effect. However it is impossible
+     * to determine the activator at this stage as we don't yet know what the
+     * action will be of the message we're creating. See issue 5692.
+     *
+     * @param inter
+     *            The Interaction.
+     * @param role
+     *            The Association Role.
+     * @return The newly created Message.
+     */
+    private Message buildMessageInteraction(Interaction inter,
+            AssociationRole role) {
+<span class="nc bnc" id="L358" title="All 4 branches missed.">        assert inter != null : &quot;An interaction must be provided&quot;;</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">        assert role != null : &quot;An association role must be provided&quot;;</span>
+
+<span class="nc" id="L361">        Message message = createMessage();</span>
+
+<span class="nc" id="L363">        inter.getMessage().add(message);</span>
+
+<span class="nc" id="L365">        message.setCommunicationConnection(role);</span>
+
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (role.getConnection().size() == 2) {</span>
+<span class="nc" id="L368">            message.setSender((ClassifierRole) role.getConnection().get(0)</span>
+<span class="nc" id="L369">                    .getParticipant());</span>
+<span class="nc" id="L370">            message.setReceiver((ClassifierRole) role.getConnection().get(1)</span>
+<span class="nc" id="L371">                    .getParticipant());</span>
+
+            Collection&lt;Message&gt; messages =
+<span class="nc" id="L374">                Model.getFacade().getReceivedMessages(message.getSender());</span>
+<span class="nc" id="L375">            Message lastMsg = lastMessage(messages, message);</span>
+
+<span class="nc bnc" id="L377" title="All 2 branches missed.">            if (lastMsg != null) {</span>
+<span class="nc" id="L378">                message.setActivator(lastMsg);</span>
+<span class="nc" id="L379">                messages = Model.getFacade().getActivatedMessages(lastMsg);</span>
+            } else {
+<span class="nc" id="L381">                messages = Model.getFacade().getSentMessages(</span>
+<span class="nc" id="L382">                        message.getSender());</span>
+            }
+
+<span class="nc" id="L385">            lastMsg = lastMessage(messages, message);</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">            if (lastMsg != null) {</span>
+<span class="nc" id="L387">                message.getPredecessor().add(findEnd(lastMsg));</span>
+            }
+
+        }
+
+<span class="nc" id="L392">        return message;</span>
+    }
+
+    /**
+     * Finds the last message in the collection not equal to null and not equal
+     * to m.
+     *
+     * @param c
+     *            A collection containing exclusively Messages.
+     * @param m
+     *            A Message.
+     * @return The last message in the collection, or null.
+     */
+    private Message lastMessage(Collection&lt;Message&gt; c, Message m) {
+<span class="nc" id="L406">        Message last = null;</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">        for (Message msg : c) {</span>
+<span class="nc bnc" id="L408" title="All 4 branches missed.">            if (msg != null &amp;&amp; msg != m) {</span>
+<span class="nc" id="L409">                last = msg;</span>
+            }
+<span class="nc" id="L411">        }</span>
+<span class="nc" id="L412">        return last;</span>
+    }
+
+    /**
+     * Walks the tree of successors to m rooted until a leaf is found. The leaf
+     * is the returned. If m is itself a leaf, then m is returned.
+     *
+     * @param m A Message.
+     * @return The last message in one branch of the tree rooted at m.
+     */
+    private Message findEnd(Message m) {
+        while (true) {
+<span class="nc" id="L424">            Collection&lt;Message&gt; c = Model.getFacade().getSuccessors(m);</span>
+<span class="nc" id="L425">            Iterator&lt;Message&gt; it = c.iterator();</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">            if (!it.hasNext()) {</span>
+<span class="nc" id="L427">                return m;</span>
+            }
+<span class="nc" id="L429">            m = it.next();</span>
+<span class="nc" id="L430">        }</span>
+    }
+
+
+    public Message buildMessage(Object acollab, Object arole) {
+<span class="nc bnc" id="L435" title="All 2 branches missed.">        if (!(arole instanceof AssociationRole)) {</span>
+<span class="nc" id="L436">            throw new IllegalArgumentException(</span>
+                    &quot;An association role must be supplied - got &quot; + arole);
+        }
+        try {
+<span class="nc bnc" id="L440" title="All 2 branches missed.">            if (acollab instanceof Collaboration) {</span>
+<span class="nc" id="L441">                return buildMessageCollab((Collaboration) acollab,</span>
+                        (AssociationRole) arole);
+            }
+<span class="nc bnc" id="L444" title="All 2 branches missed.">            if (acollab instanceof Interaction) {</span>
+<span class="nc" id="L445">                return buildMessageInteraction((Interaction) acollab,</span>
+                        (AssociationRole) arole);
+            }
+<span class="nc" id="L448">            throw new IllegalArgumentException(&quot;No valid object &quot; + acollab);</span>
+<span class="nc" id="L449">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L450">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+    private Message buildMessageCollab(Collaboration collab,
+            AssociationRole role) {
+<span class="nc" id="L456">        Interaction inter = null;</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">        if (collab.getInteraction().size() == 0) {</span>
+<span class="nc" id="L458">            inter = buildInteraction(collab);</span>
+        } else {
+<span class="nc" id="L460">            inter = (Interaction) (collab.getInteraction().toArray())[0];</span>
+        }
+<span class="nc" id="L462">        return buildMessageInteraction(inter, role);</span>
+    }
+
+
+    public Message buildActivator(Object owner, Object interaction) {
+<span class="nc" id="L467">        Message theOwner = (Message) owner;</span>
+        Interaction theInteraction;
+<span class="nc bnc" id="L469" title="All 2 branches missed.">        if (interaction == null) {</span>
+<span class="nc" id="L470">            theInteraction = theOwner.getInteraction();</span>
+        } else {
+<span class="nc" id="L472">            theInteraction = (Interaction) interaction;</span>
+        }
+<span class="nc bnc" id="L474" title="All 2 branches missed.">        if (interaction == null) {</span>
+<span class="nc" id="L475">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L478">        Message activator = createMessage();</span>
+<span class="nc" id="L479">        activator.setInteraction(theInteraction);</span>
+<span class="nc" id="L480">        theOwner.setActivator(activator);</span>
+<span class="nc" id="L481">        return activator;</span>
+    }
+
+    /**
+     * @param elem
+     *            the associationendrole
+     */
+    void deleteAssociationEndRole(Object elem) {
+<span class="nc bnc" id="L489" title="All 2 branches missed.">        if (!(elem instanceof AssociationEndRole)) {</span>
+<span class="nc" id="L490">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L493">    }</span>
+
+    /**
+     * @param elem
+     *            the associationrole
+     */
+    void deleteAssociationRole(Object elem) {
+<span class="nc" id="L500">        AssociationRole role = (AssociationRole) elem;</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        for (Message message : role.getMessage()) {</span>
+<span class="nc" id="L502">            modelImpl.getUmlFactory().delete(message);</span>
+<span class="nc" id="L503">        }</span>
+<span class="nc" id="L504">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteClassifierRole(Object elem) {
+<span class="nc" id="L511">        ClassifierRole cr = (ClassifierRole) elem;</span>
+        // delete Messages which have this as sender or receiver
+<span class="nc" id="L513">        CollaborationsPackage cPkg = ((org.omg.uml.UmlPackage) cr</span>
+<span class="nc" id="L514">                .refOutermostPackage()).getCollaborations();</span>
+<span class="nc" id="L515">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L516">                cPkg.getAMessageSender().getMessage(cr));</span>
+<span class="nc" id="L517">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L518">                cPkg.getAReceiverMessage().getMessage(cr));</span>
+        // TODO: delete Collaborations where this is the last ClassifierRole?
+//        Object owner = cr.refImmediateComposite();
+//        if (owner instanceof Collaboration) {
+//            Collection ownedElements = ((Collaboration) owner)
+//                    .getOwnedElement();
+//            if (ownedElements.size() == 1 &amp;&amp; ownedElements.contains(cr))
+//                nsmodel.getUmlFactory().delete(owner);
+//        }
+<span class="nc" id="L527">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be delete
+     */
+    void deleteCollaboration(Object elem) {
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        if (!(elem instanceof Collaboration)) {</span>
+<span class="nc" id="L535">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L537">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be delete
+     */
+    void deleteCollaborationInstanceSet(Object elem) {
+<span class="nc bnc" id="L544" title="All 2 branches missed.">        if (!(elem instanceof CollaborationInstanceSet)) {</span>
+<span class="nc" id="L545">            throw new IllegalArgumentException();</span>
+        }
+        // InteractionInstanceSets will get deleted automatically
+        // because they are associated by composition
+<span class="nc" id="L549">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be delete
+     */
+    void deleteInteraction(Object elem) {
+<span class="nc bnc" id="L556" title="All 2 branches missed.">        if (!(elem instanceof Interaction)) {</span>
+<span class="nc" id="L557">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L559">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be delete
+     */
+    void deleteInteractionInstanceSet(Object elem) {
+<span class="nc bnc" id="L566" title="All 2 branches missed.">        if (!(elem instanceof InteractionInstanceSet)) {</span>
+<span class="nc" id="L567">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L569">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be delete
+     */
+    void deleteMessage(Object elem) {
+<span class="nc" id="L576">        Message message = (Message) elem;</span>
+        // If this is the only message contained in the Interaction
+        // we delete the Interaction
+<span class="nc" id="L579">        Interaction i = message.getInteraction();</span>
+<span class="nc bnc" id="L580" title="All 4 branches missed.">        if (i != null &amp;&amp; i.getMessage().size() == 1) {</span>
+<span class="nc" id="L581">            modelImpl.getUmlFactory().delete(i);</span>
+        }
+<span class="nc" id="L583">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

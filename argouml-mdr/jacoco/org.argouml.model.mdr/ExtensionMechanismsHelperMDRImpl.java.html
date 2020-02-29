@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExtensionMechanismsHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ExtensionMechanismsHelperMDRImpl.java</span></div><h1>ExtensionMechanismsHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import javax.jmi.model.MofClass;
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.ExtensionMechanismsHelper;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.NotImplementedException;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.modelmanagement.Model;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Helper class for UML Foundation::ExtensionMechanisms Package.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * derived from NSUML implementation by:
+ * @author Thierry Lach
+ */
+class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
+
+<span class="fc" id="L76">    private static final Logger LOG =</span>
+<span class="fc" id="L77">        Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class.getName());</span>
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+<span class="fc" id="L84">    private static Map&lt;String, String&gt; packageMap =</span>
+        new HashMap&lt;String, String&gt;(16);
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L93">    ExtensionMechanismsHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L94">        modelImpl = implementation;</span>
+<span class="fc" id="L95">        packageMap.put(&quot;core&quot;, &quot;Core&quot;);</span>
+<span class="fc" id="L96">        packageMap.put(&quot;datatypes&quot;, &quot;Data_Types&quot;);</span>
+<span class="fc" id="L97">        packageMap.put(&quot;commonbehavior&quot;, &quot;Common_Behavior&quot;);</span>
+<span class="fc" id="L98">        packageMap.put(&quot;usecases&quot;, &quot;Use_Cases&quot;);</span>
+<span class="fc" id="L99">        packageMap.put(&quot;statemachines&quot;, &quot;State_Machines&quot;);</span>
+<span class="fc" id="L100">        packageMap.put(&quot;collaborations&quot;, &quot;Collaborations&quot;);</span>
+<span class="fc" id="L101">        packageMap.put(&quot;activitygraphs&quot;, &quot;Activity_Graphs&quot;);</span>
+<span class="fc" id="L102">        packageMap.put(&quot;modelmanagement&quot;, &quot;Model_Management&quot;);</span>
+<span class="fc" id="L103">    }</span>
+
+
+    public Collection&lt;Stereotype&gt; getStereotypes(Object ns) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L108">            throw new IllegalArgumentException(&quot;A namespace was expected we got &quot; + ns);</span>
+        }
+
+<span class="nc" id="L111">        List&lt;Stereotype&gt; l = new ArrayList&lt;Stereotype&gt;();</span>
+        // TODO: this could be a huge collection - find a more efficient way
+        try {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            for (Object o : ((Namespace) ns).getOwnedElement()) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (o instanceof Stereotype) {</span>
+<span class="nc" id="L116">                    l.add((Stereotype) o);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                } else if (o instanceof UmlPackage) {</span>
+<span class="nc" id="L118">                    l.addAll(getStereotypes(o));</span>
+                }
+<span class="nc" id="L120">            }</span>
+<span class="nc" id="L121">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L122">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L123">        }</span>
+<span class="nc" id="L124">        return l;</span>
+    }
+
+    /* TODO: Make this work when the given stereotype
+     * has more than one baseclass.
+     * TODO: Currently only works for stereotypes where the baseclass is
+     * equal to the given one - inheritance does not work.*/
+    public Object getStereotype(Object ns, Object stereo) {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L133">            throw new IllegalArgumentException(&quot;namespace&quot;);</span>
+        }
+
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (!(stereo instanceof Stereotype)) {</span>
+<span class="nc" id="L137">            throw new IllegalArgumentException(&quot;stereotype&quot;);</span>
+        }
+
+        try {
+<span class="nc" id="L141">            String name = ((ModelElement) stereo).getName();</span>
+<span class="nc" id="L142">            Collection&lt;String&gt; baseClasses =</span>
+<span class="nc" id="L143">                ((Stereotype) stereo).getBaseClass();</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">            if (name == null || baseClasses.size() != 1) {</span>
+<span class="nc" id="L145">                return null;</span>
+            }
+<span class="nc" id="L147">            String baseClass = baseClasses.iterator().next();</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">            for (Stereotype o : getStereotypes(ns)) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                if (name.equals(o.getName())</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                        &amp;&amp; o.getBaseClass().contains(baseClass)) {</span>
+<span class="nc" id="L152">                    return o;</span>
+                }
+<span class="nc" id="L154">            }</span>
+<span class="nc" id="L155">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L156">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L157">        }</span>
+<span class="nc" id="L158">        return null;</span>
+    }
+
+
+    public Stereotype getStereotype(Collection models, Object stereo) {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (stereo == null) {</span>
+<span class="nc" id="L164">            throw new IllegalArgumentException(&quot;null argument&quot;);</span>
+        }
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (!(stereo instanceof Stereotype)) {</span>
+<span class="nc" id="L167">            throw new IllegalArgumentException(&quot;stereotype&quot;);</span>
+        }
+
+        try {
+<span class="nc" id="L171">            String name = ((Stereotype) stereo).getName();</span>
+<span class="nc" id="L172">            Collection&lt;String&gt; baseClasses =</span>
+<span class="nc" id="L173">                ((Stereotype) stereo).getBaseClass();</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">            if (name == null || baseClasses.size() != 1) {</span>
+<span class="nc" id="L175">                return null;</span>
+            }
+<span class="nc" id="L177">            String baseClass = baseClasses.iterator().next();</span>
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">            for (Model model : ((Collection&lt;Model&gt;) models)) {</span>
+                // TODO: this should call the single namespace form
+                // getStereotype(it2.next(); stereo);
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                for (Stereotype o : getStereotypes(model)) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                    if (name.equals(o.getName())</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                            &amp;&amp; o.getBaseClass().contains(baseClass)) {</span>
+<span class="nc" id="L185">                        return o;</span>
+                    }
+<span class="nc" id="L187">                }</span>
+<span class="nc" id="L188">            }</span>
+<span class="nc" id="L189">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L190">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L191">        }</span>
+<span class="nc" id="L192">        return null;</span>
+    }
+
+
+    @Deprecated
+    public String getMetaModelName(Object m) {
+<span class="nc" id="L198">        return modelImpl.getMetaTypes().getName(m);</span>
+    }
+
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(java.util.Collection, java.lang.Object)
+     */
+    public Collection&lt;Stereotype&gt; getAllPossibleStereotypes(Collection models,
+            Object modelElement) {
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L208">            return Collections.emptySet();</span>
+        }
+<span class="nc" id="L210">        List&lt;Stereotype&gt; ret = new ArrayList&lt;Stereotype&gt;();</span>
+        try {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            for (Stereotype stereo : getStereotypes(models)) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                if (isApplicableStereo(modelElement, stereo)) {</span>
+<span class="nc" id="L214">                    ret.add(stereo);</span>
+                }
+<span class="nc" id="L216">            }</span>
+<span class="nc" id="L217">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L218">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L219">        }</span>
+<span class="nc" id="L220">        return ret;</span>
+    }
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsHelper#getCommonTaggedValueTypes()
+     */
+    public Collection getCommonTaggedValueTypes() {
+        // TODO: still not used, because in ArgoUML String is &quot;hardwired&quot;
+<span class="nc" id="L228">        return null;</span>
+    }
+
+
+    /**
+     * Can the given stereotype be applied the given class?
+     *
+     * @param element
+     *            the UML element we want to apply the stereotype to
+     * @param stereo
+     *            the given stereotype
+     * @return true if the stereotype may be applied
+     */
+    private boolean isApplicableStereo(Object element, Stereotype stereo) {
+<span class="nc" id="L242">        String metatypeName = modelImpl.getMetaTypes().getName(element);</span>
+<span class="nc" id="L243">        MofClass metatype = ((FacadeMDRImpl) modelImpl.getFacade())</span>
+<span class="nc" id="L244">                .getMofClass(metatypeName);</span>
+<span class="nc" id="L245">        Collection&lt;String&gt; allTypes = getNames(metatype.allSupertypes());</span>
+<span class="nc" id="L246">        allTypes.add(metatypeName);</span>
+
+<span class="nc bnc" id="L248" title="All 2 branches missed.">        for (String base : stereo.getBaseClass()) {</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            if (allTypes.contains(base)) {</span>
+<span class="nc" id="L250">                return true;</span>
+            }
+<span class="nc" id="L252">        }</span>
+<span class="nc" id="L253">        return false;</span>
+    }
+
+
+    /**
+     * Convert a collection of elements to a collection of names.
+     *
+     * @param elements The elements.
+     * @return A Collection with {@link String}s.
+     */
+    private Collection&lt;String&gt; getNames(Collection&lt;MofClass&gt; elements) {
+<span class="nc" id="L264">        Collection&lt;String&gt; names = new HashSet&lt;String&gt;();</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        for (MofClass element : elements) {</span>
+<span class="nc" id="L266">            names.add(element.getName());</span>
+<span class="nc" id="L267">        }</span>
+<span class="nc" id="L268">        return names;</span>
+    }
+
+
+    public boolean isValidStereotype(Object theModelElement,
+            Object theStereotype) {
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (theModelElement == null) {</span>
+<span class="nc" id="L275">            return false;</span>
+        }
+<span class="nc" id="L277">        return isApplicableStereo(theModelElement, (Stereotype) theStereotype);</span>
+    }
+
+
+    public Collection&lt;Stereotype&gt; getStereotypes(Collection models) {
+<span class="nc" id="L282">        List&lt;Stereotype&gt; ret = new ArrayList&lt;Stereotype&gt;();</span>
+        try {
+<span class="nc bnc" id="L284" title="All 2 branches missed.">            for (Object model : models) {</span>
+<span class="nc bnc" id="L285" title="All 2 branches missed.">                if (!(model instanceof Model)) {</span>
+<span class="nc" id="L286">                    throw new IllegalArgumentException(</span>
+                            &quot;Expected to receive a collection of Models. &quot;
+                            + &quot;The collection contained a &quot;
+<span class="nc" id="L289">                            + model.getClass().getName());</span>
+                }
+<span class="nc" id="L291">                ret.addAll(getStereotypes(model));</span>
+<span class="nc" id="L292">            }</span>
+<span class="nc" id="L293">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L294">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L295">        }</span>
+<span class="nc" id="L296">        return ret;</span>
+    }
+
+
+    public void addCopyStereotype(Object modelElement, Object stereotype) {
+<span class="nc" id="L301">        modelImpl.getCoreHelper().addStereotype(modelElement, stereotype);</span>
+<span class="nc" id="L302">    }</span>
+
+
+
+    public boolean isStereotype(Object object, String name, String base) {
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        if (!(object instanceof Stereotype)) {</span>
+<span class="nc" id="L308">            return false;</span>
+        }
+
+<span class="nc" id="L311">        Stereotype st = (Stereotype) object;</span>
+        try {
+<span class="nc bnc" id="L313" title="All 4 branches missed.">            if (name == null &amp;&amp; st.getName() != null) {</span>
+<span class="nc" id="L314">                return false;</span>
+            }
+<span class="nc bnc" id="L316" title="All 4 branches missed.">            if (base == null &amp;&amp; !(st.getBaseClass().isEmpty())) {</span>
+<span class="nc" id="L317">                return false;</span>
+            }
+
+<span class="nc bnc" id="L320" title="All 2 branches missed.">            return name.equals(st.getName())</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">                &amp;&amp; st.getBaseClass().contains(base);</span>
+<span class="nc" id="L322">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L323">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public boolean isStereotypeInh(Object object, String name, String base) {
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        if (!(object instanceof Stereotype)) {</span>
+<span class="nc" id="L330">            return false;</span>
+        }
+        try {
+<span class="nc bnc" id="L333" title="All 2 branches missed.">            if (isStereotype(object, name, base)) {</span>
+<span class="nc" id="L334">                return true;</span>
+            }
+            /* TODO: mvw: do we really look into super-types of the stereotype,
+             * or should we be looking into super-types of the baseclass? */
+<span class="nc" id="L338">            Iterator it =</span>
+<span class="nc" id="L339">                modelImpl.getCoreHelper().getSupertypes(object).iterator();</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">                if (isStereotypeInh(it.next(), name, base)) {</span>
+<span class="nc" id="L342">                    return true;</span>
+                }
+            }
+<span class="nc" id="L345">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L346">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L347">        }</span>
+<span class="nc" id="L348">        return false;</span>
+    }
+
+
+    public void addExtendedElement(Object handle, Object extendedElement) {
+<span class="nc bnc" id="L353" title="All 4 branches missed.">        if (handle instanceof Stereotype</span>
+                &amp;&amp; extendedElement instanceof ModelElement) {
+<span class="nc" id="L355">            ((ModelElement) extendedElement).getStereotype().add(</span>
+                    (Stereotype) handle);
+<span class="nc" id="L357">            return;</span>
+        }
+<span class="nc" id="L359">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or extendedElement: &quot; + extendedElement);
+    }
+
+
+    public void addBaseClass(Object handle, Object baseClass) {
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        if (handle instanceof Stereotype) {</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">            if (baseClass instanceof String) {</span>
+<span class="nc" id="L367">                ((Stereotype) handle).getBaseClass().add((String) baseClass);</span>
+<span class="nc" id="L368">                return;</span>
+            }
+<span class="nc bnc" id="L370" title="All 2 branches missed.">            if (baseClass instanceof ModelElement) {</span>
+<span class="nc" id="L371">                ((Stereotype) handle).getBaseClass().add(</span>
+<span class="nc" id="L372">                        modelImpl.getMetaTypes().getName(baseClass));</span>
+<span class="nc" id="L373">                return;</span>
+            }
+        }
+<span class="nc" id="L376">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or baseClass: &quot; + baseClass);
+    }
+
+    public void applyProfile(Object handle, Object profile) {
+        // do nothing
+<span class="nc" id="L382">    }</span>
+
+    public void removeBaseClass(Object handle, Object baseClass) {
+        try {
+<span class="nc bnc" id="L386" title="All 2 branches missed.">            if (handle instanceof Stereotype) {</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">                if (baseClass instanceof String) {</span>
+<span class="nc" id="L388">                    ((Stereotype) handle).getBaseClass().remove(baseClass);</span>
+<span class="nc" id="L389">                    return;</span>
+                }
+<span class="nc bnc" id="L391" title="All 2 branches missed.">                if (baseClass instanceof ModelElement) {</span>
+<span class="nc" id="L392">                    ((Stereotype) handle).getBaseClass().remove(</span>
+<span class="nc" id="L393">                            modelImpl.getMetaTypes().getName(baseClass));</span>
+<span class="nc" id="L394">                    return;</span>
+                }
+            }
+<span class="nc" id="L397">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L398">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L399">        }</span>
+<span class="nc" id="L400">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or baseClass: &quot; + baseClass);
+    }
+
+
+    public void setIcon(Object handle, Object icon) {
+<span class="nc bnc" id="L406" title="All 6 branches missed.">        if (handle instanceof Stereotype</span>
+                &amp;&amp; (icon == null || icon instanceof String)) {
+<span class="nc" id="L408">            ((Stereotype) handle).setIcon((String) icon);</span>
+<span class="nc" id="L409">            return;</span>
+        }
+<span class="nc" id="L411">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or icon: &quot;</span>
+                + icon);
+    }
+
+
+    public void setValueOfTag(Object handle, String value) {
+<span class="nc" id="L417">        setDataValues(handle, new String[] {value});</span>
+<span class="nc" id="L418">    }</span>
+
+    public void setDataValues(Object handle, String[] values) {
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (handle instanceof TaggedValue) {</span>
+<span class="nc" id="L422">            TaggedValue tv = (TaggedValue) handle;</span>
+<span class="nc" id="L423">            Collection&lt;String&gt; dataValues = tv.getDataValue();</span>
+<span class="nc" id="L424">            dataValues.clear();</span>
+<span class="nc" id="L425">            Collections.addAll(dataValues, values);</span>
+        }
+<span class="nc" id="L427">    }</span>
+
+    public void addTaggedValue(Object handle, Object taggedValue) {
+<span class="nc bnc" id="L430" title="All 4 branches missed.">        if (handle instanceof ModelElement</span>
+                &amp;&amp; taggedValue instanceof TaggedValue) {
+<span class="nc" id="L432">            ((ModelElement) handle).getTaggedValue().add(</span>
+                    (TaggedValue) taggedValue);
+<span class="nc" id="L434">            return;</span>
+        }
+<span class="nc" id="L436">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or taggedValue: &quot; + taggedValue);
+    }
+
+
+    public void removeTaggedValue(Object handle, Object taggedValue) {
+<span class="nc bnc" id="L442" title="All 4 branches missed.">        if (handle instanceof ModelElement</span>
+                &amp;&amp; taggedValue instanceof TaggedValue) {
+<span class="nc" id="L444">            ((ModelElement) handle).getTaggedValue().remove(taggedValue);</span>
+<span class="nc" id="L445">            return;</span>
+        }
+<span class="nc" id="L447">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or taggedValue: &quot; + taggedValue);
+    }
+
+
+    public void setTaggedValue(Object handle, Collection taggedValues) {
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        if (handle instanceof ModelElement) {</span>
+<span class="nc" id="L454">            Collection tv =</span>
+<span class="nc" id="L455">                modelImpl.getFacade().getTaggedValuesCollection(handle);</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">            if (!tv.isEmpty()) {</span>
+<span class="nc" id="L457">                Collection tvs = new ArrayList(tv);</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">                for (Object value : tvs) {</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">                    if (!taggedValues.contains(value)) {</span>
+<span class="nc" id="L460">                        tv.remove(value);</span>
+                    }
+<span class="nc" id="L462">                }</span>
+            }
+<span class="nc bnc" id="L464" title="All 2 branches missed.">            for (Object value : taggedValues) {</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">                if (!tv.contains(value)) {</span>
+<span class="nc" id="L466">                    tv.add(value);</span>
+                }
+<span class="nc" id="L468">            }</span>
+<span class="nc" id="L469">            return;</span>
+        }
+<span class="nc" id="L471">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or taggedValues: &quot; + taggedValues);
+    }
+
+    public void setTaggedValue(Object handle, Object property, Object value) {
+<span class="nc" id="L476">        throw new NotImplementedException();</span>
+    }
+
+    public void setTagType(Object handle, String tagType) {
+<span class="nc bnc" id="L480" title="All 2 branches missed.">        if (handle instanceof TagDefinition) {</span>
+            // TODO: What type of validation can we do here on tagType?
+<span class="nc" id="L482">            ((TagDefinition) handle).setTagType(tagType);</span>
+<span class="nc" id="L483">            return;</span>
+        }
+<span class="nc" id="L485">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or tagType: &quot; + tagType);
+    }
+
+    public void setType(Object handle, Object type) {
+<span class="nc bnc" id="L490" title="All 4 branches missed.">        if (type == null || type instanceof TagDefinition) {</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">            if (handle instanceof TaggedValue) {</span>
+<span class="nc" id="L492">                ((TaggedValue) handle).setType((TagDefinition) type);</span>
+<span class="nc" id="L493">                return;</span>
+            }
+        }
+<span class="nc" id="L496">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or type: &quot;</span>
+                + type);
+    }
+
+    public void unapplyProfile(Object handle, Object profile) {
+        // do nothing
+<span class="nc" id="L502">    }</span>
+
+    public boolean hasStereotype(Object handle, String name) {
+<span class="nc bnc" id="L505" title="All 4 branches missed.">        if (name == null || !(handle instanceof ModelElement)) {</span>
+<span class="nc" id="L506">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L509">            ModelElement element = (ModelElement) handle;</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">            for (Stereotype stereotype : element.getStereotype()) {</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">                if (name.equals(stereotype.getName())) {</span>
+<span class="nc" id="L512">                    return true;</span>
+                }
+<span class="nc" id="L514">            }</span>
+<span class="nc" id="L515">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L516">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L517">        }</span>
+<span class="nc" id="L518">        return false;</span>
+    }
+
+    public Object makeProfileApplicable(Object handle) {
+        // there is nothing to do in UML1.4
+<span class="nc" id="L523">        return handle;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

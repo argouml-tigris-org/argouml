@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActivityGraphsHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ActivityGraphsHelperMDRImpl.java</span></div><h1>ActivityGraphsHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.ActivityGraphsHelper;
+import org.argouml.model.Model;
+import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
+import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
+import org.omg.uml.behavioralelements.activitygraphs.Partition;
+import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.State;
+import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Class to implement ActivityGraphsHelper.
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * Derived from NSUML implementation
+ */
+class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
+
+    /**
+     * Constructor.
+     */
+    public ActivityGraphsHelperMDRImpl() {
+<span class="fc" id="L72">        super();</span>
+<span class="fc" id="L73">    }</span>
+
+    /*
+     * @see org.argouml.model.ActivityGraphsHelper#findClassifierByName(
+     *         java.lang.Object, java.lang.String)
+     */
+    public Object findClassifierByName(Object ofs, String s) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (!(ofs instanceof ObjectFlowState)) {</span>
+<span class="nc" id="L81">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L84">        CompositeState cs = ((ObjectFlowState) ofs).getContainer();</span>
+<span class="nc" id="L85">        StateMachine sm = cs.getStateMachine();</span>
+<span class="nc" id="L86">        ModelElement ns = sm.getContext();</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L88">            return null;</span>
+        }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L91">            ns = ns.getNamespace();</span>
+        }
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (ns != null) {</span>
+            Collection c =
+<span class="nc" id="L95">                Model.getModelManagementHelper().getAllModelElementsOfKind(</span>
+<span class="nc" id="L96">                    ns, Model.getMetaTypes().getClassifier());</span>
+<span class="nc" id="L97">            Iterator i = c.iterator();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L99">                ModelElement classifier = (ModelElement) i.next();</span>
+<span class="nc" id="L100">                String cn = classifier.getName();</span>
+<span class="nc bnc" id="L101" title="All 4 branches missed.">                if (cn != null &amp;&amp; cn.equals(s)) {</span>
+<span class="nc" id="L102">                    return classifier;</span>
+                }
+<span class="nc" id="L104">            }</span>
+<span class="nc" id="L105">        } else {</span>
+<span class="nc" id="L106">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L108">        return null;</span>
+    }
+
+
+    public Object findStateByName(Object c, String s) {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (!(c instanceof Classifier)) {</span>
+<span class="nc" id="L114">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L117" title="All 4 branches missed.">        if ((s == null) || (s.equals(&quot;&quot;))) {</span>
+<span class="nc" id="L118">            return null;</span>
+        }
+
+<span class="nc" id="L121">        Collection allStatemachines = Model.getFacade().getBehaviors(c);</span>
+<span class="nc" id="L122">        Iterator i = allStatemachines.iterator();</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L124">            StateMachine statemachine = (StateMachine) i.next();</span>
+<span class="nc" id="L125">            State top = statemachine.getTop();</span>
+            Collection allStates =
+<span class="nc" id="L127">                Model.getStateMachinesHelper().getAllSubStates(top);</span>
+<span class="nc" id="L128">            Iterator ii = allStates.iterator();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">            while (ii.hasNext()) {</span>
+<span class="nc" id="L130">                StateVertex state = (StateVertex) ii.next();</span>
+
+<span class="nc" id="L132">                String statename = state.getName();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                if (statename != null) {</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                    if (statename.equals(s)) {</span>
+<span class="nc" id="L135">                        return state;</span>
+                    }
+                }
+<span class="nc" id="L138">            }</span>
+<span class="nc" id="L139">        }</span>
+<span class="nc" id="L140">        return null;</span>
+    }
+
+
+    public boolean isAddingActivityGraphAllowed(Object context) {
+<span class="nc bnc" id="L145" title="All 6 branches missed.">        return context instanceof BehavioralFeature</span>
+            || context instanceof Classifier
+            || context instanceof UmlPackage;
+    }
+
+
+    public void addInState(Object classifierInState, Object state) {
+<span class="nc bnc" id="L152" title="All 4 branches missed.">        if (classifierInState instanceof ClassifierInState</span>
+                &amp;&amp; state instanceof State) {
+<span class="nc" id="L154">            ((ClassifierInState) classifierInState).getInState().add(</span>
+                    (State) state);
+        } else {
+<span class="nc" id="L157">            throw new IllegalArgumentException(</span>
+                    &quot;classifierInState: &quot; + classifierInState
+                    + &quot; or state: &quot; + state);
+        }
+<span class="nc" id="L161">    }</span>
+
+
+    public void setInStates(Object classifierInState, Collection newStates) {
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (classifierInState instanceof ClassifierInState) {</span>
+<span class="nc" id="L166">            ClassifierInState cis = (ClassifierInState) classifierInState;</span>
+<span class="nc" id="L167">            CollectionHelper.update(cis.getInState(), newStates);</span>
+<span class="nc" id="L168">        } else {</span>
+<span class="nc" id="L169">            throw new IllegalArgumentException(</span>
+                    &quot;classifierInState: &quot; + classifierInState);
+        }
+<span class="nc" id="L172">    }</span>
+    
+
+    public void setContents(Object partition, Collection contents) {
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (partition instanceof Partition) {</span>
+<span class="nc" id="L177">            Partition p = (Partition) partition;</span>
+<span class="nc" id="L178">            CollectionHelper.update(p.getContents(), contents);</span>
+<span class="nc" id="L179">        } else {</span>
+<span class="nc" id="L180">            throw new IllegalArgumentException(</span>
+                    &quot;Partition: &quot; + partition);
+        }
+<span class="nc" id="L183">    }</span>
+    
+    public void addContent(Object partition, Object modelElement) {
+<span class="nc" id="L186">        Partition p = (Partition) partition;</span>
+<span class="nc" id="L187">        p.getContents().add((ModelElement) modelElement);</span>
+<span class="nc" id="L188">    }</span>
+
+    public void removeContent(Object partition, Object modelElement) {
+<span class="nc" id="L191">        Partition p = (Partition) partition;</span>
+<span class="nc" id="L192">        p.getContents().remove(modelElement);</span>
+<span class="nc" id="L193">    }</span>
+
+    public void setSynch(Object objectFlowState, boolean isSynch) {
+<span class="nc" id="L196">        ((ObjectFlowState) objectFlowState).setSynch(isSynch);</span>
+<span class="nc" id="L197">    }</span>
+
+    public void addParameter(Object objectFlowState, Object parameter) {
+<span class="nc" id="L200">        ((ObjectFlowState) objectFlowState).getParameter().add(</span>
+                (Parameter) parameter);
+<span class="nc" id="L202">    }</span>
+
+    public void removeParameter(Object objectFlowState, Object parameter) {
+<span class="nc" id="L205">        ((ObjectFlowState) objectFlowState).getParameter().remove(parameter);</span>
+<span class="nc" id="L206">    }</span>
+
+    public void setParameters(Object objectFlowState, Collection parameters) {
+<span class="nc" id="L209">        Collection params = ((ObjectFlowState) objectFlowState).getParameter();</span>
+<span class="nc" id="L210">        params.clear();</span>
+<span class="nc" id="L211">        params.addAll(parameters);</span>
+<span class="nc" id="L212">    }</span>
+
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CopyHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CopyHelper.java</span></div><h1>CopyHelper.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.omg.uml.foundation.core.DataType;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Interface;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.UmlClass;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Utility class to facilitate copying model elements.
+ *
+ * @author Michael Stockman
+ * @since 0.13.2
+ */
+final class CopyHelper implements org.argouml.model.CopyHelper {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor to forbid creation of this object.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L73">    CopyHelper(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L74">        modelImpl = implementation;</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * @see org.argouml.model.CopyHelper#copy(java.lang.Object, java.lang.Object)
+     *
+     * Make a copy of element in the given namespace.&lt;p&gt;
+     *
+     * This function is a dispatcher that calls the
+     * copyElement(Element,Namespace) function from XXXFactory.&lt;p&gt;
+     *
+     * This function may fail and return null for any of the following reasons:
+     * &lt;ol&gt;
+     * &lt;li&gt;No copy function is known for element's type.
+     * &lt;li&gt;The copy function fails or throws.
+     * &lt;/ol&gt;
+     *
+     * @param anelement
+     *            is the element to copy.
+     * @param ans
+     *            the namespace
+     * @return a copy of element, or null.
+     *
+     * @throws IllegalArgumentException
+     *             if element is null.
+     */
+    public Object copy(Object anelement, Object ans) {
+        // Don't explicitly check if element is null
+<span class="nc" id="L102">        ModelElement element = (ModelElement) anelement;</span>
+<span class="nc" id="L103">        Namespace ns = (Namespace) ans;</span>
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (element instanceof UmlPackage) {</span>
+<span class="nc" id="L106">            return modelImpl.getModelManagementFactory().copyPackage(element,</span>
+                    ns);
+        }
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (element instanceof UmlClass) {</span>
+<span class="nc" id="L110">            return modelImpl.getCoreFactory().copyClass(element, ns);</span>
+        }
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (element instanceof DataType) {</span>
+<span class="nc" id="L113">            return modelImpl.getCoreFactory().copyDataType(element, ns);</span>
+        }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (element instanceof Interface) {</span>
+<span class="nc" id="L116">            return modelImpl.getCoreFactory().copyInterface(element, ns);</span>
+        }
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (element instanceof Feature) {</span>
+<span class="nc" id="L119">            return modelImpl.getCoreFactory().copyFeature(element, ns);</span>
+        }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (element instanceof Stereotype) {</span>
+<span class="nc" id="L122">            return modelImpl.getExtensionMechanismsFactory().copyStereotype(</span>
+                    element, ns);
+        }
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (element instanceof TagDefinition) {</span>
+<span class="nc" id="L126">            return modelImpl.getExtensionMechanismsFactory().copyTagDefinition(</span>
+                    element, ns);
+        }
+<span class="nc" id="L129">        throw new IllegalArgumentException(&quot;anelement:&quot; + anelement + &quot;, ans: &quot;</span>
+                + ans);
+    }
+
+    /**
+     * Copy an element and its children into a namespace.
+     *
+     * @param anelement element to be copied
+     * @param ans namespace to copy into
+     * @return Object copy of given element and its children
+     */
+    Object fullCopy(Object anelement, Object ans) {
+<span class="nc" id="L141">        ModelElement copy = (ModelElement) copy(anelement, ans);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (anelement instanceof Namespace) {</span>
+<span class="nc" id="L143">            Collection children = ((Namespace) anelement).getOwnedElement();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (!children.isEmpty()) {</span>
+<span class="nc" id="L145">                Iterator it = children.iterator();</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L147">                    Object childToCopy = it.next();</span>
+<span class="nc" id="L148">                    fullCopy(childToCopy, copy);</span>
+<span class="nc" id="L149">                }</span>
+            }
+        }
+<span class="nc" id="L152">        return copy;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
