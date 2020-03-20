@@ -5,10 +5,9 @@ Started in January 1998. Converted to Subversion in 2006. Converted to git in 20
 
 ## Resources
 
-* Homepage: <http://argouml.tigris.org>
-* Using ArgoUML: <http://argouml.tigris.org/documentation/>
-* Developer Wiki: <http://argouml.tigris.org/wiki>
-* Issues: <http://argouml.tigris.org/issues/query.cgi>
+* Github organisation: <https://github.com/argouml-tigris-org>
+* Developer homepage: <https://argouml-tigris-org.github.io/>
+* Use development environment: <https://github.com/argouml-tigris-org/argouml/wiki/Working-in-the-project>
 
 ## Contributing
 
