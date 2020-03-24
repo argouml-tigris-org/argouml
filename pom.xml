@@ -46,8 +46,12 @@ This project is the virtual project that includes all core subprojects.
   </properties>
 
   <scm>
-    <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</connection>
-    <developerConnection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</developerConnection>
-    <url>http://argouml.tigris.org/svn/argouml/trunk/</url>
+    <!-- The trick with adding a ? is because maven appends the path to
+         the directory and the artifactId to url. Since many of the
+         directories have a directory name that does not match with
+         the artifactId this doesn't work. The ? will make the url
+         point to the root. -->
+    <url>https://github.com/argouml-tigris-org/argouml?</url>
   </scm>
+
 </project>
