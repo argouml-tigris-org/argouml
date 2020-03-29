@@ -26,7 +26,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3-ibmjava-8'
-      args '-v maven-repo:/.m2 -v maven-repo:/root/.m2'
+      args '-v maven-repo:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2'
     }
   }
   environment {
