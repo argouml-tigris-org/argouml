@@ -26,7 +26,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3-ibmjava-8'
-      args '-v maven-repo:/.m2 -v maven-repo:/root/.m2'
+      args '-v maven-repo:/var/maven/.m2 -e MAVEN_CONFIG=/var/maven/.m2'
     }
   }
   environment {
@@ -45,7 +45,7 @@ Build has these steps:
 If these are all successful, it is scored as Verified."""
         timeout(time:1, unit: 'HOURS') {
           withMaven() {
-            sh '$MVN_CMD -B compile'
+            sh '$MVN_CMD -Duser.home=/var/maven -B compile'
           }
         }
         gerritReview labels: [:], message: "Compiled without error."
@@ -55,7 +55,7 @@ If these are all successful, it is scored as Verified."""
       steps {
         timeout(time:1, unit: 'HOURS') {
           withMaven() {
-            sh '$MVN_CMD -B test'
+            sh '$MVN_CMD -Duser.home=/var/maven -B test'
           }
         }
         gerritReview labels: [:], message: "Tests run without error."
@@ -66,7 +66,7 @@ If these are all successful, it is scored as Verified."""
         timeout(time:1, unit: 'HOURS') {
           withMaven(options: [junitPublisher(disabled: true,
                                              healthScaleFactor: 0.0)]) {
-            sh '$MVN_CMD -B site'
+            sh '$MVN_CMD -Duser.home=/var/maven -B site'
           }
         }
         gerritReview labels: [:], message: "Site generated without error."
