@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-03-27T05:52:25.934">
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ActivityGraphsHelperMDRImpl.java">
+<pmd version="4.3" timestamp="2020-04-03T06:17:51.317">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ActivityGraphsHelperMDRImpl.java">
 <violation beginline="134" endline="136" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ActivityGraphsHelperMDRImpl" method="findStateByName" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreFactoryMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreFactoryMDRImpl.java">
 <violation beginline="2065" endline="2067" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="CoreFactoryMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'source'.
 </violation>
@@ -13,7 +13,7 @@ Avoid unused method parameters such as 'source'.
 Avoid unused method parameters such as 'target'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/CoreHelperMDRImpl.java">
 <violation beginline="1460" endline="1462" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="CoreHelperMDRImpl" method="isValidNamespace" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -60,12 +60,12 @@ Avoid unnecessary return statements
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/DataTypesHelperMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/DataTypesHelperMDRImpl.java">
 <violation beginline="65" endline="65" begincolumn="36" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="DataTypesHelperMDRImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ExtensionMechanismsHelperMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ExtensionMechanismsHelperMDRImpl.java">
 <violation beginline="76" endline="76" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="ExtensionMechanismsHelperMDRImpl" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
@@ -73,17 +73,17 @@ Avoid unused private fields such as 'LOG'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/FacadeMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/FacadeMDRImpl.java">
 <violation beginline="4718" endline="4718" begincolumn="30" endcolumn="38" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="FacadeMDRImpl" method="getProxy" variable="metaTypes" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
 Avoid unused local variables such as 'metaTypes'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/KindsMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/KindsMDRImpl.java">
 <violation beginline="67" endline="67" begincolumn="36" endcolumn="44" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="KindsMDRImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/MDRModelImplementation.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/MDRModelImplementation.java">
 <violation beginline="325" endline="329" begincolumn="25" endcolumn="25" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="MDRModelImplementation" method="deleteExtentUnchecked" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
@@ -91,7 +91,7 @@ These nested if statements could be combined
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ModelEventPumpMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ModelEventPumpMDRImpl.java">
 <violation beginline="118" endline="118" begincolumn="39" endcolumn="56" rule="BooleanInstantiation" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ModelEventPumpMDRImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#BooleanInstantiation" priority="2">
 Avoid instantiating Boolean objects; reference Boolean.TRUE or Boolean.FALSE or call Boolean.valueOf() instead.
 </violation>
@@ -114,17 +114,17 @@ Avoid unused method parameters such as 'className'.
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UmlFactoryMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UmlFactoryMDRImpl.java">
 <violation beginline="1103" endline="1105" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="UmlFactoryMDRImpl" method="isConnectionWellformed" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UseCasesHelperMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/UseCasesHelperMDRImpl.java">
 <violation beginline="354" endline="358" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="UseCasesHelperMDRImpl" method="addExtensionPoint" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReaderImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReaderImpl.java">
 <violation beginline="306" endline="309" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReaderImpl" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
@@ -138,7 +138,7 @@ Avoid unused method parameters such as 'systemId'.
 Avoid unused private methods such as 'chainedTransform(String,InputSource)'.
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReferenceResolverImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReferenceResolverImpl.java">
 <violation beginline="432" endline="434" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="toURL" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
@@ -146,7 +146,7 @@ Avoid empty if statements
 These nested if statements could be combined
 </violation>
 </file>
-<file name="/var/jenkins_home/workspace/thub-organization_argouml_master@2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiWriterMDRImpl.java">
+<file name="/var/jenkins_home/workspace/thub-organization_argouml_master/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiWriterMDRImpl.java">
 <violation beginline="72" endline="72" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.mdr" class="XmiWriterMDRImpl" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
