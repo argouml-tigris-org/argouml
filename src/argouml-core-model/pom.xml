@@ -4,10 +4,6 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- 
-    Experimenting with maven for the nightly build.
-  -->
-
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>argouml-core</artifactId>
@@ -106,6 +102,10 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
   </dependencies>
 
   <name>argouml-core-model</name>
