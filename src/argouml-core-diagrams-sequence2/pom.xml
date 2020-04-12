@@ -4,10 +4,6 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- 
-    Experimenting with maven for the nightly build.
-  -->
-
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>argouml-core</artifactId>
@@ -114,16 +110,15 @@
     <dependency>
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
-      <version>2.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jdepend</groupId>
       <artifactId>jdepend</artifactId>
-      <version>2.9.1</version>
-      <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
 
   </dependencies>
 
