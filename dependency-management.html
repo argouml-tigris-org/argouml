@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>argouml-core - Issue Tracking</title>
+    <title>argouml-core - Project Dependency Management</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -93,8 +93,8 @@
                           <a href="dependency-info.html" title="Dependency Information">Dependency Information</a>
             </li>
                       <li class="none">
-                          <a href="dependency-management.html" title="Dependency Management">Dependency Management</a>
-            </li>
+            <strong>Dependency Management</strong>
+          </li>
                       <li class="none">
                           <a href="distribution-management.html" title="Distribution Management">Distribution Management</a>
             </li>
@@ -102,8 +102,8 @@
                           <a href="index.html" title="About">About</a>
             </li>
                       <li class="none">
-            <strong>Issue Tracking</strong>
-          </li>
+                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
+            </li>
                       <li class="none">
                           <a href="modules.html" title="Project Modules">Project Modules</a>
             </li>
@@ -135,13 +135,35 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section">
-<h2>Overview<a name="Overview"></a></h2><a name="Overview"></a>
-<p>This project uses GitHub Issues to manage its issues.</p></div>
+<h2>Project Dependency Management<a name="Project_Dependency_Management"></a></h2><a name="Project_Dependency_Management"></a>
 <div class="section">
-<h2>Issue Tracking<a name="Issue_Tracking"></a></h2><a name="Issue_Tracking"></a>
-<p>Issues, bugs, and feature requests should be submitted to the following issue tracking system for this project.</p>
-<div class="source">
-<pre><a class="externalLink" href="https://github.com/argouml-tigris-org/argouml/issues">https://github.com/argouml-tigris-org/argouml/issues</a></pre></div></div>
+<h3>test<a name="test"></a></h3><a name="test"></a>
+<p>The following is a list of test dependencies in the DependencyManagement of this project. These dependencies can be included in the submodules to compile and run unit tests for the submodule:</p>
+<table border="0" class="bodyTable">
+<tr class="a">
+<th>GroupId</th>
+<th>ArtifactId</th>
+<th>Version</th>
+<th>Type</th>
+<th>License</th></tr>
+<tr class="b">
+<td>easymock</td>
+<td>easymock</td>
+<td>2.0</td>
+<td>jar</td>
+<td>-</td></tr>
+<tr class="a">
+<td>jdepend</td>
+<td>jdepend</td>
+<td>2.9.1</td>
+<td>jar</td>
+<td>-</td></tr>
+<tr class="b">
+<td>junit</td>
+<td><a class="externalLink" href="http://junit.org">junit</a></td>
+<td>4.8.2</td>
+<td>jar</td>
+<td><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></td></tr></table></div></div>
       </div>
     </div>
     <div class="clear">
