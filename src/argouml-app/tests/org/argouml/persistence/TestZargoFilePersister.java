@@ -39,6 +39,7 @@
 package org.argouml.persistence;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
@@ -121,18 +122,15 @@ public class TestZargoFilePersister extends TestCase {
     /**
      * Tests that a project is loadable.
      *
-     * @param filename of the project file to load
+     * @param file of the project file to load
      * @throws OpenException if something goes wrong.
      * @throws URISyntaxException if the url cannot be converted.
      *    (This shouldn't happen.)
      */
-    private Project doLoad(String filename) 
+    private Project doLoad(File file) 
         throws OpenException, InterruptedException, URISyntaxException {
-        URL url = TestZargoFilePersister.class.getResource(filename);
-        assertTrue("Unintended failure: resource to be tested is not found: "
-                + filename + ", converted to URL: " + url, url != null);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(new File(url.toURI()));
+        Project p = persister.doLoad(file);
         return p;
     }
 
@@ -142,7 +140,10 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadEmptyUml13() throws Exception {
-        Project p = doLoad("/testmodels/uml13/Empty.zargo");
+        ProjectFile file = new ProjectFile("/testmodels/uml13/Empty.zargo");
+
+        Project p = doLoad(file.getFile());
+
         p.remove();
     }
 
@@ -152,7 +153,11 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadEmptyUml14() throws Exception {
-        Project p = doLoad("/testmodels/uml14/EmptyProject024.zargo");
+        ProjectFile file =
+                new ProjectFile("/testmodels/uml14/EmptyProject024.zargo");
+
+        Project p = doLoad(file.getFile());
+
         p.remove();
     }
 
@@ -162,7 +167,12 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml13() throws Exception {
-        Project p = doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
+        ProjectFile file =
+                new ProjectFile(
+                        "/testmodels/uml13/Alittlebitofeverything.zargo");
+
+        Project p = doLoad(file.getFile());
+
         p.remove();
     }
 
@@ -172,7 +182,10 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml14() throws Exception {
-        Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
+        ProjectFile file = new ProjectFile("zargo");
+
+        Project p = doLoad(file.getFile());
+
         p.remove();
     }
 
@@ -182,7 +195,10 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml14i18n() throws Exception {
-        Project p = doLoad("/testmodels/uml14/i18n.zargo");
+        ProjectFile file = new ProjectFile("/testmodels/uml14/i18n.zargo");
+
+        Project p = doLoad(file.getFile());
+
         p.remove();
     }
 
@@ -193,9 +209,16 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testSave() throws Exception {
-        Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
+        ProjectFile file = new ProjectFile("zargo");
+
+        Project p = doLoad(file.getFile());
         ZargoFilePersister persister = new ZargoFilePersister();
-        persister.save(p, new File("Alittlebitofeverything2.zargo"));
+        File savedFile =
+                File.createTempFile("TestZargoFilePersister_Save", ".zargo");
+        savedFile.delete();
+        savedFile.deleteOnExit();
+        persister.save(p, savedFile);
+
         p.remove();
     }
 
@@ -227,12 +250,15 @@ public class TestZargoFilePersister extends TestCase {
      * @throws InterruptedException
      *                 if interrupted - should never occur in test environment
      * @throws URISyntaxException on internal error.
+     * @throws IOException if the file cannot be created.
      */
     public void testLoadLinkedProfile() throws OpenException,
-            InterruptedException, URISyntaxException {
+            InterruptedException, URISyntaxException, IOException {
+        ProjectFile file =
+                new ProjectFile("/testmodels/uml14/LinkedProfile.zargo");
      
         // Load a project which contains links to it
-        Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");
+        Project p = doLoad(file.getFile());
         
         // Make sure the contents match what we expect
         final Facade f = Model.getFacade();

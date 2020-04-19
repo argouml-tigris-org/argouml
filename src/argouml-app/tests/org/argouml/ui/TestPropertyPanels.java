@@ -60,6 +60,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ProjectFile;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
@@ -183,26 +184,12 @@ public class TestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        URL url =
-            TestPropertyPanels.class.getResource(
-                        TEST_PROPERTY_PANELS_ZARGO);
-
-        if (url == null) {
-            System.out.println(TestPropertyPanels.class.getName()
-                    + ": WARNING: Inconclusive tests.");
-            System.out.println("This test must be able to"
-                    + " find the resource " + TEST_PROPERTY_PANELS_ZARGO
-                    + " on the classpath.");
-            System.out.println("Examine your set up and try again!");
-            return suite;
-        }
-
-        File testfile = new File(url.toURI());
+        ProjectFile file = new ProjectFile(TEST_PROPERTY_PANELS_ZARGO);
 
         AbstractFilePersister persister =
             PersistenceManager.getInstance().getPersisterFromFileName(
                 TEST_PROPERTY_PANELS_ZARGO);
-        p = persister.doLoad(testfile);
+        p = persister.doLoad(file.getFile());
         ProjectManager.getManager().setCurrentProject(p);
         Object model = p.getRoot();
         Collection me =

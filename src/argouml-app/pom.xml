@@ -176,6 +176,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
     </dependency>
+    <dependency>
+    	<groupId>org.argouml</groupId>
+    	<artifactId>testmodels</artifactId>
+    	<version>0.35.2-SNAPSHOT</version>
+    	<scope>test</scope>
+    </dependency>
   </dependencies>
 
   <name>argouml-app</name>

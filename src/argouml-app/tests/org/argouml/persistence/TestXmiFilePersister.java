@@ -200,17 +200,12 @@ public class TestXmiFilePersister extends TestCase {
      * @throws Exception if loading project fails
      */
     public void testLoadProject13() throws Exception {
-        String filename = "/testmodels/uml13/Alittlebitofeverything.xmi";
-        URL url = TestZargoFilePersister.class.getResource(filename);
-        assertTrue("Unintended failure: resource to be tested is not found: "
-                + filename + ", converted to URL: " + url, url != null);
-
+        ProjectFile file = new ProjectFile("xmi");
         XmiFilePersister persister = new XmiFilePersister();
-
         Project project = ProjectManager.getManager().makeEmptyProject();
         ProjectManager.getManager().setCurrentProject(project);
 
-        persister.doLoad(new File(url.toURI()));
+        persister.doLoad(file.getFile());
 
         ProjectManager.getManager().removeProject(project);
     }
@@ -221,10 +216,7 @@ public class TestXmiFilePersister extends TestCase {
      * @throws Exception if loading project fails
      */
     public void testLoadBadHref() throws Exception {
-        String filename = "/testmodels/uml14/href-test.xmi";
-        URL url = TestZargoFilePersister.class.getResource(filename);
-        assertTrue("Unintended failure: resource to be tested is not found: "
-                + filename + ", converted to URL: " + url, url != null);
+        ProjectFile file = new ProjectFile("href");
 
         XmiFilePersister persister = new XmiFilePersister();
 
@@ -232,7 +224,7 @@ public class TestXmiFilePersister extends TestCase {
         ProjectManager.getManager().setCurrentProject(project);
 
         try {
-            persister.doLoad(new File(url.toURI()));
+            persister.doLoad(file.getFile());
             fail("Expected exception not thrown");
         } catch (OpenException e) {
             // Success - expected exception
