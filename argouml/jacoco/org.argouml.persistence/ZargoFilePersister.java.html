@@ -182,10 +182,10 @@ class ZargoFilePersister extends UmlFilePersister {
                 // and name+&quot;#&quot; exists move name+&quot;#&quot; to name+&quot;~&quot;
                 // this is the correct backup file
 <span class="pc bpc" id="L184" title="1 of 2 branches missed.">                if (lastArchiveFile.exists()) {</span>
-<span class="fc" id="L185">                    lastArchiveFile.delete();</span>
+<span class="nc" id="L185">                    lastArchiveFile.delete();</span>
                 }
-<span class="pc bpc" id="L187" title="2 of 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
-<span class="fc" id="L188">                    tempFile.renameTo(lastArchiveFile);</span>
+<span class="pc bpc" id="L187" title="3 of 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
+<span class="nc" id="L188">                    tempFile.renameTo(lastArchiveFile);</span>
                 }
 <span class="pc bpc" id="L190" title="1 of 2 branches missed.">                if (tempFile.exists()) {</span>
 <span class="nc" id="L191">                    tempFile.delete();</span>
