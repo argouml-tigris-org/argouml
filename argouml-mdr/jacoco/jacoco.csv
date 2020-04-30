@@ -1,57 +1,57 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-argouml-core-model-mdr,org.argouml.model.mdr,ModelManagementFactoryMDRImpl,177,40,22,2,56,15,25,4,13,4
 argouml-core-model-mdr,org.argouml.model.mdr,CommonBehaviorHelperMDRImpl,1352,6,230,0,293,3,154,1,39,1
+argouml-core-model-mdr,org.argouml.model.mdr,ModelManagementFactoryMDRImpl,177,40,22,2,56,15,25,4,13,4
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator,1124,14,18,0,322,5,111,2,102,2
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
-argouml-core-model-mdr,org.argouml.model.mdr,Registry,43,192,9,31,7,45,8,18,0,6
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
+argouml-core-model-mdr,org.argouml.model.mdr,Registry,43,192,9,31,7,45,8,18,0,6
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new ModelCommand() {...},32,0,0,0,7,0,5,0,5,0
 argouml-core-model-mdr,org.argouml.model.mdr,XmiReferenceResolverImpl,369,623,46,48,71,138,36,27,4,12
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.StringSetter() {...},17,0,0,0,3,0,2,0,2,0
-argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,MessageSortMDRImpl,12,3,0,0,6,1,6,1,6,1
-argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
+argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,DataTypesHelperMDRImpl,315,6,30,0,77,3,32,1,17,1
+argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.StringSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,ActivityGraphsFactoryMDRImpl,275,6,30,0,88,3,32,1,17,1
-argouml-core-model-mdr,org.argouml.model.mdr,CollaborationsFactoryMDRImpl,746,12,77,1,211,4,75,2,36,2
-argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,ExtensionMechanismsHelperMDRImpl,879,56,138,0,205,14,98,2,29,2
+argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
+argouml-core-model-mdr,org.argouml.model.mdr,CollaborationsFactoryMDRImpl,746,12,77,1,211,4,75,2,36,2
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoDataTypesHelperDecorator,4,0,0,0,2,0,1,0,1,0
-argouml-core-model-mdr,org.argouml.model.mdr,FacadeMDRImpl,7170,48,929,5,2134,17,872,6,406,5
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCollaborationsHelperDecorator,4,0,0,0,2,0,1,0,1,0
-argouml-core-model-mdr,org.argouml.model.mdr,UseCasesHelperMDRImpl,1029,6,152,0,224,3,99,1,23,1
+argouml-core-model-mdr,org.argouml.model.mdr,FacadeMDRImpl,7170,48,929,5,2134,17,872,6,406,5
 argouml-core-model-mdr,org.argouml.model.mdr,MDRModelImplementation,232,744,29,33,55,182,32,62,10,53
+argouml-core-model-mdr,org.argouml.model.mdr,UseCasesHelperMDRImpl,1029,6,152,0,224,3,99,1,23,1
 argouml-core-model-mdr,org.argouml.model.mdr,ExtensionMechanismsFactoryMDRImpl,649,10,60,0,159,4,52,1,22,1
 argouml-core-model-mdr,org.argouml.model.mdr,XmiReference,0,15,0,0,0,6,0,3,0,3
 argouml-core-model-mdr,org.argouml.model.mdr,AbstractUmlModelFactoryMDR,0,4,0,0,0,3,0,2,0,2
-argouml-core-model-mdr,org.argouml.model.mdr,UndoExtensionMechanismsHelperDecorator,4,0,0,0,2,0,1,0,1,0
 argouml-core-model-mdr,org.argouml.model.mdr,UmlFactoryMDRImpl,2633,1367,520,8,625,74,291,8,31,4
+argouml-core-model-mdr,org.argouml.model.mdr,UndoExtensionMechanismsHelperDecorator,4,0,0,0,2,0,1,0,1,0
 argouml-core-model-mdr,org.argouml.model.mdr,MDRModelImplementation.Extent,11,26,0,0,2,7,2,2,2,2
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new ModelCommand() {...},32,0,0,0,7,0,5,0,5,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new ModelCommand() {...},32,0,0,0,7,0,5,0,5,0
-argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.StringSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,XmiReferenceProviderImpl,53,12,10,0,14,5,6,1,1,1
-argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
+argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.StringSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,CollaborationsHelperMDRImpl,1952,16,329,1,430,6,203,2,38,2
+argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoUseCasesHelperDecorator,4,0,0,0,2,0,1,0,1,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,ModelManagementHelperMDRImpl,1329,11,218,0,347,5,141,2,32,2
 argouml-core-model-mdr,org.argouml.model.mdr,CoreHelperMDRImpl.new UndoCoreHelperDecorator.StringSetter() {...},15,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
-argouml-core-model-mdr,org.argouml.model.mdr,CoreHelperMDRImpl.new ModelCommand() {...},38,0,0,0,8,0,6,0,6,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
+argouml-core-model-mdr,org.argouml.model.mdr,CoreHelperMDRImpl.new ModelCommand() {...},38,0,0,0,8,0,6,0,6,0
 argouml-core-model-mdr,org.argouml.model.mdr,KindsMDRImpl,68,6,0,0,31,3,31,1,31,1
 argouml-core-model-mdr,org.argouml.model.mdr,UseCasesFactoryMDRImpl,361,6,40,0,108,3,37,1,17,1
 argouml-core-model-mdr,org.argouml.model.mdr,CoreFactoryMDRImpl.new ModelCommand() {...},28,28,1,1,8,5,4,2,3,2
