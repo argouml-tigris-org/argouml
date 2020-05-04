@@ -71,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLOperationSpecificationDocument.java">org/argouml/core/propertypanels/ui/UMLOperationSpecificationDocument.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.GenericUMLPlainTextDocument.java">org/argouml/core/propertypanels/ui/GenericUMLPlainTextDocument.java</a>
                 </td>
                 <td>
                   0
@@ -85,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.GenericUMLPlainTextDocument.java">org/argouml/core/propertypanels/ui/GenericUMLPlainTextDocument.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLOperationSpecificationDocument.java">org/argouml/core/propertypanels/ui/UMLOperationSpecificationDocument.java</a>
                 </td>
                 <td>
                   0
@@ -155,6 +155,20 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateMachineTransitionListModel.java">org/argouml/core/propertypanels/ui/UMLStateMachineTransitionListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.AbstractActionAddModelElement.java">org/argouml/core/propertypanels/ui/AbstractActionAddModelElement.java</a>
                 </td>
                 <td>
@@ -176,20 +190,6 @@
                 </td>
                 <td>
                   3
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateMachineTransitionListModel.java">org/argouml/core/propertypanels/ui/UMLStateMachineTransitionListModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
                 </td>
                 <td>
                   0
@@ -365,7 +365,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMessageActivatorComboBox.java">org/argouml/core/propertypanels/ui/UMLMessageActivatorComboBox.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDiscriminatorNameDocument.java">org/argouml/core/propertypanels/ui/UMLDiscriminatorNameDocument.java</a>
                 </td>
                 <td>
                   0
@@ -379,7 +379,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDiscriminatorNameDocument.java">org/argouml/core/propertypanels/ui/UMLDiscriminatorNameDocument.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMessageActivatorComboBox.java">org/argouml/core/propertypanels/ui/UMLMessageActivatorComboBox.java</a>
                 </td>
                 <td>
                   0
@@ -407,13 +407,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLEventParameterListModel.java">org/argouml/core/propertypanels/ui/UMLEventParameterListModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLCreateActionClassifierListModel.java">org/argouml/core/propertypanels/ui/UMLCreateActionClassifierListModel.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  1
+                  0
                 </td>
                 <td>
                   0
@@ -435,13 +435,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLCreateActionClassifierListModel.java">org/argouml/core/propertypanels/ui/UMLCreateActionClassifierListModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLEventParameterListModel.java">org/argouml/core/propertypanels/ui/UMLEventParameterListModel.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
@@ -456,6 +456,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLComboBox.java">org/argouml/core/propertypanels/ui/UMLComboBox.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
@@ -478,20 +492,6 @@
                           <tr>
                 <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLCommentBodyDocument.java">org/argouml/core/propertypanels/ui/UMLCommentBodyDocument.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLComboBox.java">org/argouml/core/propertypanels/ui/UMLComboBox.java</a>
                 </td>
                 <td>
                   0
@@ -701,20 +701,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLComboBoxNavigator.java">org/argouml/core/propertypanels/ui/UMLComboBoxNavigator.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLAssociationRoleAssociationEndRoleListModel.java">org/argouml/core/propertypanels/ui/UMLAssociationRoleAssociationEndRoleListModel.java</a>
                 </td>
                 <td>
@@ -722,6 +708,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLComboBoxNavigator.java">org/argouml/core/propertypanels/ui/UMLComboBoxNavigator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
@@ -757,20 +757,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLValueSpecificationValueFieldLiteralString.java">org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldLiteralString.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  2
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateVertexIncomingListModel.java">org/argouml/core/propertypanels/ui/UMLStateVertexIncomingListModel.java</a>
                 </td>
                 <td>
@@ -778,6 +764,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLValueSpecificationValueFieldLiteralString.java">org/argouml/core/propertypanels/ui/UMLValueSpecificationValueFieldLiteralString.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
@@ -799,20 +799,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.SingleListFactory.java">org/argouml/core/propertypanels/ui/SingleListFactory.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  13
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLExtensionPointUseCaseListModel.java">org/argouml/core/propertypanels/ui/UMLExtensionPointUseCaseListModel.java</a>
                 </td>
                 <td>
@@ -820,6 +806,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.SingleListFactory.java">org/argouml/core/propertypanels/ui/SingleListFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  13
                 </td>
                 <td>
                   0
@@ -869,20 +869,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.XmlPropertyPanel.java">org/argouml/core/propertypanels/ui/XmlPropertyPanel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLScriptExpressionModel.java">org/argouml/core/propertypanels/ui/UMLScriptExpressionModel.java</a>
                 </td>
                 <td>
@@ -890,6 +876,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.XmlPropertyPanel.java">org/argouml/core/propertypanels/ui/XmlPropertyPanel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -925,20 +925,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLModelElementNamespaceComboBoxModel.java">org/argouml/core/propertypanels/ui/UMLModelElementNamespaceComboBoxModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMessagePredecessorListModel.java">org/argouml/core/propertypanels/ui/UMLMessagePredecessorListModel.java</a>
                 </td>
                 <td>
@@ -946,6 +932,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLModelElementNamespaceComboBoxModel.java">org/argouml/core/propertypanels/ui/UMLModelElementNamespaceComboBoxModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -1009,7 +1009,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDependencySupplierListModel.java">org/argouml/core/propertypanels/ui/UMLDependencySupplierListModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLIncludeListModel.java">org/argouml/core/propertypanels/ui/UMLIncludeListModel.java</a>
                 </td>
                 <td>
                   0
@@ -1023,7 +1023,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLIncludeListModel.java">org/argouml/core/propertypanels/ui/UMLIncludeListModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDependencySupplierListModel.java">org/argouml/core/propertypanels/ui/UMLDependencySupplierListModel.java</a>
                 </td>
                 <td>
                   0
@@ -1051,20 +1051,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLParameterBehavioralFeatListModel.java">org/argouml/core/propertypanels/ui/UMLParameterBehavioralFeatListModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.RowSelector.java">org/argouml/core/propertypanels/ui/RowSelector.java</a>
                 </td>
                 <td>
@@ -1072,6 +1058,20 @@
                 </td>
                 <td>
                   26
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLParameterBehavioralFeatListModel.java">org/argouml/core/propertypanels/ui/UMLParameterBehavioralFeatListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -1359,20 +1359,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.Named.java">org/argouml/core/propertypanels/model/Named.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLExtendExtensionListModel.java">org/argouml/core/propertypanels/ui/UMLExtendExtensionListModel.java</a>
                 </td>
                 <td>
@@ -1387,13 +1373,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.GetterSetterManagerImpl.java">org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.Named.java">org/argouml/core/propertypanels/model/Named.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  176
+                  1
                 </td>
                 <td>
                   0
@@ -1408,6 +1394,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.GetterSetterManagerImpl.java">org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  176
                 </td>
                 <td>
                   0
@@ -1541,20 +1541,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLExpressionExpressionModel.java">org/argouml/core/propertypanels/ui/UMLExpressionExpressionModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMetaClassComboBoxModel.java">org/argouml/core/propertypanels/ui/UMLMetaClassComboBoxModel.java</a>
                 </td>
                 <td>
@@ -1562,6 +1548,20 @@
                 </td>
                 <td>
                   3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLExpressionExpressionModel.java">org/argouml/core/propertypanels/ui/UMLExpressionExpressionModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
@@ -1611,20 +1611,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.GetterSetterManager.java">org/argouml/core/propertypanels/model/GetterSetterManager.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  26
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLTagDefinitionTypedValuesListModel.java">org/argouml/core/propertypanels/ui/UMLTagDefinitionTypedValuesListModel.java</a>
                 </td>
                 <td>
@@ -1639,13 +1625,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMessageInteractionListModel.java">org/argouml/core/propertypanels/ui/UMLMessageInteractionListModel.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.GetterSetterManager.java">org/argouml/core/propertypanels/model/GetterSetterManager.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  1
+                  26
                 </td>
                 <td>
                   0
@@ -1667,7 +1653,35 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLMessageInteractionListModel.java">org/argouml/core/propertypanels/ui/UMLMessageInteractionListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLExpressionLanguageField.java">org/argouml/core/propertypanels/ui/UMLExpressionLanguageField.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLActivityGraphPartitionListModel.java">org/argouml/core/propertypanels/ui/UMLActivityGraphPartitionListModel.java</a>
                 </td>
                 <td>
                   0
@@ -1688,20 +1702,6 @@
                 </td>
                 <td>
                   9
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLActivityGraphPartitionListModel.java">org/argouml/core/propertypanels/ui/UMLActivityGraphPartitionListModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
                 </td>
                 <td>
                   0
@@ -1737,20 +1737,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.CheckBoxData.java">org/argouml/core/propertypanels/model/CheckBoxData.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  3
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.OldScrollList.java">org/argouml/core/propertypanels/ui/OldScrollList.java</a>
                 </td>
                 <td>
@@ -1758,6 +1744,20 @@
                 </td>
                 <td>
                   2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.model.CheckBoxData.java">org/argouml/core/propertypanels/model/CheckBoxData.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
                 </td>
                 <td>
                   0
@@ -1905,20 +1905,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLModelElementElementResidenceListModel.java">org/argouml/core/propertypanels/ui/UMLModelElementElementResidenceListModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLPartitionActivityGraphListModel.java">org/argouml/core/propertypanels/ui/UMLPartitionActivityGraphListModel.java</a>
                 </td>
                 <td>
@@ -1926,6 +1912,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLModelElementElementResidenceListModel.java">org/argouml/core/propertypanels/ui/UMLModelElementElementResidenceListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
@@ -1961,20 +1961,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDocument.java">org/argouml/core/propertypanels/ui/UMLDocument.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.SwingUIFactory.java">org/argouml/core/propertypanels/ui/SwingUIFactory.java</a>
                 </td>
                 <td>
@@ -1982,6 +1968,20 @@
                 </td>
                 <td>
                   32
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLDocument.java">org/argouml/core/propertypanels/ui/UMLDocument.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
@@ -2031,20 +2031,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UmlControl.java">org/argouml/core/propertypanels/ui/UmlControl.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  13
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.NavigatePreviousAction.java">org/argouml/core/propertypanels/ui/NavigatePreviousAction.java</a>
                 </td>
                 <td>
@@ -2073,13 +2059,13 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.NavigateUpAction.java">org/argouml/core/propertypanels/ui/NavigateUpAction.java</a>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UmlControl.java">org/argouml/core/propertypanels/ui/UmlControl.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  2
+                  13
                 </td>
                 <td>
                   0
@@ -2094,6 +2080,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.NavigateUpAction.java">org/argouml/core/propertypanels/ui/NavigateUpAction.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
@@ -2367,20 +2367,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLEditableComboBox.java">org/argouml/core/propertypanels/ui/UMLEditableComboBox.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  10
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateMachineContextComboBoxModel.java">org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java</a>
                 </td>
                 <td>
@@ -2388,6 +2374,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLEditableComboBox.java">org/argouml/core/propertypanels/ui/UMLEditableComboBox.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  10
                 </td>
                 <td>
                   0
@@ -2479,20 +2479,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateVertexOutgoingListModel.java">org/argouml/core/propertypanels/ui/UMLStateVertexOutgoingListModel.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLAssociationEndAssociationListModel.java">org/argouml/core/propertypanels/ui/UMLAssociationEndAssociationListModel.java</a>
                 </td>
                 <td>
@@ -2500,6 +2486,20 @@
                 </td>
                 <td>
                   1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-umlpropertypanels/checkstyle.html#org.argouml.core.propertypanels.ui.UMLStateVertexOutgoingListModel.java">org/argouml/core/propertypanels/ui/UMLStateVertexOutgoingListModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
