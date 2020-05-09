@@ -90,4 +90,10 @@
 This is the project containing the mdr of the model subsystem.
   </description>
 
+  <scm>
+    <url>${github.site.org}/${github.site.repositoryName}/tree/master/src/argouml-core-model-mdr</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
+  </scm>
+
 </project>

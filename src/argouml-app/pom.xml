@@ -191,4 +191,10 @@ the parts of the application that are not (yet) moved into their
 own projects.
   </description>
 
+  <scm>
+    <url>${github.site.org}/${github.site.repositoryName}/tree/master/src/argouml-app</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
+  </scm>
+
 </project>

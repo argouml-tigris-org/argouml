@@ -43,12 +43,16 @@ This project is the virtual project that includes all core subprojects.
   </properties>
 
   <scm>
-    <!-- The trick with adding a ? is because maven appends the path to
-         the directory and the artifactId to url. Since many of the
-         directories have a directory name that does not match with
-         the artifactId this doesn't work. The ? will make the url
-         point to the root. -->
-    <url>https://github.com/argouml-tigris-org/argouml?</url>
+    <url>${github.site.org}/${github.site.repositoryName}</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
   </scm>
+
+  <distributionManagement>
+     <site>
+        <id>${project.artifactId}-site</id>
+        <url>${github.site.pages}/${github.site.repositoryName}</url>
+     </site>
+  </distributionManagement>
 
 </project>
