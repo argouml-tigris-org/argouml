@@ -54,4 +54,10 @@
 Structure diagrams.
   </description>
 
+  <scm>
+    <url>${github.site.org}/${github.site.repositoryName}/tree/master/src/argouml-core-diagrams-structure2</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
+  </scm>
+
 </project>
