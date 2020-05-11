@@ -550,8 +550,8 @@ public abstract class ArgoDiagramImpl extends Diagram
 <span class="nc" id="L550">            LOG.log(Level.SEVERE, &quot;Not a namespace {0}&quot;, ns);</span>
 <span class="nc" id="L551">            throw new IllegalArgumentException(&quot;Given object not a namespace&quot;);</span>
         }
-<span class="pc bpc" id="L553" title="3 of 4 branches missed.">        if ((namespace != null) &amp;&amp; (namespace != ns)) {</span>
-<span class="nc" id="L554">            Model.getPump().removeModelEventListener(this, namespace);</span>
+<span class="pc bpc" id="L553" title="1 of 4 branches missed.">        if ((namespace != null) &amp;&amp; (namespace != ns)) {</span>
+<span class="fc" id="L554">            Model.getPump().removeModelEventListener(this, namespace);</span>
         }
 <span class="fc" id="L556">        Object oldNs = namespace;</span>
 <span class="fc" id="L557">        namespace = ns;</span>
