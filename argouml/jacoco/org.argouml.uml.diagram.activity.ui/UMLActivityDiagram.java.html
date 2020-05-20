@@ -297,10 +297,10 @@ import org.tigris.gef.presentation.FigNode;
                     theActivityGraph, new String[] {&quot;remove&quot;, &quot;namespace&quot;});
 <span class="fc" id="L298">            getProject().moveToTrash(this);</span>
         }
-<span class="fc bfc" id="L300" title="All 2 branches covered.">        if (evt.getSource() == getStateMachine()) {</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (evt.getSource() == getStateMachine()) {</span>
             Object newNamespace =
-<span class="fc" id="L302">                Model.getFacade().getNamespace(getStateMachine());</span>
-<span class="pc bpc" id="L303" title="1 of 2 branches missed.">            if (getNamespace() != newNamespace) {</span>
+<span class="nc" id="L302">                Model.getFacade().getNamespace(getStateMachine());</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">            if (getNamespace() != newNamespace) {</span>
                 /* The namespace of the activitygraph is changed! */
 <span class="nc" id="L305">                setNamespace(newNamespace);</span>
 <span class="nc" id="L306">                ((UMLMutableGraphSupport) getGraphModel())</span>
@@ -335,8 +335,8 @@ import org.tigris.gef.presentation.FigNode;
 <span class="fc" id="L335">        GraphModel gm = getGraphModel();</span>
 <span class="pc bpc" id="L336" title="1 of 2 branches missed.">        if (gm instanceof StateDiagramGraphModel) {</span>
 <span class="fc" id="L337">            Object machine = ((StateDiagramGraphModel) gm).getMachine();</span>
-<span class="fc bfc" id="L338" title="All 2 branches covered.">            if (!Model.getUmlFactory().isRemoved(machine)) {</span>
-<span class="fc" id="L339">                return machine;</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">            if (!Model.getUmlFactory().isRemoved(machine)) {</span>
+<span class="nc" id="L339">                return machine;</span>
             }
         }
 <span class="fc" id="L342">        return null;</span>
