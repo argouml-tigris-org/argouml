@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="20" tokens="139">
+<file line="26" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
+<file line="27" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedPentagon.java"/>
+<codefragment>
+<![CDATA[
+    public FigNamedConcavePentagon(
+            final Object owner, Rectangle rect, Color lineColor,
+            Color fillColor, Object modelElement, DiagramSettings settings) {
+        super(owner, rect, lineColor, fillColor, modelElement, settings);
+        createBorder(rect, lineColor, fillColor);
+    }
+
+    protected DiagramElement createBorder(
+            final Rectangle rect,
+            final Color lineColor,
+            final Color fillColor) {
+        final Poly poly = new Poly();
+        final int[] xs = new int[6];
+        final int[] ys = new int[6];
+        final int x = rect.x;
+        final int y = rect.y;
+        final int w = rect.width;
+        final int h = rect.height;        
+        xs[0] = x;         ys[0] = y;
+        xs[1] = x + w;     ys[1] = y;
+]]>
+</codefragment>
+</duplication>
+<duplication lines="34" tokens="120">
+<file line="75" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseNode.java"/>
+<file line="55" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigComposite.java"/>
+<codefragment>
+<![CDATA[
+    }
+    
+    @Override
+    protected void setBoundsImpl(
+            final int x,
+            final int y,
+            final int w,
+            final int h) {
+
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        
+        positionChildren();
+    }
+
+    /**
+     * This is called to rearrange the contents of the Fig when a childs
+     * minimum size means it will no longer fit. If this group also has
+     * a parent and it will no longer fit that parent then control is
+     * delegated to that parent.
+     */
+    public void calcBounds() {
+        if (getGroup() != null) {
+            ((FigGroup) getGroup()).calcBounds();
+        } else {
+            final Dimension min = getMinimumSize();
+            int maxw = Math.max(getWidth(), min.width);
+            int maxh = Math.max(getHeight(), min.height);
+            setBounds(_x, _y, maxw, maxh);
+        }
+    }
+}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="7" tokens="101">
+<file line="32" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigAcceptEventPoly.java"/>
+<file line="44" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedConcavePentagon.java"/>
+<codefragment>
+<![CDATA[
+        xs[0] = x;         ys[0] = y;
+        xs[1] = x + w;     ys[1] = y;
+        xs[2] = x + w;     ys[2] = y + h;
+        xs[3] = x;         ys[3] = y + h;
+        xs[4] = x + h / 2; ys[4] = y + h / 2;
+        xs[5] = x;         ys[5] = y;
+        final Polygon p = new Polygon(xs, ys, 6);
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>

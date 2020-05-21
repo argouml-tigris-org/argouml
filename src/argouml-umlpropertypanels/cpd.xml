@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="50" tokens="233">
+<file line="126" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/OldScrollList.java"/>
+<file line="114" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ScrollListImpl.java"/>
+<codefragment>
+<![CDATA[
+    public OldScrollList(JList alist) {
+        setHorizontalScrollBarPolicy(
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        this.list = (UMLLinkedList) alist;
+        setViewportView(list);
+    }
+    
+    public ListModel getListModel() {
+        return list.getModel();
+    }
+    
+    
+    /**
+     * Examine key event to scroll left or right depending on key press
+     * @param e the key event to examine
+     */
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            final Point posn = getViewport().getViewPosition();
+            if (posn.x > 0) {
+                getViewport().setViewPosition(new Point(posn.x - 1, posn.y));
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            final Point posn = getViewport().getViewPosition();
+            if (list.getWidth() - posn.x > getViewport().getWidth()) {
+                getViewport().setViewPosition(new Point(posn.x + 1, posn.y));
+            }
+        }
+    }
+
+    public void keyReleased(KeyEvent arg0) {
+    }
+
+    public void keyTyped(KeyEvent arg0) {
+    }
+    
+    public void addNotify() {
+        super.addNotify();
+        list.addKeyListener(this);
+    }
+    
+    public void removeNotify() {
+        super.removeNotify();
+        list.removeKeyListener(this);
+    }
+    
+    public JList getList() {
+        return list;
+    }
+}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="31" tokens="169">
+<file line="98" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<file line="73" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
+<codefragment>
+<![CDATA[
+    public UMLExpressionModel(Object target, String name) {
+        this.target = target;
+        propertyName = name;
+//        mustRefresh = true;
+        startListeningForModelChanges();
+    }
+
+    protected void startListeningForModelChanges() {
+	if (Model.getFacade().isAUMLElement(target)) {
+	    Model.getPump().addModelEventListener(this, target,
+		    propertyName);
+	}
+        LOG.log(Level.FINE, ">>Start listening for UML changes...");
+    }
+
+    protected void stopListeningForModelChanges() {
+	if (Model.getFacade().isAUMLElement(target)) {
+	    Model.getPump().removeModelEventListener(this, target,
+	                propertyName);
+	}
+        LOG.log(Level.FINE, ">>Stop listening for UML changes...");
+    }
+
+    public void propertyChange(PropertyChangeEvent e) {
+	if (propertyName.equals(e.getPropertyName())) {
+	    if (rememberExpression != e.getNewValue()) {
+		fireStateChanged();
+                LOG.log(Level.FINE, ">>UML expression changed.");
+	    } else {
+		/* This should not happen. */
+                LOG.log(Level.FINE,
+]]>
+</codefragment>
+</duplication>
+<duplication lines="39" tokens="166">
+<file line="69" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterDefaultElementComboBoxModel.java"/>
+<file line="74" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLTemplateParameterParameterComboBoxModel.java"/>
+<codefragment>
+<![CDATA[
+        super(target, propertyName, true); // Allow null
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAModelElement(element);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
+     */
+    @SuppressWarnings("unchecked")
+    protected void buildModelList() {
+        Set<Object> elements = new TreeSet<Object>(new PathComparator());
+
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p == null) {
+            return;
+        }
+        
+        for (Object model : p.getUserDefinedModelList()) {
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getModelElement()));
+        }
+
+        elements.addAll(p.getProfileConfiguration().findByMetaType(
+                        Model.getMetaTypes().getClassifier()));
+
+        setElements(elements);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void buildMinimalModelList() {
+        Collection list = new ArrayList(1);
+        Object element = getSelectedModelElement();
+]]>
+</codefragment>
+</duplication>
+<duplication lines="47" tokens="151">
+<file line="257" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<file line="196" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLValueSpecificationModel.java"/>
+<codefragment>
+<![CDATA[
+	startListeningForModelChanges();
+    }
+
+    /**
+     * Adds a <code>ChangeListener</code>.
+     * The change listeners are run each
+     * time the expression changes.
+     *
+     * @param l the ChangeListener to add
+     * @see #removeChangeListener
+     */
+    public void addChangeListener(ChangeListener l) {
+        listenerList.add(ChangeListener.class, l);
+        LOG.log(Level.FINE, ">>Add listener");
+    }
+
+    /**
+     * Removes a <code>ChangeListener</code>.
+     *
+     * @param l the <code>ChangeListener</code> to remove
+     * @see #addChangeListener
+     */
+    public void removeChangeListener(ChangeListener l) {
+        listenerList.remove(ChangeListener.class, l);
+        LOG.log(Level.FINE, ">>Remove listener");
+    }
+
+    /**
+     * Runs each <code>ChangeListener</code>'s
+     * <code>stateChanged</code> method.
+     *
+     * @see #setRangeProperties
+     * @see EventListenerList
+     */
+    protected void fireStateChanged() {
+        LOG.log(Level.FINE, ">>Fire state changed to listeners.");
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -=2 ) {
+            if (listeners[i] == ChangeListener.class) {
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((ChangeListener)listeners[i+1]).stateChanged(changeEvent);
+            }
+        }
+    }
+}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="39" tokens="140">
+<file line="2090" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="2344" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<codefragment>
+<![CDATA[
+            return Model.getFacade().getClassifiers(modelElement);
+        }
+
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+
+        public Object getMetaType() {
+            return Model.getMetaTypes().getClassifier();
+        }
+
+        public Command getAddCommand(Object modelElement) {
+            return new AddCommand(modelElement);
+        }
+
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+    	    return new RemoveCommand(modelElement, objectToRemove);
+        }
+
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(Object target) {
+                super(target);
+            }
+
+            protected List getChoices() {
+                List list = new ArrayList();
+]]>
+</codefragment>
+</duplication>
+<duplication lines="37" tokens="139">
+<file line="156" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionModel.java"/>
+<file line="180" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionModel.java"/>
+<codefragment>
+<![CDATA[
+        return Model.getDataTypesHelper().getBody(expression);
+    }
+
+    /**
+     * @param lang the language of the expression
+     */
+    public void setLanguage(String lang) {
+
+	Object expression = getExpression();
+        boolean mustChange = true;
+        if (expression != null) {
+            String oldValue =
+                Model.getDataTypesHelper().getLanguage(expression);
+            if (oldValue != null && oldValue.equals(lang)) {
+                mustChange = false;
+            }
+        }
+        if (mustChange) {
+            String body = EMPTYSTRING;
+            if (expression != null
+                    && Model.getDataTypesHelper().getBody(expression) != null) {
+                body = Model.getDataTypesHelper().getBody(expression);
+            }
+
+            setExpression(lang, body);
+        }
+    }
+
+    /**
+     * @param body the body text of the expression
+     */
+    public void setBody(String body) {
+
+	Object expression = getExpression();
+        boolean mustChange = true;
+        if (expression != null) {
+            Object oldValue = Model.getDataTypesHelper().getBody(expression);
+]]>
+</codefragment>
+</duplication>
+<duplication lines="22" tokens="118">
+<file line="473" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="494" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<codefragment>
+<![CDATA[
+    public void mousePressed(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            JPopupMenu popup = new JPopupMenu();
+            for (Object action : actions) {
+                if (action instanceof Action) {
+                    popup.add((Action) action);
+                }
+            }
+            if (moveTopAction != null) {
+                popup.add(moveTopAction);
+                popup.add(moveBottomAction);
+                popup.add(moveUpAction);
+                popup.add(moveDownAction);
+            }
+            if (popup.getComponentCount() > 0) {
+                popup.show(this, e.getX(), e.getY());
+            }
+            e.consume();
+        }
+    }
+
+    public void mouseReleased(MouseEvent e) {
+]]>
+</codefragment>
+</duplication>
+<duplication lines="24" tokens="109">
+<file line="2294" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="151" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStereotypeBaseClassListModel.java"/>
+<codefragment>
+<![CDATA[
+            }
+
+
+            @Override
+            protected void doIt(Collection selected) {
+                Object stereo = getTarget();
+                Set<Object> oldSet = new HashSet<Object>(getSelected());
+                Set toBeRemoved = new HashSet<Object>(oldSet);
+
+                for (Object o : selected) {
+                    if (oldSet.contains(o)) {
+                        toBeRemoved.remove(o);
+                    } else {
+                        Model.getExtensionMechanismsHelper()
+                                .addBaseClass(stereo, o);
+                    }
+                }
+                for (Object o : toBeRemoved) {
+                    Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
+                }
+            }
+        }
+
+        private class RemoveCommand
+]]>
+</codefragment>
+</duplication>
+<duplication lines="31" tokens="106">
+<file line="1596" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<file line="1729" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java"/>
+<codefragment>
+<![CDATA[
+            return Model.getMetaTypes().getReception();
+        }
+
+        public Command getAddCommand(Object modelElement) {
+        	return new AddCommand(modelElement);
+        }
+
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+        	return new RemoveCommand(modelElement, objectToRemove);
+        }
+
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(final Object target) {
+                super(target);
+            }
+
+
+            protected List getChoices() {
+                List list = new ArrayList();
+                /* TODO: correctly implement next function
+                 * in the model subsystem for
+                 * issue 1942: */
+                Object model =
+                    ProjectManager.getManager().getCurrentProject().getModel();
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model,
+                            Model.getMetaTypes().getReception()));
+]]>
+</codefragment>
+</duplication>
+<duplication lines="18" tokens="105">
+<file line="69" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
+<file line="71" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
+<codefragment>
+<![CDATA[
+    public UMLActivityGraphContextComboBoxModel(String propertyName, final Object target) {
+        super(target, propertyName, false);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        Collection elements = new ArrayList();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        for (Object model : p.getUserDefinedModelList()) {
+            elements.addAll(Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getClassifier()));
+            elements.addAll(Model
+                    .getModelManagementHelper().getAllModelElementsOfKind(
+                            model, 
+                            Model.getMetaTypes().getBehavioralFeature()));
+]]>
+</codefragment>
+</duplication>
+<duplication lines="26" tokens="103">
+<file line="791" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<file line="882" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/RowSelector.java"/>
+<codefragment>
+<![CDATA[
+                    ResourceLoaderWrapper.lookupIconResource("MoveDown"));
+            setEnabled(false);
+        }
+
+        /**
+         * Set the action as enabled when any row other then the last is selected
+         * @param e the event
+         */
+        public void valueChanged(ListSelectionEvent e) {
+            final int index = getList().getSelectedIndex();
+            setEnabled(index > -1 && index < getModel().getSize() - 1);
+        }
+
+        /***
+         * Perform the action
+         * @param e the event
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            movedModelElement.setElement(getList().getSelectedValues()[0]);
+            assert (movedModelElement != null);
+            Model.getUmlHelper().move(
+                    target,
+                    movedModelElement.getElement(),
+                    UmlHelper.Direction.DOWN);
+]]>
+</codefragment>
+</duplication>
+<duplication lines="31" tokens="102">
+<file line="70" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/ExpressionBodyField.java"/>
+<file line="89" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLExpressionBodyField.java"/>
+<codefragment>
+<![CDATA[
+        String oldText = getText();
+        String newText = model.getBody();
+
+        if (oldText == null || newText == null || !oldText.equals(newText)) {
+            if (oldText != newText) {
+                setText(newText);
+            }
+        }
+    }
+
+    /*
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void changedUpdate(final DocumentEvent p1) {
+        model.setBody(getText());
+    }
+
+    /*
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void removeUpdate(final DocumentEvent p1) {
+        model.setBody(getText());
+    }
+
+    /*
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void insertUpdate(final DocumentEvent p1) {
+        model.setBody(getText());
+    }
+}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="22" tokens="101">
+<file line="132" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLActivityGraphContextComboBoxModel.java"/>
+<file line="127" path="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/ui/UMLStateMachineContextComboBoxModel.java"/>
+<codefragment>
+<![CDATA[
+        protected ActionSetContext() {
+            super(Translator.localize("action.set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("action.set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            UMLComboBox source = (UMLComboBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().getContext(target)
+                    != source.getSelectedItem()) {
+                Model.getStateMachinesHelper().setContext(
+                        target, source.getSelectedItem());
+            }
+        }
+    }
+}
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>

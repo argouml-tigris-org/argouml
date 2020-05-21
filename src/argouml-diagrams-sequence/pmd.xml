@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="4.3" timestamp="2020-05-09T09:28:02.655">
+<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-sequence2/src/org/argouml/sequence2/diagram/FigMessage.java">
+<violation beginline="459" endline="466" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.sequence2.diagram" class="FigMessage" method="getReceiverOperations" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+These nested if statements could be combined
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-sequence2/src/org/argouml/sequence2/diagram/SelectionMessage.java">
+<violation beginline="62" endline="62" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.sequence2.diagram" class="SelectionMessage" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+Avoid unused private fields such as 'LOG'.
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-sequence2/src/org/argouml/sequence2/diagram/SequenceDiagramGraphModel.java">
+<violation beginline="389" endline="391" begincolumn="39" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.sequence2.diagram" class="SequenceDiagramGraphModel" method="createMessage1" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+Avoid empty if statements
+</violation>
+</file>
+<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-sequence2/src/org/argouml/sequence2/diagram/UMLSequenceDiagram.java">
+<violation beginline="165" endline="165" begincolumn="17" endcolumn="17" rule="UnusedLocalVariable" ruleset="Unused Code Rules" package="org.argouml.sequence2.diagram" class="UMLSequenceDiagram" method="getUmlActions" variable="i" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedLocalVariable" priority="3">
+Avoid unused local variables such as 'i'.
+</violation>
+</file>
+</pmd>
