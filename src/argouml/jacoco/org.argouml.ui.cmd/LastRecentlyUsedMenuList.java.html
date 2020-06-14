@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LastRecentlyUsedMenuList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">LastRecentlyUsedMenuList.java</span></div><h1>LastRecentlyUsedMenuList.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.io.File;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.uml.ui.ActionReopenProject;
+
+// TODO: This class is part of a dependency cycle with ProjectBrowser and
+// GenericArgoMenuBar, but should  be fixed if project open/close is moved
+// out of ProjectBrowser.
+
+/**
+ * Menu extension for last recently used files menu.&lt;p&gt;
+ *
+ * functionality:
+ * it is created with a link to the (file-)menu,
+ * if it is created it is reading its content from config information
+ * the add entry method adds a specific filename to the list, ensures that it
+ * bubbles at top of list if it is already member of list
+ * typically called by SaveFile method
+ * LRU is added at the specific position at creation time
+ * and all entries are going to be inserted or deletied
+ *
+ * @author  Frank Jelinek
+ * @since 9. November 2003 (0.15.2)
+ */
+public class LastRecentlyUsedMenuList {
+
+    /**
+     * Default value for maxcount if there is no configuration.
+     */
+    private static final int MAX_COUNT_DEFAULT = 4;
+
+    /**
+     * Menu where the list is bound to.
+     */
+    private JMenu fileMenu;
+
+    /**
+     * Recent loaded count.
+     */
+    private int lruCount;
+
+    /**
+     * Maxcount read from configuration.
+     */
+<span class="nc" id="L90">    private int maxCount = MAX_COUNT_DEFAULT;</span>
+
+    /**
+     * Index where the menu entries should be inserted
+     * -1 to be sure (adds at end).
+     */
+<span class="nc" id="L96">    private int menuIndex = -1;</span>
+
+    /**
+     * Menuitems actually created and added to menu.
+     */
+    private JMenuItem[] menuItems;
+
+    /**
+     * Array of conf keys for accessing the stored entries.
+     */
+    private ConfigurationKey[] confKeys;
+
+    /**
+     * Adds the eventhandler to the menu and renames the entry.
+     *
+     * @param filename the text for the entry
+     * @param addAt the location
+     * @return the menuitem
+     */
+    private JMenuItem addEventHandler(String filename, int addAt) {
+        // the text is used by the event handler for opening the project
+<span class="nc" id="L117">        File f = new File(filename);</span>
+        //JMenuItem item = _fileMenu.add(new ActionReopenProject(filename));
+<span class="nc" id="L119">        JMenuItem item =</span>
+<span class="nc" id="L120">            fileMenu.insert(new ActionReopenProject(filename), addAt);</span>
+
+        // set maximum length of menu entry
+<span class="nc" id="L123">        String entryName = f.getName();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (entryName.length() &gt; 40) {</span>
+<span class="nc" id="L125">            entryName = entryName.substring(0, 40) + &quot;...&quot;;</span>
+        }
+
+        // text is short, tooltip is long
+<span class="nc" id="L129">        item.setText(entryName);</span>
+<span class="nc" id="L130">        item.setToolTipText(filename);</span>
+
+<span class="nc" id="L132">        return item;</span>
+    }
+
+    /**
+     * Creates a new instance of LastRecentlyUsedMenuList with respect
+     * to the menu where the lru is bound to.
+     *
+     * @param filemenu at this menu the lru is bound after last entry
+     * it is added with a separator
+     *
+     */
+<span class="nc" id="L143">    public LastRecentlyUsedMenuList(JMenu filemenu) {</span>
+        String newName;
+        int i;
+
+        // holds file menu
+<span class="nc" id="L148">        fileMenu = filemenu;</span>
+<span class="nc" id="L149">        lruCount = 0;</span>
+<span class="nc" id="L150">        menuIndex = filemenu.getItemCount();</span>
+
+        // init from config
+        // read number, write result as new default and prepare keys
+<span class="nc" id="L154">        maxCount =</span>
+<span class="nc" id="L155">            Configuration.getInteger(Argo.KEY_NUMBER_LAST_RECENT_USED,</span>
+                                     MAX_COUNT_DEFAULT);
+<span class="nc" id="L157">        Configuration.setInteger(Argo.KEY_NUMBER_LAST_RECENT_USED, maxCount);</span>
+<span class="nc" id="L158">        confKeys = new ConfigurationKey[maxCount];</span>
+<span class="nc" id="L159">        menuItems = new JMenuItem[maxCount];</span>
+
+        // create all nessessary configuration keys for lru
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        for (i = 0; i &lt; maxCount; i++) {</span>
+<span class="nc" id="L163">            confKeys[i] =</span>
+<span class="nc" id="L164">		Configuration.makeKey(&quot;project&quot;,</span>
+				      &quot;mostrecent&quot;,
+<span class="nc" id="L166">				      &quot;filelist&quot;.concat(Integer.toString(i)));</span>
+        }
+
+        // read existing file names from configuration
+<span class="nc" id="L170">        i = 0;</span>
+<span class="nc" id="L171">        boolean readOK = true;</span>
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        while (i &lt; maxCount &amp;&amp; readOK) {</span>
+<span class="nc" id="L173">            newName = Configuration.getString(confKeys[i], &quot;&quot;);</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            if (newName.length() &gt; 0) {</span>
+<span class="nc" id="L175">                menuItems[i] = addEventHandler(newName, menuIndex + i);</span>
+<span class="nc" id="L176">                i++;</span>
+            } else {
+<span class="nc" id="L178">                readOK = false; // empty entry stops reading --&gt; last line!</span>
+            }
+        }
+
+        // this is the recent count
+<span class="nc" id="L183">        lruCount = i;</span>
+<span class="nc" id="L184">    }</span>
+
+    /**
+     * Adds a new entry to lru list and removes the last one if
+     * if it increases maxCount.
+     *
+     * @param filename name of link which is to be used to represent
+     * _and_ reopen the file
+     */
+    public void addEntry(String filename) {
+        // get already existing names from menu actions
+        // real file names, not action names !
+
+<span class="nc" id="L197">        String[] tempNames = new String[maxCount];</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        for (int i = 0; i &lt; lruCount; i++) {</span>
+<span class="nc" id="L199">            ActionReopenProject action =</span>
+<span class="nc" id="L200">                (ActionReopenProject) menuItems[i].getAction();</span>
+<span class="nc" id="L201">            tempNames[i] = action.getFilename();</span>
+        }
+
+        // delete all existing entries
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        for (int i = 0; i &lt; lruCount; i++) {</span>
+<span class="nc" id="L206">            fileMenu.remove(menuItems[i]);</span>
+        }
+
+        // add new entry as first entry
+<span class="nc" id="L210">        menuItems[0] = addEventHandler(filename, menuIndex);</span>
+
+        // add other existing entries, but filter the just added one
+        int i, j;
+<span class="nc" id="L214">        i = 0;</span>
+<span class="nc" id="L215">	j = 1;</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">        while (i &lt; lruCount &amp;&amp; j &lt; maxCount) {</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">            if (!(tempNames[i].equals(filename))) {</span>
+<span class="nc" id="L218">                menuItems[j] = addEventHandler(tempNames[i], menuIndex + j);</span>
+<span class="nc" id="L219">                j++;</span>
+            }
+<span class="nc" id="L221">            i++;</span>
+        }
+
+        // save count
+<span class="nc" id="L225">        lruCount = j;</span>
+
+        // and store configuration props
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        for (int k = 0; k &lt; lruCount; k++) {</span>
+<span class="nc" id="L229">            ActionReopenProject action =</span>
+<span class="nc" id="L230">                (ActionReopenProject) menuItems[k].getAction();</span>
+<span class="nc" id="L231">            Configuration.setString(confKeys[k], action.getFilename());</span>
+        }
+<span class="nc" id="L233">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

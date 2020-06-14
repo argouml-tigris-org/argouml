@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionSaveDiagramToClipboard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionSaveDiagramToClipboard.java</span></div><h1>ActionSaveDiagramToClipboard.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.SaveGraphicsManager;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.SaveGIFAction;
+
+/**
+ * This class copies a diagram to the system clipboard, this functionality will
+ * only work with Java1.4, but it will compile with 1.3. It can be put into GEF
+ * as it is rather generic.
+ *
+ * @see &lt;a href=&quot;http://java.sun.com/docs/books/tutorial/uiswing/misc/dnd.html&quot;&gt;
+ *      Swing Drag and Drop &lt;/a&gt;
+ * @author alexb
+ * @since argoUML version 0.15.2, Created on 19 October 2003, 08:36
+ */
+public class ActionSaveDiagramToClipboard extends AbstractAction implements
+        ClipboardOwner {
+
+    /**
+     * The constructor.
+     */
+    public ActionSaveDiagramToClipboard() {
+<span class="nc" id="L82">        super(Translator.localize(&quot;menu.popup.copy-diagram-to-clip&quot;),</span>
+<span class="nc" id="L83">                ResourceLoaderWrapper.lookupIcon(&quot;action.copy&quot;));</span>
+<span class="nc" id="L84">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent actionEvent) {
+
+<span class="nc" id="L91">        Image diagramGifImage = getImage();</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (diagramGifImage == null) {</span>
+<span class="nc" id="L94">            return;</span>
+        }
+
+        // copy the gif image to the clipboard
+<span class="nc" id="L98">        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();</span>
+<span class="nc" id="L99">        clipboard.setContents(new ImageSelection(diagramGifImage), this);</span>
+<span class="nc" id="L100">    }</span>
+
+    /**
+     * Get image from gef.
+     *
+     * @return An Image.
+     */
+    private Image getImage() {
+
+<span class="nc" id="L109">        int scale =</span>
+<span class="nc" id="L110">            Configuration.getInteger(</span>
+                SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
+
+<span class="nc" id="L113">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L114">        Rectangle drawingArea =</span>
+<span class="nc" id="L115">            ce.getLayerManager().getActiveLayer()</span>
+<span class="nc" id="L116">                .calcDrawingArea();</span>
+
+        // avoid GEF calcDrawingArea bug when nothing in a diagram.
+<span class="nc bnc" id="L119" title="All 8 branches missed.">        if (drawingArea.x &lt; 0 || drawingArea.y &lt; 0 || drawingArea.width &lt;= 0</span>
+                || drawingArea.height &lt;= 0) {
+<span class="nc" id="L121">            return null;</span>
+        }
+
+<span class="nc" id="L124">        boolean isGridHidden = ce.getGridHidden();</span>
+<span class="nc" id="L125">        ce.setGridHidden(true); // hide grid, otherwise can't see anything</span>
+<span class="nc" id="L126">        Image diagramGifImage =</span>
+<span class="nc" id="L127">            ce.createImage(drawingArea.width * scale,</span>
+                drawingArea.height * scale);
+<span class="nc" id="L129">        Graphics g = diagramGifImage.getGraphics();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (g instanceof Graphics2D) {</span>
+<span class="nc" id="L131">            ((Graphics2D) g).scale(scale, scale);</span>
+        }
+
+        // background color.
+<span class="nc" id="L135">        g.setColor(new Color(SaveGIFAction.TRANSPARENT_BG_COLOR));</span>
+<span class="nc" id="L136">        g.fillRect(0, 0, drawingArea.width * scale, drawingArea.height * scale);</span>
+<span class="nc" id="L137">        g.translate(-drawingArea.x, -drawingArea.y);</span>
+<span class="nc" id="L138">        ce.print(g);</span>
+<span class="nc" id="L139">        ce.setGridHidden(isGridHidden);</span>
+
+<span class="nc" id="L141">        return diagramGifImage;</span>
+    }
+
+    /*
+     * @see java.awt.datatransfer.ClipboardOwner#lostOwnership(
+     *      java.awt.datatransfer.Clipboard, java.awt.datatransfer.Transferable)
+     */
+    public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+        // do nothing
+<span class="nc" id="L150">    }</span>
+
+    /*
+     * @see javax.swing.AbstractAction#isEnabled()
+     */
+    public boolean isEnabled() {
+<span class="nc" id="L156">        Editor ce = Globals.curEditor();</span>
+<span class="nc bnc" id="L157" title="All 4 branches missed.">        if (ce == null || ce.getLayerManager() == null</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                || ce.getLayerManager().getActiveLayer() == null) {</span>
+<span class="nc" id="L159">            return false;</span>
+        }
+<span class="nc" id="L161">        Layer layer = ce.getLayerManager().getActiveLayer();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (layer == null) {</span>
+<span class="nc" id="L163">            return false;</span>
+        }
+<span class="nc" id="L165">        Rectangle drawingArea = layer.calcDrawingArea();</span>
+
+        // avoid GEF calcDrawingArea bug when nothing in a diagram.
+<span class="nc bnc" id="L168" title="All 8 branches missed.">        if (drawingArea.x &lt; 0 || drawingArea.y &lt; 0 || drawingArea.width &lt;= 0</span>
+                || drawingArea.height &lt;= 0) {
+<span class="nc" id="L170">            return false;</span>
+        }
+<span class="nc" id="L172">        return super.isEnabled();</span>
+    }
+
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4916652432210626558L;
+}
+
+/**
+ * Encapsulates an awt Image for Data Transfer to/from the clipboard.
+ */
+class ImageSelection implements Transferable {
+
+<span class="nc" id="L187">    private DataFlavor[] supportedFlavors = {</span>
+        DataFlavor.imageFlavor,
+    };
+
+    // the diagram image data
+    private Image diagramImage;
+
+    /**
+     * Constructor.
+     *
+     * @param newDiagramImage The image.
+     */
+<span class="nc" id="L199">    public ImageSelection(Image newDiagramImage) {</span>
+
+<span class="nc" id="L201">        diagramImage = newDiagramImage;</span>
+<span class="nc" id="L202">    }</span>
+
+    /*
+     * @see java.awt.datatransfer.Transferable#getTransferDataFlavors()
+     */
+    public synchronized DataFlavor[] getTransferDataFlavors() {
+<span class="nc" id="L208">        return (supportedFlavors);</span>
+    }
+
+    /*
+     * @see java.awt.datatransfer.Transferable#isDataFlavorSupported(
+     *         java.awt.datatransfer.DataFlavor)
+     */
+    public boolean isDataFlavorSupported(DataFlavor parFlavor) {
+
+        // hack in order to be able to compile in java1.3
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        return (parFlavor.getMimeType().equals(</span>
+<span class="nc" id="L219">                DataFlavor.imageFlavor.getMimeType()) &amp;&amp; parFlavor</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                .getHumanPresentableName().equals(</span>
+<span class="nc" id="L221">                        DataFlavor.imageFlavor.getHumanPresentableName()));</span>
+    }
+    
+    /*
+     * @see java.awt.datatransfer.Transferable#getTransferData(
+     *         java.awt.datatransfer.DataFlavor)
+     */
+    public synchronized Object getTransferData(DataFlavor parFlavor)
+        throws UnsupportedFlavorException {
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (isDataFlavorSupported(parFlavor)) {</span>
+<span class="nc" id="L232">            return (diagramImage);</span>
+        }
+<span class="nc" id="L234">        throw new UnsupportedFlavorException(DataFlavor.imageFlavor);</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

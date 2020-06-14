@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractFigNode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.deployment.ui</a> &gt; <span class="el_source">AbstractFigNode.java</span></div><h1>AbstractFigNode.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.deployment.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCube;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Introduce abstract superclass for FigMNode &amp; FigNodeInstance 
+ * so that we can do proper inheritance.
+ *
+ * @author Tom Morris
+ */
+public abstract class AbstractFigNode extends FigNodeModelElement {
+
+    /**
+     * Offset in x &amp; y for depth perspective lines of cube.
+     * TODO: This is the same value as the member 'D'in 
+     * {@link org.tigris.gef.presentation.FigCube}, but there is
+     * nothing enforcing that correspondence.  Things will probably
+     * break if they don't match.
+     */
+    protected static final int DEPTH = 20;
+    private FigCube cover;
+    private static final int DEFAULT_X = 10;
+    private static final int DEFAULT_Y = 10;
+    private static final int DEFAULT_WIDTH = 200;
+    private static final int DEFAULT_HEIGHT = 180;
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L91">       Fig cpfr = new CubePortFigRect(DEFAULT_X, DEFAULT_Y - DEPTH, </span>
+               DEFAULT_WIDTH + DEPTH, 
+               DEFAULT_HEIGHT + DEPTH, DEPTH);
+<span class="fc" id="L94">       cpfr.setFilled(false);</span>
+<span class="fc" id="L95">       cpfr.setLineWidth(0);</span>
+<span class="fc" id="L96">        return cpfr;</span>
+    }
+
+    private void initFigs() {
+<span class="fc" id="L100">        cover = new FigCube(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH,</span>
+                DEFAULT_HEIGHT, LINE_COLOR, FILL_COLOR);
+
+<span class="fc" id="L103">        getNameFig().setLineWidth(0);</span>
+<span class="fc" id="L104">        getNameFig().setFilled(false);</span>
+<span class="fc" id="L105">        getNameFig().setJustification(0);</span>
+
+<span class="fc" id="L107">        addFig(getBigPort());</span>
+<span class="fc" id="L108">        addFig(cover);</span>
+<span class="fc" id="L109">        addFig(getStereotypeFig());</span>
+<span class="fc" id="L110">        addFig(getNameFig());</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Construct a new AbstractFigNode.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public AbstractFigNode(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L122">        super(owner, bounds, settings);</span>
+<span class="fc" id="L123">        initFigs();</span>
+<span class="fc" id="L124">    }</span>
+    
+    @Override
+    public Object clone() {
+<span class="nc" id="L128">        AbstractFigNode figClone = (AbstractFigNode) super.clone();</span>
+<span class="nc" id="L129">        Iterator it = figClone.getFigs().iterator();</span>
+<span class="nc" id="L130">        figClone.setBigPort((FigRect) it.next());</span>
+<span class="nc" id="L131">        figClone.cover = (FigCube) it.next();</span>
+<span class="nc" id="L132">        it.next();</span>
+<span class="nc" id="L133">        figClone.setNameFig((FigText) it.next());</span>
+<span class="nc" id="L134">        return figClone;</span>
+    }
+
+    @Override
+    public void setLineColor(Color c) {
+<span class="fc" id="L139">        cover.setLineColor(c);</span>
+<span class="fc" id="L140">    }</span>
+
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L144">        cover.setLineWidth(w);</span>
+<span class="fc" id="L145">    }</span>
+
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L150">        return cover.isFilled();</span>
+    }
+
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L155">        cover.setFilled(f);</span>
+<span class="fc" id="L156">    }</span>
+
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L160">        return new SelectionNode(this);</span>
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+<span class="fc" id="L165">        Dimension stereoDim = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L166">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+    
+<span class="fc" id="L168">        int w = Math.max(stereoDim.width, nameDim.width + 1) + DEPTH;</span>
+<span class="fc" id="L169">        int h = stereoDim.height + nameDim.height + DEPTH;</span>
+        
+<span class="fc" id="L171">        w = Math.max(3 * DEPTH, w); // so it still looks like a cube</span>
+<span class="fc" id="L172">        h = Math.max(3 * DEPTH, h);</span>
+<span class="fc" id="L173">        return new Dimension(w, h);</span>
+    }
+
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">        if (getNameFig() == null) {</span>
+<span class="nc" id="L179">            return;</span>
+        }
+<span class="fc" id="L181">        Rectangle oldBounds = getBounds();</span>
+<span class="fc" id="L182">        getBigPort().setBounds(x, y, w, h);</span>
+<span class="fc" id="L183">        cover.setBounds(x, y + DEPTH, w - DEPTH, h - DEPTH);</span>
+
+<span class="fc" id="L185">        Dimension stereoDim = getStereotypeFig().getMinimumSize();</span>
+<span class="fc" id="L186">        Dimension nameDim = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L187">        getNameFig().setBounds(</span>
+                x + 4, y + DEPTH + stereoDim.height + 1,
+                w - DEPTH - 8, nameDim.height);
+<span class="fc" id="L190">        getStereotypeFig().setBounds(x + 1, y + DEPTH + 1,</span>
+                w - DEPTH - 2, stereoDim.height);
+<span class="fc" id="L192">        _x = x;</span>
+<span class="fc" id="L193">        _y = y;</span>
+<span class="fc" id="L194">        _w = w;</span>
+<span class="fc" id="L195">        _h = h;</span>
+<span class="fc" id="L196">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L197">        updateEdges();</span>
+<span class="fc" id="L198">    }</span>
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+<span class="nc" id="L202">        super.mouseClicked(me);</span>
+<span class="nc" id="L203">        setLineColor(LINE_COLOR);</span>
+<span class="nc" id="L204">    }</span>
+
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+<span class="pc bpc" id="L208" title="3 of 4 branches missed.">        if (encloser == null</span>
+                || (encloser != null
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isANode(encloser.getOwner()))) {</span>
+<span class="fc" id="L211">            super.setEnclosingFig(encloser);</span>
+        }
+    
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (getLayer() != null) {</span>
+            // elementOrdering(figures);
+<span class="nc" id="L216">            Collection contents = getLayer().getContents();</span>
+<span class="nc" id="L217">            Collection&lt;FigEdgeModelElement&gt; bringToFrontList = </span>
+                new ArrayList&lt;FigEdgeModelElement&gt;();
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            for (Object o : contents) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                if (o instanceof FigEdgeModelElement) {</span>
+<span class="nc" id="L221">                    bringToFrontList.add((FigEdgeModelElement) o);</span>
+                }
+<span class="nc" id="L223">            }</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">            for (FigEdgeModelElement figEdge : bringToFrontList) {</span>
+<span class="nc" id="L225">                figEdge.getLayer().bringToFront(figEdge);</span>
+<span class="nc" id="L226">            }</span>
+        }
+<span class="fc" id="L228">    }</span>
+
+    @Override
+    public boolean getUseTrapRect() {
+<span class="nc" id="L232">        return true;</span>
+    }
+
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+<span class="nc" id="L237">        super.modelChanged(mee);</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">        if (mee instanceof AssociationChangeEvent </span>
+                || mee instanceof AttributeChangeEvent) {
+<span class="nc" id="L240">            renderingChanged();</span>
+<span class="nc" id="L241">            updateListeners(getOwner(), getOwner());</span>
+<span class="nc" id="L242">            damage();</span>
+        }
+<span class="nc" id="L244">    }</span>
+
+    @Override
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+<span class="nc" id="L248">        Set&lt;Object[]&gt; l = new HashSet&lt;Object[]&gt;();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (newOwner != null) {</span>
+            // add the listeners to the newOwner
+<span class="nc" id="L251">            l.add(new Object[] {newOwner, null});</span>
+            
+<span class="nc" id="L253">            Collection c = Model.getFacade().getStereotypes(newOwner);</span>
+<span class="nc" id="L254">            Iterator i = c.iterator();</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L256">                Object st = i.next();</span>
+<span class="nc" id="L257">                l.add(new Object[] {st, &quot;name&quot;});</span>
+<span class="nc" id="L258">            }</span>
+        }
+<span class="nc" id="L260">        updateElementListeners(l);</span>
+<span class="nc" id="L261">    }</span>
+
+    @Override
+    public Point getClosestPoint(Point anotherPt) {
+<span class="nc" id="L265">        Rectangle r = getBounds();</span>
+<span class="nc" id="L266">        int[] xs = {</span>
+            r.x,
+            r.x + DEPTH,
+            r.x + r.width,
+            r.x + r.width,
+            r.x + r.width - DEPTH,
+            r.x,
+            r.x,
+        };
+<span class="nc" id="L275">        int[] ys = {</span>
+            r.y + DEPTH,
+            r.y,
+            r.y,
+            r.y + r.height - DEPTH,
+            r.y + r.height,
+            r.y + r.height,
+            r.y + DEPTH,
+        };
+<span class="nc" id="L284">        Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);</span>
+<span class="nc" id="L285">        return p;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

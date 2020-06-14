@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassDiagramRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">ClassDiagramRenderer.java</span></div><h1>ClassDiagramRenderer.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.uml.diagram.GraphChangeAdapter;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * This class defines a renderer object for UML Class Diagrams. In a
+ * Class Diagram the following UML objects are displayed with the
+ * following Figs: &lt;p&gt;
+ *
+ * &lt;pre&gt;
+ *  UML Object       ---  Fig
+ *  ---------------------------------------
+ *  Class            ---  FigClass
+ *  Interface        ---  FigInterface
+ *  Instance         ---  FigInstance
+ *  Model            ---  FigModel
+ *  Subsystem        ---  FigSubsystem
+ *  Package          ---  FigPackage
+ *  Comment          ---  FigComment
+ *  (CommentEdge)    ---  FigEdgeNote
+ *  Generalization   ---  FigGeneralization
+ *  Realization      ---  FigRealization
+ *  Permission       ---  FigPermission
+ *  Usage            ---  FigUsage
+ *  Dependency       ---  FigDependency
+ *  Association      ---  FigAssociation
+ *  AssociationClass ---  FigAssociationClass
+ *  Dependency       ---  FigDependency
+ *  Link             ---  FigLink
+ *  DataType         ---  FigDataType
+ *  Stereotype       ---  FigStereotypeDeclaration
+ * &lt;/pre&gt;
+ *
+ * @author jrobbins
+ */
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">public class ClassDiagramRenderer extends UmlDiagramRenderer {</span>
+
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = 675407719309039112L;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L97">    private static final Logger LOG =</span>
+<span class="fc" id="L98">        Logger.getLogger(ClassDiagramRenderer.class.getName());</span>
+
+    /*
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     *         org.tigris.gef.graph.GraphModel,
+     *         org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
+     */
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay,
+				 Object node, Map styleAttributes) {
+
+<span class="fc" id="L108">        FigNodeModelElement figNode = null;</span>
+
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L111">            throw new IllegalArgumentException(&quot;A node must be supplied&quot;);</span>
+        }
+        // Although not generally true for GEF, for Argo we know that the layer
+        // is a LayerPerspective which knows the associated diagram
+<span class="fc" id="L115">        Diagram diag = ((LayerPerspective) lay).getDiagram();</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (diag instanceof UMLDiagram</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                &amp;&amp; ((UMLDiagram) diag).doesAccept(node)) {</span>
+<span class="fc" id="L118">            figNode = (FigNodeModelElement) ((UMLDiagram) diag)</span>
+<span class="fc" id="L119">                    .drop(node, null);</span>
+        } else {
+<span class="nc" id="L121">            LOG.log(Level.SEVERE, &quot;TODO: ClassDiagramRenderer getFigNodeFor &quot; + node);</span>
+<span class="nc" id="L122">            throw new IllegalArgumentException(</span>
+                    &quot;Node is not a recognised type. Received &quot;
+<span class="nc" id="L124">                    + node.getClass().getName());</span>
+        }
+
+<span class="fc" id="L127">        lay.add(figNode);</span>
+<span class="fc" id="L128">        figNode.setDiElement(</span>
+<span class="fc" id="L129">                GraphChangeAdapter.getInstance().createElement(gm, node));</span>
+
+
+<span class="fc" id="L132">        return figNode;</span>
+
+    }
+
+    /**
+     * Return a Fig that can be used to represent the given edge.
+     * Throws IllegalArgumentException if the edge is not of an expected type.
+     * Throws IllegalStateException if the edge generated has no source
+     *                               or dest port.
+     * {@inheritDoc}
+     */
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
+				 Object edge, Map styleAttribute) {
+<span class="nc" id="L145">        LOG.log(Level.FINE, &quot;making figedge for {0}&quot;, edge);</span>
+        
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (edge == null) {</span>
+<span class="nc" id="L148">            throw new IllegalArgumentException(&quot;A model edge must be supplied&quot;);</span>
+        }
+
+<span class="nc bnc" id="L151" title="All 4 branches missed.">        assert lay instanceof LayerPerspective;</span>
+
+        final FigEdge newEdge;
+
+        // Although not generally true for GEF, for Argo we know that the layer
+        // is a LayerPerspective which knows the associated diagram
+<span class="nc" id="L157">        Diagram diag = ((LayerPerspective) lay).getDiagram();</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (diag instanceof UMLDiagram</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                &amp;&amp; ((UMLDiagram) diag).doesAccept(edge)) {</span>
+<span class="nc" id="L160">            newEdge = (FigEdge) ((UMLDiagram) diag)</span>
+<span class="nc" id="L161">                    .drop(edge, null);</span>
+        } else {
+<span class="nc" id="L163">            LOG.log(Level.SEVERE, &quot;TODO: ClassDiagramRenderer getFigEdgeFor &quot; + edge);</span>
+<span class="nc" id="L164">            throw new IllegalArgumentException(</span>
+                    &quot;Edge is not a recognised type. Received &quot;
+<span class="nc" id="L166">                    + edge.getClass().getName());</span>
+        }
+
+<span class="nc" id="L169">        addEdge(lay, newEdge, edge);</span>
+<span class="nc" id="L170">        return newEdge;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

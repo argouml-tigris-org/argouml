@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrConsiderSingleton.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.pattern.cognitive.critics</a> &gt; <span class="el_source">CrConsiderSingleton.java</span></div><h1>CrConsiderSingleton.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.pattern.cognitive.critics;
+
+import java.util.Iterator;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.cognitive.critics.CrUML;
+
+/**
+ * A critic to detect when a class can never have more than one instance (of
+ * itself of any subclasses), and thus whether it is suitable for declaration
+ * as a Singleton (with stereotype &amp;laquo;Singleton&amp;raquo;.&lt;p&gt;
+ * &lt;p&gt;
+ * see the ArgoUML User Manual: Consider Using Singleton Pattern for Class
+ *
+ * @author jrobbins
+ */
+public class CrConsiderSingleton extends CrUML {
+
+    /**
+     * Constructor for the critic.&lt;p&gt;
+     *
+     * Sets up the resource name, which will allow headline and description
+     * to be found for the current locale. Provides a design issue category
+     * (PATTERNS), sets a priority for any to-do items (LOW) and adds triggers
+     * for metaclasses &quot;stereotype&quot;, &quot;structuralFeature&quot; and
+     * &quot;associationEnd&quot;.
+     */
+<span class="nc" id="L69">    public CrConsiderSingleton() {</span>
+<span class="nc" id="L70">        setupHeadAndDesc();</span>
+<span class="nc" id="L71">        addSupportedDecision(UMLDecision.PATTERNS);</span>
+<span class="nc" id="L72">        setPriority(ToDoItem.LOW_PRIORITY);</span>
+
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+<span class="nc" id="L77">        addTrigger(&quot;stereotype&quot;);</span>
+<span class="nc" id="L78">        addTrigger(&quot;structuralFeature&quot;);</span>
+<span class="nc" id="L79">        addTrigger(&quot;associationEnd&quot;);</span>
+<span class="nc" id="L80">    }</span>
+
+
+    /**
+     * The trigger for the critic.&lt;p&gt;
+     *
+     * First check we are already a Singleton.&lt;p&gt;
+     *
+     * Otherwise plausible candidates for the Singleton design pattern are
+     * classes with no instance variables (i.e. non-static attributes) and no
+     * outgoing associations.&lt;p&gt;
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only look at classes...
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (!(Model.getFacade().isAClass(dm))) {</span>
+<span class="nc" id="L108">            return NO_PROBLEM;</span>
+        }
+
+        // and not association classes
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (Model.getFacade().isAAssociationClass(dm)) {</span>
+<span class="nc" id="L113">            return NO_PROBLEM;</span>
+        }
+
+        // with a name...
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (Model.getFacade().getName(dm) == null</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                || &quot;&quot;.equals(Model.getFacade().getName(dm))) {</span>
+<span class="nc" id="L119">            return NO_PROBLEM;</span>
+        }
+
+        // ... and not incompletely imported
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (!(Model.getFacade().isPrimaryObject(dm))) {</span>
+<span class="nc" id="L124">            return NO_PROBLEM;</span>
+        }
+
+        // abstract classes are hardly ever singletons
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (Model.getFacade().isAbstract(dm)) {</span>
+<span class="nc" id="L129">            return NO_PROBLEM;</span>
+        }
+
+        // Check for Singleton stereotype, uninitialised instance variables and
+        // outgoing associations, as per JavaDoc above.
+
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (Model.getFacade().isSingleton(dm)) {</span>
+<span class="nc" id="L136">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc bnc" id="L139" title="All 2 branches missed.">	if (Model.getFacade().isUtility(dm)) {</span>
+<span class="nc" id="L140">	    return NO_PROBLEM;</span>
+	}
+
+	// If there is an attribute which is not static =&gt; no problem
+<span class="nc" id="L144">	Iterator iter = Model.getFacade().getAttributes(dm).iterator();</span>
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">	while (iter.hasNext()) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">	    if (!Model.getFacade().isStatic(iter.next())) {</span>
+<span class="nc" id="L148">	        return NO_PROBLEM;</span>
+	    }
+	}
+
+
+	// If there is an outgoing association =&gt; no problem
+<span class="nc" id="L154">	Iterator ends = Model.getFacade().getAssociationEnds(dm).iterator();</span>
+
+<span class="nc bnc" id="L156" title="All 2 branches missed.">	while (ends.hasNext()) {</span>
+	    Iterator otherends =
+<span class="nc" id="L158">		Model.getFacade()</span>
+<span class="nc" id="L159">			.getOtherAssociationEnds(ends.next()).iterator();</span>
+
+<span class="nc bnc" id="L161" title="All 2 branches missed.">	    while (otherends.hasNext()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">		if (Model.getFacade().isNavigable(otherends.next())) {</span>
+<span class="nc" id="L163">		    return NO_PROBLEM;</span>
+		}
+	    }
+<span class="nc" id="L166">	}</span>
+
+<span class="nc" id="L168">	return PROBLEM_FOUND;</span>
+    }
+
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -178026888698499288L;
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

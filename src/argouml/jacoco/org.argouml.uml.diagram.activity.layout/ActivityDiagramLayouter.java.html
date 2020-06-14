@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActivityDiagramLayouter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.activity.layout</a> &gt; <span class="el_source">ActivityDiagramLayouter.java</span></div><h1>ActivityDiagramLayouter.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.activity.layout;
+
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.layout.LayoutedObject;
+import org.argouml.uml.diagram.layout.Layouter;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * A simple layout class for Activity Diagrams. It lays out the states in a
+ * single column, densely packed on the assumption that they'll be split into
+ * one or more swim lanes by the user. The graph is traversed starting at the
+ * initial state and states are placed in the position where they are first
+ * encountered. Nothing sophisticated is done for cycles or nodes with multiple
+ * incoming or outgoing edges.
+ * 
+ * @author Tom Morris
+ * 
+ */
+<span class="nc bnc" id="L64" title="All 2 branches missed.">public class ActivityDiagramLayouter implements Layouter {</span>
+    
+    /*
+     * The diagram to be laid out.
+     */
+    private ArgoDiagram diagram;
+
+    /*
+     * List of objects.
+     * 
+     * NOTE: This methods which read/write this don't appear to be used.
+     */
+<span class="nc" id="L76">    private List objects = new ArrayList();</span>
+    
+    /*
+     * Point at which to start layout (initial state goes here). The X
+     * coordinate must be greater than half the width of the widest figure to
+     * be placed (because figures are centered on this location).
+     */
+<span class="nc" id="L83">    private static final Point STARTING_POINT = new Point(100, 10);</span>
+    
+    /*
+     * Amount to increment Y position by for each node placed. We pack them
+     * densely on the assumption that the user is going to split them into at
+     * least two swimlanes.
+     */
+    private static final int OFFSET_Y = 25;
+    
+    /*
+     * FinalState element for ActivityDiagram
+     */
+<span class="nc" id="L95">    private Object finalState = null;</span>
+
+    /**
+     * Construct a new layout engine for an ActivityDiagram.
+     * @param d the ActivityDiagram to be laid out.
+     */
+<span class="nc" id="L101">    public ActivityDiagramLayouter(ArgoDiagram d)  {</span>
+<span class="nc" id="L102">        this.diagram = d;</span>
+<span class="nc" id="L103">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#add(org.argouml.uml.diagram.layout.LayoutedObject)
+     */
+    public void add(LayoutedObject object) {
+<span class="nc" id="L109">        objects.add(object);</span>
+<span class="nc" id="L110">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#remove(org.argouml.uml.diagram.layout.LayoutedObject)
+     */
+    public void remove(LayoutedObject object) {
+<span class="nc" id="L116">        objects.remove(object);</span>
+<span class="nc" id="L117">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#getObjects()
+     */
+    public LayoutedObject[] getObjects() {
+<span class="nc" id="L123">        return (LayoutedObject[]) objects.toArray();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#getObject(int)
+     */
+    public LayoutedObject getObject(int index) {
+<span class="nc" id="L130">        return (LayoutedObject) objects.get(index);</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#layout()
+     */
+    public void layout() {
+<span class="nc" id="L137">        Object first = null;</span>
+        // Find our Initial State
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        for (Iterator it = diagram.getNodes().iterator(); it.hasNext();) {</span>
+<span class="nc" id="L140">            Object node = it.next();</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (Model.getFacade().isAPseudostate(node) </span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                    &amp;&amp; Model.getDataTypesHelper().equalsINITIALKind(</span>
+<span class="nc" id="L143">                            Model.getFacade().getKind(node))) {</span>
+<span class="nc" id="L144">                first = node;</span>
+<span class="nc" id="L145">                break;</span>
+            } 
+<span class="nc" id="L147">        }</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">        assert first != null;</span>
+<span class="nc bnc" id="L149" title="All 4 branches missed.">        assert Model.getFacade().getIncomings(first).isEmpty();</span>
+
+        // Place all the nodes
+<span class="nc" id="L152">        int lastIndex = placeNodes(new ArrayList(), first, 0);</span>
+
+        // Place the final state last with a little separation
+<span class="nc" id="L155">        Point location = new Point(STARTING_POINT);</span>
+<span class="nc" id="L156">        location.y += OFFSET_Y * (lastIndex + 2);</span>
+<span class="nc" id="L157">        diagram.getContainingFig(finalState).setLocation(location);</span>
+<span class="nc" id="L158">    }</span>
+    
+    /*
+     * Recursively place all nodes pointed to by outgoing transitions.
+     * 
+     * Because of the recursive algorithm multiple outgoing transitions
+     * will end up very lopsided because one entire subgraph will be done
+     * before dealing with the other transition(s).
+     * 
+     * @param seen set of nodes seen so far
+     * @param node the node to collect neighbors for
+     */
+    private int placeNodes(List seen, Object node, int index) {
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (!seen.contains(node)) {</span>
+<span class="nc" id="L172">            seen.add(node);</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (Model.getFacade().isAFinalState(node)) {</span>
+<span class="nc" id="L174">                finalState = node;</span>
+            }
+<span class="nc" id="L176">            Fig fig = diagram.getContainingFig(node);</span>
+<span class="nc" id="L177">            Point location = new Point(STARTING_POINT.x - fig.getWidth() / 2,</span>
+                    STARTING_POINT.y + OFFSET_Y * index++);
+            //System.out.println(&quot;Setting location to &quot; + location);
+<span class="nc" id="L180">            fig.setLocation(location);</span>
+<span class="nc" id="L181">            for (Iterator it = Model.getFacade().getOutgoings(node).iterator(); </span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                    it.hasNext();) {</span>
+<span class="nc" id="L183">                index = placeNodes(seen, Model.getFacade().getTarget(it.next()),</span>
+                                  index);
+            }
+        }
+<span class="nc" id="L187">        return index;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.layout.Layouter#getMinimumDiagramSize()
+     */
+    public Dimension getMinimumDiagramSize() {
+<span class="nc" id="L194">        return new Dimension(</span>
+                STARTING_POINT.x + 300,
+<span class="nc" id="L196">                STARTING_POINT.y + OFFSET_Y * objects.size()</span>
+        );
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

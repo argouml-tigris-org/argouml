@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileConfigurationFilePersister.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">ProfileConfigurationFilePersister.java</span></div><h1>ProfileConfigurationFilePersister.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.configuration.Configuration;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiWriter;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.ProfileManager;
+import org.argouml.profile.UserDefinedProfile;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+/**
+ * Persister for project's profile configuration.
+ *
+ * @author maurelio1234
+ */
+<span class="fc" id="L78">public class ProfileConfigurationFilePersister extends MemberFilePersister {</span>
+
+<span class="fc" id="L80">    private static final Logger LOG =</span>
+<span class="fc" id="L81">        Logger.getLogger(ProfileConfigurationFilePersister.class.getName());</span>
+
+    /*
+     * @see org.argouml.persistence.MemberFilePersister#getMainTag()
+     */
+    public String getMainTag() {
+<span class="fc" id="L87">        return &quot;profile&quot;;</span>
+    }
+
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
+<span class="nc" id="L92">        load(project, new InputSource(inputStream));</span>
+<span class="nc" id="L93">    }</span>
+
+    /*
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project, java.io.InputStream)
+     */
+    public void load(Project project, InputSource inputSource)
+        throws OpenException {
+        try {
+<span class="fc" id="L101">            ProfileConfigurationParser parser =</span>
+                new ProfileConfigurationParser();
+<span class="fc" id="L103">            parser.parse(inputSource);</span>
+<span class="fc" id="L104">            Collection&lt;Profile&gt; profiles = parser.getProfiles();</span>
+
+<span class="fc" id="L106">            Collection&lt;String&gt; unresolved = parser.getUnresolvedFilenames();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (!unresolved.isEmpty()) {</span>
+<span class="fc" id="L108">                profiles.addAll(loadUnresolved(unresolved));</span>
+            }
+
+<span class="fc" id="L111">            ProfileConfiguration pc = new ProfileConfiguration(project,</span>
+                    profiles);
+<span class="fc" id="L113">            project.setProfileConfiguration(pc);</span>
+<span class="nc" id="L114">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (e instanceof OpenException) {</span>
+<span class="nc" id="L116">                throw (OpenException) e;</span>
+            }
+<span class="nc" id="L118">            throw new OpenException(e);</span>
+<span class="fc" id="L119">        }</span>
+<span class="fc" id="L120">    }</span>
+
+
+    /**
+     * Use XMI as a fall back alternative when the file for the user defined
+     * profile isn't found by the profile manager.
+     * &lt;p&gt;
+     * TODO: work in progress, see issue 5039
+     *
+     * @param unresolved collection of unresolved filenames from the parser
+     * @return collection of resolved profiles
+     */
+    private Collection&lt;Profile&gt; loadUnresolved(Collection&lt;String&gt; unresolved) {
+<span class="fc" id="L133">        Collection&lt;Profile&gt; profiles = new ArrayList&lt;Profile&gt;();</span>
+<span class="fc" id="L134">        ProfileManager profileManager = ProfileFacade.getManager();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (String filename : unresolved) {</span>
+            // TODO: work in progress, see issue 5039
+//            addUserDefinedProfile(filename, xmi, profileManager);
+//            Profile profile = getMatchingUserDefinedProfile(filename,
+//                    profileManager);
+//            assert profile != null : &quot;Profile should have been found now.&quot;;
+//            profiles.add(profile);
+<span class="fc" id="L142">        }</span>
+<span class="fc" id="L143">        return profiles;</span>
+    }
+
+    /**
+     * Register a user defined profile in the profileManager, using the backup
+     * XMI file from the project being loaded.
+     * &lt;p&gt;
+     * &lt;em&gt;NOTE:&lt;/em&gt; This has the side effect of permanently registering the
+     * profile which may not be what the user wants.
+     *
+     * @param fileName name of original XMI file that the author of the project
+     *                used when creating the UserDefinedProfile.
+     * @param xmi the contents of the XMI file.
+     * @param profileManager the {@link ProfileManager}.
+     * @throws IOException on any i/o error
+     */
+    private void addUserDefinedProfile(String fileName, StringBuffer xmi,
+            ProfileManager profileManager) throws IOException {
+<span class="nc" id="L161">        File profilesDirectory = getProfilesDirectory(profileManager);</span>
+<span class="nc" id="L162">        File profileFile = new File(profilesDirectory, fileName);</span>
+<span class="nc" id="L163">        OutputStreamWriter writer = new OutputStreamWriter(</span>
+                new FileOutputStream(profileFile),
+<span class="nc" id="L165">                Argo.getEncoding());</span>
+<span class="nc" id="L166">        writer.write(xmi.toString());</span>
+<span class="nc" id="L167">        writer.close();</span>
+
+<span class="nc" id="L169">        LOG.log(Level.INFO,</span>
+                &quot;Wrote user defined profile \&quot;{0}\&quot;, with size {1}.&quot;,
+<span class="nc" id="L171">                new Object[]{profileFile, xmi.length()});</span>
+
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (isSomeProfileDirectoryConfigured(profileManager)) {</span>
+<span class="nc" id="L174">            profileManager.refreshRegisteredProfiles();</span>
+        } else {
+<span class="nc" id="L176">            profileManager.addSearchPathDirectory(</span>
+<span class="nc" id="L177">                profilesDirectory.getAbsolutePath());</span>
+        }
+<span class="nc" id="L179">    }</span>
+
+
+    private static File getProfilesDirectory(ProfileManager profileManager) {
+<span class="nc bnc" id="L183" title="All 2 branches missed.">        if (isSomeProfileDirectoryConfigured(profileManager)) {</span>
+<span class="nc" id="L184">            List&lt;String&gt; directories =</span>
+<span class="nc" id="L185">                profileManager.getSearchPathDirectories();</span>
+<span class="nc" id="L186">            return new File(directories.get(0));</span>
+        } else {
+<span class="nc" id="L188">            File userSettingsFile = new File(</span>
+<span class="nc" id="L189">                Configuration.getFactory().getConfigurationHandler().</span>
+<span class="nc" id="L190">                    getDefaultPath());</span>
+<span class="nc" id="L191">            return userSettingsFile.getParentFile();</span>
+        }
+    }
+
+    private static boolean isSomeProfileDirectoryConfigured(
+            ProfileManager profileManager) {
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        return profileManager.getSearchPathDirectories().size() &gt; 0;</span>
+    }
+
+    /*
+     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream)
+     */
+    public void save(ProjectMember member, OutputStream stream)
+	throws SaveException {
+
+        PrintWriter w;
+        try {
+<span class="fc" id="L208">            w = new PrintWriter(new OutputStreamWriter(stream, &quot;UTF-8&quot;));</span>
+<span class="nc" id="L209">        } catch (UnsupportedEncodingException e1) {</span>
+<span class="nc" id="L210">            throw new SaveException(&quot;UTF-8 encoding not supported on platform&quot;,</span>
+                    e1);
+<span class="fc" id="L212">        }</span>
+<span class="fc" id="L213">        saveProjectMember(member, w);</span>
+<span class="fc" id="L214">        w.flush();</span>
+<span class="fc" id="L215">    }</span>
+
+    private void saveProjectMember(ProjectMember member, PrintWriter w)
+	throws SaveException {
+
+        try {
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">	    if (member instanceof ProfileConfiguration) {</span>
+<span class="fc" id="L222">		ProfileConfiguration pc = (ProfileConfiguration) member;</span>
+
+<span class="fc" id="L224">		w.println(&quot;&lt;?xml version = \&quot;1.0\&quot; encoding = \&quot;UTF-8\&quot; ?&gt;&quot;);</span>
+		// TODO: This DTD doesn't exist, so we can't tell readers to
+		// look for it
+//		w.println(&quot;&lt;!DOCTYPE profile SYSTEM \&quot;profile.dtd\&quot; &gt;&quot;);
+		// but we need a 2nd line to make the funky UML persister work
+<span class="fc" id="L229">		w.println(&quot;&quot;); // remove this line if the above is uncommented</span>
+<span class="fc" id="L230">		w.println(&quot;&lt;profile&gt;&quot;);</span>
+
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		for (Profile profile : pc.getProfiles()) {</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">                    if (profile instanceof UserDefinedProfile) {</span>
+<span class="fc" id="L234">                        UserDefinedProfile uprofile =</span>
+                            (UserDefinedProfile) profile;
+<span class="fc" id="L236">                        w.println(&quot;\t\t&lt;userDefined&gt;&quot;);</span>
+<span class="fc" id="L237">                        w.println(&quot;\t\t\t&lt;filename&gt;&quot;</span>
+<span class="fc" id="L238">                                + uprofile.getModelFile().getName()</span>
+                                + &quot;&lt;/filename&gt;&quot;);
+<span class="fc" id="L240">                        w.println(&quot;\t\t\t&lt;model&gt;&quot;);</span>
+
+<span class="fc" id="L242">                        printModelXMI(w, uprofile.getProfilePackages());</span>
+
+<span class="fc" id="L244">                        w.println(&quot;\t\t\t&lt;/model&gt;&quot;);</span>
+<span class="fc" id="L245">                        w.println(&quot;\t\t&lt;/userDefined&gt;&quot;);</span>
+<span class="fc" id="L246">                    } else {</span>
+<span class="fc" id="L247">                        w.println(&quot;\t\t&lt;plugin&gt;&quot;);</span>
+<span class="fc" id="L248">                        w.println(&quot;\t\t\t&quot; + profile.getProfileIdentifier());</span>
+<span class="fc" id="L249">                        w.println(&quot;\t\t&lt;/plugin&gt;&quot;);</span>
+                    }
+<span class="fc" id="L251">                }</span>
+
+<span class="fc" id="L253">		w.println(&quot;&lt;/profile&gt;&quot;);</span>
+	    }
+<span class="nc" id="L255">	} catch (Exception e) {</span>
+<span class="nc" id="L256">	    e.printStackTrace();</span>
+<span class="nc" id="L257">	    throw new SaveException(e);</span>
+<span class="fc" id="L258">	}</span>
+<span class="fc" id="L259">    }</span>
+
+    private void printModelXMI(PrintWriter w, Collection profileModels)
+        throws UmlException {
+
+        // TODO: Why is this not executed?  Remove if not needed - tfm
+        if (true) {
+<span class="fc" id="L266">            return;</span>
+        }
+
+        StringWriter myWriter = new StringWriter();
+        for (Object model : profileModels) {
+            XmiWriter xmiWriter = Model.getXmiWriter(model,
+                (OutputStream) null, //myWriter,
+                ApplicationVersion.getVersion() + &quot;(&quot;
+                    + UmlFilePersister.PERSISTENCE_VERSION + &quot;)&quot;);
+            xmiWriter.write();
+        }
+
+        myWriter.flush();
+        w.println(&quot;&quot; + myWriter.toString());
+    }
+
+
+    @Override
+    public void load(Project project, URL url) throws OpenException {
+<span class="nc" id="L285">        load(project, new InputSource(url.toExternalForm()));</span>
+<span class="nc" id="L286">    }</span>
+
+}
+
+/**
+ * Parser for Profile Configuration.
+ *
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+class ProfileConfigurationParser extends SAXParserBase {
+
+<span class="fc" id="L297">    private static final Logger LOG =</span>
+<span class="fc" id="L298">        Logger.getLogger(ProfileConfigurationParser.class.getName());</span>
+
+<span class="fc" id="L300">    private ProfileConfigurationTokenTable tokens =</span>
+        new ProfileConfigurationTokenTable();
+
+    private Profile profile;
+
+    private String model;
+
+    private String filename;
+
+<span class="fc" id="L309">    private Collection&lt;Profile&gt; profiles = new ArrayList&lt;Profile&gt;();</span>
+
+<span class="fc" id="L311">    private Collection&lt;String&gt; unresolvedFilenames = new ArrayList&lt;String&gt;();</span>
+
+    /**
+     * Construct the parser.
+     */
+<span class="fc" id="L316">    public ProfileConfigurationParser() {</span>
+        // Empty constructor
+<span class="fc" id="L318">    }</span>
+
+    public Collection&lt;Profile&gt; getProfiles() {
+<span class="fc" id="L321">        return profiles;</span>
+    }
+
+    public Collection&lt;String&gt; getUnresolvedFilenames() {
+<span class="fc" id="L325">        return unresolvedFilenames;</span>
+    }
+
+    public void handleStartElement(XMLElement e) {
+
+        try {
+<span class="pc bpc" id="L331" title="1 of 6 branches missed.">            switch (tokens.toToken(e.getName(), true)) {</span>
+
+            case ProfileConfigurationTokenTable.TOKEN_PROFILE:
+<span class="fc" id="L334">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_PLUGIN:
+<span class="fc" id="L336">                profile = null;</span>
+<span class="fc" id="L337">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_USER_DEFINED:
+<span class="fc" id="L339">                profile = null;</span>
+<span class="fc" id="L340">                filename = null;</span>
+<span class="fc" id="L341">                model = null;</span>
+<span class="fc" id="L342">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_FILENAME:
+<span class="fc" id="L344">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_MODEL:
+<span class="fc" id="L346">                break;</span>
+
+            default:
+<span class="nc" id="L349">                LOG.log(Level.WARNING, &quot;WARNING: unknown tag:&quot; + e.getName());</span>
+                break;
+            }
+<span class="nc" id="L352">        } catch (Exception ex) {</span>
+<span class="nc" id="L353">            LOG.log(Level.SEVERE, &quot;Exception in startelement&quot;, ex);</span>
+<span class="fc" id="L354">        }</span>
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Called by the XML implementation to signal the end of an XML entity.
+     *
+     * @param e The XML entity that ends.
+     * @throws SAXException on any error
+     */
+    public void handleEndElement(XMLElement e) throws SAXException {
+
+        try {
+<span class="pc bpc" id="L366" title="1 of 6 branches missed.">            switch (tokens.toToken(e.getName(), false)) {</span>
+
+            case ProfileConfigurationTokenTable.TOKEN_PROFILE:
+<span class="fc" id="L369">                handleProfileEnd(e);</span>
+<span class="fc" id="L370">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_PLUGIN:
+<span class="fc" id="L372">                handlePluginEnd(e);</span>
+<span class="fc" id="L373">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_USER_DEFINED:
+<span class="fc" id="L375">                handleUserDefinedEnd(e);</span>
+<span class="fc" id="L376">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_FILENAME:
+<span class="fc" id="L378">                handleFilenameEnd(e);</span>
+<span class="fc" id="L379">                break;</span>
+            case ProfileConfigurationTokenTable.TOKEN_MODEL:
+<span class="fc" id="L381">                handleModelEnd(e);</span>
+<span class="fc" id="L382">                break;</span>
+
+            default:
+<span class="nc" id="L385">                LOG.log(Level.WARNING,</span>
+<span class="nc" id="L386">                        &quot;WARNING: unknown end tag:&quot; + e.getName());</span>
+                break;
+            }
+<span class="nc" id="L389">        } catch (Exception ex) {</span>
+<span class="nc" id="L390">            throw new SAXException(ex);</span>
+<span class="fc" id="L391">        }</span>
+<span class="fc" id="L392">    }</span>
+
+    protected void handleProfileEnd(XMLElement e) {
+<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        if (profiles.isEmpty()) {</span>
+<span class="nc" id="L396">            LOG.log(Level.WARNING, &quot;No profiles defined&quot;);</span>
+        }
+<span class="fc" id="L398">    }</span>
+
+    protected void handlePluginEnd(XMLElement e) throws SAXException {
+<span class="fc" id="L401">        String name = e.getText().trim();</span>
+<span class="fc" id="L402">        profile = lookupProfile(name);</span>
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">        if (profile != null) {</span>
+<span class="fc" id="L404">            profiles.add(profile);</span>
+<span class="fc" id="L405">            LOG.log(Level.FINE, &quot;Found plugin profile {0}&quot;, name);</span>
+        } else {
+<span class="nc" id="L407">            LOG.log(Level.SEVERE, &quot;Unabled to find plugin profile - {0}&quot;, name);</span>
+        }
+<span class="fc" id="L409">    }</span>
+
+    private static Profile lookupProfile(String profileIdentifier)
+        throws SAXException {
+        Profile profile;
+<span class="fc" id="L414">        profile = ProfileFacade.getManager().lookForRegisteredProfile(</span>
+                profileIdentifier);
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">        if (profile == null) {</span>
+
+            // for compatibility with older format
+<span class="nc" id="L419">            profile = ProfileFacade.getManager().getProfileForClass(</span>
+                    profileIdentifier);
+
+<span class="nc bnc" id="L422" title="All 2 branches missed.">            if (profile == null) {</span>
+<span class="nc" id="L423">                throw new SAXException(&quot;Plugin profile \&quot;&quot; + profileIdentifier</span>
+                        + &quot;\&quot; is not available in installation.&quot;, null);
+            }
+        }
+<span class="fc" id="L427">        return profile;</span>
+    }
+
+    protected void handleUserDefinedEnd(XMLElement e) {
+        // &lt;model&gt; is not used in current implementation
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">        if (filename == null /* || model == null */) {</span>
+<span class="nc" id="L433">            LOG.log(Level.SEVERE,</span>
+                    &quot;Got badly formed user defined profile entry &quot; + e);
+        }
+<span class="fc" id="L436">        profile = getMatchingUserDefinedProfile(filename, ProfileFacade</span>
+<span class="fc" id="L437">                .getManager());</span>
+
+<span class="fc bfc" id="L439" title="All 2 branches covered.">        if (profile == null) {</span>
+<span class="fc" id="L440">            unresolvedFilenames.add(filename);</span>
+        } else {
+<span class="fc" id="L442">            profiles.add(profile);</span>
+<span class="fc" id="L443">            LOG.log(Level.FINE,</span>
+                    &quot;Loaded user defined profile - filename = {0}&quot;, filename);
+        }
+
+<span class="fc" id="L447">    }</span>
+
+    private static Profile getMatchingUserDefinedProfile(String fileName,
+            ProfileManager profileManager) {
+        for (Profile candidateProfile
+<span class="fc bfc" id="L452" title="All 2 branches covered.">                : profileManager.getRegisteredProfiles()) {</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">            if (candidateProfile instanceof UserDefinedProfile) {</span>
+<span class="fc" id="L454">                UserDefinedProfile userProfile =</span>
+                    (UserDefinedProfile) candidateProfile;
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">                if (userProfile.getModelFile() != null</span>
+                        &amp;&amp; fileName
+<span class="pc bpc" id="L458" title="1 of 2 branches missed.">                                .equals(userProfile.getModelFile().getName())) {</span>
+<span class="fc" id="L459">                    return userProfile;</span>
+                }
+            }
+<span class="fc" id="L462">        }</span>
+<span class="fc" id="L463">        return null;</span>
+    }
+
+    protected void handleFilenameEnd(XMLElement e) {
+<span class="fc" id="L467">        filename = e.getText().trim();</span>
+<span class="fc" id="L468">        LOG.log(Level.FINE, &quot;Got filename = {0}&quot;, filename);</span>
+<span class="fc" id="L469">    }</span>
+
+    protected void handleModelEnd(XMLElement e) {
+<span class="fc" id="L472">        model = e.getText().trim();</span>
+<span class="fc" id="L473">        LOG.log(Level.FINE, &quot;Got model = {0}&quot;, model);</span>
+<span class="fc" id="L474">    }</span>
+
+    /**
+     * Token Table for Profile Configuration parser.
+     *
+     * @author Tom Morris
+     */
+    class ProfileConfigurationTokenTable extends XMLTokenTableBase {
+
+        private static final String STRING_PROFILE = &quot;profile&quot;;
+
+        private static final String STRING_PLUGIN = &quot;plugin&quot;;
+
+        private static final String STRING_USER_DEFINED = &quot;userDefined&quot;;
+
+        private static final String STRING_FILENAME = &quot;filename&quot;;
+
+        private static final String STRING_MODEL = &quot;model&quot;;
+
+        public static final int TOKEN_PROFILE = 1;
+
+        public static final int TOKEN_PLUGIN = 2;
+
+        public static final int TOKEN_USER_DEFINED = 3;
+
+        public static final int TOKEN_FILENAME = 4;
+
+        public static final int TOKEN_MODEL = 5;
+
+        private static final int TOKEN_LAST = 5;
+
+        public static final int TOKEN_UNDEFINED = 999;
+
+        /**
+         * Construct the token table.,
+         */
+<span class="fc" id="L510">        public ProfileConfigurationTokenTable() {</span>
+<span class="fc" id="L511">            super(TOKEN_LAST);</span>
+<span class="fc" id="L512">        }</span>
+
+        protected void setupTokens() {
+<span class="fc" id="L515">            addToken(STRING_PROFILE, Integer.valueOf(TOKEN_PROFILE));</span>
+<span class="fc" id="L516">            addToken(STRING_PLUGIN, Integer.valueOf(TOKEN_PLUGIN));</span>
+<span class="fc" id="L517">            addToken(STRING_USER_DEFINED, Integer.valueOf(TOKEN_USER_DEFINED));</span>
+<span class="fc" id="L518">            addToken(STRING_FILENAME, Integer.valueOf(TOKEN_FILENAME));</span>
+<span class="fc" id="L519">            addToken(STRING_MODEL, Integer.valueOf(TOKEN_MODEL));</span>
+<span class="fc" id="L520">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

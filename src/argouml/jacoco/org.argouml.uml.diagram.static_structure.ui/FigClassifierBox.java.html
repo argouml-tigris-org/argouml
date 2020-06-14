@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigClassifierBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">FigClassifierBox.java</span></div><h1>FigClassifierBox.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+// $Id$
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+
+import javax.swing.Action;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * Class to display graphics for any UML Classifier in a diagram.&lt;p&gt;
+ * 
+ * This abstract Fig adds an Operations compartment.
+ */
+public abstract class FigClassifierBox extends FigCompartmentBox {
+
+    /**
+     * The Fig for the operations compartment (if any).
+     */
+    private FigOperationsCompartment operationsFigCompartment;
+    
+    private Rectangle getDefaultBounds() {
+        // this rectangle marks the operation section; all operations
+        // are inside it
+<span class="fc" id="L88">        Rectangle bounds = new Rectangle(DEFAULT_COMPARTMENT_BOUNDS);</span>
+        // 2nd compartment, so adjust Y appropriately
+<span class="fc" id="L90">        bounds.y = DEFAULT_COMPARTMENT_BOUNDS.y + ROWHEIGHT + 1;</span>
+<span class="fc" id="L91">        return bounds;</span>
+    }
+
+    /**
+     * Construct a Fig with owner, bounds, and settings.
+     * 
+     * @param owner the model element that owns this fig
+     * @param bounds the rectangle defining the bounds
+     * @param settings the rendering settings
+     */
+    public FigClassifierBox(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L103">        super(owner, bounds, settings);</span>
+<span class="fc" id="L104">        operationsFigCompartment = new FigOperationsCompartment(</span>
+                owner, 
+<span class="fc" id="L106">                getDefaultBounds(),</span>
+<span class="fc" id="L107">                getSettings());</span>
+<span class="fc" id="L108">    }</span>
+
+    /*
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+<span class="nc" id="L114">        FigClassifierBox figClone = (FigClassifierBox) super.clone();</span>
+<span class="nc" id="L115">        Iterator thisIter = this.getFigs().iterator();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        while (thisIter.hasNext()) {</span>
+<span class="nc" id="L117">            Fig thisFig = (Fig) thisIter.next();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (thisFig == operationsFigCompartment) {</span>
+<span class="nc" id="L119">                figClone.operationsFigCompartment = (FigOperationsCompartment) thisFig;</span>
+<span class="nc" id="L120">                return figClone;</span>
+            }
+<span class="nc" id="L122">        }</span>
+<span class="nc" id="L123">        return figClone;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+<span class="fc" id="L130">        super.renderingChanged();</span>
+        // TODO: We should be able to just call renderingChanged on the child
+        // figs here instead of doing an updateOperations...
+<span class="fc" id="L133">        updateCompartment(Model.getMetaTypes().getOperation());</span>
+        
+        // TODO: Taken from FigClassifierBoxWithAttribute to handle events
+        // on an attribute. All this event handling should eventually be moved
+        // to the compartment Fig for attributes
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (isCompartmentVisible(Model.getMetaTypes().getAttribute())) {</span>
+            // TODO: We shouldn't actually have to do all this work
+<span class="nc" id="L140">            updateCompartment(Model.getMetaTypes().getAttribute());</span>
+        }
+<span class="fc" id="L142">    }</span>
+    
+    /**
+     * We are getting events we don't want. Filter them out.
+     * TODO: Can we instruct the model event pump not to send these in the
+     * first place? See defect 5095.
+     * @param event the event
+     */
+    public void propertyChange(PropertyChangeEvent event) {
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (event.getPropertyName().equals(&quot;generalization&quot;)</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isAGeneralization(event.getOldValue())) {</span>
+<span class="nc" id="L153">            return;</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        } else if (event.getPropertyName().equals(&quot;association&quot;)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isAAssociationEnd(event.getOldValue())) {</span>
+<span class="nc" id="L156">            return;</span>
+<span class="pc bpc" id="L157" title="1 of 2 branches missed.">        } else if (event.getPropertyName().equals(&quot;supplierDependency&quot;)</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isAUsage(event.getOldValue())) {</span>
+<span class="nc" id="L159">            return;</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        } else if (event.getPropertyName().equals(&quot;clientDependency&quot;)</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isAAbstraction(event.getOldValue())) {</span>
+<span class="nc" id="L162">            return;</span>
+        }
+        
+<span class="fc" id="L165">        super.propertyChange(event);</span>
+<span class="fc" id="L166">    }</span>
+
+    protected void updateLayout(UmlChangeEvent event) {
+<span class="nc" id="L169">        super.updateLayout(event);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (event instanceof AssociationChangeEvent </span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">                &amp;&amp; getOwner().equals(event.getSource())) {</span>
+<span class="nc" id="L172">            Object o = null;</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">            if (event instanceof AddAssociationEvent) {</span>
+<span class="nc" id="L174">                o = event.getNewValue();</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">            } else if (event instanceof RemoveAssociationEvent) {</span>
+<span class="nc" id="L176">                o = event.getOldValue();</span>
+            }
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if ((Model.getFacade().isAOperation(o) </span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                    || Model.getFacade().isAReception(o))</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                    &amp;&amp; isCompartmentVisible(</span>
+<span class="nc" id="L181">                            Model.getMetaTypes().getOperation())) {</span>
+<span class="nc" id="L182">                operationsFigCompartment.populate();</span>
+<span class="nc" id="L183">                setBounds(getBounds());</span>
+<span class="nc" id="L184">                damage();</span>
+            }
+        }
+        
+        // TODO: Taken from FigClassifierBoxWithAttribute to handle events
+        // on an attribute. All this event handling should eventually be moved
+        // to the compartment Fig for attributes
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (Model.getFacade().isAAttribute(getOwner())) {</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (event instanceof AttributeChangeEvent) {</span>
+<span class="nc" id="L193">                Object source = event.getSource();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                if (Model.getFacade().isAAttribute(source)) {</span>
+                    // TODO: We just need to get someone to re-render a single
+                    // line of text which represents the element here, but I'm
+                    // not sure how to do that. - tfm
+                    // TODO: Bob replies - we shouldn't be interested in this
+                    // event here. The FigFeature (or its notation) should be
+                    // listen for change and the FigFeature should be update
+                    // from that.
+<span class="nc" id="L202">                    updateCompartment(Model.getMetaTypes().getAttribute());</span>
+                }
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            } else if (event instanceof AssociationChangeEvent </span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">                    &amp;&amp; getOwner().equals(event.getSource())) {</span>
+<span class="nc" id="L206">                Object o = null;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">                if (event instanceof AddAssociationEvent) {</span>
+<span class="nc" id="L208">                    o = event.getNewValue();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                } else if (event instanceof RemoveAssociationEvent) {</span>
+<span class="nc" id="L210">                    o = event.getOldValue();</span>
+                }
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                if (Model.getFacade().isAAttribute(o)) {</span>
+                    // TODO: Bob says - we should not be listening here for
+                    // addition and removal of attributes. This should be done in
+                    // FigAttributesCompartment.
+<span class="nc" id="L216">                    updateCompartment(Model.getMetaTypes().getAttribute());</span>
+                }
+            }
+        }
+<span class="nc" id="L220">    }</span>
+    
+    @Override
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+       
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (isCompartmentVisible(Model.getMetaTypes().getAttribute())) {</span>
+<span class="nc" id="L226">            Set&lt;Object[]&gt; listeners = new HashSet&lt;Object[]&gt;();</span>
+
+            // Collect the set of model elements that we want to listen to
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (newOwner != null) {</span>
+                // TODO: Because we get called on each and every change event, when
+                // the model is in a state of flux, we'll often get an
+                // InvalidElementException before we finish this collection. The
+                // only saving grace is that we're called SO many times that on the
+                // last time, things should be stable again and we'll get a good set
+                // of elements for the final update.  We need a better mechanism.
+                
+                // add the listeners to the newOwner
+<span class="nc" id="L238">                listeners.add(new Object[] {newOwner, null});</span>
+                
+                // and its stereotypes
+                // TODO: Aren't stereotypes handled elsewhere?
+                for (Object stereotype 
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                        : Model.getFacade().getStereotypes(newOwner)) {</span>
+<span class="nc" id="L244">                    listeners.add(new Object[] {stereotype, null});</span>
+<span class="nc" id="L245">                }</span>
+
+                // and its features
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                for (Object feat : Model.getFacade().getFeatures(newOwner)) {</span>
+<span class="nc" id="L249">                    listeners.add(new Object[] {feat, null});</span>
+                    // and the stereotypes of its features
+                    for (Object stereotype 
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                            : Model.getFacade().getStereotypes(feat)) {</span>
+<span class="nc" id="L253">                        listeners.add(new Object[] {stereotype, null});</span>
+<span class="nc" id="L254">                    }</span>
+                    // and the parameter of its operations
+<span class="nc bnc" id="L256" title="All 2 branches missed.">                    if (Model.getFacade().isAOperation(feat)) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                        for (Object param : Model.getFacade().getParameters(feat)) {</span>
+<span class="nc" id="L258">                            listeners.add(new Object[] {param, null});</span>
+<span class="nc" id="L259">                        }</span>
+                    }
+<span class="nc" id="L261">                }</span>
+            }
+            
+            // Update the listeners to match the desired set using the minimal
+            // update facility
+<span class="nc" id="L266">            updateElementListeners(listeners);</span>
+<span class="nc" id="L267">        } else {</span>
+<span class="nc" id="L268">            super.updateListeners(oldOwner, newOwner);</span>
+        }
+<span class="nc" id="L270">    }</span>
+    
+    /**
+     * Updates a compartment box. Called from updateLayout if there is
+     * a model event effecting the attributes/operations and from
+     * renderingChanged in all cases.
+     * TODO: The above statement means that the entire contents of the
+     * compartments are being rebuilt whenever an add/remove
+     * of an attribute, operation or a reception is detected. It would be
+     * better to have compartments listen for add and remove events
+     * and make minimum change rather than entirely rebuild. 
+     * Remark MVW: This is a bit exaggerated, since the populate() 
+     * method is already heavily optimized.
+     */
+    protected void updateCompartment(Object metaType) {
+<span class="fc" id="L285">        FigCompartment fc = getCompartment(metaType);</span>
+<span class="pc bpc" id="L286" title="1 of 2 branches missed.">        if (!fc.isVisible()) {</span>
+<span class="nc" id="L287">            return;</span>
+        }
+<span class="fc" id="L289">        fc.populate();</span>
+    
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+<span class="fc" id="L292">        setBounds(getBounds());</span>
+<span class="fc" id="L293">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    public void translate(int dx, int dy) {
+<span class="fc" id="L299">        super.translate(dx, dy);</span>
+<span class="fc" id="L300">        Editor ce = Globals.curEditor();</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">        if (ce != null) {</span>
+<span class="nc" id="L302">            Selection sel = ce.getSelectionManager().findSelectionFor(this);</span>
+            // TODO&quot; What is the purpose of this? Why do we hide buttons here?
+            // Presumably if so we should not assume SelectionClass
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            if (sel instanceof SelectionClass) {</span>
+<span class="nc" id="L306">                ((SelectionClass) sel).hideButtons();</span>
+            }
+        }
+<span class="fc" id="L309">    }</span>
+
+    /**
+     * Build a collection of menu items relevant for a right-click
+     * popup menu on an Interface.
+     *
+     * @param     me     a mouse event
+     * @return           a collection of menu items
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L319">        Vector popUpActions = super.getPopUpActions(me);</span>
+    
+        // Add ...
+<span class="nc" id="L322">        ArgoJMenu addMenu = buildAddMenu();</span>
+<span class="nc" id="L323">        popUpActions.add(</span>
+<span class="nc" id="L324">                popUpActions.size() - getPopupAddOffset(),</span>
+                addMenu);
+
+        // Modifier ...
+<span class="nc" id="L328">        popUpActions.add(</span>
+<span class="nc" id="L329">                popUpActions.size() - getPopupAddOffset(),</span>
+<span class="nc" id="L330">                buildModifierPopUp());</span>
+    
+        // Visibility ...
+<span class="nc" id="L333">        popUpActions.add(</span>
+<span class="nc" id="L334">                popUpActions.size() - getPopupAddOffset(),</span>
+<span class="nc" id="L335">                buildVisibilityPopUp());</span>
+    
+<span class="nc" id="L337">        return popUpActions;</span>
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+<span class="nc" id="L341">        ArgoJMenu showMenu = super.buildShowPopUp();</span>
+
+<span class="nc" id="L343">        Iterator i = ActionCompartmentDisplay.getActions().iterator();</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L345">            showMenu.add((Action) i.next());</span>
+        }
+<span class="nc" id="L347">        return showMenu;</span>
+    }
+
+    protected ArgoJMenu buildAddMenu() {
+<span class="nc" id="L351">        ArgoJMenu addMenu = new ArgoJMenu(&quot;menu.popup.add&quot;);</span>
+        
+<span class="nc" id="L353">        List&lt;FigCompartment&gt; comps = getCompartments();</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        for (FigCompartment comp : comps) {</span>
+<span class="nc" id="L355">            final Object metaType = comp.getCompartmentType();</span>
+<span class="nc" id="L356">            Action addAction = new ActionCreateContainedModelElement(metaType, getOwner());</span>
+<span class="nc" id="L357">            addAction.setEnabled(isSingleTarget());</span>
+<span class="nc" id="L358">            addMenu.insert(addAction, 0);</span>
+<span class="nc" id="L359">        }</span>
+<span class="nc" id="L360">        addMenu.add(new ActionAddNote());</span>
+<span class="nc" id="L361">        addMenu.add(ActionEdgesDisplay.getShowEdges());</span>
+<span class="nc" id="L362">        addMenu.add(ActionEdgesDisplay.getHideEdges());</span>
+<span class="nc" id="L363">        return addMenu;</span>
+    }
+
+    /**
+     * USED BY PGML.tee.
+     * TODO We should loop round the compartments to build this string. That
+     * way we have no attribute/operation knowledge at this level.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+<span class="nc" id="L374">        String classNameAndBounds =  super.classNameAndBounds()</span>
+            + &quot;operationsVisible=&quot;
+<span class="nc" id="L376">            + isCompartmentVisible(Model.getMetaTypes().getOperation()) + &quot;;&quot;;</span>
+<span class="nc" id="L377">        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">        if (fc != null) {</span>
+<span class="nc" id="L379">            classNameAndBounds += </span>
+<span class="nc" id="L380">                &quot;attributesVisible=&quot; + fc.isVisible() + &quot;;&quot;;</span>
+        }
+<span class="nc" id="L382">        return classNameAndBounds;</span>
+    }
+
+    
+    protected Object buildModifierPopUp() {
+<span class="nc" id="L387">        return buildModifierPopUp(ABSTRACT | LEAF | ROOT);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

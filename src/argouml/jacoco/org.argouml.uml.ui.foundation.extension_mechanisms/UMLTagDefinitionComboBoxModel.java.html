@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLTagDefinitionComboBoxModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui.foundation.extension_mechanisms</a> &gt; <span class="el_source">UMLTagDefinitionComboBoxModel.java</span></div><h1>UMLTagDefinitionComboBoxModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui.foundation.extension_mechanisms;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.util.PathComparator;
+
+/**
+ * A model for tagdefinitions.
+ * @author lmaitre
+ * @since October 27, 2005
+ */
+public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
+
+<span class="fc" id="L65">    private static final Logger LOG =</span>
+<span class="fc" id="L66">        Logger.getLogger(UMLTagDefinitionComboBoxModel.class.getName());</span>
+
+    /**
+     * Constructor for UMLTagDefinitionComboBoxModel.
+     */
+    public UMLTagDefinitionComboBoxModel() {
+        // stereotypes applied to the target mostly control which TDs
+        // (but see below for other listeners too)
+<span class="fc" id="L74">        super(&quot;stereotype&quot;, false);</span>
+<span class="fc" id="L75">    }</span>
+
+    @Override
+    protected void addOtherModelEventListeners(Object target) {
+        // Ask to be notified of any changes to TagDefinitions so that we
+        // can track new ones, name changes, etc
+<span class="fc" id="L81">        Model.getPump().addClassModelEventListener(this,</span>
+<span class="fc" id="L82">                Model.getMetaTypes().getTagDefinition(), (String[]) null);</span>
+<span class="fc" id="L83">    }</span>
+
+    @Override
+    protected void removeOtherModelEventListeners(Object target) {
+<span class="nc" id="L87">        Model.getPump().addClassModelEventListener(this,</span>
+<span class="nc" id="L88">                Model.getMetaTypes().getTagDefinition(), (String[]) null);</span>
+<span class="nc" id="L89">    }</span>
+
+    @Override
+    public void modelChanged(UmlChangeEvent evt) {
+        // because we're listening for stereotypes being added and removed
+        // but we're really interested in their owned tag definitions,
+        // the default implementation won't work for us
+
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (Model.getFacade().isATagDefinition(evt.getSource())) {</span>
+<span class="fc" id="L98">            LOG.log(Level.FINE, &quot;Got TagDefinition event {0}&quot;, evt);</span>
+
+            // Just mark for rebuild next time since we use lazy loading
+<span class="fc" id="L101">            setModelInvalid();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        } else if (&quot;stereotype&quot;.equals(evt.getPropertyName())) {</span>
+<span class="nc" id="L103">            LOG.log(Level.FINE, &quot;Got stereotype event {0}&quot;, evt);</span>
+            // A stereotype got applied or removed
+            // Just mark for rebuild next time since we use lazy loading
+<span class="nc" id="L106">            setModelInvalid();</span>
+        } else {
+<span class="nc" id="L108">            LOG.log(Level.FINE, &quot;Got other event {0}&quot;, evt);</span>
+        }
+<span class="fc" id="L110">    }</span>
+
+
+    @Override
+    public boolean isLazy() {
+<span class="fc" id="L115">        return true;</span>
+    }
+
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object element) {
+<span class="nc" id="L123">        Object owner = Model.getFacade().getOwner(element);</span>
+<span class="nc bnc" id="L124" title="All 4 branches missed.">        return (Model.getFacade().isATagDefinition(element)</span>
+                &amp;&amp; (owner == null || Model
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                .getFacade().getStereotypes(getTarget()).contains(owner)));</span>
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#setSelectedItem(java.lang.Object)
+     */
+    @Override
+    public void setSelectedItem(Object o) {
+<span class="fc" id="L134">        setFireListEvents(false);</span>
+<span class="fc" id="L135">        super.setSelectedItem(o);</span>
+<span class="fc" id="L136">        setFireListEvents(true);</span>
+<span class="fc" id="L137">    }</span>
+
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+<span class="fc" id="L144">        setElements(getApplicableTagDefinitions(getTarget()));</span>
+<span class="fc" id="L145">    }</span>
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+<span class="fc" id="L151">        return getSelectedItem();</span>
+    }
+
+    Collection getApplicableTagDefinitions(Object element) {
+<span class="fc" id="L155">        Set&lt;List&lt;String&gt;&gt; paths = new HashSet&lt;List&lt;String&gt;&gt;();</span>
+<span class="fc" id="L156">        Set&lt;Object&gt; availableTagDefs =</span>
+            new TreeSet&lt;Object&gt;(new PathComparator());
+<span class="fc" id="L158">        Collection stereotypes = Model.getFacade().getStereotypes(element);</span>
+<span class="fc" id="L159">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">            for (Object model : project.getModels()) {</span>
+                // TODO: Won't our use of PathComparator take care of uniqueness?
+<span class="fc" id="L163">                addAllUniqueModelElementsFrom(availableTagDefs, paths,</span>
+<span class="fc" id="L164">                        Model.getModelManagementHelper().getAllModelElementsOfKind(</span>
+                                model,
+<span class="fc" id="L166">                                Model.getMetaTypes().getTagDefinition()));</span>
+<span class="fc" id="L167">            }</span>
+            // TODO: Won't our use of PathComparator take care of uniqueness?
+<span class="fc" id="L169">            addAllUniqueModelElementsFrom(availableTagDefs, paths, project</span>
+<span class="fc" id="L170">                    .getProfileConfiguration().findByMetaType(</span>
+<span class="fc" id="L171">                            Model.getMetaTypes().getTagDefinition()));</span>
+
+<span class="fc" id="L173">            List notValids = new ArrayList();</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            for (Object tagDef : availableTagDefs) {</span>
+<span class="fc" id="L175">                Object owner = Model.getFacade().getOwner(tagDef);</span>
+<span class="pc bpc" id="L176" title="1 of 4 branches missed.">                if (owner != null &amp;&amp; !stereotypes.contains(owner)) {</span>
+<span class="nc" id="L177">                    notValids.add(tagDef);</span>
+                }
+<span class="fc" id="L179">            }</span>
+<span class="fc" id="L180">            availableTagDefs.removeAll(notValids);</span>
+<span class="fc" id="L181">        } else {</span>
+            // since UML2 it's easier: TDs only via stereotypes
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            for (Object st : stereotypes) {</span>
+<span class="nc" id="L184">                availableTagDefs.addAll(Model.getFacade().getAttributes(st));</span>
+<span class="nc" id="L185">            }</span>
+        }
+<span class="fc" id="L187">        return availableTagDefs;</span>
+    }
+
+    /**
+     * Helper method for buildModelList.&lt;p&gt;
+     *
+     * Adds those elements from source that do not have the same path as any
+     * path in paths to elements, and its path to paths. Thus elements will
+     * never contain two objects with the same path, unless they are added by
+     * other means.
+     */
+    private static void addAllUniqueModelElementsFrom(Set elements,
+            Set&lt;List&lt;String&gt;&gt; paths, Collection sources) {
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        for (Object source : sources) {</span>
+<span class="fc" id="L202">            List&lt;String&gt; path = Model.getModelManagementHelper().getPathList(</span>
+                    source);
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            if (!paths.contains(path)) {</span>
+<span class="fc" id="L205">                paths.add(path);</span>
+<span class="fc" id="L206">                elements.add(source);</span>
+            }
+<span class="fc" id="L208">        }</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -4194727034416788372L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

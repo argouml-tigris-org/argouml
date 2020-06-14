@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionAddAttribute.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui.foundation.core</a> &gt; <span class="el_source">ActionAddAttribute.java</span></div><h1>ActionAddAttribute.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui.foundation.core;
+
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
+import org.argouml.model.Defaults;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+
+/**
+ * Action to add an attribute to a Classifier or AssociationEnd.&lt;p&gt;
+ * 
+ * This class shall be the only one that knows 
+ * when this tool should be downlighted or not.
+ */
+@UmlModelMutator
+public class ActionAddAttribute extends UndoableAction {
+
+    private static ActionAddAttribute targetFollower;
+
+    /**
+     * The constructor for this class.
+     */
+    public ActionAddAttribute() {
+<span class="fc" id="L72">        super(Translator.localize(&quot;button.new-attribute&quot;),</span>
+<span class="fc" id="L73">                ResourceLoaderWrapper.lookupIcon(&quot;button.new-attribute&quot;));</span>
+        // Set the tooltip string:
+<span class="fc" id="L75">        putValue(Action.SHORT_DESCRIPTION, </span>
+<span class="fc" id="L76">                Translator.localize(&quot;button.new-attribute&quot;));</span>
+<span class="fc" id="L77">    }</span>
+
+    public static ActionAddAttribute getTargetFollower() {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (targetFollower == null) {</span>
+<span class="nc" id="L81">            targetFollower  = new ActionAddAttribute();</span>
+<span class="nc" id="L82">            TargetManager.getInstance().addTargetListener(new TargetListener() {</span>
+                public void targetAdded(TargetEvent e) {
+<span class="nc" id="L84">                    setTarget();</span>
+<span class="nc" id="L85">                }</span>
+                public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L87">                    setTarget();</span>
+<span class="nc" id="L88">                }</span>
+
+                public void targetSet(TargetEvent e) {
+<span class="nc" id="L91">                    setTarget();</span>
+<span class="nc" id="L92">                }</span>
+                private void setTarget() {
+<span class="nc" id="L94">                    targetFollower.setEnabled(targetFollower.shouldBeEnabled());</span>
+<span class="nc" id="L95">                }</span>
+            });
+<span class="nc" id="L97">            targetFollower.setEnabled(targetFollower.shouldBeEnabled());</span>
+        }
+<span class="nc" id="L99">        return targetFollower;</span>
+    }
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent ae) {
+
+<span class="nc" id="L107">        super.actionPerformed(ae);</span>
+
+<span class="nc" id="L109">        Object target = TargetManager.getInstance().getSingleModelTarget();</span>
+<span class="nc" id="L110">        Object classifier = null;</span>
+
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (Model.getFacade().isAClassifier(target)</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                || Model.getFacade().isAAssociationEnd(target)) {</span>
+<span class="nc" id="L114">            classifier = target;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        } else if (Model.getFacade().isAFeature(target)) {</span>
+<span class="nc" id="L116">            classifier = Model.getFacade().getOwner(target);</span>
+        } else {
+<span class="nc" id="L118">            return;</span>
+        }
+
+<span class="nc" id="L121">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L122">        Defaults defaults = project.getDefaults();</span>
+<span class="nc" id="L123">        Object attr = Model.getUmlFactory().buildNode(Model.getMetaTypes().getAttribute(), classifier, null, defaults);</span>
+<span class="nc" id="L124">        TargetManager.getInstance().setTarget(attr);</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * @return true if this tool should be enabled
+     */
+    public boolean shouldBeEnabled() {
+<span class="nc" id="L131">        Object target = TargetManager.getInstance().getSingleModelTarget();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L133">            return false;</span>
+        }
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        return Model.getFacade().isAClassifier(target)</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            || Model.getFacade().isAFeature(target)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">            || Model.getFacade().isAAssociationEnd(target);</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -111785878370086329L;
+} /* end class ActionAddAttribute */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

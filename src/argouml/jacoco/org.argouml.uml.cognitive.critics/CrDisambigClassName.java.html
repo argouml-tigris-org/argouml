@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrDisambigClassName.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrDisambigClassName.java</span></div><h1>CrDisambigClassName.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.Icon;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * Well-formedness rule for Package. Check that the alias for an imported
+ * element doesn't conflict with any existing name. Section 4.14.3.3 of UML 1.4
+ * spec.
+ * &lt;p&gt;
+ * Other types of name conflicts in a Namespace are checked by
+ * {@link CrNameConflict}.
+ * &lt;p&gt;
+ * TODO: MVW: If an Alias is the same as another class' name, then this critic
+ * fires, but the explanation and wizard are wrong!
+ */
+public class CrDisambigClassName extends CrUML {
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L69">    public CrDisambigClassName() {</span>
+<span class="fc" id="L70">        setupHeadAndDesc();</span>
+<span class="fc" id="L71">	addSupportedDecision(UMLDecision.NAMING);</span>
+<span class="fc" id="L72">	setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+<span class="fc" id="L73">	addTrigger(&quot;name&quot;);</span>
+<span class="fc" id="L74">	addTrigger(&quot;elementOwnership&quot;);</span>
+<span class="fc" id="L75">    }</span>
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     *      java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+        // TODO: The WFR doesn't restrict this to Classifiers - tfm
+<span class="nc bnc" id="L84" title="All 2 branches missed.">	if (!(Model.getFacade().isAClassifier(dm))) {</span>
+<span class="nc" id="L85">	    return NO_PROBLEM;</span>
+	}
+<span class="nc" id="L87">	Object classifier = dm;</span>
+<span class="nc" id="L88">	String designMaterialName = Model.getFacade().getName(classifier);</span>
+	//@ if (myNameString.equals(Name.UNSPEC)) return NO_PROBLEM;
+
+<span class="nc bnc" id="L91" title="All 4 branches missed.">	if (designMaterialName != null &amp;&amp; designMaterialName.length() == 0) {</span>
+<span class="nc" id="L92">	    return NO_PROBLEM;</span>
+	}
+
+	Collection elementImports = 
+<span class="nc" id="L96">            Model.getFacade().getElementImports2(classifier);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">	if (elementImports == null) {</span>
+<span class="nc" id="L98">	    return NO_PROBLEM;</span>
+	}
+        // TODO: This is only checking immediate siblings when it needs
+        // to be checking all imported elements both here and by our
+        // parents and also taking into account visibility
+<span class="nc bnc" id="L103" title="All 2 branches missed.">	for (Iterator iter = elementImports.iterator(); iter.hasNext();) {</span>
+<span class="nc" id="L104">	    Object imp = iter.next();</span>
+<span class="nc" id="L105">	    Object pack = Model.getFacade().getPackage(imp);</span>
+<span class="nc" id="L106">            String alias = Model.getFacade().getAlias(imp);</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">            if (alias == null || alias.length() == 0) {</span>
+<span class="nc" id="L108">                alias = designMaterialName;</span>
+            }
+<span class="nc" id="L110">	    Collection siblings = Model.getFacade().getOwnedElements(pack);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">	    if (siblings == null) {</span>
+<span class="nc" id="L112">	        return NO_PROBLEM;</span>
+	    }
+<span class="nc" id="L114">	    Iterator elems = siblings.iterator();</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">	    while (elems.hasNext()) {</span>
+<span class="nc" id="L116">		Object eo = elems.next();</span>
+<span class="nc" id="L117">		Object me = /*Model.getFacade().getModelElement(*/eo/*)*/;</span>
+                // TODO: The WFR doesn't restrict this to Classifiers - tfm
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!(Model.getFacade().isAClassifier(me))) {</span>
+<span class="nc" id="L120">		    continue;</span>
+		}
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (me == classifier) {</span>
+<span class="nc" id="L123">		    continue;</span>
+		}
+<span class="nc" id="L125">		String meName = Model.getFacade().getName(me);</span>
+<span class="nc bnc" id="L126" title="All 4 branches missed.">		if (meName == null || meName.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L127">		    continue;</span>
+		}
+<span class="nc bnc" id="L129" title="All 2 branches missed.">		if (meName.equals(alias)) {</span>
+<span class="nc" id="L130">		    return PROBLEM_FOUND;</span>
+		}
+<span class="nc" id="L132">	    }</span>
+<span class="nc" id="L133">	}</span>
+<span class="nc" id="L134">	return NO_PROBLEM;</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
+    @Override
+    public Icon getClarifier() {
+<span class="nc" id="L142">	return ClClassName.getTheInstance();</span>
+    }
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
+     */
+    @Override
+    public void initWizard(Wizard w) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">	if (w instanceof WizMEName) {</span>
+<span class="nc" id="L152">	    ToDoItem item = (ToDoItem) w.getToDoItem();</span>
+<span class="nc" id="L153">	    Object me = item.getOffenders().get(0);</span>
+<span class="nc" id="L154">	    String sug = Model.getFacade().getName(me);</span>
+<span class="nc" id="L155">	    String ins = super.getInstructions();</span>
+<span class="nc" id="L156">	    ((WizMEName) w).setInstructions(ins);</span>
+<span class="nc" id="L157">	    ((WizMEName) w).setSuggestion(sug);</span>
+<span class="nc" id="L158">	    ((WizMEName) w).setMustEdit(true);</span>
+	}
+<span class="nc" id="L160">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
+    @Override
+<span class="nc" id="L166">    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

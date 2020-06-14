@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmiReaderImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">XmiReaderImpl.java</span></div><h1>XmiReaderImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2005-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Tom Morris
+ *    Luis Sergio Oliveira (euluis)
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
+import javax.jmi.xmi.MalformedXMIException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiException;
+import org.argouml.model.XmiReader;
+import org.netbeans.api.mdr.MDRepository;
+import org.netbeans.api.xmi.XMIReader;
+import org.netbeans.api.xmi.XMIReaderFactory;
+import org.netbeans.lib.jmi.xmi.InputConfig;
+import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
+import org.netbeans.lib.jmi.xmi.XMIHeaderConsumer;
+import org.omg.uml.UmlPackage;
+import org.openide.ErrorManager;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLFilter;
+import org.xml.sax.XMLReader;
+
+/**
+ * A wrapper around the genuine XmiReader that provides public access with no
+ * knowledge of actual UML implementation.
+ *
+ * @author Bob Tarling
+ */
+class XmiReaderImpl implements XmiReader, UnknownElementsListener,
+        XMIHeaderConsumer {
+
+    static final String TEMP_XMI_FILE_PREFIX = &quot;zargo_model_&quot;;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L109">    private static final Logger LOG =</span>
+<span class="fc" id="L110">        Logger.getLogger(XmiReaderImpl.class.getName());</span>
+
+    private static String tempXMIFileURIPrefix;
+
+    private MDRModelImplementation modelImpl;
+
+    private XmiReferenceResolverImpl resolver;
+
+    /**
+     * Flag indicating unknown element was found in XMI file.
+     */
+    private boolean unknownElement;
+
+    /**
+     * Name of first unknown element found (if not a UML 1.3 name).
+     */
+    private String unknownElementName;
+
+    /**
+     * Flag indicating that we think unknown element was due to a UML 1.3 file.
+     */
+    private boolean uml13;
+
+    /**
+     * Elements to ignore errors on if they aren't found in the metamodel.
+     */
+<span class="fc" id="L136">    private String[] ignoredElements = new String[] {};</span>
+
+    /**
+     * Flag indicating that we stripped at least one diagram during the import.
+     */
+    private int ignoredElementCount;
+
+    /**
+     * String that we pulled from the header of the XMI file
+     */
+    private String xmiHeader;
+
+
+    /**
+     * Constructor for XMIReader.
+     * @param parentModelImplementation The ModelImplementation
+     */
+<span class="fc" id="L153">    XmiReaderImpl(MDRModelImplementation parentModelImplementation) {</span>
+<span class="fc" id="L154">        modelImpl = parentModelImplementation;</span>
+<span class="fc" id="L155">    }</span>
+
+    public Collection parse(InputSource inputSource, boolean readOnly)
+        throws UmlException {
+
+<span class="fc" id="L160">        System.setProperty(&quot;javax.xml.transform.TransformerFactory&quot;,</span>
+        &quot;net.sf.saxon.TransformerFactoryImpl&quot;);
+
+<span class="fc" id="L163">        Collection&lt;RefObject&gt; newElements = Collections.emptyList();</span>
+
+<span class="fc" id="L165">        String extentBase = inputSource.getPublicId();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (extentBase == null) {</span>
+<span class="fc" id="L167">            extentBase = inputSource.getSystemId();</span>
+        }
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (extentBase == null) {</span>
+<span class="fc" id="L170">            extentBase = MDRModelImplementation.MODEL_EXTENT_NAME;</span>
+        }
+<span class="fc" id="L172">        String extentName = extentBase;</span>
+<span class="fc" id="L173">        UmlPackage extent =</span>
+<span class="fc" id="L174">            (UmlPackage) modelImpl.getRepository().getExtent(extentName);</span>
+<span class="fc" id="L175">        int serial = 1;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        while (extent != null) {</span>
+<span class="fc" id="L177">            extentName = extentBase + &quot; &quot; + serial;</span>
+<span class="fc" id="L178">            serial++;</span>
+<span class="fc" id="L179">            extent = (UmlPackage) modelImpl.getRepository().getExtent(</span>
+                    extentName);
+        }
+
+<span class="fc" id="L183">        extent = (UmlPackage) modelImpl.createExtent(extentName, readOnly);</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        if (extent == null) {</span>
+<span class="nc" id="L185">            LOG.log(Level.SEVERE, &quot;Failed to create extent &quot; + extentName);</span>
+        }
+
+        try {
+<span class="fc" id="L189">            LOG.log(Level.INFO, &quot;Loading to extent {0} {1}&quot;, new Object[]{extentName, extent});</span>
+
+<span class="fc" id="L191">            InputConfig config = new InputConfig();</span>
+<span class="fc" id="L192">            config.setUnknownElementsListener(this);</span>
+<span class="fc" id="L193">            config.setUnknownElementsIgnored(true);</span>
+
+<span class="fc" id="L195">            String pId = inputSource.getPublicId();</span>
+<span class="fc" id="L196">            String sId = modelImpl.getPublic2SystemIds().get(pId);</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">            if (sId != null) {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                if (sId.equals(inputSource.getSystemId())) {</span>
+<span class="nc" id="L199">                    LOG.log(Level.INFO, &quot;Attempt to reread profile - ignoring - &quot;</span>
+                            + &quot;publicId = \&quot;&quot; + pId + &quot;\&quot;;  systemId = \&quot;&quot;
+                            + sId + &quot;\&quot;.&quot;);
+<span class="nc" id="L202">                    return Collections.emptySet();</span>
+                } else {
+<span class="nc" id="L204">                    throw new UmlException(&quot;Profile with the duplicate publicId &quot;</span>
+                            + &quot;is being loaded! publicId = \&quot;&quot; + pId
+                            + &quot;\&quot;; existing systemId = \&quot;&quot;
+<span class="nc" id="L207">                            + modelImpl.getPublic2SystemIds().get(pId)</span>
+                            + &quot;\&quot;; new systemId = \&quot;&quot; + sId + &quot;\&quot;.&quot;);
+                }
+            }
+<span class="fc" id="L211">            resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},</span>
+<span class="fc" id="L212">                    config, modelImpl.getObjectToId(),</span>
+<span class="fc" id="L213">                    modelImpl.getPublic2SystemIds(), modelImpl.getIdToObject(),</span>
+<span class="fc" id="L214">                    modelImpl.getSearchPath(),</span>
+                    readOnly,
+<span class="fc" id="L216">                    inputSource.getPublicId(), inputSource.getSystemId(),</span>
+                    modelImpl);
+<span class="fc" id="L218">            config.setReferenceResolver(resolver);</span>
+<span class="fc" id="L219">            config.setHeaderConsumer(this);</span>
+
+            XMIReader xmiReader =
+<span class="fc" id="L222">                    XMIReaderFactory.getDefault().createXMIReader(config);</span>
+
+            /*
+             * MDR has a hardcoded printStackTrace on all exceptions,
+             * even if they're caught, which is unsightly, so we handle
+             * unknown elements ourselves rather than letting MDR throw
+             * an exception for us to catch.
+             *
+             * org/netbeans/lib/jmi/util/Logger.java
+             *
+             * This can be uses to disable logging.  Default output is
+             * System.err
+             * setProperty(&quot;org.netbeans.lib.jmi.Logger.fileName&quot;, &quot;&quot;)
+             *              org.netbeans.mdr.Logger
+             *
+             * The property org.netbeans.lib.jmi.Logger controls the minimum
+             * severity level for logging
+             */
+            // Turn off NetBeans logging to System.err
+//            System.setProperty(&quot;org.netbeans.lib.jmi.Logger.fileName&quot;, &quot;&quot;);
+            // Set minimum severity level for MDR
+//            System.setProperty(&quot;org.netbeans.lib.jmi.Logger&quot;,
+//                    Integer.toString(ErrorManager.INFORMATIONAL));
+<span class="fc" id="L245">            InputConfig config2 = (InputConfig) xmiReader.getConfiguration();</span>
+<span class="fc" id="L246">            config2.setUnknownElementsListener(this);</span>
+<span class="fc" id="L247">            config2.setUnknownElementsIgnored(true);</span>
+<span class="fc" id="L248">            unknownElement = false;</span>
+<span class="fc" id="L249">            uml13 = false;</span>
+<span class="fc" id="L250">            ignoredElementCount = 0;</span>
+
+            // Disable event delivery during model load
+<span class="fc" id="L253">            modelImpl.getModelEventPump().stopPumpingEvents();</span>
+
+            try {
+<span class="fc" id="L256">                String systemId = inputSource.getSystemId();</span>
+                // If we've got a streaming input, copy it to make sure we'll
+                // be able to rewind it if necessary
+<span class="fc bfc" id="L259" title="All 2 branches covered.">                if (inputSource.getByteStream() != null</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">                        || inputSource.getCharacterStream() != null) {</span>
+<span class="fc" id="L261">                    File file = copySource(inputSource);</span>
+<span class="fc" id="L262">                    systemId = file.toURI().toURL().toExternalForm();</span>
+<span class="fc" id="L263">                    String publicId = inputSource.getPublicId();</span>
+<span class="fc" id="L264">                    inputSource = new InputSource(systemId);</span>
+<span class="fc" id="L265">                    inputSource.setPublicId(publicId);</span>
+                }
+<span class="fc" id="L267">                MDRepository repository = modelImpl.getRepository();</span>
+
+                // Use a transaction to avoid the performance penalty (3x) of
+                // MDR's autocommit mode
+<span class="fc" id="L271">                repository.beginTrans(true);</span>
+
+                // Issue 5816 : invalid XMI
+                try {
+<span class="fc" id="L275">                    newElements = xmiReader.read(inputSource.getByteStream(),</span>
+                            systemId, extent);
+<span class="nc" id="L277">                } catch (MalformedXMIException e) {</span>
+<span class="nc" id="L278">                    repository.endTrans(true);</span>
+<span class="nc" id="L279">                    repository.beginTrans(true);</span>
+<span class="nc" id="L280">                    resolver.clearIdMaps();</span>
+<span class="nc" id="L281">                    inputSource = convertFromInvalidXMI(inputSource);</span>
+<span class="nc" id="L282">                    newElements = xmiReader.read(inputSource.getByteStream(),</span>
+                            systemId, extent);
+
+<span class="fc" id="L285">                }</span>
+
+                // If a UML 1.3 file, attempt to upgrade it to UML 1.4
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">                if (uml13) {</span>
+                    // Roll back transaction from first attempt &amp; start new one
+<span class="nc" id="L290">                    repository.endTrans(true);</span>
+<span class="nc" id="L291">                    repository.beginTrans(true);</span>
+
+                    // Clear the associated ID maps &amp; reset starting collection
+<span class="nc" id="L294">                    resolver.clearIdMaps();</span>
+
+<span class="nc" id="L296">                    newElements = convertAndLoadUml13(inputSource.getSystemId(),</span>
+                            extent, xmiReader, inputSource);
+                }
+
+                // Commit our transaction
+<span class="fc" id="L301">                repository.endTrans();</span>
+<span class="nc" id="L302">            } catch (Throwable e) {</span>
+                // Roll back transaction to remove any partial results read
+                try {
+<span class="nc" id="L305">                    modelImpl.getRepository().endTrans(true);</span>
+<span class="nc" id="L306">                } catch (Throwable e2) {</span>
+                    // Ignore any error.  The transaction may already have
+                    // been unwound as part of exception processing by MDR
+<span class="nc" id="L309">                }</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">                if (e instanceof MalformedXMIException) {</span>
+<span class="nc" id="L311">                    throw (MalformedXMIException) e;</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                } else if (e instanceof IOException) {</span>
+<span class="nc" id="L313">                    throw (IOException) e;</span>
+                } else {
+                    // We shouldn't get here, but just in case...
+                    // We want a wide exception catcher to make sure our
+                    // transaction always gets ended
+<span class="nc" id="L318">                    e.printStackTrace();</span>
+<span class="nc" id="L319">                    throw new MalformedXMIException();</span>
+                }
+            } finally {
+<span class="fc" id="L322">                modelImpl.getModelEventPump().startPumpingEvents();</span>
+            }
+
+<span class="pc bpc" id="L325" title="1 of 2 branches missed.">            if (unknownElement) {</span>
+<span class="nc" id="L326">                modelImpl.deleteExtent(extent);</span>
+<span class="nc" id="L327">                throw new XmiException(&quot;Unknown element in XMI file : &quot;</span>
+                        + unknownElementName);
+            }
+
+<span class="pc bpc" id="L331" title="1 of 2 branches missed.">            if (ignoredElementCount &gt; 0) {</span>
+<span class="nc" id="L332">                LOG.log(Level.WARNING, &quot;Ignored one or more elements from list &quot;</span>
+                        + ignoredElements);
+            }
+
+<span class="nc" id="L336">        } catch (MalformedXMIException e) {</span>
+            // If we can find a nested SAX exception, it will have information
+            // on the line number, etc.
+            ErrorManager.Annotation[] annotations =
+<span class="nc" id="L340">                ErrorManager.getDefault().findAnnotations(e);</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">            for (ErrorManager.Annotation annotation : annotations) {</span>
+<span class="nc" id="L342">                Throwable throwable = annotation.getStackTrace();</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                if (throwable instanceof SAXParseException) {</span>
+<span class="nc" id="L344">                    SAXParseException spe = (SAXParseException) throwable;</span>
+<span class="nc" id="L345">                    throw new XmiException(spe.getMessage(), spe.getPublicId(),</span>
+<span class="nc" id="L346">                            spe.getSystemId(), spe.getLineNumber(),</span>
+<span class="nc" id="L347">                            spe.getColumnNumber(), e);</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                } else if (throwable instanceof SAXException) {</span>
+<span class="nc" id="L349">                    SAXException se = (SAXException) throwable;</span>
+<span class="nc" id="L350">                    Exception e1 = se.getException();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">                    if (e1 instanceof org.argouml.model.XmiReferenceRuntimeException) {</span>
+<span class="nc" id="L352">                        String href =</span>
+                            ((org.argouml.model.XmiReferenceRuntimeException) e1)
+<span class="nc" id="L354">                                .getReference();</span>
+<span class="nc" id="L355">                        throw new org.argouml.model.XmiReferenceException(href,</span>
+                                e);
+                    }
+<span class="nc" id="L358">                    throw new XmiException(se.getMessage(), se);</span>
+                }
+            }
+<span class="nc" id="L361">            modelImpl.deleteExtent(extent);</span>
+<span class="nc" id="L362">            throw new XmiException(e);</span>
+<span class="nc" id="L363">        } catch (IOException e) {</span>
+            try {
+<span class="nc" id="L365">                modelImpl.deleteExtent(extent);</span>
+<span class="nc" id="L366">            } catch (InvalidObjectException e2) {</span>
+                // Ignore if the extent never got created or has been deleted
+<span class="nc" id="L368">            }</span>
+<span class="nc" id="L369">            throw new XmiException(e);</span>
+<span class="fc" id="L370">        }</span>
+
+<span class="fc" id="L372">        return newElements;</span>
+    }
+
+
+    private Collection&lt;RefObject&gt; convertAndLoadUml13(String systemId,
+            RefPackage extent, XMIReader xmiReader, InputSource input)
+        throws FileNotFoundException, UmlException, IOException,
+            MalformedXMIException {
+
+<span class="nc" id="L381">        LOG.log(Level.INFO, &quot;XMI file doesn't appear to be UML 1.4 - &quot;</span>
+                + &quot;attempting UML 1.3-&gt;UML 1.4 conversion&quot;);
+<span class="nc" id="L383">        final String[] transformFiles = new String[] {</span>
+            &quot;NormalizeNSUML.xsl&quot;,
+            &quot;uml13touml14.xsl&quot;, };
+
+<span class="nc" id="L387">        unknownElement = false;</span>
+        // InputSource xformedInput = chainedTransform(transformFiles, pIs);
+<span class="nc" id="L389">        InputSource xformedInput = serialTransform(transformFiles,</span>
+                input);
+<span class="nc" id="L391">        xformedInput.setPublicId(input.getPublicId());</span>
+<span class="nc" id="L392">        return xmiReader.read(xformedInput.getByteStream(), xformedInput</span>
+<span class="nc" id="L393">                .getSystemId(), extent);</span>
+    }
+
+    /**
+     *
+     * @param input
+     * @return InputSource : a new XML to test
+     * @throws UmlException
+     */
+    private InputSource convertFromInvalidXMI(InputSource input)
+        throws UmlException {
+
+<span class="nc" id="L405">        LOG.log(Level.INFO, &quot;XMI file doesn't appear to be a valid XMI&quot;);</span>
+
+<span class="nc" id="L407">        final String[] transformFiles = new String[] {</span>
+            &quot;umbrello.xsl&quot;,
+            };
+
+<span class="nc" id="L411">        unknownElement = false;</span>
+        // InputSource xformedInput = chainedTransform(transformFiles, pIs);
+<span class="nc" id="L413">        InputSource xformedInput = serialTransform(transformFiles,</span>
+                input);
+<span class="nc" id="L415">        xformedInput.setPublicId(input.getPublicId());</span>
+<span class="nc" id="L416">        return xformedInput;</span>
+    }
+
+    /**
+     * Defines the URI prefix of the temporary XMI file that is being read.
+     *
+     * @return the URI prefix of the temporary XMI file that is being read.
+     */
+    static String getTempXMIFileURIPrefix() {
+<span class="fc bfc" id="L425" title="All 2 branches covered.">        if (tempXMIFileURIPrefix == null) {</span>
+<span class="fc" id="L426">            tempXMIFileURIPrefix =</span>
+<span class="fc" id="L427">                new File(System.getProperty(&quot;java.io.tmpdir&quot;)).toURI()</span>
+                + TEMP_XMI_FILE_PREFIX;
+        }
+<span class="fc" id="L430">        return tempXMIFileURIPrefix;</span>
+    }
+
+    /*
+     * @see org.argouml.model.XmiReader#getXMIUUIDToObjectMap()
+     */
+    public Map&lt;String, Object&gt; getXMIUUIDToObjectMap() {
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        if (resolver != null) {</span>
+            // Give the resolver.getIdToObjectMap() entries
+            // priority over entries with the same UUID from
+            // resolver.getIdToObjectMaps() because entries
+            // in resolver.getIdToObjectMaps() are historic.
+<span class="nc" id="L442">            HashMap&lt;String, Object&gt; globalXmiIdToObjectMap =</span>
+<span class="nc" id="L443">                new HashMap&lt;String, Object&gt;(resolver.getIdToObjectMap());</span>
+
+<span class="nc" id="L445">            Map&lt;String, Map&lt;String, Object&gt;&gt; idToObjectMaps =</span>
+<span class="nc" id="L446">                resolver.getIdToObjectMaps();</span>
+<span class="nc" id="L447">            Set&lt;Entry&lt;String,Map&lt;String,Object&gt;&gt;&gt; entrySet = null;</span>
+            // I think that the synchronized access to idToObjectMaps is
+            // required in order to respect the thread safe nature of the
+            // object.
+            // FIXME: maybe this should be moved into XmiReferenceResolverImpl,
+            // because it depends on internal implementation details of it.
+<span class="nc" id="L453">            synchronized (idToObjectMaps) {</span>
+<span class="nc" id="L454">                entrySet =</span>
+                    new HashSet&lt;Entry&lt;String,Map&lt;String,Object&gt;&gt;&gt;(
+<span class="nc" id="L456">                            idToObjectMaps.entrySet());</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">                for (Entry&lt;String, Map&lt;String, Object&gt;&gt; entry : entrySet) {</span>
+<span class="nc" id="L458">                    entry.setValue(new HashMap&lt;String,Object&gt;(entry.getValue()));</span>
+<span class="nc" id="L459">                }</span>
+<span class="nc" id="L460">            }</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">            for (Entry&lt;String, Map&lt;String, Object&gt;&gt; entry : entrySet) {</span>
+<span class="nc" id="L462">                String xmiIdPrefix =</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">                    entry.getKey().startsWith(getTempXMIFileURIPrefix()) ? &quot;&quot; :</span>
+<span class="nc" id="L464">                        entry.getKey() + &quot;#&quot;;</span>
+                for (Entry&lt;String, Object&gt; innerMapEntry :
+<span class="nc bnc" id="L466" title="All 2 branches missed.">                        entry.getValue().entrySet()) {</span>
+
+<span class="nc" id="L468">                    String id = xmiIdPrefix + innerMapEntry.getKey();</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">                    if (!globalXmiIdToObjectMap.containsKey(id)) {</span>
+<span class="nc" id="L470">                        globalXmiIdToObjectMap.put(</span>
+                                id,
+<span class="nc" id="L472">                                innerMapEntry.getValue());</span>
+                    }
+<span class="nc" id="L474">                }</span>
+<span class="nc" id="L475">            }</span>
+<span class="nc" id="L476">            return globalXmiIdToObjectMap;</span>
+        }
+<span class="nc" id="L478">        return null;</span>
+    }
+
+    private static final String STYLE_PATH =
+        &quot;/org/argouml/model/mdr/conversions/&quot;;
+
+    /*
+     * A near clone of this code works fine outside of ArgoUML, but throws a
+     * null pointer exception during the transform when run within ArgoUML I
+     * think it's something to do with the class libraries being used, but I
+     * can't figure out what, so I've done a simpler, less efficient stepwise
+     * translation below in serialTransform
+     */
+    private InputSource chainedTransform(String[] styles, InputSource input)
+        throws XmiException {
+        SAXTransformerFactory stf =
+<span class="nc" id="L494">            (SAXTransformerFactory) TransformerFactory.newInstance();</span>
+
+        // TODO: Reconfigure exception handling to distinguish between errors
+        // that are possible due to bad input data and those that represent
+        // unexpected processing errors.
+        try {
+            // Set up reader to be first filter in chain
+<span class="nc" id="L501">            SAXParserFactory spf = SAXParserFactory.newInstance();</span>
+<span class="nc" id="L502">            SAXParser parser = spf.newSAXParser();</span>
+<span class="nc" id="L503">            XMLReader last = parser.getXMLReader();</span>
+
+            // Create filter for each style sheet and chain to previous
+            // filter/reader
+<span class="nc bnc" id="L507" title="All 2 branches missed.">            for (int i = 0; i &lt; styles.length; i++) {</span>
+<span class="nc" id="L508">                String xsltFileName = STYLE_PATH + styles[i];</span>
+<span class="nc" id="L509">                URL xsltUrl = getClass().getResource(xsltFileName);</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">                if (xsltUrl == null) {</span>
+<span class="nc" id="L511">                    throw new IOException(&quot;Error opening XSLT style sheet : &quot;</span>
+                            + xsltFileName);
+                }
+<span class="nc" id="L514">                StreamSource xsltStreamSource =</span>
+<span class="nc" id="L515">                    new StreamSource(xsltUrl.openStream());</span>
+<span class="nc" id="L516">                xsltStreamSource.setSystemId(xsltUrl.toExternalForm());</span>
+<span class="nc" id="L517">                XMLFilter filter = stf.newXMLFilter(xsltStreamSource);</span>
+
+<span class="nc" id="L519">                filter.setParent(last);</span>
+<span class="nc" id="L520">                last = filter;</span>
+            }
+
+<span class="nc" id="L523">            SAXSource transformSource = new SAXSource(last, input);</span>
+
+            // Create temporary file for output
+            // TODO: we should be able to chain this directly to XMI reader
+<span class="nc" id="L527">            File tmpFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, &quot;.xmi&quot;);</span>
+<span class="nc" id="L528">            tmpFile.deleteOnExit();</span>
+<span class="nc" id="L529">            StreamResult result =</span>
+                new StreamResult(
+                    new FileOutputStream(tmpFile));
+
+<span class="nc" id="L533">            Transformer transformer = stf.newTransformer();</span>
+<span class="nc" id="L534">            transformer.transform(transformSource, result);</span>
+
+<span class="nc" id="L536">            return new InputSource(new FileInputStream(tmpFile));</span>
+
+<span class="nc" id="L538">        } catch (SAXException e) {</span>
+<span class="nc" id="L539">            throw new XmiException(e);</span>
+<span class="nc" id="L540">        } catch (ParserConfigurationException e) {</span>
+<span class="nc" id="L541">            throw new XmiException(e);</span>
+<span class="nc" id="L542">        } catch (IOException e) {</span>
+<span class="nc" id="L543">            throw new XmiException(e);</span>
+<span class="nc" id="L544">        } catch (TransformerConfigurationException e) {</span>
+<span class="nc" id="L545">            throw new XmiException(e);</span>
+<span class="nc" id="L546">        } catch (TransformerException e) {</span>
+<span class="nc" id="L547">            throw new XmiException(e);</span>
+        }
+
+    }
+
+    private InputSource serialTransform(String[] styles, InputSource input)
+        throws UmlException {
+<span class="nc" id="L554">        SAXSource myInput = new SAXSource(input);</span>
+        SAXTransformerFactory stf =
+<span class="nc" id="L556">            (SAXTransformerFactory) TransformerFactory.newInstance();</span>
+        try {
+
+<span class="nc bnc" id="L559" title="All 2 branches missed.">            for (int i = 0; i &lt; styles.length; i++) {</span>
+                // Set up source for style sheet
+<span class="nc" id="L561">                String xsltFileName = STYLE_PATH + styles[i];</span>
+
+<span class="nc" id="L563">                LOG.log(Level.INFO, &quot;Transforming with {0}&quot;, xsltFileName);</span>
+
+<span class="nc" id="L565">                URL xsltUrl = getClass().getResource(xsltFileName);</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">                if (xsltUrl == null) {</span>
+<span class="nc" id="L567">                    throw new UmlException(&quot;Error opening XSLT style sheet : &quot;</span>
+                            + xsltFileName);
+                }
+<span class="nc" id="L570">                StreamSource xsltStreamSource =</span>
+<span class="nc" id="L571">                    new StreamSource(xsltUrl.openStream());</span>
+<span class="nc" id="L572">                xsltStreamSource.setSystemId(xsltUrl.toExternalForm());</span>
+
+                // Create &amp; set up temporary output file
+<span class="nc" id="L575">                File tmpOutFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, &quot;.xmi&quot;);</span>
+<span class="nc" id="L576">                tmpOutFile.deleteOnExit();</span>
+<span class="nc" id="L577">                StreamResult result =</span>
+                    new StreamResult(new FileOutputStream(
+                        tmpOutFile));
+
+                // Create transformer and do transformation
+<span class="nc" id="L582">                Transformer transformer = stf.newTransformer(xsltStreamSource);</span>
+<span class="nc" id="L583">                transformer.transform(myInput, result);</span>
+
+<span class="nc" id="L585">                LOG.log(Level.INFO, &quot;Wrote converted XMI file - {0} converted using : {1}&quot;,</span>
+                        new Object[]{tmpOutFile, xsltFileName});
+
+                // Set up for next iteration
+<span class="nc" id="L589">                myInput =</span>
+                    new SAXSource(new InputSource(new FileInputStream(
+                        tmpOutFile)));
+<span class="nc" id="L592">                myInput.setSystemId(tmpOutFile.toURI().toURL().toExternalForm());</span>
+            }
+<span class="nc" id="L594">            return myInput.getInputSource();</span>
+<span class="nc" id="L595">        } catch (IOException e) {</span>
+<span class="nc" id="L596">            throw new UmlException(e);</span>
+<span class="nc" id="L597">        } catch (TransformerConfigurationException e) {</span>
+<span class="nc" id="L598">            throw new UmlException(e);</span>
+<span class="nc" id="L599">        } catch (TransformerException e) {</span>
+<span class="nc" id="L600">            throw new UmlException(e);</span>
+        }
+
+    }
+
+    private File copySource(InputSource input) throws IOException {
+<span class="fc" id="L606">        byte[] buf = new byte[2048];</span>
+        int len;
+
+        // Create &amp; set up temporary output file
+<span class="fc" id="L610">        File tmpOutFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, &quot;.xmi&quot;);</span>
+<span class="fc" id="L611">        tmpOutFile.deleteOnExit();</span>
+<span class="fc" id="L612">        FileOutputStream out = new FileOutputStream(tmpOutFile);</span>
+
+        // TODO: Bob says - Coding by use of side effect here.
+        // Maybe this should be done in a clearer way but it fixes
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=4978
+        // It seems that when loading an XMI that is not contained in a zip
+        // file then the InputStream given as the argument to this method
+        // can't be reused as it is at the end of the stream. In that case
+        // systemId appears to be none-null at this stage.
+        // So if systemId is not null we recreate the InputSource.
+<span class="fc" id="L622">        String systemId = input.getSystemId();</span>
+<span class="pc bpc" id="L623" title="1 of 2 branches missed.">        if (systemId != null) {</span>
+<span class="nc" id="L624">            input = new InputSource(new URL(systemId).openStream());</span>
+        }
+
+<span class="fc" id="L627">        InputStream in = input.getByteStream();</span>
+
+<span class="fc bfc" id="L629" title="All 2 branches covered.">        while ((len = in.read(buf)) &gt;= 0) {</span>
+<span class="fc" id="L630">            out.write(buf, 0, len);</span>
+        }
+<span class="fc" id="L632">        out.close();</span>
+
+<span class="fc" id="L634">        LOG.log(Level.FINE, &quot;Wrote copied XMI file to {0}&quot;, tmpOutFile);</span>
+<span class="fc" id="L635">        return tmpOutFile;</span>
+    }
+
+<span class="fc" id="L638">    private static final String UML_13_ELEMENTS[] =</span>
+    {
+        &quot;TaggedValue.value&quot;,
+        &quot;TaggedValue.tag&quot;,
+        &quot;ModelElement.templateParameter2&quot;,
+        &quot;ModelElement.templateParameter3&quot;,
+        &quot;Classifier.structuralFeature&quot;,
+        &quot;Classifier.parameter&quot;,
+        &quot;AssociationEnd.type&quot;,
+        &quot;Node.resident&quot;,
+        &quot;ElementResidence.implementationLocation&quot;,
+        &quot;TemplateParameter.modelElement&quot;,
+        &quot;TemplateParameter.modelElement2&quot;,
+        &quot;Constraint.constrainedElement2&quot;,
+        &quot;UseCase.include2&quot;,
+        &quot;StateMachine.subMachineState&quot;,
+        &quot;ClassifierRole.message1&quot;,
+        &quot;ClassifierRole.message2&quot;,
+        &quot;Message.message3&quot;,
+        &quot;Message.message4&quot;,
+        &quot;ElementImport.modelElement&quot;,
+
+        &quot;ModelElement.elementResidence&quot;,
+        &quot;ModelElement.presentation&quot;,
+        &quot;ModelElement.supplierDependency&quot;,
+        &quot;ModelElement.templateParameter2&quot;,
+        &quot;ModelElement.templateParameter3&quot;,
+        &quot;ModelElement.binding&quot;,
+        &quot;GeneralizableElement.specialization&quot;,
+        &quot;Classifier.associationEnd&quot;,
+        &quot;Classifier.participant&quot;,
+        &quot;Operation.method&quot;,
+        &quot;Stereotype.extendedElement&quot;,
+        &quot;Stereotype.requiredTag&quot;,
+        &quot;TaggedValue.stereotype&quot;,
+        &quot;Signal.context&quot;,
+        &quot;Signal.reception&quot;,
+        &quot;Signal.sendAction&quot;,
+
+        &quot;UseCase.include2&quot;,
+        &quot;UseCase.extend2&quot;,
+        &quot;ExtensionPoint.extend&quot;,
+        &quot;Link.stimulus&quot;,
+        &quot;Instance.attributeLink&quot;,
+        &quot;Action.stimulus&quot;,
+        &quot;Event.state&quot;,
+        &quot;Event.transition&quot;,
+        &quot;Transition.state&quot;,
+
+        &quot;ClassifierRole.message1&quot;,
+        &quot;ClassifierRole.message2&quot;,
+        &quot;Message.message3&quot;,
+        &quot;Message.message4&quot;,
+
+        &quot;Action.state1&quot;,
+        &quot;Action.state2&quot;,
+        &quot;Action.state3&quot;,
+        &quot;Instance.stimulus1&quot;,
+        &quot;Instance.stimulus2&quot;,
+        &quot;Instance.stimulus3&quot;,
+
+    };
+
+
+    public void elementFound(String name) {
+        // Silently ignore anything specified by caller attempt to continue
+<span class="nc bnc" id="L704" title="All 2 branches missed.">        if (ignoredElements != null) {</span>
+<span class="nc bnc" id="L705" title="All 2 branches missed.">            for (int i = 0; i &lt; ignoredElements.length; i++) {</span>
+<span class="nc bnc" id="L706" title="All 2 branches missed.">                if (name.equals(ignoredElements[i])) {</span>
+<span class="nc" id="L707">                    ignoredElementCount++;</span>
+<span class="nc" id="L708">                    return;</span>
+                }
+            }
+        }
+
+<span class="nc bnc" id="L713" title="All 2 branches missed.">        if (name.startsWith(&quot;Foundation.&quot;)) {</span>
+<span class="nc" id="L714">            uml13 = true;</span>
+<span class="nc" id="L715">            return;</span>
+        }
+
+<span class="nc bnc" id="L718" title="All 2 branches missed.">        for (int i = 0; i &lt; UML_13_ELEMENTS.length; i++) {</span>
+<span class="nc bnc" id="L719" title="All 2 branches missed.">            if (name.endsWith(UML_13_ELEMENTS[i])) {</span>
+<span class="nc" id="L720">                uml13 = true;</span>
+<span class="nc" id="L721">                return;</span>
+            }
+        }
+
+<span class="nc" id="L725">        unknownElement = true;</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">        if (unknownElementName == null) {</span>
+<span class="nc" id="L727">            unknownElementName = name;</span>
+        }
+<span class="nc" id="L729">        LOG.log(Level.SEVERE, &quot;Unknown XMI element named : &quot; + name);</span>
+
+<span class="nc" id="L731">    }</span>
+
+
+    public boolean setIgnoredElements(String[] elementNames) {
+<span class="nc bnc" id="L735" title="All 2 branches missed.">        if (elementNames == null) {</span>
+<span class="nc" id="L736">            ignoredElements = new String[] {};</span>
+        } else {
+<span class="nc" id="L738">            ignoredElements = elementNames;</span>
+        }
+<span class="nc" id="L740">        return true;</span>
+    }
+
+
+    public String[] getIgnoredElements() {
+<span class="nc" id="L745">        return ignoredElements;</span>
+    }
+
+
+    public int getIgnoredElementCount() {
+<span class="nc" id="L750">        return ignoredElementCount;</span>
+    }
+
+
+    public String getTagName() {
+<span class="nc" id="L755">        return &quot;XMI&quot;;</span>
+    }
+
+    public void addSearchPath(String path) {
+<span class="fc" id="L759">        modelImpl.addSearchPath(path);</span>
+<span class="fc" id="L760">    }</span>
+
+    public void removeSearchPath(String path) {
+<span class="nc" id="L763">        modelImpl.removeSearchPath(path);</span>
+<span class="nc" id="L764">    }</span>
+
+    public List&lt;String&gt; getSearchPath() {
+<span class="nc" id="L767">        return modelImpl.getSearchPath();</span>
+    }
+
+    public void consumeHeader(InputStream stream) {
+        try {
+<span class="fc" id="L772">            int length = stream.available();</span>
+<span class="fc" id="L773">            byte[] bytes = new byte[length];</span>
+<span class="fc" id="L774">            stream.read(bytes, 0, length);</span>
+            // we presume the stream is encoded using the default char encoding
+<span class="fc" id="L776">            xmiHeader = new String(bytes);</span>
+<span class="nc" id="L777">        } catch (IOException e) {</span>
+<span class="nc" id="L778">            LOG.log(Level.SEVERE, &quot;Exception reading XMI file header&quot;, e);</span>
+<span class="fc" id="L779">        }</span>
+<span class="fc" id="L780">    }</span>
+
+
+    public String getHeader() {
+<span class="nc" id="L784">        return xmiHeader;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssociationEndNameNotationJava.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.java</a> &gt; <span class="el_source">AssociationEndNameNotationJava.java</span></div><h1>AssociationEndNameNotationJava.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.java;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.AssociationEndNameNotation;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
+
+/**
+ * The Java notation for an associationEnd name (i.e. the  role).
+ * 
+ * @author michiel
+ */
+public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
+
+    /**
+     * The constructor.
+     * 
+     * @param associationEnd the UML element
+     */
+    public AssociationEndNameNotationJava(Object associationEnd) {
+<span class="nc" id="L62">        super(associationEnd);</span>
+<span class="nc" id="L63">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+//        return &quot;parsing.help.fig-association-end-name&quot;;
+<span class="nc" id="L70">        return &quot;Parsing in Java not yet supported&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+<span class="nc" id="L77">        ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                ArgoEventTypes.HELP_CHANGED, this,
+            &quot;Parsing in Java not yet supported&quot;));
+<span class="nc" id="L80">    }</span>
+
+    private String toString(Object modelElement, boolean useGuillemets) {
+<span class="nc" id="L83">        String name = Model.getFacade().getName(modelElement);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L85">            name = &quot;&quot;;</span>
+        }
+
+<span class="nc" id="L88">        Object visi = Model.getFacade().getVisibility(modelElement);</span>
+<span class="nc" id="L89">        String visibility = &quot;&quot;;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (visi != null) {</span>
+<span class="nc" id="L91">            visibility = NotationUtilityJava.generateVisibility(visi);</span>
+        }
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (name.length() &lt; 1) {</span>
+<span class="nc" id="L94">            visibility = &quot;&quot;;</span>
+            //this is the temporary solution for issue 1011
+        }
+
+<span class="nc" id="L98">        String stereoString = </span>
+<span class="nc" id="L99">            NotationUtilityUml.generateStereotype(modelElement, useGuillemets);</span>
+
+<span class="nc" id="L101">        return stereoString + visibility + name;</span>
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="nc" id="L106">        return toString(modelElement, settings.isUseGuillemets());</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

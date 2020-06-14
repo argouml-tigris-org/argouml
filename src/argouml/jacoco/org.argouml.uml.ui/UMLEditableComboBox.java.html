@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLEditableComboBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLEditableComboBox.java</span></div><h1>UMLEditableComboBox.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.ComboBoxEditor;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
+import javax.swing.plaf.basic.BasicComboBoxEditor;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+
+/**
+ * An editable combobox. Upon pressing enter the text entered by the user is
+ * sent as an actioncommand to the actionlistener (this). The item that's being
+ * edited is sent to the method doIt after that. The developer should implement
+ * this method
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 4, 2003
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
+ */
+public abstract class UMLEditableComboBox extends UMLComboBox2 implements
+        FocusListener {
+
+    /**
+     * The comboboxeditor for editable uml comboboxes. This has to be changed
+     * since it controls the rendering of the textfield where the user can edit
+     * the list elements. Setitem has to give the correct value. Furthermore,
+     * the standard comboboxeditor (BasicComboBoxEditor) does not support
+     * showing icons.
+     *
+     * @author jaap.branderhorst@xs4all.nl
+     * @since Jan 5, 2003
+     */
+    protected class UMLComboBoxEditor extends BasicComboBoxEditor {
+
+        /**
+         * A panel which helps us to show the editable textfield for this
+         * combobox (including the Icon).
+         *
+         * @author jaap.branderhorst@xs4all.nl
+         * @since Jan 5, 2003
+         */
+        private class UMLImagePanel extends JPanel {
+
+            /**
+             * The label that shows the icon.
+             */
+<span class="fc" id="L97">            private JLabel imageIconLabel = new JLabel();</span>
+            /**
+             * The textfield the user can edit.
+             */
+            private JTextField theTextField;
+
+            /**
+             * Constructs a UMLImagePanel
+             * @param textField The textfield the user can edit
+             * @param showIcon boolean which must be true if an icon is to be
+             * shown.
+             */
+<span class="fc" id="L109">            public UMLImagePanel(JTextField textField, boolean showIcon) {</span>
+<span class="fc" id="L110">                setLayout(new BorderLayout());</span>
+<span class="fc" id="L111">                theTextField = textField;</span>
+<span class="fc" id="L112">                setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">                if (showIcon) {</span>
+                    // we don't want to show some nasty gray background
+                    // color, now do we?
+<span class="fc" id="L116">                    imageIconLabel.setOpaque(true);</span>
+<span class="fc" id="L117">                    imageIconLabel.setBackground(theTextField.getBackground());</span>
+<span class="fc" id="L118">                    add(imageIconLabel, BorderLayout.WEST);</span>
+                }
+<span class="fc" id="L120">                add(theTextField, BorderLayout.CENTER);</span>
+<span class="fc" id="L121">                theTextField.addFocusListener(UMLEditableComboBox.this);</span>
+<span class="fc" id="L122">            }</span>
+
+            public void setText(String text) {
+<span class="nc" id="L125">                theTextField.setText(text);</span>
+<span class="nc" id="L126">            }</span>
+
+            public String getText() {
+<span class="nc" id="L129">                return theTextField.getText();</span>
+            }
+
+            /**
+             * Sets the icon. Calls repaint to redraw the panel
+             * @param i The icon to be shown.
+             */
+            public void setIcon(Icon i) {
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                if (i != null) {</span>
+<span class="nc" id="L138">                    imageIconLabel.setIcon(i);</span>
+                    // necessary to create distance between
+                    // the textfield and the icon.
+<span class="nc" id="L141">                    imageIconLabel.setBorder(BorderFactory</span>
+<span class="nc" id="L142">                            .createEmptyBorder(0, 2, 0, 2));</span>
+
+                } else {
+<span class="nc" id="L145">                    imageIconLabel.setIcon(null);</span>
+<span class="nc" id="L146">                    imageIconLabel.setBorder(null);</span>
+                }
+<span class="nc" id="L148">                imageIconLabel.invalidate();</span>
+<span class="nc" id="L149">                validate();</span>
+<span class="nc" id="L150">                repaint();</span>
+<span class="nc" id="L151">            }</span>
+
+            public void selectAll() {
+<span class="nc" id="L154">                theTextField.selectAll();</span>
+<span class="nc" id="L155">            }</span>
+
+            public void addActionListener(ActionListener l) {
+<span class="fc" id="L158">                theTextField.addActionListener(l);</span>
+<span class="fc" id="L159">            }</span>
+
+            public void removeActionListener(ActionListener l) {
+<span class="fc" id="L162">                theTextField.removeActionListener(l);</span>
+<span class="fc" id="L163">            }</span>
+
+        }
+
+        private UMLImagePanel panel;
+
+        /**
+         * True if an icon should be shown.
+         */
+        private boolean theShowIcon;
+
+
+        /**
+         * Constructor for UMLComboBoxEditor.
+         *
+         * @param showIcon true if an icon is to be shown
+         */
+<span class="fc" id="L180">        public UMLComboBoxEditor(boolean showIcon) {</span>
+<span class="fc" id="L181">            super();</span>
+<span class="fc" id="L182">            panel = new UMLImagePanel(editor, showIcon);</span>
+<span class="fc" id="L183">            setShowIcon(showIcon);</span>
+<span class="fc" id="L184">        }</span>
+
+        /*
+         * @see javax.swing.ComboBoxEditor#setItem(java.lang.Object)
+         */
+        public void setItem(Object anObject) {
+<span class="fc bfc" id="L190" title="All 2 branches covered.">            if (((UMLComboBoxModel2) getModel()).contains(anObject)) {</span>
+<span class="fc" id="L191">                editor.setText(((UMLListCellRenderer2) getRenderer())</span>
+<span class="fc" id="L192">                        .makeText(anObject));</span>
+<span class="pc bpc" id="L193" title="2 of 4 branches missed.">                if (theShowIcon &amp;&amp; (anObject != null)) {</span>
+<span class="nc" id="L194">                    panel.setIcon(ResourceLoaderWrapper.getInstance()</span>
+<span class="nc" id="L195">                            .lookupIcon(anObject));</span>
+                }
+            } else {
+<span class="fc" id="L198">                super.setItem(anObject);</span>
+            }
+
+<span class="fc" id="L201">        }</span>
+
+        /**
+         * Returns the showIcon.
+         * @return boolean
+         */
+        public boolean isShowIcon() {
+<span class="nc" id="L208">            return theShowIcon;</span>
+        }
+
+        /**
+         * Sets the showIcon.
+         * @param showIcon The showIcon to set
+         */
+        public void setShowIcon(boolean showIcon) {
+<span class="fc" id="L216">            theShowIcon = showIcon;</span>
+<span class="fc" id="L217">        }</span>
+
+        /*
+         * @see javax.swing.ComboBoxEditor#getEditorComponent()
+         */
+        public Component getEditorComponent() {
+<span class="fc" id="L223">            return panel;</span>
+        }
+
+        /*
+         * @see javax.swing.ComboBoxEditor#addActionListener(java.awt.event.ActionListener)
+         */
+        public void addActionListener(ActionListener l) {
+<span class="fc" id="L230">            panel.addActionListener(l);</span>
+<span class="fc" id="L231">        }</span>
+
+
+
+        /*
+         * @see javax.swing.ComboBoxEditor#removeActionListener(java.awt.event.ActionListener)
+         */
+        public void removeActionListener(ActionListener l) {
+<span class="fc" id="L239">            panel.removeActionListener(l);</span>
+<span class="fc" id="L240">        }</span>
+
+        /*
+         * @see javax.swing.ComboBoxEditor#selectAll()
+         */
+        public void selectAll() {
+<span class="nc" id="L246">            super.selectAll();</span>
+<span class="nc" id="L247">        }</span>
+
+        /*
+         * @see javax.swing.ComboBoxEditor#getItem()
+         */
+        public Object getItem() {
+<span class="nc" id="L253">            return panel.getText();</span>
+        }
+
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2( UMLComboBoxModel2,
+     *      Action, boolean)
+     */
+    public UMLEditableComboBox(UMLComboBoxModel2 model, Action selectAction,
+            boolean showIcon) {
+<span class="fc" id="L264">        super(model, selectAction, showIcon);</span>
+<span class="fc" id="L265">        setEditable(true);</span>
+<span class="fc" id="L266">        setEditor(new UMLComboBoxEditor(showIcon));</span>
+<span class="fc" id="L267">        getEditor().addActionListener(this);</span>
+<span class="fc" id="L268">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * TODO: From ComboBox javadoc - &quot;This method is public as an 
+     * implementation side effect. do not call or override.&quot;
+     * We should find some other way to implement this.
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L277">        super.actionPerformed(e);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (e.getSource() instanceof JTextField) {</span>
+<span class="nc" id="L279">            Object oldValue = getSelectedItem();</span>
+<span class="nc" id="L280">            ComboBoxEditor editor = getEditor();</span>
+<span class="nc" id="L281">            Object item = editor.getItem();</span>
+<span class="nc" id="L282">            doOnEdit(item);</span>
+            // next statement is necessary to update the textfield
+            // if the selection is equal to what was allready
+            // selected
+<span class="nc bnc" id="L286" title="All 2 branches missed.">            if (oldValue == getSelectedItem()) {</span>
+<span class="nc" id="L287">                getEditor().setItem(getSelectedItem());</span>
+            }
+        }
+<span class="nc" id="L290">    }</span>
+
+    /**
+     * This method is called after the user has edited the editable textfield
+     * and has press enter. ActionPerformed determines that the action is about
+     * editing the textfield and calls this method afterwards.
+     * @param item The item in the comboboxeditor. In this case it's the text of
+     * the editable textfield.
+     */
+    protected abstract void doOnEdit(Object item);
+
+    /*
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public final void focusGained(FocusEvent arg0) {
+        // ignored
+<span class="nc" id="L306">    }</span>
+
+    /*
+     * TODO: This is a temporary method of making sure the model is updated
+     * on loss of focus of a combo box. In the long term we should attempt to
+     * update the model on each keypress.
+     * 
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     */
+    public final void focusLost(FocusEvent arg0) {
+<span class="nc" id="L316">        doOnEdit(getEditor().getItem());</span>
+<span class="nc" id="L317">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

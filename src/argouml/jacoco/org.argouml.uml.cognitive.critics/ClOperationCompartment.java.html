@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClOperationCompartment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">ClOperationCompartment.java</span></div><h1>ClOperationCompartment.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
+import org.argouml.ui.Clarifier;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.tigris.gef.presentation.Fig;
+
+
+
+/**
+ * The clarifier (red wavy line) for the operation compartment.
+ *
+ */
+<span class="nc" id="L59">public class ClOperationCompartment implements Clarifier {</span>
+<span class="nc" id="L60">    private static ClOperationCompartment theInstance =</span>
+	new ClOperationCompartment();
+    private static final int WAVE_LENGTH = 4;
+    private static final int WAVE_HEIGHT = 2;
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    private Fig fig;
+
+    /**
+     * @return Returns the theInstance.
+     */
+    public static ClOperationCompartment getTheInstance() {
+<span class="nc" id="L73">        return theInstance;</span>
+    }
+    
+    /*
+     * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
+     */
+<span class="nc" id="L79">    public void setFig(Fig f) { fig = f; }</span>
+
+    /*
+     * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
+     */
+<span class="nc" id="L84">    public void setToDoItem(ToDoItem i) { }</span>
+
+    /*
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
+     *      int, int)
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">	if (fig instanceof FigCompartmentBox) {</span>
+<span class="nc" id="L92">            final FigCompartment fc = ((FigCompartmentBox)</span>
+<span class="nc" id="L93">	            fig).getCompartment(Model.getMetaTypes().getOperation());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (fc == null) {</span>
+<span class="nc" id="L95">                return;</span>
+            }
+
+	    // added by Eric Lefevre 13 Mar 1999: we must check if the
+	    // FigText for operations is drawn before drawing things
+	    // over it
+<span class="nc bnc" id="L101" title="All 2 branches missed.">	    if (!fc.isVisible()) {</span>
+<span class="nc" id="L102">		fig = null;</span>
+<span class="nc" id="L103">		return;</span>
+	    }
+
+<span class="nc" id="L106">	    Rectangle fr = fc.getBounds();</span>
+<span class="nc" id="L107">	    int left  = fr.x + 10;</span>
+<span class="nc" id="L108">	    int height = fr.y + fr.height - 7;</span>
+<span class="nc" id="L109">	    int right = fr.x + fr.width - 10;</span>
+<span class="nc" id="L110">	    g.setColor(Color.red);</span>
+<span class="nc" id="L111">	    int i = left;</span>
+	    while (true) {
+<span class="nc" id="L113">		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);</span>
+<span class="nc" id="L114">		i += WAVE_LENGTH;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">		if (i &gt;= right) {</span>
+<span class="nc" id="L116">		    break;</span>
+		}
+<span class="nc" id="L118">		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);</span>
+<span class="nc" id="L119">		i += WAVE_LENGTH;</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">		if (i &gt;= right) {</span>
+<span class="nc" id="L121">		    break;</span>
+		}
+<span class="nc" id="L123">		g.drawLine(i, height, i + WAVE_LENGTH,</span>
+			   height + WAVE_HEIGHT / 2);
+<span class="nc" id="L125">		i += WAVE_LENGTH;</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		if (i &gt;= right) {</span>
+<span class="nc" id="L127">		    break;</span>
+		}
+<span class="nc" id="L129">		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,</span>
+			   height);
+<span class="nc" id="L131">		i += WAVE_LENGTH;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (i &gt;= right) {</span>
+<span class="nc" id="L133">		    break;</span>
+		}
+	    }
+<span class="nc" id="L136">	    fig = null;</span>
+	}
+<span class="nc" id="L138">    }</span>
+
+    /*
+     * @see javax.swing.Icon#getIconWidth()
+     */
+<span class="nc" id="L143">    public int getIconWidth() { return 0; }</span>
+
+    /*
+     * @see javax.swing.Icon#getIconHeight()
+     */
+<span class="nc" id="L148">    public int getIconHeight() { return 0; }</span>
+
+    /*
+     * @see org.argouml.ui.Clarifier#hit(int, int)
+     */
+    public boolean hit(int x, int y) {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">	if (!(fig instanceof FigCompartmentBox)) {</span>
+<span class="nc" id="L155">	    return false;</span>
+	}
+<span class="nc" id="L157">	FigCompartment compartment = ((FigCompartmentBox) fig)</span>
+<span class="nc" id="L158">	    .getCompartment(Model.getMetaTypes().getOperation());</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">	if (compartment == null) {</span>
+<span class="nc" id="L160">	    return false;</span>
+	}
+<span class="nc" id="L162">	Rectangle fr = compartment.getBounds();</span>
+<span class="nc" id="L163">	boolean res = fr.contains(x, y);</span>
+<span class="nc" id="L164">	fig = null;</span>
+<span class="nc" id="L165">	return res;</span>
+    }
+
+} /* end class ClOperationCompartment */
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

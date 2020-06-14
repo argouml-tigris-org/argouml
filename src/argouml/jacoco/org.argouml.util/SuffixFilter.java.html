@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SuffixFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">SuffixFilter.java</span></div><h1>SuffixFilter.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+import java.io.File;
+
+import javax.swing.filechooser.FileFilter;
+
+/**
+ * This class handles file extensions.
+ *
+ */
+public class SuffixFilter extends FileFilter {
+
+    private final String[] suffixes;
+    private final String desc;
+
+    /**
+     * Construct a file filter files with the given suffix and description.
+     *
+     * @param suffix the suffix string
+     * @param d the file type description
+     */
+<span class="nc" id="L60">    public SuffixFilter(String suffix, String d) {</span>
+<span class="nc" id="L61">        suffixes = new String[] {suffix};</span>
+<span class="nc" id="L62">	desc = d;</span>
+<span class="nc" id="L63">    }</span>
+
+    /**
+     * Construct a filter for an array of suffixes
+     *
+     * @param s the suffixes string
+     * @param d the file type description
+     */
+<span class="nc" id="L71">    public SuffixFilter(String[] s, String d) {</span>
+<span class="nc" id="L72">        suffixes = new String[s.length];</span>
+<span class="nc" id="L73">        System.arraycopy(s, 0, suffixes, 0, s.length);</span>
+<span class="nc" id="L74">        desc = d;</span>
+<span class="nc" id="L75">    }</span>
+    
+    /*
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
+    public boolean accept(File f) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">	if (f == null) {</span>
+<span class="nc" id="L82">            return false;</span>
+        }
+<span class="nc bnc" id="L84" title="All 2 branches missed.">	if (f.isDirectory()) {</span>
+<span class="nc" id="L85">            return true;</span>
+        }
+<span class="nc" id="L87">	String extension = getExtension(f);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (String suffix : suffixes) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (suffix.equalsIgnoreCase(extension)) {</span>
+<span class="nc" id="L90">                return true;</span>
+            }
+        }
+<span class="nc" id="L93">	return false;</span>
+    }
+
+    /**
+     * @param f the file to get the extension from
+     * @return the extension string (without the dot)
+     */
+    public static String getExtension(File f) {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">	if (f == null) {</span>
+<span class="nc" id="L102">            return null;</span>
+        }
+<span class="nc" id="L104">	return getExtension(f.getName());</span>
+    }
+
+    /**
+     * @param filename the name of the file to get the extension from
+     * @return the extension string (without the dot)
+     */
+    public static String getExtension(String filename) {
+<span class="nc" id="L112">	int i = filename.lastIndexOf('.');</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">	if (i &gt; 0 &amp;&amp; i &lt; filename.length() - 1) {</span>
+<span class="nc" id="L114">	    return filename.substring(i + 1).toLowerCase();</span>
+	}
+<span class="nc" id="L116">	return null;</span>
+    }
+
+    /*
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
+    public String getDescription() {
+<span class="nc" id="L123">        StringBuffer result = new StringBuffer(desc);</span>
+<span class="nc" id="L124">        result.append(&quot; (&quot;);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        for (int i = 0; i &lt; suffixes.length; i++) {</span>
+<span class="nc" id="L126">            result.append('.');</span>
+<span class="nc" id="L127">            result.append(suffixes[i]);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            if (i &lt; suffixes.length - 1) {</span>
+<span class="nc" id="L129">                result.append(&quot;, &quot;);</span>
+            }
+        }
+<span class="nc" id="L132">        result.append(')');</span>
+<span class="nc" id="L133">        return result.toString();</span>
+    }
+
+    /**
+     * @return Returns the default or preferred suffix for this type of file.
+     */
+    public String getSuffix() {
+<span class="nc" id="L140">        return suffixes[0];</span>
+    }
+
+    /**
+     * @return Returns the list of all acceptable suffixes.
+     */
+    public String[] getSuffixes() {
+<span class="nc" id="L147">        return suffixes;</span>
+    }
+    
+    /**
+     * Adding this function enables easy selection of suffixfilters
+     * e.g. in a combobox.
+     *
+     * {@inheritDoc}
+     */
+    public String toString() {
+<span class="nc" id="L157">        return getDescription();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

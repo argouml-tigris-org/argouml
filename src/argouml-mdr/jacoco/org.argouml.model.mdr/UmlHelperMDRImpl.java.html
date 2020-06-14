@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UmlHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">UmlHelperMDRImpl.java</span></div><h1>UmlHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.model.Model;
+import org.argouml.model.UmlHelper;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.statemachines.Event;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.UmlAssociation;
+
+/**
+ * Helper class for UML metamodel.
+ * 
+ * @since ARGO0.11.2
+ * @author Thierry Lach
+ */
+class UmlHelperMDRImpl implements UmlHelper {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Don't allow instantiation.
+     * 
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L91">    UmlHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L92">        modelImpl = implementation;</span>
+<span class="fc" id="L93">    }</span>
+
+    public void addListenersToModel(Object model) {
+        // Nothing to do - we get all events automatically
+<span class="nc" id="L97">    }</span>
+
+    /*
+     * @see org.argouml.model.UmlHelper#deleteCollection(java.util.Collection)
+     */
+    public void deleteCollection(Collection col) {
+<span class="nc" id="L103">        Iterator it = col.iterator();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L105">            modelImpl.getUmlFactory().delete(it.next());</span>
+        }
+<span class="nc" id="L107">    }</span>
+
+    /*
+     * @see org.argouml.model.UmlHelper#getSource(java.lang.Object)
+     */
+    public Object getSource(Object relationship) {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (relationship instanceof Message) {</span>
+<span class="nc" id="L114">            Message message = (Message) relationship;</span>
+<span class="nc" id="L115">            return message.getSender();</span>
+        }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (relationship instanceof Relationship) {</span>
+            // handles all children of relationship including extend and
+            // include which are not members of core
+<span class="nc" id="L120">            return modelImpl.getCoreHelper().getSource(relationship);</span>
+        }
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (relationship instanceof Transition) {</span>
+<span class="nc" id="L123">            return modelImpl.getStateMachinesHelper().getSource(relationship);</span>
+        }
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (relationship instanceof AssociationEnd) {</span>
+<span class="nc" id="L126">            return modelImpl.getCoreHelper().getSource(relationship);</span>
+        }
+<span class="nc" id="L128">        throw new IllegalArgumentException();</span>
+    }
+
+    /*
+     * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
+     */
+    public Object getDestination(Object relationship) {
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (relationship instanceof Message) {</span>
+<span class="nc" id="L136">            Message message = (Message) relationship;</span>
+<span class="nc" id="L137">            return message.getSender();</span>
+        }
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (relationship instanceof Relationship) {</span>
+            // handles all children of relationship including extend and
+            // include which are not members of core
+<span class="nc" id="L142">            return modelImpl.getCoreHelper().getDestination(relationship);</span>
+        }
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (relationship instanceof Transition) {</span>
+<span class="nc" id="L145">            return modelImpl.getStateMachinesHelper().</span>
+<span class="nc" id="L146">                    getDestination(relationship);</span>
+        }
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (relationship instanceof AssociationEnd) {</span>
+<span class="nc" id="L149">            return modelImpl.getCoreHelper().getDestination(relationship);</span>
+        }
+<span class="nc" id="L151">        throw new IllegalArgumentException();</span>
+    }
+    
+
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public void move(Object parent, Object element, Direction direction) {
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (element instanceof Argument) {</span>
+<span class="nc" id="L160">            final Argument arg = (Argument) element;</span>
+<span class="nc" id="L161">            final Action action = arg.getAction();</span>
+<span class="nc" id="L162">            final List&lt;Argument&gt; f = action.getActualArgument();</span>
+<span class="nc" id="L163">            final int oldIndex = f.indexOf(arg);</span>
+<span class="nc" id="L164">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L165">            f.remove(arg);</span>
+<span class="nc" id="L166">            f.add(newIndex, arg);</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        } else if (element instanceof Action) {</span>
+<span class="nc" id="L168">            final Action act = (Action) element;</span>
+<span class="nc" id="L169">            final ActionSequence actionSequence = act.getActionSequence();</span>
+<span class="nc" id="L170">            final List&lt;Action&gt; f = actionSequence.getAction();</span>
+<span class="nc" id="L171">            final int oldIndex = f.indexOf(act);</span>
+<span class="nc" id="L172">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L173">            f.remove(actionSequence);</span>
+<span class="nc" id="L174">            f.add(newIndex, actionSequence);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        } else if (element instanceof AssociationEnd) {</span>
+<span class="nc" id="L176">            final AssociationEnd assEnd = (AssociationEnd) element;</span>
+<span class="nc" id="L177">            final UmlAssociation assoc = assEnd.getAssociation();</span>
+<span class="nc" id="L178">            final List&lt;AssociationEnd&gt; f =  assoc.getConnection();</span>
+<span class="nc" id="L179">            final int oldIndex = f.indexOf(assEnd);</span>
+<span class="nc" id="L180">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L181">            f.remove(assEnd);</span>
+<span class="nc" id="L182">            f.add(newIndex, assEnd);</span>
+<span class="nc bnc" id="L183" title="All 4 branches missed.">        } else if (element instanceof Attribute &amp;&amp; parent instanceof AssociationEnd) {</span>
+<span class="nc" id="L184">            final Attribute attr = (Attribute) element;</span>
+<span class="nc" id="L185">            final AssociationEnd assocEnd = attr.getAssociationEnd();</span>
+<span class="nc" id="L186">            final List&lt;Attribute&gt; f = assocEnd.getQualifier();</span>
+<span class="nc" id="L187">            final int oldIndex = f.indexOf(assocEnd);</span>
+<span class="nc" id="L188">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L189">            f.remove(attr);</span>
+<span class="nc" id="L190">            f.add(newIndex, attr);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        } else if (element instanceof Feature) {</span>
+<span class="nc" id="L192">            final Feature att = (Feature) element;</span>
+<span class="nc" id="L193">            final Classifier cls = att.getOwner();</span>
+<span class="nc" id="L194">            final List f = Model.getFacade().getFeatures(cls);</span>
+<span class="nc" id="L195">            final int oldIndex = f.indexOf(att);</span>
+<span class="nc" id="L196">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L197">            Model.getCoreHelper().removeFeature(cls, att);</span>
+<span class="nc" id="L198">            Model.getCoreHelper().addFeature(cls, newIndex, att);</span>
+<span class="nc bnc" id="L199" title="All 4 branches missed.">        } else if (element instanceof Parameter &amp;&amp; parent instanceof Event) {</span>
+<span class="nc" id="L200">            final Parameter param = (Parameter) element;</span>
+<span class="nc" id="L201">            final Event event = (Event) parent;</span>
+<span class="nc" id="L202">            final List&lt;Parameter&gt; f = event.getParameter();</span>
+<span class="nc" id="L203">            final int oldIndex = f.indexOf(param);</span>
+<span class="nc" id="L204">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L205">            f.remove(param);</span>
+<span class="nc" id="L206">            f.add(newIndex, param);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        } else if (element instanceof Parameter) {</span>
+<span class="nc" id="L208">            final Parameter param = (Parameter) element;</span>
+<span class="nc" id="L209">            final BehavioralFeature bf = param.getBehavioralFeature();</span>
+<span class="nc" id="L210">            final List&lt;Parameter&gt; f = bf.getParameter();</span>
+<span class="nc" id="L211">            final int oldIndex = f.indexOf(param);</span>
+<span class="nc" id="L212">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L213">            f.remove(param);</span>
+<span class="nc" id="L214">            f.add(newIndex, param);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        } else if (element instanceof EnumerationLiteral) {</span>
+<span class="nc" id="L216">            final EnumerationLiteral lit = (EnumerationLiteral) element;</span>
+<span class="nc" id="L217">            final Enumeration enumeration = lit.getEnumeration();</span>
+<span class="nc" id="L218">            final List&lt;EnumerationLiteral&gt; f = enumeration.getLiteral();</span>
+<span class="nc" id="L219">            final int oldIndex = f.indexOf(lit);</span>
+<span class="nc" id="L220">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L221">            f.remove(lit);</span>
+<span class="nc" id="L222">            f.add(newIndex, lit);</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">        } else if (element instanceof ExtensionPoint &amp;&amp; parent instanceof Extend) {</span>
+<span class="nc" id="L224">            final ExtensionPoint ep = (ExtensionPoint) element;</span>
+<span class="nc" id="L225">            final Extend extend = (Extend) parent;</span>
+<span class="nc" id="L226">            final List&lt;ExtensionPoint&gt; f = extend.getExtensionPoint();</span>
+<span class="nc" id="L227">            final int oldIndex = f.indexOf(ep);</span>
+<span class="nc" id="L228">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L229">            f.remove(ep);</span>
+<span class="nc" id="L230">            f.add(newIndex, ep);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        } else if (element instanceof LinkEnd) {</span>
+<span class="nc" id="L232">            final LinkEnd le = (LinkEnd) element;</span>
+<span class="nc" id="L233">            final Link link = le.getLink();</span>
+<span class="nc" id="L234">            final List f = new ArrayList(Model.getFacade().getConnections(link));</span>
+<span class="nc" id="L235">            final int oldIndex = f.indexOf(le);</span>
+<span class="nc" id="L236">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L237">            f.remove(le);</span>
+<span class="nc" id="L238">            f.add(newIndex, le);</span>
+<span class="nc" id="L239">            Model.getCoreHelper().setConnections(link, f);</span>
+<span class="nc bnc" id="L240" title="All 4 branches missed.">        } else if (element instanceof ExtensionPoint &amp;&amp; parent instanceof UseCase) {</span>
+<span class="nc" id="L241">            final ExtensionPoint ep = (ExtensionPoint) element;</span>
+<span class="nc" id="L242">            final UseCase extend = ep.getUseCase();</span>
+<span class="nc" id="L243">            final List f = new ArrayList(Model.getFacade().getExtensionPoints(extend));</span>
+<span class="nc" id="L244">            final int oldIndex = f.indexOf(ep);</span>
+<span class="nc" id="L245">            final int newIndex = newPosition(oldIndex, f.size(), direction);</span>
+<span class="nc" id="L246">            f.remove(ep);</span>
+<span class="nc" id="L247">            f.add(newIndex, ep);</span>
+<span class="nc" id="L248">            Model.getUseCasesHelper().setExtensionPoints(extend, f);</span>
+        }
+<span class="nc" id="L250">    }</span>
+    
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public boolean isMovable(Object metaType) {
+<span class="nc" id="L256">        final Class&lt;?&gt;[] movableMetaType = new Class&lt;?&gt; [] {</span>
+            Action.class, 
+            Argument.class, 
+            AssociationEnd.class, 
+            Attribute.class, 
+            EnumerationLiteral.class,
+            Extend.class,
+            ExtensionPoint.class,
+            Feature.class, 
+            LinkEnd.class,
+            Operation.class, 
+            Parameter.class};
+<span class="nc" id="L268">        return Arrays.asList(movableMetaType).contains(metaType);</span>
+    }
+    
+    
+    private int newPosition(int index, int size, Direction direction) {
+        final int posn;
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (direction == Direction.DOWN) {</span>
+<span class="nc" id="L275">            posn = index + 1;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        } else if (direction == Direction.UP) {</span>
+<span class="nc" id="L277">            posn = index - 1;</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">        } else if (direction == Direction.TOP) {</span>
+<span class="nc" id="L279">            posn = 0;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        } else if (direction == Direction.BOTTOM) {</span>
+<span class="nc" id="L281">            posn = size - 1;</span>
+        } else {
+<span class="nc" id="L283">            posn = 0;</span>
+        }
+<span class="nc" id="L285">        return posn;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

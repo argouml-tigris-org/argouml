@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigCompartmentBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">FigCompartmentBox.java</span></div><h1>FigCompartmentBox.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// $Id$
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.base.SelectionButtons;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
+
+/**
+ * Class to display graphics for a node with compartments in a diagram.
+ * &lt;p&gt;
+ *
+ * The leaf descendants of this class shall add the compartments in top to
+ * bottom order.
+ * &lt;p&gt;
+ *
+ * It deals with highlighting editable compartments.
+ * &lt;p&gt;
+ *
+ * All descendants of this class have the bigPort filled with the main fig fill
+ * color, with line border.
+ * &lt;p&gt;
+ *
+ * The name, keyword and stereotype are shown in transparent figs without
+ * border, but their size is reduced so that they fit within the border of the
+ * borderFig.
+ */
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">public abstract class FigCompartmentBox extends FigNodeModelElement {</span>
+
+<span class="fc" id="L90">    private static final Logger LOG =</span>
+<span class="fc" id="L91">        Logger.getLogger(FigCompartmentBox.class.getName());</span>
+
+
+
+    /**
+     * Default bounds for a compartment.
+     */
+<span class="fc" id="L98">    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS</span>
+        = new Rectangle(
+            X0, Y0 + 20 /* 20 = height of name fig ?*/,
+            WIDTH, ROWHEIGHT + 2 /* 2*LINE_WIDTH?  or extra padding? */ );
+
+<span class="fc" id="L103">    private List&lt;FigCompartment&gt; compartments =</span>
+        new ArrayList&lt;FigCompartment&gt;();
+
+    /**
+     * Buffer the calculated dimensions of the compartments for later use.
+     */
+    protected Dimension containerBox;
+
+    /**
+     * Initialization shared by all constructors.
+     */
+    private void initialize() {
+        // Set properties of the stereotype box.
+<span class="fc" id="L116">        getStereotypeFig().setHeight(STEREOHEIGHT + LINE_WIDTH);</span>
+
+        /*
+         * The nameFig is transparent, since this is a box and the fill color is
+         * drawn by the bigPort.
+         */
+<span class="fc" id="L122">        getNameFig().setFillColor(null);</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Overrule this if a rectangle is not usable.
+     *
+     * @return the Fig to be used as bigPort
+     */
+    protected Fig createBigPortFig() {
+<span class="fc" id="L131">        Fig b = new FigRect(X0, Y0, 0, 0, LINE_COLOR, FILL_COLOR);</span>
+<span class="fc" id="L132">        return b;</span>
+    }
+
+    /**
+     * Construct a Fig with owner, bounds, and settings.
+     *
+     * @param owner the model element that owns this fig
+     * @param bounds the rectangle defining the bounds
+     * @param settings the rendering settings
+     */
+    public FigCompartmentBox(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L144">        super(owner, bounds, settings);</span>
+<span class="fc" id="L145">        initialize();</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Get the compartment that lists model elements of the given type.
+     * This can also be used to test if a Fig supports a particular type
+     * of compartment by checking for a null return.
+     * @param metaType the model element type for which the compartment is
+     * required.
+     * @return a compartment fig or null if the compartment is not contained.
+     */
+    public FigCompartment getCompartment(Object metaType) {
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        for (FigCompartment f : compartments) {</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">            if (f.getCompartmentType() == metaType) {</span>
+<span class="fc" id="L159">                return f;</span>
+            }
+<span class="fc" id="L161">        }</span>
+<span class="fc" id="L162">        return null;</span>
+    }
+
+    /**
+     * Return true of a compartment exists and is visible
+     * @param metaType the model element type for which the compartment is
+     * required.
+     * @return true if the compartment exists and is visible
+     */
+    public boolean isCompartmentVisible(Object metaType) {
+<span class="fc" id="L172">        FigCompartment f = getCompartment(metaType);</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (f == null) {</span>
+<span class="fc" id="L174">            return false;</span>
+        }
+<span class="fc" id="L176">        return f.isVisible();</span>
+    }
+
+    protected List&lt;FigCompartment&gt; getCompartments() {
+<span class="nc" id="L180">        return compartments;</span>
+    }
+
+    @Override
+    public void addFig(Fig fig) {
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (fig instanceof FigCompartment) {</span>
+<span class="fc" id="L186">            addCompartment((FigCompartment) fig);</span>
+        }
+<span class="fc" id="L188">        super.addFig(fig);</span>
+<span class="fc" id="L189">    }</span>
+
+    private void addCompartment(FigCompartment c) {
+<span class="pc bpc" id="L192" title="2 of 4 branches missed.">        assert !compartments.contains(c);</span>
+<span class="fc" id="L193">        addFig(c.getSeparatorFig());</span>
+<span class="fc" id="L194">        compartments.add(c);</span>
+<span class="fc" id="L195">    }</span>
+
+    protected void createCompartments() {
+<span class="fc" id="L198">        Object owner = getOwner();</span>
+<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (Model.getUmlFactory().isContainmentValid(</span>
+<span class="fc" id="L200">                Model.getMetaTypes().getAttribute(),</span>
+<span class="fc" id="L201">                getOwner())) {</span>
+<span class="fc" id="L202">            FigCompartment fc = new FigAttributesCompartment(</span>
+<span class="fc" id="L203">                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());</span>
+<span class="fc" id="L204">            addFig(fc);</span>
+        }
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (Model.getUmlFactory().isContainmentValid(</span>
+<span class="fc" id="L207">                Model.getMetaTypes().getEnumerationLiteral(),</span>
+<span class="fc" id="L208">                getOwner())) {</span>
+<span class="fc" id="L209">            FigCompartment fc = new FigEnumLiteralsCompartment(</span>
+<span class="fc" id="L210">                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());</span>
+<span class="fc" id="L211">            addFig(fc);</span>
+        }
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">        if (Model.getUmlFactory().isContainmentValid(</span>
+<span class="fc" id="L214">                Model.getMetaTypes().getOperation(),</span>
+<span class="fc" id="L215">                getOwner())) {</span>
+<span class="fc" id="L216">            FigCompartment fc = new FigOperationsCompartment(</span>
+<span class="fc" id="L217">                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());</span>
+<span class="fc" id="L218">            addFig(fc);</span>
+        }
+<span class="fc" id="L220">    }</span>
+
+
+    protected int getVisibleCompartmentCount() {
+<span class="fc" id="L224">        int result = 0;</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">        for (int i = 0; i &lt; compartments.size(); i++) {</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">            result += compartments.get(i).isVisible() ? 1 : 0;</span>
+        }
+<span class="fc" id="L228">        return result;</span>
+    }
+
+    @Override
+    public Dimension getMinimumSize() {
+        // Use &quot;aSize&quot; to build up the minimum size. Start with the size of the
+        // name compartment and build up.
+<span class="fc" id="L235">        Dimension aSize = getNameFig().getMinimumSize();</span>
+
+        /*
+         * Only take into account the stereotype width, not the height, since
+         * the height is included in the name fig:
+         */
+<span class="fc" id="L241">        aSize = ArgoFigUtil.addChildWidth(aSize, getStereotypeFig());</span>
+
+        /* Add the height of all the compartments (if there are any),
+         * and check their minimum width: */
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        for (FigCompartment c : compartments) {</span>
+<span class="fc" id="L246">            aSize = ArgoFigUtil.addChildDimensions(aSize, c);</span>
+<span class="fc" id="L247">        }</span>
+
+        /* We want to maintain a minimum width for the fig. Also, add the border
+         * dimensions to the minimum space required for its contents:
+         */
+<span class="fc" id="L252">        aSize.width = Math.max(WIDTH, aSize.width);</span>
+
+<span class="fc" id="L254">        aSize = addCompartmentBoxSurroundings(aSize);</span>
+
+<span class="fc" id="L256">        return aSize;</span>
+    }
+
+    /**
+     * Increase the size of the given box with the area around the
+     * compartments.
+     *
+     * @param box the minimum box size needed for the compartments
+     * @return the dimensions of the complete fig
+     */
+    protected Dimension addCompartmentBoxSurroundings(Dimension box) {
+<span class="fc" id="L267">        containerBox = new Dimension(box);</span>
+<span class="fc" id="L268">        box.width += 2 * getLineWidth();</span>
+<span class="fc" id="L269">        box.height += 2 * getLineWidth();</span>
+<span class="fc" id="L270">        return box;</span>
+    }
+
+    /**
+     * Given the outside dimensions and location of the Fig, calculate
+     * the position and size of the box for the compartments.
+     * The compartments are located inside the complete fig. For a
+     * rectangle (i.e. the default implementation), only the line-width
+     * of the outside box needs to be added.
+     * Other Figs may have other shapes, e.g. a Use Case has the
+     * box located inside an ellipse. So, they need to overrule this method.
+     *
+     * @param x outside top left
+     * @param y outside top left
+     * @param w outside dimension, including line-width
+     * @param h outside dimension, including line-width
+     * @return the location and area to be used by the compartments
+     */
+    protected Rectangle calculateCompartmentBoxDimensions(
+            final int x, final int y, final int w, final int h) {
+<span class="fc" id="L290">        return new Rectangle(</span>
+<span class="fc" id="L291">                x + getLineWidth(),</span>
+<span class="fc" id="L292">                y + getLineWidth(),</span>
+<span class="fc" id="L293">                w - 2 * getLineWidth(),</span>
+<span class="fc" id="L294">                h - 2 * getLineWidth());</span>
+    }
+
+    /**
+     * Sets the bounds, but the size will be at least the one returned by
+     * {@link #getMinimumSize()}, unless checking of size is disabled.
+     * &lt;p&gt;
+     *
+     * If the required height is bigger, then the additional height is equally
+     * distributed among all compartments, such that the accumulated height of
+     * all visible figs equals the demanded height.
+     *
+     * @param x Desired X coordinate of upper left corner
+     *
+     * @param y Desired Y coordinate of upper left corner
+     *
+     * @param width Desired width of the Fig
+     *
+     * @param height Desired height of the Fig
+     *
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    @Override
+    protected void setStandardBounds(final int x, final int y, final int w,
+            final int h) {
+
+        // Save our old boundaries so it can be used in property message later
+<span class="fc" id="L321">        Rectangle oldBounds = getBounds();</span>
+
+        // Make sure we don't try to set things smaller than the minimum
+<span class="fc" id="L324">        Dimension minimumSize = getMinimumSize();</span>
+<span class="fc" id="L325">        int newW = Math.max(w, minimumSize.width);</span>
+<span class="fc" id="L326">        int newH = Math.max(h, minimumSize.height);</span>
+
+        /* The box for the compartments is somewhere
+         * inside the outside bounds: */
+<span class="fc" id="L330">        Rectangle box = calculateCompartmentBoxDimensions(</span>
+                x, y, newW, newH);
+
+<span class="fc" id="L333">        int currentHeight = 0;</span>
+
+<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (getStereotypeFig().isVisible()) {</span>
+<span class="fc" id="L336">            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;</span>
+<span class="fc" id="L337">            getNameFig().setTopMargin(stereotypeHeight);</span>
+<span class="fc" id="L338">            getStereotypeFig().setBounds(</span>
+                    box.x,
+                    box.y,
+                    box.width,
+                    stereotypeHeight);
+<span class="fc" id="L343">        } else {</span>
+<span class="nc" id="L344">            getNameFig().setTopMargin(0);</span>
+        }
+
+        /* Now the new nameFig height will include the stereotype height: */
+<span class="fc" id="L348">        Dimension nameMin = getNameFig().getMinimumSize();</span>
+<span class="fc" id="L349">        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);</span>
+
+<span class="fc" id="L351">        getNameFig().setBounds(box.x, box.y,</span>
+                box.width, minNameHeight);
+
+        /* The new height can not be less than the name height: */
+        /*
+         * TODO: Is this needed/correct?
+         * For when all compartments are hidden?
+         */
+<span class="fc" id="L359">        newH = Math.max(minNameHeight + 2 * getLineWidth(), newH);</span>
+
+<span class="fc" id="L361">        currentHeight += minNameHeight;</span>
+
+<span class="fc" id="L363">        int requestedHeight = box.height - currentHeight;</span>
+<span class="fc" id="L364">        int neededHeight = 0;</span>
+        /* Calculate the minimum needed height for all the compartments:*/
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        for (FigCompartment c : compartments) {</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">            if (c.isVisible()) {</span>
+<span class="fc" id="L368">                neededHeight += c.getMinimumSize().height;</span>
+            }
+<span class="fc" id="L370">        }</span>
+
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        for (FigCompartment c : compartments) {</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">            if (c.isVisible()) {</span>
+<span class="fc" id="L374">                int compartmentHeight = c.getMinimumSize().height;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">                if (requestedHeight &gt; neededHeight) {</span>
+                    /*
+                     * Distribute the extra height over the visible
+                     * compartments:
+                     */
+<span class="fc" id="L380">                    compartmentHeight += (requestedHeight - neededHeight)</span>
+<span class="fc" id="L381">                            / getVisibleCompartmentCount();</span>
+                }
+<span class="fc" id="L383">                setCompartmentBounds(c,</span>
+                        new Rectangle(
+                                box.x,
+                                box.y + currentHeight,
+                                box.width,
+                                compartmentHeight),
+                        new Rectangle(x, y, newW, newH));
+<span class="fc" id="L390">                currentHeight += compartmentHeight;</span>
+            }
+<span class="fc" id="L392">        }</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">        if (requestedHeight &lt; neededHeight) {</span>
+            /* Increase the height of the fig: */
+<span class="fc" id="L395">            newH += neededHeight - requestedHeight;</span>
+        }
+        /*
+         * If requested height equals needed height then do nothing; it fits
+         * exactly.
+         */
+
+        /* Finally set the bounds of the big box and the border fig: */
+<span class="fc" id="L403">        getBigPort().setBounds(x, y, newW, newH);</span>
+
+        // Now force calculation of the bounds of the figure, update the edges
+        // and trigger anyone who's listening to see if the &quot;bounds&quot; property
+        // has changed.
+
+<span class="fc" id="L409">        calcBounds();</span>
+<span class="fc" id="L410">        updateEdges();</span>
+
+<span class="fc" id="L412">        LOG.log(Level.FINE,</span>
+                &quot;Bounds change : old - {0}, new - {1}&quot;,
+<span class="fc" id="L414">                new Object[]{oldBounds, getBounds()});</span>
+
+<span class="fc" id="L416">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L417">    }</span>
+
+    /**
+     * Set the bounds of the compartment.
+     *
+     * @param c the compartment
+     * @param cb the new compartment bounds
+     * @param ob the new outside fig bounds
+     */
+    protected void setCompartmentBounds(FigCompartment c,
+            Rectangle cb, Rectangle ob) {
+<span class="fc" id="L428">        Rectangle r = new Rectangle();</span>
+<span class="fc" id="L429">        r.y = cb.y;</span>
+<span class="fc" id="L430">        r.height = getLineWidth();</span>
+<span class="fc" id="L431">        r.width = ob.width;</span>
+<span class="fc" id="L432">        r.x = ob.x;</span>
+<span class="fc" id="L433">        c.setExternalSeparatorFigBounds(r);</span>
+<span class="fc" id="L434">        c.setBounds(cb.x, cb.y + 1, cb.width, cb.height - 1);</span>
+<span class="fc" id="L435">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    @Override
+    public void translate(int dx, int dy) {
+<span class="fc" id="L442">        super.translate(dx, dy);</span>
+<span class="fc" id="L443">        Editor ce = Globals.curEditor();</span>
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">        if (ce != null) {</span>
+<span class="nc" id="L445">            Selection sel = ce.getSelectionManager().findSelectionFor(this);</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">            if (sel instanceof SelectionButtons) {</span>
+<span class="nc" id="L447">                ((SelectionButtons) sel).hideButtons();</span>
+            }
+        }
+<span class="fc" id="L450">    }</span>
+
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+<span class="nc" id="L454">        super.modelChanged(mee);</span>
+<span class="nc bnc" id="L455" title="All 4 branches missed.">        if (mee instanceof AssociationChangeEvent</span>
+                || mee instanceof AttributeChangeEvent) {
+<span class="nc" id="L457">            Runnable doWorkRunnable = new Runnable() {</span>
+                public void run() {
+                    try {
+<span class="nc" id="L460">                        renderingChanged();</span>
+<span class="nc" id="L461">                        updateListeners(getOwner(), getOwner());</span>
+<span class="nc" id="L462">                    } catch (InvalidElementException e) {</span>
+<span class="nc" id="L463">                        LOG.log(Level.FINE,</span>
+                                &quot;method accessed deleted element&quot;, e);
+<span class="nc" id="L465">                    }</span>
+<span class="nc" id="L466">                }</span>
+            };
+<span class="nc" id="L468">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+        }
+<span class="nc" id="L470">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+<span class="nc bnc" id="L478" title="All 2 branches missed.">        if (mouseEvent.isConsumed()) {</span>
+<span class="nc" id="L479">            return;</span>
+        }
+<span class="nc" id="L481">        super.mouseClicked(mouseEvent);</span>
+<span class="nc bnc" id="L482" title="All 2 branches missed.">        if (mouseEvent.isShiftDown()</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">                &amp;&amp; TargetManager.getInstance().getTargets().size() &gt; 0) {</span>
+<span class="nc" id="L484">            return;</span>
+        }
+
+<span class="nc" id="L487">        Editor ce = Globals.curEditor();</span>
+<span class="nc bnc" id="L488" title="All 2 branches missed.">        if (ce != null) {</span>
+<span class="nc" id="L489">            Selection sel = ce.getSelectionManager().findSelectionFor(this);</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">            if (sel instanceof SelectionButtons) {</span>
+<span class="nc" id="L491">                ((SelectionButtons) sel).hideButtons();</span>
+            }
+        }
+
+<span class="nc" id="L495">        Rectangle r =</span>
+            new Rectangle(
+<span class="nc" id="L497">                mouseEvent.getX() - 1,</span>
+<span class="nc" id="L498">                mouseEvent.getY() - 1,</span>
+                2,
+                2);
+
+<span class="nc" id="L502">        Fig f = hitFig(r);</span>
+<span class="nc bnc" id="L503" title="All 2 branches missed.">        if (f instanceof FigCompartment) {</span>
+<span class="nc" id="L504">            FigCompartment figCompartment = (FigCompartment) f;</span>
+<span class="nc" id="L505">            f = figCompartment.hitFig(r);</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">            if (f instanceof CompartmentFigText) {</span>
+<span class="nc" id="L507">                TargetManager.getInstance().setTarget(f);</span>
+            }
+        }
+<span class="nc" id="L510">    }</span>
+
+    protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
+<span class="nc bnc" id="L513" title="All 2 branches missed.">        if (!(fg instanceof FigCompartment)) {</span>
+<span class="nc" id="L514">            return;</span>
+        }
+<span class="nc" id="L516">        ((FigCompartment) fg).createModelElement();</span>
+        /* Populate the compartment now,
+         * so that we can put the last one in edit mode:
+         * This fixes issue 5439. */
+<span class="nc" id="L520">        ((FigCompartment) fg).populate();</span>
+        // TODO: The above populate works but seems rather heavy here.
+        // I can see something like this is needed though as events
+        // won't manage this quick enough. Could we make
+        // FigEditableCompartment.createModelElement() create
+        // the new child Fig instance? It may also be useful
+        // for it to return the new model element rather than
+        // the current void return - Bob.
+<span class="nc" id="L528">        List figList = fg.getFigs();</span>
+<span class="nc bnc" id="L529" title="All 2 branches missed.">        if (figList.size() &gt; 0) {</span>
+<span class="nc" id="L530">            Fig fig = (Fig) figList.get(figList.size() - 1);</span>
+<span class="nc bnc" id="L531" title="All 4 branches missed.">            if (fig != null &amp;&amp; fig instanceof CompartmentFigText) {</span>
+<span class="nc" id="L532">                CompartmentFigText ft = (CompartmentFigText) fig;</span>
+<span class="nc" id="L533">                ft.startTextEditor(ie);</span>
+            }
+        }
+<span class="nc" id="L536">        ie.consume();</span>
+<span class="nc" id="L537">    }</span>
+
+    /**
+     * Show or hide a compartment based on the meta-type of its contents.
+     *
+     * @param metaType the compartment type to be shown
+     * @param visible true if the compartment should be visible
+     */
+    public void showCompartment(Object metaType, boolean visible) {
+<span class="fc" id="L546">        FigCompartment fc =</span>
+<span class="fc" id="L547">            getCompartment(metaType);</span>
+<span class="pc bpc" id="L548" title="1 of 2 branches missed.">        if (fc == null) {</span>
+<span class="nc" id="L549">            return;</span>
+        }
+<span class="pc bpc" id="L551" title="2 of 4 branches missed.">        assert fc != null;</span>
+<span class="fc" id="L552">        setCompartmentVisible(fc, visible);</span>
+<span class="fc" id="L553">    }</span>
+
+    /**
+     * TODO: This functionality is in the worn place. We should be able to
+     * call setVisible on the compartment itself and then this class should
+     * react to that event.
+     * Improvements will follow in later releases.
+     * Hence this method should not be considered stable for module developers.
+     * @param compartment the compartment to be changed
+     * @param isVisible true if the attribute compartment is visible
+     */
+    public void setCompartmentVisible(FigCompartment compartment,
+            boolean isVisible) {
+<span class="fc" id="L566">        Rectangle rect = getBounds();</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">        if (compartment.isVisible()) {</span>
+<span class="fc bfc" id="L568" title="All 2 branches covered.">            if (!isVisible) { // hide compartment</span>
+<span class="fc" id="L569">                damage();</span>
+<span class="fc bfc" id="L570" title="All 2 branches covered.">                for (Object f : compartment.getFigs()) {</span>
+<span class="fc" id="L571">                    ((Fig) f).setVisible(false);</span>
+<span class="fc" id="L572">                }</span>
+<span class="fc" id="L573">                compartment.setVisible(false);</span>
+                /*
+                 * Hiding one compartment means that the Fig returns to minimal
+                 * dimensions:
+                 */
+<span class="fc" id="L578">                Dimension aSize = getMinimumSize();</span>
+<span class="fc" id="L579">                setBounds(rect.x, rect.y, (int) aSize.getWidth(), (int) aSize</span>
+<span class="fc" id="L580">                        .getHeight());</span>
+                /*
+                 * Alternatively, we could reduce the height of the Fig by the
+                 * height of this one hidden compartment. But that would not be
+                 * possible for the width - so we better return to minimal
+                 * dimensions overall.
+                 */
+<span class="fc" id="L587">            }</span>
+        } else {
+<span class="fc bfc" id="L589" title="All 2 branches covered.">            if (isVisible) { // show compartment</span>
+<span class="fc bfc" id="L590" title="All 2 branches covered.">                for (Object f : compartment.getFigs()) {</span>
+<span class="fc" id="L591">                    ((Fig) f).setVisible(true);</span>
+<span class="fc" id="L592">                }</span>
+<span class="fc" id="L593">                compartment.setVisible(true);</span>
+<span class="fc" id="L594">                Dimension aSize = this.getMinimumSize();</span>
+<span class="fc" id="L595">                setBounds(rect.x, rect.y,</span>
+<span class="fc" id="L596">                          (int) aSize.getWidth(), (int) aSize.getHeight());</span>
+<span class="fc" id="L597">                damage();</span>
+            }
+        }
+<span class="fc" id="L600">    }</span>
+
+    @Override
+    public void setLineWidth(int w) {
+        /* This sets the lineWidth of all in the group: */
+<span class="fc" id="L605">        super.setLineWidth(w);</span>
+        /* NameFig and StereotypeFig are handled by parent. */
+<span class="fc" id="L607">    }</span>
+
+    @Override
+    public int getLineWidth() {
+<span class="fc" id="L611">        return getBigPort().getLineWidth();</span>
+    }
+
+    @Override
+    public void setFillColor(Color col) {
+<span class="fc" id="L616">        super.setFillColor(col);</span>
+<span class="fc" id="L617">        getStereotypeFig().setFillColor(null);</span>
+<span class="fc" id="L618">        getNameFig().setFillColor(null);</span>
+<span class="fc" id="L619">    }</span>
+
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L623">        return getBigPort().getFillColor();</span>
+    }
+
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L628">        super.setFilled(f);</span>
+<span class="fc" id="L629">        getBigPort().setFilled(f);</span>
+<span class="fc" id="L630">        getNameFig().setFilled(false);</span>
+<span class="fc" id="L631">        getStereotypeFig().setFilled(false);</span>
+<span class="fc" id="L632">    }</span>
+
+    @Override
+    protected void updateStereotypeText() {
+
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L638">            return;</span>
+        }
+
+<span class="fc" id="L641">        getStereotypeFig().setVisible(</span>
+<span class="pc bpc" id="L642" title="1 of 2 branches missed.">                getStereotypeFig().getStereotypeCount() &gt; 0);</span>
+
+<span class="fc" id="L644">        super.updateStereotypeText();</span>
+
+<span class="pc bpc" id="L646" title="1 of 2 branches missed.">        if (getStereotypeFig().isVisible()) {</span>
+<span class="fc" id="L647">            getNameFig().setTopMargin(</span>
+<span class="fc" id="L648">                    getStereotypeFig().getMinimumSize().height);</span>
+        } else {
+<span class="nc" id="L650">            getNameFig().setTopMargin(0);</span>
+        }
+
+        /* TODO: Is this needed? */
+        // forceRepaintShadow();
+<span class="fc" id="L655">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

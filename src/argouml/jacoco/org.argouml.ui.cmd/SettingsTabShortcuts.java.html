@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsTabShortcuts.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">SettingsTabShortcuts.java</span></div><h1>SettingsTabShortcuts.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.MessageFormat;
+
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.i18n.Translator;
+import org.argouml.util.KeyEventUtils;
+
+/**
+ * Tab for the settings dialog that makes it possible to customize Actions'
+ * shortcuts
+ * 
+ * @author andrea.nironi@gmail
+ */
+<span class="nc" id="L76">class SettingsTabShortcuts extends JPanel implements</span>
+        GUISettingsTabInterface, ActionListener, ListSelectionListener,
+        ShortcutChangedListener {
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -2033414439459450620L;
+
+<span class="nc" id="L85">    private static final String NONE_NAME = Translator</span>
+<span class="nc" id="L86">            .localize(&quot;label.shortcut-none&quot;);</span>
+
+<span class="nc" id="L88">    private static final String DEFAULT_NAME = Translator</span>
+<span class="nc" id="L89">            .localize(&quot;label.shortcut-default&quot;);</span>
+
+<span class="nc" id="L91">    private static final String CUSTOM_NAME = Translator</span>
+<span class="nc" id="L92">            .localize(&quot;label.shortcut-custom&quot;);</span>
+
+    /**
+     * The table of modules.
+     */
+    private JTable table;
+
+    private JPanel selectedContainer;
+
+<span class="nc" id="L101">    private ShortcutField shortcutField = new ShortcutField(&quot;&quot;, 12);</span>
+
+<span class="nc" id="L103">    private Color shortcutFieldDefaultBg = null;</span>
+
+<span class="nc" id="L105">    private JRadioButton customButton = new JRadioButton(CUSTOM_NAME);</span>
+
+<span class="nc" id="L107">    private JRadioButton defaultButton = new JRadioButton(DEFAULT_NAME);</span>
+
+<span class="nc" id="L109">    private JRadioButton noneButton = new JRadioButton(NONE_NAME);</span>
+
+<span class="nc" id="L111">    private JLabel warningLabel = new JLabel(&quot; &quot;);</span>
+
+    private ActionWrapper target;
+
+<span class="nc" id="L115">    private ActionWrapper[] actions = ShortcutMgr.getShortcuts();</span>
+
+<span class="nc" id="L117">    private int lastRowSelected = -1;</span>
+
+    /**
+     * The names of the columns in the table.
+     */
+<span class="nc" id="L122">    private final String[] columnNames = {</span>
+<span class="nc" id="L123">            Translator.localize(&quot;misc.column-name.action&quot;),</span>
+<span class="nc" id="L124">            Translator.localize(&quot;misc.column-name.shortcut&quot;),</span>
+<span class="nc" id="L125">            Translator.localize(&quot;misc.column-name.default&quot;) };</span>
+
+    /**
+     * The objects representing the available actions
+     */
+    private Object[][] elements;
+
+    /*
+     * @see GUISettingsTabInterface#getTabKey()
+     */
+    public String getTabKey() {
+<span class="nc" id="L136">        return &quot;tab.shortcuts&quot;;</span>
+    }
+
+    /*
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() {
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (table == null) {</span>
+<span class="nc" id="L144">            setLayout(new GridBagLayout());</span>
+<span class="nc" id="L145">            GridBagConstraints panelConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L146">            panelConstraints.gridx = 0;</span>
+<span class="nc" id="L147">            panelConstraints.gridy = 0;</span>
+<span class="nc" id="L148">            panelConstraints.anchor = GridBagConstraints.NORTH;</span>
+<span class="nc" id="L149">            panelConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L150">            panelConstraints.weightx = 5;</span>
+<span class="nc" id="L151">            panelConstraints.weighty = 15;</span>
+
+            // let's add the table, inside a JScrollPane
+<span class="nc" id="L154">            table = new JTable(new ShortcutTableModel());</span>
+<span class="nc" id="L155">            table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+<span class="nc" id="L156">            table.setShowVerticalLines(true);</span>
+<span class="nc" id="L157">            table.setDefaultRenderer(KeyStroke.class,</span>
+                    new KeyStrokeCellRenderer());
+<span class="nc" id="L159">            table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+<span class="nc" id="L160">            table.getSelectionModel().addListSelectionListener(this);</span>
+
+<span class="nc" id="L162">            JPanel tableContainer = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L163">            tableContainer.setBorder(</span>
+<span class="nc" id="L164">                    BorderFactory.createTitledBorder(</span>
+<span class="nc" id="L165">                            Translator.localize(</span>
+                                    &quot;dialog.shortcut.titled-border.actions&quot;)));
+<span class="nc" id="L167">            tableContainer.add(new JScrollPane(table));</span>
+<span class="nc" id="L168">            add(tableContainer, panelConstraints);</span>
+
+            // now, let's set up the &quot;selected action&quot; container
+<span class="nc" id="L171">            customButton.addActionListener(this);</span>
+<span class="nc" id="L172">            defaultButton.addActionListener(this);</span>
+<span class="nc" id="L173">            noneButton.addActionListener(this);</span>
+
+<span class="nc" id="L175">            selectedContainer = new JPanel(new GridBagLayout());</span>
+<span class="nc" id="L176">            selectedContainer.setBorder(</span>
+<span class="nc" id="L177">                    BorderFactory.createTitledBorder(</span>
+<span class="nc" id="L178">                            Translator.localize(</span>
+                                    &quot;dialog.shortcut.titled-border.selected&quot;)));
+<span class="nc" id="L180">            GridBagConstraints constraints = new GridBagConstraints();</span>
+<span class="nc" id="L181">            constraints.gridx = 0;</span>
+<span class="nc" id="L182">            constraints.gridy = 0;</span>
+<span class="nc" id="L183">            constraints.insets = new Insets(0, 5, 10, 0);</span>
+
+<span class="nc" id="L185">            noneButton.setActionCommand(NONE_NAME);</span>
+<span class="nc" id="L186">            defaultButton.setActionCommand(DEFAULT_NAME);</span>
+<span class="nc" id="L187">            customButton.setActionCommand(CUSTOM_NAME);</span>
+<span class="nc" id="L188">            noneButton.addActionListener(this);</span>
+<span class="nc" id="L189">            defaultButton.addActionListener(this);</span>
+<span class="nc" id="L190">            customButton.addActionListener(this);</span>
+<span class="nc" id="L191">            ButtonGroup radioButtonGroup = new ButtonGroup();</span>
+<span class="nc" id="L192">            radioButtonGroup.add(noneButton);</span>
+<span class="nc" id="L193">            radioButtonGroup.add(defaultButton);</span>
+<span class="nc" id="L194">            radioButtonGroup.add(customButton);</span>
+<span class="nc" id="L195">            selectedContainer.add(noneButton, constraints);</span>
+<span class="nc" id="L196">            constraints.gridx = 1;</span>
+<span class="nc" id="L197">            constraints.insets = new Insets(0, 5, 10, 0);</span>
+<span class="nc" id="L198">            selectedContainer.add(defaultButton, constraints);</span>
+<span class="nc" id="L199">            constraints.gridx = 2;</span>
+<span class="nc" id="L200">            constraints.insets = new Insets(0, 5, 10, 0);</span>
+<span class="nc" id="L201">            selectedContainer.add(customButton, constraints);</span>
+
+<span class="nc" id="L203">            constraints.gridx = 3;</span>
+<span class="nc" id="L204">            constraints.weightx = 10.0;</span>
+<span class="nc" id="L205">            constraints.insets = new Insets(0, 10, 10, 15);</span>
+<span class="nc" id="L206">            constraints.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L207">            shortcutField.addShortcutChangedListener(this);</span>
+<span class="nc" id="L208">            shortcutFieldDefaultBg = shortcutField.getBackground();</span>
+<span class="nc" id="L209">            selectedContainer.add(shortcutField, constraints);</span>
+<span class="nc" id="L210">            constraints.gridwidth = 4;</span>
+<span class="nc" id="L211">            constraints.gridy = 1;</span>
+<span class="nc" id="L212">            constraints.gridx = 0;</span>
+<span class="nc" id="L213">            constraints.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L214">            constraints.insets = new Insets(0, 10, 5, 10);</span>
+<span class="nc" id="L215">            warningLabel.setForeground(Color.RED);</span>
+<span class="nc" id="L216">            selectedContainer.add(warningLabel, constraints);</span>
+
+<span class="nc" id="L218">            panelConstraints.gridy = 1;</span>
+<span class="nc" id="L219">            panelConstraints.anchor = GridBagConstraints.CENTER;</span>
+<span class="nc" id="L220">            panelConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L221">            panelConstraints.weightx = 1;</span>
+<span class="nc" id="L222">            panelConstraints.weighty = 1;</span>
+<span class="nc" id="L223">            add(selectedContainer, panelConstraints);</span>
+
+<span class="nc" id="L225">            JLabel restart =</span>
+<span class="nc" id="L226">                new JLabel(Translator.localize(&quot;label.restart-application&quot;));</span>
+<span class="nc" id="L227">            restart.setHorizontalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L228">            restart.setVerticalAlignment(SwingConstants.CENTER);</span>
+<span class="nc" id="L229">            restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));</span>
+            
+<span class="nc" id="L231">            panelConstraints.gridy = 2;</span>
+<span class="nc" id="L232">            panelConstraints.anchor = GridBagConstraints.CENTER;</span>
+<span class="nc" id="L233">            panelConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L234">            panelConstraints.weightx = 1;</span>
+<span class="nc" id="L235">            panelConstraints.weighty = 0;</span>
+<span class="nc" id="L236">            add(restart, panelConstraints);</span>
+            
+<span class="nc" id="L238">            this.enableFields(false);</span>
+        }
+
+<span class="nc" id="L241">        return this;</span>
+    }
+
+    /**
+     * Enable/disable the field of the lower panel
+     * 
+     * @param enable
+     *            whether to enable the fields or not
+     */
+    private void enableFields(boolean enable) {
+<span class="nc" id="L251">        shortcutField.setEditable(enable);</span>
+<span class="nc" id="L252">        customButton.setEnabled(enable);</span>
+<span class="nc" id="L253">        defaultButton.setEnabled(enable);</span>
+<span class="nc" id="L254">        noneButton.setEnabled(enable);</span>
+<span class="nc" id="L255">    }</span>
+
+    /**
+     * Sets the current target
+     * 
+     * @param t
+     *            the new target
+     */
+    private void setTarget(Object t) {
+<span class="nc" id="L264">        target = (ActionWrapper) t;</span>
+        // let's enable the radiobuttons container
+<span class="nc" id="L266">        enableFields(true);</span>
+        // updating the radiobuttons container's title
+<span class="nc" id="L268">        selectedContainer.setBorder(BorderFactory.createTitledBorder(Translator</span>
+<span class="nc" id="L269">                .localize(&quot;dialog.shortcut.titled-border.selected-partial&quot;)</span>
+<span class="nc" id="L270">                + &quot; \&quot;&quot; + target.getActionName() + &quot;\&quot;&quot;));</span>
+<span class="nc" id="L271">        shortcutField.setText(KeyEventUtils.formatKeyStroke(target</span>
+<span class="nc" id="L272">                .getCurrentShortcut()));</span>
+<span class="nc" id="L273">        resetKeyStrokeConflict();</span>
+
+        // let's select the correct radio button
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if (target.getCurrentShortcut() == null) {</span>
+            // no shortcuts --&gt; NONE
+<span class="nc" id="L278">            noneButton.setSelected(true);</span>
+<span class="nc" id="L279">            shortcutField.setEnabled(false);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        } else if (target.getDefaultShortcut() != null</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                &amp;&amp; target.getCurrentShortcut().equals(</span>
+<span class="nc" id="L282">                        target.getDefaultShortcut())) {</span>
+            // current shortcut == default --&gt; DEFAULT
+<span class="nc" id="L284">            defaultButton.setSelected(true);</span>
+<span class="nc" id="L285">            shortcutField.setEnabled(false);</span>
+        } else {
+            // customized shortcut --&gt; CUSTOM
+<span class="nc" id="L288">            customButton.setSelected(true);</span>
+<span class="nc" id="L289">            shortcutField.setEnabled(true);</span>
+<span class="nc" id="L290">            shortcutField.requestFocus();</span>
+        }
+<span class="nc" id="L292">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
+<span class="nc" id="L299">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
+     */
+    public void handleSettingsTabCancel() {
+        // Do nothing!
+        // The next time we refresh, we will fetch the values again.
+<span class="nc" id="L307">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
+     */
+    public void handleSettingsTabRefresh() {
+        // let's reload the shortcuts
+<span class="nc" id="L314">        actions = ShortcutMgr.getShortcuts();</span>
+<span class="nc" id="L315">        table.setModel(new ShortcutTableModel());</span>
+<span class="nc" id="L316">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
+     */
+    public void handleSettingsTabSave() {
+<span class="nc bnc" id="L322" title="All 2 branches missed.">        if (getActionAlreadyAssigned(ShortcutMgr</span>
+<span class="nc" id="L323">                .decodeKeyStroke(shortcutField.getText())) != null) {</span>
+            // conflict detected: showing a warning to the user, instead of
+            // saving shortcuts
+<span class="nc" id="L326">            JOptionPane.showMessageDialog(this, </span>
+<span class="nc" id="L327">                    Translator.localize(</span>
+                            &quot;optionpane.shortcut-save-conflict&quot;),
+<span class="nc" id="L329">                    Translator.localize(</span>
+                            &quot;optionpane.shortcut-save-conflict-title&quot;),
+                          JOptionPane.WARNING_MESSAGE);
+        } else {
+            // saving shortcuts
+<span class="nc" id="L334">            ShortcutMgr.saveShortcuts(actions);</span>
+        }
+<span class="nc" id="L336">    }</span>
+
+    /**
+     * This is called every time a row is selected. It just updates the fields
+     * and the buttons status
+     * 
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L345" title="All 2 branches missed.">        if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L346">            return;</span>
+        }
+<span class="nc" id="L348">        Object src = lse.getSource();</span>
+<span class="nc bnc" id="L349" title="All 4 branches missed.">        if (src != table.getSelectionModel() || table.getSelectedRow() == -1) {</span>
+<span class="nc" id="L350">            return;</span>
+        }
+        // if a shortcut has been select then we have to check if the actual
+        // action is in conflict with other ones
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        if (!noneButton.isSelected()) {</span>
+<span class="nc" id="L355">            ActionWrapper oldAction = getActionAlreadyAssigned(ShortcutMgr</span>
+<span class="nc" id="L356">                    .decodeKeyStroke(shortcutField.getText()));</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">            if (oldAction != null) {</span>
+                // this shortcut was already been assigned to another action;
+                // let's pop-up a message for the user
+<span class="nc" id="L360">                String t = MessageFormat.format(Translator</span>
+<span class="nc" id="L361">                        .localize(&quot;optionpane.conflict-shortcut&quot;),</span>
+<span class="nc" id="L362">                        new Object[] {shortcutField.getText(),</span>
+<span class="nc" id="L363">                                oldAction.getActionName() });</span>
+<span class="nc" id="L364">                int response = JOptionPane.showConfirmDialog(this, t, t,</span>
+                        JOptionPane.YES_NO_OPTION);
+<span class="nc bnc" id="L366" title="All 3 branches missed.">                switch (response) {</span>
+                case JOptionPane.YES_OPTION:
+<span class="nc" id="L368">                    oldAction.setCurrentShortcut(null);</span>
+                    // blanking the old action's shortcut..
+                    // and now refreshing the table.
+<span class="nc" id="L371">                    table.setValueAt(oldAction, -1, -1);</span>
+<span class="nc" id="L372">                    break;</span>
+                case JOptionPane.NO_OPTION:
+                    // re-selecting the old row, without changing the target -
+                    // and without throwing another ListSelectionEvent!
+<span class="nc" id="L376">                    table.getSelectionModel().removeListSelectionListener(this);</span>
+<span class="nc" id="L377">                    table.getSelectionModel().setSelectionInterval(</span>
+                            lastRowSelected, lastRowSelected);
+<span class="nc" id="L379">                    table.getSelectionModel().addListSelectionListener(this);</span>
+<span class="nc" id="L380">                    return;</span>
+                }
+            }
+        }
+        // let's change the target
+<span class="nc" id="L385">        setTarget(actions[table.getSelectedRow()]);</span>
+
+<span class="nc" id="L387">        lastRowSelected = table.getSelectedRow();</span>
+<span class="nc" id="L388">    }</span>
+
+    /**
+     * Verifies if the given keyStroke has already been assigned
+     * to another action 
+     * 
+     * @param keyStroke
+     *            the KeyStroke to be checked
+     * @return the Action that has already been assigned
+     */
+    public ActionWrapper getActionAlreadyAssigned(KeyStroke keyStroke) {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        for (int i = 0; i &lt; actions.length; i++) {</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">            if (actions[i].getCurrentShortcut() != null</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                    &amp;&amp; actions[i].getCurrentShortcut().equals(keyStroke)</span>
+<span class="nc bnc" id="L402" title="All 2 branches missed.">                    &amp;&amp; !actions[i].getActionName().equals(</span>
+<span class="nc" id="L403">                            target.getActionName())) {</span>
+<span class="nc" id="L404">                return actions[i];</span>
+            }
+        }
+        // duplicate shortcut not found; let's check for duplicates
+<span class="nc" id="L408">        KeyStroke duplicate = ShortcutMgr.getDuplicate(keyStroke);</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        if (duplicate != null) {</span>
+            // there's a duplicate: let's recheck if there is a conflict
+<span class="nc bnc" id="L411" title="All 2 branches missed.">            for (int i = 0; i &lt; actions.length; i++) {</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">                if (actions[i].getCurrentShortcut() != null</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                        &amp;&amp; actions[i].getCurrentShortcut().equals(duplicate)</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">                        &amp;&amp; !actions[i].getActionName().equals(</span>
+<span class="nc" id="L415">                                target.getActionName())) {</span>
+<span class="nc" id="L416">                    return actions[i];</span>
+                }
+            }            
+        }
+<span class="nc" id="L420">        return null;</span>
+    }
+
+    /**
+     * This is called every time a panel button (custom / default / none) is
+     * pressed.
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L430">        resetKeyStrokeConflict();</span>
+
+<span class="nc bnc" id="L432" title="All 2 branches missed.">        if (e.getSource() == customButton) {</span>
+<span class="nc" id="L433">            setKeyStrokeValue(ShortcutMgr.decodeKeyStroke(shortcutField</span>
+<span class="nc" id="L434">                    .getText()));</span>
+<span class="nc" id="L435">            shortcutField.setEnabled(true);</span>
+<span class="nc" id="L436">            shortcutField.requestFocus();</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        } else if (e.getSource() == defaultButton) {</span>
+<span class="nc" id="L438">            setKeyStrokeValue(target.getDefaultShortcut());</span>
+<span class="nc" id="L439">            shortcutField.setEnabled(false);</span>
+<span class="nc" id="L440">            checkShortcutAlreadyAssigned(target.getDefaultShortcut());</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">        } else if (e.getSource() == noneButton) {</span>
+<span class="nc" id="L442">            setKeyStrokeValue(null);</span>
+<span class="nc" id="L443">            shortcutField.setEnabled(false);</span>
+        }
+<span class="nc" id="L445">    }</span>
+
+    /**
+     * This method simply reset the &quot;conflict&quot; gui, by blanking the warning
+     * label and resetting the shortcut's background color
+     *
+     */
+    private void resetKeyStrokeConflict() {
+<span class="nc" id="L453">        this.warningLabel.setText(&quot; &quot;);</span>
+<span class="nc" id="L454">        this.shortcutField.setBackground(shortcutFieldDefaultBg);</span>
+<span class="nc" id="L455">    }</span>
+
+    /**
+     * Updates the GUI with the given new KeyStroke
+     * 
+     * @param newKeyStroke      the KeyStroke to be set
+     */
+    private void setKeyStrokeValue(KeyStroke newKeyStroke) {
+<span class="nc" id="L463">        String formattedKeyStroke = KeyEventUtils.formatKeyStroke(newKeyStroke);</span>
+        // updating the shortcut field
+<span class="nc" id="L465">        shortcutField.setText(formattedKeyStroke);</span>
+        // updating the table data
+<span class="nc" id="L467">        table.getModel().setValueAt(newKeyStroke, table.getSelectedRow(), 1);</span>
+        // updating the actions
+<span class="nc" id="L469">        actions[table.getSelectedRow()].setCurrentShortcut(newKeyStroke);</span>
+<span class="nc" id="L470">        table.repaint();</span>
+<span class="nc" id="L471">    }</span>
+
+    /**
+     * Listener method for ShortcutChangedEvents
+     * 
+     * @see org.argouml.ui.cmd.ShortcutChangedListener#shortcutChange(org.argouml.ui.cmd.ShortcutChangedEvent)
+     */
+    public void shortcutChange(ShortcutChangedEvent event) {
+<span class="nc" id="L479">        checkShortcutAlreadyAssigned(event.getKeyStroke());</span>
+<span class="nc" id="L480">        setKeyStrokeValue(event.getKeyStroke());</span>
+<span class="nc" id="L481">        this.selectedContainer.repaint();</span>
+<span class="nc" id="L482">    }</span>
+
+    /**
+     * Update the GUI, if there is a conflict for the given key stroke
+     * 
+     * @param newKeyStroke      the key stroke to be checked
+     */
+    private void checkShortcutAlreadyAssigned(KeyStroke newKeyStroke) {
+<span class="nc" id="L490">        ActionWrapper oldAction = getActionAlreadyAssigned(newKeyStroke);</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">        if (oldAction != null) {</span>
+            // the shortcut has already been assigned to another action!
+<span class="nc" id="L493">            this.shortcutField.setBackground(Color.YELLOW);</span>
+<span class="nc" id="L494">            this.warningLabel.setText(MessageFormat.format(Translator</span>
+<span class="nc" id="L495">                    .localize(&quot;misc.shortcuts.conflict&quot;),</span>
+<span class="nc" id="L496">                    new Object[] {KeyEventUtils.formatKeyStroke(oldAction</span>
+<span class="nc" id="L497">                            .getCurrentShortcut()), </span>
+<span class="nc" id="L498">                            oldAction.getActionName()}));</span>
+        } else {
+<span class="nc" id="L500">            resetKeyStrokeConflict();</span>
+        }
+<span class="nc" id="L502">    }</span>
+
+    /**
+     * Table model for the table with actions and shortcuts.
+     */
+    class ShortcutTableModel extends AbstractTableModel {
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L512">        public ShortcutTableModel() {</span>
+<span class="nc" id="L513">            elements = new Object[actions.length][3];</span>
+
+<span class="nc bnc" id="L515" title="All 2 branches missed.">            for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="nc" id="L516">                ActionWrapper currentAction = actions[i];</span>
+<span class="nc" id="L517">                elements[i][0] = currentAction.getActionName();</span>
+<span class="nc" id="L518">                elements[i][1] = currentAction.getCurrentShortcut();</span>
+<span class="nc" id="L519">                elements[i][2] = currentAction.getDefaultShortcut();</span>
+            }
+<span class="nc" id="L521">        }</span>
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
+        public int getColumnCount() {
+<span class="nc" id="L527">            return columnNames.length;</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
+        @Override
+        public String getColumnName(int col) {
+<span class="nc" id="L535">            return columnNames[col];</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
+        public int getRowCount() {
+<span class="nc" id="L542">            return elements.length;</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
+        public Object getValueAt(int row, int col) {
+<span class="nc" id="L549">            return elements[row][col];</span>
+        }
+
+        /**
+         * Sets the value in the cell at &lt;code&gt;col&lt;/code&gt; and
+         * &lt;code&gt;row&lt;/code&gt; to &lt;code&gt;ob&lt;/code&gt;. If &lt;code&gt;ob&lt;/code&gt; is
+         * an Action instance, then the &lt;code&gt;col&lt;/code&gt; and &lt;code&gt;row&lt;/code&gt;
+         * parameters are ignored, and the ob Action is searched among the 
+         * elements and the actions.
+         * 
+         * @see javax.swing.table.TableModel#setValueAt( java.lang.Object, int,
+         *      int)
+         */
+        @Override
+        public void setValueAt(Object ob, int row, int col) {
+            // if the given object is a KeyStroke instance, then we ca
+<span class="nc bnc" id="L565" title="All 2 branches missed.">            if (ob instanceof ActionWrapper) {</span>
+<span class="nc" id="L566">                ActionWrapper newValueAction = (ActionWrapper) ob;</span>
+<span class="nc bnc" id="L567" title="All 2 branches missed.">                for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="nc bnc" id="L568" title="All 2 branches missed.">                    if (elements[i][0].equals(newValueAction.getActionName())) {</span>
+<span class="nc" id="L569">                        elements[i][1] = newValueAction.getCurrentShortcut();</span>
+<span class="nc" id="L570">                        repaint();</span>
+<span class="nc" id="L571">                        break;</span>
+                    }
+                }
+                // let's update also the actions array
+<span class="nc bnc" id="L575" title="All 2 branches missed.">                for (int i = 0; i &lt; actions.length; i++) {</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">                    if (actions[i].getKey().equals(newValueAction.getKey())) {</span>
+<span class="nc" id="L577">                        actions[i].setCurrentShortcut(newValueAction</span>
+<span class="nc" id="L578">                                .getCurrentShortcut());</span>
+<span class="nc" id="L579">                        break;</span>
+                    }
+                }
+
+<span class="nc" id="L583">            } else {</span>
+<span class="nc" id="L584">                elements[row][col] = ob;</span>
+            }
+<span class="nc" id="L586">        }</span>
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnClass(int)
+         */
+        @Override
+        public Class&lt;?&gt; getColumnClass(int col) {
+<span class="nc bnc" id="L593" title="All 4 branches missed.">            switch (col) {</span>
+            case 0:
+<span class="nc" id="L595">                return String.class;</span>
+            case 1:
+<span class="nc" id="L597">                return KeyStroke.class;</span>
+            case 2:
+<span class="nc" id="L599">                return KeyStroke.class;</span>
+            default:
+<span class="nc" id="L601">                return null;</span>
+            }
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
+        @Override
+        public boolean isCellEditable(int row, int col) {
+<span class="nc" id="L610">            return false;</span>
+        }
+
+    }
+}
+
+/**
+ * TableCellRenderer for a KeyStroke object.
+ *
+ * @author andrea.nironi@gmail.com
+ */
+class KeyStrokeCellRenderer extends DefaultTableCellRenderer {
+
+    /**
+     * Construct a table cell rendered for key strokes.
+     */
+    public KeyStrokeCellRenderer() {
+<span class="nc" id="L627">        super();</span>
+<span class="nc" id="L628">        setHorizontalAlignment(javax.swing.SwingConstants.CENTER);</span>
+<span class="nc" id="L629">    }</span>
+
+    /**
+     * Format the given KeyStroke
+     * 
+     * @see javax.swing.table.DefaultTableCellRenderer#setValue(java.lang.Object)
+     */
+    @Override
+    public void setValue(Object value) {
+<span class="nc bnc" id="L638" title="All 4 branches missed.">        if (value != null &amp;&amp; value instanceof KeyStroke) {</span>
+<span class="nc" id="L639">            value = KeyEventUtils.formatKeyStroke((KeyStroke) value);</span>
+        }
+<span class="nc" id="L641">        super.setValue(value);</span>
+<span class="nc" id="L642">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

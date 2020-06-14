@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SelectionActor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.use_case.ui</a> &gt; <span class="el_source">SelectionActor.java</span></div><h1>SelectionActor.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.use_case.ui;
+
+import javax.swing.Icon;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * @author jrobbins@ics.uci.edu
+ */
+public class SelectionActor extends SelectionNodeClarifiers2 {
+
+    /**
+     * The icon for an association.
+     */
+<span class="nc" id="L56">    private static Icon associationIcon =</span>
+<span class="nc" id="L57">	ResourceLoaderWrapper.lookupIconResource(&quot;Association&quot;);</span>
+
+<span class="nc" id="L59">    private static Icon generalizationIcon =</span>
+<span class="nc" id="L60">        ResourceLoaderWrapper.lookupIconResource(&quot;Generalization&quot;);</span>
+    
+<span class="nc" id="L62">    private static Icon icons[] =</span>
+    {generalizationIcon,
+     generalizationIcon,
+     associationIcon,
+     associationIcon,
+     null,
+    };
+
+// TODO: I18N required
+<span class="nc" id="L71">    private static String instructions[] =</span>
+    {&quot;Add a more general Actor&quot;,
+     &quot;Add a more specialized Actor&quot;,
+     &quot;Add an associated use case&quot;,
+     &quot;Add an associated use case&quot;,
+     null,
+     &quot;Move object(s)&quot;,
+    };
+
+<span class="nc" id="L80">    private static Object edgeType[] =</span>
+<span class="nc" id="L81">    {Model.getMetaTypes().getGeneralization(),</span>
+<span class="nc" id="L82">     Model.getMetaTypes().getGeneralization(),</span>
+<span class="nc" id="L83">     Model.getMetaTypes().getAssociation(),</span>
+<span class="nc" id="L84">     Model.getMetaTypes().getAssociation(),</span>
+     null, 
+    };
+
+    /**
+     * Construct a new SelectionActor for the given Fig.
+     *
+     * @param f The given Fig.
+     */
+    public SelectionActor(Fig f) {
+<span class="nc" id="L94">        super(f);</span>
+<span class="nc" id="L95">    }</span>
+
+    @Override
+    protected Icon[] getIcons() {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (Model.getModelManagementHelper().isReadOnly(</span>
+<span class="nc" id="L100">                getContent().getOwner())) {</span>
+<span class="nc" id="L101">            return new Icon[] {null, generalizationIcon, null, null, null };</span>
+        }
+<span class="nc" id="L103">        return icons;</span>
+    }
+
+    @Override
+    protected String getInstructions(int index) {
+<span class="nc" id="L108">        return instructions[index - BASE];</span>
+    }
+
+    @Override
+    protected Object getNewEdgeType(int index) {
+<span class="nc" id="L113">        return edgeType[index - BASE];</span>
+    }
+
+    @Override
+    protected Object getNewNodeType(int index) {
+<span class="nc bnc" id="L118" title="All 4 branches missed.">        if (index == TOP || index == BOTTOM) {</span>
+<span class="nc" id="L119">            return Model.getMetaTypes().getActor();</span>
+        } else {
+<span class="nc" id="L121">            return Model.getMetaTypes().getUseCase();</span>
+        }
+    }
+    
+    @Override
+    protected Object getNewNode(int index) {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (index == 0) {</span>
+<span class="nc" id="L128">            index = getButton();</span>
+        }
+<span class="nc bnc" id="L130" title="All 4 branches missed.">        if (index == TOP || index == BOTTOM) {</span>
+<span class="nc" id="L131">            return Model.getUseCasesFactory().createActor();</span>
+        } else {
+<span class="nc" id="L133">            return Model.getUseCasesFactory().createUseCase();</span>
+        }
+    }
+
+    @Override
+    protected boolean isReverseEdge(int index) {
+<span class="nc bnc" id="L139" title="All 4 branches missed.">        if (index == BOTTOM || index == LEFT) {</span>
+<span class="nc" id="L140">            return true;</span>
+        }
+<span class="nc" id="L142">        return false;</span>
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

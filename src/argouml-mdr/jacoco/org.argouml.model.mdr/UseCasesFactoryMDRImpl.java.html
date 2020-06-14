@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UseCasesFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">UseCasesFactoryMDRImpl.java</span></div><h1>UseCasesFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.UseCasesFactory;
+import org.omg.uml.behavioralelements.usecases.Actor;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.Include;
+import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
+import org.omg.uml.foundation.core.Namespace;
+
+/**
+ * Factory to create UML classes for the UML BehaviorialElements::UseCases
+ * package.
+ * &lt;p&gt;
+ * @since ARGO0.19.3
+ * @author Thierry Lach &amp; Bob Tarling
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ */
+class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
+        implements UseCasesFactory {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Don't allow instantiation.
+     * 
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L76">    UseCasesFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L77">        modelImpl = implementation;</span>
+<span class="fc" id="L78">    }</span>
+
+
+    public Extend createExtend() {
+<span class="nc" id="L82">        Extend myExtend = modelImpl.getUmlPackage().getUseCases().getExtend().</span>
+<span class="nc" id="L83">            createExtend();</span>
+<span class="nc" id="L84">        super.initialize(myExtend);</span>
+<span class="nc" id="L85">        return myExtend;</span>
+    }
+
+
+    public ExtensionPoint createExtensionPoint() {
+<span class="nc" id="L90">        ExtensionPoint myExtensionPoint = modelImpl.getUmlPackage().</span>
+<span class="nc" id="L91">            getUseCases().getExtensionPoint().createExtensionPoint();</span>
+<span class="nc" id="L92">        super.initialize(myExtensionPoint);</span>
+<span class="nc" id="L93">        return myExtensionPoint;</span>
+    }
+
+
+    public Actor createActor() {
+<span class="nc" id="L98">        Actor myActor = modelImpl.getUmlPackage().getUseCases().getActor().</span>
+<span class="nc" id="L99">            createActor();</span>
+<span class="nc" id="L100">        super.initialize(myActor);</span>
+<span class="nc" id="L101">        return myActor;</span>
+    }
+
+
+    public Include createInclude() {
+<span class="nc" id="L106">        Include myInclude = modelImpl.getUmlPackage().getUseCases()</span>
+<span class="nc" id="L107">                .getInclude().createInclude();</span>
+<span class="nc" id="L108">        super.initialize(myInclude);</span>
+<span class="nc" id="L109">        return myInclude;</span>
+    }
+
+
+    public UseCase createUseCase() {
+<span class="nc" id="L114">        UseCase myUseCase = modelImpl.getUmlPackage().getUseCases()</span>
+<span class="nc" id="L115">                .getUseCase().createUseCase();</span>
+<span class="nc" id="L116">        super.initialize(myUseCase);</span>
+<span class="nc" id="L117">        return myUseCase;</span>
+
+    }
+
+
+    public Extend buildExtend(Object abase, Object anextension) {
+<span class="nc" id="L123">        return buildExtend(abase, anextension, null);</span>
+    }
+
+
+    public Extend buildExtend(Object abase, Object anextension, Object apoint) {
+<span class="nc" id="L128">        UseCase base = (UseCase) abase;</span>
+<span class="nc" id="L129">        UseCase extension = (UseCase) anextension;</span>
+<span class="nc" id="L130">        ExtensionPoint point = (ExtensionPoint) apoint;</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">        if (base == null || extension == null) {</span>
+<span class="nc" id="L132">            throw new IllegalArgumentException(&quot;Either the base usecase or &quot;</span>
+                    + &quot;the extension usecase is &quot; + &quot;null&quot;);
+        }
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (base.equals(extension)) {</span>
+<span class="nc" id="L136">            throw new IllegalArgumentException(&quot;The base usecase and &quot;</span>
+                    + &quot;the extension usecase must be different&quot;);
+        }
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (point != null) {</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            if (!base.getExtensionPoint().contains(point)) {</span>
+<span class="nc" id="L141">                throw new IllegalArgumentException(&quot;The extensionpoint is not &quot;</span>
+                        + &quot;part of the base &quot; + &quot;usecase&quot;);
+            }
+        } else {
+<span class="nc" id="L145">            point = buildExtensionPoint(base);</span>
+        }
+<span class="nc" id="L147">        Extend extend = createExtend();</span>
+<span class="nc" id="L148">        extend.setBase(base);</span>
+<span class="nc" id="L149">        extend.setExtension(extension);</span>
+<span class="nc" id="L150">        extend.getExtensionPoint().add(point);</span>
+<span class="nc" id="L151">        return extend;</span>
+    }
+
+
+    public ExtensionPoint buildExtensionPoint(Object modelElement) {
+        final ExtensionPoint extensionPoint;
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (modelElement instanceof UseCase) {</span>
+<span class="nc" id="L158">            UseCase useCase = (UseCase) modelElement;</span>
+<span class="nc" id="L159">            extensionPoint = createExtensionPoint();</span>
+<span class="nc" id="L160">            extensionPoint.setUseCase(useCase);</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        } else if (modelElement instanceof Extend) {</span>
+<span class="nc" id="L162">            Extend extend = (Extend) modelElement;</span>
+<span class="nc" id="L163">            extensionPoint = createExtensionPoint();</span>
+<span class="nc" id="L164">            extend.getExtensionPoint().add(extensionPoint);</span>
+<span class="nc" id="L165">        } else {</span>
+<span class="nc" id="L166">            throw new IllegalArgumentException(&quot;An extension point can only &quot;</span>
+                    + &quot;be built on a use case or an Extend&quot;);
+        }
+
+        // For consistency with attribute and operation, give it a default
+        // name and location
+<span class="nc" id="L172">        extensionPoint.setName(&quot;newEP&quot;);</span>
+<span class="nc" id="L173">        extensionPoint.setLocation(&quot;loc&quot;);</span>
+<span class="nc" id="L174">        return extensionPoint;</span>
+    }
+
+
+    public Include buildInclude(Object abase, Object anaddition) {
+<span class="nc" id="L179">        UseCase base = (UseCase) abase;</span>
+<span class="nc" id="L180">        UseCase addition = (UseCase) anaddition;</span>
+<span class="nc" id="L181">        Include include = createInclude();</span>
+
+<span class="nc" id="L183">        include.setAddition(addition);</span>
+<span class="nc" id="L184">        include.setBase(base);</span>
+
+        // Set the namespace to that of the base as first choice, or that of
+        // the addition as second choice.
+
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (base.getNamespace() != null) {</span>
+<span class="nc" id="L190">            include.setNamespace(base.getNamespace());</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        } else if (addition.getNamespace() != null) {</span>
+<span class="nc" id="L192">            include.setNamespace(addition.getNamespace());</span>
+        }
+<span class="nc" id="L194">        return include;</span>
+    }
+
+    /**
+     * Builds an actor in the given namespace.
+     * 
+     * @param ns
+     *            the given namespace
+     * @param model
+     *            model to use for namespace if namespace is null
+     * @return The newly build Actor.
+     */
+    private Actor buildActor(Namespace ns, Object model) {
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L208">            ns = (Namespace) model;</span>
+        }
+<span class="nc" id="L210">        Actor actor = createActor();</span>
+<span class="nc" id="L211">        actor.setNamespace(ns);</span>
+<span class="nc" id="L212">        actor.setLeaf(false);</span>
+<span class="nc" id="L213">        actor.setRoot(false);</span>
+<span class="nc" id="L214">        return actor;</span>
+    }
+
+
+    public Actor buildActor(Object actor, Object model) {
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (actor instanceof Actor) {</span>
+<span class="nc" id="L220">            return buildActor(((Actor) actor).getNamespace(), model);</span>
+        }
+<span class="nc" id="L222">        throw new IllegalArgumentException();</span>
+    }
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteActor(Object elem) {
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (!(elem instanceof Actor)) {</span>
+<span class="nc" id="L231">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L234">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteExtend(Object elem) {
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (!(elem instanceof Extend)) {</span>
+<span class="nc" id="L242">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L245">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L246">                ((Extend) elem).getExtensionPoint());</span>
+<span class="nc" id="L247">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteExtensionPoint(Object elem) {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (!(elem instanceof ExtensionPoint)) {</span>
+<span class="nc" id="L255">            throw new IllegalArgumentException();</span>
+        }
+        // Delete Extends which have this as their only ExtensionPoint
+<span class="nc" id="L258">        ExtensionPoint ep = (ExtensionPoint) elem;</span>
+<span class="nc" id="L259">        Collection xtends = ((org.omg.uml.UmlPackage) ep.refOutermostPackage())</span>
+<span class="nc" id="L260">                .getUseCases().getAExtensionPointExtend().getExtend(ep);</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        for (Iterator it = xtends.iterator(); it.hasNext(); ) {</span>
+<span class="nc" id="L262">            Extend extend = (Extend) it.next();</span>
+<span class="nc" id="L263">            Collection eps = extend.getExtensionPoint();</span>
+<span class="nc bnc" id="L264" title="All 4 branches missed.">            if (eps.size() == 1 &amp;&amp; eps.contains(elem)) {</span>
+<span class="nc" id="L265">                modelImpl.getUmlFactory().delete(extend);</span>
+            }
+<span class="nc" id="L267">        }</span>
+<span class="nc" id="L268">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteInclude(Object elem) {
+<span class="nc bnc" id="L275" title="All 2 branches missed.">        if (!(elem instanceof Include)) {</span>
+<span class="nc" id="L276">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L279">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteUseCase(Object elem) {
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (!(elem instanceof UseCase)) {</span>
+<span class="nc" id="L287">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L290">        UseCase useCase = ((UseCase) elem);</span>
+<span class="nc" id="L291">        modelImpl.getUmlHelper().deleteCollection(useCase.getExtend());</span>
+<span class="nc" id="L292">        modelImpl.getUmlHelper().deleteCollection(useCase.getInclude());</span>
+        // delete Extends where this is the base
+<span class="nc" id="L294">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L295">                ((org.omg.uml.UmlPackage) useCase.refOutermostPackage())</span>
+<span class="nc" id="L296">                        .getUseCases().getABaseExtender().getExtender(useCase));</span>
+        // delete Includes where this is the addition
+<span class="nc" id="L298">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L299">                ((org.omg.uml.UmlPackage) useCase.refOutermostPackage())</span>
+<span class="nc" id="L300">                        .getUseCases().getAIncluderAddition().getIncluder(</span>
+                                useCase));
+<span class="nc" id="L302">    }</span>
+
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteUseCaseInstance(Object elem) {
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (!(elem instanceof UseCaseInstance)) {</span>
+<span class="nc" id="L310">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L312">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

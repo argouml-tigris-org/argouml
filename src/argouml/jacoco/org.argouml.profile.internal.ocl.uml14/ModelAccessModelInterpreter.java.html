@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelAccessModelInterpreter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal.ocl.uml14</a> &gt; <span class="el_source">ModelAccessModelInterpreter.java</span></div><h1>ModelAccessModelInterpreter.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal.ocl.uml14;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.profile.internal.ocl.ModelInterpreter;
+
+/**
+ * Model Access.
+ *
+ * @author maurelio1234
+ */
+<span class="fc" id="L58">public class ModelAccessModelInterpreter implements ModelInterpreter {</span>
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L63">    private static final Logger LOG =</span>
+<span class="fc" id="L64">        Logger.getLogger(ModelAccessModelInterpreter.class.getName());</span>
+
+<span class="fc" id="L66">    private static Uml14ModelInterpreter uml14mi = new Uml14ModelInterpreter();</span>
+
+    /*
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.Map,
+     *      java.lang.Object, java.lang.String, java.lang.String,
+     *      java.lang.Object[])
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Object invokeFeature(Map&lt;String, Object&gt; vt, Object subject,
+            String feature, String type, Object[] parameters) {
+
+        // TODO: This is an absurdly long method! Break it up.
+
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (subject == null) {</span>
+<span class="nc" id="L80">            subject = vt.get(&quot;self&quot;);</span>
+        }
+
+        /* 4.5.2.1 Abstraction */
+        // TODO investigate: Abstraction.mapping is not in the Model Subsystem
+
+        /* 4.5.2.3 Association */
+
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociation(subject)) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                if (feature.equals(&quot;connection&quot;)) {</span>
+<span class="nc" id="L91">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L92">                            .getConnections(subject));</span>
+                }
+
+                // Additional Operation 4.5.3.1 [1]
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (feature.equals(&quot;allConnections&quot;)) {</span>
+<span class="nc" id="L97">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L98">                            .getConnections(subject));</span>
+                }
+            }
+        }
+
+        /* 4.5.2.5 AssociationEnd */
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociationEnd(subject)) {</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                if (feature.equals(&quot;aggregation&quot;)) {</span>
+<span class="nc" id="L108">                    return Model.getFacade().getAggregation1(subject);</span>
+                }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                if (feature.equals(&quot;changeability&quot;)) {</span>
+<span class="nc" id="L111">                    return Model.getFacade().getChangeability(subject);</span>
+                }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                if (feature.equals(&quot;ordering&quot;)) {</span>
+<span class="nc" id="L114">                    return Model.getFacade().getOrdering(subject);</span>
+                }
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if (feature.equals(&quot;isNavigable&quot;)) {</span>
+<span class="nc" id="L117">                    return Model.getFacade().isNavigable(subject);</span>
+                }
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (feature.equals(&quot;multiplicity&quot;)) {</span>
+<span class="nc" id="L120">                    return Model.getFacade().getMultiplicity(subject);</span>
+                }
+                // TODO: isStatic in UML 2.x
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                if (feature.equals(&quot;targetScope&quot;)) {</span>
+<span class="nc" id="L124">                    return Model.getFacade().getTargetScope(subject);</span>
+                }
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                if (feature.equals(&quot;visibility&quot;)) {</span>
+<span class="nc" id="L127">                    return Model.getFacade().getVisibility(subject);</span>
+                }
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                if (feature.equals(&quot;qualifier&quot;)) {</span>
+<span class="nc" id="L130">                    return Model.getFacade().getQualifiers(subject);</span>
+                }
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                if (feature.equals(&quot;specification&quot;)) {</span>
+<span class="nc" id="L133">                    return Model.getFacade().getSpecification(subject);</span>
+                }
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                if (feature.equals(&quot;participant&quot;)) {</span>
+<span class="nc" id="L136">                    return Model.getFacade().getClassifier(subject);</span>
+                }
+
+                // TODO investigate the &quot;unnamed opposite end&quot;
+
+                // Additional Operation 4.5.3.3 [1]
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (feature.equals(&quot;upperbound&quot;)) {</span>
+<span class="nc" id="L143">                    return Model.getFacade().getUpper(subject);</span>
+                }
+
+            }
+        }
+
+        /* 4.5.2.6 Attribute */
+
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (Model.getFacade().isAAttribute(subject)) {</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                if (feature.equals(&quot;initialValue&quot;)) {</span>
+<span class="nc" id="L154">                    return Model.getFacade().getInitialValue(subject);</span>
+                }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                if (feature.equals(&quot;associationEnd&quot;)) {</span>
+<span class="nc" id="L157">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L158">                            .getAssociationEnds(subject));</span>
+                }
+            }
+        }
+
+        /* 4.5.2.7 BehavioralFeature */
+
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        if (Model.getFacade().isABehavioralFeature(subject)) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">                if (feature.equals(&quot;isQuery&quot;)) {</span>
+<span class="nc" id="L168">                    return Model.getFacade().isQuery(subject);</span>
+                }
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (feature.equals(&quot;parameter&quot;)) {</span>
+<span class="nc" id="L171">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L172">                            .getParameters(subject));</span>
+                }
+            }
+
+            // TODO implement additional operations in 4.5.3.5
+        }
+
+        /* 4.5.2.8 Binding */
+
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (Model.getFacade().isABinding(subject)) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                if (feature.equals(&quot;argument&quot;)) {</span>
+<span class="nc" id="L184">                    return Model.getFacade().getArguments(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.9 Class */
+
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        if (Model.getFacade().isAClass(subject)) {</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">                if (feature.equals(&quot;isActive&quot;)) {</span>
+<span class="nc" id="L194">                    return Model.getFacade().isActive(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.10 Classifier */
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (Model.getFacade().isAClassifier(subject)) {</span>
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">                if (feature.equals(&quot;feature&quot;)) {</span>
+<span class="nc" id="L204">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L205">                            .getFeatures(subject));</span>
+                }
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">                if (feature.equals(&quot;feature&quot;)) {</span>
+<span class="nc" id="L208">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L209">                            .getFeatures(subject));</span>
+                }
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">                if (feature.equals(&quot;association&quot;)) {</span>
+<span class="nc" id="L212">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L213">                          .getAssociationEnds(subject));</span>
+                }
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">                if (feature.equals(&quot;powertypeRange&quot;)) {</span>
+<span class="nc" id="L216">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L217">                            .getPowertypeRanges(subject));</span>
+                }
+                // TODO specifiedEnd??
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">                if (feature.equals(&quot;feature&quot;)) {</span>
+<span class="nc" id="L221">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L222">                            .getFeatures(subject));</span>
+                }
+
+                // Additional Operations in 4.5.3.8
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">                if (feature.equals(&quot;allFeatures&quot;)) {</span>
+<span class="nc" id="L227">                    return internalOcl(subject, vt, &quot;self.feature-&gt;union(&quot;</span>
+                            + &quot;self.parent.oclAsType(Classifier).allFeatures)&quot;);
+                }
+
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">                if (feature.equals(&quot;allOperations&quot;)) {</span>
+<span class="nc" id="L232">                    return internalOcl(subject, vt, &quot;self.allFeatures-&gt;&quot;</span>
+                            + &quot;select(f | f.oclIsKindOf(Operation))&quot;);
+                }
+
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">                if (feature.equals(&quot;allMethods&quot;)) {</span>
+<span class="nc" id="L237">                    return internalOcl(subject, vt, &quot;self.allFeatures-&gt;&quot;</span>
+                            + &quot;select(f | f.oclIsKindOf(Method))&quot;);
+                }
+
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">                if (feature.equals(&quot;allAttributes&quot;)) {</span>
+<span class="nc" id="L242">                    return internalOcl(subject, vt, &quot;self.allFeatures-&gt;&quot;</span>
+                            + &quot;select(f | f.oclIsKindOf(Attribute))&quot;);
+                }
+
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">                if (feature.equals(&quot;associations&quot;)) {</span>
+<span class="nc" id="L247">                    return internalOcl(subject, vt,</span>
+                            &quot;self.association.association-&gt;asSet()&quot;);
+                }
+
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">                if (feature.equals(&quot;allAssociations&quot;)) {</span>
+<span class="nc" id="L252">                    return internalOcl(</span>
+                            subject,
+                            vt,
+                          &quot;self.associations-&gt;union(&quot;
+                        + &quot;self.parent.oclAsType(Classifier).allAssociations)&quot;);
+                }
+
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">                if (feature.equals(&quot;oppositeAssociationEnds&quot;)) {</span>
+<span class="nc" id="L260">                    return internalOcl(subject, vt,</span>
+                        &quot;self.associations-&gt;select ( a | a.connection-&gt;select &quot;
+                            + &quot;( ae | ae.participant = self ).size = 1 )-&gt;&quot;
+                            + &quot;collect ( a | a.connection-&gt;&quot;
+                            + &quot;select ( ae | ae.participant &lt;&gt; self ) )-&gt;&quot;
+                            + &quot;union ( self.associations-&gt;&quot;
+                            + &quot;select ( a | a.connection-&gt;select ( ae |&quot;
+                            + &quot;ae.participant = self ).size &gt; 1 )-&gt;&quot;
+                            + &quot;collect ( a | a.connection) )&quot;);
+                }
+
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">                if (feature.equals(&quot;allOppositeAssociationEnds&quot;)) {</span>
+<span class="nc" id="L272">                    return internalOcl(</span>
+                            subject,
+                            vt,
+                            &quot;self.oppositeAssociationEnds-&gt;&quot;
+                          + &quot;union(self.parent.allOppositeAssociationEnds )&quot;);
+                }
+
+<span class="pc bpc" id="L279" title="1 of 2 branches missed.">                if (feature.equals(&quot;specification&quot;)) {</span>
+<span class="nc" id="L280">                    return internalOcl(</span>
+                            subject,
+                            vt,
+                            &quot;self.clientDependency-&gt;&quot;
+                            + &quot;select(d |&quot;
+                            + &quot;d.oclIsKindOf(Abstraction)&quot;
+                            + &quot;and d.stereotype.name = \&quot;realization\&quot; &quot;
+                            + &quot;and d.supplier.oclIsKindOf(Classifier))&quot;
+                            + &quot;.supplier.oclAsType(Classifier)&quot;);
+                }
+
+<span class="pc bpc" id="L291" title="1 of 2 branches missed.">                if (feature.equals(&quot;allContents&quot;)) {</span>
+<span class="nc" id="L292">                    return internalOcl(subject, vt,</span>
+                        &quot;self.contents-&gt;union(&quot;
+                        + &quot;self.parent.allContents-&gt;select(e |&quot;
+                        + &quot;e.elementOwnership.visibility = #public or true or &quot;
+                        + &quot; e.elementOwnership.visibility = #protected))&quot;);
+                }
+
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">                if (feature.equals(&quot;allDiscriminators&quot;)) {</span>
+<span class="nc" id="L300">                    return internalOcl(subject, vt,</span>
+                        &quot;self.generalization.discriminator-&gt;&quot;
+                        + &quot;union(self.parent.oclAsType(Classifier).&quot;
+                        + &quot;allDiscriminators)&quot;);
+                }
+            }
+        }
+
+        /* 4.5.2.11 Comment */
+
+<span class="pc bpc" id="L310" title="1 of 2 branches missed.">        if (Model.getFacade().isAComment(subject)) {</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                if (feature.equals(&quot;body&quot;)) {</span>
+<span class="nc" id="L313">                    return Model.getFacade().getBody(subject);</span>
+                }
+<span class="nc bnc" id="L315" title="All 2 branches missed.">                if (feature.equals(&quot;annotatedElement&quot;)) {</span>
+<span class="nc" id="L316">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L317">                            .getAnnotatedElements(subject));</span>
+                }
+            }
+        }
+
+        /* 4.5.2.12 Component */
+
+<span class="pc bpc" id="L324" title="1 of 2 branches missed.">        if (Model.getFacade().isAComponent(subject)) {</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                if (feature.equals(&quot;deploymentLocation&quot;)) {</span>
+<span class="nc" id="L327">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L328">                            .getDeploymentLocations(subject));</span>
+                }
+<span class="nc bnc" id="L330" title="All 2 branches missed.">                if (feature.equals(&quot;resident&quot;)) {</span>
+                    // TODO check this
+<span class="nc" id="L332">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L333">                            .getResidents(subject));</span>
+                }
+
+                // TODO implementation?
+
+                // Additional Operation in 4.5.3.9
+<span class="nc bnc" id="L339" title="All 2 branches missed.">                if (feature.equals(&quot;allResidentElements&quot;)) {</span>
+<span class="nc" id="L340">                    return internalOcl(subject, vt,</span>
+                        &quot;self.resident-&gt;union(&quot;
+                        + &quot;self.parent.oclAsType(Component).&quot;
+                        + &quot;allResidentElements-&gt;select( re |&quot;
+                        + &quot;re.elementResidence.visibility = #public or &quot;
+                        + &quot;re.elementResidence.visibility = #protected))&quot;);
+                }
+            }
+        }
+
+        /* 4.5.2.13 Constraint */
+
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">        if (Model.getFacade().isAConstraint(subject)) {</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">                if (feature.equals(&quot;body&quot;)) {</span>
+<span class="nc" id="L355">                    return Model.getFacade().getBody(subject);</span>
+                }
+<span class="nc bnc" id="L357" title="All 2 branches missed.">                if (feature.equals(&quot;constrainedElement&quot;)) {</span>
+                    // TODO check this
+<span class="nc" id="L359">                    return Model.getFacade().getConstrainedElements(subject);</span>
+                }
+
+            }
+        }
+
+        /* 4.5.2.14 Dependency */
+
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">        if (Model.getFacade().isADependency(subject)) {</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">                if (feature.equals(&quot;client&quot;)) {</span>
+<span class="nc" id="L370">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L371">                            .getClients(subject));</span>
+                }
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                if (feature.equals(&quot;supplier&quot;)) {</span>
+<span class="nc" id="L374">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L375">                            .getSuppliers(subject));</span>
+                }
+            }
+        }
+
+        // TODO ElementOwnership is not in ModelSubsys!!
+
+        /* 4.5.2.18 ElementOwnership */
+
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">        if (Model.getFacade().isAElementResidence(subject)) {</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                if (feature.equals(&quot;visibility&quot;)) {</span>
+<span class="nc" id="L387">                    return Model.getFacade().getVisibility(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.19 Enumeration */
+
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        if (Model.getFacade().isAEnumeration(subject)) {</span>
+<span class="nc bnc" id="L395" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">                if (feature.equals(&quot;literal&quot;)) {</span>
+<span class="nc" id="L397">                    return Model.getFacade().getEnumerationLiterals(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.20 EnumerationLiteral */
+
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">        if (Model.getFacade().isAEnumerationLiteral(subject)) {</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">                if (feature.equals(&quot;enumeration&quot;)) {</span>
+<span class="nc" id="L407">                    return Model.getFacade().getEnumeration(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.21 Feature */
+
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">        if (Model.getFacade().isAFeature(subject)) {</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">                if (feature.equals(&quot;ownerScope&quot;)) {</span>
+<span class="nc" id="L417">                    return Model.getFacade().isStatic(subject);</span>
+                }
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                if (feature.equals(&quot;visibility&quot;)) {</span>
+<span class="nc" id="L420">                    return Model.getFacade().getVisibility(subject);</span>
+                }
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                if (feature.equals(&quot;owner&quot;)) {</span>
+<span class="nc" id="L423">                    return Model.getFacade().getOwner(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.23 Generalizable Element */
+
+<span class="fc bfc" id="L430" title="All 2 branches covered.">        if (Model.getFacade().isAGeneralizableElement(subject)) {</span>
+<span class="pc bpc" id="L431" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">                if (feature.equals(&quot;isAbstract&quot;)) {</span>
+<span class="nc" id="L433">                    return Model.getFacade().isAbstract(subject);</span>
+                }
+<span class="pc bpc" id="L435" title="1 of 2 branches missed.">                if (feature.equals(&quot;isLeaf&quot;)) {</span>
+<span class="nc" id="L436">                    return Model.getFacade().isLeaf(subject);</span>
+                }
+<span class="pc bpc" id="L438" title="1 of 2 branches missed.">                if (feature.equals(&quot;isRoot&quot;)) {</span>
+<span class="nc" id="L439">                    return Model.getFacade().isRoot(subject);</span>
+                }
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">                if (feature.equals(&quot;generalization&quot;)) {</span>
+<span class="nc" id="L442">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L443">                            .getGeneralizations(subject));</span>
+                }
+<span class="pc bpc" id="L445" title="1 of 2 branches missed.">                if (feature.equals(&quot;specialization&quot;)) {</span>
+<span class="nc" id="L446">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L447">                            .getSpecializations(subject));</span>
+                }
+
+                // Additional Operation in 4.5.3.20
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">                if (feature.equals(&quot;parent&quot;)) {</span>
+<span class="nc" id="L452">                    return internalOcl(subject, vt,</span>
+                            &quot;self.generalization.parent&quot;);
+                }
+
+<span class="pc bpc" id="L456" title="1 of 2 branches missed.">                if (feature.equals(&quot;allParents&quot;)) {</span>
+<span class="nc" id="L457">                    return internalOcl(subject, vt,</span>
+                            &quot;self.parent-&gt;union(self.parent.allParents)&quot;);
+                }
+
+            }
+        }
+
+        /* 4.5.2.24 Generalization */
+
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">        if (Model.getFacade().isAGeneralization(subject)) {</span>
+<span class="nc bnc" id="L467" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">                if (feature.equals(&quot;discriminator&quot;)) {</span>
+<span class="nc" id="L469">                    return Model.getFacade().getDiscriminator(subject);</span>
+                }
+<span class="nc bnc" id="L471" title="All 2 branches missed.">                if (feature.equals(&quot;child&quot;)) {</span>
+<span class="nc" id="L472">                    return Model.getFacade().getSpecific(subject);</span>
+                }
+<span class="nc bnc" id="L474" title="All 2 branches missed.">                if (feature.equals(&quot;parent&quot;)) {</span>
+<span class="nc" id="L475">                    return Model.getFacade().getGeneral(subject);</span>
+                }
+<span class="nc bnc" id="L477" title="All 2 branches missed.">                if (feature.equals(&quot;powertype&quot;)) {</span>
+<span class="nc" id="L478">                    return Model.getFacade().getPowertype(subject);</span>
+                }
+<span class="nc bnc" id="L480" title="All 2 branches missed.">                if (feature.equals(&quot;specialization&quot;)) {</span>
+<span class="nc" id="L481">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L482">                            .getSpecializations(subject));</span>
+                }
+            }
+        }
+
+        /* 4.5.2.26 Method */
+
+<span class="pc bpc" id="L489" title="1 of 2 branches missed.">        if (Model.getFacade().isAMethod(subject)) {</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">                if (feature.equals(&quot;body&quot;)) {</span>
+<span class="nc" id="L492">                    return Model.getFacade().getBody(subject);</span>
+                }
+<span class="nc bnc" id="L494" title="All 2 branches missed.">                if (feature.equals(&quot;specification&quot;)) {</span>
+<span class="nc" id="L495">                    return Model.getFacade().getSpecification(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.27 ModelElement */
+
+<span class="fc bfc" id="L502" title="All 2 branches covered.">        if (Model.getFacade().isAModelElement(subject)) {</span>
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">                if (feature.equals(&quot;name&quot;)) {</span>
+<span class="fc" id="L505">                    String name = Model.getFacade().getName(subject);</span>
+<span class="pc bpc" id="L506" title="1 of 2 branches missed.">                    if (name == null) {</span>
+                        // TODO check conformancy to specification
+
+                        // avoiding null names
+<span class="nc" id="L510">                        name = &quot;&quot;;</span>
+                    }
+<span class="fc" id="L512">                    return name;</span>
+                }
+
+                // TODO asArgument??
+
+<span class="pc bpc" id="L517" title="1 of 2 branches missed.">                if (feature.equals(&quot;clientDependency&quot;)) {</span>
+<span class="nc" id="L518">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L519">                            .getClientDependencies(subject));</span>
+                }
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
+<span class="nc" id="L522">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L523">                            .getConstraints(subject));</span>
+                }
+
+                // TODO implementationLocation??
+
+<span class="pc bpc" id="L528" title="1 of 2 branches missed.">                if (feature.equals(&quot;namespace&quot;)) {</span>
+<span class="nc" id="L529">                    return Model.getFacade().getNamespace(subject);</span>
+                }
+
+                // TODO presentation??
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">                if (feature.equals(&quot;supplierDependency&quot;)) {</span>
+<span class="nc" id="L534">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L535">                            .getSupplierDependencies(subject));</span>
+                }
+
+<span class="pc bpc" id="L538" title="1 of 2 branches missed.">                if (feature.equals(&quot;templateParameter&quot;)) {</span>
+<span class="nc" id="L539">                    return Model.getFacade().getTemplateParameters(subject);</span>
+                }
+
+                // As extended by 4.6.2.2
+<span class="pc bpc" id="L543" title="1 of 2 branches missed.">                if (feature.equals(&quot;stereotype&quot;)) {</span>
+<span class="nc" id="L544">                    return Model.getFacade().getStereotypes(subject);</span>
+                }
+
+<span class="pc bpc" id="L547" title="1 of 2 branches missed.">                if (feature.equals(&quot;taggedValue&quot;)) {</span>
+<span class="nc" id="L548">                    return Model.getFacade().getTaggedValuesCollection(subject);</span>
+                }
+
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
+<span class="nc" id="L552">                    return Model.getFacade().getConstraints(subject);</span>
+                }
+
+                // Additional Operations in 4.5.3.25
+<span class="pc bpc" id="L556" title="1 of 2 branches missed.">                if (feature.equals(&quot;supplier&quot;)) {</span>
+<span class="nc" id="L557">                    return internalOcl(subject, vt,</span>
+                            &quot;self.clientDependency.supplier&quot;);
+                }
+
+<span class="pc bpc" id="L561" title="1 of 2 branches missed.">                if (feature.equals(&quot;allSuppliers&quot;)) {</span>
+<span class="nc" id="L562">                    return internalOcl(subject, vt,</span>
+                            &quot;self.supplier-&gt;union(self.supplier.allSuppliers)&quot;);
+                }
+
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">                if (feature.equals(&quot;model&quot;)) {</span>
+<span class="nc" id="L567">                    return internalOcl(subject, vt,</span>
+                            &quot;self.namespace-&gt;&quot;
+                            + &quot;union(self.namespace.allSurroundingNamespaces)-&gt;&quot;
+                            + &quot;select( ns| ns.oclIsKindOf (Model))&quot;);
+                }
+
+<span class="pc bpc" id="L573" title="1 of 2 branches missed.">                if (feature.equals(&quot;isTemplate&quot;)) {</span>
+<span class="nc" id="L574">                    return !Model.getFacade().getTemplateParameters(subject)</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">                            .isEmpty();</span>
+                }
+
+<span class="pc bpc" id="L578" title="1 of 2 branches missed.">                if (feature.equals(&quot;isInstantiated&quot;)) {</span>
+<span class="nc" id="L579">                    return internalOcl(subject, vt, &quot;self.clientDependency-&gt;&quot;</span>
+                            + &quot;select(oclIsKindOf(Binding))-&gt;notEmpty&quot;);
+                }
+
+<span class="pc bpc" id="L583" title="1 of 2 branches missed.">                if (feature.equals(&quot;templateArgument&quot;)) {</span>
+<span class="nc" id="L584">                    return internalOcl(subject, vt, &quot;self.clientDependency-&gt;&quot;</span>
+                            + &quot;select(oclIsKindOf(Binding)).&quot;
+                            + &quot;oclAsType(Binding).argument&quot;);
+                }
+
+            }
+        }
+
+        /* 4.5.2.28 Namespace */
+
+<span class="fc bfc" id="L594" title="All 2 branches covered.">        if (Model.getFacade().isANamespace(subject)) {</span>
+<span class="pc bpc" id="L595" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="pc bpc" id="L596" title="1 of 2 branches missed.">                if (feature.equals(&quot;ownedElement&quot;)) {</span>
+<span class="nc" id="L597">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L598">                            .getOwnedElements(subject));</span>
+                }
+                // Additional Operations in 4.5.3.26
+<span class="pc bpc" id="L601" title="1 of 2 branches missed.">                if (feature.equals(&quot;contents&quot;)) {</span>
+                        // TODO investigate typo in spec!!
+<span class="nc" id="L603">                    return internalOcl(subject, vt, &quot;self.ownedElement-&gt;&quot;</span>
+                            + &quot;union(self.ownedElement-&gt;&quot;
+                            + &quot;select(x|x.oclIsKindOf(Namespace)).contents)&quot;);
+                }
+
+<span class="pc bpc" id="L608" title="1 of 2 branches missed.">                if (feature.equals(&quot;allContents&quot;)) {</span>
+<span class="nc" id="L609">                    return internalOcl(subject, vt, &quot;self.contents&quot;);</span>
+                }
+
+<span class="pc bpc" id="L612" title="1 of 2 branches missed.">                if (feature.equals(&quot;allVisibleElements&quot;)) {</span>
+<span class="nc" id="L613">                    return internalOcl(</span>
+                            subject,
+                            vt,
+                          &quot;self.allContents -&gt;&quot;
+                        + &quot;select(e |e.elementOwnership.visibility = #public)&quot;);
+                }
+
+<span class="pc bpc" id="L620" title="1 of 2 branches missed.">                if (feature.equals(&quot;allSurroundingNamespaces&quot;)) {</span>
+<span class="nc" id="L621">                    return internalOcl(subject, vt, &quot;self.namespace-&gt;&quot;</span>
+                            + &quot;union(self.namespace.allSurroundingNamespaces)&quot;);
+                }
+            }
+        }
+
+
+        /* 4.5.2.29 Node */
+
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">        if (Model.getFacade().isANode(subject)) {</span>
+<span class="nc bnc" id="L631" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">                if (feature.equals(&quot;deployedComponent&quot;)) {</span>
+<span class="nc" id="L633">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L634">                            .getDeployedComponents(subject));</span>
+                }
+            }
+        }
+
+        /* 4.5.2.30 Operation */
+
+<span class="pc bpc" id="L641" title="1 of 2 branches missed.">        if (Model.getFacade().isAOperation(subject)) {</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L643" title="All 2 branches missed.">                if (feature.equals(&quot;concurrency&quot;)) {</span>
+<span class="nc" id="L644">                    return Model.getFacade().getConcurrency(subject);</span>
+                }
+<span class="nc bnc" id="L646" title="All 2 branches missed.">                if (feature.equals(&quot;isAbstract&quot;)) {</span>
+<span class="nc" id="L647">                    return Model.getFacade().isAbstract(subject);</span>
+                }
+<span class="nc bnc" id="L649" title="All 2 branches missed.">                if (feature.equals(&quot;isLeaf&quot;)) {</span>
+<span class="nc" id="L650">                    return Model.getFacade().isLeaf(subject);</span>
+                }
+<span class="nc bnc" id="L652" title="All 2 branches missed.">                if (feature.equals(&quot;isRoot&quot;)) {</span>
+<span class="nc" id="L653">                    return Model.getFacade().isRoot(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.31 Parameter */
+
+<span class="pc bpc" id="L660" title="1 of 2 branches missed.">        if (Model.getFacade().isAParameter(subject)) {</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L662" title="All 2 branches missed.">                if (feature.equals(&quot;defaultValue&quot;)) {</span>
+<span class="nc" id="L663">                    return Model.getFacade().getDefaultValue(subject);</span>
+                }
+<span class="nc bnc" id="L665" title="All 2 branches missed.">                if (feature.equals(&quot;kind&quot;)) {</span>
+<span class="nc" id="L666">                    return Model.getFacade().getKind(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.35 ProgrammingLanguageDataType */
+
+        // Gone from UML 2.x, so unsupported here
+//        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
+//            if (type.equals(&quot;.&quot;)) {
+//                if (feature.equals(&quot;expression&quot;)) {
+//                    return Model.getFacade().getExpression(subject);
+//                }
+//            }
+//        }
+
+        /* 4.5.2.37 StructuralFeature */
+
+<span class="pc bpc" id="L684" title="1 of 2 branches missed.">        if (Model.getFacade().isAStructuralFeature(subject)) {</span>
+<span class="nc bnc" id="L685" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">                if (feature.equals(&quot;changeability&quot;)) {</span>
+<span class="nc" id="L687">                    return Model.getFacade().getChangeability(subject);</span>
+                }
+<span class="nc bnc" id="L689" title="All 2 branches missed.">                if (feature.equals(&quot;multiplicity&quot;)) {</span>
+<span class="nc" id="L690">                    return Model.getFacade().getMultiplicity(subject);</span>
+                }
+<span class="nc bnc" id="L692" title="All 2 branches missed.">                if (feature.equals(&quot;ordering&quot;)) {</span>
+<span class="nc" id="L693">                    return Model.getFacade().getOrdering(subject);</span>
+                }
+                // TODO: Removed from UML 2.x
+<span class="nc bnc" id="L696" title="All 2 branches missed.">                if (feature.equals(&quot;targetScope&quot;)) {</span>
+<span class="nc" id="L697">                    return Model.getFacade().getTargetScope(subject);</span>
+                }
+<span class="nc bnc" id="L699" title="All 2 branches missed.">                if (feature.equals(&quot;type&quot;)) {</span>
+<span class="nc" id="L700">                    return Model.getFacade().getType(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.38 TemplateArgument */
+
+<span class="pc bpc" id="L707" title="1 of 2 branches missed.">        if (Model.getFacade().isATemplateArgument(subject)) {</span>
+<span class="nc bnc" id="L708" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L709" title="All 2 branches missed.">                if (feature.equals(&quot;binding&quot;)) {</span>
+<span class="nc" id="L710">                    return Model.getFacade().getBinding(subject);</span>
+                }
+<span class="nc bnc" id="L712" title="All 2 branches missed.">                if (feature.equals(&quot;modelElement&quot;)) {</span>
+<span class="nc" id="L713">                    return Model.getFacade().getModelElement(subject);</span>
+                }
+            }
+        }
+
+        /* 4.5.2.39 TemplateParameter */
+
+<span class="pc bpc" id="L720" title="1 of 2 branches missed.">        if (Model.getFacade().isATemplateParameter(subject)) {</span>
+<span class="nc bnc" id="L721" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L722" title="All 2 branches missed.">                if (feature.equals(&quot;defaultElement&quot;)) {</span>
+<span class="nc" id="L723">                    return Model.getFacade().getDefaultElement(subject);</span>
+                }
+            }
+        }
+
+        /* 4.11.3.5 UseCase */
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">        if (Model.getFacade().isAUseCase(subject)) {</span>
+<span class="nc bnc" id="L730" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">                if (feature.equals(&quot;specificationPath&quot;)) {</span>
+                    /*  The operation specificationPath results in a set containing
+                     * all surrounding Namespaces that are not instances of
+                     *  Package.
+                     *  specificationPath : Set(Namespace)
+                     * specificationPath = self.allSurroundingNamespaces-&gt;select(n |
+                     *    n.oclIsKindOf(Subsystem) or n.oclIsKindOf(Class))
+                     **/
+<span class="nc" id="L739">                    return Model.getUseCasesHelper().getSpecificationPath(subject);</span>
+                }
+<span class="nc bnc" id="L741" title="All 2 branches missed.">                if (feature.equals(&quot;allExtensionPoints&quot;)) {</span>
+<span class="nc" id="L742">                    Collection c = Model.getCoreHelper().getAllSupertypes(subject);</span>
+<span class="nc" id="L743">                    Collection result = new ArrayList(Model.getFacade().getExtensionPoints(subject));</span>
+<span class="nc bnc" id="L744" title="All 2 branches missed.">                    for (Object uc : c) {</span>
+<span class="nc" id="L745">                        result.addAll(Model.getFacade().getExtensionPoints(uc));</span>
+<span class="nc" id="L746">                    }</span>
+<span class="nc" id="L747">                    return result;</span>
+                }
+            }
+        }
+
+        /* 4.5.3.2 AssociationClass */
+
+<span class="pc bpc" id="L754" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociationClass(subject)) {</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L756" title="All 2 branches missed.">                if (feature.equals(&quot;allConnections&quot;)) {</span>
+                    /* The operation allConnections results in the set of all
+                     * AssociationEnds of the AssociationClass, including all
+                     * connections defined by its parent (transitive closure).
+                     */
+<span class="nc" id="L761">                    return internalOcl(</span>
+                            subject,
+                            vt,
+                            &quot;self.connection-&gt;union(self.parent-&gt;select(&quot;
+                          + &quot;s | s.oclIsKindOf(Association))-&gt;collect(&quot;
+                          + &quot;a : Association | a.allConnections))-&gt;asSet()&quot;);
+                }
+            }
+        }
+
+        /* 4.6.2.3 Stereotype */
+
+<span class="pc bpc" id="L773" title="1 of 2 branches missed.">        if (Model.getFacade().isAStereotype(subject)) {</span>
+<span class="nc bnc" id="L774" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L775" title="All 2 branches missed.">                if (feature.equals(&quot;baseClass&quot;)) {</span>
+<span class="nc" id="L776">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L777">                            .getBaseClasses(subject));</span>
+                }
+<span class="nc bnc" id="L779" title="All 2 branches missed.">                if (feature.equals(&quot;extendedElement&quot;)) {</span>
+<span class="nc" id="L780">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L781">                            .getExtendedElements(subject));</span>
+                }
+<span class="nc bnc" id="L783" title="All 2 branches missed.">                if (feature.equals(&quot;definedTag&quot;)) {</span>
+<span class="nc" id="L784">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L785">                            .getTagDefinitions(subject));</span>
+                }
+                // stereotypeConstraint ?
+            }
+        }
+
+        /* 4.6.2.4 TagDefinition */
+
+<span class="pc bpc" id="L793" title="1 of 2 branches missed.">        if (Model.getFacade().isATagDefinition(subject)) {</span>
+<span class="nc bnc" id="L794" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L795" title="All 2 branches missed.">                if (feature.equals(&quot;multiplicity&quot;)) {</span>
+<span class="nc" id="L796">                    return Model.getFacade().getMultiplicity(subject);</span>
+                }
+<span class="nc bnc" id="L798" title="All 2 branches missed.">                if (feature.equals(&quot;tagType&quot;)) {</span>
+<span class="nc" id="L799">                    return Model.getFacade().getType(subject);</span>
+                }
+<span class="nc bnc" id="L801" title="All 2 branches missed.">                if (feature.equals(&quot;typedValue&quot;)) {</span>
+<span class="nc" id="L802">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L803">                            .getTypedValues(subject));</span>
+                }
+<span class="nc bnc" id="L805" title="All 2 branches missed.">                if (feature.equals(&quot;owner&quot;)) {</span>
+<span class="nc" id="L806">                    return Model.getFacade().getOwner(subject);</span>
+                }
+            }
+        }
+
+        /* 4.6.2.5 TaggedValue */
+
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">        if (Model.getFacade().isATaggedValue(subject)) {</span>
+<span class="nc bnc" id="L814" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L815" title="All 2 branches missed.">                if (feature.equals(&quot;dataValue&quot;)) {</span>
+<span class="nc" id="L816">                    return Model.getFacade().getDataValue(subject);</span>
+                }
+<span class="nc bnc" id="L818" title="All 2 branches missed.">                if (feature.equals(&quot;type&quot;)) {</span>
+<span class="nc" id="L819">                    return Model.getFacade().getType(subject);</span>
+                }
+<span class="nc bnc" id="L821" title="All 2 branches missed.">                if (feature.equals(&quot;referenceValue&quot;)) {</span>
+<span class="nc" id="L822">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
+<span class="nc" id="L823">                            .getReferenceValue(subject));</span>
+                }
+            }
+        }
+<span class="fc" id="L827">        return null;</span>
+    }
+
+    private Object internalOcl(Object subject, Map&lt;String, Object&gt; vt,
+            String ocl) {
+        try {
+<span class="nc" id="L833">            Object oldSelf = vt.get(&quot;self&quot;);</span>
+
+<span class="nc" id="L835">            vt.put(&quot;self&quot;, subject);</span>
+<span class="nc" id="L836">            Object ret = DefaultOclEvaluator.getInstance().evaluate(vt,</span>
+                    uml14mi, ocl);
+<span class="nc" id="L838">            vt.put(&quot;self&quot;, oldSelf);</span>
+<span class="nc" id="L839">            return ret;</span>
+<span class="nc" id="L840">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L841">            LOG.log(Level.SEVERE, &quot;Exception&quot;, e);</span>
+<span class="nc" id="L842">            return null;</span>
+        }
+    }
+
+    /**
+     * Add the metamodel-metaclasses as built-in symbols
+     *
+     * @param sym the symbol
+     * @return the value of the symbol
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
+     */
+    public Object getBuiltInSymbol(String sym) {
+<span class="pc bpc" id="L854" title="1 of 2 branches missed.">        for (String name : Model.getFacade().getMetatypeNames()) {</span>
+<span class="fc bfc" id="L855" title="All 2 branches covered.">            if (name.equals(sym)) {</span>
+<span class="fc" id="L856">                return new OclType(sym);</span>
+            }
+        }
+<span class="nc" id="L859">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

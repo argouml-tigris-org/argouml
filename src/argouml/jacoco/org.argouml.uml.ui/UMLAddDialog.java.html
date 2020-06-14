@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLAddDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLAddDialog.java</span></div><h1>UMLAddDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
+import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.uml.util.SortedListModel;
+
+/**
+ * UMLAddDialog is a modal dialog which allows the user to do a multiple select
+ * from a list of choices. The dialog has two possible uses:
+ * &lt;ol&gt;
+ * &lt;li&gt;As dialog as described above with a custom cellrenderer or a default
+ * cellrenderer.
+ * &lt;li&gt;As dialog with a UMLCellRenderer. Cells in the choices list and selected
+ * list are presented with their name instead of their toString function.
+ * &lt;/ol&gt;
+ * &lt;p&gt;
+ * &lt;em&gt;NOTE:&lt;/em&gt; An incompatible change to the API contract was made between
+ * 0.24 and 0.26.  A number of internal methods which had public visibility
+ * were made private.
+ */
+public class UMLAddDialog extends JPanel implements ActionListener {
+
+    /**
+     * The GUI list for the choices
+     */
+<span class="nc" id="L94">    private JList choicesList = null;</span>
+
+    /**
+     * The GUI list for the selected choices
+     */
+<span class="nc" id="L99">    private JList selectedList = null;</span>
+
+<span class="nc" id="L101">    private JButton addButton = null;</span>
+
+<span class="nc" id="L103">    private JButton removeButton = null;</span>
+
+<span class="nc" id="L105">    private JButton okButton = null;</span>
+
+<span class="nc" id="L107">    private JButton cancelButton = null;</span>
+
+<span class="nc" id="L109">    private JDialog dialog = null;</span>
+
+<span class="nc" id="L111">    private String title = null;</span>
+
+<span class="nc" id="L113">    private boolean multiSelectAllowed = false;</span>
+
+    /**
+     * The returnvalue of the method showDialog. Returnvalue can be either
+     * JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     */
+    private int returnValue;
+
+    private boolean exclusive;
+
+    /**
+     * Constructs a UMLAddDialog with a UMLListCellRenderer. Modelelements are
+     * represented with their names in the choices list and the selected list.
+     *
+     * @param theChoices
+     *            A List containing the choices a user has.
+     * @param preselected
+     *            A List containing the preselected choices
+     * @param theTitle
+     *            The title of the dialog
+     * @param multiselectAllowed
+     *            True if the user may select multiple choices
+     * @param isExclusive
+     *            True if choices in the selected list may not appear in the
+     *            choices list. If true preselected choices are removed from the
+     *            choices list.
+     */
+    public UMLAddDialog(final List theChoices, final List preselected,
+            final String theTitle, final boolean multiselectAllowed,
+            final boolean isExclusive) {
+<span class="nc" id="L143">        this(theChoices, preselected, theTitle, new UMLListCellRenderer2(true),</span>
+                multiselectAllowed, isExclusive);
+<span class="nc" id="L145">    }</span>
+
+    /**
+     * Constructs a UMLAddDialog with a given UMLListCellRenderer.
+     *
+     * @param theChoices
+     *            A List containing the choices a user has.
+     * @param preselected
+     *            A List containing the preselected choices
+     * @param theTitle
+     *            The title of the dialog
+     * @param renderer
+     *            The cellrenderer of the choices list and the selected list
+     * @param multiselectAllowed
+     *            True if the user may select multiple choices
+     * @param isExclusive
+     *            True if choices in the selected list may not appear in the
+     *            choices list. If true preselected choices are removed from the
+     *            choices list.
+     */
+    public UMLAddDialog(final List theChoices, final List preselected,
+            final String theTitle, final ListCellRenderer renderer,
+<span class="nc" id="L167">            final boolean multiselectAllowed, final boolean isExclusive) {</span>
+<span class="nc" id="L168">        multiSelectAllowed = multiselectAllowed;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (theChoices == null) {</span>
+<span class="nc" id="L170">            throw new IllegalArgumentException(</span>
+                    &quot;There should always be choices in UMLAddDialog&quot;);
+        }
+<span class="nc" id="L173">        exclusive = isExclusive;</span>
+<span class="nc" id="L174">        List choices = new ArrayList(theChoices);</span>
+<span class="nc bnc" id="L175" title="All 6 branches missed.">        if (isExclusive &amp;&amp; preselected != null &amp;&amp; !preselected.isEmpty()) {</span>
+<span class="nc" id="L176">            choices.removeAll(preselected);</span>
+        }
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (theTitle != null) {</span>
+<span class="nc" id="L179">            title = theTitle;</span>
+        } else {
+<span class="nc" id="L181">            title = &quot;&quot;;</span>
+        }
+
+<span class="nc" id="L184">        setLayout(new BorderLayout());</span>
+
+<span class="nc" id="L186">        JPanel upperPanel = new JPanel();</span>
+<span class="nc" id="L187">        JPanel panelChoices = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L188">        JPanel panelSelected = new JPanel(new BorderLayout());</span>
+
+<span class="nc" id="L190">        choicesList = new JList(constructListModel(choices));</span>
+<span class="nc" id="L191">        choicesList.setMinimumSize(new Dimension(150, 300));</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (renderer != null) {</span>
+<span class="nc" id="L193">            choicesList.setCellRenderer(renderer);</span>
+        }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (multiselectAllowed) {</span>
+<span class="nc" id="L196">            choicesList.setSelectionMode(</span>
+                    ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        } else {
+<span class="nc" id="L199">            choicesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);</span>
+        }
+<span class="nc" id="L201">        choicesList.setVisibleRowCount(15);</span>
+<span class="nc" id="L202">        JScrollPane choicesScroll = new JScrollPane(choicesList);</span>
+<span class="nc" id="L203">        panelChoices.add(new JLabel(Translator.localize(&quot;label.choices&quot;)),</span>
+                BorderLayout.NORTH);
+<span class="nc" id="L205">        panelChoices.add(choicesScroll, BorderLayout.CENTER);</span>
+
+<span class="nc" id="L207">        addButton = new JButton(ResourceLoaderWrapper</span>
+<span class="nc" id="L208">                .lookupIconResource(&quot;NavigateForward&quot;));</span>
+<span class="nc" id="L209">        addButton.addActionListener(this);</span>
+<span class="nc" id="L210">        removeButton = new JButton(ResourceLoaderWrapper</span>
+<span class="nc" id="L211">                .lookupIconResource(&quot;NavigateBack&quot;));</span>
+<span class="nc" id="L212">        removeButton.addActionListener(this);</span>
+<span class="nc" id="L213">        Box buttonBox = Box.createVerticalBox();</span>
+        // buttonBox.add(Box.createRigidArea(new Dimension(0, 20)));
+<span class="nc" id="L215">        buttonBox.add(addButton);</span>
+<span class="nc" id="L216">        buttonBox.add(Box.createRigidArea(new Dimension(0, 5)));</span>
+<span class="nc" id="L217">        buttonBox.add(removeButton);</span>
+
+<span class="nc" id="L219">        selectedList = new JList(constructListModel(preselected));</span>
+<span class="nc" id="L220">        selectedList.setMinimumSize(new Dimension(150, 300));</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (renderer != null) {</span>
+<span class="nc" id="L222">            selectedList.setCellRenderer(renderer);</span>
+        }
+<span class="nc" id="L224">        selectedList</span>
+<span class="nc" id="L225">                .setSelectionMode(</span>
+                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+<span class="nc" id="L227">        selectedList.setVisibleRowCount(15);</span>
+<span class="nc" id="L228">        JScrollPane selectedScroll = new JScrollPane(selectedList);</span>
+<span class="nc" id="L229">        panelSelected.add(new JLabel(Translator.localize(&quot;label.selected&quot;)),</span>
+                BorderLayout.NORTH);
+<span class="nc" id="L231">        panelSelected.add(selectedScroll, BorderLayout.CENTER);</span>
+
+<span class="nc" id="L233">        upperPanel.add(panelChoices);</span>
+<span class="nc" id="L234">        upperPanel.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="nc" id="L235">        upperPanel.add(buttonBox);</span>
+<span class="nc" id="L236">        upperPanel.add(Box.createRigidArea(new Dimension(5, 0)));</span>
+<span class="nc" id="L237">        upperPanel.add(panelSelected);</span>
+        // upperPanel.setBorder(BorderFactory.createEtchedBorder());
+
+<span class="nc" id="L240">        add(upperPanel, BorderLayout.NORTH);</span>
+
+<span class="nc" id="L242">        JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));</span>
+
+<span class="nc" id="L244">        okButton = new JButton(Translator.localize(&quot;button.ok&quot;));</span>
+<span class="nc" id="L245">        okButton.addActionListener(this);</span>
+<span class="nc" id="L246">        cancelButton = new JButton(Translator.localize(&quot;button.cancel&quot;));</span>
+<span class="nc" id="L247">        cancelButton.addActionListener(this);</span>
+<span class="nc" id="L248">        okCancelPanel.add(okButton);</span>
+<span class="nc" id="L249">        okCancelPanel.add(cancelButton);</span>
+<span class="nc" id="L250">        okCancelPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));</span>
+
+<span class="nc" id="L252">        add(okCancelPanel, BorderLayout.SOUTH);</span>
+<span class="nc" id="L253">        setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));</span>
+<span class="nc" id="L254">        update();</span>
+<span class="nc" id="L255">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L261">        Object source = e.getSource();</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (source.equals(addButton)) {</span>
+<span class="nc" id="L263">            addSelection();</span>
+<span class="nc" id="L264">            update();</span>
+        }
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (source.equals(removeButton)) {</span>
+<span class="nc" id="L267">            removeSelection();</span>
+<span class="nc" id="L268">            update();</span>
+        }
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (source.equals(okButton)) {</span>
+<span class="nc" id="L271">            ok();</span>
+        }
+<span class="nc bnc" id="L273" title="All 2 branches missed.">        if (source.equals(cancelButton)) {</span>
+<span class="nc" id="L274">            cancel();</span>
+        }
+<span class="nc" id="L276">    }</span>
+
+    /**
+     * Updates the add and remove button (sets enabled/disabled). Called
+     * whenever the model is changed.
+     */
+    private void update() {
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (choicesList.getModel().getSize() == 0) {</span>
+<span class="nc" id="L284">            addButton.setEnabled(false);</span>
+        } else {
+<span class="nc" id="L286">            addButton.setEnabled(true);</span>
+        }
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (selectedList.getModel().getSize() == 0) {</span>
+<span class="nc" id="L289">            removeButton.setEnabled(false);</span>
+        } else {
+<span class="nc" id="L291">            removeButton.setEnabled(true);</span>
+        }
+<span class="nc bnc" id="L293" title="All 4 branches missed.">        if (selectedList.getModel().getSize() &gt; 1 &amp;&amp; !multiSelectAllowed) {</span>
+<span class="nc" id="L294">            addButton.setEnabled(false);</span>
+<span class="nc" id="L295">            okButton.setEnabled(false);</span>
+        }
+        else {
+<span class="nc" id="L298">            addButton.setEnabled(true);</span>
+<span class="nc" id="L299">            okButton.setEnabled(true);</span>
+        }
+<span class="nc" id="L301">    }</span>
+
+    /**
+     * Utility method to construct a AbstractListModel from a List
+     * 
+     * @param list the given list
+     * @return AbstractListModel
+     */
+    protected AbstractListModel constructListModel(List list) {
+<span class="nc" id="L310">        SortedListModel model = new SortedListModel();</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (list != null) {</span>
+<span class="nc" id="L312">            model.addAll(list);</span>
+        }
+<span class="nc" id="L314">        return model;</span>
+    }
+
+    /**
+     * Shows the dialog. First a dialog must be constructed using one of the
+     * constructors of this class. After that this method should be called to
+     * actually show the dialog. This method returns either
+     * JOptionPane.OK_OPTION if the user wants to select his choices or
+     * JOptionPane.CANCEL_OPTION if he does not want to.
+     *
+     * @param parent
+     *            The parent frame of this dialog.
+     * @return int The returnvalue, can be either JOptionPane.OK_OPTION or
+     *         JOptionPane.CANCEL_OPTION
+     */
+    public int showDialog(Component parent) {
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        Frame frame = parent instanceof Frame ? (Frame) parent</span>
+                : (Frame) SwingUtilities
+<span class="nc" id="L332">                        .getAncestorOfClass(Frame.class, parent);</span>
+
+        // String title = getUI().getDialogTitle(this);
+
+<span class="nc" id="L336">        dialog = new JDialog(frame, title, true);</span>
+<span class="nc" id="L337">        Container contentPane = dialog.getContentPane();</span>
+<span class="nc" id="L338">        contentPane.setLayout(new BorderLayout());</span>
+<span class="nc" id="L339">        contentPane.add(this, BorderLayout.CENTER);</span>
+
+<span class="nc" id="L341">        dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);</span>
+<span class="nc" id="L342">        dialog.addWindowListener(new WindowAdapter() {</span>
+            public void windowClosing(WindowEvent we) {
+<span class="nc" id="L344">                cancel();</span>
+<span class="nc" id="L345">            }</span>
+        });
+
+<span class="nc" id="L348">        dialog.pack();</span>
+<span class="nc" id="L349">        dialog.setLocationRelativeTo(parent);</span>
+
+<span class="nc" id="L351">        dialog.setVisible(true);</span>
+<span class="nc" id="L352">        return returnValue;</span>
+    }
+
+    /**
+     * Returns the choices a user can make.
+     * @return List of choices
+     */
+    private List getChoices() {
+<span class="nc" id="L360">        List result = new ArrayList();</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        for (int index : choicesList.getSelectedIndices()) {</span>
+<span class="nc" id="L362">            result.add(choicesList.getModel().getElementAt(index));</span>
+        }
+<span class="nc" id="L364">        return result;</span>
+    }
+    
+    /**
+     * Returns the selected elements in the selected list
+     *
+     * @return List
+     */
+    private List getSelectedChoices() {
+<span class="nc" id="L373">        List result = new ArrayList();</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">        for (int index : selectedList.getSelectedIndices()) {</span>
+<span class="nc" id="L375">            result.add(selectedList.getModel().getElementAt(index));</span>
+        }
+<span class="nc" id="L377">        return result;</span>
+    }
+
+    /**
+     * Returns the elements of the right-hand &quot;selected&quot; list.  Note
+     * that these are not the elements selected (ie highlighted) in the
+     * Swing sense, but rather the entire contents of the list containing
+     * the user selections.
+     *
+     * @return a Vector of selected elements.
+     */
+    public Vector getSelected() {
+<span class="nc" id="L389">        Vector result = new Vector();</span>
+<span class="nc" id="L390">        ListModel list = selectedList.getModel();</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">        for (int i = 0; i &lt; list.getSize(); i++) {</span>
+<span class="nc" id="L392">            result.add(list.getElementAt(i));</span>
+        }
+<span class="nc" id="L394">        return result;</span>
+    }
+    
+    /**
+     * Adds the selected elements in the choices list to the selected list.
+     * 
+     */
+    private void addSelection() {
+<span class="nc" id="L402">        List theChoices = getChoices();</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">        if (exclusive) {</span>
+<span class="nc" id="L404">            ((SortedListModel) choicesList.getModel()).removeAll(theChoices);</span>
+        }
+<span class="nc" id="L406">        ((SortedListModel) selectedList.getModel()).addAll(theChoices);</span>
+
+<span class="nc" id="L408">    }</span>
+
+    /**
+     * Removes the selected elements in the selected list and adds them to the
+     * choices list. The GUI will be updated by the ListModel listeners.
+     */
+    private void removeSelection() {
+<span class="nc" id="L415">        List theChoices = getSelectedChoices();</span>
+<span class="nc" id="L416">        ((SortedListModel) selectedList.getModel()).removeAll(theChoices);</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">        if (exclusive) {</span>
+<span class="nc" id="L418">            ((SortedListModel) choicesList.getModel()).addAll(theChoices);</span>
+        }
+<span class="nc" id="L420">    }</span>
+
+    /**
+     * Called when the OK button is pressed. Closes this dialog and sets the
+     * return value to JOptionPane.OK_OPTION.
+     */
+    private void ok() {
+<span class="nc bnc" id="L427" title="All 2 branches missed.">        if (dialog != null) {</span>
+<span class="nc" id="L428">            dialog.setVisible(false);</span>
+<span class="nc" id="L429">            returnValue = JOptionPane.OK_OPTION;</span>
+        }
+<span class="nc" id="L431">    }</span>
+
+    /**
+     * Called when the cancel button is pressed. Closes this dialog and sets the
+     * returnvalue to JOptionPane.CANCEL_OPTION. The state of any selections
+     * is indeterminate after cancel is called.
+     */
+    private void cancel() {
+<span class="nc bnc" id="L439" title="All 2 branches missed.">        if (dialog != null) {</span>
+<span class="nc" id="L440">            dialog.setVisible(false);</span>
+<span class="nc" id="L441">            returnValue = JOptionPane.CANCEL_OPTION;</span>
+        }
+<span class="nc" id="L443">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

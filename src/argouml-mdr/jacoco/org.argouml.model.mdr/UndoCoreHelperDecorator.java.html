@@ -1,0 +1,832 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UndoCoreHelperDecorator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">UndoCoreHelperDecorator.java</span></div><h1>UndoCoreHelperDecorator.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009,2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Thomas Neustupny
+ *    Tom Morris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.model.AbstractCoreHelperDecorator;
+import org.argouml.model.CoreHelper;
+import org.argouml.model.DummyModelCommand;
+import org.argouml.model.Model;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.NotImplementedException;
+
+
+/**
+ * This Decorator is responsible for generating commands for any
+ * mutable methods.
+ *
+ * @author Bob Tarling
+ * @author Linus Tolke
+ */
+@SuppressWarnings(&quot;deprecation&quot;)
+class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
+
+    /**
+     * Constructor.
+     *
+     * @param component The component we are decorating.
+     */
+    UndoCoreHelperDecorator(CoreHelper component) {
+<span class="fc" id="L69">        super(component);</span>
+<span class="fc" id="L70">    }</span>
+
+    // Helper interfaces and methods.
+    /**
+     * Interface to set a boolean value.
+     */
+    protected interface BooleanSetter {
+        /**
+         * Do the actual setting.
+         *
+         * @param value The new value.
+         */
+        void set(boolean value);
+    }
+
+    /**
+     * Interface to set a Object value.
+     */
+    protected interface ObjectSetter {
+        /**
+         * Do the actual setting.
+         *
+         * @param value The new value.
+         */
+        void set(Object value);
+    }
+
+    /**
+     * Interface to set a String value.
+     */
+    protected interface StringSetter {
+        /**
+         * Do the actual setting.
+         *
+         * @param value The new value.
+         */
+        void set(String value);
+    }
+
+
+    /**
+     * Create a command for a setter of a boolean value.
+     *
+     * @param accesser The accesser.
+     * @param newValue The new value.
+     * @param oldValue The old value.
+     */
+    private void createCommand(
+            final BooleanSetter accesser,
+            final boolean newValue, final boolean oldValue) {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (newValue == oldValue) {</span>
+<span class="nc" id="L121">            return;</span>
+        }
+<span class="nc" id="L123">        ModelCommand command = new ModelCommand() {</span>
+            public void undo() {
+<span class="nc" id="L125">                accesser.set(oldValue);</span>
+<span class="nc" id="L126">            }</span>
+            public Object execute() {
+<span class="nc" id="L128">                accesser.set(newValue);</span>
+<span class="nc" id="L129">                return null;</span>
+            }
+            public boolean isUndoable() {
+<span class="nc" id="L132">                return true;</span>
+            }
+            public boolean isRedoable() {
+<span class="nc" id="L135">                return true;</span>
+            }
+        };
+<span class="nc" id="L138">        Model.execute(command);</span>
+<span class="nc" id="L139">    }</span>
+
+    /**
+     * Create a command for a setter of a Object value.
+     *
+     * @param accesser The accesser.
+     * @param newValue The new value.
+     * @param oldValue The old value.
+     */
+    private void createCommand(
+            final ObjectSetter accesser,
+            final Object newValue, final Object oldValue) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (newValue == oldValue) {</span>
+<span class="nc" id="L152">            return;</span>
+        }
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (newValue != null</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                &amp;&amp; newValue.equals(oldValue)) {</span>
+<span class="nc" id="L156">            return;</span>
+        }
+<span class="nc" id="L158">        ModelCommand command = new ModelCommand() {</span>
+            public void undo() {
+<span class="nc" id="L160">                accesser.set(oldValue);</span>
+<span class="nc" id="L161">            }</span>
+            public Object execute() {
+<span class="nc" id="L163">                accesser.set(newValue);</span>
+<span class="nc" id="L164">                return null;</span>
+            }
+            public boolean isUndoable() {
+<span class="nc" id="L167">                return true;</span>
+            }
+            public boolean isRedoable() {
+<span class="nc" id="L170">                return true;</span>
+            }
+        };
+<span class="nc" id="L173">        Model.execute(command);</span>
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * Create a command for a setter of a String value.
+     *
+     * @param accesser The accesser.
+     * @param newValue The new value.
+     * @param oldValue The old value.
+     */
+    private void createCommand(
+            final StringSetter accesser,
+            final String newValue, final String oldValue) {
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (newValue == oldValue) {</span>
+<span class="nc" id="L187">            return;</span>
+        }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (newValue != null</span>
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                &amp;&amp; newValue.equals(oldValue)) {</span>
+<span class="nc" id="L191">            return;</span>
+        }
+<span class="nc" id="L193">        ModelCommand command = new ModelCommand() {</span>
+            public void undo() {
+<span class="nc" id="L195">                accesser.set(oldValue);</span>
+<span class="nc" id="L196">            }</span>
+            public Object execute() {
+<span class="nc" id="L198">                accesser.set(newValue);</span>
+<span class="nc" id="L199">                return null;</span>
+            }
+            public boolean isUndoable() {
+<span class="nc" id="L202">                return true;</span>
+            }
+            public boolean isRedoable() {
+<span class="nc" id="L205">                return true;</span>
+            }
+        };
+<span class="nc" id="L208">        Model.execute(command);</span>
+<span class="nc" id="L209">    }</span>
+
+
+    public void setAbstract(final Object handle, boolean flag) {
+<span class="nc" id="L213">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L215">                getComponent().setAbstract(handle, value);</span>
+<span class="nc" id="L216">            }</span>
+<span class="nc" id="L217">        }, flag, Model.getFacade().isAbstract(handle));</span>
+<span class="nc" id="L218">    }</span>
+
+
+    public void setActive(final Object handle, boolean active) {
+<span class="nc" id="L222">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L224">                getComponent().setActive(handle, value);</span>
+<span class="nc" id="L225">            }</span>
+<span class="nc" id="L226">        }, active, Model.getFacade().isActive(handle));</span>
+<span class="nc" id="L227">    }</span>
+
+
+    public void setAggregation(final Object handle, Object aggregationKind) {
+<span class="nc" id="L231">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L233">                getComponent().setAggregation(handle, value);</span>
+<span class="nc" id="L234">            }</span>
+<span class="nc" id="L235">        }, aggregationKind, Model.getFacade().getAggregation(handle));</span>
+<span class="nc" id="L236">    }</span>
+
+    public void setAggregation1(final Object handle, Object aggregationKind) {
+<span class="nc" id="L239">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L241">                getComponent().setAggregation1(handle, value);</span>
+<span class="nc" id="L242">            }</span>
+<span class="nc" id="L243">        }, aggregationKind, Model.getFacade().getAggregation1(handle));</span>
+<span class="nc" id="L244">    }</span>
+
+    
+    public void setAggregation2(final Object handle, Object aggregationKind) {
+<span class="nc" id="L248">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L250">                getComponent().setAggregation2(handle, value);</span>
+<span class="nc" id="L251">            }</span>
+<span class="nc" id="L252">        }, aggregationKind, Model.getFacade().getAggregation2(handle));</span>
+<span class="nc" id="L253">    }</span>
+
+    public void setLeaf(final Object handle, boolean flag) {
+<span class="nc" id="L256">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L258">                getComponent().setLeaf(handle, value);</span>
+<span class="nc" id="L259">            }</span>
+<span class="nc" id="L260">        }, flag, Model.getFacade().isLeaf(handle));</span>
+<span class="nc" id="L261">    }</span>
+
+    @Override
+    public void setChangeability(final Object handle, Object ck) {
+<span class="nc" id="L265">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L267">                getComponent().setChangeability(handle, value);</span>
+<span class="nc" id="L268">            }</span>
+<span class="nc" id="L269">        }, ck, Model.getFacade().getChangeability(handle));</span>
+<span class="nc" id="L270">    }</span>
+
+    @Override
+    public void setReadOnly(final Object handle, boolean flag) {
+<span class="nc" id="L274">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L276">                getComponent().setReadOnly(handle, value);</span>
+<span class="nc" id="L277">            }</span>
+<span class="nc" id="L278">        }, flag, Model.getFacade().isReadOnly(handle));</span>
+<span class="nc" id="L279">    }</span>
+
+    public void setConcurrency(final Object handle, Object concurrencyKind) {
+<span class="nc" id="L282">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L284">                getComponent().setConcurrency(handle, value);</span>
+<span class="nc" id="L285">            }</span>
+<span class="nc" id="L286">        }, concurrencyKind, Model.getFacade().getConcurrency(handle));</span>
+<span class="nc" id="L287">    }</span>
+
+
+    public void setKind(final Object handle, Object kind) {
+<span class="nc" id="L291">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L293">                getComponent().setKind(handle, value);</span>
+<span class="nc" id="L294">            }</span>
+<span class="nc" id="L295">        }, kind, Model.getFacade().getKind(handle));</span>
+<span class="nc" id="L296">    }</span>
+
+
+    @Deprecated
+    public void setMultiplicity(final Object handle, Object arg) {
+<span class="nc" id="L301">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L303">                getComponent().setMultiplicity(handle, value);</span>
+<span class="nc" id="L304">            }</span>
+<span class="nc" id="L305">        }, arg, Model.getFacade().getMultiplicity(handle));</span>
+<span class="nc" id="L306">    }</span>
+
+    public void setMultiplicity(final Object handle, String arg) {
+<span class="nc" id="L309">        createCommand(new StringSetter() {</span>
+            public void set(String value) {
+<span class="nc" id="L311">                getComponent().setMultiplicity(handle, value);</span>
+<span class="nc" id="L312">            }</span>
+<span class="nc" id="L313">        }, arg, Model.getFacade().toString(</span>
+<span class="nc" id="L314">                Model.getFacade().getMultiplicity(handle)));</span>
+<span class="nc" id="L315">    }</span>
+    
+    public void setMultiplicity(final Object handle, int lower, int upper) {
+        final String lowerStr;
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (lower == -1) {</span>
+<span class="nc" id="L320">            lowerStr = &quot;*&quot;;</span>
+        } else {
+<span class="nc" id="L322">            lowerStr = Integer.toString(lower);</span>
+        }
+        final String upperStr;
+<span class="nc bnc" id="L325" title="All 2 branches missed.">        if (upper == -1) {</span>
+<span class="nc" id="L326">            upperStr = &quot;*&quot;;</span>
+        } else {
+<span class="nc" id="L328">            upperStr = Integer.toString(lower);</span>
+        }
+<span class="nc" id="L330">        setMultiplicity(handle, lowerStr + &quot;..&quot; + upperStr);</span>
+<span class="nc" id="L331">    }</span>
+
+    public void setBody(final Object handle, String body) {
+<span class="nc" id="L334">        createCommand(new StringSetter() {</span>
+            public void set(String value) {
+<span class="nc" id="L336">                getComponent().setBody(handle, value);</span>
+<span class="nc" id="L337">            }</span>
+<span class="nc" id="L338">        }, body, Model.getCoreHelper().getBody(handle));</span>
+<span class="nc" id="L339">    }</span>
+
+
+    public void setNavigable(final Object handle, boolean flag) {
+<span class="nc" id="L343">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L345">                getComponent().setNavigable(handle, value);</span>
+<span class="nc" id="L346">            }</span>
+<span class="nc" id="L347">        }, flag, Model.getFacade().isNavigable(handle));</span>
+<span class="nc" id="L348">    }</span>
+
+
+    public void setOrdering(final Object handle, Object ok) {
+<span class="nc" id="L352">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L354">                getComponent().setOrdering(handle, value);</span>
+<span class="nc" id="L355">            }</span>
+<span class="nc" id="L356">        }, ok, Model.getFacade().getOrdering(handle));</span>
+<span class="nc" id="L357">    }</span>
+
+
+    public void setPowertype(final Object handle, Object pt) {
+<span class="nc" id="L361">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L363">                getComponent().setPowertype(handle, value);</span>
+<span class="nc" id="L364">            }</span>
+<span class="nc" id="L365">        }, pt, Model.getFacade().getPowertype(handle));</span>
+<span class="nc" id="L366">    }</span>
+
+
+    public void setQuery(final Object handle, boolean flag) {
+<span class="nc" id="L370">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L372">                getComponent().setQuery(handle, value);</span>
+<span class="nc" id="L373">            }</span>
+<span class="nc" id="L374">        }, flag, Model.getFacade().isQuery(handle));</span>
+<span class="nc" id="L375">    }</span>
+
+
+    public void setRoot(final Object handle, boolean flag) {
+<span class="nc" id="L379">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L381">                getComponent().setRoot(handle, value);</span>
+<span class="nc" id="L382">            }</span>
+<span class="nc" id="L383">        }, flag, Model.getFacade().isRoot(handle));</span>
+<span class="nc" id="L384">    }</span>
+
+
+    public void setSpecification(final Object handle, boolean specification) {
+<span class="nc" id="L388">        createCommand(new BooleanSetter() {</span>
+            public void set(boolean value) {
+<span class="nc" id="L390">                getComponent().setSpecification(handle, value);</span>
+<span class="nc" id="L391">            }</span>
+<span class="nc" id="L392">        }, specification, Model.getFacade().isSpecification(handle));</span>
+<span class="nc" id="L393">    }</span>
+
+    
+    public void setSpecification(final Object handle, String specification) {
+<span class="nc" id="L397">        createCommand(new StringSetter() {</span>
+            public void set(String value) {
+<span class="nc" id="L399">                getComponent().setSpecification(handle, value);</span>
+<span class="nc" id="L400">            }</span>
+<span class="nc" id="L401">        }, specification, Model.getFacade().getSpecification(handle));</span>
+<span class="nc" id="L402">    }</span>
+
+    
+    public void setSpecification(final Object handle, Object specification) {
+<span class="nc" id="L406">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L408">                getComponent().setSpecification(handle, value);</span>
+<span class="nc" id="L409">            }</span>
+<span class="nc" id="L410">        }, specification, Model.getCoreHelper().getSpecification(handle));</span>
+<span class="nc" id="L411">    }</span>
+
+    
+    @Override
+    public void setTargetScope(final Object handle, Object scopeKind) {
+<span class="nc" id="L416">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L418">                getComponent().setTargetScope(handle, value);</span>
+<span class="nc" id="L419">            }</span>
+<span class="nc" id="L420">        }, scopeKind, Model.getFacade().getTargetScope(handle));</span>
+<span class="nc" id="L421">    }</span>
+
+    
+    @Override
+    public void setVisibility(final Object handle, Object visibility) {
+<span class="nc" id="L426">        createCommand(new ObjectSetter() {</span>
+            public void set(Object value) {
+<span class="nc" id="L428">                getComponent().setVisibility(handle, value);</span>
+<span class="nc" id="L429">            }</span>
+<span class="nc" id="L430">        }, visibility, Model.getFacade().getVisibility(handle));</span>
+<span class="nc" id="L431">    }</span>
+
+    public void addAllStereotypes(Object modelElement, Collection stereotypes) {
+<span class="nc" id="L434">        super.addAllStereotypes(modelElement, stereotypes);</span>
+<span class="nc" id="L435">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L436">    }</span>
+
+    public void addAnnotatedElement(Object comment, Object annotatedElement) {
+<span class="nc" id="L439">        super.addAnnotatedElement(comment, annotatedElement);</span>
+<span class="nc" id="L440">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L441">    }</span>
+
+    public void addClient(Object handle, Object element) {
+<span class="nc" id="L444">        super.addClient(handle, element);</span>
+<span class="nc" id="L445">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L446">    }</span>
+
+    public void addClientDependency(Object handle, Object dependency) {
+<span class="nc" id="L449">        super.addClientDependency(handle, dependency);</span>
+<span class="nc" id="L450">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L451">    }</span>
+
+    public void addComment(Object element, Object comment) {
+<span class="nc" id="L454">        super.addComment(element, comment);</span>
+<span class="nc" id="L455">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L456">    }</span>
+
+    public void addConnection(Object handle, Object connection) {
+<span class="nc" id="L459">        super.addConnection(handle, connection);</span>
+<span class="nc" id="L460">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L461">    }</span>
+
+    public void addConnection(Object handle, int position, Object connection) {
+<span class="nc" id="L464">        super.addConnection(handle, position, connection);</span>
+<span class="nc" id="L465">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L466">    }</span>
+
+    public void addConstraint(Object handle, Object mc) {
+<span class="nc" id="L469">        super.addConstraint(handle, mc);</span>
+<span class="nc" id="L470">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L471">    }</span>
+
+    public void addDeploymentLocation(Object handle, Object node) {
+<span class="nc" id="L474">        super.addDeploymentLocation(handle, node);</span>
+<span class="nc" id="L475">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L476">    }</span>
+
+    public void addElementResidence(Object handle, Object residence) {
+<span class="nc" id="L479">        super.addElementResidence(handle, residence);</span>
+<span class="nc" id="L480">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L481">    }</span>
+
+    public void addFeature(Object handle, int index, Object f) {
+<span class="nc" id="L484">        super.addFeature(handle, index, f);</span>
+<span class="nc" id="L485">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L486">    }</span>
+
+    public void addLiteral(Object handle, int index, Object literal) {
+<span class="nc" id="L489">        super.addLiteral(handle, index, literal);</span>
+<span class="nc" id="L490">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L491">    }</span>
+
+    public void addFeature(Object handle, Object f) {
+<span class="nc" id="L494">        super.addFeature(handle, f);</span>
+<span class="nc" id="L495">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L496">    }</span>
+
+    public void addLink(Object handle, Object link) {
+<span class="nc" id="L499">        super.addLink(handle, link);</span>
+<span class="nc" id="L500">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L501">    }</span>
+
+    public void addManifestation(Object handle, Object m) {
+<span class="nc" id="L504">        super.addManifestation(handle, m);</span>
+<span class="nc" id="L505">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L506">    }</span>
+
+    public void addMethod(Object handle, Object m) {
+<span class="nc" id="L509">        super.addMethod(handle, m);</span>
+<span class="nc" id="L510">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L511">    }</span>
+
+    public void addOwnedElement(Object handle, Object me) {
+<span class="nc" id="L514">        super.addOwnedElement(handle, me);</span>
+<span class="nc" id="L515">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L516">    }</span>
+
+    public void addParameter(Object handle, int index, Object parameter) {
+<span class="nc" id="L519">        super.addParameter(handle, index, parameter);</span>
+<span class="nc" id="L520">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L521">    }</span>
+
+    public void addParameter(Object handle, Object parameter) {
+<span class="nc" id="L524">        super.addParameter(handle, parameter);</span>
+<span class="nc" id="L525">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L526">    }</span>
+
+    public void addQualifier(Object handle, int index, Object qualifier) {
+<span class="nc" id="L529">        super.addQualifier(handle, index, qualifier);</span>
+<span class="nc" id="L530">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L531">    }</span>
+
+    public void addRaisedSignal(Object handle, Object sig) {
+<span class="nc" id="L534">        super.addRaisedSignal(handle, sig);</span>
+<span class="nc" id="L535">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L536">    }</span>
+    
+    /**
+     * Dummy method for UML 1.x
+     * 
+     * @author Andreas Rueckert &lt;a_rueckert@gmx.net&gt;
+     * @see org.argouml.model.CoreHelper#addRaisedException(java.lang.Object, java.lang.Object)
+     */
+    public void addRaisedException(Object handle, Object exception) {
+<span class="nc" id="L545">        throw new NotImplementedException(&quot;A UML 1.x operation has no exceptions&quot;);</span>
+    }
+
+    public void addSourceFlow(Object handle, Object flow) {
+<span class="nc" id="L549">        super.addSourceFlow(handle, flow);</span>
+<span class="nc" id="L550">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L551">    }</span>
+
+    public void addStereotype(Object modelElement, Object stereotype) {
+<span class="nc" id="L554">        super.addStereotype(modelElement, stereotype);</span>
+<span class="nc" id="L555">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L556">    }</span>
+
+    public void addSupplier(Object handle, Object element) {
+<span class="nc" id="L559">        super.addSupplier(handle, element);</span>
+<span class="nc" id="L560">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L561">    }</span>
+
+    public void addSupplierDependency(Object supplier, Object dependency) {
+<span class="nc" id="L564">        super.addSupplierDependency(supplier, dependency);</span>
+<span class="nc" id="L565">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L566">    }</span>
+
+    public void addTargetFlow(Object handle, Object flow) {
+<span class="nc" id="L569">        super.addTargetFlow(handle, flow);</span>
+<span class="nc" id="L570">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L571">    }</span>
+
+    public void addTemplateParameter(Object handle, int index, 
+            Object parameter) {
+<span class="nc" id="L575">        super.addTemplateParameter(handle, index, parameter);</span>
+<span class="nc" id="L576">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L577">    }</span>
+
+    public void addTemplateParameter(Object handle, Object parameter) {
+<span class="nc" id="L580">        super.addTemplateParameter(handle, parameter);</span>
+<span class="nc" id="L581">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L582">    }</span>
+
+    public void clearStereotypes(Object modelElement) {
+<span class="nc" id="L585">        super.clearStereotypes(modelElement);</span>
+<span class="nc" id="L586">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L587">    }</span>
+
+    public void removeAnnotatedElement(Object handle, Object me) {
+<span class="nc" id="L590">        super.removeAnnotatedElement(handle, me);</span>
+<span class="nc" id="L591">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L592">    }</span>
+
+    public void removeClientDependency(Object handle, Object dep) {
+<span class="nc" id="L595">        super.removeClientDependency(handle, dep);</span>
+<span class="nc" id="L596">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L597">    }</span>
+
+    public void removeConnection(Object handle, Object connection) {
+<span class="nc" id="L600">        super.removeConnection(handle, connection);</span>
+<span class="nc" id="L601">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L602">    }</span>
+
+    public void removeConstraint(Object handle, Object cons) {
+<span class="nc" id="L605">        super.removeConstraint(handle, cons);</span>
+<span class="nc" id="L606">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L607">    }</span>
+
+    public void removeDeploymentLocation(Object handle, Object node) {
+<span class="nc" id="L610">        super.removeDeploymentLocation(handle, node);</span>
+<span class="nc" id="L611">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L612">    }</span>
+
+    public void removeElementResidence(Object handle, Object residence) {
+<span class="nc" id="L615">        super.removeElementResidence(handle, residence);</span>
+<span class="nc" id="L616">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L617">    }</span>
+
+    public void removeFeature(Object cls, Object feature) {
+<span class="nc" id="L620">        super.removeFeature(cls, feature);</span>
+<span class="nc" id="L621">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L622">    }</span>
+
+    public void removeLiteral(Object enu, Object literal) {
+<span class="nc" id="L625">        super.removeLiteral(enu, literal);</span>
+<span class="nc" id="L626">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L627">    }</span>
+
+    public void removeOwnedElement(Object handle, Object value) {
+<span class="nc" id="L630">        super.removeOwnedElement(handle, value);</span>
+<span class="nc" id="L631">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L632">    }</span>
+
+    public void removeParameter(Object handle, Object parameter) {
+<span class="nc" id="L635">        super.removeParameter(handle, parameter);</span>
+<span class="nc" id="L636">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L637">    }</span>
+
+    public void removeQualifier(Object handle, Object qualifier) {
+<span class="nc" id="L640">        super.removeQualifier(handle, qualifier);</span>
+<span class="nc" id="L641">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L642">    }</span>
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeSourceFlow(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeSourceFlow(Object handle, Object flow) {
+<span class="nc" id="L649">        super.removeSourceFlow(handle, flow);</span>
+<span class="nc" id="L650">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L651">    }</span>
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeStereotype(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeStereotype(Object modelElement, Object stereotype) {
+<span class="nc" id="L658">        super.removeStereotype(modelElement, stereotype);</span>
+<span class="nc" id="L659">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L660">    }</span>
+
+    /**
+     * @see org.argouml.model.AbstractCoreHelperDecorator#removeSupplierDependency(
+     * java.lang.Object, java.lang.Object)
+     */
+    public void removeSupplierDependency(Object supplier, Object dependency) {
+<span class="nc" id="L667">        super.removeSupplierDependency(supplier, dependency);</span>
+<span class="nc" id="L668">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L669">    }</span>
+
+    public void removeTargetFlow(Object handle, Object flow) {
+<span class="nc" id="L672">        super.removeTargetFlow(handle, flow);</span>
+<span class="nc" id="L673">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L674">    }</span>
+
+
+    public void removeTemplateArgument(Object handle, Object argument) {
+<span class="nc" id="L678">        super.removeTemplateArgument(handle, argument);</span>
+<span class="nc" id="L679">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L680">    }</span>
+    
+    public void removeTemplateParameter(Object handle, Object parameter) {
+<span class="nc" id="L683">        super.removeTemplateParameter(handle, parameter);</span>
+<span class="nc" id="L684">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L685">    }</span>
+    
+    public void setAnnotatedElements(Object handle, Collection elems) {
+<span class="nc" id="L688">        super.setAnnotatedElements(handle, elems);</span>
+<span class="nc" id="L689">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L690">    }</span>
+
+    public void setAssociation(Object handle, Object association) {
+<span class="nc" id="L693">        super.setAssociation(handle, association);</span>
+<span class="nc" id="L694">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L695">    }</span>
+
+    public void setAttributes(Object classifier, List attributes) {
+<span class="nc" id="L698">        super.setAttributes(classifier, attributes);</span>
+<span class="nc" id="L699">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L700">    }</span>
+    
+    public void setBody(Object handle, Object expr) {
+<span class="nc" id="L703">        super.setBody(handle, expr);</span>
+<span class="nc" id="L704">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L705">    }</span>
+
+    public void setChild(Object handle, Object child) {
+<span class="nc" id="L708">        super.setChild(handle, child);</span>
+<span class="nc" id="L709">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L710">    }</span>
+
+    public void setConnections(Object handle, Collection elems) {
+<span class="nc" id="L713">        super.setConnections(handle, elems);</span>
+<span class="nc" id="L714">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L715">    }</span>
+
+    public void setContainer(Object handle, Object component) {
+<span class="nc" id="L718">        super.setContainer(handle, component);</span>
+<span class="nc" id="L719">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L720">    }</span>
+
+    public void setDefaultElement(Object handle, Object element) {
+<span class="nc" id="L723">        super.setDefaultElement(handle, element);</span>
+<span class="nc" id="L724">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L725">    }</span>
+
+    public void setDefaultValue(Object handle, Object expr) {
+<span class="nc" id="L728">        super.setDefaultValue(handle, expr);</span>
+<span class="nc" id="L729">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L730">    }</span>
+
+    public void setDiscriminator(Object handle, String discriminator) {
+<span class="nc" id="L733">        super.setDiscriminator(handle, discriminator);</span>
+<span class="nc" id="L734">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L735">    }</span>
+
+    public void setEnumerationLiterals(Object enumeration, List literals) {
+<span class="nc" id="L738">        super.setEnumerationLiterals(enumeration, literals);</span>
+<span class="nc" id="L739">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L740">    }</span>
+
+    public void setFeature(Object elem, int i, Object feature) {
+<span class="nc" id="L743">        super.setFeature(elem, i, feature);</span>
+<span class="nc" id="L744">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L745">    }</span>
+
+    public void setFeatures(Object handle, Collection features) {
+<span class="nc" id="L748">        super.setFeatures(handle, features);</span>
+<span class="nc" id="L749">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L750">    }</span>
+
+    public void setInitialValue(Object at, Object expr) {
+<span class="nc" id="L753">        super.setInitialValue(at, expr);</span>
+<span class="nc" id="L754">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L755">    }</span>
+
+    public void setModelElementContainer(Object handle, Object container) {
+<span class="nc" id="L758">        super.setModelElementContainer(handle, container);</span>
+<span class="nc" id="L759">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L760">    }</span>
+
+    public void setNamespace(Object handle, Object ns) {
+<span class="fc" id="L763">        super.setNamespace(handle, ns);</span>
+<span class="fc" id="L764">        Model.execute(new DummyModelCommand());</span>
+<span class="fc" id="L765">    }</span>
+
+    public void setOperations(Object classifier, List operations) {
+<span class="nc" id="L768">        super.setOperations(classifier, operations);</span>
+<span class="nc" id="L769">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L770">    }</span>
+
+    public void setOwner(Object handle, Object owner) {
+<span class="nc" id="L773">        super.setOwner(handle, owner);</span>
+<span class="nc" id="L774">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L775">    }</span>
+
+    public void setStatic(Object handle, boolean isStatic) {
+<span class="nc" id="L778">        super.setStatic(handle, isStatic);</span>
+<span class="nc" id="L779">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L780">    }</span>
+    public void setParameters(Object handle, Collection parameters) {
+<span class="nc" id="L782">        super.setParameters(handle, parameters);</span>
+<span class="nc" id="L783">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L784">    }</span>
+
+    public void setParent(Object handle, Object parent) {
+<span class="nc" id="L787">        super.setParent(handle, parent);</span>
+<span class="nc" id="L788">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L789">    }</span>
+
+    public void setQualifiers(Object handle, List elems) {
+<span class="nc" id="L792">        super.setQualifiers(handle, elems);</span>
+<span class="nc" id="L793">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L794">    }</span>
+
+    public void setRaisedSignals(Object handle, Collection raisedSignals) {
+<span class="nc" id="L797">        super.setRaisedSignals(handle, raisedSignals);</span>
+<span class="nc" id="L798">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L799">    }</span>
+
+    public void setResident(Object handle, Object resident) {
+<span class="nc" id="L802">        super.setResident(handle, resident);</span>
+<span class="nc" id="L803">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L804">    }</span>
+
+    public void setResidents(Object handle, Collection residents) {
+<span class="nc" id="L807">        super.setResidents(handle, residents);</span>
+<span class="nc" id="L808">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L809">    }</span>
+
+    public void setSources(Object handle, Collection specifications) {
+<span class="nc" id="L812">        super.setSources(handle, specifications);</span>
+<span class="nc" id="L813">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L814">    }</span>
+
+    public void setSpecifications(Object handle, Collection specifications) {
+<span class="nc" id="L817">        super.setSpecifications(handle, specifications);</span>
+<span class="nc" id="L818">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L819">    }</span>
+
+    public void setTaggedValue(Object handle, String tag, String value) {
+<span class="nc" id="L822">        super.setTaggedValue(handle, tag, value);</span>
+<span class="nc" id="L823">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L824">    }</span>
+
+    public void setType(Object handle, Object type) {
+<span class="nc" id="L827">        super.setType(handle, type);</span>
+<span class="nc" id="L828">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L829">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

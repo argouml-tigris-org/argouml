@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EvaluateExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal.ocl</a> &gt; <span class="el_source">EvaluateExpression.java</span></div><h1>EvaluateExpression.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal.ocl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.profile.internal.ocl.uml14.Bag;
+import org.argouml.profile.internal.ocl.uml14.HashBag;
+import org.argouml.profile.internal.ocl.uml14.OclEnumLiteral;
+
+import tudresden.ocl.parser.analysis.DepthFirstAdapter;
+import tudresden.ocl.parser.node.AActualParameterList;
+import tudresden.ocl.parser.node.AAdditiveExpressionTail;
+import tudresden.ocl.parser.node.AAndLogicalOperator;
+import tudresden.ocl.parser.node.ABooleanLiteral;
+import tudresden.ocl.parser.node.ADeclaratorTail;
+import tudresden.ocl.parser.node.ADivMultiplyOperator;
+import tudresden.ocl.parser.node.AEmptyFeatureCallParameters;
+import tudresden.ocl.parser.node.AEnumLiteral;
+import tudresden.ocl.parser.node.AEqualRelationalOperator;
+import tudresden.ocl.parser.node.AExpressionListOrRange;
+import tudresden.ocl.parser.node.AFeatureCall;
+import tudresden.ocl.parser.node.AFeatureCallParameters;
+import tudresden.ocl.parser.node.AFeaturePrimaryExpression;
+import tudresden.ocl.parser.node.AGtRelationalOperator;
+import tudresden.ocl.parser.node.AGteqRelationalOperator;
+import tudresden.ocl.parser.node.AIfExpression;
+import tudresden.ocl.parser.node.AImpliesLogicalOperator;
+import tudresden.ocl.parser.node.AIntegerLiteral;
+import tudresden.ocl.parser.node.AIterateDeclarator;
+import tudresden.ocl.parser.node.ALetExpression;
+import tudresden.ocl.parser.node.AListExpressionListOrRangeTail;
+import tudresden.ocl.parser.node.ALiteralCollection;
+import tudresden.ocl.parser.node.ALogicalExpressionTail;
+import tudresden.ocl.parser.node.ALtRelationalOperator;
+import tudresden.ocl.parser.node.ALteqRelationalOperator;
+import tudresden.ocl.parser.node.AMinusAddOperator;
+import tudresden.ocl.parser.node.AMinusUnaryOperator;
+import tudresden.ocl.parser.node.AMultMultiplyOperator;
+import tudresden.ocl.parser.node.AMultiplicativeExpressionTail;
+import tudresden.ocl.parser.node.ANEqualRelationalOperator;
+import tudresden.ocl.parser.node.ANotUnaryOperator;
+import tudresden.ocl.parser.node.AOrLogicalOperator;
+import tudresden.ocl.parser.node.APlusAddOperator;
+import tudresden.ocl.parser.node.APostfixExpressionTail;
+import tudresden.ocl.parser.node.ARealLiteral;
+import tudresden.ocl.parser.node.ARelationalExpressionTail;
+import tudresden.ocl.parser.node.AStandardDeclarator;
+import tudresden.ocl.parser.node.AStringLiteral;
+import tudresden.ocl.parser.node.AUnaryUnaryExpression;
+import tudresden.ocl.parser.node.AXorLogicalOperator;
+import tudresden.ocl.parser.node.PActualParameterListTail;
+import tudresden.ocl.parser.node.PDeclaratorTail;
+import tudresden.ocl.parser.node.PExpression;
+import tudresden.ocl.parser.node.PExpressionListTail;
+
+/**
+ * Evaluates OCL expressions, this class should not depend on the model
+ * subsystem. This adapter assumes the ocl expression is syntatically and
+ * semantically correct.
+ *
+ * @author maurelio1234
+ */
+public class EvaluateExpression extends DepthFirstAdapter {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L112">    private static final Logger LOG =</span>
+<span class="fc" id="L113">        Logger.getLogger(EvaluateExpression.class.getName());</span>
+
+    /**
+     * The Variable Table
+     */
+<span class="fc" id="L118">    private Map&lt;String, Object&gt; vt = null;</span>
+
+    /**
+     * Keeps the return value of the visitor
+     */
+<span class="fc" id="L123">    private Object val = null;</span>
+
+    /**
+     * Keeps a forward propagated value
+     */
+<span class="fc" id="L128">    private Object fwd = null;</span>
+
+    /**
+     * The model interpreter
+     */
+<span class="fc" id="L133">    private ModelInterpreter interp = null;</span>
+
+    /**
+     * Constructor
+     *
+     * @param modelElement self
+     * @param mi model interpreter
+     */
+<span class="fc" id="L141">    public EvaluateExpression(Object modelElement, ModelInterpreter mi) {</span>
+<span class="fc" id="L142">        reset(modelElement, mi);</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Constructor
+     *
+     * @param variableTable the variable table
+     * @param modelInterpreter model interpreter
+     */
+    public EvaluateExpression(Map&lt;String, Object&gt; variableTable,
+<span class="fc" id="L152">            ModelInterpreter modelInterpreter) {</span>
+<span class="fc" id="L153">        reset(variableTable, modelInterpreter);</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Resets the internal state of this adapter
+     *
+     * @param mi the model interpreter
+     * @param element the model element
+     */
+    public void reset(Object element, ModelInterpreter mi) {
+<span class="fc" id="L163">        vt = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L164">        vt.put(&quot;self&quot;, element);</span>
+<span class="fc" id="L165">        reset(vt, mi);</span>
+<span class="fc" id="L166">    }</span>
+
+    /**
+     * @param newVT the variable table
+     * @param mi the model interpreter
+     */
+    public void reset(Map&lt;String, Object&gt; newVT, ModelInterpreter mi) {
+<span class="fc" id="L173">        this.interp = mi;</span>
+
+<span class="fc" id="L175">        this.val = null;</span>
+<span class="fc" id="L176">        this.fwd = null;</span>
+<span class="fc" id="L177">        this.vt = newVT;</span>
+<span class="fc" id="L178">    }</span>
+
+    /**
+     * @return is the invariant ok?
+     */
+    public Object getValue() {
+<span class="fc" id="L184">        return val;</span>
+    }
+
+    /** Interpreter Code * */
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAIfExpression(tudresden.ocl.parser.node.AIfExpression)
+     */
+    public void caseAIfExpression(AIfExpression node) {
+<span class="nc" id="L193">        boolean test = false;</span>
+<span class="nc" id="L194">        boolean ret = false;</span>
+
+<span class="nc" id="L196">        inAIfExpression(node);</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (node.getTIf() != null) {</span>
+<span class="nc" id="L198">            node.getTIf().apply(this);</span>
+        }
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (node.getIfBranch() != null) {</span>
+<span class="nc" id="L201">            node.getIfBranch().apply(this);</span>
+<span class="nc" id="L202">            test = asBoolean(val, node.getIfBranch());</span>
+<span class="nc" id="L203">            val = null;</span>
+        }
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (node.getTThen() != null) {</span>
+<span class="nc" id="L206">            node.getTThen().apply(this);</span>
+        }
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (node.getThenBranch() != null) {</span>
+<span class="nc" id="L209">            node.getThenBranch().apply(this);</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">            if (test) {</span>
+<span class="nc" id="L211">                ret = asBoolean(val, node.getThenBranch());</span>
+<span class="nc" id="L212">                val = null;</span>
+            }
+        }
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        if (node.getTElse() != null) {</span>
+<span class="nc" id="L216">            node.getTElse().apply(this);</span>
+        }
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (node.getElseBranch() != null) {</span>
+<span class="nc" id="L219">            node.getElseBranch().apply(this);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            if (!test) {</span>
+<span class="nc" id="L221">                ret = asBoolean(val, node.getThenBranch());</span>
+<span class="nc" id="L222">                val = null;</span>
+            }
+        }
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (node.getEndif() != null) {</span>
+<span class="nc" id="L226">            node.getEndif().apply(this);</span>
+        }
+
+<span class="nc" id="L229">        val = ret;</span>
+<span class="nc" id="L230">        outAIfExpression(node);</span>
+<span class="nc" id="L231">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALogicalExpressionTail(tudresden.ocl.parser.node.ALogicalExpressionTail)
+     */
+    public void caseALogicalExpressionTail(ALogicalExpressionTail node) {
+<span class="fc" id="L237">        Object left = val;</span>
+<span class="fc" id="L238">        val = null;</span>
+
+<span class="fc" id="L240">        inALogicalExpressionTail(node);</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        if (node.getLogicalOperator() != null) {</span>
+<span class="fc" id="L242">            node.getLogicalOperator().apply(this);</span>
+        }
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">        if (node.getRelationalExpression() != null) {</span>
+<span class="fc" id="L245">            node.getRelationalExpression().apply(this);</span>
+        }
+
+<span class="fc" id="L248">        Object op = node.getLogicalOperator();</span>
+<span class="fc" id="L249">        Object right = val;</span>
+<span class="fc" id="L250">        val = null;</span>
+
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">        if (op != null) {</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">            if (op instanceof AAndLogicalOperator) {</span>
+<span class="pc bpc" id="L254" title="1 of 4 branches missed.">                if (left != null &amp;&amp; left instanceof Boolean</span>
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">                        &amp;&amp; !((Boolean) left)) {</span>
+<span class="fc" id="L256">                    val = false;</span>
+<span class="pc bpc" id="L257" title="2 of 4 branches missed.">                } else if (right != null &amp;&amp; right instanceof Boolean</span>
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">                        &amp;&amp; !((Boolean) right)) {</span>
+<span class="fc" id="L259">                    val = false;</span>
+                } else {
+<span class="nc bnc" id="L261" title="All 4 branches missed.">                    val = asBoolean(left, node) &amp;&amp; asBoolean(right, node);</span>
+                }
+<span class="pc bpc" id="L263" title="1 of 2 branches missed.">            } else if (op instanceof AImpliesLogicalOperator) {</span>
+<span class="nc bnc" id="L264" title="All 4 branches missed.">                val = !asBoolean(left, node) || asBoolean(right, node);</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">            } else if (op instanceof AOrLogicalOperator) {</span>
+<span class="pc bpc" id="L266" title="1 of 4 branches missed.">                if (left != null &amp;&amp; left instanceof Boolean</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">                        &amp;&amp; ((Boolean) left)) {</span>
+<span class="fc" id="L268">                    val = true;</span>
+<span class="pc bpc" id="L269" title="2 of 4 branches missed.">                } else if (right != null &amp;&amp; right instanceof Boolean</span>
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                        &amp;&amp; ((Boolean) right)) {</span>
+<span class="fc" id="L271">                    val = true;</span>
+                } else {
+<span class="nc bnc" id="L273" title="All 4 branches missed.">                    val = asBoolean(left, node) || asBoolean(right, node);</span>
+                }
+<span class="nc bnc" id="L275" title="All 2 branches missed.">            } else if (op instanceof AXorLogicalOperator) {</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">                val = !asBoolean(left, node) ^ asBoolean(right, node);</span>
+            } else {
+<span class="nc" id="L278">                error(node);</span>
+            }
+        } else {
+<span class="nc" id="L281">            error(node);</span>
+        }
+<span class="fc" id="L283">        outALogicalExpressionTail(node);</span>
+<span class="fc" id="L284">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseARelationalExpressionTail(tudresden.ocl.parser.node.ARelationalExpressionTail)
+     */
+    public void caseARelationalExpressionTail(ARelationalExpressionTail node) {
+<span class="fc" id="L290">        Object left = val;</span>
+<span class="fc" id="L291">        val = null;</span>
+
+<span class="fc" id="L293">        inARelationalExpressionTail(node);</span>
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">        if (node.getRelationalOperator() != null) {</span>
+<span class="fc" id="L295">            node.getRelationalOperator().apply(this);</span>
+        }
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">        if (node.getAdditiveExpression() != null) {</span>
+<span class="fc" id="L298">            node.getAdditiveExpression().apply(this);</span>
+        }
+
+<span class="fc" id="L301">        Object op = node.getRelationalOperator();</span>
+<span class="fc" id="L302">        Object right = val;</span>
+<span class="fc" id="L303">        val = null;</span>
+
+<span class="pc bpc" id="L305" title="3 of 6 branches missed.">        if (left != null &amp;&amp; op != null &amp;&amp; right != null) {</span>
+<span class="fc bfc" id="L306" title="All 2 branches covered.">            if (op instanceof AEqualRelationalOperator) {</span>
+<span class="fc" id="L307">                val = left.equals(right);</span>
+<span class="pc bpc" id="L308" title="1 of 2 branches missed.">            } else if (op instanceof AGteqRelationalOperator) {</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                val = asInteger(left, node) &gt;= asInteger(right, node);</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">            } else if (op instanceof AGtRelationalOperator) {</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">                val = asInteger(left, node) &gt; asInteger(right, node);</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">            } else if (op instanceof ALteqRelationalOperator) {</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">                val = asInteger(left, node) &lt;= asInteger(right, node);</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">            } else if (op instanceof ALtRelationalOperator) {</span>
+<span class="fc bfc" id="L315" title="All 2 branches covered.">                val = asInteger(left, node) &lt; asInteger(right, node);</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">            } else if (op instanceof ANEqualRelationalOperator) {</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">                val = !left.equals(right);</span>
+            } else {
+<span class="nc" id="L319">                error(node);</span>
+            }
+        } else {
+            // if one side is null, compare with the equality operator
+<span class="nc bnc" id="L323" title="All 2 branches missed.">            if (op instanceof AEqualRelationalOperator) {</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">                val = (left == right);</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">            } else if (op instanceof ANEqualRelationalOperator) {</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                val = (left != right);</span>
+            } else {
+<span class="nc" id="L328">                error(node);</span>
+<span class="nc" id="L329">                val = null;</span>
+            }
+        }
+<span class="fc" id="L332">        outARelationalExpressionTail(node);</span>
+<span class="fc" id="L333">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAAdditiveExpressionTail(tudresden.ocl.parser.node.AAdditiveExpressionTail)
+     */
+    @Override
+    public void caseAAdditiveExpressionTail(AAdditiveExpressionTail node) {
+<span class="nc" id="L340">        Object left = val;</span>
+<span class="nc" id="L341">        val = null;</span>
+
+<span class="nc" id="L343">        inAAdditiveExpressionTail(node);</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        if (node.getAddOperator() != null) {</span>
+<span class="nc" id="L345">            node.getAddOperator().apply(this);</span>
+        }
+<span class="nc bnc" id="L347" title="All 2 branches missed.">        if (node.getMultiplicativeExpression() != null) {</span>
+<span class="nc" id="L348">            node.getMultiplicativeExpression().apply(this);</span>
+        }
+
+<span class="nc" id="L351">        Object op = node.getAddOperator();</span>
+<span class="nc" id="L352">        Object right = val;</span>
+<span class="nc" id="L353">        val = null;</span>
+
+<span class="nc bnc" id="L355" title="All 6 branches missed.">        if (left != null &amp;&amp; op != null &amp;&amp; right != null) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">            if (op instanceof AMinusAddOperator) {</span>
+<span class="nc" id="L357">                val = asInteger(left, node) - asInteger(right, node);</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            } else if (op instanceof APlusAddOperator) {</span>
+<span class="nc" id="L359">                val = asInteger(left, node) + asInteger(right, node);</span>
+            } else {
+<span class="nc" id="L361">                error(node);</span>
+            }
+        } else {
+<span class="nc" id="L364">            error(node);</span>
+        }
+
+<span class="nc" id="L367">        outAAdditiveExpressionTail(node);</span>
+<span class="nc" id="L368">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAMultiplicativeExpressionTail(tudresden.ocl.parser.node.AMultiplicativeExpressionTail)
+     */
+    public void caseAMultiplicativeExpressionTail(
+            AMultiplicativeExpressionTail node) {
+<span class="fc" id="L375">        Object left = val;</span>
+<span class="fc" id="L376">        val = null;</span>
+
+<span class="fc" id="L378">        inAMultiplicativeExpressionTail(node);</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">        if (node.getMultiplyOperator() != null) {</span>
+<span class="fc" id="L380">            node.getMultiplyOperator().apply(this);</span>
+        }
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">        if (node.getUnaryExpression() != null) {</span>
+<span class="fc" id="L383">            node.getUnaryExpression().apply(this);</span>
+        }
+
+<span class="fc" id="L386">        Object op = node.getMultiplyOperator();</span>
+<span class="fc" id="L387">        Object right = val;</span>
+<span class="fc" id="L388">        val = null;</span>
+
+<span class="pc bpc" id="L390" title="3 of 6 branches missed.">        if (left != null &amp;&amp; op != null &amp;&amp; right != null) {</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">            if (op instanceof ADivMultiplyOperator) {</span>
+<span class="nc" id="L392">                val = asInteger(left, node) / asInteger(right, node);</span>
+<span class="pc bpc" id="L393" title="1 of 2 branches missed.">            } else if (op instanceof AMultMultiplyOperator) {</span>
+<span class="fc" id="L394">                val = asInteger(left, node) * asInteger(right, node);</span>
+            } else {
+<span class="nc" id="L396">                error(node);</span>
+            }
+        } else {
+<span class="nc" id="L399">            error(node);</span>
+        }
+
+<span class="fc" id="L402">        outAMultiplicativeExpressionTail(node);</span>
+<span class="fc" id="L403">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAUnaryUnaryExpression(tudresden.ocl.parser.node.AUnaryUnaryExpression)
+     */
+    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node) {
+<span class="fc" id="L409">        inAUnaryUnaryExpression(node);</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (node.getUnaryOperator() != null) {</span>
+<span class="fc" id="L411">            node.getUnaryOperator().apply(this);</span>
+        }
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">        if (node.getPostfixExpression() != null) {</span>
+<span class="fc" id="L414">            val = null;</span>
+<span class="fc" id="L415">            node.getPostfixExpression().apply(this);</span>
+        }
+
+<span class="fc" id="L418">        Object op = node.getUnaryOperator();</span>
+<span class="pc bpc" id="L419" title="1 of 2 branches missed.">        if (op instanceof AMinusUnaryOperator) {</span>
+<span class="fc" id="L420">            val = -asInteger(val, node);</span>
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        } else if (op instanceof ANotUnaryOperator) {</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">            val = !asBoolean(val, node);</span>
+        }
+
+<span class="fc" id="L425">        outAUnaryUnaryExpression(node);</span>
+<span class="fc" id="L426">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAPostfixExpressionTail(tudresden.ocl.parser.node.APostfixExpressionTail)
+     */
+    public void caseAPostfixExpressionTail(APostfixExpressionTail node) {
+<span class="fc" id="L432">        inAPostfixExpressionTail(node);</span>
+<span class="pc bpc" id="L433" title="1 of 2 branches missed.">        if (node.getPostfixExpressionTailBegin() != null) {</span>
+<span class="fc" id="L434">            node.getPostfixExpressionTailBegin().apply(this);</span>
+        }
+<span class="pc bpc" id="L436" title="1 of 2 branches missed.">        if (node.getFeatureCall() != null) {</span>
+<span class="fc" id="L437">            fwd = node.getPostfixExpressionTailBegin();</span>
+<span class="fc" id="L438">            node.getFeatureCall().apply(this);</span>
+
+            // XXX: hypotheses for AFeatureCall: fwd = op, val = head
+        }
+<span class="fc" id="L442">        outAPostfixExpressionTail(node);</span>
+<span class="fc" id="L443">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeaturePrimaryExpression(tudresden.ocl.parser.node.AFeaturePrimaryExpression)
+     */
+    @Override
+    public void caseAFeaturePrimaryExpression(AFeaturePrimaryExpression node) {
+<span class="fc" id="L450">        Object subject = val;</span>
+<span class="fc" id="L451">        Object feature = null;</span>
+<span class="fc" id="L452">        List parameters = null;</span>
+
+<span class="fc" id="L454">        inAFeaturePrimaryExpression(node);</span>
+<span class="pc bpc" id="L455" title="1 of 2 branches missed.">        if (node.getPathName() != null) {</span>
+            // TODO support other name kinds
+<span class="fc" id="L457">            node.getPathName().apply(this);</span>
+<span class="fc" id="L458">            feature = node.getPathName().toString().trim();</span>
+        }
+<span class="pc bpc" id="L460" title="1 of 2 branches missed.">        if (node.getTimeExpression() != null) {</span>
+            // hypotheses no time expression (only invariants)
+<span class="nc" id="L462">            node.getTimeExpression().apply(this);</span>
+        }
+<span class="pc bpc" id="L464" title="1 of 2 branches missed.">        if (node.getQualifiers() != null) {</span>
+            // XXX: hypotheses no qualifiers (I don't know)
+<span class="nc" id="L466">            node.getQualifiers().apply(this);</span>
+        }
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">        if (node.getFeatureCallParameters() != null) {</span>
+<span class="nc" id="L469">            val = null;</span>
+<span class="nc" id="L470">            node.getFeatureCallParameters().apply(this);</span>
+<span class="nc" id="L471">            parameters = (List) val;</span>
+        }
+
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">        if (subject == null) {</span>
+<span class="fc" id="L475">            val = vt.get(feature);</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">            if (val == null) {</span>
+<span class="fc" id="L477">                val = this.interp.getBuiltInSymbol(feature.toString().trim());</span>
+            }
+        } else {
+<span class="nc" id="L480">            val = runFeatureCall(subject, feature, fwd, parameters);</span>
+        }
+<span class="fc" id="L482">        outAFeaturePrimaryExpression(node);</span>
+<span class="fc" id="L483">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEmptyFeatureCallParameters(tudresden.ocl.parser.node.AEmptyFeatureCallParameters)
+     */
+    @Override
+    public void outAEmptyFeatureCallParameters(AEmptyFeatureCallParameters node)
+    {
+<span class="nc" id="L491">        val = new ArrayList();</span>
+<span class="nc" id="L492">        defaultOut(node);</span>
+<span class="nc" id="L493">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCallParameters(tudresden.ocl.parser.node.AFeatureCallParameters)
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public void caseAFeatureCallParameters(AFeatureCallParameters node) {
+<span class="fc" id="L501">        inAFeatureCallParameters(node);</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">        if (node.getLPar() != null) {</span>
+<span class="fc" id="L503">            node.getLPar().apply(this);</span>
+        }
+
+<span class="fc" id="L506">        boolean hasDeclarator = false;</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        if (node.getDeclarator() != null) {</span>
+<span class="fc" id="L508">            node.getDeclarator().apply(this);</span>
+<span class="fc" id="L509">            hasDeclarator = true;</span>
+        }
+<span class="fc bfc" id="L511" title="All 2 branches covered.">        if (node.getActualParameterList() != null) {</span>
+<span class="fc" id="L512">            List&lt;String&gt; vars = null;</span>
+<span class="fc bfc" id="L513" title="All 2 branches covered.">            if (hasDeclarator) {</span>
+<span class="fc" id="L514">                List ret = new ArrayList();</span>
+<span class="fc" id="L515">                vars = (List) val;</span>
+<span class="fc" id="L516">                final PExpression exp = ((AActualParameterList) node</span>
+<span class="fc" id="L517">                        .getActualParameterList()).getExpression();</span>
+
+                /*
+                 * For a iterator call we should provide: (a) the variables (b)
+                 * the expression to be evaluated on each step (c) the
+                 * lambda-evaluator to evaluate it
+                 */
+
+<span class="fc" id="L525">                ret.add(vars);</span>
+<span class="fc" id="L526">                ret.add(exp);</span>
+<span class="fc" id="L527">                ret.add(new LambdaEvaluator() {</span>
+
+                    /**
+                     * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.Map,
+                     *      java.lang.Object)
+                     */
+                    public Object evaluate(Map&lt;String, Object&gt; vti,
+                            Object expi) {
+
+<span class="fc" id="L536">                        Object state = EvaluateExpression.this.saveState();</span>
+
+<span class="fc" id="L538">                        EvaluateExpression.this.vt = vti;</span>
+<span class="fc" id="L539">                        EvaluateExpression.this.val = null;</span>
+<span class="fc" id="L540">                        EvaluateExpression.this.fwd = null;</span>
+
+<span class="fc" id="L542">                        ((PExpression) expi).apply(EvaluateExpression.this);</span>
+
+<span class="fc" id="L544">                        Object reti = EvaluateExpression.this.val;</span>
+<span class="fc" id="L545">                        EvaluateExpression.this.loadState(state);</span>
+<span class="fc" id="L546">                        return reti;</span>
+                    }
+
+                });
+
+<span class="fc" id="L551">                val = ret;</span>
+<span class="fc" id="L552">            } else {</span>
+<span class="fc" id="L553">                node.getActualParameterList().apply(this);</span>
+            }
+
+        }
+<span class="pc bpc" id="L557" title="1 of 2 branches missed.">        if (node.getRPar() != null) {</span>
+<span class="fc" id="L558">            node.getRPar().apply(this);</span>
+        }
+<span class="fc" id="L560">        outAFeatureCallParameters(node);</span>
+<span class="fc" id="L561">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void loadState(Object state) {
+<span class="fc" id="L565">        Object[] stateArr = (Object[]) state;</span>
+<span class="fc" id="L566">        this.vt = (Map&lt;String, Object&gt;) stateArr[0];</span>
+<span class="fc" id="L567">        this.val = stateArr[1];</span>
+<span class="fc" id="L568">        this.fwd = stateArr[2];</span>
+<span class="fc" id="L569">    }</span>
+
+    private Object saveState() {
+<span class="fc" id="L572">        return new Object[] {vt, val, fwd};</span>
+    }
+
+    /*
+     * @param node
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAStandardDeclarator(tudresden.ocl.parser.node.AStandardDeclarator)
+     */
+    @Override
+    public void caseAStandardDeclarator(AStandardDeclarator node) {
+<span class="fc" id="L581">        inAStandardDeclarator(node);</span>
+
+<span class="fc" id="L583">        List&lt;String&gt; vars = new ArrayList&lt;String&gt;();</span>
+
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">        if (node.getName() != null) {</span>
+<span class="fc" id="L586">            node.getName().apply(this);</span>
+
+<span class="fc" id="L588">            vars.add(node.getName().toString().trim());</span>
+        }
+        {
+<span class="fc" id="L591">            Object temp[] = node.getDeclaratorTail().toArray();</span>
+<span class="pc bpc" id="L592" title="1 of 2 branches missed.">            for (int i = 0; i &lt; temp.length; i++) {</span>
+<span class="nc" id="L593">                ((PDeclaratorTail) temp[i]).apply(this);</span>
+
+<span class="nc" id="L595">                vars.add(((ADeclaratorTail) temp[i]).getName()</span>
+<span class="nc" id="L596">                        .toString().trim());</span>
+            }
+
+<span class="fc" id="L599">            val = vars;</span>
+        }
+<span class="pc bpc" id="L601" title="1 of 2 branches missed.">        if (node.getDeclaratorTypeDeclaration() != null) {</span>
+            // TODO check types!
+<span class="nc" id="L603">            node.getDeclaratorTypeDeclaration().apply(this);</span>
+        }
+<span class="pc bpc" id="L605" title="1 of 2 branches missed.">        if (node.getBar() != null) {</span>
+<span class="fc" id="L606">            node.getBar().apply(this);</span>
+        }
+<span class="fc" id="L608">        outAStandardDeclarator(node);</span>
+<span class="fc" id="L609">    }</span>
+
+    @Override
+    public void outAIterateDeclarator(AIterateDeclarator node) {
+        // TODO support iterate declarator
+<span class="nc" id="L614">        val = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L615">        defaultOut(node);</span>
+<span class="nc" id="L616">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALetExpression(tudresden.ocl.parser.node.ALetExpression)
+     */
+    @Override
+    public void caseALetExpression(ALetExpression node) {
+        // TODO support nested let expressions !
+
+<span class="fc" id="L625">        Object name = null;</span>
+<span class="fc" id="L626">        Object value = null;</span>
+
+<span class="fc" id="L628">        inALetExpression(node);</span>
+<span class="pc bpc" id="L629" title="1 of 2 branches missed.">        if (node.getTLet() != null) {</span>
+<span class="fc" id="L630">            node.getTLet().apply(this);</span>
+        }
+<span class="pc bpc" id="L632" title="1 of 2 branches missed.">        if (node.getName() != null) {</span>
+<span class="fc" id="L633">            node.getName().apply(this);</span>
+<span class="fc" id="L634">            name = node.getName().toString().trim();</span>
+        }
+<span class="pc bpc" id="L636" title="1 of 2 branches missed.">        if (node.getLetExpressionTypeDeclaration() != null) {</span>
+            // TODO: check type!
+<span class="fc" id="L638">            node.getLetExpressionTypeDeclaration().apply(this);</span>
+        }
+<span class="pc bpc" id="L640" title="1 of 2 branches missed.">        if (node.getEqual() != null) {</span>
+<span class="fc" id="L641">            node.getEqual().apply(this);</span>
+        }
+<span class="pc bpc" id="L643" title="1 of 2 branches missed.">        if (node.getExpression() != null) {</span>
+<span class="fc" id="L644">            node.getExpression().apply(this);</span>
+<span class="fc" id="L645">            value = val;</span>
+        }
+<span class="pc bpc" id="L647" title="1 of 2 branches missed.">        if (node.getTIn() != null) {</span>
+<span class="fc" id="L648">            node.getTIn().apply(this);</span>
+        }
+
+<span class="fc" id="L651">        vt.put((&quot;&quot; + name).trim(), value);</span>
+<span class="fc" id="L652">        val = null;</span>
+<span class="fc" id="L653">        outALetExpression(node);</span>
+<span class="fc" id="L654">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAStringLiteral(tudresden.ocl.parser.node.AStringLiteral)
+     */
+    public void outAStringLiteral(AStringLiteral node) {
+<span class="fc" id="L660">        String text = node.getStringLit().getText();</span>
+<span class="fc" id="L661">        val = text.substring(1, text.length() - 1);</span>
+<span class="fc" id="L662">        defaultOut(node);</span>
+<span class="fc" id="L663">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outARealLiteral(tudresden.ocl.parser.node.ARealLiteral)
+     */
+    public void outARealLiteral(ARealLiteral node) {
+        // TODO support real types
+<span class="nc" id="L670">        val = (int) Double.parseDouble(node.getReal().getText());</span>
+<span class="nc" id="L671">        defaultOut(node);</span>
+<span class="nc" id="L672">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAIntegerLiteral(tudresden.ocl.parser.node.AIntegerLiteral)
+     */
+    public void outAIntegerLiteral(AIntegerLiteral node) {
+<span class="fc" id="L678">        val = Integer.parseInt(node.getInt().getText());</span>
+<span class="fc" id="L679">        defaultOut(node);</span>
+<span class="fc" id="L680">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outABooleanLiteral(tudresden.ocl.parser.node.ABooleanLiteral)
+     */
+    public void outABooleanLiteral(ABooleanLiteral node) {
+<span class="fc" id="L686">        val = Boolean.parseBoolean(node.getBool().getText());</span>
+<span class="fc" id="L687">        defaultOut(node);</span>
+<span class="fc" id="L688">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEnumLiteral(tudresden.ocl.parser.node.AEnumLiteral)
+     */
+    public void outAEnumLiteral(AEnumLiteral node) {
+<span class="nc" id="L694">        val = new OclEnumLiteral(node.getName().toString().trim());</span>
+<span class="nc" id="L695">        defaultOut(node);</span>
+<span class="nc" id="L696">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALiteralCollection(tudresden.ocl.parser.node.ALiteralCollection)
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public void caseALiteralCollection(ALiteralCollection node)
+    {
+<span class="fc" id="L704">        Collection&lt;Object&gt; col = null;</span>
+
+<span class="fc" id="L706">        inALiteralCollection(node);</span>
+<span class="pc bpc" id="L707" title="1 of 2 branches missed.">        if (node.getCollectionKind() != null)</span>
+        {
+<span class="fc" id="L709">            node.getCollectionKind().apply(this);</span>
+
+<span class="fc" id="L711">            String kind = node.getCollectionKind().toString().trim();</span>
+<span class="fc bfc" id="L712" title="All 2 branches covered.">            if (kind.equalsIgnoreCase(&quot;Set&quot;)) {</span>
+<span class="fc" id="L713">                col = new HashSet&lt;Object&gt;();</span>
+<span class="fc bfc" id="L714" title="All 2 branches covered.">            } else if (kind.equalsIgnoreCase(&quot;Sequence&quot;)) {</span>
+<span class="fc" id="L715">                col = new ArrayList&lt;Object&gt;();</span>
+<span class="pc bpc" id="L716" title="1 of 2 branches missed.">            } else if (kind.equalsIgnoreCase(&quot;Bag&quot;)) {</span>
+<span class="fc" id="L717">                col = new HashBag&lt;Object&gt;();</span>
+            }
+        }
+<span class="pc bpc" id="L720" title="1 of 2 branches missed.">        if (node.getLBrace() != null) {</span>
+<span class="fc" id="L721">            node.getLBrace().apply(this);</span>
+        }
+<span class="pc bpc" id="L723" title="1 of 2 branches missed.">        if (node.getExpressionListOrRange() != null) {</span>
+<span class="fc" id="L724">            val = null;</span>
+<span class="fc" id="L725">            node.getExpressionListOrRange().apply(this);</span>
+<span class="fc" id="L726">            col.addAll((Collection&lt;Object&gt;) val);</span>
+        }
+<span class="pc bpc" id="L728" title="1 of 2 branches missed.">        if (node.getRBrace() != null) {</span>
+<span class="fc" id="L729">            node.getRBrace().apply(this);</span>
+        }
+<span class="fc" id="L731">        val = col;</span>
+<span class="fc" id="L732">        outALiteralCollection(node);</span>
+<span class="fc" id="L733">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAExpressionListOrRange(tudresden.ocl.parser.node.AExpressionListOrRange)
+     */
+    @Override
+    public void caseAExpressionListOrRange(AExpressionListOrRange node)
+    {
+<span class="fc" id="L741">        List ret = new ArrayList();</span>
+<span class="fc" id="L742">        inAExpressionListOrRange(node);</span>
+<span class="pc bpc" id="L743" title="1 of 2 branches missed.">        if (node.getExpression() != null) {</span>
+<span class="fc" id="L744">            val = null;</span>
+<span class="fc" id="L745">            node.getExpression().apply(this);</span>
+<span class="fc" id="L746">            ret.add(val);</span>
+        }
+<span class="pc bpc" id="L748" title="1 of 2 branches missed.">        if (node.getExpressionListOrRangeTail() != null) {</span>
+<span class="fc" id="L749">            val = null;</span>
+<span class="fc" id="L750">            node.getExpressionListOrRangeTail().apply(this);</span>
+<span class="fc" id="L751">            ret.addAll((Collection) val);</span>
+        }
+<span class="fc" id="L753">        val = ret;</span>
+<span class="fc" id="L754">        outAExpressionListOrRange(node);</span>
+<span class="fc" id="L755">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAListExpressionListOrRangeTail(tudresden.ocl.parser.node.AListExpressionListOrRangeTail)
+     */
+    @Override
+    public void caseAListExpressionListOrRangeTail(
+            AListExpressionListOrRangeTail node)
+    {
+        // TODO support other kinds of tail
+<span class="fc" id="L765">        inAListExpressionListOrRangeTail(node);</span>
+        {
+<span class="fc" id="L767">            List ret = new ArrayList();</span>
+<span class="fc" id="L768">            Object temp[] = node.getExpressionListTail().toArray();</span>
+<span class="fc bfc" id="L769" title="All 2 branches covered.">            for (int i = 0; i &lt; temp.length; i++) {</span>
+<span class="fc" id="L770">                val = null;</span>
+<span class="fc" id="L771">                ((PExpressionListTail) temp[i]).apply(this);</span>
+<span class="fc" id="L772">                ret.add(val);</span>
+            }
+<span class="fc" id="L774">            val = ret;</span>
+        }
+<span class="fc" id="L776">        outAListExpressionListOrRangeTail(node);</span>
+<span class="fc" id="L777">    }</span>
+
+    /*
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
+     */
+    @Override
+    public void caseAFeatureCall(AFeatureCall node) {
+<span class="fc" id="L784">        Object subject = val;</span>
+<span class="fc" id="L785">        Object feature = null;</span>
+<span class="fc" id="L786">        Object type = fwd;</span>
+<span class="fc" id="L787">        List parameters = null;</span>
+
+<span class="fc" id="L789">        inAFeatureCall(node);</span>
+<span class="pc bpc" id="L790" title="1 of 2 branches missed.">        if (node.getPathName() != null) {</span>
+            // TODO support other name kinds
+<span class="fc" id="L792">            node.getPathName().apply(this);</span>
+
+<span class="fc" id="L794">            feature = node.getPathName().toString().trim();</span>
+        }
+<span class="pc bpc" id="L796" title="1 of 2 branches missed.">        if (node.getTimeExpression() != null) {</span>
+            // XXX hypothesis: no time expression (inv)
+<span class="nc" id="L798">            node.getTimeExpression().apply(this);</span>
+        }
+<span class="pc bpc" id="L800" title="1 of 2 branches missed.">        if (node.getQualifiers() != null) {</span>
+            // TODO understand qualifiers
+<span class="nc" id="L802">            node.getQualifiers().apply(this);</span>
+        }
+<span class="fc bfc" id="L804" title="All 2 branches covered.">        if (node.getFeatureCallParameters() != null) {</span>
+<span class="fc" id="L805">            val = null;</span>
+<span class="fc" id="L806">            node.getFeatureCallParameters().apply(this);</span>
+
+<span class="fc" id="L808">            parameters = (List) val;</span>
+        } else {
+<span class="fc" id="L810">            parameters = new ArrayList();</span>
+        }
+
+<span class="fc" id="L813">        val = runFeatureCall(subject, feature, type, parameters);</span>
+<span class="fc" id="L814">        outAFeatureCall(node);</span>
+<span class="fc" id="L815">    }</span>
+
+    @Override
+    public void caseAActualParameterList(AActualParameterList node) {
+<span class="fc" id="L819">        List list = new ArrayList();</span>
+<span class="fc" id="L820">        inAActualParameterList(node);</span>
+<span class="pc bpc" id="L821" title="1 of 2 branches missed.">        if (node.getExpression() != null) {</span>
+<span class="fc" id="L822">            val = null;</span>
+<span class="fc" id="L823">            node.getExpression().apply(this);</span>
+<span class="fc" id="L824">            list.add(val);</span>
+        }
+        { // TODO: why is this inside a block? Forgotten else branch?!?
+            // Question by euluis @ 2009-08-16.
+<span class="fc" id="L828">            Object temp[] = node.getActualParameterListTail().toArray();</span>
+<span class="pc bpc" id="L829" title="1 of 2 branches missed.">            for (int i = 0; i &lt; temp.length; i++) {</span>
+<span class="nc" id="L830">                val = null;</span>
+<span class="nc" id="L831">                ((PActualParameterListTail) temp[i]).apply(this);</span>
+<span class="nc" id="L832">                list.add(val);</span>
+            }
+        }
+
+<span class="fc" id="L836">        val = list;</span>
+<span class="fc" id="L837">        outAActualParameterList(node);</span>
+<span class="fc" id="L838">    }</span>
+
+    /** HELPER METHODS * */
+    private boolean asBoolean(Object value, Object node) {
+<span class="nc bnc" id="L842" title="All 2 branches missed.">        if (value instanceof Boolean) {</span>
+<span class="nc" id="L843">            return (Boolean) value;</span>
+        } else {
+<span class="nc" id="L845">            errorNotType(node, &quot;Boolean&quot;, false);</span>
+<span class="nc" id="L846">            return false;</span>
+        }
+    }
+
+    private int asInteger(Object value, Object node) {
+<span class="pc bpc" id="L851" title="1 of 2 branches missed.">        if (value instanceof Integer) {</span>
+<span class="fc" id="L852">            return (Integer) value;</span>
+        } else {
+<span class="nc" id="L854">            errorNotType(node, &quot;integer&quot;, 0);</span>
+<span class="nc" id="L855">            return 0;</span>
+        }
+    }
+
+    private Object runFeatureCall(Object subject, Object feature, Object type,
+            List parameters) {
+        // LOG.log(Level.FINE, &quot;OCL FEATURE CALL: &quot; + subject + &quot;&quot;+ type +&quot;&quot;+ feature + &quot;&quot;
+        // + parameters);
+
+<span class="fc bfc" id="L864" title="All 2 branches covered.">        if (parameters == null) {</span>
+<span class="fc" id="L865">            parameters = new ArrayList&lt;Object&gt;();</span>
+        }
+
+        // XXX this should be done in CollectionsModelInterpreter
+        // but it can't trigger another invokeFeature...
+
+<span class="fc bfc" id="L871" title="All 2 branches covered.">        if ((subject instanceof Collection)</span>
+<span class="fc bfc" id="L872" title="All 2 branches covered.">                &amp;&amp; type.toString().trim().equals(&quot;.&quot;)) {</span>
+<span class="fc" id="L873">            Collection col = (Collection) subject;</span>
+<span class="fc" id="L874">            Bag res = new HashBag();</span>
+<span class="fc bfc" id="L875" title="All 2 branches covered.">            for (Object obj : col) {</span>
+<span class="fc" id="L876">                res.add(interp.invokeFeature(vt, obj,</span>
+<span class="fc" id="L877">                        feature.toString().trim(), &quot;.&quot;, parameters.toArray()));</span>
+<span class="fc" id="L878">            }</span>
+<span class="fc" id="L879">            return res;</span>
+        } else {
+<span class="fc" id="L881">            return interp.invokeFeature(vt, subject, feature.toString().trim(),</span>
+<span class="fc" id="L882">                    type.toString().trim(), parameters.toArray());</span>
+        }
+    }
+
+    /** Error Handling * */
+    private void errorNotType(Object node, String type, Object dft) {
+<span class="nc" id="L888">        LOG.log(Level.SEVERE,</span>
+                &quot;OCL does not evaluate to a &quot; + type + &quot; expression!! Exp: &quot;
+                + node + &quot; Val: &quot; + val);
+<span class="nc" id="L891">        val = dft;</span>
+        // TODO: We need a specific exception type here.
+<span class="nc" id="L893">        throw new RuntimeException();</span>
+    }
+
+    private void error(Object node) {
+<span class="nc" id="L897">        LOG.log(Level.SEVERE,</span>
+                &quot;Unknown error processing OCL exp!! Exp: &quot; + node + &quot; Val: &quot;
+                + val);
+<span class="nc" id="L900">        val = null;</span>
+        // TODO: We need a specific exception type here.
+<span class="nc" id="L902">        throw new RuntimeException();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToDoTreeRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">ToDoTreeRenderer.java</span></div><h1>ToDoTreeRenderer.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.Color;
+import java.awt.Component;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.plaf.metal.MetalIconFactory;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLTreeCellRenderer;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Fig;
+
+
+/**
+ * Displays an entry in the ToDo tree.
+ *
+ */
+<span class="nc" id="L67">public class ToDoTreeRenderer extends DefaultTreeCellRenderer {</span>
+    ////////////////////////////////////////////////////////////////
+    // class variables
+
+    // general icons for poster
+<span class="nc" id="L72">    private final ImageIcon postIt0     = lookupIconResource(&quot;PostIt0&quot;);</span>
+<span class="nc" id="L73">    private final ImageIcon postIt25    = lookupIconResource(&quot;PostIt25&quot;);</span>
+<span class="nc" id="L74">    private final ImageIcon postIt50    = lookupIconResource(&quot;PostIt50&quot;);</span>
+<span class="nc" id="L75">    private final ImageIcon postIt75    = lookupIconResource(&quot;PostIt75&quot;);</span>
+<span class="nc" id="L76">    private final ImageIcon postIt99    = lookupIconResource(&quot;PostIt99&quot;);</span>
+<span class="nc" id="L77">    private final ImageIcon postIt100   = lookupIconResource(&quot;PostIt100&quot;);</span>
+
+    // specialised icons for designer
+<span class="nc" id="L80">    private final ImageIcon postItD0    = lookupIconResource(&quot;PostItD0&quot;);</span>
+<span class="nc" id="L81">    private final ImageIcon postItD25   = lookupIconResource(&quot;PostItD25&quot;);</span>
+<span class="nc" id="L82">    private final ImageIcon postItD50   = lookupIconResource(&quot;PostItD50&quot;);</span>
+<span class="nc" id="L83">    private final ImageIcon postItD75   = lookupIconResource(&quot;PostItD75&quot;);</span>
+<span class="nc" id="L84">    private final ImageIcon postItD99   = lookupIconResource(&quot;PostItD99&quot;);</span>
+<span class="nc" id="L85">    private final ImageIcon postItD100  = lookupIconResource(&quot;PostItD100&quot;);</span>
+
+<span class="nc" id="L87">    private UMLTreeCellRenderer treeCellRenderer = new UMLTreeCellRenderer();</span>
+
+    private static ImageIcon lookupIconResource(String name) {
+<span class="nc" id="L90">        return ResourceLoaderWrapper.lookupIconResource(name);</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // TreeCellRenderer implementation
+
+    /*
+     * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
+     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
+     * boolean)
+     */
+    public Component getTreeCellRendererComponent(JTree tree, Object value,
+    boolean sel,
+    boolean expanded,
+    boolean leaf, int row,
+    boolean hasTheFocus) {
+
+<span class="nc" id="L107">        Component r = super.getTreeCellRendererComponent(tree, value, sel,</span>
+							 expanded, leaf,
+							 row, hasTheFocus);
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (r instanceof JLabel) {</span>
+<span class="nc" id="L112">            JLabel lab = (JLabel) r;</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (value instanceof ToDoItem) {</span>
+<span class="nc" id="L114">                ToDoItem item = (ToDoItem) value;</span>
+<span class="nc" id="L115">                Poster post = item.getPoster();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if (post instanceof Designer) {</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                    if (item.getProgress() == 0) {</span>
+<span class="nc" id="L118">                        lab.setIcon(postItD0);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 25) {</span>
+<span class="nc" id="L120">                        lab.setIcon(postItD25);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 50) {</span>
+<span class="nc" id="L122">                        lab.setIcon(postItD50);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 75) {</span>
+<span class="nc" id="L124">                        lab.setIcon(postItD75);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 100) {</span>
+<span class="nc" id="L126">                        lab.setIcon(postItD99);</span>
+                    } else {
+<span class="nc" id="L128">                        lab.setIcon(postItD100);</span>
+                    }
+                } else {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                    if (item.getProgress() == 0) {</span>
+<span class="nc" id="L132">                        lab.setIcon(postIt0);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 25) {</span>
+<span class="nc" id="L134">                        lab.setIcon(postIt25);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 50) {</span>
+<span class="nc" id="L136">                        lab.setIcon(postIt50);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 75) {</span>
+<span class="nc" id="L138">                        lab.setIcon(postIt75);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">                    } else if (item.getProgress() &lt;= 100) {</span>
+<span class="nc" id="L140">                        lab.setIcon(postIt99);</span>
+                    } else {
+<span class="nc" id="L142">                        lab.setIcon(postIt100);</span>
+                    }
+                }
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            } else if (value instanceof Decision) {</span>
+<span class="nc" id="L147">                lab.setIcon(MetalIconFactory.getTreeFolderIcon());</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            } else if (value instanceof Goal) {</span>
+<span class="nc" id="L149">                lab.setIcon(MetalIconFactory.getTreeFolderIcon());</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            } else if (value instanceof Poster) {</span>
+<span class="nc" id="L151">                lab.setIcon(MetalIconFactory.getTreeFolderIcon());</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            } else if (value instanceof PriorityNode) {</span>
+<span class="nc" id="L153">                lab.setIcon(MetalIconFactory.getTreeFolderIcon());</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            } else if (value instanceof KnowledgeTypeNode) {</span>
+<span class="nc" id="L155">                lab.setIcon(MetalIconFactory.getTreeFolderIcon());</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            } else if (value instanceof Diagram) {</span>
+<span class="nc" id="L157">                return treeCellRenderer.getTreeCellRendererComponent(tree,</span>
+								 value,
+								 sel,
+								 expanded,
+								 leaf,
+								 row,
+								 hasTheFocus);
+            } else {
+<span class="nc" id="L165">                Object newValue = value;</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                if (newValue instanceof Fig) {</span>
+<span class="nc" id="L167">                    newValue = ((Fig) value).getOwner();</span>
+                }
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                if (Model.getFacade().isAUMLElement(newValue)) {</span>
+<span class="nc" id="L170">                    return treeCellRenderer.getTreeCellRendererComponent(</span>
+                            tree, newValue, sel, expanded, leaf, row,
+                            hasTheFocus);
+                }
+            }
+
+
+
+<span class="nc" id="L178">            String tip = lab.getText() + &quot; &quot;;</span>
+<span class="nc" id="L179">            lab.setToolTipText(tip);</span>
+<span class="nc" id="L180">            tree.setToolTipText(tip);</span>
+
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            if (!sel) {</span>
+<span class="nc" id="L183">                lab.setBackground(getBackgroundNonSelectionColor());</span>
+            } else {
+<span class="nc" id="L185">                Color high = Globals.getPrefs().getHighlightColor();</span>
+<span class="nc" id="L186">                high = high.brighter().brighter();</span>
+<span class="nc" id="L187">                lab.setBackground(high);</span>
+            }
+<span class="nc" id="L189">            lab.setOpaque(sel);</span>
+        }
+<span class="nc" id="L191">        return r;</span>
+    }
+
+
+} /* end class ToDoTreeRenderer */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

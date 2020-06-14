@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToolBarUtility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">ToolBarUtility.java</span></div><h1>ToolBarUtility.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JToolBar;
+
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.tigris.toolbar.ToolBarManager;
+import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
+
+/**
+ * This utility class contains additional functionality related to the
+ * org.tigris.toolbar project for the ArgoUML application.
+ *
+ * @author Michiel
+ */
+<span class="nc" id="L63">public class ToolBarUtility {</span>
+
+<span class="nc" id="L65">    private static final Logger LOG =</span>
+<span class="nc" id="L66">        Logger.getLogger(ToolBarUtility.class.getName());</span>
+
+    /**
+     * Manages the selection of the default tool
+     * in a popup tool in the toolbar. &lt;p&gt;
+     *
+     * I.e. in a toolbar, you can have tools that can be opened,
+     * into a grid of tools. The last used tool is remembered,
+     * and put at the top when the popup is closed, i.e.
+     * is the only tool that remains visible. This remembering is
+     * persistent, hence stored in the configuration file,
+     * under a certain key (i.e. name).
+     *
+     * @param actions the array of actions that make up the popup
+     * @param key appendix for the key for the configuration file
+     */
+    public static void manageDefault(Object[] actions, String key) {
+<span class="nc" id="L83">        Action defaultAction = null;</span>
+<span class="nc" id="L84">        ConfigurationKey k =</span>
+<span class="nc" id="L85">            Configuration.makeKey(&quot;default&quot;, &quot;popupactions&quot;, key);</span>
+<span class="nc" id="L86">        String defaultName = Configuration.getString(k);</span>
+<span class="nc" id="L87">        PopupActionsListener listener = new PopupActionsListener(k);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (int i = 0; i &lt; actions.length; ++i) {</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (actions[i] instanceof Action) {</span>
+<span class="nc" id="L90">                Action a = (Action) actions[i];</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                if (a.getValue(Action.NAME).equals(defaultName)) {</span>
+<span class="nc" id="L92">                    defaultAction = a;</span>
+                }
+<span class="nc" id="L94">                a.addPropertyChangeListener(listener);</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            } else if (actions[i] instanceof Object[]) {</span>
+<span class="nc" id="L96">                Object[] actionRow = (Object[]) actions[i];</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                for (int j = 0; j &lt; actionRow.length; ++j) {</span>
+<span class="nc" id="L98">                    Action a = (Action) actionRow[j];</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                    if (a.getValue(Action.NAME).equals(defaultName)) {</span>
+<span class="nc" id="L100">                        defaultAction = a;</span>
+                    }
+<span class="nc" id="L102">                    a.addPropertyChangeListener(listener);</span>
+                }
+            }
+        }
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (defaultAction != null) {</span>
+<span class="nc" id="L108">            defaultAction.putValue(&quot;isDefault&quot;, Boolean.TRUE);</span>
+        }
+<span class="nc" id="L110">    }</span>
+
+    static class PopupActionsListener implements PropertyChangeListener {
+        private boolean blockEvents;
+        private ConfigurationKey key;
+
+        /**
+         * Constructor.
+         *
+         * @param k
+         */
+<span class="nc" id="L121">        public PopupActionsListener(ConfigurationKey k) {</span>
+<span class="nc" id="L122">            key = k;</span>
+<span class="nc" id="L123">        }</span>
+
+        /*
+         * @see java.beans.PropertyChangeListener#propertyChange(
+         *         java.beans.PropertyChangeEvent)
+         */
+        public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc bnc" id="L130" title="All 2 branches missed.">            if (evt.getSource() instanceof Action) {</span>
+<span class="nc" id="L131">                Action a = (Action) evt.getSource();</span>
+<span class="nc bnc" id="L132" title="All 4 branches missed.">                if (!blockEvents &amp;&amp; evt.getPropertyName().equals(&quot;popped&quot;)) {</span>
+<span class="nc" id="L133">                    blockEvents = true;</span>
+                    /* Switch the value back off, so that we will
+                     * get notified again next time.
+                     */
+<span class="nc" id="L137">                    a.putValue(&quot;popped&quot;, Boolean.FALSE);</span>
+<span class="nc" id="L138">                    blockEvents = false;</span>
+<span class="nc" id="L139">                    Configuration.setString(key,</span>
+<span class="nc" id="L140">                            (String) a.getValue(Action.NAME));</span>
+                }
+            }
+<span class="nc" id="L143">        }</span>
+    }
+
+    /**
+     * TODO: Use the following function to have a dropdown set of tools:
+     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true);
+     * Instead, this temporary solution:
+     *
+     * @param buttonPanel the toolbar
+     * @param actions an array of actions representing the tool layout
+     */
+    public static void addItemsToToolBar(JToolBar buttonPanel,
+            Object[] actions) {
+<span class="nc" id="L156">        JButton button = buildPopupToolBoxButton(actions, false);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (!ToolBarManager.alwaysUseStandardRollover()) {</span>
+<span class="nc" id="L158">            button.setBorderPainted(false);</span>
+        }
+<span class="nc" id="L160">        buttonPanel.add(button);</span>
+<span class="nc" id="L161">    }</span>
+
+    /**
+     * TODO: Use the following function to have a dropdown set of tools:
+     * ToolBarFactory.addItemsToToolBar(buttonPanel, actions, true);
+     * Instead, this temporary solution:
+     *
+     * @param buttonPanel the toolbar
+     * @param actions an array of actions representing the tool layout
+     */
+    public static void addItemsToToolBar(JToolBar buttonPanel,
+            Collection actions) {
+<span class="nc" id="L173">	addItemsToToolBar(buttonPanel, actions.toArray());</span>
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * TODO: Move this into the toolbar project.
+     */
+    private static PopupToolBoxButton buildPopupToolBoxButton(Object[] actions,
+            boolean rollover) {
+<span class="nc" id="L181">        PopupToolBoxButton toolBox = null;</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        for (int i = 0; i &lt; actions.length; ++i) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (actions[i] instanceof Action) {</span>
+<span class="nc" id="L184">                LOG.log(Level.INFO, &quot;Adding a {0} to the toolbar&quot;, actions[i]);</span>
+
+<span class="nc" id="L186">                Action a = (Action) actions[i];</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">                if (toolBox == null) {</span>
+<span class="nc" id="L188">                    toolBox = new PopupToolBoxButton(a, 0, 1, rollover);</span>
+                }
+<span class="nc" id="L190">                toolBox.add(a);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">            } else if (actions[i] instanceof Component) {</span>
+<span class="nc" id="L192">                toolBox.add((Component) actions[i]);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            } else if (actions[i] instanceof Object[]) {</span>
+<span class="nc" id="L194">                Object[] actionRow = (Object[]) actions[i];</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                for (int j = 0; j &lt; actionRow.length; ++j) {</span>
+<span class="nc" id="L196">                    Action a = (Action) actionRow[j];</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                    if (toolBox == null) {</span>
+<span class="nc" id="L198">                        int cols = actionRow.length;</span>
+<span class="nc" id="L199">                        toolBox = new PopupToolBoxButton(a, 0, cols, rollover);</span>
+                    }
+<span class="nc" id="L201">                    toolBox.add(a);</span>
+                }
+<span class="nc" id="L203">            } else {</span>
+<span class="nc" id="L204">                LOG.log(Level.SEVERE,</span>
+                        &quot;Can't add a &quot; + actions[i] + &quot; to the toolbar&quot;);
+            }
+        }
+<span class="nc" id="L208">        return toolBox;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

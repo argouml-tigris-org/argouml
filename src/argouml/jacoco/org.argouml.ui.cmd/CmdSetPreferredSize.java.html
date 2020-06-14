@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CmdSetPreferredSize.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">CmdSetPreferredSize.java</span></div><h1>CmdSetPreferredSize.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.cmd;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.argouml.i18n.Translator;
+import org.tigris.gef.base.Cmd;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.presentation.Fig;
+
+
+/**
+ * A command to set selected figs to their minimum size. &lt;p&gt;
+ * Despite its name, really the minimum size is selected here! &lt;p&gt;
+ * 
+ * TODO: Rename this class.
+ *
+ * @author Markus Klink
+ */
+public class CmdSetPreferredSize extends Cmd {
+
+    /**
+     * Default constructor - set minimum size command.
+     */
+    public CmdSetPreferredSize() {
+//        super(Translator.localize(&quot;action.size-to-fit-contents&quot;));
+<span class="nc" id="L67">	super(Translator.localize(&quot;action.set-minimum-size&quot;));</span>
+<span class="nc" id="L68">    }</span>
+
+
+    /**
+     * Set the fig to be resized.
+     *
+     * @param f the fig to resize
+     */
+    public void setFigToResize(Fig f) {
+<span class="nc" id="L77">        List&lt;Fig&gt; figs = new ArrayList&lt;Fig&gt;(1);</span>
+<span class="nc" id="L78">        figs.add(f);</span>
+<span class="nc" id="L79">        setArg(&quot;figs&quot;, figs);</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Set the figs to be resized.
+     *
+     * @param figs the list of figs to resize
+     */
+    public void setFigToResize(List figs) {
+<span class="nc" id="L88">        setArg(&quot;figs&quot;, figs);</span>
+<span class="nc" id="L89">    }</span>
+
+
+    /**
+     * Set all the figs in the selection or passed by param &quot;figs&quot; to the
+     * size according to the mode of the command.
+     */
+    public void doIt() {
+<span class="nc" id="L97">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L98">        List&lt;Fig&gt; figs = (List&lt;Fig&gt;) getArg(&quot;figs&quot;);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (figs == null) {</span>
+<span class="nc" id="L100">            SelectionManager sm = ce.getSelectionManager();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (sm.getLocked()) {</span>
+<span class="nc" id="L102">                Globals.showStatus(</span>
+<span class="nc" id="L103">                    Translator.localize(&quot;action.locked-objects-not-modify&quot;));</span>
+<span class="nc" id="L104">                return;</span>
+            }
+<span class="nc" id="L106">            figs = sm.getFigs();</span>
+        }
+
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (figs == null) {</span>
+<span class="nc" id="L110">            return;</span>
+        }
+<span class="nc" id="L112">        int size = figs.size();</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (size == 0) {</span>
+<span class="nc" id="L114">            return;</span>
+        }
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L118">            Fig fi = figs.get(i);</span>
+            /* Only resize elements which the user would also be able
+             * to resize: */
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (fi.isResizable() </span>
+                    /* But exclude elements that enclose others, 
+                     * since their algorithms to calculate the minimum size 
+                     * does not take enclosed objects into account: */
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                    &amp;&amp; (fi.getEnclosedFigs() == null </span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                            || fi.getEnclosedFigs().size() == 0)) {</span>
+<span class="nc" id="L127">                fi.setSize(fi.getMinimumSize());</span>
+                /* TODO: Beautify the 2nd part of this string: */
+<span class="nc" id="L129">                Globals.showStatus(Translator.localize(&quot;action.setting-size&quot;, </span>
+                        new Object[] {fi}));
+            }
+<span class="nc" id="L132">            fi.endTrans();</span>
+        }
+<span class="nc" id="L134">    }</span>
+
+
+    /*
+     * @see org.tigris.gef.base.Cmd#undoIt()
+     */
+    public void undoIt() {
+        // unsupported. 
+<span class="nc" id="L142">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

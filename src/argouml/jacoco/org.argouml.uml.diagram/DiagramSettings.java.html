@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DiagramSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram</a> &gt; <span class="el_source">DiagramSettings.java</span></div><h1>DiagramSettings.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008, 2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram;
+
+import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.notation.NotationSettings;
+import org.tigris.gef.undo.Memento;
+
+/**
+ * Diagram appearance settings.  This includes basic things like colors and
+ * fonts, as well as the {@link NotationSettings} which contain all the settings
+ * that control text formatting.
+ * &lt;p&gt;
+ * The settings are designed to work in a hierarchical fashion with any settings
+ * that are defaulted at the current level inheriting from the next level in
+ * the hierarchy.  A typical hierarchy would be Fig-&gt;StyleSheet-&gt;Project where 
+ * a style sheet is a named set of attributes that can be applied as a set to
+ * a fig (perhaps in conjunction with a stereotype).  The hierarchy which is
+ * currently used in ArgoUML is Fig-&gt;Diagram-&gt;Project, although there's no
+ * support for changing anything but the Project (and a few of the attributes
+ * managed directly by GEF).
+ * &lt;p&gt;
+ * Notation settings have a semantic meaning in the UML, which
+ * defines the difference between notation settings and 
+ * diagram appearance settings.
+ * 
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+public class DiagramSettings {
+
+    /*
+     * The special value &lt;code&gt;null&lt;/code&gt; is used internally to indicate that
+     * the default value should be inherited from the next level of settings.
+     */
+    
+    /**
+     * Enumeration representing different stereotype presentation styles
+     */
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">    public enum StereotypeStyle {</span>
+        
+        // *IMPORTANT* - These MUST remain in order!
+        
+        /**
+         * Textual rendering for stereotype
+         */
+<span class="fc" id="L90">        TEXTUAL(DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL), </span>
+        /**
+         * Stereotype rendered with large icon
+         */
+<span class="fc" id="L94">        BIG_ICON(DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON), </span>
+        /**
+         * Stereotype rendered with small icon
+         */
+<span class="fc" id="L98">        SMALL_ICON(DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);</span>
+       
+<span class="fc" id="L100">        StereotypeStyle(int value) {</span>
+<span class="pc bpc" id="L101" title="2 of 4 branches missed.">            assert value == this.ordinal();</span>
+<span class="fc" id="L102">        }</span>
+        
+
+        /**
+         * Convert old style int representation to an enum.  The enum returned
+         * is the one at the given ordinal (ie this is the inverse of the
+         * mapping done by ordinal()).
+         * 
+         * @param value one of the defined int values in DiagramAppearance
+         * @return the corresponding StereotypeView enum
+         */
+        public static StereotypeStyle getEnum(int value) {
+<span class="fc" id="L114">            int counter = 0;</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            for (StereotypeStyle sv : StereotypeStyle.values()) {</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">                if (counter == value) {</span>
+<span class="fc" id="L117">                    return sv;</span>
+                }
+<span class="fc" id="L119">                counter++;</span>
+            }
+<span class="nc" id="L121">            return null;</span>
+        }
+    }
+    
+//    private static final StereotypeView[] stereotypeViewMap;
+//    
+//    static {
+//        stereotypeViewMap = new StereotypeView[3];
+//        StereotypeView.
+//        stereotypeViewMap[DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL] = 
+//            StereotypeView.TEXTUAL;
+//        stereotypeViewMap[DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON] = 
+//            StereotypeView.BIG_ICON;
+//        stereotypeViewMap[DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON] = 
+//            StereotypeView.SMALL_ICON;
+//    }
+    
+    /**
+     * Next level in the settings hierarchy to inherit from if the value
+     * isn't set (ie is &lt;default&gt;) at the current level.
+     */
+    private DiagramSettings parent;
+    
+    private NotationSettings notationSettings;
+
+    /* Diagram appearance settings with project scope: */
+    private String fontName;
+    private Integer fontSize;
+    
+    // We can not remove this and have the application manage things directly
+    // based on the font, since only the names should be bold.
+    private Boolean showBoldNames;
+
+    private Boolean showBidirectionalArrows;
+    
+    private Integer defaultShadowWidth;
+    
+    private StereotypeStyle defaultStereotypeView;
+
+    /* Some cached fonts based on the above settings */
+    private Font fontPlain;
+    private Font fontItalic;
+    private Font fontBold;
+    private Font fontBoldItalic;
+
+    /**
+     * Construct an empty diagram settings with no parent and all values
+     * defaulted. &lt;p&gt;
+     */
+    public DiagramSettings() {
+<span class="fc" id="L171">        this(null);</span>
+<span class="fc" id="L172">    }</span>
+    
+    /**
+     * Construct a DiagramSettings object which inherits from the given
+     * parent settings (e.g. project default diagram settings).
+     * 
+     * @param parentSettings settings to inherit from if default values aren't
+     * overridden.
+     */
+    public DiagramSettings(DiagramSettings parentSettings) {
+<span class="fc" id="L182">        super();</span>
+<span class="fc" id="L183">        parent = parentSettings;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (parentSettings == null) {</span>
+<span class="fc" id="L185">            notationSettings = new NotationSettings();</span>
+        } else {
+<span class="fc" id="L187">            notationSettings = </span>
+<span class="fc" id="L188">                new NotationSettings(parent.getNotationSettings());</span>
+        }
+<span class="fc" id="L190">        recomputeFonts();</span>
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Send all events when the settings are changed to refresh
+     * anything rendered with these settings.
+     */
+    public void notifyOfChangedSettings() {
+        /*
+         * Since body ever looks
+         * at the type of the diagram appearance event, we can simplify from
+         * sending every existing event to one event only. But since there is no
+         * catch-all event defined, we just use one. Rationale: reduce the
+         * number of total refreshes of the drawing.
+         */
+<span class="fc" id="L205">        ConfigurationKey key = </span>
+<span class="fc" id="L206">            Configuration.makeKey(&quot;diagramappearance&quot;, &quot;all&quot;);</span>
+<span class="fc" id="L207">        ArgoEventPump.fireEvent(new ArgoDiagramAppearanceEvent(</span>
+                ArgoEventTypes.DIAGRAM_FONT_CHANGED, new PropertyChangeEvent(
+<span class="fc" id="L209">                        this, key.getKey(),  &quot;0&quot;, &quot;0&quot;)));</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Initialize the diagram settings with application default values 
+     * from the Configuration retrieved from disk.
+     */
+    public void initFromConfiguration() {
+<span class="fc" id="L217">        setShowBoldNames(Configuration.getBoolean(</span>
+                DiagramAppearance.KEY_SHOW_BOLD_NAMES));
+        
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        setShowBidirectionalArrows(!Configuration.getBoolean(</span>
+                DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
+        
+<span class="fc" id="L223">        setDefaultShadowWidth(Configuration.getInteger(</span>
+                DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 1));
+
+<span class="fc" id="L226">        setDefaultStereotypeView(Configuration.getInteger(</span>
+                ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL));
+
+<span class="fc" id="L230">        setFontName(</span>
+<span class="fc" id="L231">                DiagramAppearance.getInstance().getConfiguredFontName());</span>
+<span class="fc" id="L232">        setFontSize(</span>
+<span class="fc" id="L233">                Configuration.getInteger(DiagramAppearance.KEY_FONT_SIZE));</span>
+<span class="fc" id="L234">    }</span>
+
+    /**
+     * @return Returns the notationSettings.
+     */
+    public NotationSettings getNotationSettings() {
+<span class="fc" id="L240">        return notationSettings;</span>
+    }
+
+
+    /**
+     * @param notationSettings The notationSettings to set.
+     */
+    public void setNotationSettings(NotationSettings notationSettings) {
+<span class="nc" id="L248">        this.notationSettings = notationSettings;</span>
+<span class="nc" id="L249">    }</span>
+
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show bold names.
+     */
+    public boolean isShowBoldNames() {
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (showBoldNames == null) {</span>
+<span class="fc bfc" id="L257" title="All 2 branches covered.">            if (parent != null) {</span>
+<span class="fc" id="L258">                return parent.isShowBoldNames();</span>
+            } else {
+<span class="fc" id="L260">                return false;</span>
+            }
+        }
+<span class="fc" id="L263">        return showBoldNames;</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if names are to be shown in bold font.
+     */
+    public void setShowBoldNames(final boolean showem) {
+<span class="fc bfc" id="L270" title="All 4 branches covered.">        if (showBoldNames != null &amp;&amp; showBoldNames == showem) {</span>
+<span class="fc" id="L271">            return;</span>
+        }
+
+<span class="fc" id="L274">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L276">                showBoldNames = showem;</span>
+<span class="fc" id="L277">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                showBoldNames = !showem;</span>
+<span class="nc" id="L281">            }</span>
+        };
+<span class="fc" id="L283">        doUndoable(memento);</span>
+<span class="fc" id="L284">    }</span>
+
+   
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show the arrows when
+     * both association ends of an association are navigable.
+     */
+    public boolean isShowBidirectionalArrows() {
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (showBidirectionalArrows == null) {</span>
+<span class="pc bpc" id="L293" title="1 of 2 branches missed.">            if (parent != null) {</span>
+<span class="nc" id="L294">                return parent.isShowBidirectionalArrows();</span>
+            } else {
+<span class="fc" id="L296">                return false;</span>
+            }
+        }
+<span class="fc" id="L299">        return showBidirectionalArrows;</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if both arrows are to be shown when
+     * both association ends of an association are navigable.
+     */
+    public void setShowBidirectionalArrows(final boolean showem) {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (showBidirectionalArrows != null </span>
+<span class="fc bfc" id="L308" title="All 2 branches covered.">                &amp;&amp; showBidirectionalArrows == showem) {</span>
+<span class="fc" id="L309">            return;</span>
+        }
+
+<span class="fc" id="L312">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L314">                showBidirectionalArrows = showem;</span>
+<span class="fc" id="L315">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L318" title="All 2 branches missed.">                showBidirectionalArrows = !showem;</span>
+<span class="nc" id="L319">            }</span>
+        };
+<span class="fc" id="L321">        doUndoable(memento);</span>
+
+<span class="fc" id="L323">    }</span>
+
+
+    /**
+     * @return Returns the shadow width.
+     */
+    public int getDefaultShadowWidth() {
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        if (defaultShadowWidth == null) {</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">            if (parent != null) {</span>
+<span class="fc" id="L332">                return parent.getDefaultShadowWidth();</span>
+            } else {
+<span class="fc" id="L334">                return 0;</span>
+            }
+        }
+<span class="fc" id="L337">        return defaultShadowWidth;</span>
+    }
+
+    /**
+     * @param newWidth The Shadow Width.
+     */
+    public void setDefaultShadowWidth(final int newWidth) {
+<span class="fc bfc" id="L344" title="All 4 branches covered.">        if (defaultShadowWidth != null &amp;&amp; defaultShadowWidth == newWidth) {</span>
+<span class="fc" id="L345">            return;</span>
+        }
+
+<span class="fc" id="L348">        final Integer oldValue = defaultShadowWidth;</span>
+
+<span class="fc" id="L350">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L352">                defaultShadowWidth = newWidth;</span>
+<span class="fc" id="L353">            }</span>
+
+            public void undo() {
+<span class="nc" id="L356">                defaultShadowWidth = oldValue;</span>
+<span class="nc" id="L357">            }</span>
+        };
+<span class="fc" id="L359">        doUndoable(memento);</span>
+
+<span class="fc" id="L361">    }</span>
+
+
+    /**
+     * @return Returns the default stereotype view
+     * TODO: Enumeration here?
+     */
+    public StereotypeStyle getDefaultStereotypeView() {
+<span class="fc bfc" id="L369" title="All 2 branches covered.">        if (defaultStereotypeView == null) {</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">            if (parent != null) {</span>
+<span class="fc" id="L371">                return parent.getDefaultStereotypeView();</span>
+            } else {
+<span class="fc" id="L373">                return StereotypeStyle.TEXTUAL;</span>
+            }
+        }
+<span class="fc" id="L376">        return defaultStereotypeView;</span>
+    }
+
+    /**
+     * @return Returns the default stereotype view as an int compatible with
+     * old users of DiagramAppearance-defined ints.
+     * @deprecated for 0.27.2 by tfmorris.  For backward compatibility only.
+     */
+    public int getDefaultStereotypeViewInt() {
+<span class="fc" id="L385">        return getDefaultStereotypeView().ordinal();</span>
+    }
+    
+    /**
+     * @param newView the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris. Not for use in new code. Only for
+     *             help in transitioning to enum based methods. Use
+     *             {@link #setDefaultStereotypeView(StereotypeStyle)}.
+     */
+    public void setDefaultStereotypeView(final int newView) {
+<span class="fc" id="L395">        StereotypeStyle sv = StereotypeStyle.getEnum(newView);</span>
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">        if (sv == null) {</span>
+<span class="nc" id="L397">            throw new IllegalArgumentException(&quot;Bad argument &quot; + newView);</span>
+        }
+<span class="fc" id="L399">        setDefaultStereotypeView(sv);</span>
+<span class="fc" id="L400">    }</span>
+
+    /**
+     * @param newView the default stereotype view
+     */
+    public void setDefaultStereotypeView(final StereotypeStyle newView) {
+<span class="pc bpc" id="L406" title="1 of 4 branches missed.">        if (defaultStereotypeView != null &amp;&amp; defaultStereotypeView == newView) {</span>
+<span class="nc" id="L407">            return;</span>
+        }
+
+<span class="fc" id="L410">        final StereotypeStyle oldValue = defaultStereotypeView;</span>
+
+<span class="fc" id="L412">        Memento memento = new Memento() {</span>
+            public void redo() {
+<span class="fc" id="L414">                defaultStereotypeView = newView;</span>
+<span class="fc" id="L415">            }</span>
+
+            public void undo() {
+<span class="nc" id="L418">                defaultStereotypeView = oldValue;</span>
+<span class="nc" id="L419">            }</span>
+        };
+<span class="fc" id="L421">        doUndoable(memento);</span>
+<span class="fc" id="L422">    }</span>
+
+
+    /**
+     * Diagram font name. &lt;p&gt;
+     * 
+     * @return diagram font name.
+     */
+    public String getFontName() {
+<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (fontName == null) {</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">            if (parent != null) {</span>
+<span class="fc" id="L433">                return parent.getFontName();</span>
+            } else {
+<span class="fc" id="L435">                return &quot;Dialog&quot;;</span>
+            }
+        }
+<span class="fc" id="L438">        return fontName;</span>
+    }
+
+    /**
+     * Diagram font name.
+     * @param newFontName diagram font name.
+     */
+    public void setFontName(String newFontName) {
+<span class="pc bpc" id="L446" title="1 of 4 branches missed.">        if (fontName != null &amp;&amp; fontName.equals(newFontName)) {</span>
+<span class="fc" id="L447">            return;</span>
+        }
+<span class="fc" id="L449">        fontName = newFontName;</span>
+<span class="fc" id="L450">        recomputeFonts();</span>
+<span class="fc" id="L451">    }</span>
+
+    /**
+     * Diagram font size. &lt;p&gt;
+     *
+     * @return diagram font size.
+     */
+    public int getFontSize() {
+<span class="fc bfc" id="L459" title="All 2 branches covered.">        if (fontSize == null) {</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">            if (parent != null) {</span>
+<span class="fc" id="L461">                return parent.getFontSize();</span>
+            } else {
+<span class="fc" id="L463">                return 10;</span>
+            }
+        }
+<span class="fc" id="L466">        return fontSize;</span>
+    }
+
+    /**
+     * Diagram font size.
+     * @param newFontSize diagram font size.
+     */
+    public void setFontSize(int newFontSize) {
+<span class="fc bfc" id="L474" title="All 4 branches covered.">        if (fontSize != null &amp;&amp; fontSize == newFontSize) {</span>
+<span class="fc" id="L475">            return;</span>
+        }
+<span class="fc" id="L477">        fontSize = newFontSize;</span>
+<span class="fc" id="L478">        recomputeFonts();</span>
+<span class="fc" id="L479">    }</span>
+
+    private void recomputeFonts() {
+        // If we've got a local (uninherited) font name or size or if we've got
+        // no parent to inherit from recompute our cached fonts
+<span class="pc bpc" id="L484" title="1 of 8 branches missed.">        if ((fontName != null &amp;&amp; !&quot;&quot;.equals(fontName) &amp;&amp; fontSize != null)</span>
+                || parent == null) {
+<span class="fc" id="L486">            String name = getFontName();</span>
+<span class="fc" id="L487">            int size = getFontSize();</span>
+<span class="fc" id="L488">            fontPlain = new Font(name, Font.PLAIN, size);</span>
+<span class="fc" id="L489">            fontItalic = new Font(name, Font.ITALIC, size);</span>
+<span class="fc" id="L490">            fontBold = new Font(name, Font.BOLD, size);</span>
+<span class="fc" id="L491">            fontBoldItalic = new Font(name, Font.BOLD | Font.ITALIC, size);</span>
+<span class="fc" id="L492">        } else {</span>
+<span class="fc" id="L493">            fontPlain = null;</span>
+<span class="fc" id="L494">            fontItalic = null;</span>
+<span class="fc" id="L495">            fontBold = null;</span>
+<span class="fc" id="L496">            fontBoldItalic = null;</span>
+        }
+<span class="fc" id="L498">    }</span>
+
+    /**
+     * Returns the Plain diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return plain diagram font
+     */
+    public Font getFontPlain() {
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        if (fontPlain == null) {</span>
+<span class="fc" id="L508">            return parent.getFontPlain();</span>
+        }
+<span class="fc" id="L510">        return fontPlain;</span>
+    }
+
+    /**
+     * Returns the Italic diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return italic diagram font
+     */
+    public Font getFontItalic() {
+<span class="fc bfc" id="L520" title="All 2 branches covered.">        if (fontItalic == null) {</span>
+<span class="fc" id="L521">            return parent.getFontItalic();</span>
+        }
+<span class="fc" id="L523">        return fontItalic;</span>
+    }
+
+    /**
+     * Returns the Bold diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return bold diagram font
+     */
+    public Font getFontBold() {
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">        if (fontBold == null) {</span>
+<span class="nc" id="L534">            return parent.getFontBold();</span>
+        }
+<span class="fc" id="L536">        return fontBold;</span>
+    }
+
+    /**
+     * Returns the Bold-Italic diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return bold-italic diagram font
+     */
+    public Font getFontBoldItalic() {
+<span class="nc bnc" id="L546" title="All 2 branches missed.">        if (fontBoldItalic == null) {</span>
+<span class="nc" id="L547">            return parent.getFontBoldItalic();</span>
+        }
+<span class="nc" id="L549">        return fontBoldItalic;</span>
+    }
+
+    /**
+     * Utility function to convert a font style integer into a Font.
+     *
+     * @param fontStyle the style; see the predefined constants in Font
+     * @return the Font that corresponds to the style
+     */
+    public Font getFont(int fontStyle) {
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        if ((fontStyle &amp; Font.ITALIC) != 0) {</span>
+<span class="pc bpc" id="L560" title="1 of 2 branches missed.">            if ((fontStyle &amp; Font.BOLD) != 0) {</span>
+<span class="nc" id="L561">                return getFontBoldItalic();</span>
+            } else {
+<span class="fc" id="L563">                return getFontItalic();</span>
+            }
+        } else {
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">            if ((fontStyle &amp; Font.BOLD) != 0) {</span>
+<span class="nc" id="L567">                return getFontBold();</span>
+            } else {
+<span class="fc" id="L569">                return getFontPlain();</span>
+            }
+        }
+    }
+
+    private void doUndoable(Memento memento) {
+        // TODO: Undo should be managed externally or we should be given 
+        // an Undo manager to use (the project's) rather than using a global one
+//        if (DiagramUndoManager.getInstance().isGenerateMementos()) {
+//            DiagramUndoManager.getInstance().addMemento(memento);
+//        }
+<span class="fc" id="L580">        memento.redo();</span>
+        // TODO: Mark diagram/project as dirty?
+<span class="fc" id="L582">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LookAndFeelMgr.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">LookAndFeelMgr.java</span></div><h1>LookAndFeelMgr.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+/*
+ * LookAndFeelMgr.java
+ *
+ * Created on 12 October 2002, 22:25
+ */
+
+package org.argouml.ui;
+
+import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+
+/**
+ * Controls the look and feel and theme of ArgoUML. LookAndFeelMgr has a
+ * &quot;Look and Feel&quot; property which represents the Swing Pluggable Look-and-feel.
+ * It also has a &quot;Theme&quot; property which represents a MetalTheme when the
+ * Metal look-and-feel is selected
+ * (for other LAFs, a theme is not supported). &lt;p&gt;
+ *
+ * Themes have 2 kinds of names:
+ * 1. The &quot;display name&quot; shown in the UI,
+ * which is retrieved by theme.getName(), and
+ * 2. the &quot;class name&quot;,
+ * which is the name of the theme class,
+ * and is retrieved by theme.getClass().getName().
+ *
+ * @author Bob Tarling
+ * @author Jeremy Jones
+ */
+public final class LookAndFeelMgr {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L82">    private static final Logger LOG = Logger.getLogger(LookAndFeelMgr.class.getName());</span>
+
+    /**
+     * The instance.
+     */
+<span class="fc" id="L87">    private static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();</span>
+
+    /**
+     * The Metal look and feel class name.
+     */
+    private static final String                 METAL_LAF_CLASS_NAME =
+	&quot;javax.swing.plaf.metal.MetalLookAndFeel&quot;;
+
+    /**
+     * Display name and configuration key for default look and feel and theme.
+     */
+    private static final String			DEFAULT_KEY = &quot;Default&quot;;
+
+    // JasonsThemes
+<span class="fc" id="L101">    private static final MetalTheme		DEFAULT_THEME =</span>
+	new JasonsTheme();
+<span class="fc" id="L103">    private static final MetalTheme		BIG_THEME =</span>
+	new JasonsBigTheme();
+<span class="fc" id="L105">    private static final MetalTheme		HUGE_THEME =</span>
+	new JasonsHugeTheme();
+
+    /**
+     * The list of supported MetalThemes.
+     */
+<span class="fc" id="L111">    private static final MetalTheme[] THEMES = {</span>
+        DEFAULT_THEME,
+        BIG_THEME,
+        HUGE_THEME,
+        new DefaultMetalTheme(),
+    };
+
+    /**
+     * The class name of Swing's default look and feel (will be used if
+     * the LookAndFeel property is null).
+     */
+    private String				defaultLafClass;
+
+    /**
+     * Get the single instance of the LookAndFeelMgr.
+     *
+     * @return the single instance of the LookAndFeelMgr
+     */
+    public static LookAndFeelMgr getInstance() {
+<span class="fc" id="L130">        return SINGLETON;</span>
+    }
+
+    /**
+     * Creates a new instance of LookAndFeelMgr.
+     */
+<span class="fc" id="L136">    private LookAndFeelMgr() {</span>
+<span class="fc" id="L137">        LookAndFeel laf = UIManager.getLookAndFeel();</span>
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if (laf != null) {</span>
+<span class="fc" id="L139">            defaultLafClass = laf.getClass().getName();</span>
+        } else {
+<span class="nc" id="L141">            defaultLafClass = null;</span>
+        }
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Sets the appearance of the UI using the current values of
+     * the LookAndFeel and Theme properties.
+     */
+    public void initializeLookAndFeel() {
+<span class="nc" id="L150">        String n = getCurrentLookAndFeel();</span>
+<span class="nc" id="L151">        setLookAndFeel(n);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (isThemeCompatibleLookAndFeel(n)) {</span>
+<span class="nc" id="L153">            setTheme(getMetalTheme(getCurrentThemeClassName()));</span>
+        }
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * Detecting the theme from the command line.
+     *
+     * @param arg the argument from the command line
+     * @return the theme
+     */
+    public String getThemeClassNameFromArg(String arg) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (arg.equalsIgnoreCase(&quot;-big&quot;)) {</span>
+<span class="nc" id="L165">            return BIG_THEME.getClass().getName();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        } else if (arg.equalsIgnoreCase(&quot;-huge&quot;)) {</span>
+<span class="nc" id="L167">            return HUGE_THEME.getClass().getName();</span>
+        }
+<span class="nc" id="L169">        return null;</span>
+    }
+
+    /**
+     * Outputs command-line arguments supported by this class.
+     */
+    public void printThemeArgs() {
+<span class="nc" id="L176">        System.err.println(&quot;  -big            use big fonts&quot;);</span>
+<span class="nc" id="L177">        System.err.println(&quot;  -huge           use huge fonts&quot;);</span>
+<span class="nc" id="L178">    }</span>
+
+    /**
+     * Returns the display names of the available look and feel choices.
+     * This may be used to fill a combobox to allow the user
+     * to select the LAF.
+     *
+     * @return	look and feel display names
+     */
+    public String[] getAvailableLookAndFeelNames() {
+<span class="nc" id="L188">        UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();</span>
+
+<span class="nc" id="L190">        String[] names = new String[lafs.length + 1];</span>
+<span class="nc" id="L191">        names[0] = DEFAULT_KEY;</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        for (int i = 0; i &lt; lafs.length; ++i) {</span>
+<span class="nc" id="L193">            names[i + 1] = lafs[i].getName();</span>
+        }
+
+<span class="nc" id="L196">        return names;</span>
+    }
+
+    /**
+     * Returns the display names of the available theme choices.
+     * This may be used to fill a combobox to allow the user
+     * to select the theme.
+     *
+     * @return	theme display names
+     */
+    public String[] getAvailableThemeNames() {
+<span class="nc" id="L207">        String[] names = new String[LookAndFeelMgr.THEMES.length];</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        for (int i = 0; i &lt; THEMES.length; ++i) {</span>
+<span class="nc" id="L209">            names[i] = THEMES[i].getName();</span>
+        }
+
+<span class="nc" id="L212">        return names;</span>
+    }
+
+    /**
+     * Returns the Look and Feel class name identifier for the specified
+     * display name, or null if no such Look and Feel is found.
+     *
+     * @param	name	display name of desired look and feel
+     * @return			class name for desired look and feel
+     */
+    public String getLookAndFeelFromName(String name) {
+<span class="nc bnc" id="L223" title="All 4 branches missed.">        if (name == null || DEFAULT_KEY.equals(name)) {</span>
+<span class="nc" id="L224">            return null;</span>
+        }
+
+<span class="nc" id="L227">        String className = null;</span>
+
+<span class="nc" id="L229">        UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        for (int i = 0; i &lt; lafs.length; ++i) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (lafs[i].getName().equals(name)) {</span>
+<span class="nc" id="L232">                className = lafs[i].getClassName();</span>
+            }
+        }
+
+<span class="nc" id="L236">        return className;</span>
+    }
+
+    /**
+     * Returns the theme class name identifier for the specified
+     * display name, or null if no such theme is found.
+     *
+     * @param	name	display name of desired theme
+     * @return			class name for desired theme
+     */
+    public String getThemeFromName(String name) {
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L248">            return null;</span>
+        }
+
+<span class="nc" id="L251">        String className = null;</span>
+
+<span class="nc bnc" id="L253" title="All 2 branches missed.">        for (int i = 0; i &lt; THEMES.length; ++i) {</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (THEMES[i].getName().equals(name)) {</span>
+<span class="nc" id="L255">                className = THEMES[i].getClass().getName();</span>
+            }
+        }
+
+<span class="nc" id="L259">        return className;</span>
+    }
+
+    /**
+     * Returns true if the specified look and feel class
+     * supports setting different themes.
+     *
+     * @param	lafClass	look and feel class name
+     * @return				true if supports themes
+     */
+    public boolean isThemeCompatibleLookAndFeel(String lafClass) {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (lafClass == null) {</span>
+<span class="nc" id="L271">            return false;</span>
+        }
+<span class="nc" id="L273">        return (/*lafClass == null ||*/ lafClass.equals(METAL_LAF_CLASS_NAME));</span>
+    }
+
+    /**
+     * Returns the string identifier for the current look and feel.
+     * This is the class name of the LookAndFeel class for the look and feel.
+     * Returns null if no look and feel has been specified, in which case
+     * Swing's default look and feel should be used.
+     *
+     * @return	current look and feel class name
+     */
+    public String getCurrentLookAndFeel() {
+<span class="nc" id="L285">        String value =</span>
+<span class="nc" id="L286">	    Configuration.getString(Argo.KEY_LOOK_AND_FEEL_CLASS, null);</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">        if (DEFAULT_KEY.equals(value)) {</span>
+<span class="nc" id="L288">            value = null;</span>
+        }
+<span class="nc" id="L290">        return value;</span>
+    }
+
+    /**
+     * Returns the display name of the current look and feel.
+     *
+     * @return	look and feel display name
+     */
+    public String getCurrentLookAndFeelName() {
+<span class="nc" id="L299">        String currentLookAndFeel = getCurrentLookAndFeel();</span>
+
+<span class="nc bnc" id="L301" title="All 2 branches missed.">        if (currentLookAndFeel == null) {</span>
+<span class="nc" id="L302">            return DEFAULT_KEY;</span>
+        }
+<span class="nc" id="L304">        String name = null;</span>
+
+        UIManager.LookAndFeelInfo[] lafs =
+<span class="nc" id="L307">            UIManager.getInstalledLookAndFeels();</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        for (int i = 0; i &lt; lafs.length; ++i) {</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">            if (lafs[i].getClassName().equals(currentLookAndFeel)) {</span>
+<span class="nc" id="L310">                name = lafs[i].getName();</span>
+            }
+        }
+
+<span class="nc" id="L314">        return name;</span>
+    }
+
+    /**
+     * Sets the current look and feel, storing the new value in
+     * Configuration.  If argument is null, indicates that Swing's default
+     * look and feel should be used.
+     *
+     * @param lafName	the name of desired look and feel
+     * @param themeName the name of the theme
+     */
+    public void setCurrentLAFAndThemeByName(String lafName, String themeName) {
+<span class="nc" id="L326">        String lafClass = getLookAndFeelFromName(lafName);</span>
+<span class="nc" id="L327">        String currentLookAndFeel = getCurrentLookAndFeel();</span>
+
+<span class="nc bnc" id="L329" title="All 4 branches missed.">        if (lafClass == null &amp;&amp; currentLookAndFeel == null) {</span>
+<span class="nc" id="L330">            return;</span>
+        }
+        /* Disabled since it gives various problems: e.g. the toolbar icons
+         * get too wide. Also the default does not give the new java 5.0 looks.
+        if (!(lafClass != null &amp;&amp; !lafClass.equals(currentLookAndFeel))) {
+            setLookAndFeel(lafClass);
+            Component tree = ProjectBrowser.getInstance();
+            SwingUtilities.updateComponentTreeUI(
+                    SwingUtilities.getRootPane(tree));
+        }
+        */
+
+<span class="nc bnc" id="L342" title="All 2 branches missed.">        if (lafClass == null) {</span>
+<span class="nc" id="L343">            lafClass = DEFAULT_KEY;</span>
+        }
+<span class="nc" id="L345">        Configuration.setString(Argo.KEY_LOOK_AND_FEEL_CLASS, lafClass);</span>
+
+<span class="nc" id="L347">        setCurrentTheme(getThemeFromName(themeName));</span>
+<span class="nc" id="L348">    }</span>
+
+    /**
+     * Returns the string identifier for the current theme.
+     * This is the class name of the MetalTheme class for the theme.
+     * This method returns null when the configuration
+     * does not return a valid metaltheme.
+     *
+     * @return	current theme class name or null
+     */
+    public String getCurrentThemeClassName() {
+<span class="nc" id="L359">	String value = Configuration.getString(Argo.KEY_THEME_CLASS, null);</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">	if (DEFAULT_KEY.equals(value)) {</span>
+<span class="nc" id="L361">	    value = null;</span>
+	}
+<span class="nc" id="L363">	return value;</span>
+    }
+
+    /**
+     * Returns the display name of the current theme.
+     * Guaranteed to return the display name
+     * of one of the themes in the THEMES list.
+     *
+     * @return	theme display name
+     */
+    public String getCurrentThemeName() {
+<span class="nc" id="L374">        String currentThemeClassName = getCurrentThemeClassName();</span>
+
+<span class="nc bnc" id="L376" title="All 2 branches missed.">        if (currentThemeClassName == null) {</span>
+            /* Make up a default */
+<span class="nc" id="L378">            return THEMES[0].getName();</span>
+        }
+
+<span class="nc bnc" id="L381" title="All 2 branches missed.">        for (int i = 0; i &lt; THEMES.length; ++i) {</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">            if (THEMES[i].getClass().getName().equals(currentThemeClassName)) {</span>
+<span class="nc" id="L383">                return THEMES[i].getName();</span>
+            }
+        }
+<span class="nc" id="L386">        return THEMES[0].getName();</span>
+    }
+
+    /**
+     * Sets the current theme, storing the new value in
+     * Configuration. Argument should not be null, and argument class
+     * should be an instance of MetalTheme.
+     *
+     * @param	themeClass	class name of desired theme
+     */
+    public void setCurrentTheme(String themeClass) {
+<span class="nc" id="L397">        MetalTheme theme = getMetalTheme(themeClass);</span>
+
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        if (theme.getClass().getName().equals(getCurrentThemeClassName())) {</span>
+<span class="nc" id="L400">            return;</span>
+        }
+
+<span class="nc" id="L403">        setTheme(theme);</span>
+
+        /* Disabled since it gives various problems: e.g. the toolbar icons
+         * get too wide. Also the default does not give the new java 5.0 looks.
+        Component tree = ProjectBrowser.getInstance();
+        SwingUtilities.updateComponentTreeUI(SwingUtilities.getRootPane(tree));
+        */
+
+<span class="nc" id="L411">        String themeValue = themeClass;</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        if (themeValue == null) {</span>
+<span class="nc" id="L413">            themeValue = DEFAULT_KEY;</span>
+        }
+<span class="nc" id="L415">        Configuration.setString(Argo.KEY_THEME_CLASS, themeValue);</span>
+<span class="nc" id="L416">    }</span>
+
+    /**
+     * @return the standard textfield font
+     */
+    public Font getStandardFont() {
+<span class="fc" id="L422">        Font font = UIManager.getDefaults().getFont(&quot;TextField.font&quot;);</span>
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">        if (font == null) {</span>
+<span class="nc" id="L424">            font = (new javax.swing.JTextField()).getFont();</span>
+        }
+<span class="fc" id="L426">        return font;</span>
+    }
+
+    /**
+     * @return the small font
+     */
+    public Font getSmallFont() {
+<span class="nc" id="L433">        Font font = getStandardFont();</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">        if (font.getSize2D() &gt;= 12f) {</span>
+<span class="nc" id="L435">            return font.deriveFont(font.getSize2D() - 2f);</span>
+        }
+<span class="nc" id="L437">        return font;</span>
+    }
+
+    /**
+     * Sets the look and feel in the GUI by calling UIManager.setLookAndFeel().
+     *
+     * @param	lafClass	class name of look and feel
+     */
+    private void setLookAndFeel(String lafClass) {
+        try {
+<span class="nc bnc" id="L447" title="All 4 branches missed.">            if (lafClass == null &amp;&amp; defaultLafClass != null) {</span>
+                // Set to the default LAF
+<span class="nc" id="L449">                UIManager.setLookAndFeel(defaultLafClass);</span>
+            } else {
+                // Set a custom LAF
+<span class="nc" id="L452">                UIManager.setLookAndFeel(lafClass);</span>
+            }
+<span class="nc" id="L454">        } catch (UnsupportedLookAndFeelException e) {</span>
+<span class="nc" id="L455">            LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L456">        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L457">            LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L458">        } catch (InstantiationException e) {</span>
+<span class="nc" id="L459">            LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L460">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L461">            LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L462">        }</span>
+<span class="nc" id="L463">    }</span>
+
+    /**
+     * Sets the metal theme in the GUI by calling
+     * MetalLookAndFeel.setCurrentTheme().
+     *
+     * @param	theme	new MetalTheme to set
+     */
+    private void setTheme(MetalTheme theme) {
+<span class="nc" id="L472">        String currentLookAndFeel = getCurrentLookAndFeel();</span>
+
+        // If LAF is Metal (either set explicitly, or as the default)
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        if ((currentLookAndFeel != null</span>
+<span class="nc bnc" id="L476" title="All 4 branches missed.">                &amp;&amp; currentLookAndFeel.equals(METAL_LAF_CLASS_NAME))</span>
+	    || (currentLookAndFeel == null
+<span class="nc bnc" id="L478" title="All 2 branches missed.">	        &amp;&amp; defaultLafClass.equals(METAL_LAF_CLASS_NAME))) {</span>
+            try {
+<span class="nc" id="L480">                MetalLookAndFeel.setCurrentTheme(theme);</span>
+<span class="nc" id="L481">                UIManager.setLookAndFeel(METAL_LAF_CLASS_NAME);</span>
+<span class="nc" id="L482">            } catch (UnsupportedLookAndFeelException e) {</span>
+<span class="nc" id="L483">                LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L484">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L485">                LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L486">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L487">                LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L488">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L489">                LOG.log(Level.SEVERE, &quot;&quot;, e);</span>
+<span class="nc" id="L490">            }</span>
+        }
+<span class="nc" id="L492">    }</span>
+
+    /**
+     * Returns the MetalTheme for the specified class name.
+     * Returns the default theme if a corresponding MetalTheme class
+     * can not be found.
+     *
+     * @param	themeClass	MetalTheme class name
+     * @return				MetalTheme object for class name
+     */
+    private MetalTheme getMetalTheme(String themeClass) {
+<span class="nc" id="L503">        MetalTheme theme = null;</span>
+
+<span class="nc bnc" id="L505" title="All 2 branches missed.">        for (int i = 0; i &lt; THEMES.length; ++i) {</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">            if (THEMES[i].getClass().getName().equals(themeClass)) {</span>
+<span class="nc" id="L507">                theme = THEMES[i];</span>
+            }
+        }
+
+<span class="nc bnc" id="L511" title="All 2 branches missed.">        if (theme == null) {</span>
+<span class="nc" id="L512">            theme = DEFAULT_THEME;</span>
+        }
+
+<span class="nc" id="L515">        return theme;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

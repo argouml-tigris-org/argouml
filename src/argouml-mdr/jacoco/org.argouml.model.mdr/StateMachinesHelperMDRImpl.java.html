@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateMachinesHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">StateMachinesHelperMDRImpl.java</span></div><h1>StateMachinesHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.StateMachinesHelper;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
+import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.Event;
+import org.omg.uml.behavioralelements.statemachines.Guard;
+import org.omg.uml.behavioralelements.statemachines.State;
+import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
+import org.omg.uml.behavioralelements.statemachines.StubState;
+import org.omg.uml.behavioralelements.statemachines.SubmachineState;
+import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.datatypes.BooleanExpression;
+import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.foundation.datatypes.TimeExpression;
+import org.omg.uml.modelmanagement.UmlPackage;
+import org.openide.util.NotImplementedException;
+
+/**
+ * The State Machines Helper Implementation for MDR.
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ */
+class StateMachinesHelperMDRImpl implements StateMachinesHelper {
+
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor.
+     *
+     * @param impl The ModelImplementation
+     */
+    public StateMachinesHelperMDRImpl(MDRModelImplementation impl) {
+<span class="fc" id="L95">        super();</span>
+<span class="fc" id="L96">        this.modelImpl = impl;</span>
+<span class="fc" id="L97">    }</span>
+
+
+    public Object getSource(Object trans) {
+        try {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            if (trans instanceof Transition) {</span>
+<span class="nc" id="L103">                return ((Transition) trans).getSource();</span>
+            }
+<span class="nc" id="L105">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L106">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">        throw new IllegalArgumentException(&quot;bad argument to &quot;</span>
+                + &quot;getSource() - &quot; + trans);
+    }
+
+
+    public Object getDestination(Object trans) {
+        try {
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (trans instanceof Transition) {</span>
+<span class="nc" id="L116">                return ((Transition) trans).getTarget();</span>
+            }
+<span class="nc" id="L118">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L119">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L120">        }</span>
+<span class="nc" id="L121">        throw new IllegalArgumentException(&quot;bad argument to &quot;</span>
+                + &quot;getDestination() - &quot; + trans);
+    }
+
+
+    public Object getStateMachine(Object handle) {
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (handle == null) {</span>
+<span class="nc" id="L128">            throw new IllegalArgumentException(&quot;bad argument to &quot;</span>
+                    + &quot;getStateMachine() - &quot; + handle);
+        }
+        try {
+<span class="nc" id="L132">            Object container =</span>
+<span class="nc" id="L133">                modelImpl.getFacade().getModelElementContainer(handle);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            while (container != null) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                if (Model.getFacade().isAStateMachine(container)) {</span>
+<span class="nc" id="L136">                    return container;</span>
+                }
+<span class="nc" id="L138">                container =</span>
+<span class="nc" id="L139">                    modelImpl.getFacade()</span>
+<span class="nc" id="L140">                        .getModelElementContainer(container);</span>
+            }
+            /* In this case, either the container was not set,
+             * or it was not contained in a statemachine.
+             */
+<span class="nc" id="L145">            return null;</span>
+
+<span class="nc" id="L147">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L148">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public void setEventAsTrigger(Object transition, Object event) {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (!(transition instanceof Transition)) {</span>
+<span class="nc" id="L155">            throw new IllegalArgumentException(&quot;Transition either null or not &quot;</span>
+                    + &quot;an instance of MTransition&quot;);
+        }
+<span class="nc bnc" id="L158" title="All 4 branches missed.">        if (event != null &amp;&amp; !(event instanceof Event)) {</span>
+<span class="nc" id="L159">            throw new IllegalArgumentException(&quot;Event not an &quot;</span>
+                    + &quot;instance of MEvent&quot;);
+        }
+<span class="nc" id="L162">        ((Transition) transition).setTrigger((Event) event);</span>
+<span class="nc" id="L163">    }</span>
+
+
+    public boolean isAddingStatemachineAllowed(Object context) {
+<span class="nc bnc" id="L167" title="All 4 branches missed.">        return (context instanceof BehavioralFeature</span>
+                || context instanceof Classifier);
+    }
+
+
+    public boolean isTopState(Object o) {
+        try {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">            if (o instanceof CompositeState) {</span>
+<span class="nc" id="L175">                CompositeState cs = (CompositeState) o;</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                return (cs.getContainer() == null);</span>
+            }
+<span class="nc" id="L178">            return false;</span>
+<span class="nc" id="L179">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L180">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public Collection&lt;StateMachine&gt; getAllPossibleStatemachines(Object model,
+            Object oSubmachineState) {
+        try {
+<span class="nc bnc" id="L188" title="All 2 branches missed.">            if (oSubmachineState instanceof SubmachineState) {</span>
+                Collection&lt;StateMachine&gt; statemachines =
+<span class="nc" id="L190">                    Model.getModelManagementHelper()</span>
+<span class="nc" id="L191">                        .getAllModelElementsOfKind(model, StateMachine.class);</span>
+<span class="nc" id="L192">                statemachines.remove(getStateMachine(oSubmachineState));</span>
+<span class="nc" id="L193">                return statemachines;</span>
+            }
+<span class="nc" id="L195">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L196">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L197">        }</span>
+<span class="nc" id="L198">        throw new IllegalArgumentException(</span>
+                &quot;Argument must be a SubmachineState&quot;);
+    }
+
+
+    // TODO: getAllPossibleSubvertices and getAllSubStates are duplicates - tfm
+    public Collection&lt;StateVertex&gt; getAllPossibleSubvertices(Object oState) {
+<span class="nc" id="L205">        Collection&lt;StateVertex&gt; result = new ArrayList&lt;StateVertex&gt;();</span>
+        try {
+<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (oState instanceof CompositeState) {</span>
+                for (StateVertex vertex 
+<span class="nc bnc" id="L209" title="All 2 branches missed.">                        : ((CompositeState) oState).getSubvertex()) {</span>
+<span class="nc" id="L210">                    result.add(vertex);</span>
+<span class="nc" id="L211">                    result.addAll(getAllPossibleSubvertices(vertex));</span>
+<span class="nc" id="L212">                }</span>
+            }
+<span class="nc" id="L214">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L215">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L216">        }</span>
+<span class="nc" id="L217">        return result;</span>
+    }
+
+
+    public void setStatemachineAsSubmachine(Object oSubmachineState,
+            Object oStatemachine) {
+<span class="nc bnc" id="L223" title="All 6 branches missed.">        if (oSubmachineState instanceof SubmachineState</span>
+                &amp;&amp; (oStatemachine instanceof StateMachine
+                        || oStatemachine == null)) {
+<span class="nc" id="L226">            SubmachineState mss = (SubmachineState) oSubmachineState;</span>
+<span class="nc" id="L227">            mss.setSubmachine((StateMachine) oStatemachine);</span>
+<span class="nc" id="L228">            return;</span>
+        }
+<span class="nc" id="L230">        throw new IllegalArgumentException(&quot;oSubmachineState: &quot;</span>
+                + oSubmachineState + &quot;,oStatemachine: &quot; + oStatemachine);
+    }
+
+
+    public State getTop(Object sm) {
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        if (!(sm instanceof StateMachine)) {</span>
+<span class="nc" id="L237">            throw new IllegalArgumentException();</span>
+        }
+
+        try  {
+<span class="nc" id="L241">            return ((StateMachine) sm).getTop();</span>
+<span class="nc" id="L242">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L243">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+    public List getRegions(Object handle) {
+<span class="nc" id="L248">        throw new NotImplementedException(&quot;Region is not a UML1.4 metatype&quot;);</span>
+    }
+
+
+    public Collection&lt;StateVertex&gt; getOutgoingStates(Object ostatevertex) {
+        try {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (ostatevertex instanceof StateVertex) {</span>
+<span class="nc" id="L255">                StateVertex statevertex = (StateVertex) ostatevertex;</span>
+<span class="nc" id="L256">                Collection&lt;StateVertex&gt; result = new ArrayList&lt;StateVertex&gt;();</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                for (Transition transition : statevertex.getOutgoing()) {</span>
+<span class="nc" id="L258">                    result.add(transition.getTarget());</span>
+<span class="nc" id="L259">                }</span>
+<span class="nc" id="L260">                return result;</span>
+            }
+<span class="nc" id="L262">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L263">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L264">        }</span>
+<span class="nc" id="L265">        throw new IllegalArgumentException(</span>
+                &quot;Argument must be a StateVertex&quot;);
+    }
+
+
+    public Object findOperationByName(Object trans, String opname) {
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        if (!(trans instanceof Transition)) {</span>
+<span class="nc" id="L272">            throw new IllegalArgumentException();</span>
+        }
+        try {
+<span class="nc" id="L275">            Object sm = getStateMachine(trans);</span>
+<span class="nc" id="L276">            Object context = Model.getFacade().getContext(sm);</span>
+<span class="nc" id="L277">            Classifier classifier = null;</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if (context instanceof Classifier) {</span>
+<span class="nc" id="L279">                classifier = (Classifier) context;</span>
+            }
+<span class="nc bnc" id="L281" title="All 2 branches missed.">            if (context instanceof BehavioralFeature) {</span>
+<span class="nc" id="L282">                classifier = ((BehavioralFeature) context).getOwner();</span>
+            }
+<span class="nc bnc" id="L284" title="All 2 branches missed.">            if (classifier != null) {</span>
+<span class="nc" id="L285">                List&lt;Feature&gt; features = classifier.getFeature();</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">                for (Feature f : features) {</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">                    if (f instanceof Operation) {</span>
+<span class="nc" id="L288">                        String on = f.getName();</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">                        if (on.equals(opname)) {</span>
+<span class="nc" id="L290">                            return f;</span>
+                        }   
+                    }
+<span class="nc" id="L293">                }</span>
+            }
+<span class="nc" id="L295">            Namespace pack = null;</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            if (context instanceof UmlPackage) {</span>
+                /* according WFR: in case of ActivityGraph only. */
+<span class="nc" id="L298">                pack = (Namespace) context;</span>
+            } else {
+<span class="nc bnc" id="L300" title="All 2 branches missed.">                if (classifier != null) {</span>
+<span class="nc" id="L301">                    Namespace parent = null;</span>
+<span class="nc" id="L302">                    parent = classifier.getNamespace();</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">                    while (parent instanceof Classifier) {</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">                        if (parent.getNamespace() == null) {</span>
+<span class="nc" id="L305">                            break;</span>
+                        }
+<span class="nc" id="L307">                        parent = parent.getNamespace();</span>
+                    }
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                    if (parent != null) {</span>
+<span class="nc" id="L310">                        pack = parent;</span>
+                    }
+                }
+            }
+<span class="nc bnc" id="L314" title="All 2 branches missed.">            if (pack != null) {</span>
+<span class="nc" id="L315">                Collection&lt;ModelElement&gt; mes = pack.getOwnedElement();</span>
+<span class="nc bnc" id="L316" title="All 2 branches missed.">                for (ModelElement me : mes) {</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">                    if (me instanceof Classifier) {</span>
+<span class="nc" id="L318">                        Classifier classifier2 = (Classifier) me;</span>
+<span class="nc" id="L319">                        List&lt;Feature&gt; features = classifier2.getFeature();</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                        for (Feature f : features) {</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">                            if (f instanceof Operation) {</span>
+<span class="nc" id="L322">                                String on = f.getName();</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">                                if (on.equals(opname)) {</span>
+<span class="nc" id="L324">                                    return f;</span>
+                                }   
+                            }
+<span class="nc" id="L327">                        }</span>
+                    }
+<span class="nc" id="L329">                }</span>
+            }
+<span class="nc" id="L331">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L332">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L333">        }</span>
+<span class="nc" id="L334">        return null;</span>
+    }
+
+
+    // TODO: getAllPossibleSubvertices and getAllSubStates are duplicates - tfm
+    public Collection&lt;StateVertex&gt; getAllSubStates(Object compState) {
+        try {
+<span class="nc bnc" id="L341" title="All 2 branches missed.">            if (compState instanceof CompositeState) {</span>
+<span class="nc" id="L342">                Collection&lt;StateVertex&gt; result = new ArrayList&lt;StateVertex&gt;();</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">                for (Object subState : Model.getFacade().getSubvertices(</span>
+                        compState)) {
+<span class="nc bnc" id="L345" title="All 2 branches missed.">                    if (subState instanceof CompositeState) {</span>
+<span class="nc" id="L346">                        result.addAll(getAllSubStates(subState));</span>
+                    }
+<span class="nc" id="L348">                    result.add((StateVertex) subState);</span>
+<span class="nc" id="L349">                }</span>
+<span class="nc" id="L350">                return result;</span>
+            }
+<span class="nc" id="L352">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L353">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L354">        }</span>
+<span class="nc" id="L355">        throw new IllegalArgumentException(</span>
+                &quot;Argument is not a composite state&quot;);
+    }
+
+    public Collection&lt;Transition&gt; getTransitions(Object handle,
+            boolean includeInternals) {
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        if (handle instanceof StateMachine) {</span>
+<span class="nc" id="L362">            Collection&lt;Transition&gt; result = new ArrayList&lt;Transition&gt;();</span>
+<span class="nc" id="L363">            result.addAll(((StateMachine) handle).getTransitions());</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">            if (includeInternals) {</span>
+<span class="nc" id="L365">                State top = ((StateMachine) handle).getTop();</span>
+<span class="nc bnc" id="L366" title="All 4 branches missed.">                if (top != null &amp;&amp; top instanceof CompositeState) {</span>
+<span class="nc" id="L367">                    Collection&lt;StateVertex&gt; subs = getAllSubStates(top);</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">                    for (StateVertex sub : subs) {</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">                        if (sub instanceof State) {</span>
+<span class="nc" id="L370">                            result.addAll(((State) sub).getInternalTransition());</span>
+                        }
+<span class="nc" id="L372">                    }</span>
+                }
+            }
+<span class="nc" id="L375">            return result;</span>
+        }
+<span class="nc" id="L377">        throw new IllegalArgumentException(</span>
+            &quot;Argument is not a statemachine&quot;);
+    }
+
+    public void removeSubvertex(Object handle, Object subvertex) {
+        try {
+<span class="nc bnc" id="L383" title="All 4 branches missed.">            if (handle instanceof CompositeState</span>
+                    &amp;&amp; subvertex instanceof StateVertex) {
+<span class="nc" id="L385">                ((CompositeState) handle).getSubvertex().remove(subvertex);</span>
+<span class="nc" id="L386">                return;</span>
+            }
+<span class="nc" id="L388">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L389">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L390">        }</span>
+<span class="nc" id="L391">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or subvertex: &quot; + subvertex);
+    }
+
+
+    public void addSubvertex(Object handle, Object subvertex) {
+<span class="nc bnc" id="L397" title="All 4 branches missed.">        if (handle instanceof CompositeState</span>
+                &amp;&amp; subvertex instanceof StateVertex) {
+<span class="nc" id="L399">            ((StateVertex) subvertex).setContainer((CompositeState) handle);</span>
+<span class="nc" id="L400">            return;</span>
+        }
+<span class="nc" id="L402">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or subvertex: &quot; + subvertex);
+    }
+
+
+    public void setBound(Object handle, int bound) {
+<span class="nc bnc" id="L408" title="All 2 branches missed.">        if (handle instanceof SynchState) {</span>
+<span class="nc" id="L409">            ((SynchState) handle).setBound(bound);</span>
+<span class="nc" id="L410">            return;</span>
+        }
+<span class="nc" id="L412">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or bound: &quot;</span>
+                + bound);
+    }
+
+
+    public void setConcurrent(Object handle, boolean concurrent) {
+<span class="nc bnc" id="L418" title="All 2 branches missed.">        if (handle instanceof CompositeState) {</span>
+<span class="nc" id="L419">            ((CompositeState) handle).setConcurrent(concurrent);</span>
+<span class="nc" id="L420">            return;</span>
+        }
+<span class="nc" id="L422">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setContainer(Object handle, Object compositeState) {
+<span class="nc bnc" id="L427" title="All 6 branches missed.">        if (handle instanceof StateVertex</span>
+                &amp;&amp; (compositeState == null
+                        || compositeState instanceof CompositeState)) {
+<span class="nc" id="L430">            ((StateVertex) handle).</span>
+<span class="nc" id="L431">                    setContainer((CompositeState) compositeState);</span>
+<span class="nc" id="L432">            return;</span>
+        }
+<span class="nc" id="L434">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or compositeState: &quot; + compositeState);
+    }
+
+
+    public void setDoActivity(Object handle, Object value) {
+<span class="nc bnc" id="L440" title="All 6 branches missed.">        if (handle instanceof State</span>
+                &amp;&amp; (value == null || value instanceof Action)) {
+<span class="nc" id="L442">            ((State) handle).setDoActivity((Action) value);</span>
+<span class="nc" id="L443">            return;</span>
+        }
+<span class="nc" id="L445">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setEffect(Object handle, Object value) {
+<span class="nc bnc" id="L451" title="All 6 branches missed.">        if (handle instanceof Transition</span>
+                &amp;&amp; (value == null || value instanceof Action)) {
+<span class="nc" id="L453">            ((Transition) handle).setEffect((Action) value);</span>
+<span class="nc" id="L454">            return;</span>
+        }
+<span class="nc" id="L456">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setEntry(Object handle, Object value) {
+<span class="nc bnc" id="L462" title="All 6 branches missed.">        if (handle instanceof State</span>
+                &amp;&amp; (value == null || value instanceof Action)) {
+<span class="nc" id="L464">            ((State) handle).setEntry((Action) value);</span>
+<span class="nc" id="L465">            return;</span>
+        }
+<span class="nc" id="L467">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setExit(Object handle, Object value) {
+<span class="nc bnc" id="L473" title="All 6 branches missed.">        if (handle instanceof State</span>
+                &amp;&amp; (value == null || value instanceof Action)) {
+<span class="nc" id="L475">            ((State) handle).setExit((Action) value);</span>
+<span class="nc" id="L476">            return;</span>
+        }
+<span class="nc" id="L478">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setExpression(Object handle, Object value) {
+<span class="nc bnc" id="L484" title="All 6 branches missed.">        if (handle instanceof Guard</span>
+                &amp;&amp; (value == null || value instanceof BooleanExpression)) {
+<span class="nc" id="L486">            Expression oldExp = ((Guard) handle).getExpression();</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">            if (!equal(oldExp,(Expression) value)) {</span>
+<span class="nc" id="L488">                ((Guard) handle).setExpression((BooleanExpression) value);</span>
+<span class="nc bnc" id="L489" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L490">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L493">            return;</span>
+        }
+<span class="nc bnc" id="L495" title="All 6 branches missed.">        if (handle instanceof ChangeEvent</span>
+                &amp;&amp; (value == null || value instanceof BooleanExpression)) {
+<span class="nc" id="L497">            ChangeEvent ce = (ChangeEvent) handle;</span>
+<span class="nc" id="L498">            Expression oldExp = ce.getChangeExpression();</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">            if (!equal(oldExp,(Expression) value)) {</span>
+<span class="nc" id="L500">                ce.setChangeExpression((BooleanExpression) value);</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L502">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L505">            return;</span>
+        }
+<span class="nc bnc" id="L507" title="All 6 branches missed.">        if (handle instanceof Argument</span>
+                &amp;&amp; (value == null || value instanceof Expression)) {
+<span class="nc" id="L509">            Argument arg = (Argument) handle;</span>
+<span class="nc" id="L510">            Expression oldExp = arg.getValue();</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            if (!equal(oldExp,(Expression) value)) {</span>
+<span class="nc" id="L512">                arg.setValue((Expression) value);</span>
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L514">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L517">            return;</span>
+        }
+<span class="nc" id="L519">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    private boolean equal(Expression expr1, Expression expr2) {
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        if (expr1 == null) {</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">            if (expr2 == null) {</span>
+<span class="nc" id="L527">                return true;</span>
+            } else {
+<span class="nc" id="L529">                return false;</span>
+            }
+        } else {
+<span class="nc" id="L532">            return expr1.equals(expr2);</span>
+        }
+    }
+    
+    
+    public void setGuard(Object handle, Object guard) {
+<span class="nc bnc" id="L538" title="All 6 branches missed.">        if (handle instanceof Transition</span>
+                &amp;&amp; (guard == null || guard instanceof Guard)) {
+<span class="nc" id="L540">            ((Transition) handle).setGuard((Guard) guard);</span>
+<span class="nc" id="L541">            return;</span>
+        }
+<span class="nc" id="L543">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or guard: &quot;</span>
+                + guard);
+    }
+
+
+    public void setInternalTransitions(Object handle, Collection intTrans) {
+<span class="nc bnc" id="L549" title="All 2 branches missed.">        if (handle instanceof State) {</span>
+            Collection internalTransitions =
+<span class="nc" id="L551">                Model.getFacade().getInternalTransitions(handle);</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">            if (!internalTransitions.isEmpty()) {</span>
+<span class="nc" id="L553">                Collection trans = new ArrayList(internalTransitions);</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">                for (Object transition : trans) {</span>
+<span class="nc" id="L555">                    removeTransition(handle, transition);</span>
+<span class="nc" id="L556">                }</span>
+            }
+<span class="nc bnc" id="L558" title="All 2 branches missed.">            for (Object transition : intTrans) {</span>
+<span class="nc" id="L559">                addTransition(handle, transition);</span>
+<span class="nc" id="L560">            }</span>
+<span class="nc" id="L561">            return;</span>
+        }
+<span class="nc" id="L563">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+    /**
+     * Remove a transition.
+     * @param handle The state
+     * @param intTrans The internal transition to remove
+     */
+    private void removeTransition(Object handle, Object intTrans) {
+        try {
+<span class="nc bnc" id="L573" title="All 4 branches missed.">            if (handle instanceof State &amp;&amp; intTrans instanceof Transition) {</span>
+<span class="nc" id="L574">                ((State) handle).getInternalTransition().remove(intTrans);</span>
+<span class="nc" id="L575">                return;</span>
+            }
+<span class="nc" id="L577">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L578">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L579">        }</span>
+<span class="nc" id="L580">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or intTrans: &quot; + intTrans);
+    }
+
+    /**
+     * Add a transition.
+     * 
+     * @param handle The state
+     * @param intTrans The internal transition to add
+     */
+    private void addTransition(Object handle, Object intTrans) {
+<span class="nc bnc" id="L591" title="All 4 branches missed.">        if (handle instanceof State &amp;&amp; intTrans instanceof Transition) {</span>
+<span class="nc" id="L592">            ((State) handle).getInternalTransition().add((Transition) intTrans);</span>
+<span class="nc" id="L593">            return;</span>
+        }
+<span class="nc" id="L595">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or subvertex: &quot; + intTrans);
+    }
+
+
+    public void setSource(Object handle, Object state) {
+<span class="nc bnc" id="L601" title="All 6 branches missed.">        if (handle instanceof Transition &amp;&amp; </span>
+                (state == null || state instanceof StateVertex)) {
+<span class="nc" id="L603">            ((Transition) handle).setSource((StateVertex) state);</span>
+<span class="nc" id="L604">            return;</span>
+        }
+<span class="nc" id="L606">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or state: &quot;</span>
+                + state);
+    }
+
+
+    public void setState(Object handle, Object element) {
+<span class="nc bnc" id="L612" title="All 4 branches missed.">        if (handle instanceof Transition &amp;&amp; element instanceof State) {</span>
+<span class="nc" id="L613">            addTransition(element, handle);</span>
+<span class="nc" id="L614">            return;</span>
+        }
+<span class="nc" id="L616">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or element: &quot; + element);
+    }
+
+
+    public void setStateMachine(Object handle, Object stm) {
+<span class="nc bnc" id="L622" title="All 6 branches missed.">        if (handle instanceof State</span>
+                &amp;&amp; (stm == null || stm instanceof StateMachine)) {
+<span class="nc" id="L624">            ((State) handle).setStateMachine((StateMachine) stm);</span>
+<span class="nc" id="L625">            return;</span>
+        }
+<span class="nc bnc" id="L627" title="All 6 branches missed.">        if (handle instanceof Transition</span>
+                &amp;&amp; (stm == null || stm instanceof StateMachine)) {
+<span class="nc" id="L629">            ((Transition) handle).setStateMachine((StateMachine) stm);</span>
+<span class="nc" id="L630">            return;</span>
+        }
+<span class="nc" id="L632">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or stm: &quot;</span>
+                + stm);
+    }
+
+
+    public void setSubvertices(Object handle, Collection subvertices) {
+<span class="nc bnc" id="L638" title="All 2 branches missed.">        if (handle instanceof CompositeState) {</span>
+<span class="nc" id="L639">            ((CompositeState) handle).getSubvertex().clear();</span>
+<span class="nc" id="L640">            ((CompositeState) handle).getSubvertex().addAll(subvertices);</span>
+<span class="nc" id="L641">            return;</span>
+        }
+<span class="nc" id="L643">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or subvertices: &quot; + subvertices);
+    }
+
+
+    public void setTrigger(Object handle, Object event) {
+<span class="nc bnc" id="L649" title="All 6 branches missed.">        if (handle instanceof Transition</span>
+                &amp;&amp; (event == null || event instanceof Event)) {
+<span class="nc" id="L651">            ((Transition) handle).setTrigger((Event) event);</span>
+<span class="nc" id="L652">            return;</span>
+        }
+<span class="nc" id="L654">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or event: &quot;</span>
+                + event);
+    }
+
+
+    public void setWhen(Object handle, Object value) {
+<span class="nc bnc" id="L660" title="All 6 branches missed.">        if (handle instanceof TimeEvent</span>
+                &amp;&amp; (value == null || value instanceof TimeExpression)) {
+<span class="nc" id="L662">            Expression oldExp = ((TimeEvent) handle).getWhen();</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">            if (!equal(oldExp,(Expression) value)) {</span>
+<span class="nc" id="L664">                ((TimeEvent) handle).setWhen((TimeExpression) value);</span>
+<span class="nc bnc" id="L665" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L666">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L669">            return;</span>
+        }
+<span class="nc" id="L671">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public void setChangeExpression(Object handle, Object value) {
+<span class="nc bnc" id="L677" title="All 6 branches missed.">        if (handle instanceof ChangeEvent</span>
+                &amp;&amp; (value == null || value instanceof BooleanExpression)) {
+<span class="nc" id="L679">            Expression oldExp = ((ChangeEvent) handle).getChangeExpression();</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">            if (!equal(oldExp, (Expression) value)) {</span>
+<span class="nc" id="L681">                ((ChangeEvent) handle)</span>
+<span class="nc" id="L682">                        .setChangeExpression((BooleanExpression) value);</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L684">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L687">            return;</span>
+        }
+<span class="nc" id="L689">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or value: &quot;</span>
+                + value);
+    }
+
+
+    public String getPath(Object o) {
+        try {
+<span class="nc bnc" id="L696" title="All 2 branches missed.">            if (o instanceof StateVertex) {</span>
+<span class="nc" id="L697">                Object o1 = o;</span>
+<span class="nc" id="L698">                Object o2 = Model.getFacade().getContainer(o1);</span>
+<span class="nc" id="L699">                String path = Model.getFacade().getName(o1);</span>
+<span class="nc bnc" id="L700" title="All 4 branches missed.">                while ((o2 != null) &amp;&amp; (!Model.getFacade().isTop(o2))) {</span>
+<span class="nc" id="L701">                    path = Model.getFacade().getName(o2) + &quot;::&quot; + path;</span>
+<span class="nc" id="L702">                    o1 = o2;</span>
+<span class="nc" id="L703">                    o2 = Model.getFacade().getContainer(o1);</span>
+                }
+<span class="nc" id="L705">                return path;</span>
+            }
+<span class="nc" id="L707">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L708">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L709">        }</span>
+<span class="nc" id="L710">        throw new IllegalArgumentException(</span>
+                &quot;Argument must be a StateVertex&quot;);
+    }
+
+
+    public Object getStatebyName(String path, Object container) {
+        try {
+            // TODO: This should probably throw an exception if it gets
+            // invalid arguments rather than just returning null
+<span class="nc bnc" id="L719" title="All 2 branches missed.">            if (container != null </span>
+<span class="nc bnc" id="L720" title="All 4 branches missed.">                    &amp;&amp; Model.getFacade().isACompositeState(container)</span>
+                    &amp;&amp; path != null) {
+
+<span class="nc" id="L723">                Iterator it = getAllPossibleSubvertices(container).iterator();</span>
+<span class="nc" id="L724">                int index = path.lastIndexOf(&quot;::&quot;);</span>
+<span class="nc bnc" id="L725" title="All 2 branches missed.">                if (index != -1) {</span>
+<span class="nc" id="L726">                    index += 2;</span>
+                } else {
+<span class="nc" id="L728">                    index += 1;</span>
+                }
+                
+<span class="nc" id="L731">                path = path.substring(index);</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L733">                    Object o = it.next();</span>
+<span class="nc" id="L734">                    Object oName = Model.getFacade().getName(o);</span>
+<span class="nc bnc" id="L735" title="All 4 branches missed.">                    if (oName != null &amp;&amp; oName.equals(path)) {</span>
+<span class="nc" id="L736">                        return o;</span>
+                    }
+<span class="nc" id="L738">                }</span>
+                
+            }
+<span class="nc" id="L741">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L742">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L743">        }</span>
+<span class="nc" id="L744">        return null;</span>
+    }
+
+
+    public void setReferenceState(Object o, String referenced) {
+<span class="nc bnc" id="L749" title="All 2 branches missed.">        if (o instanceof StubState) {</span>
+<span class="nc" id="L750">            ((StubState) o).setReferenceState(referenced);</span>
+<span class="nc" id="L751">            return;</span>
+        }
+<span class="nc" id="L753">        throw new IllegalArgumentException(&quot;handle: &quot; + o);</span>
+    }
+
+
+    public Object findNamespaceForEvent(Object trans, Object model) {
+        try {
+            Object enclosing =
+<span class="nc" id="L760">                Model.getStateMachinesHelper().getStateMachine(trans);</span>
+<span class="nc bnc" id="L761" title="All 4 branches missed.">            while ((!Model.getFacade().isAPackage(enclosing))</span>
+                    &amp;&amp; (enclosing != null)) {
+<span class="nc" id="L763">                enclosing = Model.getFacade().getNamespace(enclosing);</span>
+            }
+<span class="nc bnc" id="L765" title="All 2 branches missed.">            if (enclosing == null) {</span>
+<span class="nc" id="L766">                enclosing = model;</span>
+            }
+<span class="nc" id="L768">            return enclosing;</span>
+<span class="nc" id="L769">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L770">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public void addDeferrableEvent(Object state, Object deferrableEvent) {
+<span class="nc bnc" id="L776" title="All 4 branches missed.">        if (state instanceof State &amp;&amp; deferrableEvent instanceof Event) {</span>
+<span class="nc" id="L777">            ((State) state).getDeferrableEvent().add((Event) deferrableEvent);</span>
+<span class="nc" id="L778">            return;</span>
+        }
+<span class="nc" id="L780">        throw new IllegalArgumentException(&quot;handle: &quot; + state + &quot; or evt: &quot;</span>
+                + deferrableEvent);
+    }
+
+    
+    public void removeDeferrableEvent(Object state, Object deferrableEvent) {
+        try {
+<span class="nc bnc" id="L787" title="All 4 branches missed.">            if (state instanceof State &amp;&amp; deferrableEvent instanceof Event) {</span>
+<span class="nc" id="L788">                ((State) state).getDeferrableEvent().remove(deferrableEvent);</span>
+<span class="nc" id="L789">                return;</span>
+            }
+<span class="nc" id="L791">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L792">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L793">        }</span>
+<span class="nc" id="L794">        throw new IllegalArgumentException(&quot;handle: &quot; + state + &quot; or evt: &quot;</span>
+                + deferrableEvent);
+    }
+
+
+    public void setContext(Object statemachine, Object modelElement) {
+<span class="nc bnc" id="L800" title="All 4 branches missed.">        if (statemachine instanceof StateMachine</span>
+                &amp;&amp; modelElement instanceof ModelElement) {
+<span class="nc" id="L802">            ((StateMachine) statemachine)</span>
+<span class="nc" id="L803">                    .setContext((ModelElement) modelElement);</span>
+<span class="nc" id="L804">            return;</span>
+        }
+<span class="nc" id="L806">        throw new IllegalArgumentException(&quot;handle: &quot; + statemachine</span>
+                + &quot; or me: &quot; + modelElement);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

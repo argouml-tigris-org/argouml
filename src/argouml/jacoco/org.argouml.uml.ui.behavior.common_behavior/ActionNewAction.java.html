@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionNewAction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui.behavior.common_behavior</a> &gt; <span class="el_source">ActionNewAction.java</span></div><h1>ActionNewAction.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui.behavior.common_behavior;
+
+import java.awt.event.ActionEvent;
+
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.tigris.toolbar.toolbutton.ModalAction;
+
+/**
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public abstract class ActionNewAction extends AbstractActionNewModelElement 
+    implements ModalAction {
+
+    /**
+     * The constant defining the role the action
+     * to be created plays for its parent.
+     * For example, if one wishes to create
+     * an entry action for a state, this is
+     * filled with &quot;entry&quot;. The values are defined
+     * in the interface Roles
+     */
+    public static final String ROLE = &quot;role&quot;;
+
+    /**
+     * Contains the roles definitions for UML actions.
+     *
+     */
+    public static interface Roles {
+        /**
+         * The entry activity for some state.
+         */
+        String ENTRY = &quot;entry&quot;;
+
+        /**
+         * The exit activity for some state.
+         */
+        String EXIT = &quot;exit&quot;;
+
+        /**
+         * The doactivity with some state.
+         */
+        String DO = &quot;do&quot;;
+
+        /**
+         * The action with some message.
+         */
+        String ACTION = &quot;action&quot;;
+
+        /**
+         * The effect of some transition.
+         */
+        String EFFECT = &quot;effect&quot;;
+
+        /**
+         * The effect of some transition.
+         */
+        String MEMBER = &quot;member&quot;;
+    }
+
+    /**
+     * Constructor for ActionNewAction.
+     */
+    protected ActionNewAction() {
+<span class="nc" id="L105">        super();</span>
+<span class="nc" id="L106">    }</span>
+
+    /**
+     * Implementors should create a concrete action like
+     * a CallAction in this method.
+     * @return Object
+     */
+    protected abstract Object createAction();
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L119">        super.actionPerformed(e);</span>
+<span class="nc" id="L120">        Object action = createAction();</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (getValue(ROLE).equals(Roles.EXIT)) {</span>
+<span class="nc" id="L122">            Model.getStateMachinesHelper().setExit(getTarget(), action);</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        } else if (getValue(ROLE).equals(Roles.ENTRY)) {</span>
+<span class="nc" id="L124">            Model.getStateMachinesHelper().setEntry(getTarget(), action);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        } else if (getValue(ROLE).equals(Roles.DO)) {</span>
+<span class="nc" id="L126">            Model.getStateMachinesHelper().setDoActivity(</span>
+<span class="nc" id="L127">                    getTarget(), action);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        } else if (getValue(ROLE).equals(Roles.ACTION)) {</span>
+<span class="nc" id="L129">            Model.getCollaborationsHelper().setAction(getTarget(), action);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        } else if (getValue(ROLE).equals(Roles.EFFECT)) {</span>
+<span class="nc" id="L131">            Model.getStateMachinesHelper().setEffect(getTarget(), action);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        } else if (getValue(ROLE).equals(Roles.MEMBER)) {</span>
+<span class="nc" id="L133">            Model.getCommonBehaviorHelper().addAction(getTarget(), action);</span>
+        }
+<span class="nc" id="L135">        TargetManager.getInstance().setTarget(action);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * @param role
+     *            the role the action plays
+     * @param t
+     *            the transition or state to get the action for
+     * @return the action
+     */
+    public static Object getAction(String role, Object t) {
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (role.equals(Roles.EXIT)) {</span>
+<span class="nc" id="L147">            return Model.getFacade().getExit(t);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        } else if (role.equals(Roles.ENTRY)) {</span>
+<span class="nc" id="L149">            return Model.getFacade().getEntry(t);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        } else if (role.equals(Roles.DO)) {</span>
+<span class="nc" id="L151">            return Model.getFacade().getDoActivity(t);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        } else if (role.equals(Roles.ACTION)) {</span>
+<span class="nc" id="L153">            return Model.getFacade().getAction(t);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        } else if (role.equals(Roles.EFFECT)) {</span>
+<span class="nc" id="L155">            return Model.getFacade().getEffect(t);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        } else if (role.equals(Roles.MEMBER)) {</span>
+<span class="nc" id="L157">            return Model.getFacade().getActions(t);</span>
+        }
+<span class="nc" id="L159">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

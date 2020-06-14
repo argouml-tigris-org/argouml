@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">ProfileConfiguration.java</span></div><h1>ProfileConfiguration.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.awt.Image;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProfileEvent;
+import org.argouml.cognitive.Translator;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.model.Model;
+import org.argouml.profile.DefaultTypeStrategy;
+import org.argouml.profile.FigNodeStrategy;
+import org.argouml.profile.FormatingStrategy;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
+
+/**
+ *   This class captures represents the unique access point for the
+ *   configurability allowed by the use of profiles.
+ *
+ *   @author maurelio1234
+ */
+public class ProfileConfiguration extends AbstractProjectMember {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L76">    private static final Logger LOG =</span>
+<span class="fc" id="L77">        Logger.getLogger(ProfileConfiguration.class.getName());</span>
+
+    private FormatingStrategy formatingStrategy;
+
+    private DefaultTypeStrategy defaultTypeStrategy;
+
+<span class="fc" id="L83">    private List figNodeStrategies = new ArrayList();</span>
+
+<span class="fc" id="L85">    private List&lt;Profile&gt; profiles = new ArrayList&lt;Profile&gt;();</span>
+
+<span class="fc" id="L87">    private List&lt;Object&gt; profileModels = new ArrayList&lt;Object&gt;();</span>
+
+    /**
+     * The extension used in serialization and returned by {@link #getType()}
+     */
+    public static final String EXTENSION = &quot;profile&quot;;
+
+
+    /**
+     * The configuration key for the default stereotype view.
+     */
+<span class="fc" id="L98">    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW =</span>
+<span class="fc" id="L99">        Configuration.makeKey(&quot;profiles&quot;, &quot;stereotypeView&quot;);</span>
+
+    /**
+     * The default constructor for this class. Sets the default profiles as
+     * given by {@link org.argouml.profile.ProfileManager} as the profiles of
+     * the project.
+     *
+     * @param project the project that contains this configuration
+     */
+    public ProfileConfiguration(Project project) {
+<span class="fc" id="L109">        super(EXTENSION, project);</span>
+<span class="fc" id="L110">        List c = project.getUserDefinedModelList();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        Object m = c.isEmpty() ? null : c.get(0);</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (project.getProjectType() != Project.PROFILE_PROJECT) {</span>
+            // a profile initially has no applied profiles, we go bottom-up
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {</span>
+<span class="fc" id="L115">                addProfile(p, m);</span>
+<span class="fc" id="L116">            }</span>
+        }
+
+<span class="fc" id="L119">        updateStrategies();</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * The constructor for pre-defined profile configurations, such as when a
+     * project is read from a saved file.
+     * @param project the project that contains this configuration
+     * @param configuredProfiles the {@link Profile}s that will be the project
+     *        profiles
+     */
+    public ProfileConfiguration(Project project,
+            Collection&lt;Profile&gt; configuredProfiles) {
+<span class="fc" id="L131">        super(EXTENSION, project);</span>
+<span class="fc" id="L132">        List c = project.getUserDefinedModelList();</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        Object m = c.isEmpty() ? null : c.get(0);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (Profile profile : configuredProfiles) {</span>
+<span class="fc" id="L135">            addProfile(profile, m);</span>
+<span class="fc" id="L136">        }</span>
+<span class="fc" id="L137">        updateStrategies();</span>
+<span class="fc" id="L138">    }</span>
+
+    private void updateStrategies() {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (Profile profile : profiles) {</span>
+<span class="fc" id="L142">            activateFormatingStrategy(profile);</span>
+<span class="fc" id="L143">            activateDefaultTypeStrategy(profile);</span>
+<span class="fc" id="L144">        }</span>
+<span class="fc" id="L145">    }</span>
+
+    /**
+     * @return the current formating strategy
+     */
+    public FormatingStrategy getFormatingStrategy() {
+<span class="nc" id="L151">        return formatingStrategy;</span>
+    }
+
+    /**
+     * @return the current default type strategy
+     */
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+<span class="fc" id="L158">        return defaultTypeStrategy;</span>
+    }
+
+    /**
+     * Updates the current strategy to the strategy provided by the
+     * passed profile. The profile should have been previously registered.
+     *
+     * @param profile the profile providing the current default type strategy
+     */
+    public void activateDefaultTypeStrategy(Profile profile) {
+<span class="pc bpc" id="L168" title="1 of 4 branches missed.">        if (profile != null &amp;&amp; profile.getDefaultTypeStrategy() != null</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">                &amp;&amp; getProfiles().contains(profile)) {</span>
+<span class="fc" id="L170">            this.defaultTypeStrategy = profile.getDefaultTypeStrategy();</span>
+        }
+<span class="fc" id="L172">    }</span>
+
+    /**
+     * Updates the current strategy to the strategy provided by the
+     * passed profile. The profile should have been previously registered.
+     *
+     * @param profile the profile providing the current formating strategy
+     */
+    public void activateFormatingStrategy(Profile profile) {
+<span class="pc bpc" id="L181" title="1 of 4 branches missed.">	if (profile != null &amp;&amp; profile.getFormatingStrategy() != null</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">		&amp;&amp; getProfiles().contains(profile)) {</span>
+<span class="fc" id="L183">	    this.formatingStrategy = profile.getFormatingStrategy();</span>
+	}
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * @return the list of applied profiles
+     */
+    public List&lt;Profile&gt; getProfiles() {
+<span class="fc" id="L191">        return profiles;</span>
+    }
+
+    /**
+     * Applies a new profile to this configuration.
+     *
+     * @param p the profile to be applied
+     * @deprecated for 0.29.2, because since UML2 a profile must be applied to
+     * a model
+     */
+    @Deprecated
+    public void addProfile(Profile p) {
+<span class="nc" id="L203">        addProfile(p, null);</span>
+<span class="nc" id="L204">    }</span>
+
+    /**
+     * Applies a new profile to this configuration and to the given model (or
+     * other profile, which could be later a collection).
+     *
+     * @param p the profile to be applied
+     * @param m the model (or profile) to which the profile will be applied
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public void addProfile(Profile p, Object m) {
+<span class="fc bfc" id="L215" title="All 2 branches covered.">        if (!profiles.contains(p)) {</span>
+<span class="fc" id="L216">            profiles.add(p);</span>
+            try {
+<span class="fc bfc" id="L218" title="All 2 branches covered.">                for (Object profile : p.getProfilePackages()) {</span>
+<span class="fc" id="L219">                    Model.getExtensionMechanismsHelper().applyProfile(</span>
+                            m, profile);
+<span class="fc" id="L221">                }</span>
+<span class="fc" id="L222">                profileModels.addAll(p.getProfilePackages());</span>
+<span class="nc" id="L223">            } catch (ProfileException e) {</span>
+<span class="nc" id="L224">                LOG.log(Level.WARNING,</span>
+                        &quot;Error retrieving profile's &quot; + p + &quot; packages.&quot;,
+                        e);
+<span class="fc" id="L227">            }</span>
+
+<span class="fc" id="L229">            FigNodeStrategy fns = p.getFigureStrategy();</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            if (fns != null) {</span>
+<span class="fc" id="L231">                figNodeStrategies.add(fns);</span>
+            }
+
+<span class="fc bfc" id="L234" title="All 2 branches covered.">            for (Profile dependency : p.getDependencies()) {</span>
+<span class="fc" id="L235">                addProfile(dependency, m);</span>
+<span class="fc" id="L236">            }</span>
+
+<span class="fc" id="L238">            updateStrategies();</span>
+<span class="fc" id="L239">            ArgoEventPump.fireEvent(new ArgoProfileEvent(</span>
+                    ArgoEventTypes.PROFILE_ADDED, new PropertyChangeEvent(this,
+                            &quot;profile&quot;, null, p)));
+        }
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * @return the list of models of the currently applied profile.
+     */
+    private List getProfileModels() {
+<span class="fc" id="L249">        return profileModels;</span>
+    }
+
+    /**
+     * Removes the passed profile from this configuration.
+     *
+     * @param p the profile to be applied
+     * @deprecated for 0.29.2, because since UML2 a profile must be unapplied
+     * from a model
+     */
+    @Deprecated
+    public void removeProfile(Profile p) {
+<span class="nc" id="L261">        removeProfile(p, null);</span>
+<span class="nc" id="L262">    }</span>
+
+    /**
+     * Removes the passed profile from the configuration and unapplies it from
+     * the given model (or other profile, which could be later a collection).
+     *
+     * @param p the profile to be removed/unapplied
+     * @param m the model (or profile) to which the profile will be unapplied
+     */
+    public void removeProfile(Profile p, Object m) {
+<span class="fc" id="L272">        profiles.remove(p);</span>
+        try {
+<span class="fc bfc" id="L274" title="All 2 branches covered.">            for (Object profile : p.getProfilePackages()) {</span>
+<span class="fc" id="L275">                Model.getExtensionMechanismsHelper().unapplyProfile(m, profile);</span>
+<span class="fc" id="L276">            }</span>
+<span class="fc" id="L277">            profileModels.removeAll(p.getProfilePackages());</span>
+<span class="nc" id="L278">        } catch (ProfileException e) {</span>
+<span class="nc" id="L279">            LOG.log(Level.SEVERE, &quot;Exception&quot;, e);</span>
+<span class="fc" id="L280">        }</span>
+
+<span class="fc" id="L282">        FigNodeStrategy fns = p.getFigureStrategy();</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">        if (fns != null) {</span>
+<span class="nc" id="L284">            figNodeStrategies.remove(fns);</span>
+        }
+
+<span class="pc bpc" id="L287" title="1 of 2 branches missed.">        if (formatingStrategy == p.getFormatingStrategy()) {</span>
+<span class="nc" id="L288">            formatingStrategy = null;</span>
+        }
+
+<span class="fc" id="L291">        List&lt;Profile&gt; markForRemoval = new ArrayList&lt;Profile&gt;();</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        for (Profile profile : profiles) {</span>
+<span class="pc bpc" id="L293" title="1 of 2 branches missed.">            if (profile.getDependencies().contains(p)) {</span>
+<span class="nc" id="L294">                markForRemoval.add(profile);</span>
+            }
+<span class="fc" id="L296">        }</span>
+
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">        for (Profile profile : markForRemoval) {</span>
+<span class="nc" id="L299">            removeProfile(profile, m);</span>
+<span class="nc" id="L300">        }</span>
+
+<span class="fc" id="L302">        updateStrategies();</span>
+<span class="fc" id="L303">        ArgoEventPump.fireEvent(new ArgoProfileEvent(</span>
+                ArgoEventTypes.PROFILE_REMOVED, new PropertyChangeEvent(this,
+                        &quot;profile&quot;, p, null)));
+<span class="fc" id="L306">    }</span>
+
+<span class="fc" id="L308">    private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {</span>
+
+	public Image getIconForStereotype(Object element) {
+<span class="fc" id="L311">	    Iterator it = figNodeStrategies.iterator();</span>
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">	    while (it.hasNext()) {</span>
+<span class="nc" id="L314">		FigNodeStrategy strat = (FigNodeStrategy) it.next();</span>
+<span class="nc" id="L315">		Image extra = strat.getIconForStereotype(element);</span>
+
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		if (extra != null) {</span>
+<span class="nc" id="L318">		    return extra;</span>
+		}
+<span class="nc" id="L320">	    }</span>
+<span class="fc" id="L321">	    return null;</span>
+	}
+
+    };
+
+    /**
+     * @return the current FigNodeStrategy
+     */
+    public FigNodeStrategy getFigNodeStrategy() {
+<span class="fc" id="L330">	return compositeFigNodeStrategy;</span>
+    }
+
+    /**
+     * @return the extension for this project member
+     * @see org.argouml.kernel.AbstractProjectMember#getType()
+     */
+    public String getType() {
+<span class="fc" id="L338">	return EXTENSION;</span>
+    }
+
+    /**
+     * Objects of this class are always consistent, there's no need
+     * to repair them.
+     *
+     * @return the empty string.
+     * @see org.argouml.kernel.ProjectMember#repair()
+     */
+    public String repair() {
+<span class="nc" id="L349">	return &quot;&quot;;</span>
+    }
+
+    /**
+     * @return the &quot;Profile Configuration&quot; string
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L358">        return Translator.localize(&quot;misc.project.profileconfigurationname&quot;);</span>
+    }
+
+
+    /**
+     * Find a stereotype with the given name which is applicable to the given
+     * element.
+     *
+     * @param name name of stereotype to look for
+     * @param element model element to which the stereotype must be applicable
+     * @return the stereotype or null if none found
+     */
+    public Object findStereotypeForObject(String name, Object element) {
+<span class="fc" id="L371">        Iterator iter = null;</span>
+
+<span class="fc bfc" id="L373" title="All 2 branches covered.">        for (Object model : profileModels) {</span>
+<span class="fc" id="L374">            iter = Model.getFacade().getOwnedElements(model).iterator();</span>
+
+<span class="fc bfc" id="L376" title="All 2 branches covered.">            while (iter.hasNext()) {</span>
+<span class="fc" id="L377">                Object stereo = iter.next();</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">                if (!Model.getFacade().isAStereotype(stereo)</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">                        || !name.equals(Model.getFacade().getName(stereo))) {</span>
+<span class="fc" id="L380">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                if (Model.getExtensionMechanismsHelper().isValidStereotype(</span>
+                        element, stereo)) {
+<span class="nc" id="L385">                    return stereo;</span>
+                }
+<span class="nc" id="L387">            }</span>
+<span class="fc" id="L388">        }</span>
+
+<span class="fc" id="L390">        return null;</span>
+    }
+
+    /**
+     * Search for the given type in all of the profile models.
+     *
+     * @param name name of type to be found
+     * @return the type or null
+     */
+    public Object findType(String name) {
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        for (Object model : getProfileModels()) {</span>
+<span class="fc" id="L401">            Object result = findTypeInModel(name, model);</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">            if (result != null) {</span>
+<span class="fc" id="L403">                return result;</span>
+            }
+<span class="fc" id="L405">        }</span>
+<span class="fc" id="L406">        return null;</span>
+    }
+
+    /**
+     * Finds a type in a model by name
+     *
+     * FIXME: duplicated from the method with the same name in
+     * org.argouml.profile.internal.ModelUtils.
+     *
+     * @param s the type name
+     * @param model the model
+     * @return the type or &lt;code&gt;null&lt;/code&gt; if the type has not been found.
+     */
+    public static Object findTypeInModel(String s, Object model) {
+
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(model)) {</span>
+<span class="nc" id="L422">            throw new IllegalArgumentException(</span>
+                    &quot;Looking for the classifier &quot; + s
+                    + &quot; in a non-namespace object of &quot; + model
+                    + &quot;. A namespace was expected.&quot;);
+        }
+
+        Collection allClassifiers =
+<span class="fc" id="L429">            Model.getModelManagementHelper()</span>
+<span class="fc" id="L430">                .getAllModelElementsOfKind(model,</span>
+<span class="fc" id="L431">                        Model.getMetaTypes().getClassifier());</span>
+
+<span class="fc" id="L433">        Object[] classifiers = allClassifiers.toArray();</span>
+<span class="fc" id="L434">        Object classifier = null;</span>
+
+<span class="fc bfc" id="L436" title="All 2 branches covered.">        for (int i = 0; i &lt; classifiers.length; i++) {</span>
+
+<span class="fc" id="L438">            classifier = classifiers[i];</span>
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">            if (Model.getFacade().getName(classifier) != null</span>
+<span class="fc bfc" id="L440" title="All 2 branches covered.">                        &amp;&amp; Model.getFacade().getName(classifier).equals(s)) {</span>
+<span class="fc" id="L441">                return classifier;</span>
+            }
+        }
+
+<span class="fc" id="L445">        return null;</span>
+    }
+
+    /**
+     * Find all the model elements in the configured {@link Profile}s
+     * of the given meta type.
+     *
+     * @param metaType the meta type of the model elements to find
+     * @return a {@link Collection} containing the model elements that
+     *         are of the given meta type
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Collection findByMetaType(Object metaType) {
+<span class="fc" id="L458">        Set elements = new HashSet();</span>
+
+<span class="fc" id="L460">        Iterator it = getProfileModels().iterator();</span>
+<span class="fc bfc" id="L461" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L462">            Object model = it.next();</span>
+<span class="fc" id="L463">            elements.addAll(Model.getModelManagementHelper()</span>
+<span class="fc" id="L464">                    .getAllModelElementsOfKind(model, metaType));</span>
+<span class="fc" id="L465">        }</span>
+<span class="fc" id="L466">        return elements;</span>
+    }
+
+    /**
+     * @param modelElement
+     *                ModelElement for which find possible stereotypes
+     * @return collection of stereotypes which are valid for the given model
+     *         element.
+     */
+    public Collection findAllStereotypesForModelElement(Object modelElement) {
+<span class="fc" id="L476">        return Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(</span>
+<span class="fc" id="L477">                getProfileModels(), modelElement);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

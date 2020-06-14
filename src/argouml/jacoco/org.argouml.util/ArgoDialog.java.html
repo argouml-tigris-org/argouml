@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">ArgoDialog.java</span></div><h1>ArgoDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+import java.awt.Frame;
+
+import javax.swing.AbstractButton;
+
+import org.argouml.i18n.Translator;
+import org.tigris.swidgets.Dialog;
+
+/**
+ * A dialog with localized buttons. &lt;p&gt;
+ * 
+ * This class needs to initialized with 
+ * a pointer to the Frame 
+ * that shall be used for showing the Dialog.
+ *
+ * @author Bob Tarling
+ */
+public class ArgoDialog extends Dialog {
+    private static Frame frame;
+
+    /**
+     * Suffix to calculate the mnemonic key from the key.
+     */
+    private static final String MNEMONIC_KEY_SUFFIX = &quot;.mnemonic&quot;;
+
+    /**
+     * @param f The frame to set.
+     */
+    public static void setFrame(Frame f) {
+<span class="nc" id="L69">        ArgoDialog.frame = f;</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * Creates a new ArgoDialog with the default optionType.
+     *
+     * @param title The title String for the dialog.
+     * @param modal &lt;code&gt;true&lt;/code&gt; if the dialog is modal.
+     * @see Dialog#Dialog(Frame, String, boolean)
+     */
+    public ArgoDialog(String title, boolean modal) {
+<span class="nc" id="L80">        super(frame, title, modal);</span>
+<span class="nc" id="L81">        init();</span>
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * Creates a new ArgoDialog with the specified optionType.
+     *
+     * @param title The title String for the dialog.
+     * @param optionType Defines which buttons will be available in the dialog.
+     * @param modal &lt;code&gt;true&lt;/code&gt; if the dialog is modal.
+     * @see Dialog#Dialog(Frame, String, int, boolean)
+     */
+    public ArgoDialog(String title, int optionType, boolean modal) {
+<span class="nc" id="L93">        super(frame, title, optionType, modal);</span>
+<span class="nc" id="L94">        init();</span>
+<span class="nc" id="L95">    }</span>
+
+    /*
+     * @see org.tigris.swidgets.Dialog#nameButtons()
+     */
+    protected void nameButtons() {
+<span class="nc" id="L101">        nameButton(getOkButton(), &quot;button.ok&quot;);</span>
+<span class="nc" id="L102">        nameButton(getCancelButton(), &quot;button.cancel&quot;);</span>
+<span class="nc" id="L103">        nameButton(getCloseButton(), &quot;button.close&quot;);</span>
+<span class="nc" id="L104">        nameButton(getYesButton(), &quot;button.yes&quot;);</span>
+<span class="nc" id="L105">        nameButton(getNoButton(), &quot;button.no&quot;);</span>
+<span class="nc" id="L106">        nameButton(getHelpButton(), &quot;button.help&quot;);</span>
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Allocates names for a button.
+     *
+     * @param button The button to give names.
+     * @param key The key used to localize the button.
+     */
+    protected void nameButton(AbstractButton button, String key) {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (button != null) {</span>
+<span class="nc" id="L117">            button.setText(Translator.localize(key));</span>
+<span class="nc" id="L118">            String mnemonic =</span>
+<span class="nc" id="L119">		Translator.localize(key + MNEMONIC_KEY_SUFFIX);</span>
+<span class="nc bnc" id="L120" title="All 4 branches missed.">            if (mnemonic != null &amp;&amp; mnemonic.length() &gt; 0) {</span>
+<span class="nc" id="L121">                button.setMnemonic(mnemonic.charAt(0));</span>
+            }
+        }
+<span class="nc" id="L124">    }</span>
+
+    private void init() {
+<span class="nc" id="L127">        UIUtils.loadCommonKeyMap(this);</span>
+<span class="nc" id="L128">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

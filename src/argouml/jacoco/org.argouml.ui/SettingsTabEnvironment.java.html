@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsTabEnvironment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">SettingsTabEnvironment.java</span></div><h1>SettingsTabEnvironment.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.GUISettingsTabInterface;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.SaveGraphicsManager;
+import org.argouml.util.SuffixFilter;
+import org.tigris.swidgets.LabelledLayout;
+
+/**
+ * Settings panel for handling ArgoUML environment related settings.
+ *
+ * @author Thierry Lach
+ * @since  0.9.4
+ */
+class SettingsTabEnvironment extends JPanel
+    implements GUISettingsTabInterface {
+
+    private JPanel topPanel;
+    private JTextField fieldArgoExtDir;
+    private JTextField fieldJavaHome;
+    private JTextField fieldUserHome;
+    private JTextField fieldUserDir;
+    private JTextField fieldStartupDir;
+    private JComboBox fieldGraphicsFormat;
+    private JComboBox fieldGraphicsResolution;
+    private Collection&lt;GResolution&gt; theResolutions;
+
+    /**
+     * The constructor.
+     */
+    SettingsTabEnvironment() {
+<span class="nc" id="L83">        super();</span>
+<span class="nc" id="L84">    }</span>
+
+    private void buildPanel() {
+<span class="nc" id="L87">        setLayout(new BorderLayout());</span>
+<span class="nc" id="L88">        int labelGap = 10;</span>
+<span class="nc" id="L89">        int componentGap = 5;</span>
+<span class="nc" id="L90">        topPanel = new JPanel(new LabelledLayout(labelGap, componentGap));</span>
+
+<span class="nc" id="L92">        JLabel label =</span>
+<span class="nc" id="L93">            new JLabel(Translator.localize(&quot;label.default.graphics-format&quot;));</span>
+<span class="nc" id="L94">        fieldGraphicsFormat = new JComboBox();</span>
+<span class="nc" id="L95">        label.setLabelFor(fieldGraphicsFormat);</span>
+<span class="nc" id="L96">        topPanel.add(label);</span>
+<span class="nc" id="L97">        topPanel.add(fieldGraphicsFormat);</span>
+
+<span class="nc" id="L99">        label =</span>
+            new JLabel(
+<span class="nc" id="L101">                    Translator.localize(&quot;label.default.graphics-resolution&quot;));</span>
+<span class="nc" id="L102">        theResolutions = new ArrayList&lt;GResolution&gt;();</span>
+<span class="nc" id="L103">        theResolutions.add(new GResolution(1, &quot;combobox.item.resolution-1&quot;));</span>
+<span class="nc" id="L104">        theResolutions.add(new GResolution(2, &quot;combobox.item.resolution-2&quot;));</span>
+<span class="nc" id="L105">        theResolutions.add(new GResolution(4, &quot;combobox.item.resolution-4&quot;));</span>
+<span class="nc" id="L106">        fieldGraphicsResolution = new JComboBox(); //filled in later</span>
+<span class="nc" id="L107">        label.setLabelFor(fieldGraphicsResolution);</span>
+<span class="nc" id="L108">        topPanel.add(label);</span>
+<span class="nc" id="L109">        topPanel.add(fieldGraphicsResolution);</span>
+
+ 	// This string is NOT to be translated! See issue 2381.
+<span class="nc" id="L112">	label = new JLabel(&quot;${argo.ext.dir}&quot;);</span>
+<span class="nc" id="L113">	JTextField j2 = new JTextField();</span>
+<span class="nc" id="L114">        fieldArgoExtDir = j2;</span>
+<span class="nc" id="L115">	fieldArgoExtDir.setEnabled(false);</span>
+<span class="nc" id="L116">        label.setLabelFor(fieldArgoExtDir);</span>
+<span class="nc" id="L117">        topPanel.add(label);</span>
+<span class="nc" id="L118">        topPanel.add(fieldArgoExtDir);</span>
+
+  	// This string is NOT to be translated! See issue 2381.
+<span class="nc" id="L121">	label = new JLabel(&quot;${java.home}&quot;);</span>
+<span class="nc" id="L122">	JTextField j3 = new JTextField();</span>
+<span class="nc" id="L123">        fieldJavaHome = j3;</span>
+<span class="nc" id="L124">	fieldJavaHome.setEnabled(false);</span>
+<span class="nc" id="L125">        label.setLabelFor(fieldJavaHome);</span>
+<span class="nc" id="L126">        topPanel.add(label);</span>
+<span class="nc" id="L127">        topPanel.add(fieldJavaHome);</span>
+
+  	// This string is NOT to be translated! See issue 2381.
+<span class="nc" id="L130">	label = new JLabel(&quot;${user.home}&quot;);</span>
+<span class="nc" id="L131">	JTextField j4 = new JTextField();</span>
+<span class="nc" id="L132">        fieldUserHome = j4;</span>
+<span class="nc" id="L133">	fieldUserHome.setEnabled(false);</span>
+<span class="nc" id="L134">        label.setLabelFor(fieldUserHome);</span>
+<span class="nc" id="L135">        topPanel.add(label);</span>
+<span class="nc" id="L136">        topPanel.add(fieldUserHome);</span>
+
+	// This string is NOT to be translated! See issue 2381.
+<span class="nc" id="L139">	label = new JLabel(&quot;${user.dir}&quot;);</span>
+<span class="nc" id="L140">	JTextField j5 = new JTextField();</span>
+<span class="nc" id="L141">        fieldUserDir = j5;</span>
+<span class="nc" id="L142">	fieldUserDir.setEnabled(false);</span>
+<span class="nc" id="L143">        label.setLabelFor(fieldUserDir);</span>
+<span class="nc" id="L144">        topPanel.add(label);</span>
+<span class="nc" id="L145">        topPanel.add(fieldUserDir);</span>
+
+<span class="nc" id="L147">  	label = new JLabel(Translator.localize(&quot;label.startup-directory&quot;));</span>
+<span class="nc" id="L148">  	JTextField j6 = new JTextField();</span>
+<span class="nc" id="L149">        fieldStartupDir = j6;</span>
+<span class="nc" id="L150">	fieldStartupDir.setEnabled(false);</span>
+<span class="nc" id="L151">        label.setLabelFor(fieldStartupDir);</span>
+<span class="nc" id="L152">        topPanel.add(label);</span>
+<span class="nc" id="L153">        topPanel.add(fieldStartupDir);</span>
+
+<span class="nc" id="L155">        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L156">	add(topPanel, BorderLayout.NORTH);</span>
+	
+<span class="nc" id="L158">	JPanel bottom = new JPanel();</span>
+<span class="nc" id="L159">	bottom.add(new JLabel(</span>
+<span class="nc" id="L160">	    Translator.localize(&quot;label.graphics-export-resolution.warning&quot;)));</span>
+<span class="nc" id="L161">	add(bottom, BorderLayout.SOUTH);</span>
+<span class="nc" id="L162">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabRefresh()
+     */
+    public void handleSettingsTabRefresh() {
+<span class="nc" id="L168">        fieldArgoExtDir.setText(System.getProperty(&quot;argo.ext.dir&quot;));</span>
+<span class="nc" id="L169">        fieldJavaHome.setText(System.getProperty(&quot;java.home&quot;));</span>
+<span class="nc" id="L170">        fieldUserHome.setText(System.getProperty(&quot;user.home&quot;));</span>
+<span class="nc" id="L171">        fieldUserDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR,</span>
+<span class="nc" id="L172">		System.getProperty(&quot;user.dir&quot;)));</span>
+<span class="nc" id="L173">        fieldStartupDir.setText(Argo.getDirectory());</span>
+
+<span class="nc" id="L175">        fieldGraphicsFormat.removeAllItems();</span>
+<span class="nc" id="L176">        Collection c = SaveGraphicsManager.getInstance().getSettingsList();</span>
+<span class="nc" id="L177">        fieldGraphicsFormat.setModel(new DefaultComboBoxModel(c.toArray()));</span>
+
+<span class="nc" id="L179">        fieldGraphicsResolution.removeAllItems();</span>
+<span class="nc" id="L180">        fieldGraphicsResolution.setModel(new DefaultComboBoxModel(</span>
+<span class="nc" id="L181">                theResolutions.toArray()));</span>
+<span class="nc" id="L182">        int defaultResolution =</span>
+<span class="nc" id="L183">            Configuration.getInteger(</span>
+                SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
+<span class="nc bnc" id="L185" title="All 2 branches missed.">        for (GResolution gr : theResolutions) {</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (defaultResolution == gr.getResolution()) {</span>
+<span class="nc" id="L187">                fieldGraphicsResolution.setSelectedItem(gr);</span>
+<span class="nc" id="L188">                break;</span>
+            }
+<span class="nc" id="L190">        }</span>
+<span class="nc" id="L191">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabSave()
+     */
+    public void handleSettingsTabSave() {
+<span class="nc" id="L197">        Configuration.setString(Argo.KEY_STARTUP_DIR, fieldUserDir.getText());</span>
+
+<span class="nc" id="L199">        GResolution r = (GResolution) fieldGraphicsResolution.getSelectedItem();</span>
+<span class="nc" id="L200">        Configuration.setInteger(SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION,</span>
+<span class="nc" id="L201">                r.getResolution());</span>
+
+<span class="nc" id="L203">        SaveGraphicsManager.getInstance().setDefaultFilter(</span>
+<span class="nc" id="L204">                (SuffixFilter) fieldGraphicsFormat.getSelectedItem());</span>
+<span class="nc" id="L205">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#handleSettingsTabCancel()
+     */
+    public void handleSettingsTabCancel() {
+<span class="nc" id="L211">	handleSettingsTabRefresh();</span>
+<span class="nc" id="L212">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+        // Do nothing - these buttons are not shown.
+<span class="nc" id="L219">    }</span>
+
+    /*
+     * @see GUISettingsTabInterface#getTabKey()
+     */
+    public String getTabKey() {
+<span class="nc" id="L225">        return &quot;tab.environment&quot;;</span>
+    }
+
+    /*
+     * @see GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (topPanel == null) {</span>
+<span class="nc" id="L233">            buildPanel();</span>
+        }
+<span class="nc" id="L235">        return this;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 543442930918741133L;
+}
+
+
+class GResolution {
+    private int resolution;
+    private String label;
+
+    /**
+     * Constructor.
+     *
+     * @param r
+     * @param name
+     */
+<span class="nc" id="L255">    GResolution(int r, String name) {</span>
+<span class="nc" id="L256">        resolution = r;</span>
+<span class="nc" id="L257">        label = Translator.localize(name);</span>
+<span class="nc" id="L258">    }</span>
+
+    int getResolution() {
+<span class="nc" id="L261">        return resolution;</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+<span class="nc" id="L268">        return label;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

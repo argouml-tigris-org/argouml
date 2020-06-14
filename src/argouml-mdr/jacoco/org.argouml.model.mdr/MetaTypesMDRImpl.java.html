@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MetaTypesMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">MetaTypesMDRImpl.java</span></div><h1>MetaTypesMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.jmi.model.PrimitiveType;
+
+import org.argouml.model.MetaTypes;
+import org.argouml.model.NotImplementedException;
+import org.omg.uml.behavioralelements.activitygraphs.ActionState;
+import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
+import org.omg.uml.behavioralelements.activitygraphs.CallState;
+import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
+import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
+import org.omg.uml.behavioralelements.activitygraphs.Partition;
+import org.omg.uml.behavioralelements.activitygraphs.SubactivityState;
+import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
+import org.omg.uml.behavioralelements.collaborations.AssociationRole;
+import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Interaction;
+import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
+import org.omg.uml.behavioralelements.commonbehavior.CallAction;
+import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
+import org.omg.uml.behavioralelements.commonbehavior.CreateAction;
+import org.omg.uml.behavioralelements.commonbehavior.DataValue;
+import org.omg.uml.behavioralelements.commonbehavior.DestroyAction;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.commonbehavior.LinkObject;
+import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.ReturnAction;
+import org.omg.uml.behavioralelements.commonbehavior.SendAction;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
+import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
+import org.omg.uml.behavioralelements.commonbehavior.UmlException;
+import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
+import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.Event;
+import org.omg.uml.behavioralelements.statemachines.FinalState;
+import org.omg.uml.behavioralelements.statemachines.Guard;
+import org.omg.uml.behavioralelements.statemachines.Pseudostate;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
+import org.omg.uml.behavioralelements.statemachines.SimpleState;
+import org.omg.uml.behavioralelements.statemachines.State;
+import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
+import org.omg.uml.behavioralelements.statemachines.StubState;
+import org.omg.uml.behavioralelements.statemachines.SubmachineState;
+import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.behavioralelements.usecases.Actor;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.Include;
+import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
+import org.omg.uml.foundation.core.Abstraction;
+import org.omg.uml.foundation.core.Artifact;
+import org.omg.uml.foundation.core.AssociationClass;
+import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Binding;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Comment;
+import org.omg.uml.foundation.core.Component;
+import org.omg.uml.foundation.core.Constraint;
+import org.omg.uml.foundation.core.DataType;
+import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Element;
+import org.omg.uml.foundation.core.ElementResidence;
+import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Flow;
+import org.omg.uml.foundation.core.GeneralizableElement;
+import org.omg.uml.foundation.core.Generalization;
+import org.omg.uml.foundation.core.Interface;
+import org.omg.uml.foundation.core.Method;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Node;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.core.PresentationElement;
+import org.omg.uml.foundation.core.ProgrammingLanguageDataType;
+import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.StructuralFeature;
+import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.foundation.core.TemplateArgument;
+import org.omg.uml.foundation.core.TemplateParameter;
+import org.omg.uml.foundation.core.UmlAssociation;
+import org.omg.uml.foundation.core.UmlClass;
+import org.omg.uml.foundation.core.Usage;
+import org.omg.uml.foundation.datatypes.ActionExpression;
+import org.omg.uml.foundation.datatypes.AggregationKind;
+import org.omg.uml.foundation.datatypes.ArgListsExpression;
+import org.omg.uml.foundation.datatypes.BooleanExpression;
+import org.omg.uml.foundation.datatypes.CallConcurrencyKind;
+import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.foundation.datatypes.IterationExpression;
+import org.omg.uml.foundation.datatypes.MappingExpression;
+import org.omg.uml.foundation.datatypes.Multiplicity;
+import org.omg.uml.foundation.datatypes.MultiplicityRange;
+import org.omg.uml.foundation.datatypes.ObjectSetExpression;
+import org.omg.uml.foundation.datatypes.ParameterDirectionKind;
+import org.omg.uml.foundation.datatypes.ProcedureExpression;
+import org.omg.uml.foundation.datatypes.PseudostateKind;
+import org.omg.uml.foundation.datatypes.ScopeKind;
+import org.omg.uml.foundation.datatypes.TimeExpression;
+import org.omg.uml.foundation.datatypes.TypeExpression;
+import org.omg.uml.foundation.datatypes.VisibilityKind;
+import org.omg.uml.modelmanagement.ElementImport;
+import org.omg.uml.modelmanagement.Model;
+import org.omg.uml.modelmanagement.Subsystem;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * This class contains methods to retrieve objects that represent the different
+ * UML types. These objects are use as tokens used to create model elements in
+ * some methods.
+ * 
+ * @see org.argouml.model.UmlFactory#buildConnection( Object, Object, Object,
+ *      Object, Object, Object, Object)
+ * @see org.argouml.model.UmlFactory#buildNode(Object)
+ */
+final class MetaTypesMDRImpl implements MetaTypes {
+
+    /**
+     * Constructor that forbids to instantiate.
+     */
+<span class="fc" id="L187">    MetaTypesMDRImpl() {</span>
+        // forbid instantiation
+<span class="fc" id="L189">    }</span>
+    
+    private static final Collection&lt;Class&lt;?&gt;&gt; allMetaTypes;
+    static {
+        // TODO: Bob says - how can we auto-generate this list?
+<span class="fc" id="L194">        allMetaTypes = new ArrayList&lt;Class&lt;?&gt;&gt;(125);</span>
+<span class="fc" id="L195">        allMetaTypes.add(Abstraction.class);</span>
+<span class="fc" id="L196">        allMetaTypes.add(ActionSequence.class);</span>
+<span class="fc" id="L197">        allMetaTypes.add(ActionState.class);</span>
+<span class="fc" id="L198">        allMetaTypes.add(Actor.class);</span>
+<span class="fc" id="L199">        allMetaTypes.add(ArgListsExpression.class);</span>
+<span class="fc" id="L200">        allMetaTypes.add(Argument.class);</span>
+<span class="fc" id="L201">        allMetaTypes.add(Artifact.class);</span>
+<span class="fc" id="L202">        allMetaTypes.add(AssociationEnd.class);</span>
+<span class="fc" id="L203">        allMetaTypes.add(AssociationEndRole.class);</span>
+<span class="fc" id="L204">        allMetaTypes.add(AssociationRole.class);</span>
+<span class="fc" id="L205">        allMetaTypes.add(AttributeLink.class);</span>
+<span class="fc" id="L206">        allMetaTypes.add(Expression.class);</span>
+<span class="fc" id="L207">        allMetaTypes.add(BooleanExpression.class);</span>
+<span class="fc" id="L208">        allMetaTypes.add(Multiplicity.class);</span>
+<span class="fc" id="L209">        allMetaTypes.add(MultiplicityRange.class);</span>
+<span class="fc" id="L210">        allMetaTypes.add(TypeExpression.class);</span>
+<span class="fc" id="L211">        allMetaTypes.add(MappingExpression.class);</span>
+<span class="fc" id="L212">        allMetaTypes.add(ProcedureExpression.class);</span>
+<span class="fc" id="L213">        allMetaTypes.add(ObjectSetExpression.class);</span>
+<span class="fc" id="L214">        allMetaTypes.add(ActionExpression.class);</span>
+<span class="fc" id="L215">        allMetaTypes.add(IterationExpression.class);</span>
+<span class="fc" id="L216">        allMetaTypes.add(TimeExpression.class);</span>
+<span class="fc" id="L217">        allMetaTypes.add(Element.class);</span>
+<span class="fc" id="L218">        allMetaTypes.add(ModelElement.class);</span>
+<span class="fc" id="L219">        allMetaTypes.add(GeneralizableElement.class);</span>
+<span class="fc" id="L220">        allMetaTypes.add(Namespace.class);</span>
+<span class="fc" id="L221">        allMetaTypes.add(Classifier.class);</span>
+<span class="fc" id="L222">        allMetaTypes.add(UmlClass.class);</span>
+<span class="fc" id="L223">        allMetaTypes.add(DataType.class);</span>
+<span class="fc" id="L224">        allMetaTypes.add(Feature.class);</span>
+<span class="fc" id="L225">        allMetaTypes.add(StructuralFeature.class);</span>
+<span class="fc" id="L226">        allMetaTypes.add(Interface.class);</span>
+<span class="fc" id="L227">        allMetaTypes.add(Constraint.class);</span>
+<span class="fc" id="L228">        allMetaTypes.add(Relationship.class);</span>
+<span class="fc" id="L229">        allMetaTypes.add(UmlAssociation.class);</span>
+<span class="fc" id="L230">        allMetaTypes.add(Attribute.class);</span>
+<span class="fc" id="L231">        allMetaTypes.add(BehavioralFeature.class);</span>
+<span class="fc" id="L232">        allMetaTypes.add(Operation.class);</span>
+<span class="fc" id="L233">        allMetaTypes.add(Parameter.class);</span>
+<span class="fc" id="L234">        allMetaTypes.add(Method.class);</span>
+<span class="fc" id="L235">        allMetaTypes.add(Generalization.class);</span>
+<span class="fc" id="L236">        allMetaTypes.add(AssociationClass.class);</span>
+<span class="fc" id="L237">        allMetaTypes.add(Dependency.class);</span>
+<span class="fc" id="L238">        allMetaTypes.add(PresentationElement.class);</span>
+<span class="fc" id="L239">        allMetaTypes.add(Usage.class);</span>
+<span class="fc" id="L240">        allMetaTypes.add(Binding.class);</span>
+<span class="fc" id="L241">        allMetaTypes.add(Component.class);</span>
+<span class="fc" id="L242">        allMetaTypes.add(Node.class);</span>
+<span class="fc" id="L243">        allMetaTypes.add(Permission.class);</span>
+<span class="fc" id="L244">        allMetaTypes.add(Comment.class);</span>
+<span class="fc" id="L245">        allMetaTypes.add(Flow.class);</span>
+<span class="fc" id="L246">        allMetaTypes.add(ElementResidence.class);</span>
+<span class="fc" id="L247">        allMetaTypes.add(Enumeration.class);</span>
+<span class="fc" id="L248">        allMetaTypes.add(EnumerationLiteral.class);</span>
+<span class="fc" id="L249">        allMetaTypes.add(Stereotype.class);</span>
+<span class="fc" id="L250">        allMetaTypes.add(TagDefinition.class);</span>
+<span class="fc" id="L251">        allMetaTypes.add(TaggedValue.class);</span>
+<span class="fc" id="L252">        allMetaTypes.add(ProgrammingLanguageDataType.class);</span>
+<span class="fc" id="L253">        allMetaTypes.add(TemplateArgument.class);</span>
+<span class="fc" id="L254">        allMetaTypes.add(Instance.class);</span>
+<span class="fc" id="L255">        allMetaTypes.add(Signal.class);</span>
+<span class="fc" id="L256">        allMetaTypes.add(Action.class);</span>
+<span class="fc" id="L257">        allMetaTypes.add(CreateAction.class);</span>
+<span class="fc" id="L258">        allMetaTypes.add(DestroyAction.class);</span>
+<span class="fc" id="L259">        allMetaTypes.add(UninterpretedAction.class);</span>
+<span class="fc" id="L260">        allMetaTypes.add(Object.class);</span>
+<span class="fc" id="L261">        allMetaTypes.add(Link.class);</span>
+<span class="fc" id="L262">        allMetaTypes.add(LinkObject.class);</span>
+<span class="fc" id="L263">        allMetaTypes.add(DataValue.class);</span>
+<span class="fc" id="L264">        allMetaTypes.add(CallAction.class);</span>
+<span class="fc" id="L265">        allMetaTypes.add(SendAction.class);</span>
+<span class="fc" id="L266">        allMetaTypes.add(Reception.class);</span>
+<span class="fc" id="L267">        allMetaTypes.add(LinkEnd.class);</span>
+<span class="fc" id="L268">        allMetaTypes.add(ReturnAction.class);</span>
+<span class="fc" id="L269">        allMetaTypes.add(TerminateAction.class);</span>
+<span class="fc" id="L270">        allMetaTypes.add(Stimulus.class);</span>
+<span class="fc" id="L271">        allMetaTypes.add(UmlException.class);</span>
+<span class="fc" id="L272">        allMetaTypes.add(ComponentInstance.class);</span>
+<span class="fc" id="L273">        allMetaTypes.add(NodeInstance.class);</span>
+<span class="fc" id="L274">        allMetaTypes.add(SubsystemInstance.class);</span>
+<span class="fc" id="L275">        allMetaTypes.add(UseCase.class);</span>
+<span class="fc" id="L276">        allMetaTypes.add(UseCaseInstance.class);</span>
+<span class="fc" id="L277">        allMetaTypes.add(Extend.class);</span>
+<span class="fc" id="L278">        allMetaTypes.add(Include.class);</span>
+<span class="fc" id="L279">        allMetaTypes.add(ExtensionPoint.class);</span>
+<span class="fc" id="L280">        allMetaTypes.add(StateMachine.class);</span>
+<span class="fc" id="L281">        allMetaTypes.add(Event.class);</span>
+<span class="fc" id="L282">        allMetaTypes.add(StateVertex.class);</span>
+<span class="fc" id="L283">        allMetaTypes.add(State.class);</span>
+<span class="fc" id="L284">        allMetaTypes.add(TimeEvent.class);</span>
+<span class="fc" id="L285">        allMetaTypes.add(CallEvent.class);</span>
+<span class="fc" id="L286">        allMetaTypes.add(SignalEvent.class);</span>
+<span class="fc" id="L287">        allMetaTypes.add(Transition.class);</span>
+<span class="fc" id="L288">        allMetaTypes.add(CompositeState.class);</span>
+<span class="fc" id="L289">        allMetaTypes.add(ChangeEvent.class);</span>
+<span class="fc" id="L290">        allMetaTypes.add(Guard.class);</span>
+<span class="fc" id="L291">        allMetaTypes.add(Pseudostate.class);</span>
+<span class="fc" id="L292">        allMetaTypes.add(SimpleState.class);</span>
+<span class="fc" id="L293">        allMetaTypes.add(SubmachineState.class);</span>
+<span class="fc" id="L294">        allMetaTypes.add(SynchState.class);</span>
+<span class="fc" id="L295">        allMetaTypes.add(StubState.class);</span>
+<span class="fc" id="L296">        allMetaTypes.add(FinalState.class);</span>
+<span class="fc" id="L297">        allMetaTypes.add(Collaboration.class);</span>
+<span class="fc" id="L298">        allMetaTypes.add(ClassifierRole.class);</span>
+<span class="fc" id="L299">        allMetaTypes.add(Message.class);</span>
+<span class="fc" id="L300">        allMetaTypes.add(Interaction.class);</span>
+<span class="fc" id="L301">        allMetaTypes.add(InteractionInstanceSet.class);</span>
+<span class="fc" id="L302">        allMetaTypes.add(CollaborationInstanceSet.class);</span>
+<span class="fc" id="L303">        allMetaTypes.add(ActivityGraph.class);</span>
+<span class="fc" id="L304">        allMetaTypes.add(Partition.class);</span>
+<span class="fc" id="L305">        allMetaTypes.add(SubactivityState.class);</span>
+<span class="fc" id="L306">        allMetaTypes.add(CallState.class);</span>
+<span class="fc" id="L307">        allMetaTypes.add(ObjectFlowState.class);</span>
+<span class="fc" id="L308">        allMetaTypes.add(ClassifierInState.class);</span>
+<span class="fc" id="L309">        allMetaTypes.add(UmlPackage.class);</span>
+<span class="fc" id="L310">        allMetaTypes.add(Model.class);</span>
+<span class="fc" id="L311">        allMetaTypes.add(Subsystem.class);</span>
+<span class="fc" id="L312">        allMetaTypes.add(ElementImport.class);</span>
+<span class="fc" id="L313">    };</span>
+    
+    public Collection getAllMetaTypes() {
+<span class="nc" id="L316">        return allMetaTypes;</span>
+    }
+    
+    public String getName(Object modelElement) {
+        Class&lt;?&gt; clazz;
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">        if (modelElement instanceof Class) {</span>
+<span class="nc" id="L322">            clazz = (Class&lt;?&gt;) modelElement;</span>
+        } else {
+<span class="fc" id="L324">            clazz = modelElement.getClass();</span>
+        }
+<span class="fc" id="L326">        String name = clazz.getName();</span>
+
+        // The name of the meta type is the class name (after the last .)
+        // and before the next $ or end of class name.
+<span class="fc" id="L330">        int startName = name.lastIndexOf('.') + 1;</span>
+
+        // MDR classes may have a UML or Uml prefix which should be removed.
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (name.regionMatches(true, startName, &quot;UML&quot;, 0, 3)) {</span>
+<span class="fc" id="L334">            startName += 3;</span>
+        }
+
+<span class="fc" id="L337">        int endName = name.indexOf('$', startName);</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">        if (endName &lt; 0) {</span>
+<span class="nc" id="L339">            endName = name.length();</span>
+        }
+
+<span class="fc" id="L342">        return name.substring(startName, endName);</span>
+    }
+
+    /*
+     * @see org.argouml.model.MetaTypes#getAbstraction()
+     */
+    public Object getAbstraction() {
+<span class="nc" id="L349">        return Abstraction.class;</span>
+    }
+
+    public Object getAcceptEventAction() {
+<span class="nc" id="L353">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getAction() {
+<span class="nc" id="L357">        return Action.class;</span>
+    }
+
+    public Object getActionExpression() {
+<span class="nc" id="L361">        return ActionExpression.class;</span>
+    }
+
+    public Object getActionState() {
+<span class="nc" id="L365">        return ActionState.class;</span>
+    }
+
+    public Object getActivity() {
+<span class="nc" id="L369">        return ActivityGraph.class;</span>
+    }
+
+    public Object getActivityParameterNode() {
+<span class="nc" id="L373">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getActor() {
+<span class="nc" id="L377">        return Actor.class;</span>
+    }
+
+    public Object getAggregationKind() {
+<span class="nc" id="L381">        return AggregationKind.class;</span>
+    }
+    
+    public Object getArtifact() {
+<span class="nc" id="L385">        return Artifact.class;</span>
+    }
+
+    public Object getAssociation() {
+<span class="nc" id="L389">        return UmlAssociation.class;</span>
+    }
+
+    public Object getAssociationClass() {
+<span class="nc" id="L393">        return AssociationClass.class;</span>
+    }
+
+    public Object getAssociationEnd() {
+<span class="nc" id="L397">        return AssociationEnd.class;</span>
+    }
+
+    public Object getAssociationEndRole() {
+<span class="nc" id="L401">        return AssociationEndRole.class;</span>
+    }
+
+    public Object getAssociationRole() {
+<span class="nc" id="L405">        return AssociationRole.class;</span>
+    }
+
+    public Object getAttribute() {
+<span class="nc" id="L409">        return Attribute.class;</span>
+    }
+
+    public Object getBehavioralFeature() {
+<span class="nc" id="L413">        return BehavioralFeature.class;    </span>
+    }
+    
+    public Object getBinding() {
+<span class="nc" id="L417">        return Binding.class;</span>
+    }
+
+    public Object getBooleanExpression() {
+<span class="nc" id="L421">        return BooleanExpression.class;</span>
+    }
+
+    public Object getCallAction() {
+<span class="nc" id="L425">        return CallAction.class;</span>
+    }
+
+    public Object getCallBehaviorAction() {
+<span class="nc" id="L429">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getCallConcurrencyKind() {
+<span class="nc" id="L433">        return CallConcurrencyKind.class;</span>
+    }
+
+    public Object getCallState() {
+<span class="nc" id="L437">        return CallState.class;</span>
+    }
+
+    public Object getCentralBufferNode() {
+<span class="nc" id="L441">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getUMLClass() {
+<span class="nc" id="L445">        return UmlClass.class;</span>
+    }
+
+    public Object getClassifier() {
+<span class="nc" id="L449">        return Classifier.class;</span>
+    }
+
+    public Object getClassifierRole() {
+<span class="nc" id="L453">        return ClassifierRole.class;</span>
+    }
+
+    public Object getCollaboration() {
+<span class="nc" id="L457">        return Collaboration.class;</span>
+    }
+
+    public Object getComment() {
+<span class="nc" id="L461">        return Comment.class;</span>
+    }
+
+    public Object getComponent() {
+<span class="nc" id="L465">        return Component.class;</span>
+    }
+
+    public Object getComponentInstance() {
+<span class="nc" id="L469">        return ComponentInstance.class;</span>
+    }
+
+    public Object getComponentRealization() {
+<span class="nc" id="L473">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getCompositeState() {
+<span class="nc" id="L477">        return CompositeState.class;</span>
+    }
+    
+    public Object getConnector() {
+<span class="nc" id="L481">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getConstraint() {
+<span class="nc" id="L485">        return Constraint.class;</span>
+    }
+
+    public Object getControlFlow() {
+<span class="nc" id="L489">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getCreateAction() {
+<span class="nc" id="L493">        return CreateAction.class;</span>
+    }
+
+    public Object getCreateObjectAction() {
+<span class="nc" id="L497">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+    
+    public Object getDataStoreNode() {
+<span class="nc" id="L501">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getDataType() {
+<span class="nc" id="L505">        return DataType.class;</span>
+    }
+
+    public Object getDependency() {
+<span class="nc" id="L509">        return Dependency.class;</span>
+    }
+
+    public Object getDestroyAction() {
+<span class="nc" id="L513">        return DestroyAction.class;</span>
+    }
+
+    public Object getDestroyObjectAction() {
+<span class="nc" id="L517">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getEnumeration() {
+<span class="nc" id="L521">        return Enumeration.class;</span>
+    }
+    
+    public Object getEnumerationLiteral() {
+<span class="nc" id="L525">        return EnumerationLiteral.class;</span>
+    }
+
+    public Object getElementImport() {
+<span class="nc" id="L529">        return ElementImport.class;</span>
+    }
+    
+    public Object getEvent() {
+<span class="nc" id="L533">        return Event.class;</span>
+    }
+
+    public Object getException() {
+<span class="nc" id="L537">        return UmlException.class;</span>
+    }
+
+    public Object getExpansionNode() {
+<span class="nc" id="L541">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getExtend() {
+<span class="nc" id="L545">        return Extend.class;</span>
+    }
+
+    public Object getExtensionPoint() {
+<span class="nc" id="L549">        return ExtensionPoint.class;</span>
+    }
+
+    public Object getFinalState() {
+<span class="nc" id="L553">        return FinalState.class;</span>
+    }
+
+    public Object getGeneralizableElement() {
+<span class="nc" id="L557">        return GeneralizableElement.class;</span>
+    }
+
+    public Object getGeneralization() {
+<span class="nc" id="L561">        return Generalization.class;</span>
+    }
+
+    public Object getGuard() {
+<span class="nc" id="L565">        return Guard.class;</span>
+    }
+
+    public Object getInclude() {
+<span class="nc" id="L569">        return Include.class;</span>
+    }
+
+    public Object getInputPin() {
+<span class="nc" id="L573">        throw new NotImplementedException(&quot;Not a UML1.4 element&quot;);</span>
+    }
+
+    public Object getInstance() {
+<span class="nc" id="L577">        return Instance.class;</span>
+    }
+
+    public Object getInstanceSpecification() {
+<span class="nc" id="L581">        throw new NotImplementedException(&quot;Not a UML1.4 element&quot;);</span>
+    }
+
+    public Object getInterface() {
+<span class="nc" id="L585">        return Interface.class;</span>
+    }
+
+    public Object getLifeline() {
+<span class="nc" id="L589">        return ClassifierRole.class;</span>
+    }
+    
+    public Object getLink() {
+<span class="nc" id="L593">        return Link.class;</span>
+    }
+
+    public Object getMessage() {
+<span class="nc" id="L597">        return Message.class;</span>
+    }
+
+    public Object getModel() {
+<span class="nc" id="L601">        return Model.class;</span>
+    }
+
+    public Object getModelElement() {
+<span class="nc" id="L605">        return ModelElement.class;</span>
+    }
+
+    public Object getMultiplicity() {
+<span class="nc" id="L609">        return Multiplicity.class;</span>
+    }
+
+    public Object getNamespace() {
+<span class="nc" id="L613">        return Namespace.class;</span>
+    }
+
+    public Object getNode() {
+<span class="nc" id="L617">        return Node.class;</span>
+    }
+
+    public Object getNodeInstance() {
+<span class="nc" id="L621">        return NodeInstance.class;</span>
+    }
+
+    public Object getObject() {
+<span class="nc" id="L625">        return org.omg.uml.behavioralelements.commonbehavior.Object.class;</span>
+    }
+
+    public Object getObjectFlow() {
+<span class="nc" id="L629">        throw new NotImplementedException(&quot;This is not a UML1.4 class&quot;);</span>
+    }
+
+    public Object getObjectFlowState() {
+<span class="nc" id="L633">        return ObjectFlowState.class;</span>
+    }
+
+    public Object getOperation() {
+<span class="nc" id="L637">        return Operation.class;</span>
+    }
+
+    public Object getOpaqueExpression() {
+<span class="nc" id="L641">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getOutputPin() {
+<span class="nc" id="L645">        throw new NotImplementedException(&quot;Not a UML1.4 element&quot;);</span>
+    }
+
+    public Object getPackage() {
+<span class="nc" id="L649">        return UmlPackage.class;</span>
+    }
+
+    public Object getParameter() {
+<span class="nc" id="L653">        return Parameter.class;</span>
+    }
+
+    public Object getParameterDirectionKind() {
+<span class="nc" id="L657">        return ParameterDirectionKind.class;</span>
+    }
+
+    public Object getPartition() {
+<span class="nc" id="L661">        return Partition.class;</span>
+    }
+
+    public Object getPackageImport() {
+<span class="nc" id="L665">        return Permission.class;</span>
+    }
+
+    public Object getPort() {
+<span class="nc" id="L669">        throw new NotImplementedException(&quot;Not a UML1.4 element&quot;);</span>
+    }
+
+    public Object getProfile() {
+<span class="nc" id="L673">        return Package.class;</span>
+    }
+
+    public Object getProperty() {
+<span class="nc" id="L677">        return Attribute.class;</span>
+    }
+
+    public Object getPseudostate() {
+<span class="nc" id="L681">        return Pseudostate.class;</span>
+    }
+
+    public Object getPseudostateKind() {
+<span class="nc" id="L685">        return PseudostateKind.class;</span>
+    }
+
+    public Object getReception() {
+<span class="nc" id="L689">        return Reception.class;</span>
+    }
+
+    public Object getRegion() {
+<span class="nc" id="L693">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getReturnAction() {
+<span class="nc" id="L697">        return ReturnAction.class;</span>
+    }
+
+    public Object getScopeKind() {
+<span class="nc" id="L701">        return ScopeKind.class;</span>
+    }
+
+    public Object getSendAction() {
+<span class="nc" id="L705">        return SendAction.class;</span>
+    }
+
+    public Object getSendSignalAction() {
+<span class="nc" id="L709">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getSignal() {
+<span class="nc" id="L713">        return Signal.class;</span>
+    }
+
+    public Object getSimpleState() {
+<span class="nc" id="L717">        return SimpleState.class;</span>
+    }
+
+    public Object getState() {
+<span class="nc" id="L721">        return State.class;</span>
+    }
+
+    public Object getStateMachine() {
+<span class="nc" id="L725">        return StateMachine.class;</span>
+    }
+
+    public Object getStateVertex() {
+<span class="nc" id="L729">        return StateVertex.class;</span>
+    }
+
+    public Object getStereotype() {
+<span class="nc" id="L733">        return Stereotype.class;</span>
+    }
+
+    public Object getStimulus() {
+<span class="nc" id="L737">        return Stimulus.class;</span>
+    }
+
+    public Object getStubState() {
+<span class="nc" id="L741">        return StubState.class;</span>
+    }
+
+    public Object getSubactivityState() {
+<span class="nc" id="L745">        return SubactivityState.class;</span>
+    }
+
+    public Object getSubmachineState() {
+<span class="nc" id="L749">        return SubmachineState.class;</span>
+    }
+
+    public Object getSubsystem() {
+<span class="nc" id="L753">        return Subsystem.class;</span>
+    }
+
+    public Object getSynchState() {
+<span class="nc" id="L757">        return SynchState.class;</span>
+    }
+    
+    public Object getTemplateArgument() {
+<span class="nc" id="L761">        return TemplateArgument.class;</span>
+    }
+    
+    public Object getTemplateParameter() {
+<span class="nc" id="L765">        return TemplateParameter.class;</span>
+    }
+
+    public Object getTerminateAction() {
+<span class="nc" id="L769">        return TerminateAction.class;</span>
+    }
+
+    public Object getTransition() {
+<span class="nc" id="L773">        return Transition.class;</span>
+    }
+
+    public Object getUsage() {
+<span class="nc" id="L777">        return Usage.class;</span>
+    }
+
+    public Object getUseCase() {
+<span class="nc" id="L781">        return UseCase.class;</span>
+    }
+
+    public Object getVisibilityKind() {
+<span class="nc" id="L785">        return VisibilityKind.class;</span>
+    }
+
+    public Object getTagDefinition() {
+<span class="nc" id="L789">        return TagDefinition.class;</span>
+    }
+
+    public Object getTaggedValue() {
+<span class="nc" id="L793">        return TaggedValue.class;</span>
+    }
+
+    public Object getInteraction() {
+<span class="nc" id="L797">        return Interaction.class;</span>
+    }
+
+    public Object getActionSequence() {
+<span class="nc" id="L801">        return ActionSequence.class;</span>
+    }
+
+    public Object getArgument() {
+<span class="nc" id="L805">        return Argument.class;</span>
+    }
+
+    public Object getAttributeLink() {
+<span class="nc" id="L809">        return AttributeLink.class;</span>
+    }
+
+    public Object getCallEvent() {
+<span class="nc" id="L813">        return CallEvent.class;</span>
+    }
+
+    public Object getChangeEvent() {
+<span class="nc" id="L817">        return ChangeEvent.class;</span>
+    }
+
+    public Object getClassifierInState() {
+<span class="nc" id="L821">        return ClassifierInState.class;</span>
+    }
+
+    public Object getCollaborationInstanceSet() {
+<span class="nc" id="L825">        return CollaborationInstanceSet.class;</span>
+    }
+
+    public Object getDataValue() {
+<span class="nc" id="L829">        return DataValue.class;</span>
+    }
+
+    public Object getElement() {
+<span class="nc" id="L833">        return Element.class;</span>
+    }
+
+    public Object getElementResidence() {
+<span class="nc" id="L837">        return ElementResidence.class;</span>
+    }
+
+    public Object getExpression() {
+<span class="nc" id="L841">        return Expression.class;</span>
+    }
+
+    public Object getFeature() {
+<span class="nc" id="L845">        return Feature.class;</span>
+    }
+
+    public Object getFlow() {
+<span class="nc" id="L849">        return Flow.class;</span>
+    }
+
+    public Object getInteractionInstanceSet() {
+<span class="nc" id="L853">        return InteractionInstanceSet.class;</span>
+    }
+
+    public Object getLinkEnd() {
+<span class="nc" id="L857">        return LinkEnd.class;</span>
+    }
+
+    public Object getLinkObject() {
+<span class="nc" id="L861">        return LinkObject.class;</span>
+    }
+
+    public Object getLiteralBoolean() {
+<span class="nc" id="L865">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getLiteralInteger() {
+<span class="nc" id="L869">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getLiteralString() {
+<span class="nc" id="L873">        throw new NotImplementedException(&quot;Not a UML 1.4 element&quot;);</span>
+    }
+
+    public Object getMethod() {
+<span class="nc" id="L877">        return Method.class;</span>
+    }
+
+    public Object getMultiplicityRange() {
+<span class="nc" id="L881">        return MultiplicityRange.class;</span>
+    }
+
+    public Object getPrimitiveType() {
+<span class="nc" id="L885">        return PrimitiveType.class;</span>
+    }
+
+    public Object getRelationship() {
+<span class="nc" id="L889">        return Relationship.class;</span>
+    }
+
+    public Object getSignalEvent() {
+<span class="nc" id="L893">        return SignalEvent.class;</span>
+    }
+
+    public Object getStructuralFeature() {
+<span class="nc" id="L897">        return StructuralFeature.class;</span>
+    }
+
+    public Object getSubsystemInstance() {
+<span class="nc" id="L901">        return SubsystemInstance.class;</span>
+    }
+
+    public Object getTimeEvent() {
+<span class="nc" id="L905">        return TimeEvent.class;</span>
+    }
+
+    public Object getUninterpretedAction() {
+<span class="nc" id="L909">        return UninterpretedAction.class;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

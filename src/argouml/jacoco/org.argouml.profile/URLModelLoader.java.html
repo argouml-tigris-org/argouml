@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>URLModelLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile</a> &gt; <span class="el_source">URLModelLoader.java</span></div><h1>URLModelLoader.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.xml.sax.InputSource;
+
+/**
+ * Abstract ProfileModelLoader which loads models from a URL.
+ *
+ * @author Tom Morris, Thomas Neustupny
+ */
+<span class="fc" id="L59">public class URLModelLoader implements ProfileModelLoader {</span>
+
+    /**
+     * Load a profile from a URL.  If a profile with the same public ID has 
+     * already been loaded, its contents are returned instead of loading the
+     * new profile.
+     * 
+     * @param url the url/system id to load
+     * @param publicId the publicId for which the model will be known - must be
+     *                equal in different machines in order to be possible to
+     *                load the model.  If a profile with this public ID has 
+     *                already been loaded, it is returned instead.
+     * @return a collection of top level elements in the profile (usually a
+     *         single package stereotyped &lt;&lt;profile&gt;&gt;
+     * @throws ProfileException if the XMIReader couldn't read the profile
+     */
+    public Collection loadModel(URL url, URL publicId) 
+        throws ProfileException {
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        if (url == null) {</span>
+<span class="nc" id="L78">            throw new ProfileException(&quot;Null profile URL&quot;);</span>
+        }
+        
+        Collection elements = 
+<span class="fc" id="L82">            Model.getUmlFactory().getExtentElements(publicId.toExternalForm());</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (elements == null) {</span>
+<span class="fc" id="L84">            ZipInputStream zis = null;</span>
+            try {
+<span class="fc" id="L86">                XmiReader xmiReader = Model.getXmiReader();</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">                if (url.getPath().toLowerCase().endsWith(&quot;.zip&quot;)) {</span>
+<span class="nc" id="L88">                    zis = new ZipInputStream(url.openStream());</span>
+<span class="nc" id="L89">                    ZipEntry entry = zis.getNextEntry();</span>
+                    // TODO: check if it's OK to just get the first zip entry
+                    // since the zip file should contain only one xmi file - thn
+<span class="nc bnc" id="L92" title="All 2 branches missed.">                    if (entry != null) {</span>
+<span class="nc" id="L93">                        url = makeZipEntryUrl(url, entry.getName());</span>
+                    }
+<span class="nc" id="L95">                    zis.close();</span>
+                }
+<span class="fc" id="L97">                InputSource inputSource = new InputSource(url.toExternalForm());</span>
+<span class="fc" id="L98">                inputSource.setPublicId(publicId.toString());</span>
+<span class="fc" id="L99">                elements = xmiReader.parse(inputSource, true);</span>
+<span class="fc" id="L100">            } catch (UmlException e) {</span>
+<span class="fc" id="L101">                throw new ProfileException(&quot;Error loading profile XMI file &quot;, e);</span>
+<span class="nc" id="L102">            } catch (IOException e) {</span>
+<span class="nc" id="L103">                throw new ProfileException(&quot;I/O error loading profile XMI &quot;, e);</span>
+<span class="fc" id="L104">            }</span>
+        }
+<span class="fc" id="L106">        return elements;</span>
+    }
+
+    /**
+     * Load a profile from a ProfileReference.
+     * 
+     * @param reference ProfileReference for desired profile
+     * @return a collection of top level elements in the profile (usually a
+     *         single package stereotyped &lt;&lt;profile&gt;&gt;
+     * @throws ProfileException if the XMIReader couldn't read the profile
+     */
+    public Collection loadModel(final ProfileReference reference)
+        throws ProfileException {
+<span class="fc" id="L119">        return loadModel(reference.getPublicReference(), reference</span>
+<span class="fc" id="L120">                .getPublicReference());</span>
+    }
+
+    private URL makeZipEntryUrl(URL url, String entryName)
+        throws MalformedURLException {
+<span class="nc" id="L125">        String entryURL = &quot;jar:&quot; + url + &quot;!/&quot; + entryName;</span>
+<span class="nc" id="L126">        return new URL(entryURL);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

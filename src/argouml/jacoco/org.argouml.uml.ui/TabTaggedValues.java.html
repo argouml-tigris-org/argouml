@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabTaggedValues.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabTaggedValues.java</span></div><h1>TabTaggedValues.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
+import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBar;
+
+/**
+ * Table view of a Model Element's Tagged Values.
+ */
+public class TabTaggedValues extends AbstractArgoJPanel
+    implements TabModelTarget, ListSelectionListener, ComponentListener {
+
+<span class="fc" id="L86">    private static final Logger LOG =</span>
+<span class="fc" id="L87">        Logger.getLogger(TabTaggedValues.class.getName());</span>
+
+    /**
+     * Serial version generated for rev 1.58
+     */
+    private static final long serialVersionUID = -8566948113385239423L;
+
+    private Object target;
+<span class="fc" id="L95">    private boolean shouldBeEnabled = false;</span>
+<span class="fc" id="L96">    private JTable table = new JTable(10, 2);</span>
+    private JLabel titleLabel;
+    private JToolBar buttonPanel;
+
+    private UMLComboBox2 tagDefinitionsComboBox;
+
+    private UMLComboBoxModel2 tagDefinitionsComboBoxModel;
+
+
+    /**
+     * Construct a TaggedValues pane for the property panel
+     */
+    public TabTaggedValues() {
+<span class="fc" id="L109">        super(&quot;tab.tagged-values&quot;);</span>
+<span class="fc" id="L110">        setIcon(new UpArrowIcon());</span>
+<span class="fc" id="L111">        buttonPanel = new ToolBar();</span>
+<span class="fc" id="L112">        buttonPanel.setName(getTitle());</span>
+<span class="fc" id="L113">        buttonPanel.setFloatable(false);</span>
+
+<span class="fc" id="L115">        JButton b = null;</span>
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+            // in UML2, a td is a property of a stereotype in a profile
+<span class="fc" id="L118">            b = new JButton();</span>
+<span class="fc" id="L119">            buttonPanel.add(b);</span>
+<span class="fc" id="L120">            b.setAction(new ActionNewTagDefinition());</span>
+<span class="fc" id="L121">            b.setText(&quot;&quot;);</span>
+<span class="fc" id="L122">            b.setFocusable(false);</span>
+        }
+
+<span class="fc" id="L125">        b = new JButton();</span>
+<span class="fc" id="L126">        buttonPanel.add(b);</span>
+<span class="fc" id="L127">        b.setToolTipText(Translator.localize(&quot;button.delete&quot;));</span>
+<span class="fc" id="L128">        b.setAction(new ActionRemoveTaggedValue(table));</span>
+<span class="fc" id="L129">        b.setText(&quot;&quot;);</span>
+<span class="fc" id="L130">        b.setFocusable(false);</span>
+
+<span class="fc" id="L132">        table.setModel(new TabTaggedValuesModel());</span>
+<span class="fc" id="L133">        table.setRowSelectionAllowed(false);</span>
+<span class="fc" id="L134">        tagDefinitionsComboBoxModel = new UMLTagDefinitionComboBoxModel();</span>
+<span class="fc" id="L135">        tagDefinitionsComboBox = new UMLComboBox2(tagDefinitionsComboBoxModel);</span>
+<span class="fc" id="L136">        Class tagDefinitionClass = (Class) Model.getMetaTypes()</span>
+<span class="fc" id="L137">                .getTagDefinition();</span>
+<span class="fc" id="L138">        tagDefinitionsComboBox.setRenderer(new UMLListCellRenderer2(false));</span>
+<span class="fc" id="L139">        table.setDefaultEditor(tagDefinitionClass,</span>
+                new DefaultCellEditor(tagDefinitionsComboBox));
+<span class="fc" id="L141">        table.setDefaultRenderer(tagDefinitionClass,</span>
+                new UMLTableCellRenderer());
+<span class="fc" id="L143">        table.getSelectionModel().addListSelectionListener(this);</span>
+
+<span class="fc" id="L145">        JScrollPane sp = new JScrollPane(table);</span>
+<span class="fc" id="L146">        Font labelFont = LookAndFeelMgr.getInstance().getStandardFont();</span>
+<span class="fc" id="L147">        table.setFont(labelFont);</span>
+
+<span class="fc" id="L149">        titleLabel = new JLabel(&quot;none&quot;);</span>
+<span class="fc" id="L150">        resizeColumns();</span>
+<span class="fc" id="L151">        setLayout(new BorderLayout());</span>
+<span class="fc" id="L152">        titleLabel.setLabelFor(buttonPanel);</span>
+
+<span class="fc" id="L154">        JPanel topPane = new JPanel(new BorderLayout());</span>
+<span class="fc" id="L155">        topPane.add(titleLabel, BorderLayout.WEST);</span>
+<span class="fc" id="L156">        topPane.add(buttonPanel, BorderLayout.CENTER);</span>
+
+<span class="fc" id="L158">        add(topPane, BorderLayout.NORTH);</span>
+<span class="fc" id="L159">        add(sp, BorderLayout.CENTER);</span>
+
+<span class="fc" id="L161">        addComponentListener(this);</span>
+<span class="fc" id="L162">    }</span>
+
+    /**
+     * Resize the columns.
+     */
+    public void resizeColumns() {
+<span class="fc" id="L168">        TableColumn keyCol = table.getColumnModel().getColumn(0);</span>
+<span class="fc" id="L169">        TableColumn valCol = table.getColumnModel().getColumn(1);</span>
+<span class="fc" id="L170">        keyCol.setMinWidth(50);</span>
+<span class="fc" id="L171">        keyCol.setWidth(150);</span>
+<span class="fc" id="L172">        keyCol.setPreferredWidth(150);</span>
+<span class="fc" id="L173">        valCol.setMinWidth(250);</span>
+<span class="fc" id="L174">        valCol.setWidth(550);</span>
+<span class="fc" id="L175">        valCol.setPreferredWidth(550);</span>
+<span class="fc" id="L176">        table.doLayout();</span>
+<span class="fc" id="L177">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
+    public void setTarget(Object theTarget) {
+<span class="fc" id="L183">        stopEditing();</span>
+
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        Object t = (theTarget instanceof Fig)</span>
+<span class="pc" id="L186">                    ? ((Fig) theTarget).getOwner() : theTarget;</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (!Model.getFacade().isAUMLElement(t)) {</span>
+<span class="nc" id="L188">            target = null;</span>
+<span class="nc" id="L189">            shouldBeEnabled = false;</span>
+<span class="nc" id="L190">            return;</span>
+        }
+<span class="fc" id="L192">        target = t;</span>
+<span class="fc" id="L193">        shouldBeEnabled = true;</span>
+
+        // Only update our model if we're visible
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L197">            setTargetInternal(target);</span>
+        }
+<span class="fc" id="L199">    }</span>
+
+    /**
+     * Make sure any pending edits are flushed.
+     */
+    private void stopEditing() {
+<span class="pc bpc" id="L205" title="1 of 2 branches missed.">        if (table.isEditing()) {</span>
+<span class="nc" id="L206">            TableCellEditor ce = table.getCellEditor();</span>
+            try {
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                if (ce != null &amp;&amp; !ce.stopCellEditing()) {</span>
+<span class="nc" id="L209">                    ce.cancelCellEditing();</span>
+                }
+<span class="nc" id="L211">            } catch (InvalidElementException e) {</span>
+                // Most likely cause of this is that someone deleted our
+                // target with the event pump turned off so we didn't
+                // get notification.  Nothing we can do about it now and
+                // we are changing targets anyway, so just log it.
+<span class="nc" id="L216">                LOG.log(Level.WARNING, &quot;failed to cancel editing - &quot;</span>
+                        + &quot;model element deleted while edit in progress&quot;);
+<span class="nc" id="L218">            }</span>
+        }
+<span class="fc" id="L220">    }</span>
+
+    private void setTargetInternal(Object t) {
+<span class="fc" id="L223">        tagDefinitionsComboBoxModel.setTarget(t);</span>
+
+<span class="fc" id="L225">        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);</span>
+
+<span class="fc" id="L227">        ((TabTaggedValuesModel) table.getModel()).setTarget(t);</span>
+<span class="fc" id="L228">        table.sizeColumnsToFit(0);</span>
+
+<span class="pc bpc" id="L230" title="1 of 2 branches missed.">        if (t != null) {</span>
+<span class="nc" id="L231">            titleLabel.setText(&quot;Target: &quot;</span>
+<span class="nc" id="L232">                    + Model.getFacade().getUMLClassName(t)</span>
+                    + &quot; (&quot;
+<span class="nc" id="L234">                    + Model.getFacade().getName(t) + &quot;)&quot;);</span>
+        } else {
+<span class="fc" id="L236">            titleLabel.setText(&quot;none&quot;);</span>
+        }
+<span class="fc" id="L238">        validate();</span>
+<span class="fc" id="L239">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L245">        return target;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L252">        setTarget(target);</span>
+<span class="nc" id="L253">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object theTarget) {
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">        Object t = (theTarget instanceof Fig)</span>
+<span class="pc" id="L260">            ? ((Fig) theTarget).getOwner() : theTarget;</span>
+<span class="fc" id="L261">        shouldBeEnabled = Model.getFacade().isAUMLElement(t);</span>
+<span class="fc" id="L262">        return shouldBeEnabled;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L270">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L271">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L278">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L279">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *         org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="fc" id="L286">        setTarget(e.getNewTarget());</span>
+<span class="fc" id="L287">    }</span>
+
+    /**
+     * @return Returns the tableModel.
+     */
+    protected TabTaggedValuesModel getTableModel() {
+<span class="nc" id="L293">        return (TabTaggedValuesModel) table.getModel();</span>
+    }
+    /**
+     * @return Returns the table.
+     */
+    protected JTable getTable() {
+<span class="nc" id="L299">        return table;</span>
+    }
+
+    /*
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent e) {
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (!e.getValueIsAdjusting()) {</span>
+<span class="nc" id="L307">            DefaultListSelectionModel sel =</span>
+<span class="nc" id="L308">                (DefaultListSelectionModel) e.getSource();</span>
+            Collection tvs =
+<span class="nc" id="L310">                    Model.getFacade().getTaggedValuesCollection(target);</span>
+<span class="nc" id="L311">            int index = sel.getLeadSelectionIndex();</span>
+<span class="nc bnc" id="L312" title="All 4 branches missed.">            if (index &gt;= 0 &amp;&amp; index &lt; tvs.size()) {</span>
+<span class="nc" id="L313">                Object tagDef = Model.getFacade().getTagDefinition(</span>
+<span class="nc" id="L314">                        TabTaggedValuesModel.getFromCollection(tvs, index));</span>
+<span class="nc" id="L315">                tagDefinitionsComboBoxModel.setSelectedItem(tagDef);</span>
+            }
+        }
+<span class="nc" id="L318">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+<span class="nc" id="L325">        setTargetInternal(target);</span>
+<span class="nc" id="L326">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+<span class="fc" id="L333">        stopEditing();</span>
+<span class="fc" id="L334">        setTargetInternal(null);</span>
+<span class="fc" id="L335">    }</span>
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L339">    }</span>
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L343">    }</span>
+
+
+} /* end class TabTaggedValues */
+
+class ActionRemoveTaggedValue extends UndoableAction {
+
+    /**
+     * Serial version generated for rev 1.58
+     */
+    private static final long serialVersionUID = 8276763533039642549L;
+
+    /**
+     * The table we are bound to.
+     */
+    private JTable table;
+
+    /**
+     * Construct an Action to remove a TaggedValue from the table.
+     *
+     * @param tableTv A JTable backed by a TabTaggedValuesModel
+     */
+    public ActionRemoveTaggedValue(JTable tableTv) {
+<span class="fc" id="L366">        super(Translator.localize(&quot;button.delete&quot;),</span>
+<span class="fc" id="L367">                ResourceLoaderWrapper.lookupIcon(&quot;Delete&quot;));</span>
+        // Set the tooltip string:
+<span class="fc" id="L369">        putValue(Action.SHORT_DESCRIPTION,</span>
+<span class="fc" id="L370">                Translator.localize(&quot;button.delete&quot;));</span>
+<span class="fc" id="L371">        table = tableTv;</span>
+<span class="fc" id="L372">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L379">        super.actionPerformed(e);</span>
+<span class="nc" id="L380">        TabTaggedValuesModel model = (TabTaggedValuesModel) table.getModel();</span>
+<span class="nc" id="L381">        model.removeRow(table.getSelectedRow());</span>
+<span class="nc" id="L382">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

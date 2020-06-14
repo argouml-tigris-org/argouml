@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectSettingsTabProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ProjectSettingsTabProperties.java</span></div><h1>ProjectSettingsTabProperties.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+
+/**
+ * Tab Panel for setting the project attributes: 
+ * author name and email, project description. 
+ * These are stored in the project file.
+ *
+ * @author Michiel
+ */
+<span class="nc bnc" id="L66" title="All 2 branches missed.">public class ProjectSettingsTabProperties extends JPanel implements</span>
+        GUIProjectSettingsTabInterface {
+
+    private Project p;
+    
+    /**
+     * This is where the user enters full name in settings tab.
+     * This information is stored in the zargo file.
+     */
+    private JTextField userFullname;
+
+    /**
+     * This is where the user enters email in settings tab.
+     * This information is stored in the zargo file.
+     */
+    private JTextField userEmail;
+
+    /**
+     * This is where the user enters a description of the project
+     * in the settings tab.
+     * This information is stored in the zargo file.
+     */
+    private JTextArea description;
+
+    /**
+     * This is where the ArgoUML version that last saved this project
+     * is shown in the settings tab.
+     * This information is stored in the zargo file.
+     */
+    private JTextField version;
+
+    /**
+     * The constructor.
+     */
+<span class="nc" id="L100">    ProjectSettingsTabProperties() {</span>
+<span class="nc" id="L101">        setLayout(new BorderLayout());</span>
+<span class="nc" id="L102">        JPanel top = new JPanel();</span>
+<span class="nc" id="L103">        top.setLayout(new GridBagLayout());</span>
+
+<span class="nc" id="L105">        GridBagConstraints labelConstraints = new GridBagConstraints();</span>
+        /* Labels at the left ... */
+<span class="nc" id="L107">        labelConstraints.anchor = GridBagConstraints.LINE_START;</span>
+<span class="nc" id="L108">        labelConstraints.gridy = 0;</span>
+<span class="nc" id="L109">        labelConstraints.gridx = 0;</span>
+<span class="nc" id="L110">        labelConstraints.gridwidth = 1;</span>
+<span class="nc" id="L111">        labelConstraints.gridheight = 1;</span>
+<span class="nc" id="L112">        labelConstraints.insets = new Insets(2, 20, 2, 4);</span>
+<span class="nc" id="L113">        labelConstraints.anchor = </span>
+            GridBagConstraints.FIRST_LINE_START;
+        
+<span class="nc" id="L116">        GridBagConstraints fieldConstraints = new GridBagConstraints();</span>
+        /* ... and fields at the right. */
+<span class="nc" id="L118">        fieldConstraints.anchor = GridBagConstraints.LINE_END;</span>
+<span class="nc" id="L119">        fieldConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L120">        fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L121">        fieldConstraints.gridx = 1;</span>
+<span class="nc" id="L122">        fieldConstraints.gridwidth = 3;</span>
+<span class="nc" id="L123">        fieldConstraints.gridheight = 1;</span>
+<span class="nc" id="L124">        fieldConstraints.weightx = 1.0;</span>
+<span class="nc" id="L125">        fieldConstraints.insets = new Insets(2, 4, 2, 20);</span>
+
+        /* The user's full name: */
+<span class="nc" id="L128">        labelConstraints.gridy = 0;</span>
+<span class="nc" id="L129">        fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L130">        top.add(new JLabel(Translator.localize(&quot;label.user&quot;)),</span>
+                labelConstraints);
+<span class="nc" id="L132">        userFullname = new JTextField();</span>
+<span class="nc" id="L133">        top.add(userFullname, fieldConstraints);</span>
+
+        /* The user's email: */
+<span class="nc" id="L136">        labelConstraints.gridy = 1;</span>
+<span class="nc" id="L137">        fieldConstraints.gridy = 1;</span>
+<span class="nc" id="L138">        top.add(new JLabel(Translator.localize(&quot;label.email&quot;)),</span>
+                labelConstraints);
+<span class="nc" id="L140">        userEmail = new JTextField();</span>
+<span class="nc" id="L141">        top.add(userEmail, fieldConstraints);</span>
+
+        /* The project description: */
+ 
+<span class="nc" id="L145">        JLabel lblDescription = new JLabel(</span>
+<span class="nc" id="L146">                Translator.localize(&quot;label.project.description&quot;));</span>
+<span class="nc" id="L147">        lblDescription.setVerticalAlignment(SwingConstants.TOP);</span>
+
+        
+<span class="nc" id="L150">        description = new JTextArea();</span>
+<span class="nc" id="L151">        JScrollPane area = new JScrollPane(description);</span>
+<span class="nc" id="L152">        area.setVerticalScrollBarPolicy(</span>
+                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+<span class="nc" id="L154">        area.setPreferredSize(new Dimension(400, 370));</span>
+        
+<span class="nc" id="L156">        description.setMargin(new Insets(3, 3, 3, 3));</span>
+<span class="nc" id="L157">        description.setLineWrap(true);</span>
+<span class="nc" id="L158">        description.setWrapStyleWord(true);</span>
+        
+        
+<span class="nc" id="L161">        JPanel descPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L162">        descPanel.setPreferredSize(new Dimension(380, 370));</span>
+<span class="nc" id="L163">        descPanel.add(lblDescription, BorderLayout.NORTH);</span>
+<span class="nc" id="L164">        descPanel.add(description, BorderLayout.CENTER);</span>
+        
+        
+<span class="nc" id="L167">        Insets descPanelInsets = new Insets(2, 20, 2, -12);</span>
+<span class="nc" id="L168">        GridBagConstraints descConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L169">        descConstraints.gridx = 0;</span>
+<span class="nc" id="L170">        descConstraints.gridy = 2;</span>
+<span class="nc" id="L171">        descConstraints.gridwidth = 3;</span>
+<span class="nc" id="L172">        descConstraints.gridheight = 4;</span>
+<span class="nc" id="L173">        descConstraints.weightx = 0.8;</span>
+<span class="nc" id="L174">        descConstraints.weighty = 0.8;</span>
+<span class="nc" id="L175">        descConstraints.anchor = GridBagConstraints.LINE_START;</span>
+<span class="nc" id="L176">        descConstraints.insets = descPanelInsets;</span>
+<span class="nc" id="L177">        descConstraints.fill = GridBagConstraints.BOTH;</span>
+        
+<span class="nc" id="L179">        top.add(descPanel, descConstraints);</span>
+
+        /* This non-editable field shows 
+         * the version of the ArgoUML 
+         * that last saved this project: */
+<span class="nc" id="L184">        labelConstraints.gridy = 6;</span>
+<span class="nc" id="L185">        fieldConstraints.gridy = 6;</span>
+<span class="nc" id="L186">        fieldConstraints.weighty = 0.0;</span>
+<span class="nc" id="L187">        labelConstraints.weighty = 0.0;</span>
+<span class="nc" id="L188">        top.add(new JLabel(Translator.localize(&quot;label.argouml.version&quot;)),</span>
+                labelConstraints);
+<span class="nc" id="L190">        version = new JTextField();</span>
+<span class="nc" id="L191">        version.setEditable(false);</span>
+<span class="nc" id="L192">        top.add(version, fieldConstraints);</span>
+
+        /* We need to fill the whole pane, 
+         * so that the description field can 
+         * take all available space: */
+<span class="nc" id="L197">        add(top, BorderLayout.CENTER);</span>
+<span class="nc" id="L198">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
+     */
+    public void handleSettingsTabRefresh() {
+<span class="nc bnc" id="L204" title="All 4 branches missed.">        assert p != null;</span>
+<span class="nc" id="L205">        userFullname.setText(p.getAuthorname());</span>
+<span class="nc" id="L206">        userEmail.setText(p.getAuthoremail());</span>
+<span class="nc" id="L207">        description.setText(p.getDescription());</span>
+<span class="nc" id="L208">        description.setCaretPosition(0);</span>
+<span class="nc" id="L209">        version.setText(p.getVersion());</span>
+<span class="nc" id="L210">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
+     */
+    public void handleSettingsTabSave() {
+<span class="nc bnc" id="L216" title="All 4 branches missed.">        assert p != null;</span>
+<span class="nc" id="L217">        p.setAuthorname(userFullname.getText());</span>
+<span class="nc" id="L218">        p.setAuthoremail(userEmail.getText());</span>
+<span class="nc" id="L219">        p.setDescription(description.getText());</span>
+        
+<span class="nc" id="L221">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
+     */
+    public void handleSettingsTabCancel() {
+<span class="nc" id="L227">        handleSettingsTabRefresh();</span>
+<span class="nc" id="L228">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+<span class="nc" id="L234">        userFullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));</span>
+<span class="nc" id="L235">        userEmail.setText(Configuration.getString(Argo.KEY_USER_EMAIL));</span>
+        // There is no default description.
+<span class="nc" id="L237">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
+     */
+<span class="nc" id="L242">    public String getTabKey() { return &quot;tab.user&quot;; }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
+     */
+<span class="nc" id="L247">    public JPanel getTabPanel() { return this; }</span>
+
+    public void setProject(Project project) {
+<span class="nc bnc" id="L250" title="All 4 branches missed.">        assert project != null;</span>
+<span class="nc" id="L251">        p = project;</span>
+<span class="nc" id="L252">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

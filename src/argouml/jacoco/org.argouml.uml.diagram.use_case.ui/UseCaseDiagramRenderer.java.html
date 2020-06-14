@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UseCaseDiagramRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.use_case.ui</a> &gt; <span class="el_source">UseCaseDiagramRenderer.java</span></div><h1>UseCaseDiagramRenderer.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.use_case.ui;
+
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.uml.diagram.GraphChangeAdapter;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+// could be singleton
+
+/**
+ * This class defines a renderer object for UML Use Case Diagrams. In a
+ * Class Diagram the following UML objects are displayed with the
+ * following Figs:&lt;p&gt;
+ *
+ * &lt;pre&gt;
+ *   UML Object       ---  Fig
+ *   ---------------------------------------
+ *   MActor           ---  FigActor
+ *   MUseCase         ---  FigUseCase
+ * &lt;/pre&gt;
+ *
+ * Provides {@link #getFigNodeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphNodeRenderer} interface and
+ * {@link #getFigEdgeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphEdgeRenderer} interface.&lt;p&gt;
+ *
+ * &lt;em&gt;Note&lt;/em&gt;. Should be implemented as a singleton - we don't really
+ * need a separate instance for each use case diagram.&lt;p&gt;
+ *
+ * @author abonner
+ */
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">public class UseCaseDiagramRenderer extends UmlDiagramRenderer {</span>
+
+    static final long serialVersionUID = 2217410137377934879L;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L96">    private static final Logger LOG =</span>
+<span class="fc" id="L97">        Logger.getLogger(UseCaseDiagramRenderer.class.getName());</span>
+
+
+    /**
+     * Return a Fig that can be used to represent the given node.&lt;p&gt;
+     *
+     * @param gm    The graph model for which we are rendering.
+     *
+     * @param lay   The layer in the graph on which we want this figure.
+     *
+     * @param node  The node to be rendered (an model element object)
+     *
+     * @param styleAttributes an optional map of attributes to style the fig
+     *
+     * @return      The fig to be used, or &lt;code&gt;null&lt;/code&gt; if we can't create
+     *              one.
+     */
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
+            Map styleAttributes) {
+
+<span class="nc" id="L117">        FigNodeModelElement figNode = null;</span>
+
+        // Create a new version of the relevant fig
+
+<span class="nc" id="L121">        ArgoDiagram diag = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (diag instanceof UMLDiagram</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            &amp;&amp; ((UMLDiagram) diag).doesAccept(node)) {</span>
+<span class="nc" id="L124">            figNode =</span>
+<span class="nc" id="L125">                (FigNodeModelElement) ((UMLDiagram) diag).drop(node, null);</span>
+
+        } else {
+<span class="nc" id="L128">            LOG.log(Level.FINE,</span>
+                  &quot;{0}: getFigNodeFor({1}, {2}, {3}) - cannot create this sort of node.&quot;,
+<span class="nc" id="L130">                  new Object[]{this.getClass(), gm, lay, node});</span>
+<span class="nc" id="L131">            return null;</span>
+            // TODO: Shouldn't we throw an exception here?!?!
+        }
+
+<span class="nc" id="L135">        lay.add(figNode);</span>
+<span class="nc" id="L136">        figNode.setDiElement(</span>
+<span class="nc" id="L137">                GraphChangeAdapter.getInstance().createElement(gm, node));</span>
+
+<span class="nc" id="L139">        return figNode;</span>
+    }
+
+
+    /**
+     * Return a Fig that can be used to represent the given edge.&lt;p&gt;
+     *
+     * Generally the same code as for the ClassDiagram, since it's very
+     * related to it. Deal with each of the edge types in turn.&lt;p&gt;
+     *
+     * @param gm    The graph model for which we are rendering.
+     *
+     * @param lay   The layer in the graph on which we want this figure.
+     *
+     * @param edge  The edge to be rendered (an model element object)
+     *
+     * @param styleAttributes an optional map of attributes to style the fig
+     *
+     * @return      The fig to be used, or &lt;code&gt;null&lt;/code&gt; if we can't create
+     *              one.
+     *
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
+     */
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
+            Map styleAttributes) {
+
+<span class="nc" id="L167">        LOG.log(Level.FINE, &quot;making figedge for {0}&quot;, edge);</span>
+
+<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (edge == null) {</span>
+<span class="nc" id="L170">            throw new IllegalArgumentException(&quot;A model edge must be supplied&quot;);</span>
+        }
+
+<span class="nc bnc" id="L173" title="All 4 branches missed.">        assert lay instanceof LayerPerspective;</span>
+<span class="nc" id="L174">        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();</span>
+<span class="nc" id="L175">        DiagramSettings settings = diag.getDiagramSettings();</span>
+
+<span class="nc" id="L177">        FigEdge newEdge = null;</span>
+
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (Model.getFacade().isAAssociation(edge)) {</span>
+            final Object[] associationEnds =
+<span class="nc" id="L181">                Model.getFacade().getConnections(edge).toArray();</span>
+<span class="nc" id="L182">            newEdge = new FigAssociation(</span>
+                    new DiagramEdgeSettings(
+                            edge,
+                            associationEnds[0],
+                            associationEnds[1]),
+                            settings);
+<span class="nc" id="L188">            final FigNode sourceFig =</span>
+<span class="nc" id="L189">                getFigNodeForAssociationEnd(diag, associationEnds[0]);</span>
+<span class="nc" id="L190">            final FigNode destFig =</span>
+<span class="nc" id="L191">                getFigNodeForAssociationEnd(diag, associationEnds[1]);</span>
+<span class="nc" id="L192">            newEdge.setSourceFigNode(sourceFig);</span>
+<span class="nc" id="L193">            newEdge.setSourcePortFig(sourceFig);</span>
+<span class="nc" id="L194">            newEdge.setDestFigNode(destFig);</span>
+<span class="nc" id="L195">            newEdge.setDestPortFig(destFig);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        } else if (Model.getFacade().isAGeneralization(edge)) {</span>
+<span class="nc" id="L197">            newEdge = new FigGeneralization(edge, settings);</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        } else if (Model.getFacade().isAExtend(edge)) {</span>
+<span class="nc" id="L199">            newEdge = new FigExtend(edge, settings);</span>
+
+            // The nodes at the two ends
+<span class="nc" id="L202">            Object base = Model.getFacade().getBase(edge);</span>
+<span class="nc" id="L203">            Object extension = Model.getFacade().getExtension(edge);</span>
+
+            // The figs for the two end nodes
+<span class="nc" id="L206">            FigNode baseFN = (FigNode) lay.presentationFor(base);</span>
+<span class="nc" id="L207">            FigNode extensionFN = (FigNode) lay.presentationFor(extension);</span>
+
+            // Link the new extend relationship in to the ends. Remember we
+            // draw from the extension use case to the base use case.
+<span class="nc" id="L211">            newEdge.setSourcePortFig(extensionFN);</span>
+<span class="nc" id="L212">            newEdge.setSourceFigNode(extensionFN);</span>
+
+<span class="nc" id="L214">            newEdge.setDestPortFig(baseFN);</span>
+<span class="nc" id="L215">            newEdge.setDestFigNode(baseFN);</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">        } else if (Model.getFacade().isAInclude(edge)) {</span>
+<span class="nc" id="L218">            newEdge = new FigInclude(edge, settings);</span>
+
+<span class="nc" id="L220">            Object base = Model.getFacade().getBase(edge);</span>
+<span class="nc" id="L221">            Object addition = Model.getFacade().getAddition(edge);</span>
+
+            // The figs for the two end nodes
+<span class="nc" id="L224">            FigNode baseFN = (FigNode) lay.presentationFor(base);</span>
+<span class="nc" id="L225">            FigNode additionFN = (FigNode) lay.presentationFor(addition);</span>
+
+            // Link the new include relationship in to the ends
+<span class="nc" id="L228">            newEdge.setSourcePortFig(baseFN);</span>
+<span class="nc" id="L229">            newEdge.setSourceFigNode(baseFN);</span>
+
+<span class="nc" id="L231">            newEdge.setDestPortFig(additionFN);</span>
+<span class="nc" id="L232">            newEdge.setDestFigNode(additionFN);</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        } else if (Model.getFacade().isADependency(edge)) {</span>
+<span class="nc" id="L234">            newEdge = new FigDependency(edge, settings);</span>
+
+            // Where there is more than one supplier or client, take the first
+            // element in each case. There really ought to be a check that
+            // there are some here for safety.
+
+            Object supplier =
+<span class="nc" id="L241">                 ((Model.getFacade().getSuppliers(edge).toArray())[0]);</span>
+            Object client =
+<span class="nc" id="L243">                 ((Model.getFacade().getClients(edge).toArray())[0]);</span>
+
+            // The figs for the two end nodes
+<span class="nc" id="L246">            FigNode supplierFN = (FigNode) lay.presentationFor(supplier);</span>
+<span class="nc" id="L247">            FigNode clientFN = (FigNode) lay.presentationFor(client);</span>
+
+            // Link the new dependency in to the ends
+<span class="nc" id="L250">            newEdge.setSourcePortFig(clientFN);</span>
+<span class="nc" id="L251">            newEdge.setSourceFigNode(clientFN);</span>
+
+<span class="nc" id="L253">            newEdge.setDestPortFig(supplierFN);</span>
+<span class="nc" id="L254">            newEdge.setDestFigNode(supplierFN);</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">        } else if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L257">            newEdge = new FigEdgeNote(edge, settings);</span>
+        }
+
+<span class="nc" id="L260">        addEdge(lay, newEdge, edge);</span>
+<span class="nc" id="L261">        return newEdge;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

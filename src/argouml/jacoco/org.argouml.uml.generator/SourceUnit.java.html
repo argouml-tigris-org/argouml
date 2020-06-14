@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SourceUnit.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.generator</a> &gt; <span class="el_source">SourceUnit.java</span></div><h1>SourceUnit.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.generator;
+
+/**
+ * Information about a source unit and its content, whether
+ * it exists only in memory or it's stored in a file.
+ * 
+ * TODO: Making this an interface instead of a class would allow 
+ * more flexibility in dealing with non-file-based resources. - tfm
+ * 
+ * @author aslo
+ */
+public class SourceUnit {
+    /**
+     * The file seperator for this operating system.
+     */
+<span class="nc" id="L54">    public static final String FILE_SEPARATOR =</span>
+<span class="nc" id="L55">        System.getProperty(&quot;file.separator&quot;);</span>
+
+    private Language language;
+    private String name;
+    private String basePath;
+    private String content;
+
+    /**
+     * @param theName Name of the unit.
+     * @param path The path relative to the project source path.
+     * @param theContent The source code of the unit.
+     */
+<span class="nc" id="L67">    public SourceUnit(String theName, String path, String theContent) {</span>
+<span class="nc" id="L68">        setName(theName);</span>
+<span class="nc" id="L69">        setBasePath(path);</span>
+<span class="nc" id="L70">        this.content = theContent;</span>
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * @param fullName Name with path relative to the project source path.
+     * @param theContent The source code of the unit.
+     */
+<span class="nc" id="L77">    public SourceUnit(String fullName, String theContent) {</span>
+<span class="nc" id="L78">        setFullName(fullName);</span>
+<span class="nc" id="L79">        content = theContent;</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * @return Returns the source code of the unit.
+     */
+    public String getContent() {
+<span class="nc" id="L86">        return content;</span>
+    }
+
+    /**
+     * @param theContent The source code for this unit.
+     */
+    public void setContent(String theContent) {
+<span class="nc" id="L93">        this.content = theContent;</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * @return Returns the file name of this unit, without path.
+     */
+    public String getName() {
+<span class="nc" id="L100">        return name;</span>
+    }
+
+    /**
+     * @param filename The file name of this unit, without path.
+     */
+    public void setName(String filename) {
+<span class="nc" id="L107">        int sep = filename.lastIndexOf(FILE_SEPARATOR);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (sep &gt;= 0) {</span>
+<span class="nc" id="L109">            name = filename.substring(sep + FILE_SEPARATOR.length());</span>
+        } else {
+<span class="nc" id="L111">            name = filename;</span>
+        }
+<span class="nc" id="L113">    }</span>
+
+    /**
+     * @return Returns The base path of the unit (relative to the
+     * project source path).
+     */
+    public String getBasePath() {
+<span class="nc" id="L120">        return basePath;</span>
+    }
+
+    /**
+     * @param path The base path of the unit (relative to the
+     * project source path).
+     */
+    public void setBasePath(String path) {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (path.endsWith(FILE_SEPARATOR)) {</span>
+<span class="nc" id="L129">            basePath =</span>
+<span class="nc" id="L130">                path.substring(0, path.length() - FILE_SEPARATOR.length());</span>
+        } else {
+<span class="nc" id="L132">            basePath = path;</span>
+        }
+<span class="nc" id="L134">    }</span>
+
+    /**
+     * @return Returns The name with path of the unit (relative to the
+     * project source path).
+     */
+    public String getFullName() {
+<span class="nc" id="L141">        return basePath + System.getProperty(&quot;file.separator&quot;) + name;</span>
+    }
+
+    /**
+     * @param path The full name (with path) of the unit, relative to the
+     * project source path.
+     */
+    public void setFullName(String path) {
+<span class="nc" id="L149">        int sep = path.lastIndexOf(FILE_SEPARATOR);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (sep &gt;= 0) {</span>
+<span class="nc" id="L151">            basePath = path.substring(0, sep);</span>
+<span class="nc" id="L152">            name = path.substring(sep + FILE_SEPARATOR.length());</span>
+        } else {
+<span class="nc" id="L154">            basePath = &quot;&quot;;</span>
+<span class="nc" id="L155">            name = path;</span>
+        }
+<span class="nc" id="L157">    }</span>
+
+    /**
+     * @return Returns the language.
+     */
+    public Language getLanguage() {
+<span class="nc" id="L163">        return language;</span>
+    }
+
+    /**
+     * @param lang The language to set.
+     */
+    public void setLanguage(Language lang) {
+<span class="nc" id="L170">        this.language = lang;</span>
+<span class="nc" id="L171">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

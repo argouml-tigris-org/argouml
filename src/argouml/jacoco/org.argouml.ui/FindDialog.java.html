@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FindDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">FindDialog.java</span></div><h1>FindDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.swingext.SpacerPanel;
+import org.argouml.uml.PredicateSearch;
+import org.argouml.util.ArgoDialog;
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateStringMatch;
+import org.argouml.util.PredicateType;
+
+
+/**
+ * Main dialog for Find function.
+ *
+ * This is one of the few dialog boxes in Argo that is
+ * non-modal (so that the user can keep the results on
+ * the screen while they work with them).&lt;p&gt;
+ *
+ * The search is buggy and needs work.
+ * &lt;p&gt;
+ * NOTE: An incompatible change was made to the public API for this class
+ * before the release of ArgoUML 0.26 to remove exposed internal implementation
+ * details (GEF).
+
+ */
+public class FindDialog extends ArgoDialog
+    implements ActionListener, MouseListener {
+
+    private static FindDialog instance;
+<span class="nc" id="L95">    private static int nextResultNum = 1;</span>
+
+    private static int numFinds;
+
+    /**
+     * Insets in pixels.
+     */
+    private static final int INSET_PX = 3;
+
+<span class="nc" id="L104">    private JButton     search     =</span>
+	new JButton(
+<span class="nc" id="L106">            Translator.localize(&quot;dialog.find.button.find&quot;));</span>
+<span class="nc" id="L107">    private JButton     clearTabs  =</span>
+	new JButton(
+<span class="nc" id="L109">            Translator.localize(&quot;dialog.find.button.clear-tabs&quot;));</span>
+//    private JTabbedPane tabs = new JTabbedPane();
+
+<span class="nc" id="L112">    private JPanel nameLocTab = new JPanel();</span>
+
+//    private JPanel modifiedTab = new JPanel();
+
+//    private JPanel tagValsTab = new JPanel();
+
+//    private JPanel constraintsTab = new JPanel();
+
+<span class="nc" id="L120">    private JComboBox elementName = new JComboBox();</span>
+
+<span class="nc" id="L122">    private JComboBox diagramName = new JComboBox();</span>
+
+<span class="nc" id="L124">    private JComboBox location = new JComboBox();</span>
+
+<span class="nc" id="L126">    private JComboBox type = new JComboBox();</span>
+
+<span class="nc" id="L128">    private JPanel typeDetails = new JPanel();</span>
+
+<span class="nc" id="L130">    private JTabbedPane results = new JTabbedPane();</span>
+
+<span class="nc" id="L132">    private JPanel help = new JPanel();</span>
+
+<span class="nc" id="L134">    private List&lt;TabResults&gt; resultTabs = new ArrayList&lt;TabResults&gt;();</span>
+
+    /**
+     * @return the instance of this dialog
+     */
+    public static FindDialog getInstance() {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        if (instance == null) {</span>
+<span class="nc" id="L141">            instance = new FindDialog();</span>
+        }
+<span class="nc" id="L143">        return instance;</span>
+    }
+
+    /**
+     * The constructor.
+     *
+     */
+    public FindDialog() {
+<span class="nc" id="L151">        super(Translator.localize(&quot;dialog.find.title&quot;),</span>
+              ArgoDialog.OK_CANCEL_OPTION, false);
+
+<span class="nc" id="L154">        JPanel mainPanel = new JPanel(new BorderLayout());</span>
+
+<span class="nc" id="L156">        initNameLocTab();</span>
+//        tabs.addTab(Translator.localize(&quot;dialog.find.tab.name-and-location&quot;),
+//                nameLocTab);
+
+        // penyaskito says: According to issue 2501, I have removed the tabs.
+//        initModifiedTab();
+//        tabs.addTab(Translator.localize(&quot;dialog.find.tab.last-modified&quot;),
+//                modifiedTab);
+//        tabs.setEnabledAt(1, false);
+
+//        initTagValsTab();
+//        tabs.addTab(Translator.localize(&quot;dialog.find.tab.tagged-values&quot;),
+//                tagValsTab);
+//        tabs.setEnabledAt(2, false);
+
+//        initConstraintsTab();
+//        tabs.addTab(Translator.localize(&quot;tab.constraints&quot;),
+//		     constraintsTab);
+//        tabs.setEnabledAt(3, false);
+
+//        tabs.setMinimumSize(new Dimension(300, 250));
+
+//        JPanel north = new JPanel();
+//        north.setLayout(new BorderLayout());
+//        north.add(tabs, BorderLayout.CENTER);
+        
+//        mainPanel.add(north, BorderLayout.NORTH);
+
+<span class="nc" id="L184">        mainPanel.add(nameLocTab, BorderLayout.NORTH);</span>
+        
+<span class="nc" id="L186">        initHelpTab();</span>
+<span class="nc" id="L187">        results.addTab(Translator.localize(&quot;dialog.find.tab.help&quot;), help);</span>
+<span class="nc" id="L188">        mainPanel.add(results, BorderLayout.CENTER);</span>
+
+<span class="nc" id="L190">        search.addActionListener(this);</span>
+<span class="nc" id="L191">        results.addMouseListener(this);</span>
+
+<span class="nc" id="L193">        clearTabs.addActionListener(this);</span>
+<span class="nc" id="L194">        clearTabs.setEnabled(false);</span>
+
+<span class="nc" id="L196">        setContent(mainPanel);</span>
+
+<span class="nc" id="L198">        getOkButton().setEnabled(false);</span>
+<span class="nc" id="L199">    }</span>
+
+    /**
+     * Initialise the tab &quot;Name and Location&quot;.
+     */
+    private void initNameLocTab() {
+<span class="nc" id="L205">        elementName.setEditable(true);</span>
+        // TODO: Don't use hardcoded colors here - tfm
+<span class="nc" id="L207">        elementName.getEditor()</span>
+<span class="nc" id="L208">	    .getEditorComponent().setBackground(Color.white);</span>
+<span class="nc" id="L209">        diagramName.setEditable(true);</span>
+<span class="nc" id="L210">        diagramName.getEditor()</span>
+<span class="nc" id="L211">	    .getEditorComponent().setBackground(Color.white);</span>
+
+<span class="nc" id="L213">        elementName.addItem(&quot;*&quot;);</span>
+<span class="nc" id="L214">        diagramName.addItem(&quot;*&quot;);</span>
+
+        // TODO: add recent patterns
+<span class="nc" id="L217">        GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L218">        nameLocTab.setLayout(gb);</span>
+
+<span class="nc" id="L220">        JLabel elementNameLabel =</span>
+	    new JLabel(
+<span class="nc" id="L222">                Translator.localize(&quot;dialog.find.label.element-name&quot;));</span>
+<span class="nc" id="L223">        JLabel diagramNameLabel =</span>
+	    new JLabel(
+<span class="nc" id="L225">                Translator.localize(&quot;dialog.find.label.in-diagram&quot;));</span>
+<span class="nc" id="L226">        JLabel typeLabel =</span>
+	    new JLabel(
+<span class="nc" id="L228">                Translator.localize(&quot;dialog.find.label.element-type&quot;));</span>
+<span class="nc" id="L229">        JLabel locLabel =</span>
+	    new JLabel(
+<span class="nc" id="L231">                Translator.localize(&quot;dialog.find.label.find-in&quot;));</span>
+
+<span class="nc" id="L233">        location.addItem(</span>
+<span class="nc" id="L234">                Translator.localize(&quot;dialog.find.comboboxitem.entire-project&quot;));</span>
+<span class="nc" id="L235">        initTypes();</span>
+
+<span class="nc" id="L237">        typeDetails.setMinimumSize(new Dimension(200, 100));</span>
+<span class="nc" id="L238">        typeDetails.setPreferredSize(new Dimension(200, 100));</span>
+<span class="nc" id="L239">        typeDetails.setSize(new Dimension(200, 100));</span>
+
+<span class="nc" id="L241">        GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L242">        c.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L243">        c.ipadx = 3; c.ipady = 3;</span>
+<span class="nc" id="L244">        c.gridwidth = 1;</span>
+
+<span class="nc" id="L246">        c.gridx = 0;     c.gridy = 0;</span>
+<span class="nc" id="L247">        c.weightx = 0.0;</span>
+<span class="nc" id="L248">        gb.setConstraints(elementNameLabel, c);</span>
+<span class="nc" id="L249">        nameLocTab.add(elementNameLabel);</span>
+
+<span class="nc" id="L251">        c.gridx = 1;     c.gridy = 0;</span>
+<span class="nc" id="L252">        c.weightx = 1.0;</span>
+<span class="nc" id="L253">        gb.setConstraints(elementName, c);</span>
+<span class="nc" id="L254">        nameLocTab.add(elementName);</span>
+
+<span class="nc" id="L256">        c.gridx = 0;     c.gridy = 1;</span>
+<span class="nc" id="L257">        c.weightx = 0.0;</span>
+<span class="nc" id="L258">        gb.setConstraints(diagramNameLabel, c);</span>
+<span class="nc" id="L259">        nameLocTab.add(diagramNameLabel);</span>
+
+<span class="nc" id="L261">        c.gridx = 1;     c.gridy = 1;</span>
+<span class="nc" id="L262">        c.weightx = 1.0;</span>
+<span class="nc" id="L263">        gb.setConstraints(diagramName, c);</span>
+<span class="nc" id="L264">        nameLocTab.add(diagramName);</span>
+
+        // open space at gridy = 2;
+
+<span class="nc" id="L268">        c.gridx = 0;     c.gridy = 3;</span>
+<span class="nc" id="L269">        c.weightx = 0.0;</span>
+<span class="nc" id="L270">        gb.setConstraints(locLabel, c);</span>
+<span class="nc" id="L271">        nameLocTab.add(locLabel);</span>
+
+<span class="nc" id="L273">        c.gridx = 1;     c.gridy = 3;</span>
+<span class="nc" id="L274">        c.weightx = 1.0;</span>
+<span class="nc" id="L275">        gb.setConstraints(location, c);</span>
+<span class="nc" id="L276">        nameLocTab.add(location);</span>
+
+<span class="nc" id="L278">        SpacerPanel spacer = new SpacerPanel();</span>
+<span class="nc" id="L279">        c.gridx = 2;     c.gridy = 0;</span>
+<span class="nc" id="L280">        c.weightx = 0.0;</span>
+<span class="nc" id="L281">        gb.setConstraints(spacer, c);</span>
+<span class="nc" id="L282">        nameLocTab.add(spacer);</span>
+
+<span class="nc" id="L284">        c.gridx = 3;     c.gridy = 0;</span>
+<span class="nc" id="L285">        c.weightx = 0.0;</span>
+<span class="nc" id="L286">        gb.setConstraints(typeLabel, c);</span>
+<span class="nc" id="L287">        nameLocTab.add(typeLabel);</span>
+
+<span class="nc" id="L289">        c.gridx = 4;     c.gridy = 0;</span>
+<span class="nc" id="L290">        c.weightx = 1.0;</span>
+<span class="nc" id="L291">        gb.setConstraints(type, c);</span>
+<span class="nc" id="L292">        nameLocTab.add(type);</span>
+
+<span class="nc" id="L294">        c.gridx = 3;     c.gridy = 1;</span>
+<span class="nc" id="L295">        c.gridwidth = 2; c.gridheight = 5;</span>
+<span class="nc" id="L296">        gb.setConstraints(typeDetails, c);</span>
+<span class="nc" id="L297">        nameLocTab.add(typeDetails);</span>
+
+<span class="nc" id="L299">        JPanel searchPanel = new JPanel();</span>
+<span class="nc" id="L300">        searchPanel.setLayout(new GridLayout(1, 2, 5, 5));</span>
+<span class="nc" id="L301">        searchPanel.add(clearTabs);</span>
+<span class="nc" id="L302">        searchPanel.add(search);</span>
+<span class="nc" id="L303">        searchPanel.setBorder(new EmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L304">        c.gridx = 0;     c.gridy = 4;</span>
+<span class="nc" id="L305">        c.weightx = 0.0; c.weighty = 0.0;</span>
+<span class="nc" id="L306">        c.gridwidth = 2; c.gridheight = 1;</span>
+<span class="nc" id="L307">        gb.setConstraints(searchPanel, c);</span>
+<span class="nc" id="L308">        nameLocTab.add(searchPanel);</span>
+<span class="nc" id="L309">    }</span>
+
+    /**
+     * Initialise the help tab.
+     */
+    private void initHelpTab() {
+<span class="nc" id="L315">        help.setLayout(new BorderLayout());</span>
+<span class="nc" id="L316">        JTextArea helpText = new JTextArea();</span>
+<span class="nc" id="L317">        helpText.setText(Translator.localize(&quot;dialog.find.helptext&quot;));</span>
+<span class="nc" id="L318">        helpText.setEditable(false);</span>
+<span class="nc" id="L319">        helpText.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));</span>
+<span class="nc" id="L320">        help.add(new JScrollPane(helpText), BorderLayout.CENTER);</span>
+<span class="nc" id="L321">    }</span>
+
+
+    /**
+     * Init the modelelement types that we can look for.
+     */
+    private void initTypes() {
+<span class="nc" id="L328">        type.addItem(PredicateMType.create()); // Any type</span>
+
+<span class="nc" id="L330">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L331">                Model.getMetaTypes().getUMLClass()));</span>
+<span class="nc" id="L332">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L333">                Model.getMetaTypes().getInterface()));</span>
+<span class="nc" id="L334">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L335">                Model.getMetaTypes().getAction()));</span>
+        // Not in UML 2.x (or metatypes)
+//        type.addItem(PredicateMType.create(
+//                Model.getMetaTypes().getActivityGraph()));
+<span class="nc" id="L339">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L340">                Model.getMetaTypes().getActor()));</span>
+<span class="nc" id="L341">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L342">                Model.getMetaTypes().getAssociation()));</span>
+<span class="nc" id="L343">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L344">                Model.getMetaTypes().getAssociationClass()));</span>
+<span class="nc" id="L345">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L346">                Model.getMetaTypes().getAssociationEndRole()));</span>
+<span class="nc" id="L347">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L348">                Model.getMetaTypes().getAssociationRole()));</span>
+<span class="nc" id="L349">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L350">                Model.getMetaTypes().getArtifact()));</span>
+<span class="nc" id="L351">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L352">                Model.getMetaTypes().getAttribute()));</span>
+<span class="nc" id="L353">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L354">                Model.getMetaTypes().getClassifier()));</span>
+<span class="nc" id="L355">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L356">                Model.getMetaTypes().getClassifierRole()));</span>
+<span class="nc" id="L357">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L358">                Model.getMetaTypes().getCollaboration()));</span>
+<span class="nc" id="L359">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L360">                Model.getMetaTypes().getComment()));</span>
+<span class="nc" id="L361">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L362">                Model.getMetaTypes().getComponent()));</span>
+<span class="nc" id="L363">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L364">                Model.getMetaTypes().getCompositeState()));</span>
+<span class="nc" id="L365">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L366">                Model.getMetaTypes().getConstraint()));</span>
+<span class="nc" id="L367">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L368">                Model.getMetaTypes().getDataType()));</span>
+<span class="nc" id="L369">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L370">                Model.getMetaTypes().getDependency()));</span>
+<span class="nc" id="L371">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L372">                Model.getMetaTypes().getElementImport()));</span>
+<span class="nc" id="L373">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L374">                Model.getMetaTypes().getEnumeration()));</span>
+<span class="nc" id="L375">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L376">                Model.getMetaTypes().getEnumerationLiteral()));</span>
+<span class="nc" id="L377">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L378">                Model.getMetaTypes().getException()));</span>
+<span class="nc" id="L379">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L380">                Model.getMetaTypes().getExtend()));</span>
+<span class="nc" id="L381">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L382">                Model.getMetaTypes().getExtensionPoint()));</span>
+<span class="nc" id="L383">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L384">                Model.getMetaTypes().getGuard()));</span>
+<span class="nc" id="L385">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L386">                Model.getMetaTypes().getGeneralization()));</span>
+<span class="nc" id="L387">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L388">                Model.getMetaTypes().getInclude()));</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L390">            type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L391">                    Model.getMetaTypes().getInstance()));</span>
+        }
+<span class="nc" id="L393">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L394">                Model.getMetaTypes().getInteraction()));</span>
+<span class="nc" id="L395">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L396">                Model.getMetaTypes().getInterface()));</span>
+<span class="nc" id="L397">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L398">                Model.getMetaTypes().getLink()));</span>
+<span class="nc" id="L399">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L400">                Model.getMetaTypes().getMessage()));</span>
+<span class="nc" id="L401">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L402">                Model.getMetaTypes().getModel()));</span>
+<span class="nc" id="L403">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L404">                Model.getMetaTypes().getNode()));</span>
+<span class="nc" id="L405">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L406">                Model.getMetaTypes().getPackage()));</span>
+<span class="nc" id="L407">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L408">                Model.getMetaTypes().getParameter()));</span>
+<span class="nc" id="L409">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L410">                Model.getMetaTypes().getPartition()));</span>
+<span class="nc" id="L411">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L412">                Model.getMetaTypes().getPseudostate()));</span>
+<span class="nc" id="L413">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L414">                Model.getMetaTypes().getOperation()));</span>
+<span class="nc" id="L415">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L416">                Model.getMetaTypes().getSignal()));</span>
+<span class="nc" id="L417">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L418">                Model.getMetaTypes().getState()));</span>
+<span class="nc" id="L419">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L420">                Model.getMetaTypes().getStateMachine()));</span>
+<span class="nc" id="L421">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L422">                Model.getMetaTypes().getStateVertex()));</span>
+<span class="nc" id="L423">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L424">                Model.getMetaTypes().getStereotype()));</span>
+<span class="nc" id="L425">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L426">                Model.getMetaTypes().getTagDefinition()));</span>
+<span class="nc" id="L427">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L428">                Model.getMetaTypes().getTemplateArgument()));</span>
+<span class="nc" id="L429">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L430">                Model.getMetaTypes().getTemplateParameter()));</span>
+<span class="nc" id="L431">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L432">                Model.getMetaTypes().getTransition()));</span>
+<span class="nc" id="L433">        type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L434">                Model.getMetaTypes().getUseCase()));</span>
+        
+        // TODO: Can we move this knowledge behind model facade rather than have a condition here?
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="nc" id="L438">            type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L439">                    Model.getMetaTypes().getSimpleState()));</span>
+<span class="nc" id="L440">            type.addItem(PredicateMType.create(</span>
+<span class="nc" id="L441">                    Model.getMetaTypes().getTaggedValue()));</span>
+        }
+<span class="nc" id="L443">    }</span>
+
+    /*
+     * @see org.tigris.swidgets.Dialog#nameButtons()
+     */
+    @Override
+    protected void nameButtons() {
+<span class="nc" id="L450">        super.nameButtons();</span>
+<span class="nc" id="L451">        nameButton(getOkButton(), &quot;button.go-to-selection&quot;);</span>
+<span class="nc" id="L452">        nameButton(getCancelButton(), &quot;button.close&quot;);</span>
+<span class="nc" id="L453">    }</span>
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(
+     * java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (e.getSource() == search) {</span>
+<span class="nc" id="L462">            doSearch();</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">        } else if (e.getSource() == clearTabs) {</span>
+<span class="nc" id="L464">            doClearTabs();</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">        } else if (e.getSource() == getOkButton()) {</span>
+<span class="nc" id="L466">            doGoToSelection();</span>
+        } else {
+<span class="nc" id="L468">            super.actionPerformed(e);</span>
+        }
+<span class="nc" id="L470">    }</span>
+
+
+    /**
+     * Do the search.
+     */
+    private void doSearch() {
+<span class="nc" id="L477">        numFinds++;</span>
+<span class="nc" id="L478">        String eName = &quot;&quot;;</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">        if (elementName.getSelectedItem() != null) {</span>
+<span class="nc" id="L480">            eName += elementName.getSelectedItem();</span>
+<span class="nc" id="L481">            elementName.removeItem(eName);</span>
+<span class="nc" id="L482">            elementName.insertItemAt(eName, 0);</span>
+<span class="nc" id="L483">            elementName.setSelectedItem(eName);</span>
+        }
+<span class="nc" id="L485">        String dName = &quot;&quot;;</span>
+<span class="nc bnc" id="L486" title="All 2 branches missed.">        if (diagramName.getSelectedItem() != null) {</span>
+<span class="nc" id="L487">            dName += diagramName.getSelectedItem();</span>
+<span class="nc" id="L488">            diagramName.removeItem(dName);</span>
+<span class="nc" id="L489">            diagramName.insertItemAt(dName, 0);</span>
+<span class="nc" id="L490">            diagramName.setSelectedItem(dName);</span>
+        }
+<span class="nc" id="L492">        String name = eName;</span>
+<span class="nc bnc" id="L493" title="All 2 branches missed.">        if (dName.length() &gt; 0) {</span>
+<span class="nc" id="L494">            Object[] msgArgs = {name, dName };</span>
+<span class="nc" id="L495">            name =</span>
+<span class="nc" id="L496">		Translator.messageFormat(</span>
+                    &quot;dialog.find.comboboxitem.element-in-diagram&quot;, msgArgs);
+            //name += &quot; in &quot; + dName;
+        }
+<span class="nc" id="L500">        String typeName = type.getSelectedItem().toString();</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        if (!typeName.equals(&quot;Any Type&quot;)) {</span>
+<span class="nc" id="L502">            name += &quot; &quot; + typeName;</span>
+        }
+<span class="nc bnc" id="L504" title="All 2 branches missed.">        if (name.length() == 0) {</span>
+<span class="nc" id="L505">            name =</span>
+<span class="nc" id="L506">                Translator.localize(&quot;dialog.find.tabname&quot;) + (nextResultNum++);</span>
+        }
+<span class="nc bnc" id="L508" title="All 2 branches missed.">        if (name.length() &gt; 15) {</span>
+            // TODO: Localize
+<span class="nc" id="L510">            name = name.substring(0, 12) + &quot;...&quot;;</span>
+        }
+
+<span class="nc" id="L513">        String pName = &quot;&quot;;</span>
+
+<span class="nc" id="L515">        Predicate eNamePred = PredicateStringMatch.create(eName);</span>
+<span class="nc" id="L516">        Predicate pNamePred = PredicateStringMatch.create(pName);</span>
+<span class="nc" id="L517">        Predicate dNamePred = PredicateStringMatch.create(dName);</span>
+<span class="nc" id="L518">        Predicate typePred = (Predicate) type.getSelectedItem();</span>
+<span class="nc" id="L519">        PredicateSearch pred =</span>
+            new PredicateSearch(eNamePred, pNamePred, dNamePred, typePred);
+
+<span class="nc" id="L522">        ChildGenSearch gen = new ChildGenSearch();</span>
+<span class="nc" id="L523">        Object root = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc" id="L525">        TabResults newResults = new TabResults();</span>
+<span class="nc" id="L526">        newResults.setTitle(name);</span>
+<span class="nc" id="L527">        newResults.setPredicate(pred);</span>
+<span class="nc" id="L528">        newResults.setRoot(root);</span>
+<span class="nc" id="L529">        newResults.setGenerator(gen);</span>
+<span class="nc" id="L530">        resultTabs.add(newResults);</span>
+<span class="nc" id="L531">        results.addTab(name, newResults);</span>
+<span class="nc" id="L532">        clearTabs.setEnabled(true);</span>
+<span class="nc" id="L533">        getOkButton().setEnabled(true);</span>
+<span class="nc" id="L534">        results.setSelectedComponent(newResults);</span>
+<span class="nc" id="L535">        Object[] msgArgs = {name };</span>
+<span class="nc" id="L536">        location.addItem(Translator.messageFormat(</span>
+                &quot;dialog.find.comboboxitem.in-tab&quot;, msgArgs));
+<span class="nc" id="L538">        invalidate();</span>
+<span class="nc" id="L539">        results.invalidate();</span>
+<span class="nc" id="L540">        validate();</span>
+<span class="nc" id="L541">        newResults.run();</span>
+<span class="nc" id="L542">        newResults.requestFocus();</span>
+<span class="nc" id="L543">        newResults.selectResult(0);</span>
+<span class="nc" id="L544">    }</span>
+
+    /**
+     * Reset the user interface to its initial state. Use this if a new project
+     * has been loaded and the Find dialog is being displayed with stale
+     * results.
+     */
+    public void reset() {
+<span class="nc" id="L552">        doClearTabs();</span>
+<span class="nc" id="L553">        doResetFields(true);</span>
+<span class="nc" id="L554">    }</span>
+    
+    /**
+     * Clear the tabs.
+     */
+    private void doClearTabs() {
+<span class="nc" id="L560">        int numTabs = resultTabs.size();</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        for (int i = 0; i &lt; numTabs; i++) {</span>
+<span class="nc" id="L562">            results.remove(resultTabs.get(i));</span>
+	}
+<span class="nc" id="L564">        resultTabs.clear();</span>
+<span class="nc" id="L565">        clearTabs.setEnabled(false);</span>
+<span class="nc" id="L566">        getOkButton().setEnabled(false);</span>
+<span class="nc" id="L567">        doResetFields(false);</span>
+<span class="nc" id="L568">    }</span>
+
+
+
+    /**
+     * Reset the fields.
+     * 
+     * @param complete if true, reset all 3 fields (element name, diagram name,
+     *                and location), otherwise only the last is reset.
+     */
+    private void doResetFields(boolean complete) {
+<span class="nc bnc" id="L579" title="All 2 branches missed.">        if (complete) {</span>
+<span class="nc" id="L580">            elementName.removeAllItems();</span>
+<span class="nc" id="L581">            diagramName.removeAllItems();</span>
+<span class="nc" id="L582">            elementName.addItem(&quot;*&quot;);</span>
+<span class="nc" id="L583">            diagramName.addItem(&quot;*&quot;);</span>
+        }
+<span class="nc" id="L585">        location.removeAllItems();</span>
+<span class="nc" id="L586">        location.addItem(</span>
+<span class="nc" id="L587">                Translator.localize(&quot;dialog.find.comboboxitem.entire-project&quot;));</span>
+<span class="nc" id="L588">    }</span>
+
+    /**
+     * Execute the GoTo selection command.
+     */
+    private void doGoToSelection() {
+<span class="nc bnc" id="L594" title="All 2 branches missed.">        if (results.getSelectedComponent() instanceof TabResults) {</span>
+<span class="nc" id="L595">            ((TabResults) results.getSelectedComponent()).doDoubleClick();</span>
+        }
+<span class="nc" id="L597">    }</span>
+
+
+    ////////////////////////////////////////////////////////////////
+    // MouseListener implementation
+
+    /*
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    public void mousePressed(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+<span class="nc" id="L608">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    public void mouseReleased(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+<span class="nc" id="L615">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+<span class="nc" id="L622">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent me) { 
+        // empty implementation - we only handle mouseClicked
+<span class="nc" id="L629">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent me) {
+<span class="nc" id="L635">        int tab = results.getSelectedIndex();</span>
+<span class="nc bnc" id="L636" title="All 2 branches missed.">        if (tab != -1) {</span>
+<span class="nc" id="L637">            Rectangle tabBounds = results.getBoundsAt(tab);</span>
+<span class="nc bnc" id="L638" title="All 2 branches missed.">            if (!tabBounds.contains(me.getX(), me.getY())) {</span>
+<span class="nc" id="L639">		return;</span>
+	    }
+<span class="nc bnc" id="L641" title="All 4 branches missed.">            if (tab &gt;= 1 &amp;&amp; me.getClickCount() &gt;= 2) {</span>
+<span class="nc" id="L642">                myDoubleClick(tab - 1); //help tab is 0</span>
+	    }
+        }
+<span class="nc" id="L645">    }</span>
+
+    /**
+     * Double click on tab detaches it in a free floating window.
+     *
+     * MVW: This is the only place where spawning is still enabled.
+     *
+     * @param tab the given tab
+     */
+    private void myDoubleClick(int tab) {
+<span class="nc" id="L655">        JPanel t = resultTabs.get(tab);</span>
+<span class="nc bnc" id="L656" title="All 2 branches missed.">        if (t instanceof AbstractArgoJPanel) {</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">            if (((AbstractArgoJPanel) t).spawn() != null) {</span>
+<span class="nc" id="L658">                resultTabs.remove(tab);</span>
+<span class="nc" id="L659">                location.removeItem(&quot;In Tab: &quot;</span>
+<span class="nc" id="L660">                                + ((AbstractArgoJPanel) t).getTitle());</span>
+            }
+        }
+<span class="nc" id="L663">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 9209251878896557216L;
+} /* end class FindDialog */
+
+
+/**
+ * PredicateMType is a small helper class which converts the
+ * string representation of the Type from internal form.
+ * Now that Type names aren't prefixed with NSUML's &quot;M&quot; the
+ * name of the class is somewhat of a misnomer.
+ */
+class PredicateMType extends PredicateType {
+    /**
+     * The constructor.
+     *
+     * @param pats The classes.
+     */
+    protected PredicateMType(Class[] pats) {
+<span class="nc" id="L685">        super(pats, pats.length);</span>
+<span class="nc" id="L686">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param pats The classes (or &lt;code&gt;null&lt;/code&gt; if numPats is 0.
+     * @param numPats The count of classes.
+     */
+    protected PredicateMType(Class[] pats, int numPats) {
+<span class="nc" id="L695">        super(pats, numPats);</span>
+<span class="nc" id="L696">    }</span>
+
+    /**
+     * Create without classes.
+     *
+     * @return A newly created PredicateType.
+     */
+    public static PredicateType create() {
+<span class="nc" id="L704">        return new PredicateMType(null, 0);</span>
+    }
+
+    /**
+     * Create with one class.
+     *
+     * @param c0 First class.
+     * @return A newly created PredicateType.
+     */
+    public static PredicateType create(Object c0) {
+<span class="nc" id="L714">        Class[] classes = new Class[1];</span>
+<span class="nc" id="L715">        classes[0] = (Class) c0;</span>
+<span class="nc" id="L716">        return new PredicateMType(classes);</span>
+    }
+
+    /**
+     * Create with two classes.
+     *
+     * @param c0 First class.
+     * @param c1 Second class.
+     * @return A newly created PredicateType.
+     */
+    public static PredicateType create(Object c0, Object c1) {
+<span class="nc" id="L727">        Class[] classes = new Class[2];</span>
+<span class="nc" id="L728">        classes[0] = (Class) c0;</span>
+<span class="nc" id="L729">        classes[1] = (Class) c1;</span>
+<span class="nc" id="L730">        return new PredicateMType(classes);</span>
+    }
+
+    /**
+     * Create with three classes.
+     *
+     * @param c0 First class.
+     * @param c1 Second class.
+     * @param c2 Third class.
+     * @return A newly created PredicateType.
+     */
+    public static PredicateType create(Object c0, Object c1, Object c2) {
+<span class="nc" id="L742">        Class[] classes = new Class[3];</span>
+<span class="nc" id="L743">        classes[0] = (Class) c0;</span>
+<span class="nc" id="L744">        classes[1] = (Class) c1;</span>
+<span class="nc" id="L745">        classes[2] = (Class) c2;</span>
+<span class="nc" id="L746">        return new PredicateMType(classes);</span>
+    }
+
+
+    @Override
+    public String toString() {
+<span class="nc" id="L752">        String result = super.toString();</span>
+        // TODO: This shouldn't know the internal form of type names,
+        // but I'm not sure what GEF's PredicateType does, so I'm fixing it
+        // here - tfm
+<span class="nc bnc" id="L756" title="All 2 branches missed.">        if (result.startsWith(&quot;Uml&quot;)) {</span>
+<span class="nc" id="L757">            result = result.substring(3);</span>
+        }
+<span class="nc" id="L759">        return result;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 901828109709882796L;
+} /* end class PredicateMType */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

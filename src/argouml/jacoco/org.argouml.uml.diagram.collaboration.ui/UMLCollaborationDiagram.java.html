@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLCollaborationDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.collaboration.ui</a> &gt; <span class="el_source">UMLCollaborationDiagram.java</span></div><h1>UMLCollaborationDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.collaboration.ui;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.CollaborationDiagram;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
+import org.argouml.uml.diagram.ui.ActionAddMessage;
+import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.RadioAction;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * The base class of the collaboration diagram.&lt;p&gt;
+ *
+ * Defines the toolbar, provides for its initialization and provides
+ * constructors for a top level diagram and one within a defined
+ * namespace.&lt;p&gt;
+ *
+ * @author agauthie@ics.uci.edu
+ */
+public class UMLCollaborationDiagram extends UMLDiagram implements CollaborationDiagram {
+
+    /**
+     * Logging.
+     */
+<span class="fc" id="L91">    private static final Logger LOG =</span>
+<span class="fc" id="L92">        Logger.getLogger(UMLCollaborationDiagram.class.getName());</span>
+
+    ////////////////////////
+    // actions for toolbar
+
+    private Action actionClassifierRole;
+    private Action actionGeneralize;
+
+    private Action actionConnector;
+
+    private Action actionAssociation;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
+
+    private Action actionDepend;
+    private Action actionMessage;
+
+    ////////////////////////////////////////////////////////////////
+    // contructors
+
+    /**
+     * This constructor is used to build a dummy collaboration diagram so
+     * that a project will load properly.
+     * @deprecated for 0.28 by tfmorris.  Use
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
+     */
+    @Deprecated
+<span class="fc" id="L122">    public UMLCollaborationDiagram() {</span>
+        try {
+<span class="fc" id="L124">            setName(getNewDiagramName());</span>
+<span class="pc" id="L125">        } catch (PropertyVetoException pve) { }</span>
+        // TODO: All super constrcutors should take a GraphModel
+<span class="fc" id="L127">        setGraphModel(createGraphModel());</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param collaboration the collaboration aka namespace for the diagram
+     * @deprecated for 0.28 by tfmorris.  Use
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
+     */
+    @Deprecated
+    public UMLCollaborationDiagram(Object collaboration) {
+<span class="fc" id="L139">        this();</span>
+<span class="fc" id="L140">        setNamespace(collaboration);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * @return the number of UML messages in the diagram
+     */
+    public int getNumMessages() {
+<span class="nc" id="L147">        Layer lay = getLayer();</span>
+<span class="nc" id="L148">        Collection figs = lay.getContents();</span>
+<span class="nc" id="L149">        int res = 0;</span>
+<span class="nc" id="L150">        Iterator it = figs.iterator();</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L152">            Fig f = (Fig) it.next();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            if (Model.getFacade().isAMessage(f.getOwner())) {</span>
+<span class="nc" id="L154">                res++;</span>
+            }
+<span class="nc" id="L156">        }</span>
+<span class="nc" id="L157">        return res;</span>
+    }
+
+    /**
+     * Method to perform a number of important initializations of a
+     * &lt;em&gt;CollaborationDiagram&lt;/em&gt;.&lt;p&gt;
+     *
+     * Each diagram type has a similar &lt;em&gt;UMLxxxDiagram&lt;/em&gt; class.&lt;p&gt;
+     *
+     * Changed &lt;em&gt;lay&lt;/em&gt; from &lt;em&gt;LayerPerspective&lt;/em&gt; to
+     * &lt;em&gt;LayerPerspectiveMutable&lt;/em&gt;.  This class is a child of
+     * &lt;em&gt;LayerPerspective&lt;/em&gt; and was implemented to correct some
+     * difficulties in changing the model.  &lt;em&gt;Lay&lt;/em&gt; is used mainly
+     * in &lt;em&gt;LayerManager&lt;/em&gt;(GEF) to control the adding, changing and
+     * deleting layers on the diagram...
+     *
+     * @param handle the collaboration from the UML model
+     * @author psager@tigris.org Jan. 24, 2002
+     */
+    public void setNamespace(Object handle) {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(handle)) {</span>
+<span class="nc" id="L178">            LOG.log(Level.SEVERE,</span>
+                &quot;Illegal argument. Object &quot; + handle + &quot; is not a namespace&quot;);
+<span class="nc" id="L180">            throw new IllegalArgumentException(</span>
+                &quot;Illegal argument. Object &quot; + handle + &quot; is not a namespace&quot;);
+        }
+<span class="fc" id="L183">        super.setNamespace(handle);</span>
+<span class="fc" id="L184">        CollabDiagramGraphModel gm = createGraphModel();</span>
+<span class="fc" id="L185">        gm.setCollaboration(handle);</span>
+<span class="fc" id="L186">        LayerPerspective lay =</span>
+<span class="fc" id="L187">            new LayerPerspectiveMutable(Model.getFacade().getName(handle), gm);</span>
+<span class="fc" id="L188">        CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton</span>
+<span class="fc" id="L189">        lay.setGraphNodeRenderer(rend);</span>
+<span class="fc" id="L190">        lay.setGraphEdgeRenderer(rend);</span>
+<span class="fc" id="L191">        setLayer(lay);</span>
+<span class="fc" id="L192">    }</span>
+
+
+    // TODO: Needs to be tidied up after stable release. Graph model
+    // should be created in constructor
+    private CollabDiagramGraphModel createGraphModel() {
+<span class="fc bfc" id="L198" title="All 2 branches covered.">	if ((getGraphModel() instanceof CollabDiagramGraphModel)) {</span>
+<span class="fc" id="L199">	    return (CollabDiagramGraphModel) getGraphModel();</span>
+	} else {
+<span class="fc" id="L201">	    return new CollabDiagramGraphModel();</span>
+	}
+    }
+
+    /**
+     * Get the actions from which to create a toolbar or equivalent
+     * graphic triggers.
+     * {@inheritDoc}
+     */
+    protected Object[] getUmlActions() {
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L212">            Object[] actions = {</span>
+<span class="nc" id="L213">                getActionClassifierRole(),</span>
+                null,
+<span class="nc" id="L215">                getAssociationActions(),</span>
+<span class="nc" id="L216">                getActionGeneralize(),</span>
+<span class="nc" id="L217">                getActionDepend(),</span>
+                null,
+                //this one behaves differently, hence seperated:
+<span class="nc" id="L220">                getActionMessage(),</span>
+            };
+<span class="nc" id="L222">            return actions;</span>
+        } else {
+<span class="nc" id="L224">            Object[] actions = {</span>
+<span class="nc" id="L225">                getActionClassifierRole(),</span>
+<span class="nc" id="L226">                getActionAssociation(),</span>
+<span class="nc" id="L227">                getActionGeneralize(),</span>
+<span class="nc" id="L228">                getActionDepend(),</span>
+                null,
+                //this one behaves differently, hence seperated:
+<span class="nc" id="L231">                getActionMessage(),</span>
+            };
+<span class="nc" id="L233">            return actions;</span>
+        }
+    }
+
+    private Object[] getAssociationActions() {
+<span class="nc" id="L238">        Object[][] actions = {</span>
+<span class="nc" id="L239">	    {getActionAssociation(), getActionUniAssociation() },</span>
+<span class="nc" id="L240">	    {getActionAggregation(), getActionUniAggregation() },</span>
+<span class="nc" id="L241">	    {getActionComposition(), getActionUniComposition() },</span>
+        };
+<span class="nc" id="L243">        ToolBarUtility.manageDefault(actions,</span>
+                &quot;diagram.collaboration.association&quot;);
+<span class="nc" id="L245">        return actions;</span>
+    }
+
+    /**
+     * After loading the diagram it is necessary to connect
+     * every FigMessage to its FigAssociationRole.
+     * This is done by adding the FigMessage
+     * to the PathItems of its FigAssociationRole.
+     */
+    public void postLoad() {
+
+<span class="fc" id="L256">        super.postLoad();</span>
+
+<span class="pc bpc" id="L258" title="1 of 2 branches missed.">        if (getNamespace() == null) {</span>
+<span class="nc" id="L259">            throw new IllegalStateException(</span>
+                    &quot;The namespace of the collaboration diagram is not set&quot;);
+        }
+
+        Collection messages;
+        Iterator msgIterator;
+        Collection ownedElements =
+<span class="fc" id="L266">            Model.getFacade().getOwnedElements(getNamespace());</span>
+<span class="fc" id="L267">        Iterator oeIterator = ownedElements.iterator();</span>
+<span class="fc" id="L268">        Layer lay = getLayer();</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">        while (oeIterator.hasNext()) {</span>
+<span class="fc" id="L270">            Object me = oeIterator.next();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">            if (Model.getFacade().isAAssociationRole(me)) {</span>
+<span class="fc" id="L272">                messages = Model.getFacade().getMessages(me);</span>
+<span class="fc" id="L273">                msgIterator = messages.iterator();</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">                while (msgIterator.hasNext()) {</span>
+<span class="fc" id="L275">                    Object message = msgIterator.next();</span>
+<span class="fc" id="L276">                    FigMessage figMessage =</span>
+<span class="fc" id="L277">                        (FigMessage) lay.presentationFor(message);</span>
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">                    if (figMessage != null) {</span>
+<span class="fc" id="L279">                        figMessage.addPathItemToFigAssociationRole(lay);</span>
+                    }
+<span class="fc" id="L281">                }</span>
+            }
+<span class="fc" id="L283">        }</span>
+<span class="fc" id="L284">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+<span class="fc" id="L290">        return Translator.localize(&quot;label.collaboration-diagram&quot;);</span>
+    }
+
+    /**
+     * @return Returns the actionClassifierRole.
+     */
+    private Action getActionClassifierRole() {
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (actionClassifierRole == null) {</span>
+<span class="nc" id="L298">            actionClassifierRole =</span>
+                new RadioAction(new ActionAddClassifierRole());
+        }
+<span class="nc" id="L301">        return actionClassifierRole;</span>
+    }
+
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        if (actionAssociation == null) {</span>
+<span class="nc" id="L309">            actionAssociation =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L312">                        Model.getAggregationKind().getNone(),</span>
+                        false,
+                        &quot;button.new-associationrole&quot;,
+                        &quot;Association&quot;));
+        }
+<span class="nc" id="L317">        return actionAssociation;</span>
+    }
+
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionConnector() {
+<span class="nc bnc" id="L324" title="All 2 branches missed.">        if (actionConnector == null) {</span>
+<span class="nc" id="L325">            actionConnector =</span>
+                new RadioAction(
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L330">                        Model.getMetaTypes().getConnector(),</span>
+                        &quot;button.new-connector&quot;));
+        }
+<span class="nc" id="L333">        return actionConnector;</span>
+    }
+
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        if (actionComposition == null) {</span>
+<span class="nc" id="L341">            actionComposition =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L344">                        Model.getAggregationKind().getComposite(),</span>
+                        false,
+                        &quot;button.new-composition&quot;));
+        }
+<span class="nc" id="L348">        return actionComposition;</span>
+    }
+    /**
+     * @return Returns the actionDepend.
+     */
+    protected Action getActionDepend() {
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        if (actionDepend == null) {</span>
+<span class="nc" id="L355">            actionDepend =</span>
+                new RadioAction(
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L360">                        Model.getMetaTypes().getDependency(),</span>
+                        &quot;button.new-dependency&quot;));
+        }
+<span class="nc" id="L363">        return actionDepend;</span>
+    }
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralize() {
+<span class="nc bnc" id="L369" title="All 2 branches missed.">        if (actionGeneralize == null) {</span>
+<span class="nc" id="L370">            actionGeneralize =</span>
+                new RadioAction(
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        &quot;edgeClass&quot;,
+<span class="nc" id="L375">                        Model.getMetaTypes().getGeneralization(),</span>
+                        &quot;button.new-generalization&quot;));
+        }
+<span class="nc" id="L378">        return actionGeneralize;</span>
+    }
+
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (actionUniAggregation == null) {</span>
+<span class="nc" id="L386">            actionUniAggregation =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L389">                        Model.getAggregationKind().getAggregate(),</span>
+                        true,
+                        &quot;button.new-uniaggregation&quot;));
+        }
+<span class="nc" id="L393">        return actionUniAggregation;</span>
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        if (actionUniAssociation  == null) {</span>
+<span class="nc" id="L400">            actionUniAssociation =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L403">                        Model.getAggregationKind().getNone(),</span>
+                        true,
+                        &quot;button.new-uniassociation&quot;));
+        }
+<span class="nc" id="L407">        return actionUniAssociation;</span>
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+<span class="nc bnc" id="L413" title="All 2 branches missed.">        if (actionUniComposition == null) {</span>
+<span class="nc" id="L414">            actionUniComposition =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L417">                        Model.getAggregationKind().getComposite(),</span>
+                        true,
+                        &quot;button.new-unicomposition&quot;));
+        }
+<span class="nc" id="L421">        return actionUniComposition;</span>
+    }
+
+    /**
+     * @return Returns the actionAggregation.
+     */
+    private Action getActionAggregation() {
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (actionAggregation == null) {</span>
+<span class="nc" id="L429">            actionAggregation =</span>
+                new RadioAction(
+                    new ActionAddAssociationRole(
+<span class="nc" id="L432">                        Model.getAggregationKind().getAggregate(),</span>
+                        false,
+                        &quot;button.new-aggregation&quot;));
+        }
+<span class="nc" id="L436">        return actionAggregation;</span>
+    }
+
+    /**
+     * @return Returns the actionMessage.
+     */
+    private Action getActionMessage() {
+<span class="nc bnc" id="L443" title="All 2 branches missed.">        if (actionMessage == null) {</span>
+<span class="nc" id="L444">            actionMessage = ActionAddMessage.getTargetFollower();</span>
+        }
+<span class="nc" id="L446">        return actionMessage;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base) {
+        /* TODO: We may return the following when the
+         * relocate() has been implemented.
+         */
+//      if (Model.getFacade().isAOperation(base)
+//      || Model.getFacade().isANamespace(base))
+//      return Model.getCollaborationsHelper()
+//      .isAddingCollaborationAllowed(base);
+<span class="nc" id="L460">        return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+<span class="nc" id="L467">        return false;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Collection getRelocationCandidates(Object root) {
+        /* TODO: We may return something useful when the
+         * relocate() has been implemented. */
+<span class="nc" id="L474">        Collection c =  new HashSet();</span>
+<span class="nc" id="L475">        c.add(getOwner());</span>
+<span class="nc" id="L476">        return c;</span>
+    }
+
+    public void encloserChanged(FigNode enclosed,
+            FigNode oldEncloser, FigNode newEncloser) {
+        // Do nothing.
+<span class="nc" id="L482">    }</span>
+
+    /**
+     * A sequence diagram can accept all classifiers. It will add them as a new
+     * Classifier Role with that classifier as a base. All other accepted figs
+     * are added as is.
+     * @param objectToAccept
+     * @return true if the diagram can accept the object, else false
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
+     */
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+<span class="nc bnc" id="L494" title="All 2 branches missed.">        if (Model.getFacade().isAClassifierRole(objectToAccept)) {</span>
+<span class="nc" id="L495">            return true;</span>
+<span class="nc bnc" id="L496" title="All 2 branches missed.">        } else if (Model.getFacade().isAMessage(objectToAccept)) {</span>
+<span class="nc" id="L497">            return true;</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">        } else if (Model.getFacade().isAComment(objectToAccept)) {</span>
+<span class="nc" id="L499">            return true;</span>
+<span class="nc bnc" id="L500" title="All 2 branches missed.">        } else if (Model.getFacade().isAClassifier(objectToAccept)) {</span>
+<span class="nc" id="L501">            return true;</span>
+        }
+<span class="nc" id="L503">        return false;</span>
+    }
+
+    /**
+     * Creates a new Classifier Role with a specified base.
+     * @param base
+     * @return The new CR
+     */
+    private Object makeNewCR(Object base) {
+<span class="nc" id="L512">        Object node = null;</span>
+<span class="nc" id="L513">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L514">        GraphModel gm = ce.getGraphModel();</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">        if (gm instanceof CollabDiagramGraphModel) {</span>
+<span class="nc" id="L516">            Object collaboration =</span>
+<span class="nc" id="L517">                ((CollabDiagramGraphModel) gm).getHomeModel();</span>
+            node =
+<span class="nc" id="L519">                Model.getCollaborationsFactory().buildClassifierRole(</span>
+                        collaboration);
+        }
+<span class="nc" id="L522">        Model.getCollaborationsHelper().addBase(node, base);</span>
+
+<span class="nc" id="L524">        return node;</span>
+    }
+
+    /**
+     * Creates the Fig for the CR. Y position will be adjusted to match other
+     * the other CRs.
+     * @param classifierRole
+     * @param location The position where to put the new fig.
+     * @return
+     */
+    private FigClassifierRole makeNewFigCR(Object classifierRole,
+            Point location) {
+<span class="nc bnc" id="L536" title="All 2 branches missed.">        if (classifierRole != null) {</span>
+<span class="nc" id="L537">            FigClassifierRole newCR = new FigClassifierRole(classifierRole,</span>
+<span class="nc" id="L538">                    new Rectangle(location), getDiagramSettings());</span>
+
+<span class="nc" id="L540">            getGraphModel().getNodes().add(newCR.getOwner());</span>
+
+<span class="nc" id="L542">            return newCR;</span>
+        }
+<span class="nc" id="L544">        return null;</span>
+    }
+
+    @Override
+    public DiagramElement drop(Object droppedObject, Point location) {
+<span class="nc" id="L549">        DiagramElement figNode = null;</span>
+<span class="nc" id="L550">        GraphModel gm = getGraphModel();</span>
+<span class="nc" id="L551">        Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();</span>
+
+        // If location is non-null, convert to a rectangle that we can use
+<span class="nc" id="L554">        Rectangle bounds = null;</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">        if (location != null) {</span>
+<span class="nc" id="L556">            bounds = new Rectangle(location.x, location.y, 0, 0);</span>
+        }
+<span class="nc" id="L558">        DiagramSettings settings = getDiagramSettings();</span>
+
+<span class="nc bnc" id="L560" title="All 2 branches missed.">        if (Model.getFacade().isAClassifierRole(droppedObject)) {</span>
+<span class="nc" id="L561">            figNode = new FigClassifierRole(droppedObject, bounds, settings);</span>
+<span class="nc bnc" id="L562" title="All 2 branches missed.">        } else if (Model.getFacade().isAMessage(droppedObject)) {</span>
+<span class="nc" id="L563">            figNode = new FigMessage(droppedObject, bounds, settings);</span>
+<span class="nc bnc" id="L564" title="All 2 branches missed.">        } else if (Model.getFacade().isAComment(droppedObject)) {</span>
+<span class="nc" id="L565">            figNode = new FigComment(droppedObject, bounds, settings);</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">        } else if (Model.getFacade().isAClassifierRole(droppedObject)) {</span>
+<span class="nc" id="L567">            figNode = makeNewFigCR(droppedObject, location);</span>
+<span class="nc bnc" id="L568" title="All 2 branches missed.">        } else if (Model.getFacade().isAClassifier(droppedObject)) {</span>
+<span class="nc" id="L569">            figNode = makeNewFigCR(makeNewCR(droppedObject), location);</span>
+        }
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        if (figNode != null) {</span>
+<span class="nc" id="L572">            LOG.log(Level.FINE, &quot;Dropped object {0} converted to {1}&quot;,</span>
+                    new Object[]{droppedObject, figNode});
+        } else {
+<span class="nc" id="L575">            LOG.log(Level.FINE, &quot;Dropped object NOT added {0}&quot;, droppedObject);</span>
+        }
+<span class="nc" id="L577">        return figNode;</span>
+    }
+
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+
+<span class="nc" id="L585">        FigNodeModelElement figNode = null;</span>
+
+<span class="nc" id="L587">        DiagramSettings settings = getDiagramSettings();</span>
+
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        if (Model.getFacade().isAClassifierRole(modelElement)) {</span>
+<span class="nc" id="L590">            figNode = new FigClassifierRole(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">        } else if (Model.getFacade().isAMessage(modelElement)) {</span>
+<span class="nc" id="L592">            figNode = new FigMessage(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">        } else if (Model.getFacade().isAComment(modelElement)) {</span>
+<span class="nc" id="L594">            figNode = new FigComment(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">        } else if (Model.getFacade().isAClassifierRole(modelElement)) {</span>
+<span class="nc" id="L596">            figNode =</span>
+<span class="nc" id="L597">                makeNewFigCR(modelElement, bounds.getLocation());</span>
+<span class="nc bnc" id="L598" title="All 2 branches missed.">        } else if (Model.getFacade().isAClassifier(modelElement)) {</span>
+<span class="nc" id="L599">            figNode =</span>
+<span class="nc" id="L600">                makeNewFigCR(makeNewCR(modelElement), bounds.getLocation());</span>
+        }
+
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        if (figNode != null) {</span>
+<span class="nc" id="L604">            LOG.log(Level.FINE, &quot;Model element {0} converted to {1}&quot;,</span>
+                    new Object[]{modelElement, figNode});
+        } else {
+<span class="nc" id="L607">            LOG.log(Level.FINE, &quot;Dropped object NOT added {0}&quot;, figNode);</span>
+        }
+<span class="nc" id="L609">        return figNode;</span>
+    }
+
+    @Override
+    public String getInstructions(Object droppedObject) {
+<span class="nc bnc" id="L614" title="All 2 branches missed.">        if (Model.getFacade().isAClassifierRole(droppedObject)) {</span>
+<span class="nc" id="L615">            return super.getInstructions(droppedObject);</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">    	} else if (Model.getFacade().isAClassifier(droppedObject)) {</span>
+<span class="nc" id="L617">            return Translator.localize(</span>
+                    &quot;misc.message.click-on-diagram-to-add-as-cr&quot;,
+<span class="nc" id="L619">                    new Object[] {Model.getFacade().toString(droppedObject)});</span>
+        }
+<span class="nc" id="L621">        return super.getInstructions(droppedObject);</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8081715986963837750L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

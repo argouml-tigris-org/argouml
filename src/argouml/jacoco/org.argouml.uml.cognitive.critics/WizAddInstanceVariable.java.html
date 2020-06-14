@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizAddInstanceVariable.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">WizAddInstanceVariable.java</span></div><h1>WizAddInstanceVariable.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import javax.swing.JPanel;
+
+import org.argouml.cognitive.ui.WizStepTextField;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+
+/**
+ * A wizard to add attributes to a classifier.
+ *
+ * @author  d00mst (copied from WizAddOperation by mkl)
+ * @since February 6, 2004, 11:40 PM
+ */
+public class WizAddInstanceVariable extends UMLWizard {
+
+<span class="nc" id="L56">    private WizStepTextField step1 = null;</span>
+<span class="nc" id="L57">    private String label = Translator.localize(&quot;label.name&quot;);</span>
+<span class="nc" id="L58">    private String instructions = </span>
+<span class="nc" id="L59">        Translator.localize(&quot;critics.WizAddInstanceVariable-ins&quot;);</span>
+
+    /**
+     * Creates a new instance of WizAddInstanceVariable.
+     */
+    public WizAddInstanceVariable() {
+<span class="nc" id="L65">        super();</span>
+<span class="nc" id="L66">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
+     */
+    public void doAction(int oldStep) {
+        Object attr;
+
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        switch (oldStep) {</span>
+        case 1:
+<span class="nc" id="L76">            String newName = getSuggestion();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (step1 != null) {</span>
+<span class="nc" id="L78">                newName = step1.getText();</span>
+            }
+<span class="nc" id="L80">            Object me = getModelElement();</span>
+            Object attrType =
+<span class="nc" id="L82">                ProjectManager.getManager()</span>
+<span class="nc" id="L83">                	.getCurrentProject().getDefaultAttributeType();</span>
+            attr =
+<span class="nc" id="L85">                Model.getCoreFactory()</span>
+<span class="nc" id="L86">                	.buildAttribute2(me, attrType);</span>
+<span class="nc" id="L87">            Model.getCoreHelper().setName(attr, newName);</span>
+            break;
+        }
+<span class="nc" id="L90">    }</span>
+
+
+    /**
+     * @param s set a new instruction string
+     */
+    public void setInstructions(String s) {
+<span class="nc" id="L97">	instructions = s;</span>
+<span class="nc" id="L98">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
+     */
+    public JPanel makePanel(int newStep) {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        switch (newStep) {</span>
+	case 1:
+<span class="nc bnc" id="L106" title="All 2 branches missed.">	    if (step1 == null) {</span>
+<span class="nc" id="L107">		step1 =</span>
+		    new WizStepTextField(this, instructions,
+<span class="nc" id="L109">		            label, offerSuggestion());</span>
+	    }
+<span class="nc" id="L111">	    return step1;</span>
+        }
+<span class="nc" id="L113">        return null;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,1706 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UmlFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">UmlFactoryMDRImpl.java</span></div><h1>UmlFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Luis Sergio Oliveira (euluis)
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
+
+import org.argouml.model.Defaults;
+import org.argouml.model.DummyModelCommand;
+import org.argouml.model.IllegalModelElementConnectionException;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.MetaTypes;
+import org.argouml.model.Model;
+import org.argouml.model.UmlFactory;
+import org.omg.uml.behavioralelements.activitygraphs.ActionState;
+import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
+import org.omg.uml.behavioralelements.activitygraphs.CallState;
+import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
+import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
+import org.omg.uml.behavioralelements.activitygraphs.Partition;
+import org.omg.uml.behavioralelements.activitygraphs.SubactivityState;
+import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
+import org.omg.uml.behavioralelements.collaborations.AssociationRole;
+import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Interaction;
+import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
+import org.omg.uml.behavioralelements.commonbehavior.CallAction;
+import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
+import org.omg.uml.behavioralelements.commonbehavior.CreateAction;
+import org.omg.uml.behavioralelements.commonbehavior.DataValue;
+import org.omg.uml.behavioralelements.commonbehavior.DestroyAction;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.commonbehavior.LinkObject;
+import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.ReturnAction;
+import org.omg.uml.behavioralelements.commonbehavior.SendAction;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
+import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
+import org.omg.uml.behavioralelements.commonbehavior.UmlException;
+import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
+import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.Event;
+import org.omg.uml.behavioralelements.statemachines.FinalState;
+import org.omg.uml.behavioralelements.statemachines.Guard;
+import org.omg.uml.behavioralelements.statemachines.Pseudostate;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
+import org.omg.uml.behavioralelements.statemachines.SimpleState;
+import org.omg.uml.behavioralelements.statemachines.State;
+import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateVertex;
+import org.omg.uml.behavioralelements.statemachines.StubState;
+import org.omg.uml.behavioralelements.statemachines.SubmachineState;
+import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.behavioralelements.usecases.Actor;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.Include;
+import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
+import org.omg.uml.foundation.core.Abstraction;
+import org.omg.uml.foundation.core.Artifact;
+import org.omg.uml.foundation.core.AssociationClass;
+import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Binding;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Comment;
+import org.omg.uml.foundation.core.Component;
+import org.omg.uml.foundation.core.Constraint;
+import org.omg.uml.foundation.core.DataType;
+import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Element;
+import org.omg.uml.foundation.core.ElementResidence;
+import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Flow;
+import org.omg.uml.foundation.core.GeneralizableElement;
+import org.omg.uml.foundation.core.Generalization;
+import org.omg.uml.foundation.core.Interface;
+import org.omg.uml.foundation.core.Method;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Node;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.core.PresentationElement;
+import org.omg.uml.foundation.core.Primitive;
+import org.omg.uml.foundation.core.ProgrammingLanguageDataType;
+import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.StructuralFeature;
+import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.foundation.core.TemplateArgument;
+import org.omg.uml.foundation.core.TemplateParameter;
+import org.omg.uml.foundation.core.UmlAssociation;
+import org.omg.uml.foundation.core.UmlClass;
+import org.omg.uml.foundation.core.Usage;
+import org.omg.uml.modelmanagement.ElementImport;
+import org.omg.uml.modelmanagement.Subsystem;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Root factory for UML model element instance creation.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * based on NSUML implementation by:
+ * @author Thierry Lach
+ */
+class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
+        UmlFactory {
+
+    /**
+     * The logger.
+     */
+<span class="fc" id="L184">    private static final Logger LOG =</span>
+<span class="fc" id="L185">        Logger.getLogger(UmlFactoryMDRImpl.class.getName());</span>
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * The meta types factory.
+     */
+    private MetaTypes metaTypes;
+
+    /**
+     * A map of valid connections keyed by the connection type. The constructor
+     * builds this from the data in the VALID_CONNECTIONS array
+     */
+<span class="fc" id="L201">    private Map&lt;Class&lt;?&gt;, List&lt;Class&lt;?&gt;[]&gt;&gt; validConnectionMap =</span>
+        new HashMap&lt;Class&lt;?&gt;, List&lt;Class&lt;?&gt;[]&gt;&gt;();
+
+    /**
+     * A map of the valid model elements that are valid to be contained
+     * by other model elements.
+     */
+<span class="fc" id="L208">    private HashMap&lt;Class&lt;?&gt;, Class&lt;?&gt;[]&gt; validContainmentMap =</span>
+        new HashMap&lt;Class&lt;?&gt;, Class&lt;?&gt;[]&gt;();
+
+    /**
+     * The instance that we are deleting.
+     */
+<span class="fc" id="L214">    private Set&lt;RefObject&gt; elementsToBeDeleted = new HashSet&lt;RefObject&gt;();</span>
+
+    /**
+     * Ordered list of elements to be deleted.
+     */
+<span class="fc" id="L219">    private List&lt;RefObject&gt; elementsInDeletionOrder =</span>
+        new ArrayList&lt;RefObject&gt;();
+
+    /**
+     * The top object is the first object given to the UmlFactory when calling
+     * the delete method.
+     */
+    private Object top;
+
+    /**
+     * The mutex for this class.
+     */
+<span class="fc" id="L231">    private Object lock = new Byte[0];</span>
+
+    /**
+     * An array of valid connections, the combination of connecting class and
+     * node classes must exist as a row in this list to be considered valid.
+     * &lt;ul&gt;
+     * &lt;li&gt;The 1st column is the connecting element.
+     * &lt;li&gt;The 2nd column is the &quot;from&quot; element type.
+     * &lt;li&gt;The 3rd column is the &quot;to&quot; element type.
+     * The 3rd column is optional, if not given then it is assumed to be
+     * the same as the &quot;from&quot; element.
+     * &lt;li&gt;The existence of a 4th column indicates that the connection is valid
+     * in one direction only.
+     * &lt;/ul&gt;
+     * TODO: This encodes not only what is legal in UML, but also what ArgoUML
+     * knows how to create, so not all legal connections are included. Probably
+     * should be split into two pieces: 1) legal UML (here) and 2) supported (in
+     * ArgoUML application someplace) - tfm - 20060325&lt;p&gt;
+     * See also issue 3863.&lt;p&gt;
+     *
+     * Most of these are subtypes of Relationship which includes Association,
+     * Dependency, Flow, Generalization, Extend, and Include. Dependency
+     * includes Binding, Abstraction, Usage, and Permission. AssociationRole and
+     * AssociationClass are Associations. The remaining items (Link, Transition,
+     * AssociationEnd, Message) are non-Relationship types which ArgoUML treats
+     * as connections/edges.
+     */
+    // TODO: This should be built by reflection from the metamodel - tfm
+    //       Update for UML 1.4 metamodel if not replaced by reflection
+<span class="fc" id="L260">    private static final Class&lt;?&gt;[][] VALID_CONNECTIONS = {</span>
+        {Generalization.class,   GeneralizableElement.class, },
+        {Dependency.class,       ModelElement.class, },
+        // Although Usage &amp; Permission are Dependencies, they need to
+        // be include separately because of the way lookup works
+        {Usage.class,            ModelElement.class, },
+        {Permission.class,       ModelElement.class, },
+        // The following is specifically for Realizations
+        {Abstraction.class, UmlClass.class, Interface.class, null, },
+        // The next 3 restrictions for Abstraction seem to be Argo specific
+        // not something the UML spec requires - tfm - 20070215
+        {Abstraction.class, UmlClass.class, UmlClass.class, null, },
+        {Abstraction.class, UmlPackage.class, UmlPackage.class, null, },
+        {Abstraction.class, Component.class, Interface.class, null, },
+        {UmlAssociation.class,     Classifier.class, },
+        {AssociationRole.class,  ClassifierRole.class, },
+        {Extend.class,           UseCase.class, },
+        {Include.class,          UseCase.class, },
+        {Link.class, Instance.class, },
+        {Transition.class,       StateVertex.class, },
+        {AssociationClass.class, UmlClass.class, },
+        {AssociationEnd.class, Classifier.class, UmlAssociation.class, },
+        {Message.class, ClassifierRole.class },
+    };
+
+    /**
+     * Package-private constructor.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L291">    UmlFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L292">        modelImpl = implementation;</span>
+<span class="fc" id="L293">        metaTypes = modelImpl.getMetaTypes();</span>
+
+<span class="fc" id="L295">        buildValidConnectionMap();</span>
+
+<span class="fc" id="L297">        buildValidContainmentMap();</span>
+<span class="fc" id="L298">    }</span>
+
+    private void buildValidConnectionMap() {
+        // A list of valid connections between elements, the
+        // connection type first and then the elements to be connected
+
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        for (int i = 0; i &lt; VALID_CONNECTIONS.length; ++i) {</span>
+<span class="fc" id="L305">            final Class&lt;?&gt; connection = VALID_CONNECTIONS[i][0];</span>
+<span class="fc" id="L306">            List&lt;Class&lt;?&gt;[]&gt; validItems = validConnectionMap.get(connection);</span>
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (validItems == null) {</span>
+<span class="fc" id="L308">                validItems = new ArrayList&lt;Class&lt;?&gt;[]&gt;();</span>
+<span class="fc" id="L309">                validConnectionMap.put(connection, validItems);</span>
+            }
+<span class="fc bfc" id="L311" title="All 2 branches covered.">            if (VALID_CONNECTIONS[i].length &lt; 3) {</span>
+                // If there isn't a 3rd column then this represents a connection
+                // of elements of the same type.
+<span class="fc" id="L314">                Class&lt;?&gt;[] modeElementPair = new Class[2];</span>
+<span class="fc" id="L315">                modeElementPair[0] = VALID_CONNECTIONS[i][1];</span>
+<span class="fc" id="L316">                modeElementPair[1] = VALID_CONNECTIONS[i][1];</span>
+<span class="fc" id="L317">                validItems.add(modeElementPair);</span>
+<span class="fc" id="L318">            } else {</span>
+                // If there is a 3rd column then this represents a connection
+                // of between 2 different types of element.
+<span class="fc" id="L321">                Class&lt;?&gt;[] modeElementPair = new Class[2];</span>
+<span class="fc" id="L322">                modeElementPair[0] = VALID_CONNECTIONS[i][1];</span>
+<span class="fc" id="L323">                modeElementPair[1] = VALID_CONNECTIONS[i][2];</span>
+<span class="fc" id="L324">                validItems.add(modeElementPair);</span>
+                // If the array hasn't been flagged to indicate otherwise
+                // swap elements the elements and add again.
+<span class="fc bfc" id="L327" title="All 2 branches covered.">                if (VALID_CONNECTIONS[i].length &lt; 4) {</span>
+<span class="fc" id="L328">                    Class&lt;?&gt;[] reversedModeElementPair = new Class[2];</span>
+<span class="fc" id="L329">                    reversedModeElementPair[0] = VALID_CONNECTIONS[i][2];</span>
+<span class="fc" id="L330">                    reversedModeElementPair[1] = VALID_CONNECTIONS[i][1];</span>
+<span class="fc" id="L331">                    validItems.add(reversedModeElementPair);</span>
+                }
+            }
+        }
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Initializes the validContainmentMap based on the rules for
+     * valid containment of elements.
+     *
+     * @author Scott Roberts
+     */
+    private void buildValidContainmentMap() {
+
+<span class="fc" id="L345">        validContainmentMap.clear();</span>
+
+<span class="fc" id="L347">        validContainmentMap.put(ModelElement.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class
+                });
+
+        // specifies valid elements for a Model to contain
+<span class="fc" id="L353">        validContainmentMap.put(org.omg.uml.modelmanagement.Model.class,</span>
+            new Class&lt;?&gt;[] {
+                TemplateParameter.class,
+                ComponentInstance.class, NodeInstance.class
+            });
+
+        // specifies valid elements for a Model to contain
+<span class="fc" id="L360">        validContainmentMap.put(AssociationEnd.class,</span>
+            new Class&lt;?&gt;[] {
+                Attribute.class
+            });
+
+        // specifies valid elements for a Package to contain
+<span class="fc" id="L366">        validContainmentMap.put(UmlPackage.class,</span>
+            new Class&lt;?&gt;[] {
+                TemplateParameter.class,
+                UmlPackage.class, Actor.class,
+                UseCase.class, UmlClass.class,
+                Interface.class, Component.class,
+                Node.class, Stereotype.class,
+                Enumeration.class, DataType.class,
+                UmlException.class, Signal.class
+            });
+
+        // specifies valid elements for a class to contain
+<span class="fc" id="L378">        validContainmentMap.put(UmlClass.class,</span>
+            new Class&lt;?&gt;[] {
+                TemplateParameter.class,
+                Attribute.class, Operation.class,
+                UmlClass.class, Reception.class
+            });
+
+        // specifies valid elements for a classifier to contain
+<span class="fc" id="L386">        validContainmentMap.put(Classifier.class,</span>
+            new Class&lt;?&gt;[] {
+                TemplateParameter.class
+            });
+
+        // specifies valid elements for an Interface to contain
+<span class="fc" id="L392">        validContainmentMap.put(Interface.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Operation.class, Reception.class
+                });
+
+        // specifies valid elements for a Signal to contain
+<span class="fc" id="L399">        validContainmentMap.put(Signal.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Operation.class, Attribute.class
+                });
+
+        // specifies valid elements for an Actor to contain
+<span class="fc" id="L406">        validContainmentMap.put(Actor.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Operation.class,
+                    Reception.class
+                });
+
+        // specifies valid elements for a Use Case to contain
+<span class="fc" id="L414">        validContainmentMap.put(UseCase.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    ExtensionPoint.class, Attribute.class,
+                    Operation.class, Reception.class
+                });
+
+        // specifies valid elements for a Use Case to contain
+<span class="fc" id="L422">        validContainmentMap.put(Extend.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    ExtensionPoint.class
+                });
+
+        // specifies valid elements for a Component to contain
+<span class="fc" id="L429">        validContainmentMap.put(Component.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Reception.class,
+                    Operation.class
+                });
+
+        // specifies valid elements for a Node to contain
+<span class="fc" id="L437">        validContainmentMap.put(Node.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Operation.class,
+                    Reception.class
+                });
+
+        // specifies valid elements for a Enumeration to contain
+<span class="fc" id="L445">        validContainmentMap.put(Enumeration.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    EnumerationLiteral.class, Operation.class
+                });
+
+        // specifies valid elements for a DataType to contain
+<span class="fc" id="L452">        validContainmentMap.put(DataType.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Operation.class,
+                    Reception.class
+                });
+
+        // specifies valid elements for a Operation to contain
+<span class="fc" id="L460">        validContainmentMap.put(Operation.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Parameter.class,
+                    Signal.class,
+                    Method.class
+                });
+
+        // specifies valid elements for an Event to contain
+<span class="fc" id="L469">        validContainmentMap.put(Event.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Parameter.class
+                });
+
+        // specifies valid elements for an ObjectFlowState to contain
+<span class="fc" id="L476">        validContainmentMap.put(ObjectFlowState.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Parameter.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L483">        validContainmentMap.put(AssociationRole.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Message.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L490">        validContainmentMap.put(CallAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L497">        validContainmentMap.put(UninterpretedAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L504">        validContainmentMap.put(ReturnAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L511">        validContainmentMap.put(DestroyAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L518">        validContainmentMap.put(SendAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L525">        validContainmentMap.put(TerminateAction.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Argument.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L532">        validContainmentMap.put(ActionSequence.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class, Argument.class,
+                    CallAction.class, ReturnAction.class, CreateAction.class,
+                    DestroyAction.class, SendAction.class,
+                    TerminateAction.class, UninterpretedAction.class,
+                    ActionSequence.class,
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L542">        validContainmentMap.put(Transition.class,</span>
+                new Class&lt;?&gt;[] {
+                    TemplateParameter.class,
+                    Guard.class,
+                    CallAction.class, ReturnAction.class,
+                    CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L552">        validContainmentMap.put(SignalEvent.class,</span>
+                new Class&lt;?&gt;[] {
+                    Signal.class
+                });
+
+        // specifies valid elements for an AssociationRole to contain
+<span class="fc" id="L558">        validContainmentMap.put(Reception.class,</span>
+                new Class&lt;?&gt;[] {
+                    Parameter.class,
+                    TemplateParameter.class
+                });
+
+        // specifies valid elements for an State to contain
+<span class="fc" id="L565">        validContainmentMap.put(State.class,</span>
+                new Class&lt;?&gt;[] {
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an CallState to contain
+<span class="fc" id="L572">        validContainmentMap.put(CallState.class,</span>
+                new Class&lt;?&gt;[] {
+                    CallAction.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an SimpleState to contain
+<span class="fc" id="L580">        validContainmentMap.put(SimpleState.class,</span>
+                new Class&lt;?&gt;[] {
+                    Transition.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class,
+                    TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an SimpleState to contain
+<span class="fc" id="L592">        validContainmentMap.put(FinalState.class,</span>
+                new Class&lt;?&gt;[] {
+                    Transition.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class
+                });
+
+        // specifies valid elements for an SubactivityState to contain
+<span class="fc" id="L601">        validContainmentMap.put(SubactivityState.class,</span>
+                new Class&lt;?&gt;[] {
+                    Transition.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an ActionState to contain
+<span class="fc" id="L612">        validContainmentMap.put(ActionState.class,</span>
+                new Class&lt;?&gt;[] {
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
+                });
+
+        // specifies valid elements for an ActionState to contain
+<span class="fc" id="L622">        validContainmentMap.put(CompositeState.class,</span>
+                new Class&lt;?&gt;[] {
+                    Transition.class,
+                    Pseudostate.class, SynchState.class, StubState.class,
+                    CompositeState.class, SimpleState.class,
+                    FinalState.class,
+                    SubmachineState.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class,
+                    TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class
+                });
+
+<span class="fc" id="L635">    }</span>
+
+    public Object buildConnection(Object elementType, Object fromElement,
+            Object fromStyle, Object toElement, Object toStyle,
+            Object unidirectional, Object namespace)
+        throws IllegalModelElementConnectionException {
+
+<span class="nc bnc" id="L642" title="All 2 branches missed.">        if (!isConnectionValid(elementType, fromElement, toElement, true)) {</span>
+<span class="nc" id="L643">            throw new IllegalModelElementConnectionException(&quot;Cannot make a &quot;</span>
+<span class="nc" id="L644">                    + elementType.getClass().getName() + &quot; between a &quot;</span>
+<span class="nc" id="L645">                    + fromElement.getClass().getName() + &quot; and a &quot;</span>
+<span class="nc" id="L646">                    + toElement.getClass().getName());</span>
+        }
+
+<span class="nc" id="L649">        Object connection = null;</span>
+<span class="nc bnc" id="L650" title="All 2 branches missed.">        boolean uni = (unidirectional instanceof Boolean)</span>
+<span class="nc" id="L651">            ? ((Boolean) unidirectional).booleanValue() : false;</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">        if (elementType == metaTypes.getAssociation()) {</span>
+<span class="nc" id="L653">            connection =</span>
+<span class="nc" id="L654">                getCore().buildAssociation(fromElement,</span>
+                    fromStyle, toElement,
+                    toStyle, uni);
+<span class="nc bnc" id="L657" title="All 2 branches missed.">        } else if (elementType == metaTypes.getAssociationEnd()) {</span>
+<span class="nc bnc" id="L658" title="All 2 branches missed.">            if (fromElement instanceof UmlAssociation) {</span>
+<span class="nc" id="L659">                connection =</span>
+<span class="nc" id="L660">                    getCore().buildAssociationEnd(toElement, fromElement);</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">            } else if (fromElement instanceof Classifier) {</span>
+<span class="nc" id="L662">                connection =</span>
+<span class="nc" id="L663">                    getCore().buildAssociationEnd(fromElement, toElement);</span>
+            }
+<span class="nc" id="L665">        } else if (elementType</span>
+<span class="nc bnc" id="L666" title="All 2 branches missed.">                == metaTypes.getAssociationClass()) {</span>
+<span class="nc" id="L667">            connection =</span>
+<span class="nc" id="L668">                getCore().buildAssociationClass(fromElement, toElement);</span>
+<span class="nc bnc" id="L669" title="All 2 branches missed.">        } else if (elementType == metaTypes.getAssociationRole()) {</span>
+<span class="nc" id="L670">            connection =</span>
+<span class="nc" id="L671">                getCollaborations().buildAssociationRole(fromElement,</span>
+                    fromStyle, toElement, toStyle,
+<span class="nc" id="L673">                    ((Boolean) unidirectional).booleanValue());</span>
+<span class="nc bnc" id="L674" title="All 2 branches missed.">        } else if (elementType == metaTypes.getGeneralization()) {</span>
+<span class="nc" id="L675">            connection = getCore().buildGeneralization(fromElement, toElement);</span>
+<span class="nc bnc" id="L676" title="All 2 branches missed.">        } else if (elementType == metaTypes.getPackageImport()) {</span>
+<span class="nc" id="L677">            connection = getCore().buildPackageImport(fromElement, toElement);</span>
+<span class="nc bnc" id="L678" title="All 2 branches missed.">        } else if (elementType == metaTypes.getUsage()) {</span>
+<span class="nc" id="L679">            connection = getCore().buildUsage(fromElement, toElement);</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">        } else if (elementType == metaTypes.getGeneralization()) {</span>
+<span class="nc" id="L681">            connection = getCore().buildGeneralization(fromElement, toElement);</span>
+<span class="nc bnc" id="L682" title="All 2 branches missed.">        } else if (elementType == metaTypes.getDependency()) {</span>
+<span class="nc" id="L683">            connection = getCore().buildDependency(fromElement, toElement);</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">        } else if (elementType == metaTypes.getAbstraction()) {</span>
+<span class="nc" id="L685">            connection =</span>
+<span class="nc" id="L686">                getCore().buildRealization(fromElement, toElement, namespace);</span>
+<span class="nc bnc" id="L687" title="All 2 branches missed.">        } else if (elementType == metaTypes.getLink()) {</span>
+<span class="nc" id="L688">            connection = getCommonBehavior().buildLink(fromElement, toElement);</span>
+<span class="nc bnc" id="L689" title="All 2 branches missed.">        } else if (elementType == metaTypes.getExtend()) {</span>
+            // Extend, but only between two use cases. Remember we draw from the
+            // extension port to the base port.
+<span class="nc" id="L692">            connection = getUseCases().buildExtend(toElement, fromElement);</span>
+<span class="nc bnc" id="L693" title="All 2 branches missed.">        } else if (elementType == metaTypes.getInclude()) {</span>
+<span class="nc" id="L694">            connection = getUseCases().buildInclude(fromElement, toElement);</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">        } else if (elementType == metaTypes.getTransition()) {</span>
+<span class="nc" id="L696">            connection =</span>
+<span class="nc" id="L697">                getStateMachines().buildTransition(fromElement, toElement);</span>
+        }
+
+<span class="nc bnc" id="L700" title="All 2 branches missed.">        if (connection == null) {</span>
+<span class="nc" id="L701">            throw new IllegalModelElementConnectionException(&quot;Cannot make a &quot;</span>
+<span class="nc" id="L702">                    + elementType.getClass().getName() + &quot; between a &quot;</span>
+<span class="nc" id="L703">                    + fromElement.getClass().getName() + &quot; and a &quot;</span>
+<span class="nc" id="L704">                    + toElement.getClass().getName());</span>
+        }
+
+<span class="nc" id="L707">        return connection;</span>
+    }
+
+
+    public Object buildNode(Object elementType) {
+<span class="nc bnc" id="L712" title="All 2 branches missed.">        if (elementType == metaTypes.getActor()) {</span>
+<span class="nc" id="L713">            return getUseCases().createActor();</span>
+<span class="nc bnc" id="L714" title="All 2 branches missed.">        } else if (elementType == metaTypes.getUseCase()) {</span>
+<span class="nc" id="L715">            return getUseCases().createUseCase();</span>
+<span class="nc bnc" id="L716" title="All 2 branches missed.">        } else if (elementType == metaTypes.getUMLClass()) {</span>
+<span class="nc" id="L717">            return getCore().buildClass();</span>
+<span class="nc bnc" id="L718" title="All 2 branches missed.">        } else if (elementType == metaTypes.getInterface()) {</span>
+<span class="nc" id="L719">            return getCore().buildInterface();</span>
+<span class="nc bnc" id="L720" title="All 2 branches missed.">        } else if (elementType == metaTypes.getDataType()) {</span>
+<span class="nc" id="L721">            return getCore().createDataType();</span>
+<span class="nc bnc" id="L722" title="All 2 branches missed.">        } else if (elementType == metaTypes.getPackage()) {</span>
+<span class="nc" id="L723">            return getModelManagement().createPackage();</span>
+<span class="nc bnc" id="L724" title="All 2 branches missed.">        } else if (elementType == metaTypes.getModel()) {</span>
+<span class="nc" id="L725">            return getModelManagement().createModel();</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">        } else if (elementType == metaTypes.getInstance()) {</span>
+<span class="nc" id="L727">            throw new IllegalArgumentException(</span>
+                    &quot;Attempt to instantiate abstract type&quot;);
+<span class="nc bnc" id="L729" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSubsystem()) {</span>
+<span class="nc" id="L730">            return getModelManagement().createSubsystem();</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">        } else if (elementType == metaTypes.getCallState()) {</span>
+<span class="nc" id="L732">            return getActivityGraphs().createCallState();</span>
+<span class="nc bnc" id="L733" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSimpleState()) {</span>
+<span class="nc" id="L734">            return getStateMachines().createSimpleState();</span>
+<span class="nc bnc" id="L735" title="All 2 branches missed.">        } else if (elementType == metaTypes.getFinalState()) {</span>
+<span class="nc" id="L736">            return getStateMachines().createFinalState();</span>
+<span class="nc bnc" id="L737" title="All 2 branches missed.">        } else if (elementType == metaTypes.getPseudostate()) {</span>
+<span class="nc" id="L738">            return getStateMachines().createPseudostate();</span>
+<span class="nc bnc" id="L739" title="All 2 branches missed.">        } else if (elementType == metaTypes.getObjectFlowState()) {</span>
+<span class="nc" id="L740">            return getActivityGraphs().createObjectFlowState();</span>
+<span class="nc bnc" id="L741" title="All 2 branches missed.">        } else if (elementType == metaTypes.getActionState()) {</span>
+<span class="nc" id="L742">            return getActivityGraphs().createActionState();</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSubactivityState()) {</span>
+<span class="nc" id="L744">            return getActivityGraphs().createSubactivityState();</span>
+<span class="nc bnc" id="L745" title="All 2 branches missed.">        } else if (elementType == metaTypes.getPartition()) {</span>
+<span class="nc" id="L746">            return getActivityGraphs().createPartition();</span>
+<span class="nc bnc" id="L747" title="All 2 branches missed.">        } else if (elementType == metaTypes.getStubState()) {</span>
+<span class="nc" id="L748">            return getStateMachines().createStubState();</span>
+<span class="nc bnc" id="L749" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSubmachineState()) {</span>
+<span class="nc" id="L750">            return getStateMachines().createSubmachineState();</span>
+<span class="nc bnc" id="L751" title="All 2 branches missed.">        } else if (elementType == metaTypes.getCompositeState()) {</span>
+<span class="nc" id="L752">            return getStateMachines().createCompositeState();</span>
+<span class="nc bnc" id="L753" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSynchState()) {</span>
+<span class="nc" id="L754">            return getStateMachines().createSynchState();</span>
+<span class="nc bnc" id="L755" title="All 2 branches missed.">        } else if (elementType == metaTypes.getState()) {</span>
+<span class="nc" id="L756">            throw new IllegalArgumentException(</span>
+                    &quot;Attempt to instantiate abstract type&quot;);
+<span class="nc bnc" id="L758" title="All 2 branches missed.">        } else if (elementType == modelImpl.getMetaTypes().getSimpleState()) {</span>
+<span class="nc" id="L759">            return getStateMachines().createSimpleState();</span>
+<span class="nc bnc" id="L760" title="All 2 branches missed.">        } else if (elementType == metaTypes.getClassifierRole()) {</span>
+<span class="nc" id="L761">            return getCollaborations().createClassifierRole();</span>
+<span class="nc bnc" id="L762" title="All 2 branches missed.">        } else if (elementType == metaTypes.getComponent()) {</span>
+<span class="nc" id="L763">            return getCore().createComponent();</span>
+<span class="nc bnc" id="L764" title="All 2 branches missed.">        } else if (elementType == metaTypes.getComponentInstance()) {</span>
+<span class="nc" id="L765">            return getCommonBehavior().createComponentInstance();</span>
+<span class="nc bnc" id="L766" title="All 2 branches missed.">        } else if (elementType == metaTypes.getNode()) {</span>
+<span class="nc" id="L767">            return getCore().createNode();</span>
+<span class="nc bnc" id="L768" title="All 2 branches missed.">        } else if (elementType == metaTypes.getNodeInstance()) {</span>
+<span class="nc" id="L769">            return getCommonBehavior().createNodeInstance();</span>
+<span class="nc bnc" id="L770" title="All 2 branches missed.">        } else if (elementType == metaTypes.getObject()) {</span>
+<span class="nc" id="L771">            return getCommonBehavior().createObject();</span>
+<span class="nc bnc" id="L772" title="All 2 branches missed.">        } else if (elementType == metaTypes.getComment()) {</span>
+<span class="nc" id="L773">            return getCore().createComment();</span>
+<span class="nc bnc" id="L774" title="All 2 branches missed.">        } else if (elementType == metaTypes.getNamespace()) {</span>
+<span class="nc" id="L775">            throw new IllegalArgumentException(</span>
+                    &quot;Attempt to instantiate abstract type&quot;);
+<span class="nc bnc" id="L777" title="All 2 branches missed.">        } else if (elementType == metaTypes.getOperation()) {</span>
+<span class="nc" id="L778">            return getCore().createOperation();</span>
+<span class="nc bnc" id="L779" title="All 2 branches missed.">        } else if (elementType == metaTypes.getEnumeration()) {</span>
+<span class="nc" id="L780">            return getCore().createEnumeration();</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">        } else if (elementType == metaTypes.getStereotype()) {</span>
+<span class="nc" id="L782">            return getExtensionMechanisms().createStereotype();</span>
+<span class="nc bnc" id="L783" title="All 2 branches missed.">        } else if (elementType == metaTypes.getAttribute()) {</span>
+<span class="nc" id="L784">            return getCore().buildAttribute();</span>
+<span class="nc bnc" id="L785" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSignal()) {</span>
+<span class="nc" id="L786">            return getCommonBehavior().createSignal();</span>
+<span class="nc bnc" id="L787" title="All 2 branches missed.">        } else if (elementType == metaTypes.getException()) {</span>
+<span class="nc" id="L788">            return getCommonBehavior().createException();</span>
+<span class="nc bnc" id="L789" title="All 2 branches missed.">        } else if (elementType == metaTypes.getTransition()) {</span>
+<span class="nc" id="L790">            return getStateMachines().createTransition();</span>
+<span class="nc bnc" id="L791" title="All 2 branches missed.">        } else if (elementType == metaTypes.getTransition()) {</span>
+<span class="nc" id="L792">            return getStateMachines().createTransition();</span>
+        }
+
+<span class="nc" id="L795">        throw new IllegalArgumentException(</span>
+                &quot;Attempted to create unsupported model element type: &quot;
+                + elementType);
+    }
+
+    public Object buildNode(Object elementType, Object container, String property, Defaults defaults) {
+<span class="nc" id="L801">        Object element = buildNode(elementType, container, property);</span>
+<span class="nc bnc" id="L802" title="All 2 branches missed.">        if (defaults != null) {</span>
+<span class="nc" id="L803">            final Object type = defaults.getDefaultType(elementType);</span>
+<span class="nc" id="L804">            final String name = defaults.getDefaultName(elementType);</span>
+<span class="nc bnc" id="L805" title="All 2 branches missed.">            if (type != null) {</span>
+<span class="nc" id="L806">                modelImpl.getCoreHelper().setType(element, type);</span>
+            }
+<span class="nc bnc" id="L808" title="All 2 branches missed.">            if (name != null) {</span>
+<span class="nc" id="L809">                modelImpl.getCoreHelper().setName(element, name);</span>
+            } else {
+<span class="nc" id="L811">                modelImpl.getCoreHelper().setName(element, &quot;&quot;);</span>
+            }
+        }
+<span class="nc" id="L814">        return element;</span>
+    }
+
+
+    public Object buildNode(Object elementType, Object container, String properyName) {
+
+<span class="nc" id="L820">        Object element = null;</span>
+
+        // if this is a feature get the owner of that feature
+        // TODO: Does anything actually make use of this? It can
+        // cause unexpected behaviour.
+<span class="nc bnc" id="L825" title="All 2 branches missed.">        if (this.modelImpl.getFacade().isAFeature(container)</span>
+<span class="nc bnc" id="L826" title="All 2 branches missed.">                &amp;&amp; elementType != metaTypes.getParameter()</span>
+<span class="nc bnc" id="L827" title="All 2 branches missed.">                &amp;&amp; elementType != metaTypes.getMethod()</span>
+<span class="nc bnc" id="L828" title="All 2 branches missed.">                &amp;&amp; elementType != metaTypes.getSignal()) {</span>
+<span class="nc" id="L829">            container = this.modelImpl.getFacade().getOwner(container);</span>
+        }
+
+        // supports implementation of some special elements not
+        // supported by buildNode
+<span class="nc bnc" id="L834" title="All 2 branches missed.">        if (elementType == this.metaTypes.getAttribute()) {</span>
+<span class="nc" id="L835">            element = getCore().buildAttribute2(container, null);</span>
+<span class="nc bnc" id="L836" title="All 2 branches missed.">        } else if (elementType == this.metaTypes.getOperation()) {</span>
+<span class="nc" id="L837">            element = getCore().buildOperation(container, null);</span>
+<span class="nc bnc" id="L838" title="All 2 branches missed.">        } else if (elementType == this.metaTypes.getReception()) {</span>
+<span class="nc" id="L839">            element = this.modelImpl.getCommonBehaviorFactory().buildReception(container);</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">        } else if (elementType == this.metaTypes.getEnumerationLiteral()) {</span>
+<span class="nc" id="L841">            element = getCore().buildEnumerationLiteral(null, container);</span>
+<span class="nc bnc" id="L842" title="All 2 branches missed.">        } else if (elementType == this.metaTypes.getExtensionPoint()) {</span>
+<span class="nc" id="L843">            element = this.modelImpl.getUseCasesFactory().</span>
+<span class="nc" id="L844">                buildExtensionPoint(container);</span>
+<span class="nc bnc" id="L845" title="All 2 branches missed.">        } else if (elementType == this.metaTypes.getTemplateParameter()) {</span>
+            // TODO: the type of the model element used in a type parameter
+            // (ie the formal) needs to match the actual parameter that it
+            // gets replaced with later.  This code is going to restrict that
+            // to always being a Parameter which doesn't seem right, but I
+            // don't have time to debug it right now. - tfm - 20090608
+<span class="nc" id="L851">            Parameter param = getCore().createParameter();</span>
+<span class="nc" id="L852">            param.setName(&quot;T&quot;); // default parameter name</span>
+<span class="nc" id="L853">            element =</span>
+<span class="nc" id="L854">                modelImpl.getCoreFactory().buildTemplateParameter(container,</span>
+                        param, null);
+<span class="nc bnc" id="L856" title="All 2 branches missed.">        } else if (elementType == metaTypes.getParameter()) {</span>
+<span class="nc" id="L857">            element = getCore().buildParameter(container, null);</span>
+<span class="nc bnc" id="L858" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSignal()) {</span>
+<span class="nc" id="L859">            element = modelImpl.getCommonBehaviorFactory().buildSignal(container);</span>
+<span class="nc bnc" id="L860" title="All 2 branches missed.">        } else if (elementType == metaTypes.getMethod()) {</span>
+<span class="nc" id="L861">            final Operation op = (Operation) container;</span>
+<span class="nc" id="L862">            element = getCore().buildMethod(op.getName());</span>
+<span class="nc" id="L863">            modelImpl.getCoreHelper().addMethod(op, element);</span>
+<span class="nc" id="L864">            modelImpl.getCoreHelper().addFeature(</span>
+<span class="nc" id="L865">                    modelImpl.getFacade().getOwner(op), element);</span>
+<span class="nc bnc" id="L866" title="All 2 branches missed.">        } else if (elementType == metaTypes.getMessage()) {</span>
+<span class="nc" id="L867">            Object collaboration = Model.getFacade().getNamespace(container);</span>
+            element =
+<span class="nc" id="L869">                Model.getCollaborationsFactory()</span>
+<span class="nc" id="L870">                    .buildMessage(collaboration, container);</span>
+<span class="nc bnc" id="L871" title="All 2 branches missed.">        } else if (elementType == metaTypes.getArgument()) {</span>
+<span class="nc" id="L872">            element = Model.getCommonBehaviorFactory().createArgument();</span>
+<span class="nc" id="L873">            Model.getCommonBehaviorHelper().addActualArgument(container, element);</span>
+<span class="nc bnc" id="L874" title="All 2 branches missed.">        } else if (elementType == metaTypes.getGuard()) {</span>
+<span class="nc" id="L875">            element = Model.getStateMachinesFactory().buildGuard(container);</span>
+<span class="nc bnc" id="L876" title="All 2 branches missed.">        } else if (elementType == metaTypes.getCreateAction()) {</span>
+<span class="nc" id="L877">            element = Model.getCommonBehaviorFactory().createCreateAction();</span>
+<span class="nc" id="L878">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L879" title="All 2 branches missed.">        } else if (elementType == metaTypes.getCallAction()) {</span>
+<span class="nc" id="L880">            element = Model.getCommonBehaviorFactory().createCallAction();</span>
+<span class="nc" id="L881">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L882" title="All 2 branches missed.">        } else if (elementType == metaTypes.getReturnAction()) {</span>
+<span class="nc" id="L883">            element = Model.getCommonBehaviorFactory().createReturnAction();</span>
+<span class="nc" id="L884">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L885" title="All 2 branches missed.">        } else if (elementType == metaTypes.getDestroyAction()) {</span>
+<span class="nc" id="L886">            element = Model.getCommonBehaviorFactory().createDestroyAction();</span>
+<span class="nc" id="L887">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L888" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSendAction()) {</span>
+<span class="nc" id="L889">            element = Model.getCommonBehaviorFactory().createSendAction();</span>
+<span class="nc" id="L890">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L891" title="All 2 branches missed.">        } else if (elementType == metaTypes.getTerminateAction()) {</span>
+<span class="nc" id="L892">            element = Model.getCommonBehaviorFactory().createTerminateAction();</span>
+<span class="nc" id="L893">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L894" title="All 2 branches missed.">        } else if (elementType == metaTypes.getUninterpretedAction()) {</span>
+<span class="nc" id="L895">            element = Model.getCommonBehaviorFactory().createUninterpretedAction();</span>
+<span class="nc" id="L896">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L897" title="All 2 branches missed.">        } else if (elementType == metaTypes.getActionSequence()) {</span>
+<span class="nc" id="L898">            element = Model.getCommonBehaviorFactory().createActionSequence();</span>
+<span class="nc" id="L899">            setNewAction(container, (Action) element, properyName);</span>
+<span class="nc bnc" id="L900" title="All 2 branches missed.">        } else if (elementType == metaTypes.getCallEvent()) {</span>
+<span class="nc" id="L901">            element = Model.getStateMachinesFactory().createCallEvent();</span>
+<span class="nc bnc" id="L902" title="All 2 branches missed.">            if (container instanceof Transition) {</span>
+<span class="nc" id="L903">                setNewTrigger((Transition) container, (Event) element);</span>
+<span class="nc bnc" id="L904" title="All 2 branches missed.">            } else if (container instanceof State) {</span>
+<span class="nc" id="L905">                setNewDeferrableEvent((State) container, (Event) element);</span>
+            }
+<span class="nc bnc" id="L907" title="All 2 branches missed.">        } else if (elementType == metaTypes.getChangeEvent()) {</span>
+<span class="nc" id="L908">            element = Model.getStateMachinesFactory().createChangeEvent();</span>
+<span class="nc bnc" id="L909" title="All 2 branches missed.">            if (container instanceof Transition) {</span>
+<span class="nc" id="L910">                setNewTrigger((Transition) container, (Event) element);</span>
+<span class="nc bnc" id="L911" title="All 2 branches missed.">            } else if (container instanceof State) {</span>
+<span class="nc" id="L912">                setNewDeferrableEvent((State) container, (Event) element);</span>
+            }
+<span class="nc bnc" id="L914" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSignalEvent()) {</span>
+<span class="nc" id="L915">            element = Model.getStateMachinesFactory().createSignalEvent();</span>
+<span class="nc bnc" id="L916" title="All 2 branches missed.">            if (container instanceof Transition) {</span>
+<span class="nc" id="L917">                setNewTrigger((Transition) container, (Event) element);</span>
+<span class="nc bnc" id="L918" title="All 2 branches missed.">            } else if (container instanceof State) {</span>
+<span class="nc" id="L919">                setNewDeferrableEvent((State) container, (Event) element);</span>
+            }
+<span class="nc bnc" id="L921" title="All 2 branches missed.">        } else if (elementType == metaTypes.getTimeEvent()) {</span>
+<span class="nc" id="L922">            element = Model.getStateMachinesFactory().createTimeEvent();</span>
+<span class="nc bnc" id="L923" title="All 2 branches missed.">            if (container instanceof Transition) {</span>
+<span class="nc" id="L924">                setNewTrigger((Transition) container, (Event) element);</span>
+<span class="nc bnc" id="L925" title="All 2 branches missed.">            } else if (container instanceof State) {</span>
+<span class="nc" id="L926">                setNewDeferrableEvent((State) container, (Event) element);</span>
+            }
+<span class="nc bnc" id="L928" title="All 2 branches missed.">        } else if (elementType == metaTypes.getSignal()) {</span>
+<span class="nc" id="L929">            element = Model.getStateMachinesFactory().buildSignalEvent(container);</span>
+<span class="nc bnc" id="L930" title="All 4 branches missed.">        } else if (elementType == metaTypes.getPseudostate() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L931">            element = Model.getStateMachinesFactory().buildPseudoState(container);</span>
+<span class="nc bnc" id="L932" title="All 4 branches missed.">        } else if (elementType == metaTypes.getSynchState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L933">            element = Model.getStateMachinesFactory().buildSynchState(container);</span>
+<span class="nc bnc" id="L934" title="All 4 branches missed.">        } else if (elementType == metaTypes.getStubState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L935">            element = Model.getStateMachinesFactory().buildStubState(container);</span>
+<span class="nc bnc" id="L936" title="All 4 branches missed.">        } else if (elementType == metaTypes.getCompositeState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L937">            element = Model.getStateMachinesFactory().buildCompositeState(container);</span>
+<span class="nc bnc" id="L938" title="All 4 branches missed.">        } else if (elementType == metaTypes.getSimpleState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L939">            element = Model.getStateMachinesFactory().buildSimpleState(container);</span>
+<span class="nc bnc" id="L940" title="All 4 branches missed.">        } else if (elementType == metaTypes.getFinalState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L941">            element = Model.getStateMachinesFactory().buildFinalState(container);</span>
+<span class="nc bnc" id="L942" title="All 4 branches missed.">        } else if (elementType == metaTypes.getSubmachineState() &amp;&amp; container instanceof CompositeState) {</span>
+<span class="nc" id="L943">            element = Model.getStateMachinesFactory().buildSubmachineState(container);</span>
+<span class="nc bnc" id="L944" title="All 4 branches missed.">        } else if (elementType == metaTypes.getTransition() &amp;&amp; container instanceof State) {</span>
+<span class="nc" id="L945">            element = Model.getStateMachinesFactory().buildInternalTransition(container);</span>
+<span class="nc bnc" id="L946" title="All 2 branches missed.">        } else if (elementType == metaTypes.getActivity()) {</span>
+<span class="nc" id="L947">            element = Model.getActivityGraphsFactory().buildActivityGraph(container);</span>
+        } else {
+            // build all other elements using existing buildNode
+<span class="nc" id="L950">            element = buildNode(elementType);</span>
+
+<span class="nc bnc" id="L952" title="All 4 branches missed.">            if (container instanceof Namespace</span>
+                    &amp;&amp; element instanceof Namespace) {
+<span class="nc" id="L954">                ((Namespace) element).setNamespace(</span>
+<span class="nc" id="L955">                        ((Namespace) container).getNamespace());</span>
+            }
+
+<span class="nc" id="L958">            this.modelImpl.getCoreHelper().addOwnedElement(container, element);</span>
+        }
+
+<span class="nc" id="L961">        modelImpl.getCoreHelper().setName(element, &quot;&quot;);</span>
+<span class="nc" id="L962">        return element;</span>
+    }
+
+    private void setNewAction(Object container, Action action, String propertyName) {
+<span class="nc bnc" id="L966" title="All 2 branches missed.">        if (container instanceof Transition) {</span>
+<span class="nc" id="L967">            ((Transition) container).setEffect(action);</span>
+<span class="nc bnc" id="L968" title="All 2 branches missed.">        } else if (container instanceof State) {</span>
+<span class="nc bnc" id="L969" title="All 2 branches missed.">            if (&quot;exit&quot;.equals(propertyName)) {</span>
+<span class="nc" id="L970">                ((State) container).setExit(action);</span>
+<span class="nc bnc" id="L971" title="All 2 branches missed.">            } else if (&quot;doActivity&quot;.equals(propertyName)) {</span>
+<span class="nc" id="L972">                ((State) container).setDoActivity(action);</span>
+            } else {
+<span class="nc" id="L974">                ((State) container).setEntry(action);</span>
+            }
+<span class="nc bnc" id="L976" title="All 2 branches missed.">        } else if (container instanceof ActionSequence) {</span>
+<span class="nc" id="L977">            ((ActionSequence) container).getAction().add(action);</span>
+        } else {
+<span class="nc" id="L979">            throw new IllegalArgumentException(&quot;Did not expect a &quot; + container);</span>
+        }
+<span class="nc" id="L981">    }</span>
+
+    public Object buildNode(Object elementType, Object container) {
+<span class="nc" id="L984">        return buildNode(elementType, container, (String) null);</span>
+    }
+
+
+    /**
+     * Add a newly created event to a trigger
+     * @param transition
+     * @param event
+     */
+    private void setNewTrigger(Transition transition, Event event) {
+<span class="nc" id="L994">        transition.setTrigger(event);</span>
+<span class="nc" id="L995">        event.setName(&quot;&quot;);</span>
+<span class="nc" id="L996">        final StateMachine statemachine = transition.getStateMachine();</span>
+<span class="nc" id="L997">        final Namespace namespace = statemachine.getNamespace();</span>
+<span class="nc" id="L998">        event.setNamespace(namespace);</span>
+<span class="nc" id="L999">    }</span>
+
+    /**
+     * Add a newly created event to a trigger
+     * @param transition
+     * @param event
+     */
+    private void setNewDeferrableEvent(final State state, final Event event) {
+<span class="nc" id="L1007">        ((State) state).getDeferrableEvent().add((Event) event);</span>
+<span class="nc" id="L1008">        event.setName(&quot;&quot;);</span>
+<span class="nc" id="L1009">        Object parent = state;</span>
+        do {
+<span class="nc" id="L1011">            parent = ((RefObject) parent).refImmediateComposite();</span>
+<span class="nc bnc" id="L1012" title="All 2 branches missed.">        } while (!(parent instanceof Namespace));</span>
+
+<span class="nc" id="L1014">        event.setNamespace((Namespace) parent);</span>
+<span class="nc" id="L1015">    }</span>
+
+    public boolean isConnectionType(Object connectionType) {
+        // If our map has any entries for this type, it's a connection type
+<span class="nc bnc" id="L1019" title="All 2 branches missed.">        return (validConnectionMap.get(connectionType) != null);</span>
+    }
+
+
+    public boolean isConnectionValid(Object connectionType, Object fromElement,
+            Object toElement, boolean checkWFR) {
+<span class="nc bnc" id="L1025" title="All 2 branches missed.">        if (Model.getModelManagementHelper().isReadOnly(fromElement)) {</span>
+            // Don't allow connections to be created from a read only
+            // model element to any other
+            // TODO: This should be considered a workaround.  It only works
+            // because, by default, we place newly created relationships in
+            // the namespace of the fromElement.  The correct behavior in
+            // the presence of read-only elements really depends on the type of
+            // connection as well as the writeability of both ends.
+<span class="nc" id="L1033">            return false;</span>
+        }
+        // Get the list of valid model item pairs for the given connection type
+<span class="nc" id="L1036">        List&lt;Class&lt;?&gt;[]&gt; validItems = validConnectionMap.get(connectionType);</span>
+<span class="nc bnc" id="L1037" title="All 2 branches missed.">        if (validItems == null) {</span>
+<span class="nc" id="L1038">            return false;</span>
+        }
+        // See if there's a pair in this list that match the given
+        // model elements
+<span class="nc bnc" id="L1042" title="All 2 branches missed.">        for (Class&lt;?&gt;[] modeElementPair : validItems) {</span>
+<span class="nc bnc" id="L1043" title="All 2 branches missed.">            if (modeElementPair[0].isInstance(fromElement)</span>
+<span class="nc bnc" id="L1044" title="All 2 branches missed.">                    &amp;&amp; modeElementPair[1].isInstance(toElement)) {</span>
+<span class="nc bnc" id="L1045" title="All 2 branches missed.">                if (checkWFR) {</span>
+<span class="nc" id="L1046">                    return isConnectionWellformed(</span>
+                            (Class&lt;?&gt;) connectionType,
+                            (ModelElement) fromElement,
+                            (ModelElement) toElement);
+                } else {
+<span class="nc" id="L1051">                    return true;</span>
+                }
+            }
+<span class="nc" id="L1054">        }</span>
+<span class="nc" id="L1055">        return false;</span>
+    }
+
+    public boolean isContainmentValid(Object metaType, Object container) {
+
+        // find the passed in container in validContainmentMap
+<span class="nc bnc" id="L1061" title="All 2 branches missed.">        for (Class&lt;?&gt; containerType : validContainmentMap.keySet()) {</span>
+
+<span class="nc bnc" id="L1063" title="All 2 branches missed.">            if (containerType.isInstance(container)) {</span>
+                // determine if metaType is a valid element for container
+<span class="nc" id="L1065">                Class&lt;?&gt;[] validElements =</span>
+<span class="nc" id="L1066">                    validContainmentMap.get(containerType);</span>
+
+<span class="nc bnc" id="L1068" title="All 2 branches missed.">                for (int eIter = 0; eIter &lt; validElements.length; ++eIter) {</span>
+
+<span class="nc bnc" id="L1070" title="All 2 branches missed.">                    if (metaType == validElements[eIter]) {</span>
+<span class="nc" id="L1071">                        return true;</span>
+                    }
+                }
+            }
+<span class="nc" id="L1075">        }</span>
+
+<span class="nc" id="L1077">        return false;</span>
+    }
+
+    /**
+     * Run through any well formedness rules we wish to enforce for a
+     * connection.
+     * @param connectionType
+     * @param fromElement
+     * @param toElement
+     * @return true if the connection satisfies the wellformedness rules
+     */
+    private boolean isConnectionWellformed(
+            Class&lt;?&gt; connectionType,
+            ModelElement fromElement,
+            ModelElement toElement) {
+
+<span class="nc bnc" id="L1093" title="All 4 branches missed.">        if (fromElement == null || toElement == null) {</span>
+<span class="nc" id="L1094">            return false;</span>
+        }
+
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">        if (connectionType == Generalization.class) {</span>
+            /*
+             * UML 1.4.2 Spec section 4.5.3.20 [5]
+             * A GeneralizableElement may only be a child of
+             * GeneralizableElement of the same kind.
+             */
+<span class="nc bnc" id="L1103" title="All 2 branches missed.">            if (fromElement.getClass() != toElement.getClass()) {</span>
+<span class="nc" id="L1104">                return false;</span>
+            }
+        }
+
+<span class="nc" id="L1108">        return true;</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * Foundation::ExtensionMechanisms.
+     *
+     * @return the ExtensionMechanisms factory instance.
+     */
+    private ExtensionMechanismsFactoryMDRImpl getExtensionMechanisms() {
+<span class="nc" id="L1118">        return (ExtensionMechanismsFactoryMDRImpl) modelImpl.</span>
+<span class="nc" id="L1119">                getExtensionMechanismsFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package Foundation::Core.
+     *
+     * @return the Core factory instance.
+     */
+    private CoreFactoryMDRImpl getCore() {
+<span class="nc" id="L1128">        return (CoreFactoryMDRImpl) modelImpl.getCoreFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * BehavioralElements::CommonBehavior.
+     *
+     * @return the CommonBehavior factory instance.
+     */
+    private CommonBehaviorFactoryMDRImpl getCommonBehavior() {
+<span class="nc" id="L1138">        return (CommonBehaviorFactoryMDRImpl) modelImpl.</span>
+<span class="nc" id="L1139">                getCommonBehaviorFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * BehavioralElements::UseCases.
+     *
+     * @return the UseCases factory instance.
+     */
+    private UseCasesFactoryMDRImpl getUseCases() {
+<span class="nc" id="L1149">        return (UseCasesFactoryMDRImpl) modelImpl.getUseCasesFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * BehavioralElements::StateMachines.
+     *
+     * @return the StateMachines factory instance.
+     */
+    private StateMachinesFactoryMDRImpl getStateMachines() {
+<span class="nc" id="L1159">        return (StateMachinesFactoryMDRImpl) modelImpl</span>
+<span class="nc" id="L1160">                .getStateMachinesFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * BehavioralElements::Collaborations.
+     *
+     * @return the Collaborations factory instance.
+     */
+    private CollaborationsFactoryMDRImpl getCollaborations() {
+<span class="nc" id="L1170">        return (CollaborationsFactoryMDRImpl) modelImpl.</span>
+<span class="nc" id="L1171">                getCollaborationsFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package
+     * BehavioralElements::ActivityGraphs.
+     *
+     * @return the ActivityGraphs factory instance.
+     */
+    private ActivityGraphsFactoryMDRImpl getActivityGraphs() {
+<span class="nc" id="L1181">        return (ActivityGraphsFactoryMDRImpl) modelImpl.</span>
+<span class="nc" id="L1182">                getActivityGraphsFactory();</span>
+    }
+
+    /**
+     * Returns the package factory for the UML package ModelManagement.
+     *
+     * @return the ModelManagement factory instance.
+     */
+    private ModelManagementFactoryMDRImpl getModelManagement() {
+<span class="nc" id="L1191">        return (ModelManagementFactoryMDRImpl) modelImpl.</span>
+<span class="nc" id="L1192">                getModelManagementFactory();</span>
+    }
+
+    /*
+     * Delete a model element.  Implements 'cascading delete' to make sure
+     * model is still valid after element has been deleted.&lt;p&gt;
+     *
+     * The actual deletion is delegated to delete methods in the rest of the
+     * factories. For example: a method deleteClass exists on CoreHelper. Delete
+     * methods as deleteClass should only do those extra actions that are
+     * necessary for the deletion of the modelelement itself. I.e. deleteClass
+     * should only take care of things specific to UmlClass.&lt;p&gt;
+     *
+     * The delete methods in the UML Factories should not be called directly
+     * throughout the code! Calls should always refer to this method and never
+     * call the deleteXXX method on XXXFactory directly. The reason that it is
+     * possible to call the deleteXXX methods directly is a pure implementation
+     * detail.&lt;p&gt;
+     *
+     * The implementation of this method uses a quite complicated if/then/else
+     * tree. This is done to provide optimal performance and full compliance to
+     * the UML 1.4 metamodel. The last remark refers to the fact that the
+     * UML 1.4 model uses multiple inheritance in several places.
+     * This has to be taken into account.&lt;p&gt;
+     *
+     * TODO: The requirements of the metamodel could probably be better
+     * determined by reflection on the metamodel.  Then each association
+     * that a deleted element participates in could be reviewed to make sure
+     * that it meets the requirements and, if not, be deleted. - tfm&lt;p&gt;
+     *
+     * Extensions and its children are not taken into account here. They do not
+     * require extra cleanup actions. Not in the form of a call to the remove
+     * method as is normal for all children of MBase and not in the form of
+     * other behaviour we want to implement via this operation.
+     *
+     * @param elem
+     *            The element to be deleted
+     *
+     * @see org.argouml.model.UmlFactory#delete(java.lang.Object)
+     */
+    public void delete(Object elem) {
+<span class="nc bnc" id="L1233" title="All 2 branches missed.">        if (elem == null) {</span>
+<span class="nc" id="L1234">            throw new IllegalArgumentException(&quot;Element may not be null &quot;</span>
+                    + &quot;in delete&quot;);
+        }
+
+        // TODO: Hold lock for entire recursive traversal?
+<span class="nc" id="L1239">        synchronized (lock) {</span>
+<span class="nc bnc" id="L1240" title="All 2 branches missed.">            if (elementsToBeDeleted.contains(elem)) {</span>
+<span class="nc" id="L1241">                return;</span>
+            }
+<span class="nc bnc" id="L1243" title="All 2 branches missed.">            if (top == null) {</span>
+<span class="nc" id="L1244">                top = elem;</span>
+            }
+<span class="nc" id="L1246">            elementsToBeDeleted.add((RefObject) elem);</span>
+<span class="nc" id="L1247">        }</span>
+
+<span class="nc bnc" id="L1249" title="All 2 branches missed.">        if (top == elem) {</span>
+<span class="nc" id="L1250">            LOG.log(Level.FINE, &quot;Set top for cascade delete to {0}&quot;, elem);</span>
+        }
+<span class="nc" id="L1252">        LOG.log(Level.FINE, &quot;Deleting {0}&quot;, elem);</span>
+
+        // Begin a transaction - we'll do a bunch of reads first
+        // to collect a set of elements to delete - then delete them all
+<span class="nc" id="L1256">        modelImpl.getRepository().beginTrans(false);</span>
+        try {
+            // TODO: Encountering a deleted object during
+            // any part of this traversal will
+            // abort the rest of the traversal.
+            // We probably should do the whole traversal
+            // in a single MDR transaction.
+<span class="nc bnc" id="L1263" title="All 2 branches missed.">            if (elem instanceof Element) {</span>
+<span class="nc" id="L1264">                getCore().deleteElement(elem);</span>
+<span class="nc bnc" id="L1265" title="All 2 branches missed.">                if (elem instanceof ModelElement) {</span>
+<span class="nc" id="L1266">                    getCore().deleteModelElement(elem);</span>
+                    // no else here to make sure Classifier with
+                    // its double inheritance goes ok
+
+<span class="nc bnc" id="L1270" title="All 2 branches missed.">                    if (elem instanceof GeneralizableElement) {</span>
+<span class="nc" id="L1271">                        GeneralizableElement ge = (GeneralizableElement) elem;</span>
+<span class="nc" id="L1272">                        getCore().deleteGeneralizableElement(ge);</span>
+<span class="nc bnc" id="L1273" title="All 2 branches missed.">                        if (elem instanceof Stereotype) {</span>
+<span class="nc" id="L1274">                            Stereotype s = (Stereotype) elem;</span>
+<span class="nc" id="L1275">                            getExtensionMechanisms().deleteStereotype(s);</span>
+                        }
+                    } // no else here to make sure AssociationClass goes ok
+
+<span class="nc bnc" id="L1279" title="All 2 branches missed.">                    if (elem instanceof Parameter) {</span>
+<span class="nc" id="L1280">                        getCore().deleteParameter(elem);</span>
+<span class="nc bnc" id="L1281" title="All 2 branches missed.">                    } else if (elem instanceof Constraint) {</span>
+<span class="nc" id="L1282">                        getCore().deleteConstraint(elem);</span>
+<span class="nc bnc" id="L1283" title="All 2 branches missed.">                    } else if (elem instanceof Relationship) {</span>
+<span class="nc" id="L1284">                        deleteRelationship((Relationship) elem);</span>
+<span class="nc bnc" id="L1285" title="All 2 branches missed.">                    } else if (elem instanceof AssociationEnd) {</span>
+<span class="nc" id="L1286">                        getCore().deleteAssociationEnd(elem);</span>
+<span class="nc bnc" id="L1287" title="All 2 branches missed.">                        if (elem instanceof AssociationEndRole) {</span>
+<span class="nc" id="L1288">                            getCollaborations().deleteAssociationEndRole(elem);</span>
+                        }
+<span class="nc bnc" id="L1290" title="All 2 branches missed.">                    } else if (elem instanceof Comment) {</span>
+<span class="nc" id="L1291">                        getCore().deleteComment(elem);</span>
+<span class="nc bnc" id="L1292" title="All 2 branches missed.">                    } else if (elem instanceof Action) {</span>
+<span class="nc" id="L1293">                        deleteAction(elem);</span>
+<span class="nc bnc" id="L1294" title="All 2 branches missed.">                    } else if (elem instanceof AttributeLink) {</span>
+<span class="nc" id="L1295">                        getCommonBehavior().deleteAttributeLink(elem);</span>
+<span class="nc bnc" id="L1296" title="All 2 branches missed.">                    } else if (elem instanceof Instance) {</span>
+<span class="nc" id="L1297">                        deleteInstance((Instance) elem);</span>
+<span class="nc bnc" id="L1298" title="All 2 branches missed.">                    } else if (elem instanceof Stimulus) {</span>
+<span class="nc" id="L1299">                        getCommonBehavior().deleteStimulus(elem);</span>
+                    } // no else to handle multiple inheritance of linkobject
+
+<span class="nc bnc" id="L1302" title="All 2 branches missed.">                    if (elem instanceof Link) {</span>
+<span class="nc" id="L1303">                        getCommonBehavior().deleteLink(elem);</span>
+<span class="nc bnc" id="L1304" title="All 2 branches missed.">                    } else if (elem instanceof LinkEnd) {</span>
+<span class="nc" id="L1305">                        getCommonBehavior().deleteLinkEnd(elem);</span>
+<span class="nc bnc" id="L1306" title="All 2 branches missed.">                    } else if (elem instanceof Interaction) {</span>
+<span class="nc" id="L1307">                        getCollaborations().deleteInteraction(elem);</span>
+<span class="nc bnc" id="L1308" title="All 2 branches missed.">                    } else if (elem instanceof InteractionInstanceSet) {</span>
+<span class="nc" id="L1309">                        getCollaborations().deleteInteractionInstanceSet(elem);</span>
+<span class="nc bnc" id="L1310" title="All 2 branches missed.">                    } else if (elem instanceof CollaborationInstanceSet) {</span>
+<span class="nc" id="L1311">                        getCollaborations()</span>
+<span class="nc" id="L1312">                                .deleteCollaborationInstanceSet(elem);</span>
+<span class="nc bnc" id="L1313" title="All 2 branches missed.">                    } else if (elem instanceof Message) {</span>
+<span class="nc" id="L1314">                        getCollaborations().deleteMessage(elem);</span>
+<span class="nc bnc" id="L1315" title="All 2 branches missed.">                    } else if (elem instanceof ExtensionPoint) {</span>
+<span class="nc" id="L1316">                        getUseCases().deleteExtensionPoint(elem);</span>
+<span class="nc bnc" id="L1317" title="All 2 branches missed.">                    } else if (elem instanceof StateVertex) {</span>
+<span class="nc" id="L1318">                        deleteStateVertex((StateVertex) elem);</span>
+                    }
+
+<span class="nc bnc" id="L1321" title="All 2 branches missed.">                    if (elem instanceof StateMachine) {</span>
+<span class="nc" id="L1322">                        getStateMachines().deleteStateMachine(elem);</span>
+<span class="nc bnc" id="L1323" title="All 2 branches missed.">                        if (elem instanceof ActivityGraph) {</span>
+<span class="nc" id="L1324">                            getActivityGraphs().deleteActivityGraph(elem);</span>
+                        }
+<span class="nc bnc" id="L1326" title="All 2 branches missed.">                    } else if (elem instanceof Transition) {</span>
+<span class="nc" id="L1327">                        getStateMachines().deleteTransition(elem);</span>
+<span class="nc bnc" id="L1328" title="All 2 branches missed.">                    } else if (elem instanceof Guard) {</span>
+<span class="nc" id="L1329">                        getStateMachines().deleteGuard(elem);</span>
+<span class="nc bnc" id="L1330" title="All 2 branches missed.">                    } else if (elem instanceof TaggedValue) {</span>
+<span class="nc" id="L1331">                        getExtensionMechanisms().deleteTaggedValue(elem);</span>
+<span class="nc bnc" id="L1332" title="All 2 branches missed.">                    } else if (elem instanceof TagDefinition) {</span>
+<span class="nc" id="L1333">                        getExtensionMechanisms().deleteTagDefinition(elem);</span>
+                    }
+                    // else if (elem instanceof MEvent) {
+                    //
+                    // }
+<span class="nc bnc" id="L1338" title="All 2 branches missed.">                } else if (elem instanceof PresentationElement) {</span>
+<span class="nc" id="L1339">                    getCore().deletePresentationElement(elem);</span>
+                }
+<span class="nc bnc" id="L1341" title="All 2 branches missed.">            } else if (elem instanceof TemplateParameter) {</span>
+<span class="nc" id="L1342">                getCore().deleteTemplateParameter(elem);</span>
+<span class="nc bnc" id="L1343" title="All 2 branches missed.">            } else if (elem instanceof TemplateArgument) {</span>
+<span class="nc" id="L1344">                getCore().deleteTemplateArgument(elem);</span>
+<span class="nc bnc" id="L1345" title="All 2 branches missed.">            } else if (elem instanceof ElementImport) {</span>
+<span class="nc" id="L1346">                getModelManagement().deleteElementImport(elem);</span>
+<span class="nc bnc" id="L1347" title="All 2 branches missed.">            } else if (elem instanceof ElementResidence) {</span>
+<span class="nc" id="L1348">                getCore().deleteElementResidence(elem);</span>
+            }
+
+<span class="nc bnc" id="L1351" title="All 2 branches missed.">            if (elem instanceof Partition) {</span>
+<span class="nc" id="L1352">                getActivityGraphs().deletePartition(elem);</span>
+            }
+
+<span class="nc bnc" id="L1355" title="All 2 branches missed.">            if (elem instanceof Feature) {</span>
+<span class="nc" id="L1356">                deleteFeature((Feature) elem);</span>
+<span class="nc bnc" id="L1357" title="All 2 branches missed.">            } else if (elem instanceof Namespace) {</span>
+<span class="nc" id="L1358">                deleteNamespace((Namespace) elem);</span>
+            }
+<span class="nc" id="L1360">        } catch (InvalidObjectException e) {</span>
+            // If we get this with the repository locked, it means our root
+            // model element was already deleted.  Nothing to do...
+<span class="nc" id="L1363">            LOG.log(Level.SEVERE, &quot;Encountered deleted object during delete of &quot; + elem);</span>
+<span class="nc" id="L1364">        } catch (InvalidElementException e) {</span>
+            // Our wrapped version of the same error
+<span class="nc" id="L1366">            LOG.log(Level.SEVERE, &quot;Encountered deleted object during delete of &quot; + elem);</span>
+        } finally {
+            // end our transaction
+<span class="nc" id="L1369">            modelImpl.getRepository().endTrans();</span>
+        }
+
+<span class="nc" id="L1372">        synchronized (lock) {</span>
+            // Elements which will be deleted when their container is deleted
+            // don't get added to the list of elements to be deleted
+            // (but we still want to traverse them looking for other elements
+            //  to be deleted)
+            try {
+<span class="nc" id="L1378">                Object container = ((RefObject) elem).refImmediateComposite();</span>
+<span class="nc bnc" id="L1379" title="All 2 branches missed.">                if (container == null</span>
+<span class="nc bnc" id="L1380" title="All 10 branches missed.">                        || !elementsToBeDeleted.contains(container)</span>
+                        // There is a bug in the version of MDR (20050711) that
+                        // we use  that causes it to fail to delete aggregate
+                        // elements which are single valued and where the
+                        // aggregate end is listed second in the association
+                        // defined in the metamodel. For the UML 1.4 metamodel,
+                        // this affects a StateMachine's top StateVertex and
+                        // a Transition's Guard.  See issue 4948 &amp; 5227 - tfm
+                        // 20080713
+                        || (container instanceof StateMachine
+                                &amp;&amp; elem instanceof StateVertex)
+                        || (container instanceof Transition
+                                &amp;&amp; elem instanceof Guard)) {
+<span class="nc" id="L1393">                    elementsInDeletionOrder.add((RefObject) elem);</span>
+                }
+<span class="nc" id="L1395">            } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L1396">                LOG.log(Level.FINE, &quot;Object already deleted {0}&quot;, elem);</span>
+<span class="nc" id="L1397">            }</span>
+
+<span class="nc bnc" id="L1399" title="All 2 branches missed.">            if (elem == top) {</span>
+<span class="nc bnc" id="L1400" title="All 2 branches missed.">                for (RefObject o : elementsInDeletionOrder) {</span>
+                    // TODO: This doesn't belong here, but it's not a good time
+                    // to move it.  Find someplace less obtrusive than this
+                    // inner loop. - tfm
+<span class="nc bnc" id="L1404" title="All 2 branches missed.">                    if (o instanceof CompositeState) {</span>
+                        // This enforces the following well-formedness rule.
+                        // &lt;p&gt;Well formedness rule 4.12.3.1 CompositeState
+                        // [4] There have to be at least two composite
+                        // substates in a concurrent composite state.&lt;p&gt;
+                        // If this is broken by deletion of substate then we
+                        // change the parent composite substate to be not
+                        // concurrent.
+<span class="nc" id="L1412">                        CompositeState deletedCompositeState =</span>
+                            (CompositeState) o;
+                        try {
+<span class="nc" id="L1415">                            CompositeState containingCompositeState =</span>
+<span class="nc" id="L1416">                                deletedCompositeState.getContainer();</span>
+<span class="nc bnc" id="L1417" title="All 2 branches missed.">                            if (containingCompositeState != null</span>
+                                    &amp;&amp; containingCompositeState.
+<span class="nc bnc" id="L1419" title="All 2 branches missed.">                                    isConcurrent()</span>
+<span class="nc" id="L1420">                                    &amp;&amp; containingCompositeState.getSubvertex().</span>
+<span class="nc bnc" id="L1421" title="All 2 branches missed.">                                        size() == 1) {</span>
+<span class="nc" id="L1422">                                containingCompositeState.setConcurrent(false);</span>
+                            }
+<span class="nc" id="L1424">                        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L1425">                            LOG.log(Level.FINE, &quot;Object already deleted {0}&quot;, o);</span>
+<span class="nc" id="L1426">                        }</span>
+                    }
+                    try {
+<span class="nc" id="L1429">                        o.refDelete();</span>
+<span class="nc" id="L1430">                    } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L1431">                        LOG.log(Level.FINE, &quot;Object already deleted {0}&quot;, o);</span>
+<span class="nc" id="L1432">                    }</span>
+<span class="nc" id="L1433">                    elementsToBeDeleted.remove(o);</span>
+<span class="nc" id="L1434">                }</span>
+<span class="nc" id="L1435">                top = null;</span>
+<span class="nc" id="L1436">                elementsInDeletionOrder.clear();</span>
+<span class="nc bnc" id="L1437" title="All 2 branches missed.">                if (!elementsToBeDeleted.isEmpty()) {</span>
+<span class="nc" id="L1438">                    LOG.log(Level.FINE, &quot;**Skipped deleting {0} elements (probably in a deleted container&quot;, elementsToBeDeleted.size());</span>
+<span class="nc" id="L1439">                    elementsToBeDeleted.clear();</span>
+                }
+            }
+<span class="nc" id="L1442">        }</span>
+
+<span class="nc" id="L1444">        Model.execute(new DummyModelCommand());</span>
+<span class="nc" id="L1445">    }</span>
+
+
+    public boolean isRemoved(Object o) {
+<span class="nc bnc" id="L1449" title="All 2 branches missed.">        if (!(o instanceof RefObject)) {</span>
+<span class="nc" id="L1450">            throw new IllegalArgumentException(</span>
+                    &quot;Expected JMI RefObject, received &quot; + o);
+        }
+        try {
+            // We don't care about the value - just want to see if it throws
+<span class="nc" id="L1455">            ((RefObject) o).refImmediateComposite();</span>
+<span class="nc" id="L1456">            return false;</span>
+<span class="nc" id="L1457">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L1458">            return true;</span>
+        }
+    }
+
+    /**
+     * Delete a Feature.
+     *
+     * @param elem feature to be deleted
+     */
+    private void deleteFeature(Feature elem) {
+<span class="nc" id="L1468">        getCore().deleteFeature(elem);</span>
+<span class="nc bnc" id="L1469" title="All 2 branches missed.">        if (elem instanceof BehavioralFeature) {</span>
+<span class="nc" id="L1470">            getCore().deleteBehavioralFeature(elem);</span>
+<span class="nc bnc" id="L1471" title="All 2 branches missed.">            if (elem instanceof Operation) {</span>
+<span class="nc" id="L1472">                getCore().deleteOperation(elem);</span>
+<span class="nc bnc" id="L1473" title="All 2 branches missed.">            } else if (elem instanceof Method) {</span>
+<span class="nc" id="L1474">                getCore().deleteMethod(elem);</span>
+<span class="nc bnc" id="L1475" title="All 2 branches missed.">            } else if (elem instanceof Reception) {</span>
+<span class="nc" id="L1476">                getCommonBehavior().deleteReception(elem);</span>
+            }
+<span class="nc bnc" id="L1478" title="All 2 branches missed.">        } else if (elem instanceof StructuralFeature) {</span>
+<span class="nc" id="L1479">            getCore().deleteStructuralFeature(elem);</span>
+<span class="nc bnc" id="L1480" title="All 2 branches missed.">            if (elem instanceof Attribute) {</span>
+<span class="nc" id="L1481">                getCore().deleteAttribute(elem);</span>
+            }
+        }
+<span class="nc" id="L1484">    }</span>
+
+    /**
+     * Delete a Namespace.
+     *
+     * @param elem namespace to be deleted
+     */
+    private void deleteNamespace(Namespace elem) {
+<span class="nc" id="L1492">        getCore().deleteNamespace(elem);</span>
+<span class="nc bnc" id="L1493" title="All 2 branches missed.">        if (elem instanceof Classifier) {</span>
+<span class="nc" id="L1494">            getCore().deleteClassifier(elem);</span>
+<span class="nc bnc" id="L1495" title="All 2 branches missed.">            if (elem instanceof UmlClass) {</span>
+<span class="nc" id="L1496">                getCore().deleteClass(elem);</span>
+<span class="nc bnc" id="L1497" title="All 2 branches missed.">                if (elem instanceof AssociationClass) {</span>
+<span class="nc" id="L1498">                    getCore().deleteAssociationClass(elem);</span>
+                }
+<span class="nc bnc" id="L1500" title="All 2 branches missed.">            } else if (elem instanceof Interface) {</span>
+<span class="nc" id="L1501">                getCore().deleteInterface(elem);</span>
+<span class="nc bnc" id="L1502" title="All 2 branches missed.">            } else if (elem instanceof DataType) {</span>
+<span class="nc" id="L1503">                getCore().deleteDataType(elem);</span>
+<span class="nc bnc" id="L1504" title="All 2 branches missed.">                if (elem instanceof Primitive) {</span>
+<span class="nc" id="L1505">                    getCore().deletePrimitive(elem);</span>
+<span class="nc bnc" id="L1506" title="All 2 branches missed.">                } else if (elem instanceof Enumeration) {</span>
+                    // TODO: Add EnumerationLiteral someplace
+<span class="nc" id="L1508">                    getCore().deleteEnumeration(elem);</span>
+<span class="nc bnc" id="L1509" title="All 2 branches missed.">                } else if (elem instanceof ProgrammingLanguageDataType) {</span>
+<span class="nc" id="L1510">                    getCore().deleteProgrammingLanguageDataType(elem);</span>
+                }
+<span class="nc bnc" id="L1512" title="All 2 branches missed.">            } else if (elem instanceof Node) {</span>
+<span class="nc" id="L1513">                getCore().deleteNode(elem);</span>
+<span class="nc bnc" id="L1514" title="All 2 branches missed.">            } else if (elem instanceof Component) {</span>
+<span class="nc" id="L1515">                getCore().deleteComponent(elem);</span>
+<span class="nc bnc" id="L1516" title="All 2 branches missed.">            } else if (elem instanceof Artifact) {</span>
+<span class="nc" id="L1517">                getCore().deleteArtifact(elem);</span>
+<span class="nc bnc" id="L1518" title="All 2 branches missed.">            } else if (elem instanceof Signal) {</span>
+<span class="nc" id="L1519">                getCommonBehavior().deleteSignal(elem);</span>
+<span class="nc bnc" id="L1520" title="All 2 branches missed.">                if (elem instanceof Exception) {</span>
+<span class="nc" id="L1521">                    getCommonBehavior().deleteException(elem);</span>
+                }
+<span class="nc bnc" id="L1523" title="All 2 branches missed.">            } else if (elem instanceof ClassifierRole) {</span>
+<span class="nc" id="L1524">                getCollaborations().deleteClassifierRole(elem);</span>
+<span class="nc bnc" id="L1525" title="All 2 branches missed.">            } else if (elem instanceof UseCase) {</span>
+<span class="nc" id="L1526">                getUseCases().deleteUseCase(elem);</span>
+<span class="nc bnc" id="L1527" title="All 2 branches missed.">            } else if (elem instanceof Actor) {</span>
+<span class="nc" id="L1528">                getUseCases().deleteActor(elem);</span>
+<span class="nc bnc" id="L1529" title="All 2 branches missed.">            } else if (elem instanceof ClassifierInState) {</span>
+<span class="nc" id="L1530">                getActivityGraphs().deleteClassifierInState(elem);</span>
+            }
+<span class="nc bnc" id="L1532" title="All 2 branches missed.">        } else if (elem instanceof Collaboration) {</span>
+<span class="nc" id="L1533">            getCollaborations().deleteCollaboration(elem);</span>
+<span class="nc bnc" id="L1534" title="All 2 branches missed.">        } else if (elem instanceof UmlPackage) {</span>
+<span class="nc" id="L1535">            getModelManagement().deletePackage(elem);</span>
+<span class="nc bnc" id="L1536" title="All 2 branches missed.">            if (elem instanceof org.omg.uml.modelmanagement.Model) {</span>
+<span class="nc" id="L1537">                getModelManagement().deleteModel(elem);</span>
+<span class="nc bnc" id="L1538" title="All 2 branches missed.">            } else if (elem instanceof Subsystem) {</span>
+<span class="nc" id="L1539">                getModelManagement().deleteSubsystem(elem);</span>
+            }
+        }
+<span class="nc" id="L1542">    }</span>
+
+    /**
+     * Delete a Relationship.
+     *
+     * @param elem Relationship to be deleted
+     */
+    private void deleteRelationship(Relationship elem) {
+<span class="nc" id="L1550">        getCore().deleteRelationship(elem);</span>
+<span class="nc bnc" id="L1551" title="All 2 branches missed.">        if (elem instanceof Flow) {</span>
+<span class="nc" id="L1552">            getCore().deleteFlow(elem);</span>
+<span class="nc bnc" id="L1553" title="All 2 branches missed.">        } else if (elem instanceof Generalization) {</span>
+<span class="nc" id="L1554">            getCore().deleteGeneralization(elem);</span>
+<span class="nc bnc" id="L1555" title="All 2 branches missed.">        } else if (elem instanceof UmlAssociation) {</span>
+<span class="nc" id="L1556">            getCore().deleteAssociation(elem);</span>
+<span class="nc bnc" id="L1557" title="All 2 branches missed.">            if (elem instanceof AssociationRole) {</span>
+<span class="nc" id="L1558">                getCollaborations().deleteAssociationRole(elem);</span>
+            }
+<span class="nc bnc" id="L1560" title="All 2 branches missed.">        } else if (elem instanceof Dependency) {</span>
+<span class="nc" id="L1561">            getCore().deleteDependency(elem);</span>
+<span class="nc bnc" id="L1562" title="All 2 branches missed.">            if (elem instanceof Abstraction) {</span>
+<span class="nc" id="L1563">                getCore().deleteAbstraction(elem);</span>
+<span class="nc bnc" id="L1564" title="All 2 branches missed.">            } else if (elem instanceof Binding) {</span>
+<span class="nc" id="L1565">                getCore().deleteBinding(elem);</span>
+<span class="nc bnc" id="L1566" title="All 2 branches missed.">            } else if (elem instanceof Usage) {</span>
+<span class="nc" id="L1567">                getCore().deleteUsage(elem);</span>
+<span class="nc bnc" id="L1568" title="All 2 branches missed.">            } else if (elem instanceof Permission) {</span>
+<span class="nc" id="L1569">                getCore().deletePermission(elem);</span>
+            }
+<span class="nc bnc" id="L1571" title="All 2 branches missed.">        } else if (elem instanceof Include) {</span>
+<span class="nc" id="L1572">            getUseCases().deleteInclude(elem);</span>
+<span class="nc bnc" id="L1573" title="All 2 branches missed.">        } else if (elem instanceof Extend) {</span>
+<span class="nc" id="L1574">            getUseCases().deleteExtend(elem);</span>
+        }
+<span class="nc" id="L1576">    }</span>
+
+    /**
+     * Delete an Action.
+     *
+     * @param elem the Action to be deleted
+     */
+    private void deleteAction(Object elem) {
+<span class="nc" id="L1584">        getCommonBehavior().deleteAction(elem);</span>
+<span class="nc bnc" id="L1585" title="All 2 branches missed.">        if (elem instanceof ActionSequence) {</span>
+<span class="nc" id="L1586">            getCommonBehavior().deleteActionSequence(elem);</span>
+<span class="nc bnc" id="L1587" title="All 2 branches missed.">        } else if (elem instanceof CreateAction) {</span>
+<span class="nc" id="L1588">            getCommonBehavior().deleteCreateAction(elem);</span>
+<span class="nc bnc" id="L1589" title="All 2 branches missed.">        } else if (elem instanceof CallAction) {</span>
+<span class="nc" id="L1590">            getCommonBehavior().deleteCallAction(elem);</span>
+<span class="nc bnc" id="L1591" title="All 2 branches missed.">        } else if (elem instanceof ReturnAction) {</span>
+<span class="nc" id="L1592">            getCommonBehavior().deleteReturnAction(elem);</span>
+<span class="nc bnc" id="L1593" title="All 2 branches missed.">        } else if (elem instanceof SendAction) {</span>
+<span class="nc" id="L1594">            getCommonBehavior().deleteSendAction(elem);</span>
+<span class="nc bnc" id="L1595" title="All 2 branches missed.">        } else if (elem instanceof TerminateAction) {</span>
+<span class="nc" id="L1596">            getCommonBehavior().deleteTerminateAction(elem);</span>
+<span class="nc bnc" id="L1597" title="All 2 branches missed.">        } else if (elem instanceof UninterpretedAction) {</span>
+<span class="nc" id="L1598">            getCommonBehavior().deleteUninterpretedAction(elem);</span>
+<span class="nc bnc" id="L1599" title="All 2 branches missed.">        } else if (elem instanceof DestroyAction) {</span>
+<span class="nc" id="L1600">            getCommonBehavior().deleteDestroyAction(elem);</span>
+        }
+<span class="nc" id="L1602">    }</span>
+
+    /**
+     * Delete an Instance.
+     *
+     * @param elem the Instance to be deleted.
+     */
+    private void deleteInstance(Instance elem) {
+<span class="nc" id="L1610">        getCommonBehavior().deleteInstance(elem);</span>
+<span class="nc bnc" id="L1611" title="All 2 branches missed.">        if (elem instanceof DataValue) {</span>
+<span class="nc" id="L1612">            getCommonBehavior().deleteDataValue(elem);</span>
+<span class="nc bnc" id="L1613" title="All 2 branches missed.">        } else if (elem instanceof ComponentInstance) {</span>
+<span class="nc" id="L1614">            getCommonBehavior().deleteComponentInstance(elem);</span>
+<span class="nc bnc" id="L1615" title="All 2 branches missed.">        } else if (elem instanceof NodeInstance) {</span>
+<span class="nc" id="L1616">            getCommonBehavior().deleteNodeInstance(elem);</span>
+<span class="nc bnc" id="L1617" title="All 2 branches missed.">        } else if (elem</span>
+                instanceof
+                org.omg.uml.behavioralelements.commonbehavior.Object) {
+<span class="nc" id="L1620">            getCommonBehavior().deleteObject(elem);</span>
+<span class="nc bnc" id="L1621" title="All 2 branches missed.">            if (elem instanceof LinkObject) {</span>
+<span class="nc" id="L1622">                getCommonBehavior().deleteLinkObject(elem);</span>
+            }
+<span class="nc bnc" id="L1624" title="All 2 branches missed.">        } else if (elem instanceof SubsystemInstance) {</span>
+<span class="nc" id="L1625">            getCommonBehavior().deleteSubsystemInstance(elem);</span>
+        }
+<span class="nc bnc" id="L1627" title="All 2 branches missed.">        if (elem instanceof UseCaseInstance) {</span>
+<span class="nc" id="L1628">            getUseCases().deleteUseCaseInstance(elem);</span>
+        }
+<span class="nc" id="L1630">    }</span>
+
+    /**
+     * Delete a StateVertex.
+     *
+     * @param elem the StateVertex to be deleted
+     */
+    private void deleteStateVertex(StateVertex elem) {
+<span class="nc" id="L1638">        getStateMachines().deleteStateVertex(elem);</span>
+<span class="nc bnc" id="L1639" title="All 2 branches missed.">        if (elem instanceof Pseudostate) {</span>
+<span class="nc" id="L1640">            getStateMachines().deletePseudostate(elem);</span>
+<span class="nc bnc" id="L1641" title="All 2 branches missed.">        } else if (elem instanceof SynchState) {</span>
+<span class="nc" id="L1642">            getStateMachines().deleteSynchState(elem);</span>
+<span class="nc bnc" id="L1643" title="All 2 branches missed.">        } else if (elem instanceof StubState) {</span>
+<span class="nc" id="L1644">            getStateMachines().deleteStubState(elem);</span>
+<span class="nc bnc" id="L1645" title="All 2 branches missed.">        } else if (elem instanceof State) {</span>
+<span class="nc" id="L1646">            getStateMachines().deleteState(elem);</span>
+<span class="nc bnc" id="L1647" title="All 2 branches missed.">            if (elem instanceof CompositeState) {</span>
+<span class="nc" id="L1648">                getStateMachines().deleteCompositeState(elem);</span>
+<span class="nc bnc" id="L1649" title="All 2 branches missed.">                if (elem instanceof SubmachineState) {</span>
+<span class="nc" id="L1650">                    getStateMachines().deleteSubmachineState(elem);</span>
+<span class="nc bnc" id="L1651" title="All 2 branches missed.">                    if (elem instanceof SubactivityState) {</span>
+<span class="nc" id="L1652">                        getActivityGraphs().deleteSubactivityState(elem);</span>
+                    }
+                }
+<span class="nc bnc" id="L1655" title="All 2 branches missed.">            } else if (elem instanceof SimpleState) {</span>
+<span class="nc" id="L1656">                getStateMachines().deleteSimpleState(elem);</span>
+<span class="nc bnc" id="L1657" title="All 2 branches missed.">                if (elem instanceof ActionState) {</span>
+<span class="nc" id="L1658">                    getActivityGraphs().deleteActionState(elem);</span>
+<span class="nc bnc" id="L1659" title="All 2 branches missed.">                    if (elem instanceof CallState) {</span>
+<span class="nc" id="L1660">                        getActivityGraphs().deleteCallState(elem);</span>
+                    }
+<span class="nc bnc" id="L1662" title="All 2 branches missed.">                } else if (elem instanceof ObjectFlowState) {</span>
+<span class="nc" id="L1663">                    getActivityGraphs().deleteObjectFlowState(elem);</span>
+                }
+<span class="nc bnc" id="L1665" title="All 2 branches missed.">            } else if (elem instanceof FinalState) {</span>
+<span class="nc" id="L1666">                getStateMachines().deleteFinalState(elem);</span>
+            }
+        }
+<span class="nc" id="L1669">    }</span>
+
+    public void deleteExtent(Object element) {
+        try {
+<span class="nc" id="L1673">            org.omg.uml.UmlPackage extent =</span>
+                (org.omg.uml.UmlPackage) ((RefObject) element)
+<span class="nc" id="L1675">                    .refOutermostPackage();</span>
+
+<span class="nc" id="L1677">            LOG.log(Level.FINE, &quot;Removing extent {0}&quot;, extent);</span>
+
+<span class="nc" id="L1679">            modelImpl.deleteExtent(extent);</span>
+<span class="nc" id="L1680">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L1681">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L1682">        }</span>
+<span class="nc" id="L1683">    }</span>
+
+    public Collection getExtentElements(String name) {
+<span class="nc" id="L1686">        return getExtentPackages(name);</span>
+    }
+
+    public Collection getExtentPackages(String name) {
+<span class="nc" id="L1690">        org.omg.uml.UmlPackage pkg = modelImpl.getExtent(name);</span>
+<span class="nc bnc" id="L1691" title="All 2 branches missed.">        if (pkg == null) {</span>
+<span class="nc" id="L1692">            return null;</span>
+        }
+<span class="nc" id="L1694">        Collection&lt;Object&gt; packages = pkg.getModelManagement().getUmlPackage().</span>
+<span class="nc" id="L1695">            refAllOfType();</span>
+<span class="nc" id="L1696">        Collection&lt;Object&gt; topLevelPackages = new ArrayList&lt;Object&gt;();</span>
+<span class="nc bnc" id="L1697" title="All 2 branches missed.">        for (Object pack : packages) {</span>
+<span class="nc bnc" id="L1698" title="All 2 branches missed.">            if (Model.getFacade().getNamespace(pack) == null) {</span>
+<span class="nc" id="L1699">                topLevelPackages.add(pack);</span>
+            }
+<span class="nc" id="L1701">        }</span>
+<span class="nc" id="L1702">        return topLevelPackages;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DefaultUndoManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">DefaultUndoManager.java</span></div><h1>DefaultUndoManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.i18n.Translator;
+
+/**
+ * Manages a stacks of Commands to undo and redo. This DefaultUndoManager is
+ * only temporarily a singleton until changes are made to GEF.
+ *
+ * @author Bob Tarling
+ */
+class DefaultUndoManager implements UndoManager {
+
+<span class="fc" id="L61">    private static final Logger LOG =</span>
+<span class="fc" id="L62">        Logger.getLogger(DefaultUndoManager.class.getName());</span>
+
+    /**
+     * The number of undoable commands to store. When set to zero undo is
+     * disabled entirely.
+     */
+<span class="fc" id="L68">    private int undoMax = 0;</span>
+
+<span class="fc" id="L70">    private ArrayList&lt;PropertyChangeListener&gt; listeners =</span>
+        new ArrayList&lt;PropertyChangeListener&gt;();
+
+    /**
+     * Set when a new user interaction begins
+     */
+<span class="fc" id="L76">    private boolean newInteraction = true;</span>
+
+    /**
+     * The project to which this undo manager relates
+     */
+    private final Project project;
+
+    /**
+     * A description of the user interaction taking place.
+     * Often this is the label of an Action.
+     */
+    private String newInteractionLabel;
+
+<span class="fc" id="L89">    private UndoStack undoStack = new UndoStack();</span>
+<span class="fc" id="L90">    private RedoStack redoStack = new RedoStack();</span>
+
+    /**
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
+     */
+    @Deprecated
+<span class="fc" id="L96">    private static final UndoManager INSTANCE = new DefaultUndoManager();</span>
+
+    /**
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
+     */
+    @Deprecated
+    private DefaultUndoManager() {
+<span class="fc" id="L103">        super();</span>
+<span class="fc" id="L104">        project = null;</span>
+<span class="fc" id="L105">    }</span>
+
+    DefaultUndoManager(Project project) {
+<span class="fc" id="L108">        super();</span>
+<span class="fc" id="L109">        this.project = project;</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
+     */
+    @Deprecated
+    public static UndoManager getInstance() {
+<span class="nc" id="L117">        return INSTANCE;</span>
+    }
+
+    public synchronized Object execute(Command command) {
+<span class="fc" id="L121">        addCommand(command);</span>
+<span class="fc" id="L122">        return command.execute();</span>
+    }
+
+    public synchronized void addCommand(Command command) {
+
+        // TODO: Once the default constructor is deleted we only set dirty flag
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (project != null) {</span>
+<span class="fc" id="L129">            project.setDirty(true);</span>
+        } else {
+<span class="nc" id="L131">            ProjectManager.getManager().setSaveEnabled(true);</span>
+        }
+
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (undoMax == 0) {</span>
+<span class="fc" id="L135">            return;</span>
+        }
+
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (!command.isUndoable()) {</span>
+<span class="nc" id="L139">            undoStack.clear();</span>
+<span class="nc" id="L140">            newInteraction = true;</span>
+        }
+        // Flag the command as to whether it is first in a chain
+        final Interaction macroCommand;
+<span class="nc bnc" id="L144" title="All 4 branches missed.">        if (newInteraction || undoStack.isEmpty()) {</span>
+<span class="nc" id="L145">            redoStack.clear();</span>
+<span class="nc" id="L146">            newInteraction = false;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            if (undoStack.size() &gt; undoMax) {</span>
+<span class="nc" id="L148">                undoStack.remove(0);</span>
+            }
+<span class="nc" id="L150">            macroCommand = new Interaction(newInteractionLabel);</span>
+<span class="nc" id="L151">            undoStack.push(macroCommand);</span>
+        } else {
+<span class="nc" id="L153">            macroCommand = undoStack.peek();</span>
+        }
+<span class="nc" id="L155">        macroCommand.addCommand(command);</span>
+<span class="nc" id="L156">    }</span>
+
+    public void setUndoMax(int max) {
+<span class="nc" id="L159">        undoMax = max;</span>
+<span class="nc" id="L160">    }</span>
+
+
+    public synchronized void undo() {
+<span class="nc" id="L164">        final Interaction command = undoStack.pop();</span>
+<span class="nc" id="L165">        command.undo();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (!command.isRedoable()) {</span>
+<span class="nc" id="L167">            redoStack.clear();</span>
+        }
+<span class="nc" id="L169">        redoStack.push(command);</span>
+<span class="nc" id="L170">    }</span>
+
+
+    public synchronized void redo() {
+<span class="nc" id="L174">        final Interaction command = redoStack.pop();</span>
+<span class="nc" id="L175">        command.execute();</span>
+<span class="nc" id="L176">        undoStack.push(command);</span>
+<span class="nc" id="L177">    }</span>
+
+    public synchronized void startInteraction(String label) {
+<span class="fc" id="L180">        LOG.log(Level.FINE, &quot;Starting interaction {0}&quot;, label);</span>
+<span class="fc" id="L181">        this.newInteractionLabel = label;</span>
+<span class="fc" id="L182">        newInteraction = true;</span>
+<span class="fc" id="L183">    }</span>
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<span class="nc" id="L186">        listeners.add(listener);</span>
+<span class="nc" id="L187">    }</span>
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+<span class="nc" id="L190">        listeners.remove(listener);</span>
+<span class="nc" id="L191">    }</span>
+
+    private void fire(final String property, final Object value) {
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (PropertyChangeListener listener : listeners) {</span>
+<span class="nc" id="L195">            listener.propertyChange(</span>
+                    new PropertyChangeEvent(this, property, &quot;&quot;, value));
+<span class="nc" id="L197">        }</span>
+<span class="nc" id="L198">    }</span>
+
+    /**
+     * An Interact is a Command the contains a list of sub-commands. It
+     * represents a single user interaction and contains all the commands
+     * executed as part of that interaction.
+     *
+     * @author Bob
+     */
+    class Interaction extends AbstractCommand {
+
+<span class="nc" id="L209">        private List&lt;Command&gt; commands = new ArrayList&lt;Command&gt;();</span>
+
+        private String label;
+
+<span class="nc" id="L213">        Interaction(String lbl) {</span>
+<span class="nc" id="L214">            label = lbl;</span>
+<span class="nc" id="L215">        }</span>
+
+        public void undo() {
+<span class="nc" id="L218">            final ListIterator&lt;Command&gt; it =</span>
+<span class="nc" id="L219">                commands.listIterator(commands.size());</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            while (it.hasPrevious()) {</span>
+<span class="nc" id="L221">                it.previous().undo();</span>
+            }
+<span class="nc" id="L223">        }</span>
+
+        public Object execute() {
+<span class="nc" id="L226">            final Iterator&lt;Command&gt; it = commands.iterator();</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc" id="L228">                it.next().execute();</span>
+            }
+<span class="nc" id="L230">            return null;</span>
+        }
+
+        public boolean isUndoable() {
+<span class="nc" id="L234">            final Iterator&lt;Command&gt; it = commands.iterator();</span>
+<span class="nc bnc" id="L235" title="All 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc" id="L236">                final Command command = it.next();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">                if (!command.isUndoable()) {</span>
+<span class="nc" id="L238">                    return false;</span>
+                }
+<span class="nc" id="L240">            }</span>
+<span class="nc" id="L241">            return true;</span>
+        }
+
+        public boolean isRedoable() {
+<span class="nc" id="L245">            final Iterator&lt;Command&gt; it = commands.iterator();</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc" id="L247">                final Command command = it.next();</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">                if (!command.isRedoable()) {</span>
+<span class="nc" id="L249">                    return false;</span>
+                }
+<span class="nc" id="L251">            }</span>
+<span class="nc" id="L252">            return true;</span>
+        }
+
+        private void addCommand(Command command) {
+<span class="nc" id="L256">            commands.add(command);</span>
+<span class="nc" id="L257">        }</span>
+
+        // TODO: i18n
+        private String getUndoLabel() {
+<span class="nc bnc" id="L261" title="All 2 branches missed.">            if (isUndoable()) {</span>
+<span class="nc" id="L262">                return &quot;Undo &quot; + label;</span>
+            } else {
+<span class="nc" id="L264">                return &quot;Can't Undo &quot; + label;</span>
+            }
+        }
+
+        // TODO: i18n
+        private String getRedoLabel() {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">            if (isRedoable()) {</span>
+<span class="nc" id="L271">                return &quot;Redo &quot; + label;</span>
+            } else {
+<span class="nc" id="L273">                return &quot;Can't Redo &quot; + label;</span>
+            }
+        }
+
+        List&lt;Command&gt; getCommands() {
+<span class="nc" id="L278">            return new ArrayList&lt;Command&gt; (commands);</span>
+        }
+    }
+
+    private abstract class InteractionStack extends Stack&lt;Interaction&gt; {
+
+        private String labelProperty;
+        private String addedProperty;
+        private String removedProperty;
+        private String sizeProperty;
+
+        public InteractionStack(
+                String labelProp,
+                String addedProp,
+                String removedProp,
+<span class="fc" id="L293">                String sizeProp) {</span>
+<span class="fc" id="L294">            labelProperty = labelProp;</span>
+<span class="fc" id="L295">            addedProperty = addedProp;</span>
+<span class="fc" id="L296">            removedProperty = removedProp;</span>
+<span class="fc" id="L297">            sizeProperty = sizeProp;</span>
+<span class="fc" id="L298">        }</span>
+
+        public Interaction push(Interaction item) {
+<span class="nc" id="L301">            super.push(item);</span>
+<span class="nc" id="L302">            fireLabel();</span>
+<span class="nc" id="L303">            fire(addedProperty, item);</span>
+<span class="nc" id="L304">            fire(sizeProperty, size());</span>
+<span class="nc" id="L305">            return item;</span>
+        }
+
+        public Interaction pop() {
+<span class="nc" id="L309">            Interaction item = super.pop();</span>
+<span class="nc" id="L310">            fireLabel();</span>
+<span class="nc" id="L311">            fire(removedProperty, item);</span>
+<span class="nc" id="L312">            fire(sizeProperty, size());</span>
+<span class="nc" id="L313">            return item;</span>
+        }
+
+        private void fireLabel() {
+<span class="nc" id="L317">            fire(labelProperty, getLabel());</span>
+<span class="nc" id="L318">        }</span>
+
+        protected abstract String getLabel();
+    }
+
+    private class UndoStack extends InteractionStack {
+
+<span class="fc" id="L325">        public UndoStack() {</span>
+<span class="fc" id="L326">            super(</span>
+                    &quot;undoLabel&quot;,
+                    &quot;undoAdded&quot;,
+                    &quot;undoRemoved&quot;,
+                    &quot;undoSize&quot;);
+<span class="fc" id="L331">        }</span>
+
+        public Interaction push(Interaction item) {
+<span class="nc" id="L334">            super.push(item);</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">            if (item.isUndoable()) {</span>
+<span class="nc" id="L336">                fire(&quot;undoable&quot;, true);</span>
+            }
+<span class="nc" id="L338">            return item;</span>
+        }
+
+        public Interaction pop() {
+<span class="nc" id="L342">            Interaction item = super.pop();</span>
+<span class="nc bnc" id="L343" title="All 4 branches missed.">            if (size() == 0 || !peek().isUndoable()) {</span>
+<span class="nc" id="L344">                fire(&quot;undoable&quot;, false);</span>
+            }
+<span class="nc" id="L346">            return item;</span>
+        }
+
+        public void clear() {
+<span class="nc" id="L350">            super.clear();</span>
+<span class="nc" id="L351">            fire(&quot;undoSize&quot;, size());</span>
+<span class="nc" id="L352">            fire(&quot;undoable&quot;, false);</span>
+<span class="nc" id="L353">        }</span>
+
+        protected String getLabel() {
+<span class="nc bnc" id="L356" title="All 2 branches missed.">            if (empty()) {</span>
+<span class="nc" id="L357">                return Translator.localize(&quot;action.undo&quot;);</span>
+            } else {
+<span class="nc" id="L359">                return peek().getUndoLabel();</span>
+            }
+        }
+    }
+
+    private class RedoStack extends InteractionStack {
+
+<span class="fc" id="L366">        public RedoStack() {</span>
+<span class="fc" id="L367">            super(</span>
+                    &quot;redoLabel&quot;,
+                    &quot;redoAdded&quot;,
+                    &quot;redoRemoved&quot;,
+                    &quot;redoSize&quot;);
+<span class="fc" id="L372">        }</span>
+
+
+        public Interaction push(Interaction item) {
+<span class="nc" id="L376">            super.push(item);</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">            if (item.isRedoable()) {</span>
+<span class="nc" id="L378">                fire(&quot;redoable&quot;, true);</span>
+            }
+<span class="nc" id="L380">            return item;</span>
+        }
+
+        public Interaction pop() {
+<span class="nc" id="L384">            Interaction item = super.pop();</span>
+<span class="nc bnc" id="L385" title="All 4 branches missed.">            if (size() == 0 || !peek().isRedoable()) {</span>
+<span class="nc" id="L386">                fire(&quot;redoable&quot;, false);</span>
+            }
+<span class="nc" id="L388">            return item;</span>
+        }
+
+        public void clear() {
+<span class="nc" id="L392">            super.clear();</span>
+<span class="nc" id="L393">            fire(&quot;redoSize&quot;, size());</span>
+<span class="nc" id="L394">            fire(&quot;redoable&quot;, false);</span>
+<span class="nc" id="L395">        }</span>
+
+        protected String getLabel() {
+<span class="nc bnc" id="L398" title="All 2 branches missed.">            if (empty()) {</span>
+<span class="nc" id="L399">                return Translator.localize(&quot;action.redo&quot;);</span>
+            } else {
+<span class="nc" id="L401">                return peek().getRedoLabel();</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

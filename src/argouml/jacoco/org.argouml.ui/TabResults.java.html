@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabResults.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">TabResults.java</span></div><h1>TabResults.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ChildGenRelated;
+import org.argouml.uml.PredicateSearch;
+import org.argouml.uml.TMResults;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.util.ChildGenerator;
+
+
+/**
+ * The results tab for the find dialog.
+ * &lt;p&gt;
+ * NOTE: An incompatible change was made to the public API for this class
+ * before the release of ArgoUML 0.26 to remove exposed internal implementation
+ * details (GEF).
+ */
+public class TabResults
+        extends AbstractArgoJPanel
+        implements
+                Runnable,
+                MouseListener,
+                ActionListener,
+                ListSelectionListener,
+                KeyListener {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L97">    private static final Logger LOG =</span>
+<span class="nc" id="L98">        Logger.getLogger(TabResults.class.getName());</span>
+
+    private static int numJumpToRelated;
+
+    /**
+     * Insets in pixels.
+     */
+    private static final int INSET_PX = 3;
+
+    private PredicateSearch pred;
+    private ChildGenerator cg;
+    private Object root;
+    private JSplitPane mainPane;
+<span class="nc" id="L111">    private List results = new ArrayList();</span>
+<span class="nc" id="L112">    private Set diagramResults = new HashSet();</span>
+<span class="nc" id="L113">    private List related = new ArrayList();</span>
+<span class="nc" id="L114">    private List&lt;ArgoDiagram&gt; diagrams = new ArrayList&lt;ArgoDiagram&gt;();</span>
+    private boolean relatedShown;
+
+<span class="nc" id="L117">    private JLabel resultsLabel = new JLabel();</span>
+    private JTable resultsTable;
+    private TMResults resultsModel;
+
+<span class="nc" id="L121">    private JLabel relatedLabel = new JLabel();</span>
+<span class="nc" id="L122">    private JTable relatedTable = new JTable(4, 4);</span>
+<span class="nc" id="L123">    private TMResults relatedModel = new TMResults();</span>
+
+    /**
+     * The constructor.
+     *
+     */
+    public TabResults() {
+<span class="nc" id="L130">	this(true);</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param showRelated true if related results should be shown
+     */
+    public TabResults(boolean showRelated) {
+<span class="nc" id="L139">	super(&quot;Results&quot;, true);</span>
+<span class="nc" id="L140">	relatedShown = showRelated;</span>
+<span class="nc" id="L141">	setLayout(new BorderLayout());</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">	resultsTable = new JTable(10, showRelated ? 4 : 3);</span>
+<span class="nc" id="L143">	resultsModel = new TMResults(showRelated);</span>
+
+<span class="nc" id="L145">	JPanel resultsW = new JPanel();</span>
+<span class="nc" id="L146">	JScrollPane resultsSP = new JScrollPane(resultsTable);</span>
+<span class="nc" id="L147">	resultsW.setLayout(new BorderLayout());</span>
+<span class="nc" id="L148">	resultsLabel.setBorder(BorderFactory.createEmptyBorder(</span>
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L150">	resultsW.add(resultsLabel, BorderLayout.NORTH);</span>
+<span class="nc" id="L151">	resultsW.add(resultsSP, BorderLayout.CENTER);</span>
+<span class="nc" id="L152">	resultsTable.setModel(resultsModel);</span>
+<span class="nc" id="L153">	resultsTable.addMouseListener(this);</span>
+<span class="nc" id="L154">	resultsTable.addKeyListener(this);</span>
+<span class="nc" id="L155">	resultsTable.getSelectionModel().addListSelectionListener(</span>
+								   this);
+<span class="nc" id="L157">	resultsTable.setSelectionMode(</span>
+				       ListSelectionModel.SINGLE_SELECTION);
+<span class="nc" id="L159">	resultsW.setMinimumSize(new Dimension(100, 100));</span>
+
+<span class="nc" id="L161">	JPanel relatedW = new JPanel();</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">	if (relatedShown) {</span>
+<span class="nc" id="L163">	    JScrollPane relatedSP = new JScrollPane(relatedTable);</span>
+<span class="nc" id="L164">	    relatedW.setLayout(new BorderLayout());</span>
+<span class="nc" id="L165">            relatedLabel.setBorder(BorderFactory.createEmptyBorder(</span>
+                    INSET_PX, INSET_PX, INSET_PX, INSET_PX));
+<span class="nc" id="L167">	    relatedW.add(relatedLabel, BorderLayout.NORTH);</span>
+<span class="nc" id="L168">	    relatedW.add(relatedSP, BorderLayout.CENTER);</span>
+<span class="nc" id="L169">	    relatedTable.setModel(relatedModel);</span>
+<span class="nc" id="L170">	    relatedTable.addMouseListener(this);</span>
+<span class="nc" id="L171">	    relatedTable.addKeyListener(this);</span>
+<span class="nc" id="L172">	    relatedW.setMinimumSize(new Dimension(100, 100));</span>
+	}
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">	if (relatedShown) {</span>
+<span class="nc" id="L176">	    mainPane =</span>
+		new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+			       resultsW,
+			       relatedW);
+<span class="nc" id="L180">	    add(mainPane, BorderLayout.CENTER);</span>
+	} else {
+<span class="nc" id="L182">	    add(resultsW, BorderLayout.CENTER);</span>
+	}
+
+<span class="nc" id="L185">    }</span>
+
+    /**
+     * @param p the predicate for the search
+     *            &lt;p&gt;
+     *            NOTE: The type of this parameter was changed incompatibly
+     *            before 0.26 from org.argouml.uml.PredicateFind to
+     *            org.argouml.uml.PredicateSearch.
+     */
+    public void setPredicate(PredicateSearch p) {
+<span class="nc" id="L195">        pred = p;</span>
+<span class="nc" id="L196">    }</span>
+
+    /**
+     * @param r the root object for the search
+     */
+    public void setRoot(Object r) {
+<span class="nc" id="L202">	root = r;</span>
+<span class="nc" id="L203">    }</span>
+
+    /**
+     * @param gen the generator.
+     *            &lt;p&gt;
+     *            NOTE: The type of this parameter was changed incompatibly
+     *            before 0.26 from org.tigris.gef.util.ChildGenerator to
+     *            org.argouml.util.ChildGenerator.
+     */
+    public void setGenerator(ChildGenerator gen) {
+<span class="nc" id="L213">        cg = gen;</span>
+<span class="nc" id="L214">    }</span>
+
+    /**
+     * @param res the results
+     * @param dia the diagrams
+     */
+    public void setResults(List res, List dia) {
+<span class="nc" id="L221">        results = res;</span>
+<span class="nc" id="L222">        diagrams = dia;</span>
+<span class="nc" id="L223">        Object[] msgArgs = {Integer.valueOf(results.size()) };</span>
+<span class="nc" id="L224">        resultsLabel.setText(Translator.messageFormat(</span>
+            &quot;dialog.tabresults.results-items&quot;, msgArgs));
+<span class="nc" id="L226">        resultsModel.setTarget(results, diagrams);</span>
+<span class="nc" id="L227">        relatedModel.setTarget((List) null, (List) null);</span>
+<span class="nc" id="L228">        relatedLabel.setText(</span>
+<span class="nc" id="L229">            Translator.localize(&quot;dialog.tabresults.related-items&quot;));</span>
+<span class="nc" id="L230">    }</span>
+
+    /*
+     * @see org.argouml.ui.AbstractArgoJPanel#spawn()
+     */
+    public AbstractArgoJPanel spawn() {
+<span class="nc" id="L236">	TabResults newPanel = (TabResults) super.spawn();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">	if (newPanel != null) {</span>
+<span class="nc" id="L238">	    newPanel.setResults(results, diagrams);</span>
+	}
+<span class="nc" id="L240">	return newPanel;</span>
+    }
+
+    /**
+     * Handle a doubleclick on the results tab.
+     */
+    public void doDoubleClick() {
+<span class="nc" id="L247">	myDoubleClick(resultsTable);</span>
+<span class="nc" id="L248">    }</span>
+
+    /**
+     * Select the result at the given index.
+     *
+     * @param index the given index
+     */
+    public void selectResult(int index) {
+<span class="nc bnc" id="L256" title="All 2 branches missed.">	if (index &lt; resultsTable.getRowCount()) {</span>
+<span class="nc" id="L257">	    resultsTable.getSelectionModel().setSelectionInterval(index,</span>
+								   index);
+	}
+<span class="nc" id="L260">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // ActionListener implementation
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent ae) {
+        // ignored
+<span class="nc" id="L270">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // MouseListener implementation
+
+    /*
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    public void mousePressed(MouseEvent me) {
+        // ignored
+<span class="nc" id="L280">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    public void mouseReleased(MouseEvent me) {
+        // ignored
+<span class="nc" id="L287">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent me) {
+<span class="nc bnc" id="L293" title="All 2 branches missed.">	if (me.getClickCount() &gt;= 2) {</span>
+<span class="nc" id="L294">            myDoubleClick(me.getSource());</span>
+        }
+<span class="nc" id="L296">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent me) {
+        // ignored
+<span class="nc" id="L303">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent me) {
+        // ignored
+<span class="nc" id="L310">    }</span>
+
+    private void myDoubleClick(Object src) {
+<span class="nc" id="L313">	Object sel = null;</span>
+<span class="nc" id="L314">	ArgoDiagram d = null;</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">	if (src == resultsTable) {</span>
+<span class="nc" id="L316">	    int row = resultsTable.getSelectionModel().getMinSelectionIndex();</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">	    if (row &lt; 0) {</span>
+<span class="nc" id="L318">                return;</span>
+            }
+<span class="nc" id="L320">	    sel = results.get(row);</span>
+<span class="nc" id="L321">	    d = diagrams.get(row);</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">	} else if (src == relatedTable) {</span>
+<span class="nc" id="L323">	    int row = relatedTable.getSelectionModel().getMinSelectionIndex();</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">	    if (row &lt; 0) {</span>
+<span class="nc" id="L325">                return;</span>
+            }
+<span class="nc" id="L327">	    numJumpToRelated++;</span>
+<span class="nc" id="L328">	    sel = related.get(row);</span>
+	}
+
+<span class="nc bnc" id="L331" title="All 2 branches missed.">	if (d != null) {</span>
+<span class="nc" id="L332">            LOG.log(Level.FINE,</span>
+<span class="nc" id="L333">                    &quot;go {0} in {1}&quot;, new Object[]{sel, d.getName()});</span>
+<span class="nc" id="L334">            TargetManager.getInstance().setTarget(d);</span>
+        }
+<span class="nc bnc" id="L336" title="All 2 branches missed.">	if (Model.getFacade().isATaggedValue(sel)) {</span>
+	    // For tagged values, use their containing ModelElement since they
+	    // don't have property panels of their own
+	    // TODO: May want to do this for other types too?
+<span class="nc" id="L340">	    sel = Model.getFacade().getModelElementContainer(sel);</span>
+	}
+<span class="nc" id="L342">	TargetManager.getInstance().setTarget(sel);</span>
+<span class="nc" id="L343">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // KeyListener implementation
+
+    /*
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent e) {
+<span class="nc bnc" id="L352" title="All 4 branches missed.">        if (!e.isConsumed() &amp;&amp; e.getKeyChar() == KeyEvent.VK_ENTER) {</span>
+<span class="nc" id="L353">            e.consume();</span>
+<span class="nc" id="L354">            myDoubleClick(e.getSource());</span>
+        }
+<span class="nc" id="L356">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent e) {
+        // ignored
+<span class="nc" id="L363">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent e) {
+        // ignored
+<span class="nc" id="L370">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // ListSelectionListener implementation
+
+    /*
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L379" title="All 2 branches missed.">	if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L380">	    return;</span>
+	}
+<span class="nc bnc" id="L382" title="All 2 branches missed.">	if (relatedShown) {</span>
+<span class="nc" id="L383">	    int row = lse.getFirstIndex();</span>
+<span class="nc" id="L384">	    Object sel = results.get(row);</span>
+<span class="nc" id="L385">            LOG.log(Level.FINE, &quot;selected {0}&quot;, sel);</span>
+<span class="nc" id="L386">	    related.clear();</span>
+	    Enumeration elems =
+<span class="nc" id="L388">		ChildGenRelated.getSingleton().gen(sel);</span>
+<span class="nc bnc" id="L389" title="All 2 branches missed.">	    if (elems != null) {</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">		while (elems.hasMoreElements()) {</span>
+<span class="nc" id="L391">		    related.add(elems.nextElement());</span>
+		}
+	    }
+<span class="nc" id="L394">	    relatedModel.setTarget(related, null);</span>
+<span class="nc" id="L395">	    Object[] msgArgs = {Integer.valueOf(related.size()) };</span>
+<span class="nc" id="L396">	    relatedLabel.setText(Translator.messageFormat(</span>
+                &quot;dialog.find.related-elements&quot;, msgArgs));
+	}
+<span class="nc" id="L399">    }</span>
+
+    /*
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+<span class="nc" id="L405">	resultsLabel.setText(Translator.localize(&quot;dialog.find.searching&quot;));</span>
+<span class="nc" id="L406">	results.clear();</span>
+<span class="nc" id="L407">	depthFirst(root, null);</span>
+<span class="nc" id="L408">	setResults(results, diagrams);</span>
+<span class="nc" id="L409">    }</span>
+
+    /**
+     * Do a recursive depth first search of the project. The children of the
+     * root are all user models and all the diagrams. Searches of the diagrams
+     * will terminate immediately if they fail to match, but the models are
+     * searched to their leaves, even if the diagram predicate doesn't match an
+     * empty diagram name.  This is inefficient, but shouldn't be a common
+     * case.&lt;p&gt;
+     *
+     * Another effect of the current algorithm is that model elements will
+     * appear once for each diagram that they are included in PLUS an additional
+     * time with no diagram name given.  It would be slightly more friendly
+     * have the non-diagram list only includes those elements which didn't
+     * appear in any other diagram, but we're not going to do the bookkeeping
+     * for now.  - tfm 20060214
+     */
+    private void depthFirst(Object node, ArgoDiagram lastDiagram) {
+<span class="nc bnc" id="L427" title="All 2 branches missed.">	if (node instanceof ArgoDiagram) {</span>
+<span class="nc" id="L428">	    lastDiagram = (ArgoDiagram) node;</span>
+<span class="nc" id="L429">	    diagramResults.clear();</span>
+<span class="nc bnc" id="L430" title="All 2 branches missed.">	    if (!pred.matchDiagram(lastDiagram)) {</span>
+<span class="nc" id="L431">                return;</span>
+            }
+	    // diagrams are not placed in search results
+	}
+<span class="nc" id="L435">	Iterator iterator = cg.childIterator(node);</span>
+<span class="nc bnc" id="L436" title="All 2 branches missed.">	while (iterator.hasNext()) {</span>
+<span class="nc" id="L437">	    Object child = iterator.next();</span>
+<span class="nc bnc" id="L438" title="All 4 branches missed.">	    if (pred.evaluate(child)</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">                    &amp;&amp; (lastDiagram != null || pred.matchDiagram(&quot;&quot;))) {</span>
+	        // Only return once per diagram so we don't, for example, find
+	        // a class as a diagram element and also as a child of a package
+	        // which is on the diagram
+<span class="nc bnc" id="L443" title="All 2 branches missed.">                if (!diagramResults.contains(child)) {</span>
+<span class="nc" id="L444">                    diagramResults.add(child);</span>
+<span class="nc" id="L445">                    results.add(child);</span>
+<span class="nc" id="L446">                    diagrams.add(lastDiagram);</span>
+                }
+            }
+<span class="nc" id="L449">	    depthFirst(child, lastDiagram);</span>
+<span class="nc" id="L450">	}</span>
+<span class="nc" id="L451">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4980167466628873068L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

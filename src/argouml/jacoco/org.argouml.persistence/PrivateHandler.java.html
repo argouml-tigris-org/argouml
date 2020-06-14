@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrivateHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">PrivateHandler.java</span></div><h1>PrivateHandler.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.uml.diagram.ui.PathItemPlacement;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
+import org.tigris.gef.base.PathItemPlacementStrategy;
+import org.tigris.gef.persistence.pgml.Container;
+import org.tigris.gef.persistence.pgml.FigEdgeHandler;
+import org.tigris.gef.persistence.pgml.FigGroupHandler;
+import org.tigris.gef.persistence.pgml.PGMLHandler;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+/**
+ * Will set the ItemUID for objects represented by
+ * PGML elements that contain private elements that have
+ * ItemUID assignments in them.&lt;p&gt;
+ *
+ * Currently, there are three possibilities: ArgoDiagram,
+ * FigNode, FigEdge
+ */
+class PrivateHandler
+    extends org.tigris.gef.persistence.pgml.PrivateHandler {
+
+    private Container container;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(PrivateHandler.class.getName());</span>
+
+    /**
+     * The constructor.
+     *
+     * @param parser
+     * @param cont
+     */
+    public PrivateHandler(PGMLStackParser parser, Container cont) {
+<span class="fc" id="L84">        super(parser, cont);</span>
+<span class="fc" id="L85">        container = cont;</span>
+<span class="fc" id="L86">    }</span>
+
+    /**
+     * If the containing object is a type for which the private element
+     * might contain an ItemUID, extract the ItemUID if it exists and assign it
+     * to the object.
+     *
+     * @param contents
+     * @exception SAXException
+     */
+    public void gotElement(String contents)
+        throws SAXException {
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (container instanceof PGMLHandler) {</span>
+<span class="nc" id="L100">            Object o = getPGMLStackParser().getDiagram();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (o instanceof IItemUID) {</span>
+<span class="nc" id="L102">                ItemUID uid = getItemUID(contents);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                if (uid != null) {</span>
+<span class="nc" id="L104">                    ((IItemUID) o).setItemUID(uid);</span>
+                }
+            }
+            // No other uses of string in PGMLHandler
+<span class="nc" id="L108">            return;</span>
+        }
+
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (container instanceof FigGroupHandler) {</span>
+<span class="fc" id="L112">            Object o = ((FigGroupHandler) container).getFigGroup();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">            if (o instanceof IItemUID) {</span>
+<span class="fc" id="L114">                ItemUID uid = getItemUID(contents);</span>
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">                if (uid != null) {</span>
+<span class="nc" id="L116">                    ((IItemUID) o).setItemUID(uid);</span>
+                }
+            }
+        }
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (container instanceof FigEdgeHandler) {</span>
+<span class="fc" id="L122">            Object o = ((FigEdgeHandler) container).getFigEdge();</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">            if (o instanceof IItemUID) {</span>
+<span class="fc" id="L124">                ItemUID uid = getItemUID(contents);</span>
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">                if (uid != null) {</span>
+<span class="nc" id="L126">                    ((IItemUID) o).setItemUID(uid);</span>
+                }
+            }
+        }
+
+        // Handle other uses of &lt;private&gt; contents
+<span class="fc" id="L132">        super.gotElement(contents);</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Process starting elements within the private tag.
+     * This method handles all attributes within tags within private methods.
+     * The only specific tags we handle here at the moment are pathitems.
+     *
+     * The strategy for handling pathitems is as follows:
+     * &lt;ul&gt;
+     *  &lt;li&gt;Data is saved for each path item using one &lt;argouml:pathitem ... /&gt;
+     *      tag per path item.
+     *  &lt;li&gt;The code that defines what is stored is in
+     *      org.argouml.persistence.PGML.tee
+     *  &lt;li&gt;Each &lt;argouml:pathitem&gt; tag stores
+     *  &lt;ul&gt;
+     *    &lt;li&gt;The class name of the PathItemPlacementStrategy
+     *    &lt;li&gt;The class name of the fig which it places.
+     *    &lt;li&gt;The href of the model element which owns the fig being placed.
+     *    &lt;li&gt;The angle of the placement vector (PathItemPlacement.angle)
+     *    &lt;li&gt;The distance along the displacement vector to place the fig
+     *        (PathItemPlacement.vectorOffset).
+     *  &lt;/ul&gt;
+     *  &lt;/li&gt;
+     *  &lt;li&gt;No specific data is stored to match pathitem tags to the
+     *      diagram figs which they control.
+     *  &lt;li&gt;The matching during file load depends entirely on
+     *      there being a unique figclassname and ownerhref combination
+     *      for each pathitem on the diagram.  For example, For a
+     *      FigAssociation, the main label is a FigTextGroup, and it's
+     *      owner is assigned to the Association.  This combination is
+     *      unique, and is used to match the parsed pathitem data back
+     *      to the instantiated PathItemPlacement.
+     *      Another example is the source multiplicity, which is a
+     *      FigMultiplicity, and it's owner is assigned to the
+     *      source model element.
+     *      In each case, the combination is unique, so there is only
+     *      one pathitem that matches when rebuilding the diagram.
+     *  &lt;/ul&gt;
+     *
+     * @param uri
+     * @param localname
+     * @param qname
+     * @param attributes
+     * @throws SAXException
+     * @see org.tigris.gef.persistence.pgml.BaseHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
+    public void startElement(String uri, String localname, String qname,
+            Attributes attributes) throws SAXException {
+<span class="nc bnc" id="L181" title="All 4 branches missed.">        if (&quot;argouml:pathitem&quot;.equals(qname)</span>
+                &amp;&amp; container instanceof FigEdgeHandler) {
+<span class="nc" id="L183">            String classname = attributes.getValue(&quot;classname&quot;);</span>
+<span class="nc" id="L184">            String figclassname =</span>
+<span class="nc" id="L185">                attributes.getValue(&quot;figclassname&quot;);</span>
+<span class="nc" id="L186">            String ownerhref = attributes.getValue(&quot;ownerhref&quot;);</span>
+<span class="nc" id="L187">            String angle = attributes.getValue(&quot;angle&quot;);</span>
+<span class="nc" id="L188">            String offset = attributes.getValue(&quot;offset&quot;);</span>
+<span class="nc bnc" id="L189" title="All 10 branches missed.">            if ( classname != null</span>
+                    &amp;&amp; figclassname != null
+                    &amp;&amp; ownerhref != null
+                    &amp;&amp; angle != null
+                    &amp;&amp; offset != null ) {
+                // Method 2: (assign data immediately, see end of file).
+                // TODO: if we ever want to extend PathItemPlacement,
+                // we should modify this, so that we also recognise any
+                // subclass of PathItemPlacement.
+                // Is the class name a PathItemPlacment?
+                // TODO: Use class reference to make this dependency obvious
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (&quot;org.argouml.uml.diagram.ui.PathItemPlacement&quot;.equals(</span>
+                        classname)) {
+<span class="nc" id="L202">                    PathItemPlacementStrategy pips</span>
+<span class="nc" id="L203">                        = getPips(figclassname, ownerhref);</span>
+                    // Sanity check - the returned path item placement
+                    // strategy should match the one in the UML.
+                    // If it doesn't, it could be that the UML was
+                    // created with an older argo version, and the new
+                    // argo version use a different placement strategy.
+                    // If they don't match, just use the default.
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                    if (pips != null</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                            &amp;&amp; classname.equals(pips.getClass().getName())) {</span>
+                        // Now we're into processing each specific path
+                        // item strategy.
+                        // At the moment, we only know PathItemPlacement
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                        if (pips instanceof PathItemPlacement) {</span>
+<span class="nc" id="L216">                            PathItemPlacement pip =</span>
+                                (PathItemPlacement) pips;
+<span class="nc" id="L218">                            pip.setDisplacementVector(</span>
+<span class="nc" id="L219">                                    Double.parseDouble(angle),</span>
+<span class="nc" id="L220">                                    Integer.parseInt(offset));</span>
+<span class="nc" id="L221">                        }</span>
+                        // Continue (future PathItemPlacementStrategy impl)
+                        //else if (...) {
+                        //}
+                    }
+                    // If the PathItemPlacement was unknown, leave the
+                    // diagram with the default settings.
+                    else {
+<span class="nc" id="L229">                        LOG.log(Level.WARNING,</span>
+                                &quot;PGML stored pathitem class name does &quot;
+                                + &quot;not match the class name on the &quot;
+                                + &quot;diagram. Label position will revert &quot;
+                                + &quot;to defaults.&quot;);
+                    }
+<span class="nc" id="L235">                }</span>
+            }
+            // If any of the values are null, ignore the element.
+            else {
+<span class="nc" id="L239">                LOG.log(Level.WARNING, &quot;Could not find all attributes for &lt;&quot;</span>
+                        + qname + &quot;&gt; tag, ignoring.&quot;);
+                //System.out.println(&quot;Error - one of these is null:&quot;
+                //        + &quot;classname=&quot; + classname
+                //        + &quot; figclassname=&quot; + figclassname
+                //        + &quot; ownerhref=&quot; + ownerhref
+                //        + &quot; angle=&quot; + angle
+                //        + &quot; offset=&quot; + offset);
+            }
+        }
+<span class="nc" id="L249">        super.startElement(uri, localname, qname, attributes);</span>
+<span class="nc" id="L250">    }</span>
+
+    /**
+     * Finds the path item placement strategy for a sub Fig, by its class name,
+     * and it's owner href.
+     * @param figclassname The class name of the fig being placed.
+     * @param ownerhref The href of the owner of the fig being placed.
+     * @return The path item placement strategy.
+     */
+    private PathItemPlacementStrategy getPips(String figclassname,
+            String ownerhref) {
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (container instanceof FigEdgeHandler) {</span>
+<span class="nc" id="L262">            FigEdge fe = ((FigEdgeHandler) container).getFigEdge();</span>
+<span class="nc" id="L263">            Object owner = getPGMLStackParser().findOwner(ownerhref);</span>
+
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            for (Object o : fe.getPathItemFigs()) {</span>
+<span class="nc" id="L266">                Fig f = (Fig) o;</span>
+                // For a match to be found, it has to have the same
+                // owner, and the same long class name.
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                if (owner.equals(f.getOwner())</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">                        &amp;&amp; figclassname.equals(f.getClass().getName())) {</span>
+                    //System.out.println(&quot;MATCHED! &quot; + figclassname);
+<span class="nc" id="L272">                    return fe.getPathItemPlacementStrategy(f);</span>
+                }
+<span class="nc" id="L274">            }</span>
+        }
+<span class="nc" id="L276">        LOG.log(Level.WARNING,</span>
+                &quot;Could not load path item for fig '&quot; + figclassname
+                + &quot;', using default placement.&quot;);
+<span class="nc" id="L279">        return null;</span>
+    }
+
+    /**
+     * Determine if the string contains an ItemUID.
+     *
+     * @return a newly created ItemUID (or &lt;code&gt;null&lt;/code&gt;).
+     */
+    private ItemUID getItemUID(String privateContents) {
+<span class="fc" id="L288">        StringTokenizer st = new StringTokenizer(privateContents, &quot;\n&quot;);</span>
+
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        while (st.hasMoreElements()) {</span>
+<span class="fc" id="L291">            String str = st.nextToken();</span>
+<span class="fc" id="L292">            NameVal nval = splitNameVal(str);</span>
+
+<span class="fc bfc" id="L294" title="All 2 branches covered.">            if (nval != null) {</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">                if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L296">                    LOG.log(Level.FINE, &quot;Private Element: \&quot;&quot; + nval.getName()</span>
+<span class="nc" id="L297">                              + &quot;\&quot; \&quot;&quot; + nval.getValue() + &quot;\&quot;&quot;);</span>
+                }
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">                if (&quot;ItemUID&quot;.equals(nval.getName())</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">                    &amp;&amp; nval.getValue().length() &gt; 0) {</span>
+<span class="nc" id="L301">                    return new ItemUID(nval.getValue());</span>
+                }
+            }
+<span class="fc" id="L304">        }</span>
+<span class="fc" id="L305">        return null;</span>
+    }
+
+    /**
+     * Utility class to pair a name and a value String together.
+     */
+    static class NameVal {
+        private String name;
+        private String value;
+
+        /**
+         * The constructor.
+         *
+         * @param n the name
+         * @param v the value
+         */
+<span class="fc" id="L321">        NameVal(String n, String v) {</span>
+<span class="fc" id="L322">            name = n.trim();</span>
+<span class="fc" id="L323">            value = v.trim();</span>
+<span class="fc" id="L324">        }</span>
+
+        /**
+         * @return returns the name
+         */
+        String getName() {
+<span class="fc" id="L330">            return name;</span>
+        }
+
+        /**
+         * @return returns the value
+         */
+        String getValue() {
+<span class="nc" id="L337">            return value;</span>
+        }
+    }
+
+    /**
+     * Splits a name value pair into a NameVal instance. A name value pair is
+     * a String on the form &amp;lt; name = [&quot;] value [&quot;] &amp;gt;.
+     *
+     * @param str A String with a name value pair.
+     * @return A NameVal, or null if they could not be split.
+     */
+    protected NameVal splitNameVal(String str) {
+<span class="fc" id="L349">        NameVal rv = null;</span>
+        int lqpos, rqpos;
+<span class="fc" id="L351">        int eqpos = str.indexOf('=');</span>
+
+<span class="fc bfc" id="L353" title="All 2 branches covered.">        if (eqpos &lt; 0) {</span>
+<span class="fc" id="L354">            return null;</span>
+        }
+
+<span class="fc" id="L357">        lqpos = str.indexOf('&quot;', eqpos);</span>
+<span class="fc" id="L358">        rqpos = str.lastIndexOf('&quot;');</span>
+
+<span class="pc bpc" id="L360" title="2 of 4 branches missed.">        if (lqpos &lt; 0 || rqpos &lt;= lqpos) {</span>
+<span class="nc" id="L361">            return null;</span>
+        }
+
+<span class="fc" id="L364">        rv =</span>
+<span class="fc" id="L365">            new NameVal(str.substring(0, eqpos),</span>
+<span class="fc" id="L366">                str.substring(lqpos + 1, rqpos));</span>
+
+<span class="fc" id="L368">        return rv;</span>
+    }
+}
+
+// An alternative implementation of the parsing of pathitems is to collect
+// everything at the start, then iterate through it all at the end.
+// The code below does this - it works, but it is currently not used,
+// since it is a unnecessarily complicated.
+// There are probably better ways to implement this than using an
+// ArrayList of Hashtables.
+// see option 1 in
+// http://argouml.tigris.org/issues/show_bug.cgi?id=1048#desc66
+//
+
+///**
+// * A list of the path item attributes for this container.
+// * The list is populated during parsing, them processed at endElement()
+// */
+//private List&lt;Hashtable&lt;String, String&gt;&gt; pathItemAttrs =
+//    new ArrayList&lt;Hashtable&lt;String, String&gt;&gt;();
+
+// This code has to go within the startElement block after the strings
+// have been matched.
+
+//// Method 1:
+//// (collect data and assign later in endElement() method).
+//Hashtable&lt;String, String&gt; ht =
+//    new Hashtable&lt;String, String&gt;();
+//ht.put(&quot;classname&quot;, classname);
+//ht.put(&quot;figclassname&quot;, figclassname);
+//ht.put(&quot;ownerhref&quot;, ownerhref);
+//ht.put(&quot;angle&quot;, angle);
+//ht.put(&quot;offset&quot;, offset);
+//pathItemAttrs.add(ht);
+
+//public void endElement(String uri, String localname, String qname)
+//throws SAXException {
+////System.out.print(&quot;Got endElement: &quot;
+////        + &quot;uri='&quot; + uri + &quot;'\n&quot;
+////        + &quot;localname='&quot; + localname + &quot;'\n&quot;
+////        + &quot;qname='&quot; + qname + &quot;'\n&quot;
+////);
+//// If we collected any path items for a FigEdgeModelElement,
+//// process them now, and assign their values to real Figs on the diag.
+//if (!(pathItemAttrs.isEmpty())) {
+//    for (Hashtable&lt;String, String&gt; attrs : pathItemAttrs) {
+//        // Is the class name a PathItemPlacment?
+//        // TODO: if we ever want to extend PathItemPlacement,
+//        // we should modify this, so that we also recognise any
+//        // subclass of PathItemPlacement.
+//        if (&quot;org.argouml.uml.diagram.ui.PathItemPlacement&quot;.
+//                equals(attrs.get(&quot;classname&quot;))) {
+//            //System.out.println(&quot;figclassname=&quot; + attrs.get(&quot;figclassname&quot;));
+//
+//            PathItemPlacementStrategy pips
+//                = getPips(attrs.get(&quot;figclassname&quot;),
+//                        attrs.get(&quot;ownerhref&quot;));
+//            // Sanity check - the returned path item placement straty
+//            // should match the one in the uml.
+//            if (pips.getClass().getName().equals(attrs.get(&quot;classname&quot;))) {
+//                // Now we're into processing each specific path item
+//                // strategy.
+//                // At the moment, we only know about PathItemPlacement
+//                if (pips instanceof PathItemPlacement) {
+//                    PathItemPlacement pip = (PathItemPlacement) pips;
+//                    pip.setDisplacementVector(
+//                            Double.parseDouble(attrs.get(&quot;angle&quot;)),
+//                            Integer.parseInt(attrs.get(&quot;offset&quot;)));
+//                }
+//                // Continue (future PathItemPlacementStrategy impl)
+//                //else if (...) {
+//                //
+//                //}
+//
+//            }
+//            else {
+//                LOG.log(Level.WARNING, &quot;PGML stored pathitem class name does not &quot;
+//                        + &quot;match the class name on the diagram.&quot;
+//                        + &quot;Label position will revert to defaults.&quot;);
+//            }
+//        }
+//    }
+//}
+//
+//super.endElement(uri, localname, qname);
+//}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmiReferenceResolverImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">XmiReferenceResolverImpl.java</span></div><h1>XmiReferenceResolverImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2005-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
+
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReferenceRuntimeException;
+import org.netbeans.api.xmi.XMIInputConfig;
+import org.netbeans.lib.jmi.util.DebugException;
+import org.netbeans.lib.jmi.xmi.XmiContext;
+import org.xml.sax.InputSource;
+
+/**
+ * Custom resolver to use with XMI reader.
+ * &lt;p&gt;
+ *
+ * This provides two functions:
+ * &lt;nl&gt;
+ * &lt;li&gt;Records the mapping of &lt;code&gt;xmi.id&lt;/code&gt;'s to MDR objects as they
+ * are resolved so that the map can be used to lookup objects by xmi.id later
+ * (used by diagram subsystem to associate GEF/PGML objects with model
+ * elements).  This map is also used to resolve cross references (HREFs) to
+ * other files when reading multiple files linked together.
+ * &lt;li&gt;Keeps an inverse map of objects to the xmi.id that they were read in from
+ * which can be used to maintain stable xmi.id values on output.
+ * &lt;li&gt;Handles search special processing for profiles including the search list
+ * of directories which an be used to look them up.
+ * &lt;li&gt;Resolves a System ID to a fully specified URL which can be used by MDR
+ * to open and read the referenced content. The standard MDR resolver is
+ * extended to support that &quot;jar:&quot; protocol for URLs, allowing it to handle
+ * multi-file Zip/jar archives contained a set of models. The method
+ * &lt;code&gt;toUrl&lt;/code&gt; and supporting methods and fields was copied from the
+ * AndroMDA 3.1 implementation
+ * (org.andromda.repositories.mdr.MDRXmiReferenceResolverContext) by Ludo
+ * (rastaman).
+ * &lt;/nl&gt;
+ * &lt;p&gt;
+ * NOTE: This is not a standalone implementation of the reference resolver since
+ * it depends on extending the specific MDR implementation.
+ *
+ * @author Tom Morris
+ *
+ */
+class XmiReferenceResolverImpl extends XmiContext {
+
+<span class="fc" id="L100">    private static final Logger LOG =</span>
+<span class="fc" id="L101">        Logger.getLogger(XmiReferenceResolverImpl.class.getName());</span>
+
+    /**
+     * Map of href/id to object.  IDs for top level document will have no
+     * leading URL piece while others will be in &lt;url&gt;#&lt;id&gt; form
+     */
+<span class="fc" id="L107">    private Map&lt;String, Map&lt;String, Object&gt;&gt; idToObject =</span>
+<span class="fc" id="L108">        Collections.synchronizedMap(new HashMap&lt;String, Map&lt;String, Object&gt;&gt;());</span>
+
+    /**
+     * Map indexed by MOF ID containing XmiReference objects.
+     */
+    private Map&lt;String, XmiReference&gt; mofidToXmiref;
+
+    /**
+     * System ID of top level document
+     */
+    private String topSystemId;
+
+    /**
+     * Most recent system ID (public ID in our context) translated by toURL
+     */
+<span class="fc" id="L123">    private Map&lt;String, URL&gt; pendingProfiles = new HashMap&lt;String, URL&gt;();</span>
+
+    /**
+     * URI form of topSystemID for use in relativization.
+     */
+    private URI baseUri;
+
+    /**
+     * The array of paths in which the models references in other models will be
+     * searched.
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     */
+<span class="fc" id="L136">    private List&lt;String&gt; modulesPath = new ArrayList&lt;String&gt;();</span>
+
+    /**
+     * Module to URL map to cache things we've already found.
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     *
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     */
+<span class="fc" id="L144">    private Map&lt;String, URL&gt; urlMap = new HashMap&lt;String, URL&gt;();</span>
+
+    /**
+     * Mapping from absolute resolved URL to the original SystemID
+     * that was read from the input file.  We'll preserve this mapping when
+     * we write things back out again.
+     */
+<span class="fc" id="L151">    private Map&lt;String, String&gt; reverseUrlMap = new HashMap&lt;String, String&gt;();</span>
+
+    /**
+     * True if top level file is a profile/readonly
+     */
+    private boolean profile;
+
+    /**
+     * Mapping from public ID to system ID for files which have been read.
+     */
+    private Map&lt;String, String&gt; public2SystemIds;
+
+    private String modelPublicId;
+
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor.
+     * @param systemId
+     * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
+     * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
+     */
+    // CHECKSTYLE:OFF - ignore too many parameters since API is fixed by MDR
+    XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
+            Map&lt;String, XmiReference&gt; objectToXmiref,
+            Map&lt;String, String&gt; publicIds,
+            Map&lt;String, Map&lt;String, Object&gt;&gt; idToObject,
+            List&lt;String&gt; searchDirs,
+            boolean isProfile, String publicId, String systemId,
+            MDRModelImplementation modelImplementation) {
+    // CHECKSTYLE:ON
+<span class="fc" id="L182">        super(extents, config);</span>
+<span class="fc" id="L183">        modelImpl = modelImplementation;</span>
+<span class="fc" id="L184">        mofidToXmiref = objectToXmiref;</span>
+<span class="fc" id="L185">        modulesPath = searchDirs;</span>
+<span class="fc" id="L186">        profile = isProfile;</span>
+<span class="fc" id="L187">        public2SystemIds = publicIds;</span>
+<span class="fc" id="L188">        this.idToObject = idToObject;</span>
+<span class="fc" id="L189">        modelPublicId = publicId;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (isProfile) {</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">            if (publicId == null) {</span>
+<span class="nc" id="L192">                LOG.log(Level.WARNING, &quot;Profile load with null public ID.  Using system ID - &quot;</span>
+                        + systemId);
+<span class="nc" id="L194">                modelPublicId = publicId = systemId;</span>
+            }
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">            if (public2SystemIds.containsKey(modelPublicId)) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (systemId.equals(public2SystemIds.get(publicId))) {</span>
+<span class="nc" id="L198">                    LOG.log(Level.WARNING, &quot;Loaded profile is being re-read &quot;</span>
+                            + &quot;publicId = \&quot;&quot; + publicId + &quot;\&quot;;  systemId = \&quot;&quot;
+                            + systemId + &quot;\&quot;.&quot;);
+                } else {
+<span class="nc" id="L202">                    LOG.log(Level.WARNING, &quot;Profile with the duplicate publicId &quot;</span>
+                            + &quot;is being loaded! publicId = \&quot;&quot; + publicId
+                            + &quot;\&quot;; existing systemId = \&quot;&quot;
+<span class="nc" id="L205">                            + public2SystemIds.get(publicId)</span>
+                            + &quot;\&quot;; new systemId = \&quot;&quot; + systemId + &quot;\&quot;.&quot;);
+                }
+            }
+<span class="fc" id="L209">            public2SystemIds.put(publicId, systemId);</span>
+        }
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Save registered ID in our object map.
+     *
+     * @param systemId
+     *            URL of XMI field
+     * @param xmiId
+     *            xmi.id string for current object
+     * @param object
+     *            referenced object
+     */
+    @Override
+    public void register(final String systemId, final String xmiId,
+            final RefObject object) {
+
+<span class="fc" id="L227">        LOG.log(Level.FINE,</span>
+                &quot;Registering XMI ID {0} in system ID {1} to object with MOF ID {2}&quot;,
+<span class="fc" id="L229">                new Object[]{xmiId, systemId, object.refMofId()});</span>
+
+<span class="fc bfc" id="L231" title="All 2 branches covered.">        if (topSystemId == null) {</span>
+<span class="fc" id="L232">            topSystemId = systemId;</span>
+            try {
+<span class="fc" id="L234">                baseUri = new URI(</span>
+<span class="fc" id="L235">                        systemId.substring(0, systemId.lastIndexOf('/') + 1));</span>
+<span class="nc" id="L236">            } catch (URISyntaxException e) {</span>
+<span class="nc" id="L237">                LOG.log(Level.WARNING, &quot;Bad URI syntax for base URI from XMI document &quot;</span>
+                        + systemId, e);
+<span class="nc" id="L239">                baseUri = null;</span>
+<span class="fc" id="L240">            }</span>
+<span class="fc" id="L241">            LOG.log(Level.FINE, &quot;Top system ID set to {0}&quot;, topSystemId);</span>
+        }
+
+<span class="fc" id="L244">        String resolvedSystemId = systemId;</span>
+<span class="fc bfc" id="L245" title="All 4 branches covered.">        if (profile &amp;&amp; systemId.equals(topSystemId)) {</span>
+<span class="fc" id="L246">            resolvedSystemId = modelPublicId;</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        } else if (reverseUrlMap.get(systemId) != null) {</span>
+<span class="fc" id="L248">            resolvedSystemId = reverseUrlMap.get(systemId);</span>
+        } else {
+<span class="fc" id="L250">            LOG.log(Level.FINE, &quot;Unable to map systemId - {0}&quot;, systemId);</span>
+        }
+
+<span class="fc" id="L253">        RefObject o = getReferenceInt(resolvedSystemId, xmiId);</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        if (o == null) {</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">            if (mofidToXmiref.containsKey(object.refMofId())) {</span>
+<span class="fc" id="L256">                XmiReference ref = mofidToXmiref.get(object.refMofId());</span>
+                // For now just skip registering this and ignore the request,
+                // but the real issue is that MagicDraw serializes the same
+                // object in two different composition associations, first in
+                // the referencing file and second in the referenced file
+<span class="fc" id="L261">                LOG.log(Level.FINE, &quot;register called twice for the same object &quot;</span>
+                        + &quot;- ignoring second&quot;);
+<span class="fc" id="L263">                LOG.log(Level.FINE, &quot; - first reference = {0}#{1}&quot;, new Object[]{ref.getSystemId(), ref.getXmiId()});</span>
+<span class="fc" id="L264">                LOG.log(Level.FINE, &quot; - 2nd reference   = {0}#{1}&quot;, new Object[]{systemId, xmiId});</span>
+<span class="fc" id="L265">                LOG.log(Level.FINE, &quot; -   resolved system id = {0}&quot;, resolvedSystemId );</span>
+<span class="fc" id="L266">            } else {</span>
+<span class="fc" id="L267">                registerInt(resolvedSystemId, xmiId, object);</span>
+<span class="fc" id="L268">                super.register(resolvedSystemId, xmiId, object);</span>
+            }
+        } else {
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (o.equals(object)) {</span>
+                // Object from a different file, register with superclass so it
+                // can resolve all references
+<span class="nc" id="L274">                super.register(resolvedSystemId, xmiId, object);</span>
+            } else {
+<span class="nc" id="L276">               LOG.log(Level.SEVERE, &quot;Collision - multiple elements with same xmi.id : &quot;</span>
+                        + xmiId);
+<span class="nc" id="L278">                throw new IllegalStateException(</span>
+                        &quot;Multiple elements with same xmi.id&quot;);
+            }
+        }
+<span class="fc" id="L282">    }</span>
+
+    private RefObject getReferenceInt(String docId, String xmiId)  {
+<span class="fc" id="L285">        Map&lt;String, Object&gt; map = idToObject.get(docId);</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">        if (map != null) {</span>
+<span class="fc" id="L287">            RefObject result = (RefObject) map.get(xmiId);</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">            if (result == null ) {</span>
+<span class="fc" id="L289">                LOG.log(Level.FINE, &quot;No internal reference for - {0}#{1}&quot;, new Object[]{docId, xmiId});</span>
+            }
+<span class="fc" id="L291">            return result;</span>
+        }
+<span class="fc" id="L293">        return null;</span>
+    }
+
+    private void registerInt(String docId, String xmiId, RefObject object) {
+<span class="fc" id="L297">        Map&lt;String, Object&gt; map = idToObject.get(docId);</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">        if (map == null) {</span>
+<span class="fc" id="L299">            map = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L300">            idToObject.put(docId,map);</span>
+        }
+<span class="fc" id="L302">        map.put(xmiId, object);</span>
+<span class="fc" id="L303">        mofidToXmiref.put(object.refMofId(), new XmiReference(docId, xmiId));</span>
+<span class="fc" id="L304">    }</span>
+
+    /*
+     * @see org.netbeans.lib.jmi.xmi.XmiContext#getReference(java.lang.String, java.lang.String)
+     */
+    public RefObject getReference (String docId, String xmiId) {
+<span class="fc" id="L310">        RefObject ro = getReferenceInt(docId, xmiId);</span>
+<span class="pc bpc" id="L311" title="1 of 4 branches missed.">        if (ro == null &amp;&amp; !idToObject.containsKey(docId)) {</span>
+<span class="fc" id="L312">            ro = super.getReference(docId, xmiId);</span>
+        }
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (ro == null) {</span>
+            // TODO: Distinguish between deferred resolution and things which
+            // are unresolved at end of load and should be reported to user.
+<span class="fc" id="L317">            LOG.log(Level.SEVERE, &quot;Failed to resolve &quot; + docId + &quot;#&quot; + xmiId );</span>
+        }
+        // TODO: Count/report unresolved references
+<span class="fc" id="L320">        return ro;</span>
+    }
+
+    /**
+     * Return map of all registered objects for top level document.
+     *
+     * @return map of xmi.id to RefObject correspondences
+     */
+    Map&lt;String, Object&gt; getIdToObjectMap() {
+<span class="nc" id="L329">        return getIdToObjectMaps().get(topSystemId);</span>
+    }
+
+    /**
+     * @return map of maps from xmi ID to object
+     */
+    Map&lt;String, Map&lt;String, Object&gt;&gt; getIdToObjectMaps() {
+<span class="nc" id="L336">        return idToObject;</span>
+    }
+
+    /**
+     * Reinitialize the object id maps to the empty state.
+     */
+    void clearIdMaps() {
+<span class="nc" id="L343">        getIdToObjectMap().clear();</span>
+<span class="nc" id="L344">        mofidToXmiref.clear();</span>
+<span class="nc" id="L345">        topSystemId = null;</span>
+<span class="nc" id="L346">    }</span>
+
+
+    /////////////////////////////////////////////////////
+    ////////// Begin AndroMDA Code //////////////////////
+    /////////////////////////////////////////////////////
+
+    /**
+     * Convert a System ID from an HREF which may be relative or otherwise in
+     * need of resolution to an absolute URL.
+     *
+     * Copied from AndroMDA 3.1 by Ludo (rastaman)
+     * see @link org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * @see org.netbeans.lib.jmi.xmi.XmiContext#toURL(java.lang.String)
+     */
+    @Override
+    public URL toURL(String systemId) {
+<span class="fc" id="L363">        LOG.log(Level.FINE,</span>
+                &quot;attempting to resolve Xmi Href --&gt; {0}&quot;, systemId);
+
+        // TODO: Using just the last piece of the ID leaves the potential for
+        // name collisions if two linked files have the same name in different
+        // directories
+<span class="fc" id="L369">        final String suffix = getSuffix(systemId);</span>
+
+        // if the model URL has a suffix of '.zip' or '.jar', get
+        // the suffix without it and store it in the urlMap
+<span class="fc" id="L373">        String exts = &quot;\\.jar|\\.zip&quot;;</span>
+<span class="fc" id="L374">        String suffixWithExt = suffix.replaceAll(exts, &quot;&quot;);</span>
+<span class="fc" id="L375">        URL modelUrl = urlMap.get(suffixWithExt);</span>
+
+        // Several tries to construct a URL that really exists.
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        if (modelUrl == null) {</span>
+<span class="pc bpc" id="L379" title="1 of 2 branches missed.">            if (public2SystemIds.containsKey(systemId)) {</span>
+                // If systemId is publicId previously mapped from a systemId,
+                // try to use the systemId.
+<span class="nc" id="L382">                modelUrl = getValidURL(public2SystemIds.get(systemId));</span>
+            }
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">            if (modelUrl == null) {</span>
+                // If systemId is a valid URL, simply use it.
+                // TODO: This causes a network connection attempt for profiles
+<span class="fc" id="L387">                modelUrl = getValidURL(fixupURL(systemId));</span>
+            }
+<span class="fc bfc" id="L389" title="All 2 branches covered.">            if (modelUrl == null) {</span>
+                // Try to find suffix in module list.
+<span class="fc" id="L391">                String modelUrlAsString = findModuleURL(suffix);</span>
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">                if (!(modelUrlAsString == null</span>
+<span class="pc bpc" id="L393" title="1 of 2 branches missed.">                        || &quot;&quot;.equals(modelUrlAsString))) {</span>
+<span class="fc" id="L394">                    modelUrl = getValidURL(modelUrlAsString);</span>
+                }
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
+                    // search the classpath
+<span class="nc" id="L398">                    modelUrl = findModelUrlOnClasspath(systemId);</span>
+                }
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
+                    // Give up and let superclass deal with it.
+<span class="nc" id="L402">                    modelUrl = super.toURL(systemId);</span>
+                }
+            }
+            // if we've found the module model, log it
+            // and place it in the map so we don't have to
+            // find it if we need it again.
+<span class="pc bpc" id="L408" title="1 of 2 branches missed.">            if (modelUrl != null) {</span>
+<span class="fc" id="L409">                LOG.log(Level.INFO, &quot;Referenced model --&gt; {0}&quot;, modelUrl);</span>
+
+<span class="fc" id="L411">                urlMap.put(suffixWithExt, modelUrl);</span>
+<span class="fc" id="L412">                pendingProfiles.put(systemId, modelUrl);</span>
+<span class="fc" id="L413">                String relativeUri = systemId;</span>
+                try {
+<span class="pc bpc" id="L415" title="1 of 2 branches missed.">                    if (baseUri != null) {</span>
+<span class="fc" id="L416">                        relativeUri = baseUri.relativize(modelUrl.toURI())</span>
+<span class="fc" id="L417">                                .toString();</span>
+<span class="fc" id="L418">                        LOG.log(Level.FINE, &quot;  system ID {0} modelUrl {1}\n  relativized as {2}&quot;,</span>
+                                new Object[]{systemId, modelUrl, relativeUri});
+                    } else {
+<span class="nc" id="L421">                        relativeUri = systemId;</span>
+                    }
+<span class="nc" id="L423">                } catch (URISyntaxException e) {</span>
+<span class="nc" id="L424">                    LOG.log(Level.SEVERE, &quot;Error relativizing system ID &quot; + systemId, e);</span>
+<span class="nc" id="L425">                    relativeUri = systemId;</span>
+<span class="fc" id="L426">                }</span>
+                // TODO: Check whether this is really needed.  I think it's
+                // left over from an incomplete understanding of the MagicDraw
+                // composition error problem - tfm
+<span class="fc" id="L430">                reverseUrlMap.put(modelUrl.toString(), relativeUri);</span>
+<span class="fc" id="L431">                reverseUrlMap.put(systemId, relativeUri);</span>
+            } else {
+                // TODO: We failed to resolve URL - signal error
+            }
+        }
+<span class="fc" id="L436">        return modelUrl;</span>
+    }
+
+    /**
+     * Finds a module in the module search path.
+     * &lt;p&gt;
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     *
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     * @param moduleName
+     *            the name of the module without any path
+     * @return the complete URL string of the module if found (null if not
+     *         found)
+     */
+    private String findModuleURL(String moduleName) {
+<span class="pc bpc" id="L451" title="1 of 2 branches missed.">        if (modulesPath == null) {</span>
+<span class="nc" id="L452">            return null;</span>
+        }
+
+<span class="fc" id="L455">        LOG.log(Level.FINE, &quot;findModuleURL: modulesPath.size() = {0}&quot;, modulesPath.size());</span>
+
+<span class="pc bpc" id="L457" title="1 of 2 branches missed.">        for (String moduleDirectory : modulesPath) {</span>
+<span class="fc" id="L458">            File candidate = new File(moduleDirectory, moduleName);</span>
+
+<span class="fc" id="L460">            LOG.log(Level.FINE,</span>
+                    &quot;candidate {0} exists={1}&quot;,
+<span class="fc" id="L462">                    new Object[]{candidate, candidate.exists()});</span>
+
+<span class="fc bfc" id="L464" title="All 2 branches covered.">            if (candidate.exists()) {</span>
+                String urlString;
+                try {
+<span class="fc" id="L467">                    urlString = candidate.toURI().toURL().toExternalForm();</span>
+<span class="nc" id="L468">                } catch (MalformedURLException e) {</span>
+<span class="nc" id="L469">                    return null;</span>
+<span class="fc" id="L470">                }</span>
+
+<span class="fc" id="L472">                return fixupURL(urlString);</span>
+            }
+<span class="fc" id="L474">        }</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        if (public2SystemIds.containsKey(moduleName)) {</span>
+<span class="nc" id="L476">            LOG.log(Level.FINE,</span>
+                    &quot;Couldn't find user model ({0}) in modulesPath, attempt to use a model stored within the zargo file.&quot;,
+                    moduleName);
+
+<span class="nc" id="L480">            return moduleName;</span>
+        }
+<span class="nc" id="L482">        return null;</span>
+    }
+
+
+    /**
+     * Gets the suffix of the &lt;code&gt;systemId&lt;/code&gt;.
+     * &lt;p&gt;
+     * Copied from AndroMDA 3.1 by Ludo (rastaman). see
+     * org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     *
+     * @param systemId the system identifier.
+     * @return the suffix as a String.
+     */
+    private String getSuffix(String systemId) {
+<span class="fc" id="L496">        int lastSlash = systemId.lastIndexOf(&quot;/&quot;);</span>
+<span class="pc bpc" id="L497" title="1 of 2 branches missed.">        if (lastSlash &gt; 0) {</span>
+<span class="fc" id="L498">            String suffix = systemId.substring(lastSlash + 1);</span>
+<span class="fc" id="L499">            return suffix;</span>
+        }
+<span class="nc" id="L501">        return systemId;</span>
+    }
+
+    /**
+     * The suffixes to use when searching for referenced models on the
+     * classpath.
+     * &lt;p&gt;
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     */
+<span class="fc" id="L511">    protected static final String[] CLASSPATH_MODEL_SUFFIXES =</span>
+        new String[] {&quot;xml&quot;, &quot;xmi&quot;, };
+
+    /**
+     * Searches for the model URL on the classpath.
+     * &lt;p&gt;
+     * Copied from AndroMDA 3.1 by Ludo (rastaman).
+     *
+     * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     *
+     * @param systemId
+     *            the system identifier.
+     * @return the suffix as a String.
+     */
+    private URL findModelUrlOnClasspath(String systemId) {
+<span class="nc" id="L526">        final String dot = &quot;.&quot;;</span>
+<span class="nc" id="L527">        String modelName = systemId;</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">        if (public2SystemIds.containsKey(systemId)) {</span>
+<span class="nc" id="L529">            modelName = public2SystemIds.get(systemId);</span>
+        } else {
+<span class="nc" id="L531">            int filenameIndex = systemId.lastIndexOf(&quot;/&quot;);</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">            if (filenameIndex &gt; 0) {</span>
+<span class="nc" id="L533">                modelName = systemId.substring(filenameIndex + 1, systemId</span>
+<span class="nc" id="L534">                        .length());</span>
+            } else {
+<span class="nc" id="L536">                LOG.log(Level.WARNING, &quot;Received systemId with no '/'&quot; + systemId);</span>
+            }
+
+
+            // remove the first prefix because it may be an archive
+            // (like magicdraw)
+<span class="nc bnc" id="L542" title="All 2 branches missed.">            if (modelName.lastIndexOf(dot) &gt; 0) {</span>
+<span class="nc" id="L543">                modelName = modelName.substring(0, modelName.lastIndexOf(dot));</span>
+            }
+        }
+
+<span class="nc" id="L547">        URL modelUrl = Thread.currentThread().getContextClassLoader()</span>
+<span class="nc" id="L548">                .getResource(modelName);</span>
+        // TODO: Not sure whether the above is better in some cases, but
+        // the code below is better for both Java Web Start and Eclipse.
+<span class="nc bnc" id="L551" title="All 2 branches missed.">        if (modelUrl == null) {</span>
+<span class="nc" id="L552">            modelUrl = this.getClass().getResource(modelName);</span>
+        }
+        // TODO: Is this adequate for finding profiles in Java WebStart jars?
+        //       - tfm
+<span class="nc bnc" id="L556" title="All 2 branches missed.">        if (modelUrl == null) {</span>
+<span class="nc bnc" id="L557" title="All 4 branches missed.">            if (CLASSPATH_MODEL_SUFFIXES != null</span>
+                    &amp;&amp; CLASSPATH_MODEL_SUFFIXES.length &gt; 0) {
+<span class="nc bnc" id="L559" title="All 2 branches missed.">                for (String suffix : CLASSPATH_MODEL_SUFFIXES) {</span>
+
+<span class="nc" id="L561">                    LOG.log(Level.FINE,</span>
+                            &quot;searching for model reference --&gt; {0}&quot;, modelUrl);
+
+<span class="nc" id="L564">                    modelUrl = Thread.currentThread().getContextClassLoader()</span>
+<span class="nc" id="L565">                            .getResource(modelName + dot + suffix);</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
+<span class="nc" id="L567">                        break;</span>
+                    }
+<span class="nc" id="L569">                    modelUrl = this.getClass().getResource(modelName);</span>
+<span class="nc bnc" id="L570" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
+<span class="nc" id="L571">                        break;</span>
+                    }
+                }
+            }
+        }
+<span class="nc" id="L576">        return modelUrl;</span>
+    }
+
+    /**
+     * Returns a URL if the systemId is valid. Returns null otherwise. Catches
+     * exceptions as necessary.
+     * &lt;p&gt;
+     * Copied from AndroMDA 3.1 by Ludo (rastaman). See
+     * org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
+     *
+     * @param systemId
+     *            the system id
+     * @return the URL (if valid) or null
+     */
+    private URL getValidURL(String systemId) {
+<span class="fc" id="L591">        InputStream stream = null;</span>
+<span class="fc" id="L592">        URL url = null;</span>
+        try {
+<span class="fc" id="L594">            url = new URL(systemId);</span>
+<span class="fc" id="L595">            stream = url.openStream();</span>
+<span class="fc" id="L596">            stream.close();</span>
+<span class="fc" id="L597">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L598">            url = null;</span>
+<span class="fc" id="L599">        } catch (IOException e) {</span>
+<span class="fc" id="L600">            url = null;</span>
+        } finally {
+<span class="fc" id="L602">            stream = null;</span>
+        }
+<span class="fc" id="L604">        return url;</span>
+    }
+
+    /////////////////////////////////////////////////////
+    ////////// End AndroMDA Code //////////////////////
+    /////////////////////////////////////////////////////
+
+    /**
+     * Fix up a file URL for a Zip file or Jar.  Assume it is a single
+     * file archive with the entry name the same as the base name.
+     */
+    private String fixupURL(String url) {
+<span class="fc" id="L616">        final String suffix = getSuffix(url);</span>
+<span class="pc bpc" id="L617" title="1 of 2 branches missed.">        if (suffix.endsWith(&quot;.zargo&quot;)) {</span>
+<span class="nc" id="L618">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
+<span class="nc" id="L619">                    + suffix.substring(0, suffix.length() - 6) + &quot;.xmi&quot;;</span>
+<span class="pc bpc" id="L620" title="1 of 4 branches missed.">        } else if (suffix.endsWith(&quot;.zip&quot;) || suffix.endsWith(&quot;.jar&quot;)) {</span>
+<span class="fc" id="L621">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
+<span class="fc" id="L622">                    + suffix.substring(0, suffix.length() - 4);</span>
+        }
+<span class="fc" id="L624">        return url;</span>
+    }
+
+    @Override
+    public void readExternalDocument(String arg0) {
+        // We've got a profile read pending - handle it ourselves now
+<span class="fc" id="L630">        URL url = pendingProfiles.remove(arg0);</span>
+<span class="pc bpc" id="L631" title="1 of 2 branches missed.">        if (url != null) {</span>
+<span class="fc" id="L632">            InputSource is = new InputSource(url.toExternalForm());</span>
+<span class="fc" id="L633">            is.setPublicId(arg0);</span>
+<span class="fc" id="L634">            XmiReaderImpl reader = new XmiReaderImpl(modelImpl);</span>
+            try {
+<span class="fc" id="L636">                reader.parse(is, true);</span>
+<span class="nc" id="L637">            } catch (UmlException e) {</span>
+<span class="nc" id="L638">                LOG.log(Level.SEVERE, &quot;Error reading referenced profile &quot; + arg0);</span>
+<span class="nc" id="L639">                throw new XmiReferenceRuntimeException(arg0, e);</span>
+<span class="fc" id="L640">            }</span>
+<span class="pc bnc" id="L641" title="All 2 branches missed.">        } else if (!(public2SystemIds.containsKey(arg0))) {</span>
+            // Otherwise if it's not something we've already read, just
+            // punt to the super class.
+            try {
+<span class="nc" id="L645">                super.readExternalDocument(arg0);</span>
+<span class="nc" id="L646">            } catch (DebugException e) {</span>
+                // Unfortunately the MDR super implementation throws
+                // DebugException with just the message from the causing
+                // exception rather than nesting the exception itself, so
+                // we don't have all the information we'd like
+<span class="nc" id="L651">                LOG.log(Level.SEVERE, &quot;Error reading external document &quot; + arg0);</span>
+<span class="nc" id="L652">                throw new XmiReferenceRuntimeException(arg0, e);</span>
+<span class="nc" id="L653">            }</span>
+        }
+<span class="fc" id="L655">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

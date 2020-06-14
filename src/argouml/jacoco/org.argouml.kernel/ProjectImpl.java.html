@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">ProjectImpl.java</span></div><h1>ProjectImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
+// $Id$
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeSupport;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Defaults;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * The ProjectImpl is a data structure that represents the designer's
+ * current project. It manages the list of diagrams and UML models.
+ * &lt;p&gt;
+ * NOTE: This was named Project until 0.25.4 when it was replaced by an
+ * interface of the same name and renamed to ProjectImpl.
+ */
+public class ProjectImpl implements java.io.Serializable, Project {
+
+<span class="fc" id="L89">    private static final Logger LOG =</span>
+<span class="fc" id="L90">        Logger.getLogger(ProjectImpl.class.getName());</span>
+
+<span class="fc" id="L92">    Set&lt;ProjectListener&gt; projectListeners = new HashSet&lt;ProjectListener&gt;();</span>
+    
+    /**
+     * Default name for a project.
+     */
+<span class="fc" id="L97">    private static final String UNTITLED_FILE =</span>
+<span class="fc" id="L98">	Translator.localize(&quot;label.projectbrowser-title&quot;);</span>
+
+    /**
+     * The project type
+     */
+<span class="fc" id="L103">    private int projectType = UML_PROJECT;</span>
+
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = 1399111233978692444L;
+
+    /**
+     * TODO: should just be the directory to write.
+     */
+    private URI uri;
+
+    /* The preferences with project-scope: */
+    private String authorname;
+    private String authoremail;
+    private String description;
+    /* The ArgoUML version with which this project was last saved: */
+    private String version;
+
+    private ProjectSettings projectSettings;
+
+<span class="fc" id="L124">    private final List&lt;String&gt; searchpath = new ArrayList&lt;String&gt;();</span>
+
+    // TODO: break into 3 main member types
+    // model, diagram and other
+<span class="fc" id="L128">    private final List&lt;ProjectMember&gt; members = new MemberList();</span>
+
+    private String historyFile;
+
+    /**
+     * The version number of the persistence format that last
+     * saved this project.
+     */
+    private int persistenceVersion;
+
+    /**
+     * Instances of the UML model.
+     */
+<span class="fc" id="L141">    private final List models = new ArrayList();</span>
+
+    private Object root;
+<span class="fc" id="L144">    private final Collection roots = new HashSet();</span>
+
+    /**
+     * Instances of the UML diagrams.
+     */
+<span class="fc" id="L149">    private final List&lt;ArgoDiagram&gt; diagrams = new ArrayList&lt;ArgoDiagram&gt;();</span>
+
+    private Object currentNamespace;
+    private Map&lt;String, Object&gt; uuidRefs;
+
+    private ProfileConfiguration profileConfiguration;
+
+    /**
+     * The active diagram, pointer to a diagram in the list with diagrams.
+     */
+    private ArgoDiagram activeDiagram;
+
+    /** The name of the diagram to show by default after loading a project. */
+    private String savedDiagramName;
+
+    /**
+     * Cache for the default model.
+     */
+<span class="fc" id="L167">    private HashMap&lt;String, Object&gt; defaultModelTypeCache =</span>
+        new HashMap&lt;String, Object&gt;();
+
+<span class="fc" id="L170">    private final Collection trashcan = new ArrayList();</span>
+
+    // TODO: Change this to use an UndoManager instance per project when
+    // GEF has been enhanced.
+<span class="fc" id="L174">    private UndoManager undoManager = new DefaultUndoManager(this);</span>
+
+<span class="fc" id="L176">    private boolean dirty = false;</span>
+
+    /**
+     * Constructor.
+     *
+     * @param theProjectUri Uri to read the project from.
+     */
+    public ProjectImpl(int type, URI theProjectUri) {
+<span class="fc" id="L184">        this(UML_PROJECT);</span>
+        /* TODO: Why was this next line in the code so long? */
+//        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
+<span class="fc" id="L187">        uri = theProjectUri;</span>
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * Constructor.
+     */
+    public ProjectImpl() {
+<span class="fc" id="L194">        this(UML_PROJECT);</span>
+<span class="fc" id="L195">    }</span>
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L200">    public ProjectImpl(int type) {</span>
+<span class="fc" id="L201">        projectType = type;</span>
+<span class="fc" id="L202">        setProfileConfiguration(new ProfileConfiguration(this));</span>
+
+<span class="fc" id="L204">        projectSettings = new ProjectSettings(this);</span>
+
+<span class="fc" id="L206">        Model.getModelManagementFactory().setRootModel(null);</span>
+
+<span class="fc" id="L208">        authorname = Configuration.getString(Argo.KEY_USER_FULLNAME);</span>
+<span class="fc" id="L209">        authoremail = Configuration.getString(Argo.KEY_USER_EMAIL);</span>
+<span class="fc" id="L210">        description = &quot;&quot;;</span>
+        // this should be moved to a ui action.
+<span class="fc" id="L212">        version = ApplicationVersion.getVersion();</span>
+
+<span class="fc" id="L214">        historyFile = &quot;&quot;;</span>
+
+<span class="fc" id="L216">        LOG.log(Level.INFO, &quot;making empty project with empty model&quot;);</span>
+<span class="fc" id="L217">        addSearchPath(&quot;PROJECT_DIR&quot;);</span>
+<span class="fc" id="L218">    }</span>
+
+
+    public String getName() {
+        // TODO: maybe separate name
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (uri == null) {</span>
+<span class="nc" id="L224">            return UNTITLED_FILE;</span>
+        }
+<span class="nc" id="L226">        return new File(uri).getName();</span>
+    }
+
+    public int getProjectType() {
+<span class="fc" id="L230">        return projectType;</span>
+    }
+
+    public void setProjectType(int projectType) {
+<span class="nc" id="L234">        this.projectType = projectType;</span>
+<span class="nc" id="L235">    }</span>
+
+    public URI getUri() {
+<span class="fc" id="L238">        return uri;</span>
+    }
+
+
+    public URI getURI() {
+<span class="nc" id="L243">        return uri;</span>
+    }
+
+    /**
+     * @param theUri the URI for the project
+     */
+    public void setUri(URI theUri) {
+<span class="fc" id="L250">        LOG.log(Level.FINE,</span>
+                &quot;Setting project URI from \&quot;{0}\&quot; to \&quot;{1}\&quot;.&quot;,
+                new Object[]{uri, theUri});
+
+<span class="fc" id="L254">        uri = theUri;</span>
+<span class="fc" id="L255">    }</span>
+
+    public void setFile(final File file) {
+<span class="fc" id="L258">        URI theProjectUri = file.toURI();</span>
+
+<span class="fc" id="L260">        LOG.log(Level.FINE,</span>
+                &quot;Setting project file name from \&quot;{0}\&quot; to \&quot;{1}\&quot;.&quot;,
+                new Object[]{uri, theProjectUri});
+
+<span class="fc" id="L264">        uri = theProjectUri;</span>
+<span class="fc" id="L265">    }</span>
+
+
+    public List&lt;String&gt; getSearchPathList() {
+<span class="fc" id="L269">        return Collections.unmodifiableList(searchpath);</span>
+    }
+
+
+    public void addSearchPath(final String searchPathElement) {
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (!searchpath.contains(searchPathElement)) {</span>
+<span class="fc" id="L275">            searchpath.add(searchPathElement);</span>
+        }
+<span class="fc" id="L277">    }</span>
+
+
+    public List&lt;ProjectMember&gt; getMembers() {
+<span class="fc" id="L281">        LOG.log(Level.INFO,</span>
+<span class="fc" id="L282">                &quot;Getting the members there are {0}&quot;, members.size());</span>
+<span class="fc" id="L283">        return members;</span>
+    }
+
+    /**
+     * @param d the diagram
+     */
+    private void addDiagramMember(ArgoDiagram d) {
+        // Check for duplicate name and rename if necessary
+<span class="fc" id="L291">        int serial = getDiagramCount();</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        while (!isValidDiagramName(d.getName())) {</span>
+            try {
+<span class="fc" id="L294">                d.setName(d.getName() + &quot; &quot; + serial);</span>
+<span class="nc" id="L295">            } catch (PropertyVetoException e) {</span>
+<span class="nc" id="L296">                serial++;</span>
+<span class="pc" id="L297">            }</span>
+        }
+<span class="fc" id="L299">        ProjectMember pm = new ProjectMemberDiagram(d, this);</span>
+<span class="fc" id="L300">        addDiagram(d);</span>
+        // if diagram added successfully, add the member too
+<span class="fc" id="L302">        members.add(pm);</span>
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * @param pm the member to be added
+     */
+    private void addTodoMember(ProjectMemberTodoList pm) {
+        // Adding a todo member removes any existing one.
+<span class="fc" id="L310">        members.add(pm);</span>
+<span class="fc" id="L311">        LOG.log(Level.INFO,</span>
+<span class="fc" id="L312">                &quot;Added todo member, there are now {0}&quot;, members.size());</span>
+<span class="fc" id="L313">    }</span>
+
+
+    public void addMember(Object m) {
+
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        if (m == null) {</span>
+<span class="nc" id="L319">            throw new IllegalArgumentException(</span>
+                    &quot;A model member must be supplied&quot;);
+<span class="fc bfc" id="L321" title="All 2 branches covered.">        } else if (m instanceof ArgoDiagram) {</span>
+<span class="fc" id="L322">            LOG.log(Level.INFO, &quot;Adding diagram member&quot;);</span>
+<span class="fc" id="L323">            addDiagramMember((ArgoDiagram) m);</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">        } else if (m instanceof ProjectMemberTodoList) {</span>
+<span class="fc" id="L325">            LOG.log(Level.INFO, &quot;Adding todo member&quot;);</span>
+<span class="fc" id="L326">            addTodoMember((ProjectMemberTodoList) m);</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAModel(m)) {</span>
+<span class="fc" id="L328">            LOG.log(Level.INFO, &quot;Adding model member&quot;);</span>
+<span class="fc" id="L329">            addModelMember(m);</span>
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        } else if (Model.getFacade().isAProfile(m)) {</span>
+<span class="nc" id="L331">            LOG.log(Level.INFO, &quot;Adding profile model member&quot;);</span>
+<span class="nc" id="L332">            addModelMember(m);</span>
+        } else {
+<span class="nc" id="L334">            throw new IllegalArgumentException(</span>
+                    &quot;The member must be a UML model todo member or diagram.&quot;
+<span class="nc" id="L336">                    + &quot;It is &quot; + m.getClass().getName());</span>
+        }
+<span class="fc" id="L338">        LOG.log(Level.INFO, &quot;There are now {0} members&quot;, members.size());</span>
+<span class="fc" id="L339">    }</span>
+
+    /**
+     * @param m the model
+     */
+    private void addModelMember(final Object m) {
+
+<span class="fc" id="L346">        boolean memberFound = false;</span>
+<span class="fc" id="L347">        Object currentMember =</span>
+<span class="fc" id="L348">            members.get(0);</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">        if (currentMember instanceof ProjectMemberModel) {</span>
+<span class="nc" id="L350">            Object currentModel =</span>
+<span class="nc" id="L351">                ((ProjectMemberModel) currentMember).getModel();</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">            if (currentModel == m) {</span>
+<span class="nc" id="L353">                memberFound = true;</span>
+            }
+        }
+
+<span class="pc bpc" id="L357" title="1 of 2 branches missed.">        if (!memberFound) {</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">            if (!models.contains(m)) {</span>
+<span class="fc" id="L359">                addModel(m);</span>
+            }
+            // got past the veto, add the member
+<span class="fc" id="L362">            ProjectMember pm = new ProjectMemberModel(m, this);</span>
+<span class="fc" id="L363">            LOG.log(Level.INFO, &quot;Adding model member to start of member list&quot;);</span>
+<span class="fc" id="L364">            members.add(pm);</span>
+<span class="fc" id="L365">        } else {</span>
+<span class="nc" id="L366">            LOG.log(Level.INFO, &quot;Attempted to load 2 models&quot;);</span>
+<span class="nc" id="L367">            throw new IllegalArgumentException(</span>
+                    &quot;Attempted to load 2 models&quot;);
+        }
+<span class="fc" id="L370">    }</span>
+
+
+    public void addModel(final Object model) {
+
+<span class="pc bpc" id="L375" title="1 of 2 branches missed.">        if (!Model.getFacade().isAModel(model)</span>
+<span class="nc bnc" id="L376" title="All 2 branches missed.">             &amp;&amp; !Model.getFacade().isAProfile(model)) {</span>
+<span class="nc" id="L377">            throw new IllegalArgumentException();</span>
+	}
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (!models.contains(model)) {</span>
+<span class="fc" id="L380">            setRoot(model);</span>
+        }
+<span class="fc" id="L382">    }</span>
+
+    private void addModelInternal(final Object model) {
+<span class="fc" id="L385">        models.add(model);</span>
+<span class="fc" id="L386">        roots.add(model);</span>
+<span class="fc" id="L387">        setCurrentNamespace(model);</span>
+<span class="fc" id="L388">        setSaveEnabled(true);</span>
+<span class="pc bpc" id="L389" title="1 of 4 branches missed.">        if (models.size() &gt; 1 || roots.size() &gt; 1) {</span>
+<span class="fc" id="L390">            LOG.log(Level.FINE, &quot;Multiple roots/models&quot;);</span>
+        }
+<span class="fc" id="L392">    }</span>
+
+    /**
+     * Removes a project member diagram completely from the project.
+     * @param d the ArgoDiagram
+     */
+    protected void removeProjectMemberDiagram(ArgoDiagram d) {
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">        if (activeDiagram == d) {</span>
+<span class="nc" id="L400">            LOG.log(Level.FINE, &quot;Deleting active diagram {0}&quot;, d);</span>
+<span class="nc" id="L401">            ArgoDiagram defaultDiagram = null;</span>
+<span class="nc bnc" id="L402" title="All 2 branches missed.">            if (diagrams.size() == 1) {</span>
+                // We're deleting the last diagram so lets create a new one
+                // TODO: Once we go MDI we won't need this.
+<span class="nc" id="L405">                LOG.log(Level.FINE,</span>
+                        &quot;Deleting last diagram - creating new default diag&quot;);
+<span class="nc" id="L407">                Object projectRoot = getRoot();</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">                if (!Model.getUmlFactory().isRemoved(projectRoot)) {</span>
+<span class="nc" id="L409">                    defaultDiagram = DiagramFactory.getInstance()</span>
+<span class="nc" id="L410">                            .createDefaultDiagram(projectRoot);</span>
+<span class="nc" id="L411">                    addMember(defaultDiagram);</span>
+                }
+<span class="nc" id="L413">            } else {</span>
+                // Make the topmost diagram (that is not the one being deleted)
+                // current.
+<span class="nc" id="L416">                defaultDiagram = diagrams.get(0);</span>
+<span class="nc" id="L417">                LOG.log(Level.FINE,</span>
+                        &quot;Candidate default diagram is {0}&quot;, defaultDiagram);
+<span class="nc bnc" id="L419" title="All 2 branches missed.">                if (defaultDiagram == d) {</span>
+<span class="nc" id="L420">                    defaultDiagram = diagrams.get(1);</span>
+<span class="nc" id="L421">                    LOG.log(Level.FINE,</span>
+                            &quot;Switching default diagram to {0}&quot;, defaultDiagram);
+                }
+            }
+<span class="nc" id="L425">            activeDiagram = defaultDiagram;</span>
+<span class="nc" id="L426">            TargetManager.getInstance().setTarget(activeDiagram);</span>
+<span class="nc" id="L427">            LOG.log(Level.FINE, &quot;New active diagram is {0}&quot;, defaultDiagram);</span>
+        }
+
+<span class="fc" id="L430">        removeDiagram(d);</span>
+<span class="fc" id="L431">        members.remove(d);</span>
+<span class="fc" id="L432">        d.remove();</span>
+<span class="fc" id="L433">        setSaveEnabled(true);</span>
+<span class="fc" id="L434">    }</span>
+
+    /**
+     * Enables the save action if this project is the current project
+     * @param enable true to enable
+     */
+    private void setSaveEnabled(boolean enable) {
+<span class="fc" id="L441">        ProjectManager pm = ProjectManager.getManager();</span>
+<span class="fc bfc" id="L442" title="All 2 branches covered.">        if (pm.getCurrentProject() == this) {</span>
+<span class="fc" id="L443">            pm.setSaveEnabled(enable);</span>
+        }
+<span class="fc" id="L445">    }</span>
+
+
+    public String getAuthorname() {
+<span class="fc" id="L449">        return authorname;</span>
+    }
+
+
+    public void setAuthorname(final String s) {
+<span class="fc" id="L454">        final String oldAuthorName = authorname;</span>
+<span class="fc" id="L455">        AbstractCommand command = new AbstractCommand() {</span>
+            public Object execute() {
+<span class="fc" id="L457">                authorname = s;</span>
+<span class="fc" id="L458">                return null;</span>
+            }
+
+            public void undo() {
+<span class="nc" id="L462">                authorname = oldAuthorName;</span>
+<span class="nc" id="L463">            }</span>
+        };
+<span class="fc" id="L465">        undoManager.execute(command);</span>
+<span class="fc" id="L466">    }</span>
+
+
+    public String getAuthoremail() {
+<span class="fc" id="L470">        return authoremail;</span>
+    }
+
+
+    public void setAuthoremail(final String s) {
+<span class="fc" id="L475">        final String oldAuthorEmail = authoremail;</span>
+<span class="fc" id="L476">        AbstractCommand command = new AbstractCommand() {</span>
+            public Object execute() {
+<span class="fc" id="L478">                authoremail = s;</span>
+<span class="fc" id="L479">                return null;</span>
+            }
+
+            public void undo() {
+<span class="nc" id="L483">                authoremail = oldAuthorEmail;</span>
+<span class="nc" id="L484">            }</span>
+        };
+<span class="fc" id="L486">        undoManager.execute(command);</span>
+<span class="fc" id="L487">    }</span>
+
+
+    public String getVersion() {
+<span class="fc" id="L491">        return version;</span>
+    }
+
+
+    public void setVersion(String s) {
+<span class="fc" id="L496">        version = s;</span>
+<span class="fc" id="L497">    }</span>
+
+
+    public String getDescription() {
+<span class="fc" id="L501">        return description;</span>
+    }
+
+
+    public void setDescription(final String s) {
+<span class="fc" id="L506">        final String oldDescription = description;</span>
+<span class="fc" id="L507">        AbstractCommand command = new AbstractCommand() {</span>
+            public Object execute() {
+<span class="fc" id="L509">                description = s;</span>
+<span class="fc" id="L510">                return null;</span>
+            }
+
+            public void undo() {
+<span class="nc" id="L514">                description = oldDescription;</span>
+<span class="nc" id="L515">            }</span>
+        };
+<span class="fc" id="L517">        undoManager.execute(command);</span>
+<span class="fc" id="L518">    }</span>
+
+
+    public String getHistoryFile() {
+<span class="fc" id="L522">        return historyFile;</span>
+    }
+
+
+    public void setHistoryFile(final String s) {
+<span class="fc" id="L527">        historyFile = s;</span>
+<span class="fc" id="L528">    }</span>
+
+
+    public List getUserDefinedModelList() {
+<span class="fc" id="L532">        return models;</span>
+    }
+
+
+    public Collection getModels() {
+<span class="fc" id="L537">        Set result = new HashSet();</span>
+<span class="fc" id="L538">        result.addAll(models);</span>
+<span class="fc bfc" id="L539" title="All 2 branches covered.">        for (Profile profile : getProfileConfiguration().getProfiles()) {</span>
+            try {
+<span class="fc" id="L541">                result.addAll(profile.getProfilePackages());</span>
+<span class="nc" id="L542">            } catch (org.argouml.profile.ProfileException e) {</span>
+<span class="nc" id="L543">                LOG.log(Level.SEVERE,</span>
+                        &quot;Exception when fetching models from profile &quot;
+<span class="nc" id="L545">                        + profile.getDisplayName(), e);</span>
+<span class="fc" id="L546">            }</span>
+<span class="fc" id="L547">        }</span>
+<span class="fc" id="L548">        return Collections.unmodifiableCollection(result);</span>
+    }
+
+    /**
+     * Return the model.&lt;p&gt;
+     *
+     * If there isn't exactly one model, &lt;code&gt;null&lt;/code&gt; is returned.
+     *
+     * @return the model.
+     * @deprecated for 0.25.4 by tfmorris.  Use
+     * {@link #getUserDefinedModelList()} or {@link #getModels()}.
+     * @see org.argouml.kernel.Project#getModel()
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public Object getModel() {
+<span class="pc bpc" id="L564" title="1 of 2 branches missed.">        if (models.size() != 1) {</span>
+<span class="nc" id="L565">            return null;</span>
+        }
+<span class="fc" id="L567">        return models.iterator().next();</span>
+    }
+
+
+    public Object findType(String s) {
+<span class="fc" id="L572">        return findType(s, true);</span>
+    }
+
+
+    public Object getDefaultAttributeType() {
+<span class="pc bpc" id="L577" title="1 of 2 branches missed.">        if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="fc" id="L578">            return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="fc" id="L579">                    .getDefaultAttributeType();</span>
+        }
+<span class="nc" id="L581">        return null;</span>
+    }
+
+    public Defaults getDefaults() {
+<span class="nc" id="L585">        return new Defaults() {</span>
+            public Object getDefaultType(Object metaType) {
+<span class="nc bnc" id="L587" title="All 2 branches missed.">                if (Model.getMetaTypes().getOperation() == metaType) {</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">                    if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="nc" id="L589">                        return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="nc" id="L590">                                .getDefaultReturnType();</span>
+                    }
+<span class="nc bnc" id="L592" title="All 2 branches missed.">                } else if (Model.getMetaTypes().getAttribute() == metaType) {</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">                    if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="nc" id="L594">                        return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="nc" id="L595">                                .getDefaultAttributeType();</span>
+                    }
+<span class="nc bnc" id="L597" title="All 2 branches missed.">                } else if (Model.getMetaTypes().getParameter() == metaType) {</span>
+<span class="nc bnc" id="L598" title="All 2 branches missed.">                    if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="nc" id="L599">                        return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="nc" id="L600">                                .getDefaultParameterType();</span>
+                    }
+                }
+<span class="nc" id="L603">                return null;</span>
+            }
+            public String getDefaultName(Object metaType) {
+<span class="nc bnc" id="L606" title="All 2 branches missed.">                if (Model.getMetaTypes().getOperation() == metaType) {</span>
+<span class="nc" id="L607">                    return &quot;newOperation&quot;;</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">                } else if (Model.getMetaTypes().getAttribute() == metaType) {</span>
+<span class="nc" id="L609">                    return &quot;newAttr&quot;;</span>
+<span class="nc bnc" id="L610" title="All 2 branches missed.">                } else if (Model.getMetaTypes().getEnumerationLiteral() == metaType) {</span>
+<span class="nc" id="L611">                    return &quot;newLiteral&quot;;</span>
+                }
+<span class="nc" id="L613">                return null;</span>
+            }
+        };
+    }
+
+    public Object getDefaultParameterType() {
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="nc" id="L620">            return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="nc" id="L621">                    .getDefaultParameterType();</span>
+        }
+<span class="nc" id="L623">        return null;</span>
+    }
+
+
+    public Object getDefaultReturnType() {
+<span class="pc bpc" id="L628" title="1 of 2 branches missed.">        if (profileConfiguration.getDefaultTypeStrategy() != null) {</span>
+<span class="fc" id="L629">            return profileConfiguration.getDefaultTypeStrategy()</span>
+<span class="fc" id="L630">                    .getDefaultReturnType();</span>
+        }
+<span class="nc" id="L632">        return null;</span>
+    }
+
+
+    public Object findType(String s, boolean defineNew) {
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">        if (s != null) {</span>
+<span class="fc" id="L638">            s = s.trim();</span>
+        }
+<span class="pc bpc" id="L640" title="2 of 4 branches missed.">        if (s == null || s.length() == 0) {</span>
+<span class="nc" id="L641">            return null;</span>
+        }
+<span class="fc" id="L643">        Object cls = null;</span>
+<span class="fc bfc" id="L644" title="All 2 branches covered.">        for (Object model : models) {</span>
+<span class="fc" id="L645">            cls = findTypeInModel(s, model);</span>
+<span class="fc bfc" id="L646" title="All 2 branches covered.">            if (cls != null) {</span>
+<span class="fc" id="L647">                return cls;</span>
+            }
+<span class="fc" id="L649">        }</span>
+<span class="fc" id="L650">        cls = findTypeInDefaultModel(s);</span>
+
+<span class="fc bfc" id="L652" title="All 4 branches covered.">        if (cls == null &amp;&amp; defineNew) {</span>
+<span class="fc" id="L653">            LOG.log(Level.FINE, &quot;new Type defined!&quot;);</span>
+            cls =
+<span class="fc" id="L655">                Model.getCoreFactory().buildClass(getCurrentNamespace());</span>
+<span class="fc" id="L656">            Model.getCoreHelper().setName(cls, s);</span>
+        }
+<span class="fc" id="L658">        return cls;</span>
+    }
+
+
+    public Collection&lt;Fig&gt; findFigsForMember(Object member) {
+<span class="fc" id="L663">        Collection&lt;Fig&gt; figs = new ArrayList&lt;Fig&gt;();</span>
+<span class="fc bfc" id="L664" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L665">            Fig fig = diagram.getContainingFig(member);</span>
+<span class="fc bfc" id="L666" title="All 2 branches covered.">            if (fig != null) {</span>
+<span class="fc" id="L667">                figs.add(fig);</span>
+            }
+<span class="fc" id="L669">        }</span>
+<span class="fc" id="L670">        return figs;</span>
+    }
+
+
+    public Collection findAllPresentationsFor(Object obj) {
+<span class="fc" id="L675">        Collection&lt;Fig&gt; figs = new ArrayList&lt;Fig&gt;();</span>
+<span class="fc bfc" id="L676" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L677">            Fig aFig = diagram.presentationFor(obj);</span>
+<span class="pc bpc" id="L678" title="1 of 2 branches missed.">            if (aFig != null) {</span>
+<span class="nc" id="L679">                figs.add(aFig);</span>
+            }
+<span class="fc" id="L681">        }</span>
+<span class="fc" id="L682">        return figs;</span>
+    }
+
+    public Object findTypeInModel(String typeName, Object namespace) {
+<span class="pc bpc" id="L686" title="1 of 2 branches missed.">        if (typeName == null) {</span>
+<span class="nc" id="L687">            throw new IllegalArgumentException(&quot;typeName must be non-null&quot;);</span>
+        }
+<span class="pc bpc" id="L689" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(namespace)) {</span>
+<span class="nc" id="L690">            throw new IllegalArgumentException(</span>
+                    &quot;Looking for the classifier &quot; + typeName
+                    + &quot; in a non-namespace object of &quot; + namespace
+                    + &quot;. A namespace was expected.&quot;);
+    	}
+
+        Collection allClassifiers =
+<span class="fc" id="L697">            Model.getModelManagementHelper()</span>
+<span class="fc" id="L698">	        .getAllModelElementsOfKind(namespace,</span>
+<span class="fc" id="L699">	                Model.getMetaTypes().getClassifier());</span>
+
+<span class="fc bfc" id="L701" title="All 2 branches covered.">        for (Object classifier : allClassifiers) {</span>
+<span class="fc bfc" id="L702" title="All 2 branches covered.">            if (typeName.equals(Model.getFacade().getName(classifier))) {</span>
+<span class="fc" id="L703">                return classifier;</span>
+            }
+<span class="fc" id="L705">        }</span>
+
+<span class="fc" id="L707">        return null;</span>
+    }
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setCurrentNamespace(final Object m) {
+
+<span class="pc bpc" id="L715" title="2 of 4 branches missed.">        if (m != null &amp;&amp; !Model.getFacade().isANamespace(m)) {</span>
+<span class="nc" id="L716">            throw new IllegalArgumentException();</span>
+    	}
+
+<span class="fc" id="L719">        currentNamespace = m;</span>
+<span class="fc" id="L720">    }</span>
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public Object getCurrentNamespace() {
+<span class="fc" id="L726">        return currentNamespace;</span>
+    }
+
+
+    public List&lt;ArgoDiagram&gt; getDiagramList() {
+<span class="fc" id="L731">        return Collections.unmodifiableList(diagrams);</span>
+    }
+
+
+    public int getDiagramCount() {
+<span class="fc" id="L736">        return diagrams.size();</span>
+    }
+
+
+    public ArgoDiagram getDiagram(String name) {
+<span class="nc bnc" id="L741" title="All 2 branches missed.">        for (ArgoDiagram ad : diagrams) {</span>
+<span class="nc bnc" id="L742" title="All 4 branches missed.">            if (ad.getName() != null &amp;&amp; ad.getName().equals(name)) {</span>
+<span class="nc" id="L743">                return ad;</span>
+            }
+<span class="nc bnc" id="L745" title="All 2 branches missed.">            if (ad.getItemUID() != null</span>
+<span class="nc bnc" id="L746" title="All 2 branches missed.">                    &amp;&amp; ad.getItemUID().toString().equals(name)) {</span>
+<span class="nc" id="L747">                return ad;</span>
+            }
+<span class="nc" id="L749">        }</span>
+<span class="nc" id="L750">        return null;</span>
+    }
+
+
+    public void addDiagram(final ArgoDiagram d) {
+        // send indeterminate new value instead of making copy of vector
+<span class="fc" id="L756">	d.setProject(this);</span>
+<span class="fc" id="L757">        diagrams.add(d);</span>
+
+<span class="fc" id="L759">        d.addPropertyChangeListener(&quot;name&quot;, new NamePCL());</span>
+<span class="fc" id="L760">        setSaveEnabled(true);</span>
+<span class="fc" id="L761">        ProjectEvent event = new ProjectEvent(d);</span>
+<span class="pc bpc" id="L762" title="1 of 2 branches missed.">        for (ProjectListener listener : projectListeners) {</span>
+<span class="nc" id="L763">            listener.diagramAdded(event);</span>
+<span class="nc" id="L764">        }</span>
+        
+<span class="fc" id="L766">    }</span>
+
+    /**
+     * Listener to events from the Diagram class. &lt;p&gt;
+     *
+     * Purpose: changing the name of a diagram shall set the need save flag.
+     *
+     * @author Michiel
+     */
+<span class="fc" id="L775">    private class NamePCL implements PropertyChangeListener {</span>
+        public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc" id="L777">            setSaveEnabled(true);</span>
+<span class="nc" id="L778">        }</span>
+    }
+
+    /**
+     * Removes a diagram from the list with diagrams.
+     *
+     * Removes (hopefully) the event listeners for this diagram.  Does
+     * not remove the diagram from the project members. This should
+     * not be called directly. Use moveToTrash if you want to remove a
+     * diagram.
+     *
+     * @param d the ArgoDiagram
+     */
+    protected void removeDiagram(ArgoDiagram d) {
+<span class="fc" id="L792">        diagrams.remove(d);</span>
+        
+        /* Remove the dependent
+         * modelelements, such as the statemachine
+         * for a statechartdiagram:
+         */
+<span class="fc" id="L798">        Object o = d.getDependentElement();</span>
+<span class="fc bfc" id="L799" title="All 2 branches covered.">        if (o != null) {</span>
+<span class="fc" id="L800">            moveToTrash(o);</span>
+        }
+<span class="fc" id="L802">        ProjectEvent event = new ProjectEvent(d);</span>
+<span class="pc bpc" id="L803" title="1 of 2 branches missed.">        for (ProjectListener listener : projectListeners) {</span>
+<span class="nc" id="L804">            listener.diagramRemoved(event);</span>
+<span class="nc" id="L805">        }</span>
+<span class="fc" id="L806">    }</span>
+
+    public int getPresentationCountFor(Object me) {
+
+<span class="nc bnc" id="L810" title="All 2 branches missed.">        if (!Model.getFacade().isAUMLElement(me)) {</span>
+<span class="nc" id="L811">            throw new IllegalArgumentException();</span>
+    	}
+
+<span class="nc" id="L814">        int presentations = 0;</span>
+<span class="nc bnc" id="L815" title="All 2 branches missed.">        for (ArgoDiagram d : diagrams) {</span>
+<span class="nc" id="L816">            presentations += d.getLayer().presentationCountFor(me);</span>
+<span class="nc" id="L817">        }</span>
+<span class="nc" id="L818">        return presentations;</span>
+    }
+
+
+    public Object getInitialTarget() {
+<span class="nc bnc" id="L823" title="All 2 branches missed.">        if (savedDiagramName != null) {</span>
+            /* Hence, a diagram name was saved in the project
+             * that we are loading. So, we use this name
+             * to retrieve any matching diagram. */
+<span class="nc" id="L827">            return getDiagram(savedDiagramName);</span>
+        }
+<span class="nc bnc" id="L829" title="All 2 branches missed.">        if (diagrams.size() &gt; 0) {</span>
+            /* Use the first diagram. */
+<span class="nc" id="L831">            return diagrams.get(0);</span>
+        }
+<span class="nc bnc" id="L833" title="All 2 branches missed.">        if (models.size() &gt; 0) {</span>
+            /* If there was no diagram at all,
+             * then use the (first) UML model. */
+<span class="nc" id="L836">            return models.iterator().next();</span>
+        }
+<span class="nc" id="L838">        return null;</span>
+    }
+
+    public void preSave() {
+<span class="fc bfc" id="L842" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L843">            diagram.preSave();</span>
+<span class="fc" id="L844">        }</span>
+<span class="fc" id="L845">    }</span>
+
+    public void postSave() {
+<span class="fc bfc" id="L848" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L849">            diagram.postSave();</span>
+<span class="fc" id="L850">        }</span>
+<span class="fc" id="L851">        setSaveEnabled(true);</span>
+<span class="fc" id="L852">    }</span>
+
+    public void postLoad() {
+<span class="fc" id="L855">        long startTime = System.currentTimeMillis();</span>
+<span class="fc bfc" id="L856" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L857">            diagram.postLoad();</span>
+<span class="fc" id="L858">        }</span>
+<span class="fc" id="L859">        long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L860">        LOG.log(Level.FINE,</span>
+<span class="fc" id="L861">                &quot;Diagram post load took {0} msec.&quot;, (endTime - startTime));</span>
+
+        // issue 1725: the root is not set, which leads to problems
+        // with displaying prop panels
+<span class="fc" id="L865">        Object model = getModel();</span>
+
+<span class="fc" id="L867">        LOG.log(Level.INFO, &quot;Setting root model to {0}&quot;, model);</span>
+
+<span class="fc" id="L869">        setRoot(model);</span>
+
+<span class="fc" id="L871">        setSaveEnabled(true);</span>
+        // we don't need this HashMap anymore so free up the memory
+<span class="fc" id="L873">        uuidRefs = null;</span>
+<span class="fc" id="L874">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // trash related methods
+
+    /**
+     * Empty the trash can and permanently delete all objects that it contains.
+     */
+    private void emptyTrashCan() {
+<span class="fc" id="L883">        trashcan.clear();</span>
+<span class="fc" id="L884">    }</span>
+
+    public void moveToTrash(Object obj) {
+<span class="pc bpc" id="L887" title="1 of 2 branches missed.">        if (obj instanceof Collection) {</span>
+<span class="nc" id="L888">            Iterator i = ((Collection) obj).iterator();</span>
+<span class="nc bnc" id="L889" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L890">                Object trash = i.next();</span>
+<span class="nc bnc" id="L891" title="All 2 branches missed.">                if (!trashcan.contains(trash)) {</span>
+<span class="nc" id="L892">                    trashInternal(trash);</span>
+                }
+<span class="nc" id="L894">            }</span>
+<span class="nc" id="L895">        } else {</span>
+<span class="fc bfc" id="L896" title="All 2 branches covered.">            if (!trashcan.contains(obj)) {</span>
+<span class="fc" id="L897">                trashInternal(obj);</span>
+            }
+        }
+<span class="fc" id="L900">    }</span>
+
+    /**
+     * Removes some object from the project.
+     *
+     * @param obj the object to be thrown away
+     */
+    protected void trashInternal(Object obj) {
+        // TODO: This should only be checking for the top level package
+        // (if anything at all)
+<span class="pc bpc" id="L910" title="1 of 2 branches missed.">        if (Model.getFacade().isAModel(obj)) {</span>
+<span class="nc" id="L911">            return; //Can not delete the model</span>
+        }
+<span class="pc bpc" id="L913" title="1 of 2 branches missed.">        if (Model.getFacade().isAProfile(obj)) {</span>
+<span class="nc" id="L914">            return; //Can not delete the profile</span>
+        }
+
+<span class="pc bpc" id="L917" title="1 of 2 branches missed.">        if (obj != null) {</span>
+<span class="fc" id="L918">            trashcan.add(obj);</span>
+        }
+<span class="fc bfc" id="L920" title="All 2 branches covered.">        if (Model.getFacade().isAUMLElement(obj)) {</span>
+
+<span class="fc" id="L922">            Model.getUmlFactory().delete(obj);</span>
+
+            // TODO: Presumably this is only relevant if
+            // obj is actually a Model or Profile.
+            // An added test of isAModel(obj) or isAProfile(obj) would clarify
+            // what is going on here.
+<span class="pc bpc" id="L928" title="1 of 2 branches missed.">            if (models.contains(obj)) {</span>
+<span class="nc" id="L929">                models.remove(obj);</span>
+            }
+<span class="pc bpc" id="L931" title="1 of 2 branches missed.">        } else if (obj instanceof ArgoDiagram) {</span>
+<span class="fc" id="L932">            removeProjectMemberDiagram((ArgoDiagram) obj);</span>
+            // Fire an event some anyone who cares about diagrams being
+            // removed can listen for it
+<span class="fc" id="L935">            ProjectManager.getManager()</span>
+<span class="fc" id="L936">                    .firePropertyChanged(&quot;remove&quot;, obj, null);</span>
+<span class="nc bnc" id="L937" title="All 2 branches missed.">        } else if (obj instanceof Fig) {</span>
+<span class="nc" id="L938">            ((Fig) obj).deleteFromModel();</span>
+            // If we delete a FigEdge
+            // or FigNode we actually call this method with the owner not
+            // the Fig itself. However, this method
+            // is called by ActionDeleteModelElements
+            // for primitive Figs (without owner).
+<span class="nc" id="L944">            LOG.log(Level.INFO,</span>
+<span class="nc" id="L945">                    &quot;Request to delete a Fig {0}&quot;, obj.getClass().getName());</span>
+<span class="nc bnc" id="L946" title="All 2 branches missed.">        } else if (obj instanceof CommentEdge) {</span>
+            // TODO: Why is this a special case? - tfm
+<span class="nc" id="L948">            CommentEdge ce = (CommentEdge) obj;</span>
+
+<span class="nc" id="L950">            LOG.log(Level.INFO, &quot;Removing the link from {0} to {1}&quot;,</span>
+<span class="nc" id="L951">                    new Object[]{ce.getAnnotatedElement(), ce.getComment()});</span>
+<span class="nc" id="L952">            ce.delete();</span>
+        }
+<span class="fc" id="L954">    }</span>
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public boolean isInTrash(Object obj) {
+<span class="fc" id="L960">        return trashcan.contains(obj);</span>
+    }
+
+
+
+    public Object findTypeInDefaultModel(String name) {
+<span class="fc bfc" id="L966" title="All 2 branches covered.">        if (defaultModelTypeCache.containsKey(name)) {</span>
+<span class="fc" id="L967">            return defaultModelTypeCache.get(name);</span>
+        }
+
+<span class="fc" id="L970">        Object result = profileConfiguration.findType(name);</span>
+
+<span class="fc" id="L972">        defaultModelTypeCache.put(name, result);</span>
+<span class="fc" id="L973">        return result;</span>
+    }
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public final Object getRoot() {
+<span class="fc" id="L980">        return root;</span>
+    }
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setRoot(final Object theRoot) {
+
+<span class="pc bpc" id="L988" title="1 of 2 branches missed.">        if (theRoot == null) {</span>
+<span class="nc" id="L989">            throw new IllegalArgumentException(</span>
+        	    &quot;A root model element is required&quot;);
+        }
+<span class="pc bpc" id="L992" title="1 of 2 branches missed.">        if (!Model.getFacade().isAModel(theRoot)</span>
+<span class="nc bnc" id="L993" title="All 2 branches missed.">                &amp;&amp; !Model.getFacade().isAProfile(theRoot)) {</span>
+<span class="nc" id="L994">            throw new IllegalArgumentException(</span>
+        	    &quot;The root model element must be a model - got &quot;
+<span class="nc" id="L996">        	    + theRoot.getClass().getName());</span>
+        }
+
+<span class="fc" id="L999">        Object treeRoot = Model.getModelManagementFactory().getRootModel();</span>
+<span class="fc bfc" id="L1000" title="All 2 branches covered.">        if (treeRoot != null) {</span>
+<span class="fc" id="L1001">            models.remove(treeRoot);</span>
+        }
+<span class="fc" id="L1003">        root = theRoot;</span>
+        // TODO: We don't really want to do the following, but I'm not sure
+        // what depends on it - tfm - 20070725
+<span class="fc" id="L1006">        Model.getModelManagementFactory().setRootModel(theRoot);</span>
+        // TODO: End up with multiple models here
+<span class="fc" id="L1008">        addModelInternal(theRoot);</span>
+<span class="fc" id="L1009">        roots.clear();</span>
+<span class="fc" id="L1010">        roots.add(theRoot);</span>
+<span class="fc" id="L1011">    }</span>
+
+
+    public final Collection getRoots() {
+<span class="fc" id="L1015">        return Collections.unmodifiableCollection(roots);</span>
+    }
+
+
+    public void setRoots(final Collection elements) {
+<span class="fc" id="L1020">        boolean modelFound = false;</span>
+<span class="fc bfc" id="L1021" title="All 2 branches covered.">        for (Object element : elements) {</span>
+<span class="pc bpc" id="L1022" title="1 of 2 branches missed.">            if (!Model.getFacade().isAPackage(element)) {</span>
+<span class="nc" id="L1023">                LOG.log(Level.WARNING,</span>
+                        &quot;Top level element other than package found - &quot;
+<span class="nc" id="L1025">                        + Model.getFacade().getName(element));</span>
+            }
+<span class="pc bpc" id="L1027" title="1 of 2 branches missed.">            if (Model.getFacade().isAModel(element)</span>
+<span class="nc bnc" id="L1028" title="All 2 branches missed.">                 || Model.getFacade().isAProfile(element) ) {</span>
+<span class="fc" id="L1029">                addModel(element);</span>
+<span class="fc bfc" id="L1030" title="All 2 branches covered.">                if (!modelFound) {</span>
+<span class="fc" id="L1031">                    setRoot(element);</span>
+<span class="fc" id="L1032">                    modelFound = true;</span>
+                }
+            }
+<span class="fc" id="L1035">        }</span>
+<span class="fc" id="L1036">        roots.clear();</span>
+<span class="fc" id="L1037">        roots.addAll(elements);</span>
+<span class="fc" id="L1038">    }</span>
+
+    public void updateRoots() {
+<span class="pc bpc" id="L1041" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+            // not needed in UML 1.x
+<span class="fc" id="L1043">            return;</span>
+        }
+<span class="nc" id="L1045">        roots.clear();</span>
+<span class="nc bnc" id="L1046" title="All 2 branches missed.">        for (Object m : models) {</span>
+<span class="nc bnc" id="L1047" title="All 2 branches missed.">            for (Object e : Model.getModelManagementHelper().getRootElements(m)) {</span>
+<span class="nc bnc" id="L1048" title="All 2 branches missed.">                if (!roots.contains(e)) {</span>
+<span class="nc" id="L1049">                    roots.add(e);</span>
+<span class="nc" id="L1050">                    checkProfileFor(e, m);</span>
+                }
+<span class="nc" id="L1052">            }</span>
+<span class="nc" id="L1053">        }</span>
+<span class="nc" id="L1054">    }</span>
+
+    public boolean isValidDiagramName(String name) {
+<span class="fc" id="L1057">        boolean rv = true;</span>
+<span class="fc bfc" id="L1058" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc bfc" id="L1059" title="All 2 branches covered.">            if (diagram.getName().equals(name)) {</span>
+<span class="fc" id="L1060">                rv = false;</span>
+<span class="fc" id="L1061">                break;</span>
+            }
+<span class="fc" id="L1063">        }</span>
+<span class="fc" id="L1064">        return rv;</span>
+    }
+
+
+    public Map&lt;String, Object&gt; getUUIDRefs() {
+<span class="fc" id="L1069">        return uuidRefs;</span>
+    }
+
+
+    public void setSearchPath(final List&lt;String&gt; theSearchpath) {
+<span class="nc" id="L1074">        searchpath.clear();</span>
+<span class="nc" id="L1075">        searchpath.addAll(theSearchpath);</span>
+<span class="nc" id="L1076">    }</span>
+
+    public void setUUIDRefs(Map&lt;String, Object&gt; uUIDRefs) {
+<span class="fc" id="L1079">        uuidRefs = uUIDRefs;</span>
+<span class="fc" id="L1080">    }</span>
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public ArgoDiagram getActiveDiagram() {
+<span class="fc" id="L1085">        return activeDiagram;</span>
+    }
+
+
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setActiveDiagram(final ArgoDiagram theDiagram) {
+<span class="fc" id="L1093">        activeDiagram = theDiagram;</span>
+<span class="fc" id="L1094">    }</span>
+
+    public void setSavedDiagramName(String diagramName) {
+<span class="fc" id="L1097">        savedDiagramName = diagramName;</span>
+<span class="fc" id="L1098">    }</span>
+
+    public void remove() {
+<span class="fc bfc" id="L1101" title="All 2 branches covered.">        for (ArgoDiagram diagram : diagrams) {</span>
+<span class="fc" id="L1102">            diagram.remove();</span>
+<span class="fc" id="L1103">        }</span>
+
+<span class="fc" id="L1105">        members.clear();</span>
+<span class="fc bfc" id="L1106" title="All 2 branches covered.">        if (!roots.isEmpty()) {</span>
+            try {
+<span class="fc" id="L1108">                Model.getUmlFactory().deleteExtent(roots.iterator().next());</span>
+<span class="fc" id="L1109">            } catch (InvalidElementException e) {</span>
+<span class="fc" id="L1110">                LOG.log(Level.WARNING, &quot;Extent deleted a second time&quot;);</span>
+<span class="fc" id="L1111">            }</span>
+<span class="fc" id="L1112">            roots.clear();</span>
+        }
+<span class="fc" id="L1114">        models.clear();</span>
+<span class="fc" id="L1115">        diagrams.clear();</span>
+<span class="fc" id="L1116">        searchpath.clear();</span>
+
+<span class="fc bfc" id="L1118" title="All 2 branches covered.">        if (uuidRefs != null) {</span>
+<span class="fc" id="L1119">            uuidRefs.clear();</span>
+        }
+
+<span class="fc bfc" id="L1122" title="All 2 branches covered.">        if (defaultModelTypeCache != null) {</span>
+<span class="fc" id="L1123">            defaultModelTypeCache.clear();</span>
+        }
+
+<span class="fc" id="L1126">        uuidRefs = null;</span>
+<span class="fc" id="L1127">        defaultModelTypeCache = null;</span>
+
+<span class="fc" id="L1129">        uri = null;</span>
+<span class="fc" id="L1130">        authorname = null;</span>
+<span class="fc" id="L1131">        authoremail = null;</span>
+<span class="fc" id="L1132">        description = null;</span>
+<span class="fc" id="L1133">        version = null;</span>
+<span class="fc" id="L1134">        historyFile = null;</span>
+<span class="fc" id="L1135">        currentNamespace = null;</span>
+<span class="fc" id="L1136">        activeDiagram = null;</span>
+<span class="fc" id="L1137">        savedDiagramName = null;</span>
+
+<span class="fc" id="L1139">        emptyTrashCan();</span>
+<span class="fc" id="L1140">    }</span>
+
+
+    public int getPersistenceVersion() {
+<span class="fc" id="L1144">        return persistenceVersion;</span>
+    }
+
+
+    public void setPersistenceVersion(int pv) {
+<span class="fc" id="L1149">        persistenceVersion = pv;</span>
+<span class="fc" id="L1150">    }</span>
+
+
+    public String repair() {
+<span class="nc" id="L1154">        StringBuilder report = new StringBuilder();</span>
+<span class="nc" id="L1155">        Iterator it = members.iterator();</span>
+<span class="nc bnc" id="L1156" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L1157">            ProjectMember member = (ProjectMember) it.next();</span>
+<span class="nc" id="L1158">            report.append(member.repair());</span>
+<span class="nc" id="L1159">        }</span>
+<span class="nc" id="L1160">        return report.toString();</span>
+    }
+
+
+    public ProjectSettings getProjectSettings() {
+<span class="fc" id="L1165">        return projectSettings;</span>
+    }
+    public UndoManager getUndoManager() {
+<span class="fc" id="L1168">        return undoManager;</span>
+    }
+
+    public ProfileConfiguration getProfileConfiguration() {
+<span class="fc" id="L1172">        return profileConfiguration;</span>
+    }
+
+    public void setProfileConfiguration(ProfileConfiguration pc) {
+<span class="pc bpc" id="L1176" title="1 of 2 branches missed.">        if (this.profileConfiguration != pc) {</span>
+<span class="fc bfc" id="L1177" title="All 2 branches covered.">            if (this.profileConfiguration != null) {</span>
+<span class="fc" id="L1178">                this.members.remove(this.profileConfiguration);</span>
+            }
+
+<span class="fc" id="L1181">            this.profileConfiguration = pc;</span>
+
+            // there's just one ProfileConfiguration in a project
+            // and there's no other way to add another one
+<span class="fc" id="L1185">            members.add(pc);</span>
+        }
+
+<span class="fc" id="L1188">        ProfileFacade.applyConfiguration(pc);</span>
+<span class="fc" id="L1189">    }</span>
+
+    public boolean isDirty() {
+        // TODO: Placeholder implementation until support for tracking on
+        // a per-project basis is implemented
+//        return dirty;
+<span class="nc" id="L1195">        return ProjectManager.getManager().isSaveActionEnabled();</span>
+    }
+
+    public void setDirty(boolean isDirty) {
+        // TODO: Placeholder implementation until support for tracking on
+        // a per-project basis is implemented
+<span class="fc" id="L1201">        dirty = isDirty;</span>
+<span class="fc" id="L1202">        ProjectManager.getManager().setSaveEnabled(isDirty);</span>
+<span class="fc" id="L1203">    }</span>
+
+    private void checkProfileFor(Object o, Object m) {
+<span class="nc" id="L1206">        Profile profile = null;</span>
+<span class="nc bnc" id="L1207" title="All 2 branches missed.">        if (Model.getFacade().isAAppliedProfileElement(o)) {</span>
+<span class="nc" id="L1208">            Object pkg = Model.getFacade().getNamespace(o);</span>
+<span class="nc bnc" id="L1209" title="All 2 branches missed.">            if (pkg != null) {</span>
+<span class="nc" id="L1210">                String name = Model.getFacade().getName(pkg);</span>
+<span class="nc" id="L1211">                profile = ProfileFacade.getManager()</span>
+<span class="nc" id="L1212">                        .lookForRegisteredProfile(name);</span>
+            }
+        }
+<span class="nc bnc" id="L1215" title="All 2 branches missed.">        if (profile != null) {</span>
+<span class="nc" id="L1216">            getProfileConfiguration().addProfile(profile, m);</span>
+        }
+<span class="nc" id="L1218">    }</span>
+
+    @Override
+    public void addProjectListener(ProjectListener listener) {
+<span class="nc" id="L1222">        projectListeners.add(listener);</span>
+<span class="nc" id="L1223">    }</span>
+
+    @Override
+    public void removeProjectListener(ProjectListener listener) {
+<span class="nc" id="L1227">        projectListeners.remove(listener);</span>
+<span class="nc" id="L1228">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

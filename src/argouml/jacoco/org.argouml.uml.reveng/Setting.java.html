@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Setting.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng</a> &gt; <span class="el_source">Setting.java</span></div><h1>Setting.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng;
+
+import java.util.Collections;
+import java.util.List;
+
+
+/**
+ * Common class that all settings types inherit from.  It provides
+ * a label to be associated with the setting in the user interface.
+ */
+public class Setting implements SettingsTypes.Setting2 {
+
+    /**
+     * The message of the Label.
+     */
+    private String label;
+
+    private String description;
+    
+    /**
+     * Construct a new Setting with the given label text.
+     * 
+     * @param labelText string to use as the label
+     */
+    public Setting(String labelText) {
+<span class="nc" id="L64">        super();</span>
+<span class="nc" id="L65">        label = labelText;</span>
+<span class="nc" id="L66">    }</span>
+    
+    /**
+     * Construct a new Setting with the given label text and description.
+     * 
+     * @param labelText string to use as the label
+     * @param descriptionText string to use as description
+     */
+    public Setting(String labelText, String descriptionText) {
+<span class="nc" id="L75">        this(labelText);</span>
+<span class="nc" id="L76">        description = descriptionText;</span>
+<span class="nc" id="L77">    }</span>
+
+
+    public final String getLabel() {
+<span class="nc" id="L81">        return label;</span>
+    }
+    
+    public String getDescription() {
+<span class="nc" id="L85">        return description;</span>
+    }
+
+    /**
+     * Setting which specifies a boolean value.  Typical user presentation
+     * would be labeled checkbox.
+     */
+    public static class BooleanSelection extends Setting
+        implements SettingsTypes.BooleanSelection2 {
+
+        private boolean defaultValue;
+        private boolean value;
+
+
+        /**
+         * Construct a new setting object which specifies a boolean selection.
+         *
+         * @param labelText the string to use for the user visible label
+         * @param initialValue the default value (true or false)
+         */
+        public BooleanSelection(String labelText, boolean initialValue) {
+<span class="nc" id="L106">            super(labelText);</span>
+<span class="nc" id="L107">            this.defaultValue = initialValue;</span>
+<span class="nc" id="L108">            value = initialValue;</span>
+<span class="nc" id="L109">        }</span>
+
+        /*
+         * @see org.argouml.uml.reveng.SettingsTypes.BooleanSelection#isSelected()
+         */
+        public final boolean isSelected() {
+<span class="nc" id="L115">            return value;</span>
+        }
+
+        /*
+         * @see org.argouml.uml.reveng.SettingsTypes.BooleanSelection#getDefaultValue()
+         */
+        public final boolean getDefaultValue() {
+<span class="nc" id="L122">            return defaultValue;</span>
+        }
+        
+        public final void setSelected(boolean selected) {
+<span class="nc" id="L126">            this.value = selected;</span>
+<span class="nc" id="L127">        }</span>
+    }
+    
+    /**
+     * A setting that allows a single selection from a list of choices.
+     * 
+     * @see SettingsTypes.UniqueSelection2
+     * @author Bogdan Pistol
+     * 
+     */
+    public static class UniqueSelection extends Setting implements
+            SettingsTypes.UniqueSelection2 {
+
+        /**
+         * The list of String options
+         */
+        private List&lt;String&gt; options;
+        
+        /**
+         * Default selection is UNDEFINED
+         */
+<span class="nc" id="L148">        private int defaultSelection = UNDEFINED_SELECTION;</span>
+        
+        /**
+         * The selection is UNDEFINED
+         */
+<span class="nc" id="L153">        private int selection = UNDEFINED_SELECTION;</span>
+        
+        /**
+         * Constructor
+         * 
+         * @param label the user visible string to associate with this setting
+         * @param variants
+         *            the list of String options
+         * @param defaultVariant
+         *            the default selection or UNDEFINED_SELECTION
+         */
+        public UniqueSelection(String label, List&lt;String&gt; variants,
+                int defaultVariant) {
+<span class="nc" id="L166">            super(label);</span>
+<span class="nc" id="L167">            options = variants;</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            if (isOption(defaultVariant)) {</span>
+<span class="nc" id="L169">                defaultSelection = defaultVariant;</span>
+            }
+<span class="nc" id="L171">        }</span>
+
+        /**
+         * Tests if this is a valid option.
+         * 
+         * @param opt
+         *            the option to test
+         * @return true if it's OK and false otherwise
+         */
+        private boolean isOption(int opt) {
+<span class="nc bnc" id="L181" title="All 2 branches missed.">            if (options == null) {</span>
+<span class="nc" id="L182">                return false;</span>
+            }
+<span class="nc bnc" id="L184" title="All 4 branches missed.">            return opt &gt;= 0 &amp;&amp; opt &lt; options.size() ? true : false;        </span>
+        }
+
+        /*
+         * @see org.argouml.uml.reveng.ImportSettingTypes.UniqueSelection#getDefaultSelection()
+         */
+        public int getDefaultSelection() {
+<span class="nc" id="L191">            return defaultSelection;</span>
+        }
+
+        /*
+         * We return a new List with the options instead of the options themself
+         * because we don't want the user to be able to change the options.
+         * 
+         * @see org.argouml.uml.reveng.SettingsTypes.UniqueSelection#getOptions()
+         */
+        public List&lt;String&gt; getOptions() {
+<span class="nc" id="L201">            return Collections.unmodifiableList(options);</span>
+        }
+
+        /*
+         * @see org.argouml.uml.reveng.ImportSettingTypes.UniqueSelection#setSelection(int)
+         */
+        public boolean setSelection(int sel) {
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (isOption(sel)) {</span>
+<span class="nc" id="L209">                selection = sel;</span>
+<span class="nc" id="L210">                return true;</span>
+            } else {
+<span class="nc" id="L212">                return false;</span>
+            }
+        }
+        
+        /**
+         * This method (package access) determines the selected option.
+         * 
+         * @return the 0-based index of the selected option or the default
+         *         option if no other option was selected
+         */
+        public int getSelection() {
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            if (selection == UNDEFINED_SELECTION) {</span>
+<span class="nc" id="L224">                return defaultSelection;</span>
+            } else {
+<span class="nc" id="L226">                return selection;</span>
+            }
+        }
+
+    }
+
+    /**
+     * A selection for a single path (e.g. file system path or directory).
+     */
+    public static class PathSelection extends Setting implements
+            SettingsTypes.PathSelection {
+
+        private String path;
+
+        private String defaultPath;
+
+        /**
+         * Construct a PathSelection with the given attributes.
+         * 
+         * @param labelText string to use for the label of the path list
+         * @param descriptionText longer description of the purpose of this
+         *                pathlist (appropriate for a tooltip)
+         * @param defaultValue initial value of the path 
+         */
+        public PathSelection(String labelText, String descriptionText,
+                String defaultValue) {
+<span class="nc" id="L252">            super(labelText, descriptionText);</span>
+<span class="nc" id="L253">            defaultPath = defaultValue;</span>
+<span class="nc" id="L254">            path = defaultValue;</span>
+<span class="nc" id="L255">        }</span>
+
+        public String getDefaultPath() {
+<span class="nc" id="L258">            return defaultPath;</span>
+        }
+
+        public String getPath() {
+<span class="nc" id="L262">            return path;</span>
+        }
+
+        /**
+         * Set the path selection so that it is available to the importer.
+         * 
+         * @param newPath string representing the new path
+         */
+        public void setPath(String newPath) {
+<span class="nc" id="L271">            path = newPath;</span>
+<span class="nc" id="L272">        }</span>
+
+    }
+
+    /**
+     * An implementation of the PathListSelection.
+     */
+    public static class PathListSelection extends Setting implements
+            SettingsTypes.PathListSelection {
+
+        private List&lt;String&gt; defaultPathList;
+
+        private List&lt;String&gt; pathList;
+
+        /**
+         * Construct a new PathListSelection with the given attributes.
+         * 
+         * @param labelText string to use for the label of the path list
+         * @param descriptionText longer description of the purpose of this
+         *                pathlist (appropriate for a tooltip)
+         * @param defaultList inital values of the path list
+         */
+        public PathListSelection(String labelText, String descriptionText,
+                List&lt;String&gt; defaultList) {
+<span class="nc" id="L296">            super(labelText, descriptionText);</span>
+<span class="nc" id="L297">            defaultPathList = defaultList;</span>
+<span class="nc" id="L298">            pathList = defaultList;</span>
+<span class="nc" id="L299">        }</span>
+
+        public List&lt;String&gt; getDefaultPathList() {
+<span class="nc" id="L302">            return defaultPathList;</span>
+        }
+
+        public List&lt;String&gt; getPathList() {
+<span class="nc" id="L306">            return pathList;</span>
+        }
+
+        public void setPathList(List&lt;String&gt; newPathList) {
+<span class="nc" id="L310">            pathList = newPathList;</span>
+<span class="nc" id="L311">        }</span>
+
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

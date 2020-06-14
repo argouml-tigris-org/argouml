@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RelationshipActionFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.cmd</a> &gt; <span class="el_source">RelationshipActionFactory.java</span></div><h1>RelationshipActionFactory.java</h1><pre class="source lang-java linenums">/* $Id: $
+ *****************************************************************************
+ * Copyright (c) 2014 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *****************************************************************************/
+
+package org.argouml.ui.cmd;
+
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
+import org.argouml.kernel.ActionList;
+import org.argouml.model.Model;
+import org.argouml.ui.ContextActionFactory;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * A factory for creating context menu actions to place related nodes and edges of
+ * an existing FigNode.
+ *
+ * @author Bob Tarling
+ */
+<span class="nc" id="L39">public class RelationshipActionFactory implements ContextActionFactory {</span>
+
+    public List&lt;Action&gt; createContextPopupActions(final Object element) {
+        
+<span class="nc" id="L43">        List&lt;Action&gt; list = new ArrayList&lt;Action&gt;();</span>
+        
+<span class="nc" id="L45">        ArgoDiagram diagram = DiagramUtils.getActiveDiagram();</span>
+        
+<span class="nc" id="L47">        ActionList al1 = getAssociationFromActions(element, diagram);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">        if (!al1.isEmpty()) {</span>
+<span class="nc" id="L49">            list.add(al1);</span>
+        }
+<span class="nc" id="L51">        ActionList al2 = getAssociationToActions(element, diagram);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if (!al2.isEmpty()) {</span>
+<span class="nc" id="L53">            list.add(al2);</span>
+        }
+<span class="nc" id="L55">        ActionList al3 = getDependancyFromActions(element, diagram);</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (!al3.isEmpty()) {</span>
+<span class="nc" id="L57">            list.add(al3);</span>
+        }
+<span class="nc" id="L59">        ActionList al4 = getDependancyToActions(element, diagram);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (!al4.isEmpty()) {</span>
+<span class="nc" id="L61">            list.add(al4);</span>
+        }
+<span class="nc" id="L63">        ActionList al5 = getGeneralizationFromActions(element, diagram);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (!al5.isEmpty()) {</span>
+<span class="nc" id="L65">            list.add(al5);</span>
+        }
+<span class="nc" id="L67">        ActionList al6 = getGeneralizationToActions(element, diagram);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (!al6.isEmpty()) {</span>
+<span class="nc" id="L69">            list.add(al6);</span>
+        }
+        
+<span class="nc" id="L72">        return list;</span>
+    }
+    
+    private ActionList getAssociationFromActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L76">        ActionList al= new ActionList(&quot;Add Associations from &quot;);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (Model.getFacade().isAClass(element)) {</span>
+<span class="nc" id="L78">            Collection associationEnds = Model.getFacade().getAssociationEnds(element);</span>
+            
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            for (Object associationEnd : associationEnds) {</span>
+<span class="nc" id="L81">                Object association = Model.getFacade().getAssociation(associationEnd);</span>
+                
+                // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (diagram.presentationFor(association) == null) {</span>
+<span class="nc" id="L85">                    Collection connections = Model.getFacade().getConnections(association);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                    if (connections.size() == 2) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                        for (Object connection : connections) {</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                            if (connection != associationEnd) {</span>
+                                final String direction;
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                                if (Model.getFacade().isNavigable(associationEnd)) {</span>
+<span class="nc" id="L91">                                    Object oppositeClass = Model.getFacade().getClassifier(connection);</span>
+<span class="nc" id="L92">                                    al.add(new AddAssociationAction(</span>
+                                            &quot;Add association from &quot; +
+<span class="nc" id="L94">                                            Model.getFacade().getName(oppositeClass),</span>
+                                            diagram, element, association, oppositeClass));
+                                }
+                            } 
+<span class="nc" id="L98">                        }</span>
+                    }
+                }
+<span class="nc" id="L101">            }</span>
+        }
+<span class="nc" id="L103">        return al;</span>
+    }
+    
+    private ActionList getAssociationToActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L107">        ActionList al= new ActionList(&quot;Add Associations to &quot;);</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (Model.getFacade().isAClass(element)) {</span>
+<span class="nc" id="L109">            Collection associationEnds = Model.getFacade().getAssociationEnds(element);</span>
+            
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            for (Object associationEnd : associationEnds) {</span>
+<span class="nc" id="L112">                Object association = Model.getFacade().getAssociation(associationEnd);</span>
+                
+                // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (diagram.presentationFor(association) == null) {</span>
+<span class="nc" id="L116">                    Collection connections = Model.getFacade().getConnections(association);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                    if (connections.size() == 2) {</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                        for (Object connection : connections) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                            if (connection != associationEnd) {</span>
+                                final String direction;
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                                if (!Model.getFacade().isNavigable(associationEnd)) {</span>
+<span class="nc" id="L122">                                    Object oppositeClass = Model.getFacade().getClassifier(connection);</span>
+<span class="nc" id="L123">                                    al.add(new AddAssociationAction(</span>
+                                            &quot;Add association to &quot; +
+<span class="nc" id="L125">                                            Model.getFacade().getName(oppositeClass),</span>
+                                            diagram, element, association, oppositeClass));
+                                }
+                            } 
+<span class="nc" id="L129">                        }</span>
+                    }
+                }
+<span class="nc" id="L132">            }</span>
+        }
+<span class="nc" id="L134">        return al;</span>
+    }
+    
+    private ActionList getAssociations(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L138">        ActionList al= new ActionList(&quot;Add Associations&quot;);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (Model.getFacade().isAClass(element)) {</span>
+<span class="nc" id="L140">            Collection associationEnds = Model.getFacade().getAssociationEnds(element);</span>
+            
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            for (Object associationEnd : associationEnds) {</span>
+<span class="nc" id="L143">                Object association = Model.getFacade().getAssociation(associationEnd);</span>
+                
+                // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                if (diagram.presentationFor(association) == null) {</span>
+<span class="nc" id="L147">                    Collection connections = Model.getFacade().getConnections(association);</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                    if (connections.size() == 2) {</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">                        for (Object connection : connections) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                            if (connection != associationEnd) {</span>
+                                final String direction;
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                                if (Model.getFacade().isNavigable(associationEnd)) {</span>
+<span class="nc" id="L153">                                    direction = &quot;from&quot;;</span>
+                                } else {
+<span class="nc" id="L155">                                    direction = &quot;to&quot;;</span>
+                                }
+<span class="nc" id="L157">                                Object oppositeClass = Model.getFacade().getClassifier(connection);</span>
+<span class="nc" id="L158">                                al.add(new AddAssociationAction(</span>
+                                        &quot;Add association &quot; + direction + &quot; &quot; +
+<span class="nc" id="L160">                                        Model.getFacade().getName(oppositeClass),</span>
+                                        diagram, element, association, oppositeClass));
+                            } 
+<span class="nc" id="L163">                        }</span>
+                    }
+                }
+<span class="nc" id="L166">            }</span>
+        }
+<span class="nc" id="L168">        return al;</span>
+    }
+    
+    private ActionList getDependancyToActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L172">        ActionList al= new ActionList(&quot;Add Dependencies to &quot;);</span>
+            
+<span class="nc" id="L174">        Collection dependenciesTo = Model.getFacade().getClientDependencies(element);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        for (Object dependency : dependenciesTo) {</span>
+            
+            // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if (diagram.presentationFor(dependency) == null) {</span>
+<span class="nc" id="L179">                Collection suppliers = Model.getFacade().getSuppliers(dependency);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                for (Object supplier : suppliers) {</span>
+<span class="nc" id="L181">                    al.add(new AddUsageAction(</span>
+<span class="nc" id="L182">                            &quot;Add dependency to &quot;+ Model.getFacade().getName(supplier),</span>
+                            diagram, element, dependency, supplier));
+<span class="nc" id="L184">                }</span>
+            }
+<span class="nc" id="L186">        }</span>
+<span class="nc" id="L187">        return al;</span>
+    }
+    
+    private ActionList getDependancyFromActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L191">        ActionList al= new ActionList(&quot;Add Dependencies from &quot;);</span>
+            
+<span class="nc" id="L193">        Collection dependenciesFrom = Model.getFacade().getSupplierDependencies(element);</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (Object dependency : dependenciesFrom) {</span>
+            
+            // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            if (diagram.presentationFor(dependency) == null) {</span>
+<span class="nc" id="L198">                Collection clients = Model.getFacade().getClients(dependency);</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                for (Object client : clients) {</span>
+<span class="nc" id="L200">                    al.add(new AddUsageAction(</span>
+<span class="nc" id="L201">                            &quot;Add dependency from &quot;+ Model.getFacade().getName(client),</span>
+                            diagram, element, dependency, client));
+<span class="nc" id="L203">                }</span>
+            }
+<span class="nc" id="L205">        }</span>
+<span class="nc" id="L206">        return al;</span>
+    }
+    
+    private ActionList getGeneralizationToActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L210">        ActionList al= new ActionList(&quot;Add Generalizations to &quot;);</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        if (Model.getFacade().isAGeneralizableElement(element)) {</span>
+<span class="nc" id="L212">            Collection generalizations = Model.getFacade().getGeneralizations(element);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">            for (Object generalization : generalizations) {</span>
+
+                // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                if (diagram.presentationFor(generalization) == null) {</span>
+<span class="nc" id="L217">                    Object general = Model.getFacade().getGeneral(generalization);</span>
+<span class="nc" id="L218">                    al.add(new AddGeneralAction(</span>
+<span class="nc" id="L219">                            &quot;Add Generalization to &quot;+ Model.getFacade().getName(general),</span>
+                            diagram, element, generalization, general));
+                }
+<span class="nc" id="L222">            }</span>
+        }
+<span class="nc" id="L224">        return al;</span>
+    }
+    
+    private ActionList getGeneralizationFromActions(final Object element, ArgoDiagram diagram) {
+<span class="nc" id="L228">        ActionList al= new ActionList(&quot;Add Generalizations from &quot;);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">        if (Model.getFacade().isAGeneralizableElement(element)) {</span>
+<span class="nc" id="L230">            Collection specializations = Model.getFacade().getSpecializations(element);</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            for (Object specialization : specializations) {</span>
+
+                // Only show actions for associations not already on diagram
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                if (diagram.presentationFor(specialization) == null) {</span>
+<span class="nc" id="L235">                    Object specific = Model.getFacade().getSpecific(specialization);</span>
+<span class="nc" id="L236">                    al.add(new AddSpecialAction(</span>
+<span class="nc" id="L237">                            &quot;Add Specialization from &quot;+ Model.getFacade().getName(specific),</span>
+                            diagram, element, specialization, specific));
+                }
+<span class="nc" id="L240">            }</span>
+        }
+<span class="nc" id="L242">        return al;</span>
+    }
+    
+    private class AddAssociationAction extends AbstractAction {
+        
+        final Object element;
+        final Object association;
+        final Object oppositeClass;
+        final ArgoDiagram diagram;
+
+        public AddAssociationAction(
+                final String name,
+                final ArgoDiagram diagram,
+                final Object element,
+                final Object association,
+<span class="nc" id="L257">                final Object oppositeClass) {</span>
+<span class="nc" id="L258">            super(name);</span>
+<span class="nc" id="L259">            this.element = element;</span>
+<span class="nc" id="L260">            this.association = association;</span>
+<span class="nc" id="L261">            this.diagram = diagram;</span>
+<span class="nc" id="L262">            this.oppositeClass = oppositeClass;</span>
+<span class="nc" id="L263">        }</span>
+        
+        public void actionPerformed(ActionEvent arg0) {
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (diagram.presentationFor(oppositeClass) == null) {</span>
+<span class="nc" id="L267">                Rectangle rect = diagram.presentationFor(element).getBounds();</span>
+<span class="nc" id="L268">                addToDiagram(</span>
+                        diagram, 
+                        oppositeClass, 
+                        new Rectangle(rect.x + rect.width + 100, rect.y, 0, 0));
+            }
+<span class="nc" id="L273">            addToDiagram(diagram, association, new Rectangle());</span>
+<span class="nc" id="L274">        }</span>
+        
+    }
+    
+    private class AddUsageAction extends AbstractAction {
+        
+        final Object element;
+        final Object usage;
+        final Object oppositeClass;
+        final ArgoDiagram diagram;
+
+        public AddUsageAction(
+                final String name,
+                final ArgoDiagram diagram,
+                final Object element,
+                final Object usage,
+<span class="nc" id="L290">                final Object oppositeClass) {</span>
+<span class="nc" id="L291">            super(name);</span>
+<span class="nc" id="L292">            this.element = element;</span>
+<span class="nc" id="L293">            this.usage = usage;</span>
+<span class="nc" id="L294">            this.diagram = diagram;</span>
+<span class="nc" id="L295">            this.oppositeClass = oppositeClass;</span>
+<span class="nc" id="L296">        }</span>
+        
+        public void actionPerformed(ActionEvent arg0) {
+<span class="nc bnc" id="L299" title="All 2 branches missed.">            if (diagram.presentationFor(oppositeClass) == null) {</span>
+<span class="nc" id="L300">                Rectangle rect = diagram.presentationFor(element).getBounds();</span>
+<span class="nc" id="L301">                addToDiagram(</span>
+                        diagram, 
+                        oppositeClass, 
+                        new Rectangle(rect.x + rect.width + 100, rect.y, 0, 0));
+            }
+<span class="nc" id="L306">            addToDiagram(diagram, usage, new Rectangle());</span>
+<span class="nc" id="L307">        }</span>
+        
+    }
+    
+    
+    private class AddGeneralAction extends AbstractAction {
+        
+        final Object element;
+        final Object generalization;
+        final Object generalClass;
+        final ArgoDiagram diagram;
+
+        public AddGeneralAction(
+                final String name,
+                final ArgoDiagram diagram,
+                final Object element,
+                final Object generalization,
+<span class="nc" id="L324">                final Object generalClass) {</span>
+<span class="nc" id="L325">            super(name);</span>
+<span class="nc" id="L326">            this.element = element;</span>
+<span class="nc" id="L327">            this.generalization = generalization;</span>
+<span class="nc" id="L328">            this.diagram = diagram;</span>
+<span class="nc" id="L329">            this.generalClass = generalClass;</span>
+<span class="nc" id="L330">        }</span>
+        
+        public void actionPerformed(ActionEvent arg0) {
+<span class="nc bnc" id="L333" title="All 2 branches missed.">            if (diagram.presentationFor(generalClass) == null) {</span>
+<span class="nc" id="L334">                Rectangle rect = diagram.presentationFor(element).getBounds();</span>
+<span class="nc" id="L335">                addToDiagram(</span>
+                        diagram, 
+                        generalClass, 
+                        new Rectangle(rect.x, rect.y - (rect.height + 100), 0, 0));
+            }
+<span class="nc" id="L340">            addToDiagram(diagram, generalization, new Rectangle());</span>
+<span class="nc" id="L341">        }</span>
+        
+    }
+    
+    private class AddSpecialAction extends AbstractAction {
+        
+        final Object element;
+        final Object generalization;
+        final Object specialClass;
+        final ArgoDiagram diagram;
+
+        public AddSpecialAction(
+                final String name,
+                final ArgoDiagram diagram,
+                final Object element,
+                final Object generalization,
+<span class="nc" id="L357">                final Object specialClass) {</span>
+<span class="nc" id="L358">            super(name);</span>
+<span class="nc" id="L359">            this.element = element;</span>
+<span class="nc" id="L360">            this.generalization = generalization;</span>
+<span class="nc" id="L361">            this.diagram = diagram;</span>
+<span class="nc" id="L362">            this.specialClass = specialClass;</span>
+<span class="nc" id="L363">        }</span>
+        
+        public void actionPerformed(ActionEvent arg0) {
+<span class="nc bnc" id="L366" title="All 2 branches missed.">            if (diagram.presentationFor(specialClass) == null) {</span>
+<span class="nc" id="L367">                Rectangle rect = diagram.presentationFor(element).getBounds();</span>
+<span class="nc" id="L368">                addToDiagram(</span>
+                        diagram, 
+                        specialClass, 
+                        new Rectangle(rect.x, rect.y + rect.height + 100, 0, 0));
+            }
+<span class="nc" id="L373">            addToDiagram(diagram, generalization, new Rectangle());</span>
+<span class="nc" id="L374">        }</span>
+    }
+    
+    
+    private boolean addToDiagram(ArgoDiagram diagram, Object element, Rectangle bounds) {
+        
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (diagram.presentationFor(element) == null) {</span>
+            
+<span class="nc" id="L382">            final DiagramElement de = diagram.createDiagramElement(element, bounds);</span>
+            
+<span class="nc" id="L384">            Fig fig = (Fig) de;</span>
+<span class="nc" id="L385">            diagram.add(fig);</span>
+<span class="nc" id="L386">            return true;</span>
+        }
+<span class="nc" id="L388">        return false;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

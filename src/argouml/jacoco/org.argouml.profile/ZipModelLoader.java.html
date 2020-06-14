@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZipModelLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile</a> &gt; <span class="el_source">ZipModelLoader.java</span></div><h1>ZipModelLoader.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+/**
+ * Loads model data from a Zip file.
+ *
+ * @author maurelio1234
+ */
+<span class="nc" id="L57">public class ZipModelLoader extends StreamModelLoader {</span>
+
+<span class="nc" id="L59">    private static final Logger LOG =</span>
+<span class="nc" id="L60">        Logger.getLogger(ZipModelLoader.class.getName());</span>
+
+
+    public Collection loadModel(ProfileReference reference)
+        throws ProfileException {
+<span class="nc" id="L65">        LOG.log(Level.INFO,</span>
+<span class="nc" id="L66">                &quot;Loading profile from ZIP {0}&quot;, reference.getPath());</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (!reference.getPath().endsWith(&quot;zip&quot;)) {</span>
+<span class="nc" id="L69">            throw new ProfileException(&quot;Profile could not be loaded!&quot;);</span>
+        }
+
+<span class="nc" id="L72">        InputStream is = null;</span>
+<span class="nc" id="L73">        File modelFile = new File(reference.getPath());</span>
+        // TODO: This is in the wrong place.  It's not profile specific.
+        // It needs to be moved to main XMI reading code. - tfm 20060326
+<span class="nc" id="L76">        String filename = modelFile.getName();</span>
+<span class="nc" id="L77">        String extension = filename.substring(filename.indexOf('.'),</span>
+<span class="nc" id="L78">                filename.lastIndexOf('.'));</span>
+<span class="nc" id="L79">        String path = modelFile.getParent();</span>
+        // Add the path of the model to the search path, so we can
+        // read dependent models
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (path != null) {</span>
+<span class="nc" id="L83">            System.setProperty(&quot;org.argouml.model.modules_search_path&quot;,</span>
+                    path);
+        }
+        try {
+<span class="nc" id="L87">            is = openZipStreamAt(modelFile.toURI().toURL(), extension);</span>
+<span class="nc" id="L88">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L89">            LOG.log(Level.SEVERE,</span>
+                    &quot;Exception while loading profile '&quot;
+<span class="nc" id="L91">                    + reference.getPath() + &quot;'&quot;,</span>
+                    e);
+<span class="nc" id="L93">            throw new ProfileException(e);</span>
+<span class="nc" id="L94">        } catch (IOException e) {</span>
+<span class="nc" id="L95">            LOG.log(Level.SEVERE,</span>
+                    &quot;Exception while loading profile '&quot;
+<span class="nc" id="L97">                    + reference.getPath() + &quot;'&quot;,</span>
+                    e);
+<span class="nc" id="L99">            throw new ProfileException(e);</span>
+<span class="nc" id="L100">        }</span>
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (is == null) {</span>
+<span class="nc" id="L103">            throw new ProfileException(&quot;Profile could not be loaded!&quot;);</span>
+        }
+
+<span class="nc" id="L106">        return super.loadModel(is, reference.getPublicReference());</span>
+    }
+
+    /**
+     * Open a ZipInputStream to the first file found with a given extension.
+     *
+     * TODO: Remove since this is a duplicate of ZipFilePersister method
+     * when we have refactored the Persister subsystem.
+     *
+     * @param url
+     *            The URL of the zip file.
+     * @param ext
+     *            The required extension.
+     * @return the zip stream positioned at the required location.
+     * @throws IOException
+     *             if there is a problem opening the file.
+     */
+    private ZipInputStream openZipStreamAt(URL url, String ext)
+        throws IOException {
+<span class="nc" id="L125">        ZipInputStream zis = new ZipInputStream(url.openStream());</span>
+<span class="nc" id="L126">        ZipEntry entry = zis.getNextEntry();</span>
+<span class="nc bnc" id="L127" title="All 4 branches missed.">        while (entry != null &amp;&amp; !entry.getName().endsWith(ext)) {</span>
+<span class="nc" id="L128">            entry = zis.getNextEntry();</span>
+        }
+<span class="nc" id="L130">        return zis;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

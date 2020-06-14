@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigStubState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigStubState.java</span></div><h1>FigStubState.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.Facade;
+import org.argouml.model.Model;
+import org.argouml.model.StateMachinesHelper;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Class to display graphics for a UML StubState in a diagram.
+ *
+ * @author pepargouml@yahoo.es
+ */
+
+public class FigStubState extends FigStateVertex {
+
+<span class="fc" id="L68">    private static final Logger LOG =</span>
+<span class="fc" id="L69">        Logger.getLogger(FigStubState.class.getName());</span>
+
+    private static final int X = 0;
+    private static final int Y = 0;
+    private static final int WIDTH = 45;
+    private static final int HEIGHT = 20;
+
+    private FigText referenceFig;
+    private FigLine stubline;
+
+    private Facade facade;
+    private StateMachinesHelper stateMHelper;
+
+
+    /**
+     * Construct a new FigStubState.
+     *
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigStubState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+<span class="fc" id="L92">        super(owner, bounds, settings);</span>
+<span class="fc" id="L93">        initFigs();</span>
+<span class="fc" id="L94">    }</span>
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="fc" id="L98">        FigRect fr = new FigRect(X, Y, WIDTH, HEIGHT);</span>
+<span class="fc" id="L99">        fr.setLineWidth(0);</span>
+<span class="fc" id="L100">        fr.setFilled(false);</span>
+<span class="fc" id="L101">        return fr;</span>
+    }
+
+    private void initFigs() {
+<span class="fc" id="L105">        facade = Model.getFacade();</span>
+<span class="fc" id="L106">        stateMHelper = Model.getStateMachinesHelper();</span>
+
+<span class="fc" id="L108">        stubline = new FigLine(X,</span>
+                Y,
+                WIDTH,
+                Y,
+                TEXT_COLOR);
+
+<span class="fc" id="L114">        referenceFig = new FigText(0, 0, WIDTH, HEIGHT, true);</span>
+<span class="fc" id="L115">        referenceFig.setFont(getSettings().getFontPlain());</span>
+<span class="fc" id="L116">        referenceFig.setTextColor(TEXT_COLOR);</span>
+<span class="fc" id="L117">        referenceFig.setReturnAction(FigText.END_EDITING);</span>
+<span class="fc" id="L118">        referenceFig.setTabAction(FigText.END_EDITING);</span>
+<span class="fc" id="L119">        referenceFig.setJustification(FigText.JUSTIFY_CENTER);</span>
+<span class="fc" id="L120">        referenceFig.setLineWidth(0);</span>
+<span class="fc" id="L121">        referenceFig.setBounds(X, Y,</span>
+<span class="fc" id="L122">                WIDTH, referenceFig.getBounds().height);</span>
+<span class="fc" id="L123">        referenceFig.setFilled(false);</span>
+<span class="fc" id="L124">        referenceFig.setEditable(false);</span>
+
+
+<span class="fc" id="L127">        addFig(getBigPort());</span>
+<span class="fc" id="L128">        addFig(referenceFig);</span>
+<span class="fc" id="L129">        addFig(stubline);</span>
+
+<span class="fc" id="L131">        setShadowSize(0);</span>
+<span class="fc" id="L132">        setBlinkPorts(false); //make port invisible unless mouse enters</span>
+<span class="fc" id="L133">    }</span>
+
+    /*
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() {
+<span class="nc" id="L140">        FigStubState figClone = (FigStubState) super.clone();</span>
+<span class="nc" id="L141">        Iterator it = figClone.getFigs().iterator();</span>
+<span class="nc" id="L142">        figClone.setBigPort((FigRect) it.next());</span>
+<span class="nc" id="L143">        figClone.referenceFig = (FigText) it.next();</span>
+<span class="nc" id="L144">        figClone.stubline = (FigLine) it.next();</span>
+<span class="nc" id="L145">        return figClone;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
+
+    /**
+     * Synch states are fixed size.
+     * @return false
+     */
+    @Override
+    public boolean isResizable() {
+<span class="nc" id="L157">        return false;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L165">        return new SelectionMoveClarifiers(this);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    @Override
+    public void setLineColor(Color col) {
+<span class="fc" id="L173">        stubline.setLineColor(col);</span>
+<span class="fc" id="L174">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    @Override
+    public Color getLineColor() {
+<span class="nc" id="L181">        return stubline.getLineColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    @Override
+    public void setFillColor(Color col) {
+<span class="fc" id="L189">        referenceFig.setFillColor(col);</span>
+<span class="fc" id="L190">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    @Override
+    public Color getFillColor() {
+<span class="nc" id="L197">        return referenceFig.getFillColor();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    @Override
+    public void setFilled(boolean f) {
+<span class="fc" id="L205">        referenceFig.setFilled(f);</span>
+<span class="fc" id="L206">    }</span>
+
+    @Override
+    public boolean isFilled() {
+<span class="nc" id="L210">        return referenceFig.isFilled();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    @Override
+    public void setLineWidth(int w) {
+<span class="fc" id="L218">        stubline.setLineWidth(w);</span>
+<span class="fc" id="L219">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+<span class="nc" id="L226">        return stubline.getLineWidth();</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    @Override
+    protected void setStandardBounds(int theX, int theY, int theW, int theH) {
+<span class="fc" id="L234">        Rectangle oldBounds = getBounds();</span>
+<span class="fc" id="L235">        theW = 60;</span>
+
+<span class="fc" id="L237">        referenceFig.setBounds(theX, theY, theW,</span>
+<span class="fc" id="L238">                referenceFig.getBounds().height);</span>
+<span class="fc" id="L239">        stubline.setShape(theX, theY,</span>
+                theX + theW, theY);
+
+<span class="fc" id="L242">        getBigPort().setBounds(theX, theY, theW, theH);</span>
+
+<span class="fc" id="L244">        calcBounds(); //_x = x; _y = y; _w = w; _h = h;</span>
+<span class="fc" id="L245">        updateEdges();</span>
+<span class="fc" id="L246">        firePropChange(&quot;bounds&quot;, oldBounds, getBounds());</span>
+<span class="fc" id="L247">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event processing
+
+    /*
+     * Update the text labels.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+<span class="nc" id="L259">        super.modelChanged(mee);</span>
+        // TODO: Rather than specifically ignore some item maybe it would be better
+        // to specifically state what items are of interest. Otherwise we may still
+        // be acting on other events we don't need
+<span class="nc bnc" id="L263" title="All 2 branches missed.">        if (!Model.getFacade().isATransition(mee.getNewValue())</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                &amp;&amp; getOwner() != null) {</span>
+<span class="nc" id="L265">            Object container = facade.getContainer(getOwner());</span>
+
+            //The event source is the owner stub state
+<span class="nc bnc" id="L268" title="All 2 branches missed.">            if ((mee.getSource().equals(getOwner()))) {</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">                if (mee.getPropertyName().equals(&quot;referenceState&quot;)) {</span>
+<span class="nc" id="L270">                    updateReferenceText();</span>
+                    final Object oldRef;
+<span class="nc bnc" id="L272" title="All 4 branches missed.">                    if (container != null &amp;&amp; facade.isASubmachineState(container)</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">                            &amp;&amp; facade.getSubmachine(container) != null) {</span>
+                        final Object top;
+<span class="nc" id="L275">                        top = facade.getTop(facade.getSubmachine(container));</span>
+<span class="nc" id="L276">                        oldRef = stateMHelper.getStatebyName(</span>
+<span class="nc" id="L277">                                (String) mee.getOldValue(), top);</span>
+<span class="nc" id="L278">                    } else {</span>
+<span class="nc" id="L279">                        oldRef = null;</span>
+                    }
+<span class="nc" id="L281">                    updateListeners(oldRef, getOwner());</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">                } else if ((mee.getPropertyName().equals(&quot;container&quot;)</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                        &amp;&amp; facade.isASubmachineState(container))) {</span>
+<span class="nc" id="L284">                    removeListeners();</span>
+<span class="nc" id="L285">                    Object o = mee.getOldValue();</span>
+<span class="nc bnc" id="L286" title="All 4 branches missed.">                    if (o != null &amp;&amp; facade.isASubmachineState(o)) {</span>
+<span class="nc" id="L287">                        removeElementListener(o);</span>
+                    }
+<span class="nc" id="L289">                    stateMHelper.setReferenceState(getOwner(), null);</span>
+<span class="nc" id="L290">                    updateListeners(getOwner(), getOwner());</span>
+<span class="nc" id="L291">                    updateReferenceText();</span>
+<span class="nc" id="L292">                }</span>
+            } else {
+                /*The event source is the submachine state*/
+<span class="nc bnc" id="L295" title="All 2 branches missed.">                if (container != null</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">                        &amp;&amp; mee.getSource().equals(container)</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                        &amp;&amp; facade.isASubmachineState(container)</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                        &amp;&amp; facade.getSubmachine(container) != null) {</span>
+                    /* The submachine has got a new name*/
+                    // This indicates a change in association, not name - tfm
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                    if (mee.getPropertyName().equals(&quot;submachine&quot;)) {</span>
+                        final Object oldRef;
+<span class="nc bnc" id="L303" title="All 2 branches missed.">                        if (mee.getOldValue() != null) {</span>
+                            final Object top;
+<span class="nc" id="L305">                            top = facade.getTop(mee.getOldValue());</span>
+<span class="nc" id="L306">                            oldRef = stateMHelper.getStatebyName(facade</span>
+<span class="nc" id="L307">                                    .getReferenceState(getOwner()), top);</span>
+<span class="nc" id="L308">                        } else {</span>
+<span class="nc" id="L309">                            oldRef = null;</span>
+                        }
+<span class="nc" id="L311">                        stateMHelper.setReferenceState(getOwner(), null);</span>
+<span class="nc" id="L312">                        updateListeners(oldRef, getOwner());</span>
+<span class="nc" id="L313">                        updateReferenceText();</span>
+<span class="nc" id="L314">                    }</span>
+
+                } else {
+                    // The event source is the stub state's referenced state
+                    // or one of the referenced state's path.
+                    final Object top;
+<span class="nc bnc" id="L320" title="All 2 branches missed.">                    if (facade.getSubmachine(container) != null) {</span>
+<span class="nc" id="L321">                        top = facade.getTop(facade.getSubmachine(container));</span>
+                    } else {
+<span class="nc" id="L323">                        top = null;</span>
+                    }
+<span class="nc" id="L325">                    String path = facade.getReferenceState(getOwner());</span>
+<span class="nc" id="L326">                    Object refObject = stateMHelper.getStatebyName(path, top);</span>
+                    String ref;
+<span class="nc bnc" id="L328" title="All 2 branches missed.">                    if (refObject == null) {</span>
+                        // The source was the referenced state that has got
+                        // a new name.
+<span class="nc" id="L331">                        ref = stateMHelper.getPath(mee.getSource());</span>
+                    } else {
+                        //The source was one of the referenced state's path which
+                        // has got a new name.
+<span class="nc" id="L335">                        ref = stateMHelper.getPath(refObject);</span>
+                    }
+                    // The Referenced State or one of his path's states has got
+                    // a new name
+<span class="nc" id="L339">                    stateMHelper.setReferenceState(getOwner(), ref);</span>
+<span class="nc" id="L340">                    updateReferenceText();</span>
+                }
+            }
+        }
+<span class="nc" id="L344">    }</span>
+
+    /**
+     * Rerender the whole figure.
+     * Call superclass then add reference text
+     */
+    @Override
+    public void renderingChanged() {
+<span class="nc" id="L352">        super.renderingChanged();</span>
+<span class="nc" id="L353">        updateReferenceText();</span>
+<span class="nc" id="L354">    }</span>
+
+    /**
+     * Update the reference text.
+     */
+    public void updateReferenceText() {
+<span class="nc" id="L360">        Object text = null;</span>
+        try {
+<span class="nc" id="L362">            text = facade.getReferenceState(getOwner());</span>
+<span class="nc" id="L363">        } catch (Exception e) {</span>
+<span class="nc" id="L364">            LOG.log(Level.SEVERE, &quot;Exception caught and ignored!!&quot;, e);</span>
+<span class="nc" id="L365">        }</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">        if (text != null) {</span>
+<span class="nc" id="L367">            referenceFig.setText((String) text);</span>
+        } else {
+<span class="nc" id="L369">            referenceFig.setText(&quot;&quot;);</span>
+        }
+<span class="nc" id="L371">        calcBounds();</span>
+<span class="nc" id="L372">        setBounds(getBounds());</span>
+<span class="nc" id="L373">        damage();</span>
+<span class="nc" id="L374">    }</span>
+
+    /**
+     * @param newOwner
+     */
+    private void addListeners(Object newOwner) {
+        Object container;
+        Object top;
+        Object reference;
+<span class="nc" id="L383">        container = facade.getContainer(newOwner);</span>
+        //The new submachine container is added as listener
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (container != null</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                &amp;&amp; facade.isASubmachineState(container)) {</span>
+<span class="nc" id="L387">            addElementListener(container);</span>
+        }
+
+        //All states in the new reference state's path are added
+        // as listeners
+<span class="nc bnc" id="L392" title="All 2 branches missed.">        if (container != null</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">                &amp;&amp; facade.isASubmachineState(container)</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">                &amp;&amp; facade.getSubmachine(container) != null) {</span>
+<span class="nc" id="L395">            top = facade.getTop(facade.getSubmachine(container));</span>
+<span class="nc" id="L396">            reference = stateMHelper.getStatebyName(facade</span>
+<span class="nc" id="L397">                    .getReferenceState(newOwner), top);</span>
+<span class="nc" id="L398">            String[] properties = {&quot;name&quot;, &quot;container&quot;};</span>
+<span class="nc" id="L399">            container = reference;</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">            while (container != null</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">                    &amp;&amp; !container.equals(top)) {</span>
+<span class="nc" id="L402">                addElementListener(container);</span>
+<span class="nc" id="L403">                container = facade.getContainer(container);</span>
+            }
+        }
+<span class="nc" id="L406">    }</span>
+
+    /**
+     * Remove all the existing listeners
+     */
+    private void removeListeners() {
+        Object container;
+        Object top;
+        Object reference;
+<span class="nc" id="L415">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">        if (owner == null) {</span>
+<span class="nc" id="L417">            return;</span>
+        }
+<span class="nc" id="L419">        container = facade.getContainer(owner);</span>
+        //The old submachine container is deleted as listener
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (container != null</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                &amp;&amp; facade.isASubmachineState(container)) {</span>
+<span class="nc" id="L423">            removeElementListener(container);</span>
+        }
+        //All states in the old reference state's path are deleted
+        // as listeners
+<span class="nc bnc" id="L427" title="All 2 branches missed.">        if (container != null</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">                &amp;&amp; facade.isASubmachineState(container)</span>
+<span class="nc bnc" id="L429" title="All 2 branches missed.">                &amp;&amp; facade.getSubmachine(container) != null) {</span>
+
+<span class="nc" id="L431">            top = facade.getTop(facade.getSubmachine(container));</span>
+<span class="nc" id="L432">            reference = stateMHelper.getStatebyName(facade</span>
+<span class="nc" id="L433">                    .getReferenceState(owner), top);</span>
+<span class="nc bnc" id="L434" title="All 2 branches missed.">            if (reference != null) {</span>
+<span class="nc" id="L435">                removeElementListener(reference);</span>
+<span class="nc" id="L436">                container = facade.getContainer(reference);</span>
+<span class="nc bnc" id="L437" title="All 4 branches missed.">                while (container != null &amp;&amp; !facade.isTop(container)) {</span>
+<span class="nc" id="L438">                    removeElementListener(container);</span>
+<span class="nc" id="L439">                    container = facade.getContainer(container);</span>
+                }
+            }
+        }
+<span class="nc" id="L443">    }</span>
+
+    /**
+     * @param newOwner the new owner UML object
+     * @param oldV the old owner UML object
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #updateListeners(Object, Object)} with the argument
+     *             order swapper. There are no internal users of this method, so
+     *             the only potential users are people who've subclassed this
+     *             Fig.
+     */
+    protected void updateListenersX(Object newOwner, Object oldV) {
+        // Just swap order of arguments to get to new form
+<span class="nc" id="L456">        updateListeners(oldV, newOwner);</span>
+<span class="nc" id="L457">    }</span>
+
+    @Override
+    protected void updateListeners(Object oldV, Object newOwner) {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (oldV != null) {</span>
+<span class="nc bnc" id="L462" title="All 2 branches missed.">            if (oldV != newOwner) {</span>
+<span class="nc" id="L463">                removeElementListener(oldV);</span>
+            }
+<span class="nc" id="L465">            Object container = facade.getContainer(oldV);</span>
+<span class="nc bnc" id="L466" title="All 4 branches missed.">            while (container != null &amp;&amp; !facade.isTop(container)) {</span>
+<span class="nc" id="L467">                removeElementListener(container);</span>
+<span class="nc" id="L468">                container = facade.getContainer(container);</span>
+            }
+        }
+<span class="nc" id="L471">        super.updateListeners(getOwner(), newOwner);</span>
+<span class="nc" id="L472">    }</span>
+
+    @Override
+    protected void updateFont() {
+<span class="nc" id="L476">        super.updateFont();</span>
+<span class="nc" id="L477">        Font f = getSettings().getFont(Font.PLAIN);</span>
+<span class="nc" id="L478">        referenceFig.setFont(f);</span>
+<span class="nc" id="L479">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

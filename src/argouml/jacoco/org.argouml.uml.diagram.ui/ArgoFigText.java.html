@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoFigText.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ArgoFigText.java</span></div><h1>ArgoFigText.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+
+import javax.management.ListenerNotFoundException;
+import javax.management.MBeanNotificationInfo;
+import javax.management.Notification;
+import javax.management.NotificationBroadcasterSupport;
+import javax.management.NotificationEmitter;
+import javax.management.NotificationFilter;
+import javax.management.NotificationListener;
+
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Primitive Fig for text.
+ *
+ * @author Michiel
+ */
+public class ArgoFigText extends FigText 
+    implements NotificationEmitter, ArgoFig {
+
+<span class="fc" id="L66">    private NotificationBroadcasterSupport notifier = </span>
+        new NotificationBroadcasterSupport();
+
+    private DiagramSettings settings;
+    
+    /**
+     * Construct a text fig owned by the given UML element. &lt;p&gt;
+     * 
+     * Even if there is no owner, then you still have to use this constructor;
+     * setting the owner parameter to null is acceptable.
+     * 
+     * @param owner owning model element or null
+     * @param bounds rectangle describing bounds of figure
+     * @param renderSettings render settings
+     * @param expandOnly true if Fig should never shrink
+     */
+    public ArgoFigText(Object owner, Rectangle bounds,
+            DiagramSettings renderSettings, boolean expandOnly) {        
+<span class="fc" id="L84">        super(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);</span>
+        //setFontFamily(&quot;dialog&quot;); /* TODO: Is this needed?*/
+
+        // TODO: We don't currently have any settings that can change on a
+        // per-fig basis, so we can just use the project/diagram defaults
+//        settings = new DiagramSettings(renderSettings);
+<span class="fc" id="L90">        settings = renderSettings;</span>
+<span class="fc" id="L91">        super.setFontFamily(settings.getFontName());</span>
+<span class="fc" id="L92">        super.setFontSize(settings.getFontSize());</span>
+<span class="fc" id="L93">        super.setFilled(false);</span>
+<span class="fc" id="L94">        super.setFillColor(null);</span>
+<span class="fc" id="L95">        super.setTextFilled(false);</span>
+<span class="fc" id="L96">        super.setTextFillColor(null);</span>
+<span class="fc" id="L97">        super.setTextColor(TEXT_COLOR);</span>
+        /* This makes the text not touch the text-border line: */
+<span class="fc" id="L99">        super.setTopMargin(1);</span>
+<span class="fc" id="L100">        super.setBotMargin(1);</span>
+<span class="fc" id="L101">        super.setLeftMargin(1);</span>
+<span class="fc" id="L102">        super.setRightMargin(1);</span>
+        // Certain types of fixed text (e.g. a FigStereotype with a keyword)
+        // may not have an owner
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (owner != null) {</span>
+<span class="fc" id="L106">            super.setOwner(owner);</span>
+<span class="fc" id="L107">            Model.getPump().addModelEventListener(this, owner, &quot;remove&quot;);</span>
+        }
+<span class="fc" id="L109">    }</span>
+    
+    /*
+     * @see org.tigris.gef.presentation.Fig#deleteFromModel()
+     */
+    @Override
+    public void deleteFromModel() {
+<span class="fc" id="L116">        super.deleteFromModel();</span>
+<span class="fc" id="L117">        firePropChange(&quot;remove&quot;, null, null);</span>
+<span class="fc" id="L118">        notifier.sendNotification(new Notification(&quot;remove&quot;, this, 0));</span>
+<span class="fc" id="L119">    }</span>
+
+    /*
+     * @see javax.management.NotificationEmitter#removeNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)
+     */
+    public void removeNotificationListener(NotificationListener listener,
+        NotificationFilter filter, Object handback) 
+        throws ListenerNotFoundException {
+<span class="nc" id="L127">        notifier.removeNotificationListener(listener, filter, handback);</span>
+<span class="nc" id="L128">    }</span>
+
+    /*
+     * @see javax.management.NotificationBroadcaster#addNotificationListener(javax.management.NotificationListener, javax.management.NotificationFilter, java.lang.Object)
+     */
+    public void addNotificationListener(NotificationListener listener, 
+        NotificationFilter filter, Object handback) 
+        throws IllegalArgumentException {
+<span class="nc" id="L136">        notifier.addNotificationListener(listener, filter, handback);</span>
+<span class="nc" id="L137">    }</span>
+
+    /*
+     * @see javax.management.NotificationBroadcaster#getNotificationInfo()
+     */
+    public MBeanNotificationInfo[] getNotificationInfo() {
+<span class="nc" id="L143">        return notifier.getNotificationInfo();</span>
+    }
+
+    /*
+     * @see javax.management.NotificationBroadcaster#removeNotificationListener(javax.management.NotificationListener)
+     */
+    public void removeNotificationListener(NotificationListener listener) 
+        throws ListenerNotFoundException {
+<span class="nc" id="L151">        notifier.removeNotificationListener(listener);</span>
+<span class="nc" id="L152">    }</span>
+    
+    /**
+     * This optional method is not implemented.  It will throw an
+     * {@link UnsupportedOperationException} if used.  Figs are 
+     * added to a GraphModel which is, in turn, owned by a project.
+     *
+     * @param project the project
+     * @deprecated
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setProject(Project project) {
+<span class="nc" id="L165">        throw new UnsupportedOperationException();</span>
+    }
+    
+    /**
+     * @return the owning project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public Project getProject() {
+<span class="nc" id="L177">        return ArgoFigUtil.getProject(this);</span>
+    }
+
+    public void renderingChanged() {
+<span class="fc" id="L181">        updateFont();</span>
+<span class="fc" id="L182">        setBounds(getBounds());</span>
+<span class="fc" id="L183">        damage();        </span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont().
+     */
+    protected void updateFont() {
+<span class="fc" id="L192">        setFont(getSettings().getFont(getFigFontStyle()));</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getFigFontStyle() {
+<span class="fc" id="L204">        return Font.PLAIN;</span>
+    }
+
+    /**
+     * Update listeners for a new owner. Obsolete since owner is not allow to
+     * change.
+     * 
+     * @param oldOwner the old owner
+     * @param newOwner the new owner
+     * @deprecated for 0.27.3 by tfmorris. The owner must be specified in the
+     *             constructor and never changed.
+     */
+    @Deprecated
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (oldOwner == newOwner) {</span>
+<span class="nc" id="L219">            return;</span>
+        }
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (oldOwner != null) {</span>
+<span class="nc" id="L222">            Model.getPump().removeModelEventListener(this, oldOwner);</span>
+        }
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (newOwner != null) {</span>
+<span class="nc" id="L225">            Model.getPump().addModelEventListener(this, newOwner, &quot;remove&quot;);</span>
+        }
+<span class="nc" id="L227">    }</span>
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+<span class="fc" id="L231">        super.propertyChange(pce);</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">        if (&quot;remove&quot;.equals(pce.getPropertyName()) </span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">                &amp;&amp; (pce.getSource() == getOwner())) {</span>
+<span class="fc" id="L234">            deleteFromModel();</span>
+        }
+<span class="fc" id="L236">    }</span>
+    
+
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">        if (settings == null) {</span>
+<span class="nc" id="L243">            Project p = getProject();</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            if (p != null) {</span>
+<span class="nc" id="L245">                return p.getProjectSettings().getDefaultDiagramSettings();</span>
+            }
+        }
+<span class="fc" id="L248">        return settings;</span>
+    }
+    
+    public void setSettings(DiagramSettings renderSettings) {
+<span class="nc" id="L252">        settings = renderSettings;</span>
+<span class="nc" id="L253">        renderingChanged();</span>
+<span class="nc" id="L254">    }</span>
+
+
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @throws UnsupportedOperationException
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setOwner(Object owner) {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (owner != getOwner()) {</span>
+<span class="nc" id="L271">            throw new UnsupportedOperationException(</span>
+                    &quot;Owner must be set in constructor and left unchanged&quot;);
+        }
+<span class="nc" id="L274">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

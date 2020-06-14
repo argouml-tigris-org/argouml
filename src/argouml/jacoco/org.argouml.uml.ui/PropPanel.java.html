@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">PropPanel.java</span></div><h1>PropPanel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Orientation;
+import org.tigris.toolbar.ToolBarFactory;
+
+/**
+ * This abstract class provides the basic layout and event dispatching support
+ * for all Property Panels.&lt;p&gt;
+ *
+ * The property panel is {@link org.argouml.uml.ui.LabelledLayout} layed out as
+ * a number (specified in the constructor) of equally sized panels that split
+ * the available space. Each panel has a column of &quot;captions&quot; and matching
+ * column of &quot;fields&quot; which are laid out independently from the other
+ * panels.&lt;p&gt;
+ *
+ * The Properties panels for UML Model Elements are structured in an inheritance
+ * hierarchy that matches the UML metamodel.
+ */
+public abstract class PropPanel extends AbstractArgoJPanel implements
+        UMLUserInterfaceContainer, ComponentListener {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L104">    private static final Logger LOG =</span>
+<span class="fc" id="L105">        Logger.getLogger(PropPanel.class.getName());</span>
+
+    private Object target;
+
+    private Object modelElement;
+
+    /**
+     * List of event listeners to notify. This is computed one time and frozen
+     * the first time any target change method (e.g. setTarget, targetAdded) is
+     * called.
+     */
+    private EventListenerList listenerList;
+
+<span class="fc" id="L118">    private JPanel buttonPanel = new JPanel(new GridLayout());</span>
+
+    private JLabel titleLabel;
+
+    /**
+     * A list with &quot;actions&quot;.&lt;p&gt;
+     *
+     * Action in this respect are one of:&lt;ul&gt;
+     * &lt;li&gt; {@link Action}
+     * &lt;li&gt; {@link JButton}
+     * &lt;li&gt; {@link Object}[]
+     * &lt;/ul&gt;
+     */
+<span class="fc" id="L131">    private List actions = new ArrayList();</span>
+
+<span class="fc" id="L133">    private static Font stdFont =</span>
+<span class="fc" id="L134">        LookAndFeelMgr.getInstance().getStandardFont();</span>
+
+    /**
+     * Construct new PropPanel using LabelledLayout.
+     * &lt;p&gt;
+     * @param icon The icon to display for the panel
+     * @param label The label for the title of the panel (to be localized).
+     */
+    public PropPanel(String label, ImageIcon icon) {
+<span class="fc" id="L143">        super(Translator.localize(label));</span>
+
+<span class="fc" id="L145">        LabelledLayout layout = new LabelledLayout();</span>
+<span class="fc" id="L146">        layout.setHgap(5);</span>
+<span class="fc" id="L147">        setLayout(layout);</span>
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (icon != null) {</span>
+<span class="fc" id="L150">            setTitleLabel(new JLabel(Translator.localize(label), icon,</span>
+                    SwingConstants.LEFT));
+        } else {
+<span class="fc" id="L153">            setTitleLabel(new JLabel(Translator.localize(label)));</span>
+        }
+<span class="fc" id="L155">        titleLabel.setLabelFor(buttonPanel);</span>
+<span class="fc" id="L156">        add(titleLabel);</span>
+<span class="fc" id="L157">        add(buttonPanel);</span>
+
+<span class="fc" id="L159">        addComponentListener(this);</span>
+<span class="fc" id="L160">    }</span>
+
+
+    /*
+     * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
+     */
+    @Override
+    public void setOrientation(Orientation orientation) {
+        // TODO: Do we need to change the layout manager when
+        // changing orientation to match the behavior of the constructor?
+//        if (getOrientation() != orientation) {
+//            LabelledLayout layout = new LabelledLayout(orientation == Vertical
+//                    .getInstance());
+//            setLayout(layout);
+//        }
+<span class="fc" id="L175">        super.setOrientation(orientation);</span>
+<span class="fc" id="L176">    }</span>
+
+    /**
+     * Add a button to the toolbar of a property panel using the action to
+     * control the behavior of the action.
+     *
+     * @param action
+     *            the action which will be used in the toolbar button.
+     */
+    protected void addAction(Action action) {
+<span class="fc" id="L186">        actions.add(action);</span>
+<span class="fc" id="L187">    }</span>
+
+    /**
+     * Add a button to the toolbar of a property panel using the action to
+     * control the behavior of the action.
+     *
+     * @param action
+     *            the action which will be used in the toolbar button.
+     * @param tooltip
+     *            the tooltip to set, or null to skip setting of a new tooltip.
+     */
+    protected void addAction(Action action, String tooltip) {
+<span class="nc" id="L199">        JButton button = new TargettableButton(action);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (tooltip != null) {</span>
+<span class="nc" id="L201">            button.setToolTipText(tooltip);</span>
+        }
+<span class="nc" id="L203">        button.setText(&quot;&quot;);</span>
+<span class="nc" id="L204">        button.setFocusable(false);</span>
+<span class="nc" id="L205">        actions.add(button);</span>
+<span class="nc" id="L206">    }</span>
+
+    /**
+     * Add multiple buttons at once.
+     *
+     * @param actionArray the Actions.
+     */
+    protected void addAction(Object[] actionArray) {
+<span class="nc" id="L214">        actions.add(actionArray);</span>
+<span class="nc" id="L215">    }</span>
+
+    public void buildToolbar() {
+<span class="fc" id="L218">        LOG.log(Level.FINE, &quot;Building toolbar&quot;);</span>
+
+<span class="fc" id="L220">        ToolBarFactory factory = new ToolBarFactory(getActions());</span>
+<span class="fc" id="L221">        factory.setRollover(true);</span>
+<span class="fc" id="L222">        factory.setFloatable(false);</span>
+<span class="fc" id="L223">        JToolBar toolBar = factory.createToolBar();</span>
+<span class="fc" id="L224">        toolBar.setName(&quot;misc.toolbar.properties&quot;);</span>
+
+<span class="fc" id="L226">	buttonPanel.removeAll();</span>
+<span class="fc" id="L227">        buttonPanel.add(BorderLayout.WEST, toolBar);</span>
+        // Set the tooltip of the arrow to open combined tools:
+<span class="fc" id="L229">        buttonPanel.putClientProperty(&quot;ToolBar.toolTipSelectTool&quot;,</span>
+<span class="fc" id="L230">                Translator.localize(&quot;action.select&quot;));</span>
+<span class="fc" id="L231">    }</span>
+
+    /**
+     * Get the actions that will make up the toolbar on this panel.
+     * @return The list of actions to show for this panel.
+     */
+    protected List getActions() {
+<span class="fc" id="L238">        return actions;</span>
+    }
+
+    private static class TargettableButton extends JButton
+        implements TargettableModelView {
+
+        public TargettableButton(Action action) {
+<span class="nc" id="L245">            super(action);</span>
+<span class="nc" id="L246">        }</span>
+
+        public TargetListener getTargettableModel() {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">            if (getAction() instanceof TargetListener) {</span>
+<span class="nc" id="L250">                return (TargetListener) getAction();</span>
+            }
+<span class="nc" id="L252">            return null;</span>
+        }
+
+    }
+
+    /**
+     * Add a component with the specified label.&lt;p&gt;
+     *
+     * @param label
+     *            the label for the component
+     * @param component
+     *            the component
+     * @return the label added
+     */
+    public JLabel addField(String label, Component component) {
+<span class="fc" id="L267">        JLabel jlabel = createLabelFor(label, component);</span>
+<span class="fc" id="L268">        component.setFont(stdFont);</span>
+<span class="fc" id="L269">        add(jlabel);</span>
+<span class="fc" id="L270">        add(component);</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">        if (component instanceof UMLStereotypeList) {</span>
+<span class="nc" id="L272">            UMLModelElementListModel2 list =</span>
+<span class="nc" id="L273">                (UMLModelElementListModel2) ((UMLStereotypeList) component).getModel();</span>
+<span class="nc" id="L274">            ActionCreateContainedModelElement newAction =</span>
+                new ActionCreateContainedModelElement(
+<span class="nc" id="L276">                        list.getMetaType(),</span>
+<span class="nc" id="L277">                        list.getTarget(),</span>
+                        &quot;New...&quot;); // TODO: i18n
+        }
+<span class="fc" id="L280">        return jlabel;</span>
+    }
+
+    /**
+     * @param label The text of the label (the method cares about i18n)
+     * @param comp The component that this label is for
+     * @return a new JLabel
+     */
+    private JLabel createLabelFor(String label, Component comp) {
+<span class="fc" id="L289">        JLabel jlabel = new JLabel(Translator.localize(label));</span>
+<span class="fc" id="L290">        jlabel.setToolTipText(Translator.localize(label));</span>
+<span class="fc" id="L291">        jlabel.setFont(stdFont);</span>
+<span class="fc" id="L292">        jlabel.setLabelFor(comp);</span>
+<span class="fc" id="L293">        return jlabel;</span>
+    }
+
+    /**
+     * Add a component with the specified label positioned after another
+     * component.
+     *
+     * @param label
+     *            the label for the component
+     * @param component
+     *            the component
+     * @param afterComponent
+     *            the component before
+     * @return the newly added label
+     */
+    public JLabel addFieldAfter(String label, Component component,
+            Component afterComponent) {
+<span class="nc" id="L310">        int nComponent = getComponentCount();</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        for (int i = 0; i &lt; nComponent; ++i) {</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">            if (getComponent(i) == afterComponent) {</span>
+<span class="nc" id="L313">                JLabel jlabel = createLabelFor(label, component);</span>
+<span class="nc" id="L314">                component.setFont(stdFont);</span>
+<span class="nc" id="L315">                add(jlabel, ++i);</span>
+<span class="nc" id="L316">                add(component, ++i);</span>
+<span class="nc" id="L317">                return jlabel;</span>
+            }
+        }
+<span class="nc" id="L320">        throw new IllegalArgumentException(&quot;Component not found&quot;);</span>
+    }
+
+    /**
+     * Add a component with the specified label positioned before another
+     * component.&lt;p&gt;
+     *
+     * @param label
+     *            the label for the component
+     * @param component
+     *            the to be added component
+     * @param beforeComponent
+     *            the component before its label we add
+     * @return the newly added component
+     */
+    public JLabel addFieldBefore(String label, Component component,
+            Component beforeComponent) {
+<span class="nc" id="L337">        int nComponent = getComponentCount();</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">        for (int i = 0; i &lt; nComponent; ++i) {</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">            if (getComponent(i) == beforeComponent) {</span>
+<span class="nc" id="L340">                JLabel jlabel = createLabelFor(label, component);</span>
+<span class="nc" id="L341">                component.setFont(stdFont);</span>
+<span class="nc" id="L342">                add(jlabel, i - 1);</span>
+<span class="nc" id="L343">                add(component, i++);</span>
+<span class="nc" id="L344">                return jlabel;</span>
+            }
+        }
+<span class="nc" id="L347">        throw new IllegalArgumentException(&quot;Component not found&quot;);</span>
+    }
+
+    /**
+     * Add a separator.
+     */
+    protected final void addSeparator() {
+<span class="nc" id="L354">        add(LabelledLayout.getSeparator());</span>
+<span class="nc" id="L355">    }</span>
+
+    /**
+     * Set the target to be associated with a particular property panel.&lt;p&gt;
+     *
+     * This involves resetting the third party listeners.
+     *
+     * @param t
+     *            The object to be set as a target.
+     */
+    public void setTarget(Object t) {
+
+<span class="fc" id="L367">        LOG.log(Level.FINE, &quot;setTarget called with {0} as parameter (not target!)&quot;, t);</span>
+
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;</span>
+
+        // If the target has changed notify the third party listener if it
+        // exists and dispatch a new element event listener to
+        // ourself. Otherwise dispatch a target reasserted to ourself.
+<span class="fc" id="L374">        Runnable dispatch = null;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (t != target) {</span>
+
+            // Set up the target and its model element variant.
+
+<span class="fc" id="L379">            target = t;</span>
+<span class="fc" id="L380">            modelElement = null;</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">            if (listenerList == null) {</span>
+<span class="fc" id="L382">                listenerList = collectTargetListeners(this);</span>
+            }
+
+<span class="fc bfc" id="L385" title="All 2 branches covered.">            if (Model.getFacade().isAUMLElement(target)) {</span>
+<span class="fc" id="L386">                modelElement = target;</span>
+            }
+
+            // This will add a new ModelElement event listener
+            // after update is complete
+
+<span class="fc" id="L392">            dispatch = new UMLChangeDispatch(this,</span>
+                    UMLChangeDispatch.TARGET_CHANGED_ADD);
+
+<span class="fc" id="L395">            buildToolbar();</span>
+        } else {
+<span class="fc" id="L397">            dispatch = new UMLChangeDispatch(this,</span>
+                    UMLChangeDispatch.TARGET_REASSERTED);
+
+        }
+<span class="fc" id="L401">        SwingUtilities.invokeLater(dispatch);</span>
+
+        // update the titleLabel
+        // MVW: This overrules the icon set initiallly... Why do we need this?
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">        if (titleLabel != null) {</span>
+<span class="fc" id="L406">            Icon icon = null;</span>
+<span class="pc bpc" id="L407" title="1 of 2 branches missed.">            if (t != null) {</span>
+<span class="fc" id="L408">                icon = ResourceLoaderWrapper.getInstance().lookupIcon(t);</span>
+            }
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">            if (icon != null) {</span>
+<span class="fc" id="L411">                titleLabel.setIcon(icon);</span>
+            }
+        }
+<span class="fc" id="L414">    }</span>
+
+    /**
+     * Builds a eventlistenerlist of all targetlisteners that are part of this
+     * container and its children. Components do not need to register
+     * themselves. They are registered implicitly if they implement the
+     * TargetListener interface.
+     *
+     * @param container
+     *            the container to search for targetlisteners
+     * @return an EventListenerList with all TargetListeners on this container
+     *         and its children.
+     */
+    private EventListenerList collectTargetListeners(Container container) {
+<span class="fc" id="L428">        Component[] components = container.getComponents();</span>
+<span class="fc" id="L429">        EventListenerList list = new EventListenerList();</span>
+<span class="fc bfc" id="L430" title="All 2 branches covered.">        for (int i = 0; i &lt; components.length; i++) {</span>
+<span class="fc bfc" id="L431" title="All 2 branches covered.">            if (components[i] instanceof TargetListener) {</span>
+<span class="fc" id="L432">                list.add(TargetListener.class, (TargetListener) components[i]);</span>
+            }
+<span class="fc bfc" id="L434" title="All 2 branches covered.">            if (components[i] instanceof TargettableModelView) {</span>
+<span class="fc" id="L435">                list.add(TargetListener.class,</span>
+                        ((TargettableModelView) components[i])
+<span class="fc" id="L437">                                .getTargettableModel());</span>
+            }
+<span class="pc bpc" id="L439" title="1 of 2 branches missed.">            if (components[i] instanceof Container) {</span>
+<span class="fc" id="L440">                EventListenerList list2 = collectTargetListeners(</span>
+                                                (Container) components[i]);
+<span class="fc" id="L442">                Object[] objects = list2.getListenerList();</span>
+<span class="fc bfc" id="L443" title="All 2 branches covered.">                for (int j = 1; j &lt; objects.length; j += 2) {</span>
+<span class="fc" id="L444">                    list.add(TargetListener.class, (TargetListener) objects[j]);</span>
+                }
+            }
+        }
+<span class="fc bfc" id="L448" title="All 2 branches covered.">        if (container instanceof PropPanel) {</span>
+            /* We presume that the container equals this PropPanel. */
+<span class="fc bfc" id="L450" title="All 2 branches covered.">            for (TargetListener action : collectTargetListenerActions()) {</span>
+<span class="fc" id="L451">                list.add(TargetListener.class, action);</span>
+<span class="fc" id="L452">            }</span>
+        }
+<span class="fc" id="L454">        return list;</span>
+    }
+
+    private Collection&lt;TargetListener&gt; collectTargetListenerActions() {
+<span class="fc" id="L458">        Collection&lt;TargetListener&gt; set = new HashSet&lt;TargetListener&gt;();</span>
+<span class="fc bfc" id="L459" title="All 2 branches covered.">        for (Object obj : actions) {</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">            if (obj instanceof TargetListener) {</span>
+<span class="fc" id="L461">                set.add((TargetListener) obj);</span>
+            }
+<span class="fc" id="L463">        }</span>
+<span class="fc" id="L464">        return set;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public final Object getTarget() {
+<span class="fc" id="L471">        return target;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L478">        SwingUtilities.invokeLater(new UMLChangeDispatch(this, 0));</span>
+<span class="nc" id="L479">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object t) {
+<span class="nc bnc" id="L485" title="All 2 branches missed.">        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;</span>
+<span class="nc" id="L486">        return Model.getFacade().isAUMLElement(t);</span>
+    }
+
+    /**
+     * This method can be overridden in derived Panels where the appropriate
+     * namespace for display may not be the same as the namespace of the target.
+     *
+     * @return the namespace
+     */
+    protected Object getDisplayNamespace() {
+<span class="nc" id="L496">        Object ns = null;</span>
+<span class="nc" id="L497">        Object theTarget = getTarget();</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(theTarget)) {</span>
+<span class="nc" id="L499">            ns = Model.getFacade().getNamespace(theTarget);</span>
+        }
+<span class="nc" id="L501">        return ns;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
+     */
+    public ProfileConfiguration getProfile() {
+<span class="nc" id="L508">        return ProjectManager.getManager().getCurrentProject()</span>
+<span class="nc" id="L509">                .getProfileConfiguration();</span>
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
+     */
+    public final Object getModelElement() {
+<span class="nc" id="L516">        return modelElement;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
+     */
+    public String formatElement(Object element) {
+<span class="nc" id="L523">        return getProfile().getFormatingStrategy().formatElement(element,</span>
+<span class="nc" id="L524">                getDisplayNamespace());</span>
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
+     */
+    public String formatNamespace(Object namespace) {
+<span class="nc" id="L531">        return getProfile().getFormatingStrategy().formatElement(namespace,</span>
+                null);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatCollection(java.util.Iterator)
+     */
+    public String formatCollection(Iterator iter) {
+<span class="nc" id="L539">        Object namespace = getDisplayNamespace();</span>
+<span class="nc" id="L540">        return getProfile().getFormatingStrategy().formatCollection(iter,</span>
+                namespace);
+    }
+
+
+    /**
+     * Get the delete action.
+     *
+     * @return the delete action
+     */
+    protected final Action getDeleteAction() {
+<span class="nc" id="L551">        return ActionDeleteModelElements.getTargetFollower();</span>
+    }
+
+    /**
+     * Check whether this element can be deleted. Currently it only checks
+     * whether we delete the main model. ArgoUML does not like that.
+     *
+     * @since 0.13.2
+     * @return whether this element can be deleted
+     */
+    public boolean isRemovableElement() {
+<span class="nc bnc" id="L562" title="All 2 branches missed.">        return ((getTarget() != null) &amp;&amp; (getTarget() != (ProjectManager</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">                .getManager().getCurrentProject().getModel())));</span>
+    }
+
+    /*
+     * @see TargetListener#targetAdded(TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc bnc" id="L570" title="All 2 branches missed.">        if (listenerList == null) {</span>
+<span class="nc" id="L571">            listenerList = collectTargetListeners(this);</span>
+        }
+<span class="nc" id="L573">        setTarget(e.getNewTarget());</span>
+<span class="nc bnc" id="L574" title="All 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L575">            fireTargetAdded(e);</span>
+        }
+<span class="nc" id="L577">    }</span>
+
+    /*
+     * @see TargetListener#targetRemoved(TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L583">        setTarget(e.getNewTarget());</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L585">            fireTargetRemoved(e);</span>
+        }
+<span class="nc" id="L587">    }</span>
+
+    /*
+     * @see TargetListener#targetSet(TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="fc" id="L593">        setTarget(e.getNewTarget());</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">        if (isVisible()) {</span>
+<span class="fc" id="L595">            fireTargetSet(e);</span>
+        }
+<span class="fc" id="L597">    }</span>
+
+    private void fireTargetSet(TargetEvent targetEvent) {
+<span class="pc bpc" id="L600" title="1 of 2 branches missed.">        if (listenerList == null) {</span>
+<span class="nc" id="L601">            listenerList = collectTargetListeners(this);</span>
+        }
+        // Guaranteed to return a non-null array
+<span class="fc" id="L604">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="pc bpc" id="L606" title="1 of 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+<span class="fc" id="L607">                ((TargetListener) listeners[i + 1]).targetSet(targetEvent);</span>
+            }
+        }
+<span class="fc" id="L610">    }</span>
+
+    private void fireTargetAdded(TargetEvent targetEvent) {
+<span class="nc bnc" id="L613" title="All 2 branches missed.">        if (listenerList == null) {</span>
+<span class="nc" id="L614">            listenerList = collectTargetListeners(this);</span>
+        }
+        // Guaranteed to return a non-null array
+<span class="nc" id="L617">        Object[] listeners = listenerList.getListenerList();</span>
+
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+<span class="nc" id="L621">                ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);</span>
+            }
+        }
+<span class="nc" id="L624">    }</span>
+
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+<span class="nc bnc" id="L627" title="All 2 branches missed.">        if (listenerList == null) {</span>
+<span class="nc" id="L628">            listenerList = collectTargetListeners(this);</span>
+        }
+        // Guaranteed to return a non-null array
+<span class="nc" id="L631">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L633" title="All 2 branches missed.">            if (listeners[i] == TargetListener.class) {</span>
+<span class="nc" id="L634">                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);</span>
+            }
+        }
+<span class="nc" id="L637">    }</span>
+
+    /**
+     * @param theTitleLabel
+     *            the title of the panel shown at the top
+     */
+    protected void setTitleLabel(JLabel theTitleLabel) {
+<span class="fc" id="L644">        titleLabel = theTitleLabel;</span>
+<span class="fc" id="L645">        titleLabel.setFont(stdFont);</span>
+<span class="fc" id="L646">    }</span>
+
+    /**
+     * @return the title of the panel shown at the top
+     */
+    protected JLabel getTitleLabel() {
+<span class="fc" id="L652">        return titleLabel;</span>
+    }
+
+    protected final JPanel createBorderPanel(String title) {
+<span class="nc" id="L656">    	return new GroupPanel(Translator.localize(title));</span>
+    }
+
+    private class GroupPanel extends JPanel {
+
+<span class="nc" id="L661">        public GroupPanel(String title) {</span>
+<span class="nc" id="L662">            super(new GridLayout2());</span>
+<span class="nc" id="L663">            TitledBorder border = new TitledBorder(Translator.localize(title));</span>
+<span class="nc" id="L664">            border.setTitleFont(stdFont);</span>
+<span class="nc" id="L665">            setBorder(border);</span>
+<span class="nc" id="L666">        }</span>
+
+        public void setEnabled(boolean enabled) {
+<span class="nc" id="L669">            super.setEnabled(enabled);</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">            for (final Component component : getComponents()) {</span>
+<span class="nc" id="L671">                component.setEnabled(enabled);</span>
+            }
+<span class="nc" id="L673">        }</span>
+    }
+
+    /**
+     * If there are no buttons to show in the toolbar,
+     * then set the height to e.g. 18, so that the title
+     * is aligned right by the LabelledLayout.
+     *
+     * @param height the height
+     */
+    protected void setButtonPanelSize(int height) {
+        /* Set the minimum and preferred equal,
+         * so that the size is fixed for the labelledlayout.
+         */
+<span class="fc" id="L687">        buttonPanel.setMinimumSize(new Dimension(0, height));</span>
+<span class="fc" id="L688">        buttonPanel.setPreferredSize(new Dimension(0, height));</span>
+<span class="fc" id="L689">    }</span>
+
+    /**
+     * Look up an icon.
+     *
+     * @param name
+     *            the resource name.
+     * @return an ImageIcon corresponding to the given resource name
+     */
+    protected static ImageIcon lookupIcon(String name) {
+<span class="fc" id="L699">        return ResourceLoaderWrapper.lookupIconResource(name);</span>
+    }
+
+
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // TODO: do we want to fire targetRemoved here or is it enough to just
+        // stop updating the targets?
+<span class="fc" id="L709">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Refresh the target for all our children which weren't getting
+        // while not visible
+<span class="nc" id="L717">        fireTargetSet(new TargetEvent(</span>
+                this, TargetEvent.TARGET_SET, null, new Object[] {target}));
+<span class="nc" id="L719">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentMoved(java.awt.event.ComponentEvent)
+     */
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L726">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentResized(java.awt.event.ComponentEvent)
+     */
+    public void componentResized(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L733">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExplorerEventAdaptor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">ExplorerEventAdaptor.java</span></div><h1>ExplorerEventAdaptor.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.SwingUtilities;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProfileEvent;
+import org.argouml.application.events.ArgoProfileEventListener;
+import org.argouml.configuration.Configuration;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+
+/**
+ * All events going to the Explorer must pass through here first!&lt;p&gt;
+ *
+ * Most will come from the uml model via the EventAdapter interface.&lt;p&gt;
+ *
+ * TODO: In some cases (test cases) this object is created without setting
+ * the treeModel. I (Linus) will add tests for this now. It would be better
+ * if this is created only when the Explorer is created. &lt;p&gt;
+ *
+ * TODO: The ExplorerTreeNode also listens to some events
+ * (from Diagrams), so it does not follow the rule above.
+ *
+ * @since 0.15.2, Created on 16 September 2003, 23:13
+ * @author  alexb
+ */
+public final class ExplorerEventAdaptor
+    implements PropertyChangeListener {
+
+<span class="fc" id="L81">    private static final Logger LOG =</span>
+<span class="fc" id="L82">        Logger.getLogger(ExplorerEventAdaptor.class.getName());</span>
+
+    /**
+     * The singleton instance.
+     *
+     * TODO: Why is this a singleton? Wouldn't it be better to have exactly
+     * one for every Explorer?
+     */
+    private static ExplorerEventAdaptor instance;
+
+    /**
+     * The tree model to update.
+     */
+    private TreeModelUMLEventListener treeModel;
+
+    /**
+     * @return the instance (singleton)
+     */
+    public static ExplorerEventAdaptor getInstance() {
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (instance == null) {</span>
+<span class="fc" id="L102">            instance = new ExplorerEventAdaptor();</span>
+	}
+<span class="fc" id="L104">	return instance;</span>
+    }
+
+    /**
+     * Creates a new instance of ExplorerUMLEventAdaptor.
+     */
+<span class="fc" id="L110">    private ExplorerEventAdaptor() {</span>
+
+<span class="fc" id="L112">        Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);</span>
+<span class="fc" id="L113">        Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);</span>
+<span class="fc" id="L114">        ProjectManager.getManager().addPropertyChangeListener(this);</span>
+        // TODO: We really only care about events which affect things that
+        // are visible in the current perspective (view).  This could be
+        // tailored to cut down on event traffic. - tfm 20060410
+<span class="fc" id="L118">        Model.getPump().addClassModelEventListener(this,</span>
+<span class="fc" id="L119">                Model.getMetaTypes().getModelElement(), (String[]) null);</span>
+<span class="fc" id="L120">        ArgoEventPump.addListener(</span>
+                ArgoEventTypes.ANY_PROFILE_EVENT, new ProfileChangeListener());
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * The tree structure has changed significantly.
+     * Inform the associated tree model.
+     *
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
+     * @deprecated by mvw in V0.25.4. Use events instead.
+     */
+    @Deprecated
+    public void structureChanged() {
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        if (treeModel == null) {</span>
+<span class="fc" id="L135">            return;</span>
+        }
+<span class="nc" id="L137">        treeModel.structureChanged();</span>
+<span class="nc" id="L138">    }</span>
+
+
+    /**
+     * forwards this event to the tree model.
+     *
+     * @param element the modelelement to be added
+     *
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
+     */
+    public void modelElementAdded(Object element) {
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (treeModel == null) {</span>
+<span class="fc" id="L151">            return;</span>
+        }
+<span class="nc" id="L153">        treeModel.modelElementAdded(element);</span>
+<span class="nc" id="L154">    }</span>
+
+    /**
+     * forwards this event to the tree model.
+     *
+     * @param element the modelelement to be changed
+     *
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
+     */
+    public void modelElementChanged(Object element) {
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (treeModel == null) {</span>
+<span class="nc" id="L166">            return;</span>
+        }
+<span class="nc" id="L168">        treeModel.modelElementChanged(element);</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * sets the tree model that will receive events.
+     *
+     * @param newTreeModel the tree model to be used
+     */
+    public void setTreeModelUMLEventListener(
+	    TreeModelUMLEventListener newTreeModel) {
+<span class="nc" id="L178">        treeModel = newTreeModel;</span>
+<span class="nc" id="L179">    }</span>
+
+    /**
+     * Listens to events coming from the project manager, config manager, and
+     * uml model, passes those events on to the explorer model.
+     *
+     * @since ARGO0.11.2
+     *
+     * @see PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(final PropertyChangeEvent pce) {
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        if (treeModel == null) {</span>
+<span class="fc" id="L191">            return;</span>
+        }
+
+        // uml model events
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (pce instanceof UmlChangeEvent) {</span>
+<span class="nc" id="L196">            Runnable doWorkRunnable = new Runnable() {</span>
+                public void run() {
+                    try {
+<span class="nc" id="L199">                        modelChanged((UmlChangeEvent) pce);</span>
+<span class="nc" id="L200">                    } catch (InvalidElementException e) {</span>
+<span class="nc" id="L201">                        LOG.log(Level.FINE, &quot;updateLayout method accessed deleted element&quot;, e);</span>
+<span class="nc" id="L202">                    }</span>
+<span class="nc" id="L203">                }</span>
+            };
+<span class="nc" id="L205">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        } else if (pce.getPropertyName().equals(</span>
+                // TODO: No one should be sending the deprecated event
+                // from outside ArgoUML, but keep responding to it for now
+                // just in case
+                ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                || pce.getPropertyName().equals(</span>
+                        ProjectManager.OPEN_PROJECTS_PROPERTY)) {
+            // project events
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (pce.getNewValue() != null) {</span>
+<span class="nc" id="L216">                treeModel.structureChanged();</span>
+            }
+<span class="nc" id="L218">            return;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        } else if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce)</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {</span>
+            // notation events
+<span class="nc" id="L222">            treeModel.structureChanged();</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        } else if (pce.getSource() instanceof ProjectManager) {</span>
+            // Handle remove for non-UML elements (e.g. diagrams)
+<span class="nc bnc" id="L225" title="All 2 branches missed.">            if (&quot;remove&quot;.equals(pce.getPropertyName())) {</span>
+<span class="nc" id="L226">                treeModel.modelElementRemoved(pce.getOldValue());</span>
+            }
+        }
+<span class="nc" id="L229">    }</span>
+
+    private void modelChanged(UmlChangeEvent event) {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        if (event instanceof AttributeChangeEvent) {</span>
+            // TODO: Can this be made more restrictive?
+            // Do we care about any attributes other than name? - tfm
+<span class="nc" id="L235">            treeModel.modelElementChanged(event.getSource());</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">        } else if (event instanceof RemoveAssociationEvent) {</span>
+            // TODO: This should really be coded the other way round,
+            // to only act on associations which are important for
+            // representing the current perspective (and to only act
+            // on a single end of the association) - tfm
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (!(&quot;namespace&quot;.equals(event.getPropertyName()))) {</span>
+<span class="nc" id="L242">                treeModel.modelElementChanged(((RemoveAssociationEvent) event)</span>
+<span class="nc" id="L243">                        .getChangedValue());</span>
+            }
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        } else if (event instanceof AddAssociationEvent) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (!(&quot;namespace&quot;.equals(event.getPropertyName()))) {</span>
+<span class="nc" id="L247">                treeModel.modelElementAdded(</span>
+<span class="nc" id="L248">                        ((AddAssociationEvent) event).getSource());</span>
+            }
+<span class="nc bnc" id="L250" title="All 2 branches missed.">        } else if (event instanceof DeleteInstanceEvent) {</span>
+<span class="nc" id="L251">            treeModel.modelElementRemoved(((DeleteInstanceEvent) event)</span>
+<span class="nc" id="L252">                    .getSource());</span>
+        }
+<span class="nc" id="L254">    }</span>
+
+
+    /**
+     * Listener for additions and removals of profiles.
+     * Since they generally have a major impact on the explorer tree,
+     * we simply update them completely.
+     *
+     * @author Michiel
+     */
+<span class="fc" id="L264">    class ProfileChangeListener implements ArgoProfileEventListener {</span>
+
+        public void profileAdded(ArgoProfileEvent e) {
+<span class="fc" id="L267">            structureChanged();</span>
+<span class="fc" id="L268">        }</span>
+
+        public void profileRemoved(ArgoProfileEvent e) {
+<span class="nc" id="L271">            structureChanged();</span>
+<span class="nc" id="L272">        }</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

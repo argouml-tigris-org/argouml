@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExplorerTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">ExplorerTree.java</span></div><h1>ExplorerTree.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JPopupMenu;
+import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.event.TreeWillExpandListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.Model;
+import org.argouml.ui.DisplayTextTree;
+import org.argouml.ui.ProjectActions;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * This class is the JTree for the explorer. It provides:
+ * &lt;p&gt;
+ * 
+ * &lt;pre&gt;
+ *  - selection/target management
+ *  - mouse listener for the pop up
+ * &lt;/pre&gt;
+ * 
+ * @author alexb
+ * @since 0.15.2
+ */
+public class ExplorerTree extends DisplayTextTree {
+
+    /**
+     * Background image only displayed in UML2 mode
+     */
+<span class="nc" id="L92">    private Image bgImage = null;</span>
+
+    /**
+     * Prevents target event cycles between this and the TargetManager.
+     */
+    private boolean updatingSelection;
+
+    /**
+     * Prevents target event cycles between this and the TargetManager for tree
+     * selection events.
+     */
+    private boolean updatingSelectionViaTreeSelection;
+
+    /**
+     * Creates a new instance of ExplorerTree.
+     */
+    public ExplorerTree() {
+<span class="nc" id="L109">        super();</span>
+
+<span class="nc" id="L111">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L112">        this.setModel(new ExplorerTreeModel(p, this));</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {</span>
+<span class="nc" id="L114">            bgImage = ResourceLoaderWrapper.lookupIconResource(</span>
+<span class="nc" id="L115">                    &quot;uml2explorerbg&quot;).getImage();</span>
+        }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (p != null) {</span>
+<span class="nc" id="L118">            ProjectSettings ps = p.getProjectSettings();</span>
+<span class="nc" id="L119">            setShowStereotype(ps.getShowStereotypesValue());</span>
+        }
+<span class="nc" id="L121">        this.addMouseListener(new ExplorerMouseListener(this));</span>
+<span class="nc" id="L122">        this.addTreeSelectionListener(new ExplorerTreeSelectionListener());</span>
+<span class="nc" id="L123">        this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());</span>
+<span class="nc" id="L124">        this.addTreeExpansionListener(new ExplorerTreeExpansionListener());</span>
+
+<span class="nc" id="L126">        TargetManager.getInstance().addTargetListener(</span>
+                new ExplorerTargetListener());
+<span class="nc" id="L128">    }</span>
+
+    /**
+     * Listens to mouse events coming from the *JTree*, on right click, brings
+     * up the pop-up menu.
+     */
+    class ExplorerMouseListener extends MouseAdapter {
+
+        private JTree mLTree;
+
+        /**
+         * The constructor.
+         * 
+         * @param newtree
+         */
+<span class="nc" id="L143">        public ExplorerMouseListener(JTree newtree) {</span>
+<span class="nc" id="L144">            super();</span>
+<span class="nc" id="L145">            mLTree = newtree;</span>
+<span class="nc" id="L146">        }</span>
+
+        /**
+         * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mousePressed(MouseEvent me) {
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (me.isPopupTrigger()) {</span>
+<span class="nc" id="L156">                me.consume();</span>
+<span class="nc" id="L157">                showPopupMenu(me);</span>
+            }
+<span class="nc" id="L159">        }</span>
+
+        /**
+         * Brings up the pop-up menu.
+         * 
+         * On Windows and Motif platforms, the user brings up a popup menu by
+         * releasing the right mouse button while the cursor is over a component
+         * that is popup-enabled.
+         * 
+         * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseReleased(MouseEvent me) {
+<span class="nc bnc" id="L172" title="All 2 branches missed.">            if (me.isPopupTrigger()) {</span>
+<span class="nc" id="L173">                me.consume();</span>
+<span class="nc" id="L174">                showPopupMenu(me);</span>
+            }
+<span class="nc" id="L176">        }</span>
+
+        /**
+         * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseClicked(MouseEvent me) {
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (me.isPopupTrigger()) {</span>
+<span class="nc" id="L186">                me.consume();</span>
+<span class="nc" id="L187">                showPopupMenu(me);</span>
+            }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            if (me.getClickCount() &gt;= 2) {</span>
+<span class="nc" id="L190">                myDoubleClick();</span>
+            }
+<span class="nc" id="L192">        }</span>
+
+        /**
+         * Double-clicking on an item attempts to show the item in a diagram.
+         */
+        private void myDoubleClick() {
+<span class="nc" id="L198">            Object target = TargetManager.getInstance().getTarget();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (target != null) {</span>
+<span class="nc" id="L200">                List show = new ArrayList();</span>
+<span class="nc" id="L201">                show.add(target);</span>
+<span class="nc" id="L202">                ProjectActions.jumpToDiagramShowing(show);</span>
+            }
+<span class="nc" id="L204">        }</span>
+
+        /**
+         * Builds a pop-up menu for extra functionality for the Tree.
+         * 
+         * @param me The mouse event.
+         */
+        public void showPopupMenu(MouseEvent me) {
+
+<span class="nc" id="L213">            TreePath path = getPathForLocation(me.getX(), me.getY());</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">            if (path == null) {</span>
+<span class="nc" id="L215">                return;</span>
+            }
+
+            /*
+             * We preserve the current (multiple) selection, if we are over part
+             * of it ...
+             */
+<span class="nc bnc" id="L222" title="All 2 branches missed.">            if (!isPathSelected(path)) {</span>
+                /* ... otherwise we select the item below the mousepointer. */
+<span class="nc" id="L224">                getSelectionModel().setSelectionPath(path);</span>
+            }
+
+<span class="nc" id="L227">            Object selectedItem = ((DefaultMutableTreeNode) path</span>
+<span class="nc" id="L228">                    .getLastPathComponent()).getUserObject();</span>
+<span class="nc" id="L229">            JPopupMenu popup = new ExplorerPopup(selectedItem, me);</span>
+
+<span class="nc bnc" id="L231" title="All 2 branches missed.">            if (popup.getComponentCount() &gt; 0) {</span>
+<span class="nc" id="L232">                popup.show(mLTree, me.getX(), me.getY());</span>
+            }
+<span class="nc" id="L234">        }</span>
+
+    } /* end class ExplorerMouseListener */
+
+    /**
+     * Helps prepare state before a node is expanded.
+     */
+<span class="nc" id="L241">    class ExplorerTreeWillExpandListener implements TreeWillExpandListener {</span>
+
+        /*
+         * @see
+         * javax.swing.event.TreeWillExpandListener#treeWillCollapse(javax.swing
+         * .event.TreeExpansionEvent)
+         */
+        public void treeWillCollapse(TreeExpansionEvent tee) {
+            // unimplemented - we only care about expanding
+<span class="nc" id="L250">        }</span>
+
+        /*
+         * Updates stereotype setting, adds all children per treemodel 'build on
+         * demand' design.
+         * 
+         * @see
+         * javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing
+         * .event.TreeExpansionEvent)
+         */
+        public void treeWillExpand(TreeExpansionEvent tee) {
+            // TODO: This should not need to know about ProjectSettings - tfm
+<span class="nc" id="L262">            Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L263">            ProjectSettings ps = p.getProjectSettings();</span>
+<span class="nc" id="L264">            setShowStereotype(ps.getShowStereotypesValue());</span>
+
+<span class="nc bnc" id="L266" title="All 2 branches missed.">            if (getModel() instanceof ExplorerTreeModel) {</span>
+
+<span class="nc" id="L268">                ((ExplorerTreeModel) getModel()).updateChildren(tee.getPath());</span>
+            }
+<span class="nc" id="L270">        }</span>
+    }
+
+    /**
+     * Helps react to tree expansion events.
+     */
+<span class="nc" id="L276">    class ExplorerTreeExpansionListener implements TreeExpansionListener {</span>
+
+        /*
+         * @see javax.swing.event.TreeExpansionListener#treeCollapsed(
+         * javax.swing.event.TreeExpansionEvent)
+         */
+        public void treeCollapsed(TreeExpansionEvent event) {
+            // does nothing.
+<span class="nc" id="L284">        }</span>
+
+        /*
+         * @see javax.swing.event.TreeExpansionListener#treeExpanded(
+         * javax.swing.event.TreeExpansionEvent) Updates the selection state.
+         */
+        public void treeExpanded(TreeExpansionEvent event) {
+
+            // need to update the selection state.
+<span class="nc" id="L293">            setSelection(TargetManager.getInstance().getTargets().toArray());</span>
+<span class="nc" id="L294">        }</span>
+    }
+
+    /**
+     * Refresh the selection of the tree nodes. This does not cause new events
+     * to be fired to the TargetManager.
+     */
+    public void refreshSelection() {
+<span class="nc" id="L302">        Collection targets = TargetManager.getInstance().getTargets();</span>
+<span class="nc" id="L303">        updatingSelectionViaTreeSelection = true;</span>
+<span class="nc" id="L304">        setSelection(targets.toArray());</span>
+<span class="nc" id="L305">        updatingSelectionViaTreeSelection = false;</span>
+<span class="nc" id="L306">    }</span>
+
+    /**
+     * Sets the selection state for a given set of targets.
+     * 
+     * @param targets the targets
+     */
+    private void setSelection(Object[] targets) {
+<span class="nc" id="L314">        updatingSelectionViaTreeSelection = true;</span>
+
+<span class="nc" id="L316">        this.clearSelection();</span>
+<span class="nc" id="L317">        addTargetsInternal(targets);</span>
+<span class="nc" id="L318">        updatingSelectionViaTreeSelection = false;</span>
+<span class="nc" id="L319">    }</span>
+
+    private void addTargetsInternal(Object[] addedTargets) {
+<span class="nc bnc" id="L322" title="All 2 branches missed.">        if (addedTargets.length &lt; 1) {</span>
+<span class="nc" id="L323">            return;</span>
+        }
+<span class="nc" id="L325">        Set targets = new HashSet();</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        for (Object t : addedTargets) {</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">            if (t instanceof Fig) {</span>
+<span class="nc" id="L328">                targets.add(((Fig) t).getOwner());</span>
+            } else {
+<span class="nc" id="L330">                targets.add(t);</span>
+            }
+            // TODO: The following can be removed if selectAll gets fixed
+<span class="nc" id="L333">            selectVisible(t);</span>
+        }
+
+        // TODO: This doesn't perform well enough with large models to have
+        // it enabled by default. If the performance can't be improved,
+        // perhaps we can introduce a manual &quot;find in explorer tree&quot; action.
+        // selectAll(targets);
+
+<span class="nc" id="L341">        int[] selectedRows = getSelectionRows();</span>
+<span class="nc bnc" id="L342" title="All 4 branches missed.">        if (selectedRows != null &amp;&amp; selectedRows.length &gt; 0) {</span>
+            // TODO: This only works if the item is visible
+            // (all its parents are expanded)
+            // getExpandedDescendants, makeVisible
+<span class="nc" id="L346">            makeVisible(getPathForRow(selectedRows[0]));</span>
+<span class="nc" id="L347">            scrollRowToVisible(selectedRows[0]);</span>
+        }
+<span class="nc" id="L349">    }</span>
+
+    /**
+     * Select any targets which are visible in the explorer pane
+     */
+    private void selectVisible(Object target) {
+<span class="nc bnc" id="L355" title="All 2 branches missed.">        for (int j = 0; j &lt; getRowCount(); j++) {</span>
+<span class="nc" id="L356">            Object rowItem = ((DefaultMutableTreeNode) getPathForRow(j)</span>
+<span class="nc" id="L357">                    .getLastPathComponent()).getUserObject();</span>
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            if (rowItem == target) {</span>
+<span class="nc" id="L359">                addSelectionRow(j);</span>
+            }
+        }
+<span class="nc" id="L362">    }</span>
+
+    /**
+     * Search the entire tree and select all instances of targets found.
+     */
+    private void selectAll(Set targets) {
+<span class="nc" id="L368">        ExplorerTreeModel model = (ExplorerTreeModel) getModel();</span>
+<span class="nc" id="L369">        ExplorerTreeNode root = (ExplorerTreeNode) model.getRoot();</span>
+<span class="nc" id="L370">        selectChildren(model, root, targets);</span>
+<span class="nc" id="L371">    }</span>
+
+    /*
+     * Perform recursive search of subtree rooted at 'node', selecting all nodes
+     * which have a userObject matching one of our targets.
+     */
+    private void selectChildren(ExplorerTreeModel model, ExplorerTreeNode node,
+            Set targets) {
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        if (targets.isEmpty()) {</span>
+<span class="nc" id="L380">            return;</span>
+        }
+
+<span class="nc" id="L383">        Object nodeObject = node.getUserObject();</span>
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        if (nodeObject != null) {</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">            for (Object t : targets) {</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                if (t == nodeObject) {</span>
+<span class="nc" id="L387">                    addSelectionPath(new TreePath(node.getPath()));</span>
+                    // target may appear multiple places in the tree, so
+                    // we don't stop here (but it's expensive to search
+                    // the whole tree) - tfm - 20070904
+                    // targets.remove(t);
+                    // break;
+                }
+<span class="nc" id="L394">            }</span>
+        }
+
+<span class="nc" id="L397">        model.updateChildren(new TreePath(node.getPath()));</span>
+<span class="nc" id="L398">        Enumeration e = node.children();</span>
+<span class="nc bnc" id="L399" title="All 2 branches missed.">        while (e.hasMoreElements()) {</span>
+<span class="nc" id="L400">            selectChildren(model, (ExplorerTreeNode) e.nextElement(), targets);</span>
+        }
+<span class="nc" id="L402">    }</span>
+
+    public void paint(Graphics g) {
+<span class="nc" id="L405">        super.paint(g);</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">        if (bgImage != null) {</span>
+<span class="nc" id="L407">            g.drawImage(bgImage, 0, 40, null);</span>
+        }
+<span class="nc" id="L409">    }</span>
+
+    /**
+     * Manages selecting the item to show in Argo's other views based on the
+     * highlighted row.
+     */
+<span class="nc" id="L415">    class ExplorerTreeSelectionListener implements TreeSelectionListener {</span>
+
+        /**
+         * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
+         * 
+         *      Change in explorer tree selection -&gt; set target in target
+         *      manager.
+         */
+        public void valueChanged(TreeSelectionEvent e) {
+
+<span class="nc bnc" id="L425" title="All 2 branches missed.">            if (!updatingSelectionViaTreeSelection) {</span>
+<span class="nc" id="L426">                updatingSelectionViaTreeSelection = true;</span>
+
+                // get the elements
+<span class="nc" id="L429">                TreePath[] addedOrRemovedPaths = e.getPaths();</span>
+<span class="nc" id="L430">                TreePath[] selectedPaths = getSelectionPaths();</span>
+<span class="nc" id="L431">                List elementsAsList = new ArrayList();</span>
+<span class="nc" id="L432">                for (int i = 0; selectedPaths != null</span>
+<span class="nc bnc" id="L433" title="All 4 branches missed.">                        &amp;&amp; i &lt; selectedPaths.length; i++) {</span>
+<span class="nc" id="L434">                    Object element = ((DefaultMutableTreeNode) selectedPaths[i]</span>
+<span class="nc" id="L435">                            .getLastPathComponent()).getUserObject();</span>
+<span class="nc" id="L436">                    elementsAsList.add(element);</span>
+                    // scan the visible rows for duplicates of
+                    // this elem and select them
+<span class="nc" id="L439">                    int rows = getRowCount();</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">                    for (int row = 0; row &lt; rows; row++) {</span>
+<span class="nc" id="L441">                        Object rowItem = ((DefaultMutableTreeNode) getPathForRow(</span>
+<span class="nc" id="L442">                                row).getLastPathComponent()).getUserObject();</span>
+<span class="nc bnc" id="L443" title="All 4 branches missed.">                        if (rowItem == element &amp;&amp; !(isRowSelected(row))) {</span>
+<span class="nc" id="L444">                            addSelectionRow(row);</span>
+                        }
+                    }
+                }
+
+                // check which targetmanager method to call
+<span class="nc" id="L450">                boolean callSetTarget = true;</span>
+<span class="nc" id="L451">                List addedElements = new ArrayList();</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">                for (int i = 0; i &lt; addedOrRemovedPaths.length; i++) {</span>
+<span class="nc" id="L453">                    Object element = ((DefaultMutableTreeNode) addedOrRemovedPaths[i]</span>
+<span class="nc" id="L454">                            .getLastPathComponent()).getUserObject();</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">                    if (!e.isAddedPath(i)) {</span>
+<span class="nc" id="L456">                        callSetTarget = false;</span>
+<span class="nc" id="L457">                        break;</span>
+                    }
+<span class="nc" id="L459">                    addedElements.add(element);</span>
+                }
+
+<span class="nc bnc" id="L462" title="All 2 branches missed.">                if (callSetTarget</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">                        &amp;&amp; addedElements.size() == elementsAsList.size()</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">                        &amp;&amp; elementsAsList.containsAll(addedElements)) {</span>
+<span class="nc" id="L465">                    TargetManager.getInstance().setTargets(elementsAsList);</span>
+                } else {
+                    // we must call the correct method on targetmanager
+                    // for each added or removed target
+<span class="nc" id="L469">                    List removedTargets = new ArrayList();</span>
+<span class="nc" id="L470">                    List addedTargets = new ArrayList();</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">                    for (int i = 0; i &lt; addedOrRemovedPaths.length; i++) {</span>
+<span class="nc" id="L472">                        Object element = ((DefaultMutableTreeNode) addedOrRemovedPaths[i]</span>
+<span class="nc" id="L473">                                .getLastPathComponent()).getUserObject();</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">                        if (e.isAddedPath(i)) {</span>
+<span class="nc" id="L475">                            addedTargets.add(element);</span>
+                        } else {
+<span class="nc" id="L477">                            removedTargets.add(element);</span>
+                        }
+                    }
+                    // we can't remove the targets in one go, we have to
+                    // do it one by one.
+<span class="nc bnc" id="L482" title="All 2 branches missed.">                    if (!removedTargets.isEmpty()) {</span>
+<span class="nc" id="L483">                        Iterator it = removedTargets.iterator();</span>
+<span class="nc bnc" id="L484" title="All 2 branches missed.">                        while (it.hasNext()) {</span>
+<span class="nc" id="L485">                            TargetManager.getInstance().removeTarget(it.next());</span>
+                        }
+                    }
+<span class="nc bnc" id="L488" title="All 2 branches missed.">                    if (!addedTargets.isEmpty()) {</span>
+<span class="nc" id="L489">                        Iterator it = addedTargets.iterator();</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">                        while (it.hasNext()) {</span>
+<span class="nc" id="L491">                            TargetManager.getInstance().addTarget(it.next());</span>
+                        }
+                    }
+                }
+
+<span class="nc" id="L496">                updatingSelectionViaTreeSelection = false;</span>
+            }
+<span class="nc" id="L498">        }</span>
+    }
+
+<span class="nc" id="L501">    class ExplorerTargetListener implements TargetListener {</span>
+
+        /**
+         * Actions a change in targets received from the TargetManager.
+         * 
+         * @param targets the targets
+         */
+        private void setTargets(Object[] targets) {
+
+<span class="nc bnc" id="L510" title="All 2 branches missed.">            if (!updatingSelection) {</span>
+<span class="nc" id="L511">                updatingSelection = true;</span>
+<span class="nc bnc" id="L512" title="All 2 branches missed.">                if (targets.length &lt;= 0) {</span>
+<span class="nc" id="L513">                    clearSelection();</span>
+                } else {
+<span class="nc" id="L515">                    setSelection(targets);</span>
+                }
+<span class="nc" id="L517">                updatingSelection = false;</span>
+            }
+<span class="nc" id="L519">        }</span>
+
+        /*
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+         * org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+<span class="nc bnc" id="L526" title="All 2 branches missed.">            if (!updatingSelection) {</span>
+<span class="nc" id="L527">                updatingSelection = true;</span>
+<span class="nc" id="L528">                Object[] targets = e.getAddedTargets();</span>
+
+<span class="nc" id="L530">                updatingSelectionViaTreeSelection = true;</span>
+<span class="nc" id="L531">                addTargetsInternal(targets);</span>
+<span class="nc" id="L532">                updatingSelectionViaTreeSelection = false;</span>
+<span class="nc" id="L533">                updatingSelection = false;</span>
+            }
+            // setTargets(e.getNewTargets());
+<span class="nc" id="L536">        }</span>
+
+        /*
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+         * org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+<span class="nc bnc" id="L543" title="All 2 branches missed.">            if (!updatingSelection) {</span>
+<span class="nc" id="L544">                updatingSelection = true;</span>
+
+<span class="nc" id="L546">                Object[] targets = e.getRemovedTargets();</span>
+
+<span class="nc" id="L548">                int rows = getRowCount();</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">                for (int i = 0; i &lt; targets.length; i++) {</span>
+<span class="nc" id="L550">                    Object target = targets[i];</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">                    if (target instanceof Fig) {</span>
+<span class="nc" id="L552">                        target = ((Fig) target).getOwner();</span>
+                    }
+<span class="nc bnc" id="L554" title="All 2 branches missed.">                    for (int j = 0; j &lt; rows; j++) {</span>
+<span class="nc" id="L555">                        Object rowItem = ((DefaultMutableTreeNode) getPathForRow(</span>
+<span class="nc" id="L556">                                j).getLastPathComponent()).getUserObject();</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">                        if (rowItem == target) {</span>
+<span class="nc" id="L558">                            updatingSelectionViaTreeSelection = true;</span>
+<span class="nc" id="L559">                            removeSelectionRow(j);</span>
+<span class="nc" id="L560">                            updatingSelectionViaTreeSelection = false;</span>
+                        }
+                    }
+                }
+
+<span class="nc bnc" id="L565" title="All 2 branches missed.">                if (getSelectionCount() &gt; 0) {</span>
+<span class="nc" id="L566">                    scrollRowToVisible(getSelectionRows()[0]);</span>
+                }
+<span class="nc" id="L568">                updatingSelection = false;</span>
+            }
+            // setTargets(e.getNewTargets());
+<span class="nc" id="L571">        }</span>
+
+        /*
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+         * org.argouml.ui.targetmanager.TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+<span class="nc" id="L578">            setTargets(e.getNewTargets());</span>
+
+<span class="nc" id="L580">        }</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 992867483644759920L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

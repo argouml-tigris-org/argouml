@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChildGenUML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">ChildGenUML.java</span></div><h1>ChildGenUML.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.util.IteratorEnumeration;
+import org.argouml.util.SingleElementIterator;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.util.ChildGenerator;
+
+/**
+ * This class gives critics access to parts of the UML model of the
+ * design.  It defines a gen() function that returns the &quot;children&quot;
+ * of any given part of the UML model.  Basically, it goes from
+ * Project, to Models, to ModelElements.  Argo's critic Agency uses
+ * this to apply critics where appropriate.
+ *
+ * TODO: This thinks it knows all the composition associations of the
+ * the UML metamodel, but it is a) incomplete and b) not updated for
+ * UML 1.4.  This should be done using information from the metamodel
+ * rather than hardwired code. - tfm - 20070205
+ *
+ * @see org.argouml.cognitive.Agency
+ * @see org.argouml.cognitive.Designer
+ * @author jrobbins
+ */
+<span class="nc" id="L73">public class ChildGenUML implements ChildGenerator {</span>
+
+<span class="nc" id="L75">    private static final Logger LOG =</span>
+<span class="nc" id="L76">        Logger.getLogger(ChildGenUML.class.getName());</span>
+
+    /**
+     * Reply a java.util.Enumeration of the children of the given Object
+     *
+     * @param o the object to return the children of
+     * @return an enumeration of the children of the given Object
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     * @deprecated for 0.25.4 by tfmorris. Only for use with legacy GEF
+     *             interfaces. Use {@link #gen2(Object)} for new applications.
+     */
+    @Deprecated
+    public Enumeration gen(Object o) {
+<span class="nc" id="L89">        return new IteratorEnumeration(gen2(o));</span>
+    }
+
+    /**
+     * Return an Iterator of the children of the given Object
+     *
+     * @param o object to return the children of
+     * @return an iterator over the children of the given object
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     */
+    public Iterator gen2(Object o) {
+
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (o == null) {</span>
+<span class="nc" id="L102">            LOG.log(Level.FINE, &quot;Object is null&quot;);</span>
+        } else {
+//                LOG.log(Level.FINE, &quot;Finding children for &quot; + o.getClass());
+        }
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">	if (o instanceof Project) {</span>
+<span class="nc" id="L108">	    Project p = (Project) o;</span>
+<span class="nc" id="L109">            Collection result = new ArrayList();</span>
+<span class="nc" id="L110">            result.addAll(p.getUserDefinedModelList());</span>
+<span class="nc" id="L111">            result.addAll(p.getDiagramList());</span>
+<span class="nc" id="L112">            return result.iterator();</span>
+	}
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">	if (o instanceof Diagram) {</span>
+<span class="nc" id="L116">	    Collection figs = ((Diagram) o).getLayer().getContents();</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">	    if (figs != null) {</span>
+<span class="nc" id="L118">	        return figs.iterator();</span>
+	    }
+	}
+
+	// argument can be an instanceof a Fig which we ignore
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">	if (Model.getFacade().isAPackage(o)) {</span>
+	    Collection ownedElements =
+<span class="nc" id="L126">                Model.getFacade().getOwnedElements(o);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">	    if (ownedElements != null) {</span>
+<span class="nc" id="L128">	        return ownedElements.iterator();</span>
+	    }
+	}
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">	if (Model.getFacade().isAElementImport(o)) {</span>
+<span class="nc" id="L133">	    Object me = Model.getFacade().getModelElement(o);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">	    if (me != null) {</span>
+<span class="nc" id="L135">	        return new SingleElementIterator(me);</span>
+	    }
+	}
+
+
+	// TODO: associationclasses fit both of the next 2 cases
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">	if (Model.getFacade().isAClassifier(o)) {</span>
+<span class="nc" id="L143">            Collection result = new ArrayList();</span>
+<span class="nc" id="L144">	    result.addAll(Model.getFacade().getFeatures(o));</span>
+
+<span class="nc" id="L146">	    Collection sms = Model.getFacade().getBehaviors(o);</span>
+	    //Object sm = null;
+	    //if (sms != null &amp;&amp; sms.size() &gt; 0)
+		//sm = sms.elementAt(0);
+	    //if (sm != null) res.addSub(new EnumerationSingle(sm));
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (sms != null) {</span>
+<span class="nc" id="L152">                result.addAll(sms);</span>
+            }
+<span class="nc" id="L154">	    return result.iterator();</span>
+	}
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">	if (Model.getFacade().isAAssociation(o)) {</span>
+<span class="nc" id="L158">	    List assocEnds = (List) Model.getFacade().getConnections(o);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">	    if (assocEnds != null) {</span>
+<span class="nc" id="L160">	        return assocEnds.iterator();</span>
+	    }
+	    //TODO: AssociationRole
+	}
+
+	// // needed?
+<span class="nc bnc" id="L166" title="All 2 branches missed.">	if (Model.getFacade().isAStateMachine(o)) {</span>
+<span class="nc" id="L167">            Collection result = new ArrayList();</span>
+<span class="nc" id="L168">	    Object top = Model.getStateMachinesHelper().getTop(o);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">	    if (top != null) {</span>
+<span class="nc" id="L170">                result.add(top);</span>
+	    }
+<span class="nc" id="L172">	    result.addAll(Model.getFacade().getTransitions(o));</span>
+<span class="nc" id="L173">	    return result.iterator();</span>
+	}
+
+	// needed?
+<span class="nc bnc" id="L177" title="All 2 branches missed.">	if (Model.getFacade().isACompositeState(o)) {</span>
+<span class="nc" id="L178">	    Collection substates = Model.getFacade().getSubvertices(o);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">	    if (substates != null) {</span>
+<span class="nc" id="L180">	        return substates.iterator();</span>
+	    }
+	}
+
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (Model.getFacade().isAOperation(o)) {</span>
+<span class="nc" id="L185">            Collection params = Model.getFacade().getParameters(o);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (params != null) {</span>
+<span class="nc" id="L187">                return params.iterator();</span>
+            }
+        }
+
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(o)) {</span>
+<span class="nc" id="L192">	    Collection behavior = Model.getFacade().getBehaviors(o);</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">	    if (behavior != null) {</span>
+<span class="nc" id="L194">	        return behavior.iterator();</span>
+	    }
+	}
+
+        // TODO: We can probably use this instead of all of the above
+        // legacy UML 1.3 code - tfm - 20070915
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (Model.getFacade().isAUMLElement(o)) {</span>
+<span class="nc" id="L201">            Collection result = Model.getFacade().getModelElementContents(o);</span>
+<span class="nc" id="L202">            return result.iterator();</span>
+        }
+
+<span class="nc" id="L205">        return Collections.emptySet().iterator();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

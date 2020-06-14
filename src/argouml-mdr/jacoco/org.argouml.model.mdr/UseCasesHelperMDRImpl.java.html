@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UseCasesHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">UseCasesHelperMDRImpl.java</span></div><h1>UseCasesHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.UseCasesHelper;
+import org.omg.uml.behavioralelements.usecases.Actor;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.Include;
+import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.UmlClass;
+import org.omg.uml.foundation.datatypes.BooleanExpression;
+import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.modelmanagement.Subsystem;
+
+/**
+ * UseCase Helper for MDR ModelImplementation.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+
+ */
+class UseCasesHelperMDRImpl implements UseCasesHelper {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L84">    UseCasesHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L85">        modelImpl = implementation;</span>
+<span class="fc" id="L86">    }</span>
+
+
+    public Collection&lt;UseCase&gt; getAllUseCases(Object ns) {
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L91">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L94">        List&lt;UseCase&gt; list = new ArrayList&lt;UseCase&gt;();</span>
+        try {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            for (Object o : ((Namespace) ns).getOwnedElement()) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if (o instanceof Namespace) {</span>
+<span class="nc" id="L98">                    list.addAll(getAllUseCases(o));</span>
+                }
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                if (o instanceof UseCase) {</span>
+<span class="nc" id="L101">                    list.add((UseCase) o);</span>
+                }
+<span class="nc" id="L103">            }</span>
+<span class="nc" id="L104">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L105">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L106">        }</span>
+<span class="nc" id="L107">        return list;</span>
+    }
+
+
+    public Collection&lt;Actor&gt; getAllActors(Object ns) {
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L113">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L116">        List&lt;Actor&gt; list = new ArrayList&lt;Actor&gt;();</span>
+        try {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            for (Object o : ((Namespace) ns).getOwnedElement()) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (o instanceof Namespace) {</span>
+<span class="nc" id="L120">                    list.addAll(getAllActors(o));</span>
+                }
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                if (o instanceof Actor) {</span>
+<span class="nc" id="L123">                    list.add((Actor) o);</span>
+                }
+<span class="nc" id="L125">            }</span>
+<span class="nc" id="L126">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L127">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L128">        }</span>
+<span class="nc" id="L129">        return list;</span>
+    }
+
+
+    public Collection&lt;UseCase&gt; getExtendedUseCases(Object ausecase) {
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        if (ausecase == null) {</span>
+<span class="nc" id="L135">            return new ArrayList&lt;UseCase&gt;();</span>
+        }
+<span class="nc" id="L137">        List&lt;UseCase&gt; list = new ArrayList&lt;UseCase&gt;();</span>
+<span class="nc" id="L138">        UseCase usecase = (UseCase) ausecase;</span>
+        try {
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            for (Extend extend : usecase.getExtend()) {</span>
+<span class="nc" id="L141">                list.add(extend.getBase());</span>
+<span class="nc" id="L142">            }</span>
+<span class="nc" id="L143">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L144">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L145">        }</span>
+<span class="nc" id="L146">        return list;</span>
+    }
+
+
+    public Extend getExtends(Object abase, Object anextension) {
+<span class="nc bnc" id="L151" title="All 4 branches missed.">        if (!(abase instanceof UseCase)</span>
+                || !(anextension instanceof UseCase)) {
+<span class="nc" id="L153">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L155">        UseCase base = (UseCase) abase;</span>
+<span class="nc" id="L156">        UseCase extension = (UseCase) anextension;</span>
+        try {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            for (Extend extend : extension.getExtend()) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                if (extend.getBase() == base) {</span>
+<span class="nc" id="L160">                    return extend;</span>
+                }
+<span class="nc" id="L162">            }</span>
+<span class="nc" id="L163">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L164">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L165">        }</span>
+<span class="nc" id="L166">        return null;</span>
+    }
+
+
+    public Collection&lt;UseCase&gt; getIncludedUseCases(Object ausecase) {
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (!(ausecase instanceof UseCase)) {</span>
+<span class="nc" id="L172">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L174">        List&lt;UseCase&gt; result = new ArrayList&lt;UseCase&gt;();</span>
+<span class="nc" id="L175">        UseCase usecase = (UseCase) ausecase;</span>
+        try {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            for (Include include : usecase.getInclude()) {</span>
+<span class="nc" id="L178">                UseCase addition = include.getBase();</span>
+<span class="nc" id="L179">                result.add(addition);</span>
+<span class="nc" id="L180">            }</span>
+<span class="nc" id="L181">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L182">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L183">        }</span>
+<span class="nc" id="L184">        return result;</span>
+    }
+
+
+    public Include getIncludes(Object abase, Object aninclusion) {
+<span class="nc bnc" id="L189" title="All 4 branches missed.">        if (!(abase instanceof UseCase)</span>
+                || !(aninclusion instanceof UseCase)) {
+<span class="nc" id="L191">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L193">        UseCase base = (UseCase) abase;</span>
+<span class="nc" id="L194">        UseCase inclusion = (UseCase) aninclusion;</span>
+        try {
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            for (Include include : inclusion.getInclude()) {</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                if (include.getBase() == base) {</span>
+<span class="nc" id="L198">                    return include;</span>
+                }
+<span class="nc" id="L200">            }</span>
+<span class="nc" id="L201">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L202">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L203">        }</span>
+<span class="nc" id="L204">        return null;</span>
+    }
+
+
+    public Collection getSpecificationPath(Object ausecase) {
+<span class="nc" id="L209">        UseCase uc = (UseCase) ausecase;</span>
+<span class="nc" id="L210">        Set set = new HashSet();</span>
+        try {
+<span class="nc" id="L212">            set.addAll(modelImpl.getModelManagementHelper().</span>
+<span class="nc" id="L213">                    getAllSurroundingNamespaces(uc));</span>
+<span class="nc" id="L214">            Set set2 = new HashSet();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            for (Object o : set) {</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">                if (o instanceof Subsystem || o instanceof UmlClass) {</span>
+<span class="nc" id="L217">                    set2.add(o);</span>
+                }
+<span class="nc" id="L219">            }</span>
+<span class="nc" id="L220">            return set2;</span>
+<span class="nc" id="L221">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L222">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+
+    public void setBase(Object extend, Object base) {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (base == null) {</span>
+<span class="nc" id="L229">            throw new IllegalArgumentException(</span>
+                    &quot;The base cannot be null&quot;);
+        }
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (!(base instanceof UseCase)) {</span>
+<span class="nc" id="L234">            throw new IllegalArgumentException(</span>
+<span class="nc" id="L235">                    &quot;The base cannot be a &quot; + base.getClass().getName());</span>
+        }
+
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (extend == null) {</span>
+<span class="nc" id="L239">            throw new IllegalArgumentException(&quot;extend&quot;);</span>
+        }
+
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (extend instanceof Extend) {</span>
+<span class="nc" id="L243">            Extend theExtend = ((Extend) extend);</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            if (base == theExtend.getBase()) {</span>
+<span class="nc" id="L245">                return;</span>
+            }
+<span class="nc bnc" id="L247" title="All 2 branches missed.">            for (ExtensionPoint point : theExtend.getExtensionPoint()) {</span>
+<span class="nc" id="L248">                removeExtend(point, theExtend);</span>
+<span class="nc" id="L249">            }</span>
+<span class="nc" id="L250">            ExtensionPoint point =</span>
+                (ExtensionPoint) modelImpl.
+<span class="nc" id="L252">                    getUseCasesFactory().buildExtensionPoint(base);</span>
+<span class="nc" id="L253">            theExtend.setBase((UseCase) base);</span>
+<span class="nc" id="L254">            addExtensionPoint(theExtend, point);</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        } else if (extend instanceof Include) {</span>
+            // TODO: this can be simplified to just
+            //((Include) extend).setBase((UseCase) base);
+<span class="nc" id="L258">            Include theInclude = ((Include) extend);</span>
+<span class="nc bnc" id="L259" title="All 2 branches missed.">            if (base == theInclude.getBase()) {</span>
+<span class="nc" id="L260">                return;</span>
+            }
+            // TODO: This looks backwards. Left over from issue 2034?
+<span class="nc" id="L263">            theInclude.setAddition((UseCase) base);</span>
+<span class="nc" id="L264">        } else {</span>
+<span class="nc" id="L265">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L267">    }</span>
+
+
+    public void removeExtend(Object elem, Object extend) {
+        try {
+<span class="nc bnc" id="L272" title="All 4 branches missed.">            if (elem instanceof UseCase &amp;&amp; extend instanceof Extend) {</span>
+<span class="nc" id="L273">                ((UseCase) elem).getExtend().remove(extend);</span>
+<span class="nc" id="L274">                return;</span>
+            }
+<span class="nc bnc" id="L276" title="All 4 branches missed.">            if (elem instanceof ExtensionPoint &amp;&amp; extend instanceof Extend) {</span>
+<span class="nc" id="L277">                ((Extend) extend).getExtensionPoint().remove(elem);</span>
+<span class="nc" id="L278">                return;</span>
+            }
+<span class="nc" id="L280">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L281">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L282">        }</span>
+<span class="nc" id="L283">        throw new IllegalArgumentException(&quot;elem: &quot; + elem + &quot; or extend: &quot;</span>
+                + extend);
+    }
+
+
+    public void removeExtensionPoint(Object elem, Object ep) {
+        try {
+<span class="nc bnc" id="L290" title="All 2 branches missed.">            if (ep instanceof ExtensionPoint) {</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">                if (elem instanceof UseCase) {</span>
+<span class="nc" id="L292">                    ((UseCase) elem).getExtensionPoint().remove(ep);</span>
+<span class="nc" id="L293">                    return;</span>
+                }
+<span class="nc bnc" id="L295" title="All 2 branches missed.">                if (elem instanceof Extend) {</span>
+<span class="nc" id="L296">                    ((Extend) elem).getExtensionPoint().remove(ep);</span>
+<span class="nc" id="L297">                    return;</span>
+                }
+            }
+<span class="nc" id="L300">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L301">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L302">        }</span>
+<span class="nc" id="L303">        throw new IllegalArgumentException(&quot;elem: &quot; + elem + &quot; or ep: &quot; + ep);</span>
+    }
+
+
+    public void removeInclude(Object usecase, Object include) {
+        try {
+<span class="nc bnc" id="L309" title="All 4 branches missed.">            if (usecase instanceof UseCase &amp;&amp; include instanceof Include) {</span>
+<span class="nc" id="L310">                ((UseCase) usecase).getInclude().remove(include);</span>
+<span class="nc" id="L311">                return;</span>
+            }
+<span class="nc" id="L313">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L314">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L315">        }</span>
+<span class="nc" id="L316">        throw new IllegalArgumentException(&quot;usecase: &quot; + usecase</span>
+                + &quot; or include: &quot; + include);
+    }
+
+
+    public void addExtend(Object elem, Object extend) {
+<span class="nc bnc" id="L322" title="All 4 branches missed.">        if (elem instanceof UseCase &amp;&amp; extend instanceof Extend) {</span>
+<span class="nc" id="L323">            ((UseCase) elem).getExtend().add((Extend) extend);</span>
+<span class="nc bnc" id="L324" title="All 4 branches missed.">        } else if (elem instanceof ExtensionPoint &amp;&amp; extend instanceof Extend) {</span>
+<span class="nc" id="L325">            ((Extend) extend).getExtensionPoint().add((ExtensionPoint) elem);</span>
+        } else {
+<span class="nc" id="L327">            throw new IllegalArgumentException(&quot;elem: &quot; + elem + &quot; or extend: &quot;</span>
+                    + extend);
+        }
+<span class="nc" id="L330">    }</span>
+
+
+    public void addExtensionPoint(Object handle, Object extensionPoint) {
+<span class="nc bnc" id="L334" title="All 2 branches missed.">        if (extensionPoint instanceof ExtensionPoint) {</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">            if (handle instanceof UseCase) {</span>
+<span class="nc" id="L336">                ((UseCase) handle).getExtensionPoint().add(</span>
+                        (ExtensionPoint) extensionPoint);
+<span class="nc" id="L338">                return;</span>
+            }
+<span class="nc bnc" id="L340" title="All 2 branches missed.">            if (handle instanceof Extend) {</span>
+<span class="nc" id="L341">                ((Extend) handle).getExtensionPoint().add(</span>
+                        (ExtensionPoint) extensionPoint);
+<span class="nc" id="L343">                return;</span>
+            }
+        }
+<span class="nc" id="L346">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or extensionPoint: &quot; + extensionPoint);
+    }
+
+
+    public void addExtensionPoint(Object handle, int position, 
+            Object extensionPoint) {
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if (extensionPoint instanceof ExtensionPoint) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            if (handle instanceof Extend) {</span>
+<span class="nc" id="L355">                ((Extend) handle).getExtensionPoint().add(position, </span>
+                        (ExtensionPoint) extensionPoint);
+<span class="nc" id="L357">                return;</span>
+            }
+        }
+<span class="nc" id="L360">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or extensionPoint: &quot; + extensionPoint);
+    }
+
+
+    public void addInclude(Object usecase, Object include) {
+<span class="nc bnc" id="L366" title="All 4 branches missed.">        if (usecase instanceof UseCase &amp;&amp; include instanceof Include) {</span>
+<span class="nc" id="L367">            ((UseCase) usecase).getInclude().add((Include) include);</span>
+<span class="nc" id="L368">            return;</span>
+        }
+
+<span class="nc" id="L371">        throw new IllegalArgumentException(&quot;usecase: &quot; + usecase</span>
+                + &quot; or include: &quot; + include);
+    }
+
+
+    public void setAddition(Object handle, Object useCase) {
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (!(useCase instanceof UseCase)) {</span>
+<span class="nc" id="L378">            throw new IllegalArgumentException(&quot;A UseCase was expected [&quot;</span>
+                    + useCase + &quot;]&quot;);
+        }
+
+<span class="nc bnc" id="L382" title="All 2 branches missed.">        if (handle instanceof Include) {</span>
+            try {
+<span class="nc" id="L384">                ((Include) handle).setAddition((UseCase) useCase);</span>
+<span class="nc" id="L385">                return;</span>
+<span class="nc" id="L386">            } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L387">                throw new IllegalArgumentException(</span>
+                        &quot;Operation on a removed object [&quot; + handle + &quot; or &quot;
+                                + useCase + &quot;]&quot;);
+            }
+        }
+<span class="nc" id="L392">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setCondition(Object handle, Object booleanExpression) {
+<span class="nc bnc" id="L397" title="All 6 branches missed.">        if (handle instanceof Extend</span>
+                &amp;&amp; (booleanExpression == null
+                        || booleanExpression instanceof BooleanExpression)) {
+<span class="nc" id="L400">            Expression oldExp = ((Extend) handle).getCondition();</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">            if (!equal(oldExp, (Expression) booleanExpression)) {</span>
+<span class="nc" id="L402">                ((Extend) handle)</span>
+<span class="nc" id="L403">                        .setCondition((BooleanExpression) booleanExpression);</span>
+<span class="nc bnc" id="L404" title="All 2 branches missed.">                if (oldExp != null) {</span>
+<span class="nc" id="L405">                    Model.getUmlFactory().delete(oldExp);</span>
+                }
+            }
+<span class="nc" id="L408">            return;</span>
+        }
+<span class="nc" id="L410">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or booleanExpression: &quot; + booleanExpression);
+    }
+
+    private boolean equal(Expression expr1, Expression expr2) {
+<span class="nc bnc" id="L415" title="All 2 branches missed.">        if (expr1 == null) {</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">            if (expr2 == null) {</span>
+<span class="nc" id="L417">                return true;</span>
+            } else {
+<span class="nc" id="L419">                return false;</span>
+            }
+        } else {
+<span class="nc" id="L422">            return expr1.equals(expr2);</span>
+        }
+    }
+    
+    
+    public void setExtension(Object handle, Object useCase) {
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (!(useCase instanceof UseCase)) {</span>
+<span class="nc" id="L429">            throw new IllegalArgumentException(&quot;A use case must be supplied&quot;);</span>
+        }
+
+<span class="nc bnc" id="L432" title="All 4 branches missed.">        if (handle instanceof Extend</span>
+                &amp;&amp; (useCase instanceof UseCase)) {
+            try {
+<span class="nc" id="L435">                ((Extend) handle).setExtension((UseCase) useCase);</span>
+<span class="nc" id="L436">                return;</span>
+<span class="nc" id="L437">            } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L438">                throw new IllegalStateException(</span>
+                        &quot;Operation on a removed object [&quot; + handle + &quot; or &quot;
+                                + useCase + &quot;]&quot;);
+            }
+        }
+<span class="nc" id="L443">        throw new IllegalArgumentException(</span>
+                &quot;handle: &quot; + handle + &quot; or ext: &quot;
+                + useCase);
+    }
+
+
+    public void setExtensionPoints(Object handle, Collection extensionPoints) {
+<span class="nc bnc" id="L450" title="All 4 branches missed.">        if (handle instanceof UseCase || handle instanceof Extend) {</span>
+            // TODO: This should use a minimal update strategy instead of
+            // removing all and then adding all - tfm - 20070806
+            Collection&lt;ExtensionPoint&gt; eps = 
+<span class="nc" id="L454">                Model.getFacade().getExtensionPoints(handle);</span>
+<span class="nc bnc" id="L455" title="All 2 branches missed.">            if (!eps.isEmpty()) {</span>
+<span class="nc" id="L456">                Collection&lt;ExtensionPoint&gt; extPts = </span>
+                    new ArrayList&lt;ExtensionPoint&gt;(eps);
+<span class="nc bnc" id="L458" title="All 2 branches missed.">                for (ExtensionPoint ep : extPts) {</span>
+<span class="nc" id="L459">                    removeExtensionPoint(handle, ep);</span>
+<span class="nc" id="L460">                }</span>
+            }
+<span class="nc bnc" id="L462" title="All 2 branches missed.">            for (Object ep : extensionPoints) {</span>
+<span class="nc" id="L463">                addExtensionPoint(handle, ep);</span>
+<span class="nc" id="L464">            }</span>
+<span class="nc" id="L465">            return;</span>
+        }
+<span class="nc" id="L467">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or extensionPoints: &quot; + extensionPoints);
+    }
+
+
+    public void setIncludes(Object handle, Collection includes) {
+<span class="nc bnc" id="L473" title="All 2 branches missed.">        if (handle instanceof UseCase) {</span>
+<span class="nc" id="L474">            Collection&lt;Include&gt; inc = Model.getFacade().getIncludes(handle);</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">            if (!inc.isEmpty()) {</span>
+<span class="nc" id="L476">                Collection&lt;Include&gt; in = new ArrayList&lt;Include&gt;(inc);</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">                for (Include i : in) {</span>
+<span class="nc" id="L478">                    removeInclude(handle, i);</span>
+<span class="nc" id="L479">                }</span>
+            }
+<span class="nc bnc" id="L481" title="All 2 branches missed.">            for (Include i : (Collection&lt;Include&gt;) includes) {</span>
+<span class="nc" id="L482">                addInclude(handle, i);</span>
+<span class="nc" id="L483">            }</span>
+<span class="nc" id="L484">            return;</span>
+        }
+<span class="nc" id="L486">        throw new IllegalArgumentException(&quot;handle: &quot; + handle</span>
+                + &quot; or includes: &quot; + includes);
+    }
+
+
+    public void setLocation(Object handle, String loc) {
+<span class="nc bnc" id="L492" title="All 2 branches missed.">        if (handle instanceof ExtensionPoint) {</span>
+<span class="nc" id="L493">            ((ExtensionPoint) handle).setLocation(loc);</span>
+<span class="nc" id="L494">            return;</span>
+        }
+<span class="nc" id="L496">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+
+    public void setUseCase(Object elem, Object usecase) {
+<span class="nc bnc" id="L501" title="All 6 branches missed.">        if (elem instanceof ExtensionPoint</span>
+                &amp;&amp; (usecase instanceof UseCase || usecase == null)) {
+<span class="nc" id="L503">            ((ExtensionPoint) elem).setUseCase((UseCase) usecase);</span>
+<span class="nc" id="L504">            return;</span>
+        }
+<span class="nc" id="L506">        throw new IllegalArgumentException(&quot;elem: &quot; + elem + &quot; or usecase: &quot;</span>
+                + usecase);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

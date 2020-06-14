@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrNoTriggerOrGuard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrNoTriggerOrGuard.java</span></div><h1>CrNoTriggerOrGuard.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+/**
+ * A critic that checks for missing trigger and/or guard.
+ *
+ *
+ * @author jrobbins
+ */
+public class CrNoTriggerOrGuard extends CrUML {
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L60">    public CrNoTriggerOrGuard() {</span>
+<span class="fc" id="L61">        setupHeadAndDesc();</span>
+<span class="fc" id="L62">	addSupportedDecision(UMLDecision.STATE_MACHINES);</span>
+<span class="fc" id="L63">	setKnowledgeTypes(Critic.KT_COMPLETENESS);</span>
+<span class="fc" id="L64">	addTrigger(&quot;trigger&quot;);</span>
+<span class="fc" id="L65">	addTrigger(&quot;guard&quot;);</span>
+<span class="fc" id="L66">    }</span>
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     *      java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">	if (!(Model.getFacade().isATransition(dm))) {</span>
+<span class="nc" id="L75">            return NO_PROBLEM;</span>
+        }
+	
+<span class="nc" id="L78">        Object transition = /*(MTransition)*/ dm;</span>
+<span class="nc" id="L79">        Object target = Model.getFacade().getTarget(transition);</span>
+
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (!(Model.getFacade().isAPseudostate(target))) {</span>
+<span class="nc" id="L82">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc" id="L85">	Object trigger = Model.getFacade().getTrigger(transition);</span>
+<span class="nc" id="L86">	Object guard = Model.getFacade().getGuard(transition);</span>
+<span class="nc" id="L87">	Object source = Model.getFacade().getSource(transition);</span>
+	
+	
+	//	 WFR Transitions, OMG UML 1.3
+<span class="nc" id="L91">	Object k = Model.getFacade().getKind(target);</span>
+<span class="nc" id="L92">	if (Model.getFacade().</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            equalsPseudostateKind(k,</span>
+<span class="nc" id="L94">                    Model.getPseudostateKind().getJoin())) {</span>
+<span class="nc" id="L95">            return NO_PROBLEM;</span>
+        }
+<span class="nc bnc" id="L97" title="All 2 branches missed.">	if (!(Model.getFacade().isAState(source))) {</span>
+<span class="nc" id="L98">            return NO_PROBLEM;</span>
+        }
+<span class="nc bnc" id="L100" title="All 2 branches missed.">	if (Model.getFacade().getDoActivity(source) != null) {</span>
+<span class="nc" id="L101">            return NO_PROBLEM;</span>
+        }
+<span class="nc bnc" id="L103" title="All 2 branches missed.">	boolean hasTrigger =</span>
+	    (trigger != null
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            &amp;&amp; Model.getFacade().getName(trigger) != null</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            &amp;&amp; Model.getFacade().getName(trigger).length() &gt; 0);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">	if (hasTrigger) {</span>
+<span class="nc" id="L108">            return NO_PROBLEM;</span>
+        }
+<span class="nc bnc" id="L110" title="All 2 branches missed.">	boolean noGuard =</span>
+            (guard == null
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            || Model.getFacade().getExpression(guard) == null</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            || Model.getFacade().getBody(</span>
+<span class="nc" id="L114">                Model.getFacade().getExpression(guard)) == null</span>
+            || Model
+<span class="nc" id="L116">                .getFacade().getBody(Model.getFacade().getExpression(guard))</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                .toString().length() == 0);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">	if (noGuard) {</span>
+<span class="nc" id="L119">            return PROBLEM_FOUND;</span>
+        }
+<span class="nc" id="L121">	return NO_PROBLEM;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L129">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L130">        ret.add(Model.getMetaTypes().getTransition());</span>
+<span class="fc" id="L131">        return ret;</span>
+    }
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -301548543890007262L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

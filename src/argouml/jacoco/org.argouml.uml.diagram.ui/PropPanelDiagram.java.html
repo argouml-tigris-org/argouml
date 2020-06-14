@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropPanelDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">PropPanelDiagram.java</span></div><h1>PropPanelDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import static org.argouml.model.Model.getModelManagementFactory;
+
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JTextField;
+
+import org.argouml.i18n.Translator;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.Relocatable;
+import org.argouml.uml.ui.AbstractActionNavigate;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLSearchableComboBox;
+import org.argouml.uml.util.PathComparator;
+
+/**
+ * This class represents the properties panel for a Diagram.
+ *
+ */
+public class PropPanelDiagram extends PropPanel implements TabModelTarget {
+
+    private JComboBox homeModelSelector;
+<span class="fc" id="L76">    private UMLDiagramHomeModelComboBoxModel homeModelComboBoxModel =</span>
+        new UMLDiagramHomeModelComboBoxModel();
+
+    /**
+     * Construct a property panel with a given name and icon.
+     * 
+     * @param diagramName the diagram name to use as the title of the panel
+     * @param icon an icon to display on the panel
+     */
+    protected PropPanelDiagram(String diagramName, ImageIcon icon) {
+<span class="fc" id="L86">        super(diagramName, icon);</span>
+
+<span class="fc" id="L88">        JTextField field = new JTextField();</span>
+        // TODO: This should probably only update the project when the user
+        // presses Return or focus is lost
+<span class="fc" id="L91">        field.getDocument().addDocumentListener(new DiagramNameDocument(field));</span>
+<span class="fc" id="L92">        addField(&quot;label.name&quot;, field);</span>
+
+<span class="fc" id="L94">        addField(&quot;label.home-model&quot;, getHomeModelSelector());</span>
+
+<span class="fc" id="L96">        addAction(new ActionNavigateUpFromDiagram());</span>
+<span class="fc" id="L97">        addAction(ActionDeleteModelElements.getTargetFollower());</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Default constructor if there is no child of this class that can show the
+     * diagram.
+     */
+    public PropPanelDiagram() {
+<span class="nc" id="L105">        this(&quot;Diagram&quot;, null);</span>
+<span class="nc" id="L106">    }</span>
+
+    /**
+     * Returns the home-model selector. This is a component which allows the
+     * user to select a single item as the home-model, 
+     * i.e. the &quot;owner&quot; of the diagram.
+     *
+     * @return a component for selecting the home-model
+     */
+    protected JComponent getHomeModelSelector() {
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (homeModelSelector == null) {</span>
+<span class="fc" id="L117">            homeModelSelector = new UMLSearchableComboBox(</span>
+                    homeModelComboBoxModel,
+                    new ActionSetDiagramHomeModel(), true);
+        }
+<span class="fc" id="L121">        return new UMLComboBoxNavigator(</span>
+<span class="fc" id="L122">                Translator.localize(&quot;label.namespace.navigate.tooltip&quot;),</span>
+                homeModelSelector);
+    }
+
+}
+
+class UMLDiagramHomeModelComboBoxModel extends UMLComboBoxModel2 {
+
+    public UMLDiagramHomeModelComboBoxModel() {
+<span class="fc" id="L131">        super(ArgoDiagram.NAMESPACE_KEY, false);</span>
+<span class="fc" id="L132">    }</span>
+
+    @Override
+    protected void buildModelList() {
+<span class="nc" id="L136">        Object target = getTarget();</span>
+<span class="nc" id="L137">        List list = new ArrayList();</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">        if (target instanceof Relocatable) {</span>
+<span class="nc" id="L139">            Relocatable diagram = (Relocatable) target;</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            for (Object obj : diagram.getRelocationCandidates(</span>
+<span class="nc" id="L141">                    getModelManagementFactory().getRootModel())) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                if (diagram.isRelocationAllowed(obj)) {</span>
+<span class="nc" id="L143">                    list.add(obj);</span>
+                }
+<span class="nc" id="L145">            }</span>
+        }
+        /* This should not be needed if the above is correct, 
+         * but let's be sure: */
+<span class="nc" id="L149">        list.add(getSelectedModelElement());</span>
+<span class="nc" id="L150">        Collections.sort(list, new PathComparator());</span>
+<span class="nc" id="L151">        setElements(list);</span>
+<span class="nc" id="L152">    }</span>
+    
+    @Override
+    protected void buildMinimalModelList() {
+<span class="fc" id="L156">        Collection list = new ArrayList(1);</span>
+<span class="fc" id="L157">        list.add(getSelectedModelElement());</span>
+<span class="fc" id="L158">        setElements(list);</span>
+<span class="fc" id="L159">        setModelInvalid();</span>
+<span class="fc" id="L160">    }</span>
+    
+    @Override
+    protected boolean isLazy() {
+<span class="fc" id="L164">        return true;</span>
+    }
+
+    @Override
+    protected Object getSelectedModelElement() {
+<span class="fc" id="L169">        Object t = getTarget();</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (t instanceof ArgoDiagram) {</span>
+<span class="fc" id="L171">            return ((ArgoDiagram) t).getOwner();</span>
+        }
+<span class="fc" id="L173">        return null;</span>
+    }
+
+    @Override
+    protected boolean isValidElement(Object element) {
+<span class="nc" id="L178">        Object t = getTarget();</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (t instanceof Relocatable) {</span>
+<span class="nc" id="L180">            return ((Relocatable) t).isRelocationAllowed(element);</span>
+        }
+<span class="nc" id="L182">        return false;</span>
+    }
+}
+
+class ActionSetDiagramHomeModel extends UndoableAction {
+    protected ActionSetDiagramHomeModel() {
+<span class="fc" id="L188">        super();</span>
+<span class="fc" id="L189">    }</span>
+
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L192">        Object source = e.getSource();</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (source instanceof UMLComboBox2) {</span>
+<span class="nc" id="L194">            UMLComboBox2 box = (UMLComboBox2) source;</span>
+<span class="nc" id="L195">            Object diagram = box.getTarget();</span>
+<span class="nc" id="L196">            Object homeModel = box.getSelectedItem();</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">            if (diagram instanceof Relocatable) {</span>
+<span class="nc" id="L198">                Relocatable d = (Relocatable) diagram;</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                if (d.isRelocationAllowed(homeModel)) {</span>
+<span class="nc" id="L200">                    d.relocate(homeModel);</span>
+                }
+            }
+        }
+<span class="nc" id="L204">    }</span>
+}
+
+class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
+
+    /**
+     * The constructor.
+     */
+    public ActionNavigateUpFromDiagram() {
+<span class="fc" id="L213">        super(&quot;button.go-up&quot;, true);</span>
+<span class="fc" id="L214">    }</span>
+
+    /*
+     * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
+     */
+    protected Object navigateTo(Object source) {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (source instanceof ArgoDiagram) {</span>
+<span class="nc" id="L221">            return ((ArgoDiagram) source).getNamespace();</span>
+        }
+<span class="nc" id="L223">        return null;</span>
+    }
+    
+    /*
+     * @see javax.swing.Action#isEnabled()
+     */
+    @Override
+    public boolean isEnabled() {
+<span class="fc" id="L231">        return true;</span>
+    }
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L239">        Object target = TargetManager.getInstance().getTarget();</span>
+<span class="nc" id="L240">        Object destination = navigateTo(target);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">        if (destination != null) {</span>
+<span class="nc" id="L242">            TargetManager.getInstance().setTarget(destination);</span>
+        }
+<span class="nc" id="L244">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

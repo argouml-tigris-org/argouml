@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionMultiplicity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionMultiplicity.java</span></div><h1>ActionMultiplicity.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.Action;
+
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * Action to set the Multiplicity.
+ *
+ */
+public class ActionMultiplicity extends UndoableAction {
+<span class="nc" id="L59">    private String str = &quot;&quot;;</span>
+<span class="nc" id="L60">    private Object mult = null;</span>
+
+    // multiplicity
+<span class="nc" id="L63">    private static UndoableAction srcMultOne = </span>
+        new ActionMultiplicity(&quot;1&quot;, &quot;src&quot;);
+
+<span class="nc" id="L66">    private static UndoableAction destMultOne = </span>
+        new ActionMultiplicity(&quot;1&quot;, &quot;dest&quot;);
+
+<span class="nc" id="L69">    private static UndoableAction srcMultZeroToOne = </span>
+        new ActionMultiplicity(&quot;0..1&quot;, &quot;src&quot;);
+
+<span class="nc" id="L72">    private static UndoableAction destMultZeroToOne = </span>
+        new ActionMultiplicity(&quot;0..1&quot;, &quot;dest&quot;);
+
+<span class="nc" id="L75">    private static UndoableAction srcMultZeroToMany = </span>
+        new ActionMultiplicity(&quot;0..*&quot;, &quot;src&quot;);
+
+<span class="nc" id="L78">    private static UndoableAction destMultZeroToMany = </span>
+        new ActionMultiplicity(&quot;0..*&quot;, &quot;dest&quot;);
+
+<span class="nc" id="L81">    private static UndoableAction srcMultOneToMany = </span>
+        new ActionMultiplicity(&quot;1..*&quot;, &quot;src&quot;);
+
+<span class="nc" id="L84">    private static UndoableAction destMultOneToMany = </span>
+        new ActionMultiplicity(&quot;1..*&quot;, &quot;dest&quot;);
+
+    /**
+     * The Constructor.
+     *
+     * @param m the multiplicity
+     * @param s &quot;src&quot; or &quot;dest&quot;. Anything else is interpreted as &quot;dest&quot;.
+     */
+    protected ActionMultiplicity(String m, String s) {
+<span class="nc" id="L94">        super(m, null);</span>
+        // Set the tooltip string:
+<span class="nc" id="L96">        putValue(Action.SHORT_DESCRIPTION, m);</span>
+<span class="nc" id="L97">	str = s;</span>
+<span class="nc" id="L98">	mult = m;</span>
+<span class="nc" id="L99">    }</span>
+
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L107">        super.actionPerformed(ae);</span>
+<span class="nc" id="L108">    	List sels = Globals.curEditor().getSelectionManager().selections();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">	if (sels.size() == 1) {</span>
+<span class="nc" id="L110">	    Selection sel = (Selection) sels.get(0);</span>
+<span class="nc" id="L111">	    Fig f = sel.getContent();</span>
+<span class="nc" id="L112">	    Object owner = ((FigEdgeModelElement) f).getOwner();</span>
+<span class="nc" id="L113">	    Collection ascEnds = Model.getFacade().getConnections(owner);</span>
+<span class="nc" id="L114">            Iterator iter = ascEnds.iterator();</span>
+<span class="nc" id="L115">	    Object ascEnd = null;</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">	    if (str.equals(&quot;src&quot;)) {</span>
+<span class="nc" id="L117">		ascEnd = iter.next();</span>
+            } else {
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                while (iter.hasNext()) {</span>
+<span class="nc" id="L120">                    ascEnd = iter.next();</span>
+                }
+            }
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (!mult.equals(Model.getFacade().toString(</span>
+<span class="nc" id="L125">                    Model.getFacade().getMultiplicity(ascEnd)))) {</span>
+<span class="nc" id="L126">                Model.getCoreHelper().setMultiplicity(ascEnd, (String) mult);</span>
+            }
+
+	}
+<span class="nc" id="L130">    }</span>
+
+    /**
+     * @return true if the action is enabled
+     * @see org.tigris.gef.undo.UndoableAction#isEnabled()
+     */
+    public boolean isEnabled() {
+<span class="nc" id="L137">	return true;</span>
+    }
+
+
+    /**
+     * @return Returns the srcMultOne.
+     */
+    public static UndoableAction getSrcMultOne() {
+<span class="nc" id="L145">        return srcMultOne;</span>
+    }
+
+
+    /**
+     * @return Returns the destMultOne.
+     */
+    public static UndoableAction getDestMultOne() {
+<span class="nc" id="L153">        return destMultOne;</span>
+    }
+
+
+    /**
+     * @return Returns the srcMultZeroToOne.
+     */
+    public static UndoableAction getSrcMultZeroToOne() {
+<span class="nc" id="L161">        return srcMultZeroToOne;</span>
+    }
+
+
+    /**
+     * @return Returns the destMultZeroToOne.
+     */
+    public static UndoableAction getDestMultZeroToOne() {
+<span class="nc" id="L169">        return destMultZeroToOne;</span>
+    }
+
+
+    /**
+     * @return Returns the srcMultZeroToMany.
+     */
+    public static UndoableAction getSrcMultZeroToMany() {
+<span class="nc" id="L177">        return srcMultZeroToMany;</span>
+    }
+
+
+    /**
+     * @return Returns the destMultZeroToMany.
+     */
+    public static UndoableAction getDestMultZeroToMany() {
+<span class="nc" id="L185">        return destMultZeroToMany;</span>
+    }
+
+
+    /**
+     * @return Returns the srcMultOneToMany.
+     */
+    public static UndoableAction getSrcMultOneToMany() {
+<span class="nc" id="L193">        return srcMultOneToMany;</span>
+    }
+
+
+    /**
+     * @return Returns the destMultOneToMany.
+     */
+    public static UndoableAction getDestMultOneToMany() {
+<span class="nc" id="L201">        return destMultOneToMany;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

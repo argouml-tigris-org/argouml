@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLClassDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">UMLClassDiagram.java</span></div><h1>UMLClassDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Thomas Neustupny
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.ClassDiagram;
+import org.argouml.model.CoreFactory;
+import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.deployment.ui.FigComponent;
+import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigAbstraction;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigAssociationEnd;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigPermission;
+import org.argouml.uml.diagram.ui.FigUsage;
+import org.argouml.uml.diagram.ui.ModeCreateDependency;
+import org.argouml.uml.diagram.ui.ModeCreatePermission;
+import org.argouml.uml.diagram.ui.ModeCreateUsage;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
+import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
+import org.argouml.uml.ui.foundation.core.ActionAddOperation;
+import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * UML Class Diagram.
+ *
+ * @author jrobbins@ics.uci.edy
+ */
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {</span>
+
+<span class="fc" id="L98">    private static final Logger LOG =</span>
+<span class="fc" id="L99">        Logger.getLogger(UMLClassDiagram.class.getName());</span>
+
+    ////////////////
+    // actions for toolbar
+    private Action actionAssociationClass;
+    private Action actionClass;
+    private Action actionInterface;
+    private Action actionInstanceSpecification;
+    private Action actionDependency;
+    private Action actionPermission;
+    private Action actionUsage;
+    private Action actionLink;
+    private Action actionGeneralization;
+    private Action actionRealization;
+    private Action actionPackage;
+    private Action actionModel;
+    private Action actionSubsystem;
+    private Action actionAssociation;
+    private Action actionAssociationEnd;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
+    private Action actionDataType;
+    private Action actionEnumeration;
+    private Action actionStereotype;
+    private Action actionSignal;
+    private Action actionException;
+
+    /**
+     * Construct a Class Diagram. Default constructor used by PGML parser during
+     * diagram load. It should not be used by other callers.
+     * @deprecated only for use by PGML parser
+     */
+    @Deprecated
+    public UMLClassDiagram() {
+<span class="fc" id="L136">        super(new ClassDiagramGraphModel());</span>
+<span class="fc" id="L137">    }</span>
+
+
+    /**
+     * Construct a new class diagram with the given name, owned by the given
+     * namespace.
+     *
+     * @param name the name for the new diagram
+     * @param namespace the namespace for the new diagram
+     */
+    public UMLClassDiagram(String name, Object namespace) {
+<span class="nc" id="L148">        super(name, namespace, new ClassDiagramGraphModel());</span>
+<span class="nc" id="L149">    }</span>
+
+    /**
+     * Construct a Class Diagram owned by the given namespace. A default unique
+     * diagram name is constructed.
+     *
+     * @param m the namespace
+     */
+    public UMLClassDiagram(Object m) {
+        // We're going to change the name immediately, so just use &quot;&quot;
+<span class="fc" id="L159">        super(&quot;&quot;, m, new ClassDiagramGraphModel());</span>
+<span class="fc" id="L160">        String name = getNewDiagramName();</span>
+        try {
+<span class="fc" id="L162">            setName(name);</span>
+<span class="nc" id="L163">        } catch (PropertyVetoException pve) {</span>
+<span class="nc" id="L164">            LOG.log(Level.WARNING,</span>
+                    &quot;Generated diagram name '&quot; + name
+                    + &quot;' was vetoed by setName&quot;);
+<span class="fc" id="L167">        }</span>
+<span class="fc" id="L168">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(java.lang.Object)
+     */
+    public void setNamespace(Object ns) {
+<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(ns)) {</span>
+<span class="nc" id="L175">            LOG.log(Level.SEVERE,</span>
+                    &quot;Illegal argument. &quot;
+                    + &quot;Object &quot; + ns + &quot; is not a namespace&quot;);
+<span class="nc" id="L178">            throw new IllegalArgumentException(&quot;Illegal argument. &quot;</span>
+            			       + &quot;Object &quot; + ns
+            			       + &quot; is not a namespace&quot;);
+        }
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        boolean init = (null == getNamespace());</span>
+<span class="fc" id="L183">        super.setNamespace(ns);</span>
+<span class="fc" id="L184">        ClassDiagramGraphModel gm = (ClassDiagramGraphModel) getGraphModel();</span>
+<span class="fc" id="L185">        gm.setHomeModel(ns);</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (init) {</span>
+<span class="fc" id="L187">            LayerPerspective lay =</span>
+<span class="fc" id="L188">                new LayerPerspectiveMutable(Model.getFacade().getName(ns), gm);</span>
+<span class="fc" id="L189">            ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton</span>
+<span class="fc" id="L190">            lay.setGraphNodeRenderer(rend);</span>
+<span class="fc" id="L191">            lay.setGraphEdgeRenderer(rend);</span>
+<span class="fc" id="L192">            setLayer(lay);</span>
+        }
+<span class="fc" id="L194">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
+     */
+    protected Object[] getUmlActions() {
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L201">            Object[] actions = {</span>
+<span class="nc" id="L202">                getPackageActions(),</span>
+<span class="nc" id="L203">                getActionClass(),</span>
+                null,
+<span class="nc" id="L205">                getAssociationActions(),</span>
+<span class="nc" id="L206">                getAggregationActions(),</span>
+<span class="nc" id="L207">                getCompositionActions(),</span>
+<span class="nc" id="L208">                getActionAssociationEnd(),</span>
+<span class="nc" id="L209">                getActionGeneralization(),</span>
+                null,
+<span class="nc" id="L211">                getActionInterface(),</span>
+<span class="nc" id="L212">                getActionRealization(),</span>
+                null,
+<span class="nc" id="L214">                getDependencyActions(),</span>
+                null,
+<span class="nc" id="L216">                ActionAddAttribute.getTargetFollower(),</span>
+<span class="nc" id="L217">                ActionAddOperation.getTargetFollower(),</span>
+<span class="nc" id="L218">                getActionAssociationClass(),</span>
+                null,
+<span class="nc" id="L220">                getDataTypeActions(),</span>
+            };
+
+<span class="nc" id="L223">            return actions;</span>
+        } else {
+<span class="nc" id="L225">            Object[] actions = {</span>
+<span class="nc" id="L226">                getPackageActions(),</span>
+<span class="nc" id="L227">                getActionClass(),</span>
+                null,
+<span class="nc" id="L229">                getAssociationActions(),</span>
+<span class="nc" id="L230">                getAggregationActions(),</span>
+<span class="nc" id="L231">                getCompositionActions(),</span>
+<span class="nc" id="L232">                getActionAssociationEnd(),</span>
+<span class="nc" id="L233">                getActionGeneralization(),</span>
+                null,
+<span class="nc" id="L235">                getActionInterface(),</span>
+<span class="nc" id="L236">                getActionRealization(),</span>
+                null,
+<span class="nc" id="L238">                getDependencyActions(),</span>
+                null,
+<span class="nc" id="L240">                ActionAddAttribute.getTargetFollower(),</span>
+<span class="nc" id="L241">                ActionAddOperation.getTargetFollower(),</span>
+<span class="nc" id="L242">                getActionAssociationClass(),</span>
+<span class="nc" id="L243">                getActionInstanceSpecification(),</span>
+                null,
+<span class="nc" id="L245">                getDataTypeActions(),</span>
+            };
+
+<span class="nc" id="L248">            return actions;</span>
+        }
+    }
+
+    /**
+     * Return the actions for the miscellaneous pulldown menu.
+     */
+    private Object[] getDataTypeActions() {
+<span class="nc" id="L256">        Object[] actions = {</span>
+<span class="nc" id="L257">            getActionDataType(),</span>
+<span class="nc" id="L258">            getActionEnumeration(),</span>
+<span class="nc" id="L259">            getActionStereotype(),</span>
+<span class="nc" id="L260">            getActionSignal(),</span>
+<span class="nc" id="L261">            getActionException(),</span>
+        };
+<span class="nc" id="L263">        ToolBarUtility.manageDefault(actions, &quot;diagram.class.datatype&quot;);</span>
+<span class="nc" id="L264">        return actions;</span>
+    }
+
+    private Object getPackageActions() {
+        // TODO: To enable models and subsystems, change this flag
+        // Work started by Markus I believe where does this stand? - Bob.
+
+        // Status as of Nov. 2008 - Figs created, property panels exist, more
+        // work required on explorer and assumptions about models not being
+        // nested - tfm
+        if (false) {
+            Object[] actions = {
+                    getActionPackage(),
+                    getActionModel(),
+                    getActionSubsystem(),
+            };
+            ToolBarUtility.manageDefault(actions, &quot;diagram.class.package&quot;);
+            return actions;
+        } else {
+<span class="nc" id="L283">            return getActionPackage();</span>
+        }
+    }
+
+    /**
+     * Return an array of dependency actions in the
+     * pattern of which to build a popup toolbutton.
+     */
+    private Object[] getDependencyActions() {
+<span class="nc" id="L292">        Object[] actions = {</span>
+<span class="nc" id="L293">            getActionDependency(),</span>
+<span class="nc" id="L294">            getActionPermission(),</span>
+<span class="nc" id="L295">            getActionUsage(),</span>
+        };
+<span class="nc" id="L297">        ToolBarUtility.manageDefault(actions, &quot;diagram.class.dependency&quot;);</span>
+<span class="nc" id="L298">        return actions;</span>
+    }
+
+    /**
+     * Return an array of association actions in the
+     * pattern of which to build a popup toolbutton.
+     */
+    private Object[] getAssociationActions() {
+        // This calls the getters to fetch actions even though the
+        // action variables are defined is instances of this class.
+        // This is because any number of action getters could have
+        // been overridden in a descendant and it is the action from
+        // that overridden method that should be returned in the array.
+<span class="nc" id="L311">        Object[] actions = {</span>
+<span class="nc" id="L312">            getActionAssociation(),</span>
+<span class="nc" id="L313">            getActionUniAssociation(),</span>
+        };
+<span class="nc" id="L315">        ToolBarUtility.manageDefault(actions, &quot;diagram.class.association&quot;);</span>
+<span class="nc" id="L316">        return actions;</span>
+    }
+
+    private Object[] getAggregationActions() {
+<span class="nc" id="L320">        Object[] actions = {</span>
+<span class="nc" id="L321">            getActionAggregation(),</span>
+<span class="nc" id="L322">            getActionUniAggregation(),</span>
+        };
+<span class="nc" id="L324">        ToolBarUtility.manageDefault(actions, &quot;diagram.class.aggregation&quot;);</span>
+<span class="nc" id="L325">        return actions;</span>
+    }
+
+    private Object[] getCompositionActions() {
+<span class="nc" id="L329">        Object[] actions = {</span>
+<span class="nc" id="L330">            getActionComposition(),</span>
+<span class="nc" id="L331">            getActionUniComposition(),</span>
+        };
+<span class="nc" id="L333">        ToolBarUtility.manageDefault(actions, &quot;diagram.class.composition&quot;);</span>
+<span class="nc" id="L334">        return actions;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+<span class="fc" id="L341">        return Translator.localize(&quot;label.class-diagram&quot;);</span>
+    }
+
+    /**
+     * @return Returns the actionAggregation.
+     */
+    protected Action getActionAggregation() {
+<span class="nc bnc" id="L348" title="All 2 branches missed.">        if (actionAggregation == null) {</span>
+<span class="nc" id="L349">            actionAggregation =</span>
+<span class="nc" id="L350">                makeCreateAssociationAction(</span>
+<span class="nc" id="L351">                        Model.getAggregationKind().getAggregate(),</span>
+                        false,
+                        &quot;button.new-aggregation&quot;);
+        }
+<span class="nc" id="L355">        return actionAggregation;</span>
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        if (actionAssociation == null) {</span>
+<span class="nc" id="L362">            actionAssociation =</span>
+<span class="nc" id="L363">                makeCreateAssociationAction(</span>
+<span class="nc" id="L364">                        Model.getAggregationKind().getNone(),</span>
+                        false, &quot;button.new-association&quot;);
+        }
+<span class="nc" id="L367">        return actionAssociation;</span>
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociationEnd() {
+<span class="nc bnc" id="L373" title="All 2 branches missed.">        if (actionAssociationEnd == null) {</span>
+<span class="nc" id="L374">            actionAssociationEnd =</span>
+<span class="nc" id="L375">                makeCreateAssociationEndAction(&quot;button.new-association-end&quot;);</span>
+        }
+<span class="nc" id="L377">        return actionAssociationEnd;</span>
+    }
+
+    /**
+     * @return Returns the actionClass.
+     */
+    protected Action getActionClass() {
+<span class="nc bnc" id="L384" title="All 2 branches missed.">        if (actionClass == null) {</span>
+<span class="nc" id="L385">            actionClass =</span>
+<span class="nc" id="L386">                makeCreateNodeAction(Model.getMetaTypes().getUMLClass(),</span>
+                        	     &quot;button.new-class&quot;);
+        }
+
+<span class="nc" id="L390">        return actionClass;</span>
+    }
+
+    /**
+    * @return Returns the actionAssociationClass.
+    */
+    protected Action getActionAssociationClass() {
+<span class="nc bnc" id="L397" title="All 2 branches missed.">        if (actionAssociationClass == null) {</span>
+<span class="nc" id="L398">            actionAssociationClass =</span>
+<span class="nc" id="L399">                makeCreateAssociationClassAction(</span>
+                        &quot;button.new-associationclass&quot;);
+        }
+<span class="nc" id="L402">        return actionAssociationClass;</span>
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+<span class="nc bnc" id="L408" title="All 2 branches missed.">        if (actionComposition == null) {</span>
+<span class="nc" id="L409">            actionComposition =</span>
+<span class="nc" id="L410">                makeCreateAssociationAction(</span>
+<span class="nc" id="L411">                        Model.getAggregationKind().getComposite(),</span>
+                        false, &quot;button.new-composition&quot;);
+        }
+<span class="nc" id="L414">        return actionComposition;</span>
+    }
+
+    /**
+     * @return Returns the actionDepend.
+     */
+    protected Action getActionDependency() {
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (actionDependency == null) {</span>
+<span class="nc" id="L422">            actionDependency = makeCreateDependencyAction(</span>
+        	    ModeCreateDependency.class,
+<span class="nc" id="L424">                        Model.getMetaTypes().getDependency(),</span>
+                        &quot;button.new-dependency&quot;);
+        }
+<span class="nc" id="L427">        return actionDependency;</span>
+    }
+
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralization() {
+<span class="nc bnc" id="L434" title="All 2 branches missed.">        if (actionGeneralization == null) {</span>
+<span class="nc" id="L435">            actionGeneralization = makeCreateGeneralizationAction();</span>
+        }
+
+<span class="nc" id="L438">        return actionGeneralization;</span>
+    }
+
+    /**
+     * @return Returns the actionInterface.
+     */
+    protected Action getActionInterface() {
+<span class="nc bnc" id="L445" title="All 2 branches missed.">        if (actionInterface == null) {</span>
+<span class="nc" id="L446">            actionInterface =</span>
+<span class="nc" id="L447">                makeCreateNodeAction(</span>
+<span class="nc" id="L448">                        Model.getMetaTypes().getInterface(),</span>
+                        &quot;button.new-interface&quot;);
+        }
+<span class="nc" id="L451">        return actionInterface;</span>
+    }
+
+    /**
+     * @return Returns the actionInterface.
+     */
+    protected Action getActionInstanceSpecification() {
+<span class="nc bnc" id="L458" title="All 2 branches missed.">        if (actionInstanceSpecification == null) {</span>
+<span class="nc" id="L459">            actionInstanceSpecification =</span>
+<span class="nc" id="L460">                makeCreateNodeAction(</span>
+<span class="nc" id="L461">                        Model.getMetaTypes().getInstanceSpecification(),</span>
+                        &quot;button.new-instance-specification&quot;);
+        }
+<span class="nc" id="L464">        return actionInstanceSpecification;</span>
+    }
+
+    /**
+     * @return Returns the actionLink.
+     */
+    protected Action getActionLink() {
+<span class="nc bnc" id="L471" title="All 2 branches missed.">        if (actionLink == null) {</span>
+<span class="nc" id="L472">            actionLink =</span>
+<span class="nc" id="L473">                makeCreateEdgeAction(Model.getMetaTypes().getLink(), &quot;Link&quot;);</span>
+        }
+
+<span class="nc" id="L476">        return actionLink;</span>
+    }
+    /**
+     * @return Returns the actionModel.
+     */
+    protected Action getActionModel() {
+<span class="nc bnc" id="L482" title="All 2 branches missed.">        if (actionModel == null) {</span>
+<span class="nc" id="L483">            actionModel =</span>
+<span class="nc" id="L484">                makeCreateNodeAction(Model.getMetaTypes().getModel(), &quot;Model&quot;);</span>
+        }
+
+<span class="nc" id="L487">        return actionModel;</span>
+    }
+
+    /**
+     * @return Returns the actionPackage.
+     */
+    protected Action getActionPackage() {
+<span class="nc bnc" id="L494" title="All 2 branches missed.">        if (actionPackage == null) {</span>
+<span class="nc" id="L495">            actionPackage =</span>
+<span class="nc" id="L496">                makeCreateNodeAction(Model.getMetaTypes().getPackage(),</span>
+                        	     &quot;button.new-package&quot;);
+        }
+
+<span class="nc" id="L500">        return actionPackage;</span>
+    }
+    /**
+     * @return Returns the actionPermission.
+     */
+    protected Action getActionPermission() {
+<span class="nc bnc" id="L506" title="All 2 branches missed.">        if (actionPermission == null) {</span>
+<span class="nc" id="L507">            actionPermission = makeCreateDependencyAction(</span>
+        	    ModeCreatePermission.class,
+<span class="nc" id="L509">                        Model.getMetaTypes().getPackageImport(),</span>
+                        &quot;button.new-permission&quot;);
+        }
+
+<span class="nc" id="L513">        return actionPermission;</span>
+    }
+
+    /**
+     * @return Returns the actionRealize.
+     */
+    protected Action getActionRealization() {
+<span class="nc bnc" id="L520" title="All 2 branches missed.">        if (actionRealization == null) {</span>
+<span class="nc" id="L521">            actionRealization =</span>
+<span class="nc" id="L522">                makeCreateEdgeAction(</span>
+<span class="nc" id="L523">                        Model.getMetaTypes().getAbstraction(),</span>
+                        &quot;button.new-realization&quot;);
+        }
+
+<span class="nc" id="L527">        return actionRealization;</span>
+    }
+
+    /**
+     * @return Returns the actionSubsystem.
+     */
+    protected Action getActionSubsystem() {
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        if (actionSubsystem == null) {</span>
+<span class="nc" id="L535">            actionSubsystem =</span>
+<span class="nc" id="L536">                makeCreateNodeAction(</span>
+<span class="nc" id="L537">                        Model.getMetaTypes().getSubsystem(),</span>
+                        &quot;Subsystem&quot;);
+        }
+<span class="nc" id="L540">        return actionSubsystem;</span>
+    }
+
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+<span class="nc bnc" id="L547" title="All 2 branches missed.">        if (actionUniAggregation == null) {</span>
+<span class="nc" id="L548">            actionUniAggregation =</span>
+<span class="nc" id="L549">                makeCreateAssociationAction(</span>
+<span class="nc" id="L550">                        Model.getAggregationKind().getAggregate(),</span>
+                        true,
+                        &quot;button.new-uniaggregation&quot;);
+        }
+<span class="nc" id="L554">        return actionUniAggregation;</span>
+    }
+
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        if (actionUniAssociation == null) {</span>
+<span class="nc" id="L562">            actionUniAssociation =</span>
+<span class="nc" id="L563">                makeCreateAssociationAction(</span>
+<span class="nc" id="L564">                        Model.getAggregationKind().getNone(),</span>
+                        true,
+                        &quot;button.new-uniassociation&quot;);
+        }
+<span class="nc" id="L568">        return actionUniAssociation;</span>
+    }
+
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+<span class="nc bnc" id="L575" title="All 2 branches missed.">        if (actionUniComposition == null) {</span>
+<span class="nc" id="L576">            actionUniComposition =</span>
+<span class="nc" id="L577">                makeCreateAssociationAction(</span>
+<span class="nc" id="L578">                        Model.getAggregationKind().getComposite(),</span>
+                        true,
+                        &quot;button.new-unicomposition&quot;);
+        }
+<span class="nc" id="L582">        return actionUniComposition;</span>
+    }
+
+    /**
+     * @return Returns the actionUsage.
+     */
+    protected Action getActionUsage() {
+<span class="nc bnc" id="L589" title="All 2 branches missed.">        if (actionUsage == null) {</span>
+<span class="nc" id="L590">            actionUsage = makeCreateDependencyAction(</span>
+        	    ModeCreateUsage.class,
+<span class="nc" id="L592">        	    Model.getMetaTypes().getUsage(),</span>
+                        &quot;button.new-usage&quot;);
+        }
+<span class="nc" id="L595">        return actionUsage;</span>
+    }
+
+    /**
+     * @return Returns the actionDataType.
+     */
+    private Action getActionDataType() {
+<span class="nc bnc" id="L602" title="All 2 branches missed.">        if (actionDataType == null) {</span>
+<span class="nc" id="L603">            actionDataType =</span>
+<span class="nc" id="L604">                makeCreateNodeAction(Model.getMetaTypes().getDataType(),</span>
+                    &quot;button.new-datatype&quot;);
+        }
+<span class="nc" id="L607">        return actionDataType;</span>
+    }
+
+    /**
+     * @return Returns the actionEnumeration.
+     */
+    private Action getActionEnumeration() {
+<span class="nc bnc" id="L614" title="All 2 branches missed.">        if (actionEnumeration == null) {</span>
+<span class="nc" id="L615">            actionEnumeration =</span>
+<span class="nc" id="L616">                makeCreateNodeAction(Model.getMetaTypes().getEnumeration(),</span>
+                    &quot;button.new-enumeration&quot;);
+        }
+<span class="nc" id="L619">        return actionEnumeration;</span>
+    }
+
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionStereotype() {
+<span class="nc bnc" id="L626" title="All 2 branches missed.">        if (actionStereotype == null) {</span>
+<span class="nc" id="L627">            actionStereotype =</span>
+<span class="nc" id="L628">                makeCreateNodeAction(Model.getMetaTypes().getStereotype(),</span>
+                    &quot;button.new-stereotype&quot;);
+        }
+<span class="nc" id="L631">        return actionStereotype;</span>
+    }
+
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionSignal() {
+<span class="nc bnc" id="L638" title="All 2 branches missed.">        if (actionSignal == null) {</span>
+<span class="nc" id="L639">            actionSignal =</span>
+<span class="nc" id="L640">                makeCreateNodeAction(Model.getMetaTypes().getSignal(),</span>
+                    &quot;button.new-signal&quot;);
+        }
+<span class="nc" id="L643">        return actionSignal;</span>
+    }
+
+    /**
+     * @return Returns the actionStereotype.
+     */
+    private Action getActionException() {
+<span class="nc bnc" id="L650" title="All 2 branches missed.">        if (actionException == null) {</span>
+<span class="nc" id="L651">            actionException =</span>
+<span class="nc" id="L652">                makeCreateNodeAction(Model.getMetaTypes().getException(),</span>
+                    &quot;button.new-exception&quot;);
+        }
+<span class="nc" id="L655">        return actionException;</span>
+    }
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base)  {
+<span class="nc" id="L661">    	return Model.getFacade().isANamespace(base);</span>
+    }
+
+    public Collection getRelocationCandidates(Object root) {
+<span class="nc" id="L665">        return</span>
+<span class="nc" id="L666">        Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(</span>
+<span class="nc" id="L667">            root, Model.getMetaTypes().getNamespace());</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
+     */
+    public boolean relocate(Object base) {
+<span class="nc" id="L674">        setNamespace(base);</span>
+<span class="nc" id="L675">        damage();</span>
+<span class="nc" id="L676">        return true;</span>
+    }
+
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
+            FigNode newEncloser) {
+        // Do nothing.
+<span class="fc" id="L682">    }</span>
+
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+<span class="pc bpc" id="L686" title="1 of 2 branches missed.">        if (objectToAccept instanceof CommentEdge) {</span>
+<span class="nc" id="L687">            return true;</span>
+<span class="fc bfc" id="L688" title="All 2 branches covered.">        } else if (Model.getFacade().isAClass(objectToAccept)) {</span>
+<span class="fc" id="L689">            return true;</span>
+<span class="fc bfc" id="L690" title="All 2 branches covered.">        } else if (Model.getFacade().isAInterface(objectToAccept)) {</span>
+<span class="fc" id="L691">            return true;</span>
+<span class="fc bfc" id="L692" title="All 2 branches covered.">        } else if (Model.getFacade().isAModel(objectToAccept)) {</span>
+<span class="fc" id="L693">            return true;</span>
+<span class="fc bfc" id="L694" title="All 2 branches covered.">        } else if (Model.getFacade().isASubsystem(objectToAccept)) {</span>
+<span class="fc" id="L695">            return true;</span>
+<span class="fc bfc" id="L696" title="All 2 branches covered.">        } else if (Model.getFacade().isAPackage(objectToAccept)) {</span>
+<span class="fc" id="L697">            return true;</span>
+<span class="fc bfc" id="L698" title="All 2 branches covered.">        } else if (Model.getFacade().isAComment(objectToAccept)) {</span>
+<span class="fc" id="L699">            return true;</span>
+<span class="pc bpc" id="L700" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAAssociation(objectToAccept)) {</span>
+<span class="nc" id="L701">            return true;</span>
+<span class="fc bfc" id="L702" title="All 2 branches covered.">        } else if (Model.getFacade().isAEnumeration(objectToAccept)) {</span>
+<span class="fc" id="L703">            return true;</span>
+<span class="fc bfc" id="L704" title="All 2 branches covered.">        } else if (Model.getFacade().isADataType(objectToAccept)) {</span>
+<span class="fc" id="L705">            return true;</span>
+<span class="fc bfc" id="L706" title="All 2 branches covered.">        } else if (Model.getFacade().isAStereotype(objectToAccept)) {</span>
+<span class="fc" id="L707">            return true;</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">        } else if (Model.getFacade().isAException(objectToAccept)) {</span>
+<span class="fc" id="L709">            return true;</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">        } else if (Model.getFacade().isASignal(objectToAccept)) {</span>
+<span class="fc" id="L711">            return true;</span>
+<span class="fc bfc" id="L712" title="All 2 branches covered.">        } else if (Model.getFacade().isAActor(objectToAccept)) {</span>
+<span class="fc" id="L713">            return true;</span>
+<span class="fc bfc" id="L714" title="All 2 branches covered.">        } else if (Model.getFacade().isAUseCase(objectToAccept)) {</span>
+<span class="fc" id="L715">            return true;</span>
+<span class="fc bfc" id="L716" title="All 2 branches covered.">        } else if (Model.getFacade().isAObject(objectToAccept)) {</span>
+<span class="fc" id="L717">            return true;</span>
+<span class="pc bpc" id="L718" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAInstanceSpecification(objectToAccept)) {</span>
+<span class="nc" id="L719">            return true;</span>
+<span class="fc bfc" id="L720" title="All 2 branches covered.">        } else if (Model.getFacade().isANodeInstance(objectToAccept)) {</span>
+<span class="fc" id="L721">            return true;</span>
+<span class="pc bpc" id="L722" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAComponentInstance(objectToAccept)) {</span>
+<span class="fc" id="L723">            return true;</span>
+<span class="nc bnc" id="L724" title="All 2 branches missed.">        } else if (Model.getFacade().isANode(objectToAccept)) {</span>
+<span class="nc" id="L725">            return true;</span>
+<span class="nc bnc" id="L726" title="All 2 branches missed.">        } else if (Model.getFacade().isAComponent(objectToAccept)) {</span>
+<span class="nc" id="L727">            return true;</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">        } else if (Model.getFacade().isAAssociationEnd(objectToAccept)) {</span>
+<span class="nc" id="L729">            return true;</span>
+<span class="nc bnc" id="L730" title="All 2 branches missed.">        } else if (Model.getFacade().isADependency(objectToAccept)) {</span>
+<span class="nc" id="L731">            return true;</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">        } else if (Model.getFacade().isAGeneralization(objectToAccept)) {</span>
+<span class="nc" id="L733">            return true;</span>
+        }
+<span class="nc" id="L735">        return false;</span>
+
+    }
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+
+<span class="fc" id="L743">        FigNodeModelElement figNode = null;</span>
+<span class="fc" id="L744">        FigEdge figEdge = null;</span>
+
+<span class="fc" id="L746">        DiagramSettings settings = getDiagramSettings();</span>
+
+<span class="pc bpc" id="L748" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociationClass(modelElement)) {</span>
+            Object[] associationEnds =
+<span class="nc" id="L750">                Model.getFacade().getConnections(modelElement).toArray();</span>
+<span class="nc" id="L751">            figEdge = new FigAssociationClass(</span>
+                    new DiagramEdgeSettings(
+                            modelElement,
+                            associationEnds[0],
+                            associationEnds[1]),
+                            settings);
+<span class="nc" id="L757">            FigNode sourceFig =</span>
+<span class="nc" id="L758">                getFigNodeForAssociationEnd(associationEnds[0]);</span>
+<span class="nc" id="L759">            FigNode destFig =</span>
+<span class="nc" id="L760">                getFigNodeForAssociationEnd(associationEnds[1]);</span>
+<span class="nc" id="L761">            figEdge.setSourceFigNode(sourceFig);</span>
+<span class="nc" id="L762">            figEdge.setSourcePortFig(sourceFig);</span>
+<span class="nc" id="L763">            figEdge.setDestFigNode(destFig);</span>
+<span class="nc" id="L764">            figEdge.setDestPortFig(destFig);</span>
+<span class="pc bpc" id="L765" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAAssociationEnd(modelElement)) {</span>
+<span class="nc" id="L766">            figEdge = new FigAssociationEnd(modelElement, settings);</span>
+<span class="nc" id="L767">            Model.getFacade().getAssociation(modelElement);</span>
+<span class="nc" id="L768">            FigNode associationFN =</span>
+<span class="nc" id="L769">                (FigNode) getLayer().presentationFor(</span>
+<span class="nc" id="L770">                        Model.getFacade().getAssociation(modelElement));</span>
+<span class="nc" id="L771">            FigNode classifierFN =</span>
+<span class="nc" id="L772">                (FigNode) getLayer().presentationFor(Model.getFacade().getType(modelElement));</span>
+
+<span class="nc" id="L774">            figEdge.setSourcePortFig(associationFN);</span>
+<span class="nc" id="L775">            figEdge.setSourceFigNode(associationFN);</span>
+<span class="nc" id="L776">            figEdge.setDestPortFig(classifierFN);</span>
+<span class="nc" id="L777">            figEdge.setDestFigNode(classifierFN);</span>
+<span class="pc bpc" id="L778" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAAssociation(modelElement)</span>
+<span class="nc bnc" id="L779" title="All 2 branches missed.">                &amp;&amp; !Model.getFacade().isANaryAssociation(modelElement)) {</span>
+            Object[] associationEnds =
+<span class="nc" id="L781">                Model.getFacade().getConnections(modelElement).toArray();</span>
+<span class="nc" id="L782">            figEdge = new FigAssociation(</span>
+                    new DiagramEdgeSettings(
+                            modelElement,
+                            associationEnds[0],
+                            associationEnds[1]),
+                            settings);
+<span class="nc" id="L788">            FigNode sourceFig =</span>
+<span class="nc" id="L789">                getFigNodeForAssociationEnd(associationEnds[0]);</span>
+<span class="nc" id="L790">            FigNode destFig =</span>
+<span class="nc" id="L791">                getFigNodeForAssociationEnd(associationEnds[1]);</span>
+<span class="nc" id="L792">            figEdge.setSourceFigNode(sourceFig);</span>
+<span class="nc" id="L793">            figEdge.setSourcePortFig(sourceFig);</span>
+<span class="nc" id="L794">            figEdge.setDestFigNode(destFig);</span>
+<span class="nc" id="L795">            figEdge.setDestPortFig(destFig);</span>
+<span class="pc bpc" id="L796" title="1 of 2 branches missed.">        } else if (Model.getFacade().isALink(modelElement)) {</span>
+<span class="nc" id="L797">            figEdge = new FigLink(modelElement, settings);</span>
+<span class="nc" id="L798">            Collection linkEndsColn = Model.getFacade().getConnections(modelElement);</span>
+
+<span class="nc" id="L800">            Object[] linkEnds = linkEndsColn.toArray();</span>
+<span class="nc" id="L801">            Object fromInst = Model.getFacade().getInstance(linkEnds[0]);</span>
+<span class="nc" id="L802">            Object toInst = Model.getFacade().getInstance(linkEnds[1]);</span>
+
+<span class="nc" id="L804">            FigNode fromFN = (FigNode) getLayer().presentationFor(fromInst);</span>
+<span class="nc" id="L805">            FigNode toFN = (FigNode) getLayer().presentationFor(toInst);</span>
+<span class="nc" id="L806">            figEdge.setSourcePortFig(fromFN);</span>
+<span class="nc" id="L807">            figEdge.setSourceFigNode(fromFN);</span>
+<span class="nc" id="L808">            figEdge.setDestPortFig(toFN);</span>
+<span class="nc" id="L809">            figEdge.setDestFigNode(toFN);</span>
+<span class="nc" id="L810">            figEdge.getFig().setLayer(getLayer());</span>
+<span class="pc bpc" id="L811" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAGeneralization(modelElement)) {</span>
+<span class="nc" id="L812">            figEdge = new FigGeneralization(modelElement, settings);</span>
+
+            Object supplier =
+<span class="nc" id="L815">                (Model.getFacade().getSpecific(modelElement));</span>
+            Object client =
+<span class="nc" id="L817">                (Model.getFacade().getGeneral(modelElement));</span>
+
+<span class="nc" id="L819">            FigNode supFN = (FigNode) getLayer().presentationFor(supplier);</span>
+<span class="nc" id="L820">            FigNode cliFN = (FigNode) getLayer().presentationFor(client);</span>
+
+<span class="nc" id="L822">            figEdge.setSourceFigNode(supFN);</span>
+<span class="nc" id="L823">            figEdge.setSourcePortFig(supFN);</span>
+<span class="nc" id="L824">            figEdge.setDestFigNode(cliFN);</span>
+<span class="nc" id="L825">            figEdge.setDestPortFig(cliFN);</span>
+<span class="pc bpc" id="L826" title="1 of 2 branches missed.">        } else if (Model.getFacade().isADependency(modelElement)) {</span>
+
+<span class="nc bnc" id="L828" title="All 2 branches missed.">            if (Model.getFacade().isAPackageImport(modelElement)) {</span>
+<span class="nc" id="L829">                figEdge = new FigPermission(modelElement, settings);</span>
+<span class="nc bnc" id="L830" title="All 2 branches missed.">            } else if (Model.getFacade().isAUsage(modelElement)) {</span>
+<span class="nc" id="L831">                figEdge = new FigUsage(modelElement, settings);</span>
+<span class="nc bnc" id="L832" title="All 2 branches missed.">            } else if (Model.getFacade().isAAbstraction(modelElement)) {</span>
+<span class="nc" id="L833">                figEdge = new FigAbstraction(modelElement, settings);</span>
+            } else {
+
+<span class="nc" id="L836">                String name = &quot;&quot;;</span>
+<span class="nc bnc" id="L837" title="All 2 branches missed.">                for (Object stereotype : Model.getFacade().getStereotypes(modelElement)) {</span>
+<span class="nc" id="L838">                    name = Model.getFacade().getName(stereotype);</span>
+<span class="nc bnc" id="L839" title="All 2 branches missed.">                    if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {</span>
+<span class="nc" id="L840">                        break;</span>
+                    }
+<span class="nc" id="L842">                }</span>
+<span class="nc bnc" id="L843" title="All 2 branches missed.">                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {</span>
+                    // TODO: This code doesn't look like it will get reached because
+                    // any abstraction/realization is going to take the
+                    // isAAbstraction leg of the if before it gets to this more
+                    // general case. - tfm 20080508
+<span class="nc" id="L848">                    figEdge = new FigAbstraction(modelElement, settings);</span>
+                } else {
+<span class="nc" id="L850">                    figEdge = new FigDependency(modelElement, settings);</span>
+                }
+            }
+            Object supplier =
+<span class="nc" id="L854">                ((Model.getFacade().getSuppliers(modelElement).toArray())[0]);</span>
+            Object client =
+<span class="nc" id="L856">                ((Model.getFacade().getClients(modelElement).toArray())[0]);</span>
+<span class="nc" id="L857">            FigNode supFN = (FigNode) getLayer().presentationFor(supplier);</span>
+<span class="nc" id="L858">            FigNode cliFN = (FigNode) getLayer().presentationFor(client);</span>
+
+<span class="nc" id="L860">            figEdge.setSourcePortFig(cliFN);</span>
+<span class="nc" id="L861">            figEdge.setSourceFigNode(cliFN);</span>
+<span class="nc" id="L862">            figEdge.setDestPortFig(supFN);</span>
+<span class="nc" id="L863">            figEdge.setDestFigNode(supFN);</span>
+<span class="nc" id="L864">            figEdge.getFig().setLayer(getLayer());</span>
+<span class="pc bpc" id="L865" title="1 of 2 branches missed.">        } else if (modelElement instanceof CommentEdge) {</span>
+<span class="nc" id="L866">            CommentEdge ce = (CommentEdge) modelElement;</span>
+<span class="nc" id="L867">            Fig source = getLayer().presentationFor(ce.getSource());</span>
+<span class="nc" id="L868">            Fig dest = getLayer().presentationFor(ce.getDestination());</span>
+<span class="nc bnc" id="L869" title="All 2 branches missed.">            if (source instanceof FigAssociationClass) {</span>
+<span class="nc" id="L870">                source = ((FigAssociationClass) source).getAssociationClass();</span>
+            }
+<span class="nc bnc" id="L872" title="All 2 branches missed.">            if (dest instanceof FigAssociationClass) {</span>
+<span class="nc" id="L873">                dest = ((FigAssociationClass) dest).getAssociationClass();</span>
+            }
+<span class="nc" id="L875">            FigNode sourceFN = (FigNode) source;</span>
+<span class="nc" id="L876">            FigNode destFN = (FigNode) dest;</span>
+<span class="nc" id="L877">            figEdge = new FigEdgeNote(modelElement, settings);</span>
+<span class="nc" id="L878">            figEdge.setSourcePortFig(sourceFN);</span>
+<span class="nc" id="L879">            figEdge.setSourceFigNode(sourceFN);</span>
+<span class="nc" id="L880">            figEdge.setDestPortFig(destFN);</span>
+<span class="nc" id="L881">            figEdge.setDestFigNode(destFN);</span>
+<span class="nc" id="L882">            figEdge.getFig().setLayer(getLayer());</span>
+        }
+
+<span class="pc bpc" id="L885" title="1 of 2 branches missed.">        if (figEdge != null) {</span>
+<span class="nc" id="L886">            figEdge.computeRoute();</span>
+<span class="nc" id="L887">            return (DiagramElement) figEdge;</span>
+        }
+
+<span class="pc bpc" id="L890" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociation(modelElement)) {</span>
+<span class="nc" id="L891">            figNode =</span>
+<span class="nc" id="L892">                createNaryAssociationNode(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L893" title="All 2 branches covered.">        } else if (Model.getFacade().isAStereotype(modelElement)) {</span>
+            // since UML2, this must appear before the isAClass clause
+<span class="fc" id="L895">            figNode = new FigStereotypeDeclaration(modelElement, bounds,</span>
+                    settings);
+<span class="fc bfc" id="L897" title="All 2 branches covered.">        } else if (Model.getFacade().isAClass(modelElement)) {</span>
+<span class="fc" id="L898">            figNode = new FigClass(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L899" title="All 2 branches covered.">        } else if (Model.getFacade().isAInterface(modelElement)) {</span>
+<span class="fc" id="L900">            figNode = new FigInterface(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L901" title="All 2 branches covered.">        } else if (Model.getFacade().isAModel(modelElement)) {</span>
+<span class="fc" id="L902">            figNode = new FigModel(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L903" title="All 2 branches covered.">        } else if (Model.getFacade().isASubsystem(modelElement)) {</span>
+<span class="fc" id="L904">            figNode = new FigSubsystem(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L905" title="All 2 branches covered.">        } else if (Model.getFacade().isAPackage(modelElement)) {</span>
+<span class="fc" id="L906">            figNode = new FigPackage(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L907" title="All 2 branches covered.">        } else if (Model.getFacade().isAComment(modelElement)) {</span>
+<span class="fc" id="L908">            figNode = new FigComment(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L909" title="All 2 branches covered.">        } else if (Model.getFacade().isAEnumeration(modelElement)) {</span>
+<span class="fc" id="L910">            figNode = new FigEnumeration(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L911" title="All 2 branches covered.">        } else if (Model.getFacade().isADataType(modelElement)) {</span>
+<span class="fc" id="L912">            figNode = new FigDataType(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L913" title="All 2 branches covered.">        } else if (Model.getFacade().isAException(modelElement)) {</span>
+<span class="fc" id="L914">            figNode = new FigException(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L915" title="All 2 branches covered.">        } else if (Model.getFacade().isASignal(modelElement)) {</span>
+<span class="fc" id="L916">            figNode = new FigSignal(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L917" title="All 2 branches covered.">        } else if (Model.getFacade().isAActor(modelElement)) {</span>
+<span class="fc" id="L918">            figNode = new FigActor(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L919" title="All 2 branches covered.">        } else if (Model.getFacade().isAUseCase(modelElement)) {</span>
+<span class="fc" id="L920">            figNode = new FigUseCase(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L921" title="All 2 branches covered.">        } else if (Model.getFacade().isAObject(modelElement)) {</span>
+<span class="fc" id="L922">            figNode = new FigObject(modelElement, bounds, settings);</span>
+<span class="pc bpc" id="L923" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAInstanceSpecification(modelElement)) {</span>
+<span class="nc" id="L924">            figNode = new FigObject(modelElement, bounds, settings);</span>
+<span class="fc bfc" id="L925" title="All 2 branches covered.">        } else if (Model.getFacade().isANodeInstance(modelElement)) {</span>
+<span class="fc" id="L926">            figNode = new FigNodeInstance(modelElement, bounds, settings);</span>
+<span class="pc bpc" id="L927" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAComponentInstance(modelElement)) {</span>
+<span class="fc" id="L928">            figNode = new FigComponentInstance(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L929" title="All 2 branches missed.">        } else if (Model.getFacade().isANode(modelElement)) {</span>
+<span class="nc" id="L930">            figNode = new FigMNode(modelElement, bounds, settings);</span>
+<span class="nc bnc" id="L931" title="All 2 branches missed.">        } else if (Model.getFacade().isAComponent(modelElement)) {</span>
+<span class="nc" id="L932">            figNode = new FigComponent(modelElement, bounds, settings);</span>
+        }
+<span class="pc bpc" id="L934" title="1 of 2 branches missed.">        if (figNode != null) {</span>
+<span class="fc" id="L935">            LOG.log(Level.FINE,</span>
+                    &quot;Model element {0} converted to {1}&quot;,
+                    new Object[]{modelElement, figNode});
+        } else {
+<span class="nc" id="L939">            LOG.log(Level.FINE, &quot;Dropped object NOT added {0}&quot;, figNode);</span>
+        }
+<span class="fc" id="L941">        return figNode;</span>
+    }
+
+    protected FigNode getFigNodeForAssociationEnd(
+            final Object associationEnd) {
+        Object classifier =
+<span class="nc" id="L947">            Model.getFacade().getClassifier(associationEnd);</span>
+<span class="nc" id="L948">        return getNodePresentationFor(getLayer(), classifier);</span>
+    }
+
+    /**
+     * Get the FigNode from the given layer that represents the given
+     * model element.
+     * The FigNode portion of an association class is returned in preference
+     * to the FigEdge portion.
+     * If no FigNode is found then a FIgEdge is searched for and the FigNode
+     * that acts as its edge port is returned.
+     * @param lay the layer containing the Fig
+     * @param modelElement the model element to find presentation for
+     * @return the FigNode presentation of the model element
+     */
+    private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
+<span class="nc bnc" id="L963" title="All 4 branches missed.">        assert modelElement != null : &quot;A modelElement must be supplied&quot;;</span>
+<span class="nc bnc" id="L964" title="All 2 branches missed.">        for (Object fig : lay.getContentsNoEdges()) {</span>
+
+<span class="nc bnc" id="L966" title="All 2 branches missed.">            if (fig instanceof FigNode</span>
+<span class="nc bnc" id="L967" title="All 2 branches missed.">                    &amp;&amp; modelElement.equals(((FigNode) fig).getOwner())) {</span>
+<span class="nc" id="L968">                return ((FigNode) fig);</span>
+            }
+<span class="nc" id="L970">        }</span>
+<span class="nc bnc" id="L971" title="All 2 branches missed.">        for (Object fig : lay.getContentsEdgesOnly()) {</span>
+<span class="nc bnc" id="L972" title="All 2 branches missed.">            if (fig instanceof FigEdgeModelElement</span>
+<span class="nc bnc" id="L973" title="All 2 branches missed.">                    &amp;&amp; modelElement.equals(((FigEdgeModelElement) fig)</span>
+<span class="nc" id="L974">                            .getOwner())) {</span>
+<span class="nc" id="L975">                return ((FigEdgeModelElement) fig).getEdgePort();</span>
+            }
+<span class="nc" id="L977">        }</span>
+<span class="nc" id="L978">        return null;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

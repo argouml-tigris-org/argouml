@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModeBroomMessages.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2.diagram</a> &gt; <span class="el_source">ModeBroomMessages.java</span></div><h1>ModeBroomMessages.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2.diagram;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.tigris.gef.base.FigModifyingModeImpl;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * Brooms all the message which y coordinate is upper than the position
+ * of the broom.
+ * TODO: Provide a ModeFactory and then this class can become package scope.
+ * @author penyaskito
+ */
+public class ModeBroomMessages extends FigModifyingModeImpl  {
+   
+    private static final int DIRECTION_UNDEFINED = 0;
+    private static final int DIRECTION_UPWARD = 1;
+    private static final int DIRECTION_DOWNWARD = 2;
+    
+    private int currentDirection;
+
+<span class="nc" id="L67">    private boolean shouldDraw = true;</span>
+
+    private int x1, x2, y;
+    private int lastX1, lastX2, lastY;
+    
+    /**
+     * 
+     */
+<span class="nc" id="L75">    public ModeBroomMessages() {</span>
+<span class="nc" id="L76">        currentDirection = DIRECTION_UNDEFINED;</span>
+<span class="nc" id="L77">    }</span>
+
+    /** 
+     * Handle mouse down events by preparing for a drag.  
+     * @param me The mouse event.
+     */
+    public void mousePressed(MouseEvent me) {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (me.isConsumed()) {</span>
+<span class="nc" id="L85">            return;</span>
+        }
+        
+        // we initialize the coordinates.
+<span class="nc" id="L89">        x1 = me.getX();</span>
+<span class="nc" id="L90">        x2 = me.getX();</span>
+<span class="nc" id="L91">        y = me.getY();</span>
+<span class="nc" id="L92">        lastX1 = x1 - 100;</span>
+<span class="nc" id="L93">        lastY = y;</span>
+<span class="nc" id="L94">        lastX2 = x1 + 100;</span>
+                
+<span class="nc" id="L96">        editor.damageAll();</span>
+<span class="nc" id="L97">        me.consume();</span>
+<span class="nc" id="L98">        start();</span>
+<span class="nc" id="L99">    }</span>
+    
+    @Override
+    public void mouseDragged(MouseEvent me) {
+<span class="nc" id="L103">        me.consume();</span>
+<span class="nc" id="L104">        editor.getSelectionManager().deselectAll();</span>
+        
+<span class="nc" id="L106">        int crY = 0;</span>
+<span class="nc" id="L107">        List nodes = editor.getGraphModel().getNodes();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (nodes.size() &gt; 0) {</span>
+<span class="nc" id="L109">            crY = (editor.getLayerManager().</span>
+<span class="nc" id="L110">                    getActiveLayer().presentationFor(nodes.get(0))).getY();</span>
+        }
+        
+<span class="nc" id="L113">        Point snapPt = me.getPoint();</span>
+<span class="nc" id="L114">        snapPt.x = Math.max(0, snapPt.x);</span>
+<span class="nc" id="L115">        snapPt.y = Math.max(crY, snapPt.y);</span>
+<span class="nc" id="L116">        editor.snap(snapPt);</span>
+        
+<span class="nc" id="L118">        int dy = snapPt.y - lastY;</span>
+
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (dy == 0) {</span>
+            // we do nothing
+<span class="nc" id="L122">            x1 = me.getX();</span>
+<span class="nc" id="L123">            x2 = me.getX();</span>
+<span class="nc" id="L124">            editor.damageAll();</span>
+<span class="nc" id="L125">            return;</span>
+        }
+        
+        // manage if cursor x is less than lastX1 
+<span class="nc" id="L129">        lastX1 = Math.min(snapPt.x, lastX1);</span>
+        // manage if cursor x is more than lastX2 
+<span class="nc" id="L131">        lastX2 = Math.max(snapPt.x, lastX2);     </span>
+        
+        // manage changes of direction...
+<span class="nc bnc" id="L134" title="All 4 branches missed.">        if (currentDirection == DIRECTION_UPWARD </span>
+                &amp;&amp; dy &gt; 0) {
+<span class="nc" id="L136">            currentDirection = DIRECTION_DOWNWARD;</span>
+        }
+<span class="nc bnc" id="L138" title="All 4 branches missed.">        else if (currentDirection == DIRECTION_DOWNWARD </span>
+                &amp;&amp; dy &gt; 0) {
+<span class="nc" id="L140">            currentDirection = DIRECTION_UPWARD;            </span>
+        }
+        // I have no direction yet
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (currentDirection == DIRECTION_UNDEFINED) {</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (dy &lt; 0) {</span>
+<span class="nc" id="L145">                currentDirection = DIRECTION_UPWARD;</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            } else if (dy &gt; 0) {</span>
+<span class="nc" id="L147">                currentDirection = DIRECTION_DOWNWARD;</span>
+            }
+        }
+        
+<span class="nc" id="L151">        x1 = lastX1;</span>
+<span class="nc" id="L152">        x2 = lastX2; </span>
+                
+        // we move down or up the messages that are downward the broom
+<span class="nc bnc" id="L155" title="All 4 branches missed.">        if (currentDirection == DIRECTION_DOWNWARD</span>
+                || currentDirection == DIRECTION_UPWARD) {
+<span class="nc" id="L157">            List&lt;FigMessage&gt; messages = getAllFigMessagesDownward(lastY);</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            for (FigMessage message : messages) {                </span>
+<span class="nc" id="L159">                message.translate(0, dy);</span>
+                // we recalculate all the activations
+<span class="nc" id="L161">                FigNode source = message.getSourceFigNode();</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">                if (source != null &amp;&amp; source instanceof FigClassifierRole) {</span>
+<span class="nc" id="L163">                    ((FigClassifierRole) source).createActivations();</span>
+                }
+<span class="nc" id="L165">                FigNode dest = message.getDestFigNode();</span>
+<span class="nc bnc" id="L166" title="All 6 branches missed.">                if (dest != null &amp;&amp; !message.isSelfMessage() </span>
+                	&amp;&amp; dest instanceof FigClassifierRole) {
+<span class="nc" id="L168">                    ((FigClassifierRole) dest).createActivations();</span>
+                }
+<span class="nc" id="L170">            }</span>
+        }
+<span class="nc" id="L172">        lastY = snapPt.y;</span>
+<span class="nc" id="L173">        editor.damageAll();        </span>
+<span class="nc" id="L174">    }</span>
+    
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        // in this event we do nothing,
+        // only stop drawing the broom.
+<span class="nc" id="L180">        shouldDraw = false;</span>
+<span class="nc" id="L181">        me.consume();</span>
+<span class="nc" id="L182">        editor.damageAll();</span>
+<span class="nc" id="L183">        done();</span>
+<span class="nc" id="L184">    }</span>
+    
+    /**
+     * Gets all the messages that are downward to a y position
+     * @param position the coordinate
+     * @return the list with all the messages.
+     */
+    private List&lt;FigMessage&gt; getAllFigMessagesDownward(int position) {
+<span class="nc" id="L192">        final List&lt;FigMessage&gt; messages = getAllFigMessages();</span>
+<span class="nc" id="L193">        List&lt;FigMessage&gt; dMessages = new LinkedList&lt;FigMessage&gt;();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (FigMessage message : messages) {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            if (message.getY() &gt; position) {</span>
+<span class="nc" id="L196">                dMessages.add(message);</span>
+            }
+<span class="nc" id="L198">        }</span>
+<span class="nc" id="L199">        return dMessages;        </span>
+    }
+    
+    /**
+     * Gets all the figmessages of the diagram.
+     * @return the list of FigMessages
+     */
+    private List&lt;FigMessage&gt; getAllFigMessages() {
+<span class="nc" id="L207">        List edges = editor.getGraphModel().getEdges();</span>
+<span class="nc" id="L208">        List&lt;FigMessage&gt; messages = new ArrayList&lt;FigMessage&gt;(edges.size());</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        for (Object message : edges) {</span>
+<span class="nc" id="L210">            Object figM = </span>
+<span class="nc" id="L211">                (editor.getLayerManager().</span>
+<span class="nc" id="L212">                    getActiveLayer().presentationFor(message));</span>
+<span class="nc" id="L213">            messages.add((FigMessage) figM);</span>
+<span class="nc" id="L214">        }        </span>
+<span class="nc" id="L215">        return messages;</span>
+    }
+    
+    @Override
+    public void paint(Graphics g) {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (!shouldDraw) {</span>
+<span class="nc" id="L221">            return;</span>
+        }
+        
+<span class="nc" id="L224">        Color selectRectColor = Globals.getPrefs().getRubberbandColor();</span>
+<span class="nc" id="L225">        g.setColor(selectRectColor);</span>
+        
+        
+<span class="nc bnc" id="L228" title="All 4 branches missed.">        switch(currentDirection) {</span>
+        
+        case DIRECTION_UNDEFINED:
+            // we draw a cross
+<span class="nc" id="L232">            g.fillRect(x1 - 10, y - 2, 20, 4);</span>
+<span class="nc" id="L233">            g.fillRect((x1 + x2) / 2 - 2, y - 10, 4, 20);</span>
+<span class="nc" id="L234">            break;</span>
+            
+        case DIRECTION_UPWARD:
+<span class="nc" id="L237">            g.fillRect(lastX1, lastY - 2, lastX2 - lastX1, 4);</span>
+<span class="nc" id="L238">            g.fillRect((lastX1 + lastX2) / 2 - 2, lastY, 4, 10);</span>
+<span class="nc" id="L239">            break;</span>
+            
+        case DIRECTION_DOWNWARD:
+<span class="nc" id="L242">            g.fillRect(lastX1, lastY - 2, lastX2 - lastX1, 4);</span>
+<span class="nc" id="L243">            g.fillRect((lastX1 + lastX2) / 2 - 2, lastY - 10, 4, 10);</span>
+            break;
+        }
+<span class="nc" id="L246">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

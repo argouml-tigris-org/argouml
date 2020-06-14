@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigurationHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.configuration</a> &gt; <span class="el_source">ConfigurationHandler.java</span></div><h1>ConfigurationHandler.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.configuration;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *   This class provides a user configuration based upon properties.
+ *   This provides an implementation-free interface to a configuration
+ *   repository.  Any classes which need to implement a configuration
+ *   datastore must extend this class.
+ *
+ *   All of the required behavioral logic for the configuration is
+ *   contained within this class, as public final methods.  Any
+ *   storage-related logic must be handled by the extending class.
+ *   These methods are abstract.
+ *
+ *   This class is intimately related to
+ *   {@link org.argouml.configuration.Configuration}.
+ *
+ *   @author Thierry Lach
+ *
+ *   @since 0.9.4
+ */
+public abstract class ConfigurationHandler {
+
+    /**
+     * Internal storage for the &lt;code&gt;File&lt;/code&gt; the configuration was
+     * loaded from, otherwise null.
+     */
+    private File loadedFromFile;
+
+    /**
+     * Internal storage for the &lt;code&gt;URL&lt;/code&gt; the configuration was
+     * loaded from, otherwise null.
+     */
+    private URL loadedFromURL;
+
+    /**
+     * Internal flag indicating whether the configuration can be updated.
+     */
+    private boolean changeable;
+
+    /**
+     * Internal flag indicating whether the configuration has been loaded.
+     * Configuration rules allow a single load, whether manual or automatic.
+     */
+    private boolean loaded;
+
+    /**
+     * Internal worker for property change.
+     */
+    private static PropertyChangeSupport pcl;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L99">    private static final Logger LOG =</span>
+<span class="fc" id="L100">        Logger.getLogger(ConfigurationHandler.class.getName());</span>
+
+    /**
+     * Anonymous constructor allows configuration changes.
+     */
+    public ConfigurationHandler() {
+<span class="nc" id="L106">        this(true);</span>
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Constructor which optionally allows configuration changes.
+     *
+     * @param c indicates if the configuration can be changed
+     */
+    public ConfigurationHandler(boolean c) {
+<span class="fc" id="L115">        super();</span>
+<span class="fc" id="L116">        changeable = c;</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Returns a default configuration path.  This could be a filename
+     * or a URL.  It is not guaranteed to be usable across different
+     * implementations of ConfigurationHandler.
+     *
+     * @return the default configuration path or url.
+     */
+    public abstract String getDefaultPath();
+
+    /**
+     * Internal worker which is called prior to any getValue
+     * or setValue to ensure that the default load is done if it was not
+     * loaded previously.
+     */
+    private void loadIfNecessary() {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        if (!loaded) {</span>
+<span class="fc" id="L135">            loadDefault();</span>
+        }
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * Load the configuration from the default location.
+     *
+     * @return true if this call loaded the configuration,
+     * otherwise false, not distinguishing between a load
+     * error or a previously loaded configuration.
+     *
+     * @see #isLoaded
+     */
+    public final boolean loadDefault() {
+        // Only allow one load
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (loaded) {</span>
+<span class="nc" id="L151">            return false;</span>
+        }
+
+<span class="fc" id="L154">        boolean status = load(new File(getDefaultPath()));</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">        if (!status) {</span>
+<span class="fc" id="L156">            status = loadUnspecified();</span>
+        }
+<span class="fc" id="L158">        loaded = true;</span>
+<span class="fc" id="L159">        return status;</span>
+    }
+
+    /**
+     * Save the configuration to the location it was loaded from.
+     * Do not force it if the configuration was not loaded already.
+     *
+     * @return true if the save was successful, false if it was not
+     * attempted or encountered an error.
+     */
+    public final boolean saveDefault() {
+<span class="nc" id="L170">        return saveDefault(false);</span>
+    }
+
+    /**
+     * Save the configuration to the location it was loaded from.
+     *
+     * @param force the save even if it would not normally be done.
+     * @return true if the save was successful, false if it was not
+     * attempted or encountered an error.
+     */
+    public final boolean saveDefault(boolean force) {
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (force) {</span>
+<span class="nc" id="L182">            File toFile = new File(getDefaultPath());</span>
+<span class="nc" id="L183">            boolean saved = saveFile(toFile);</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">            if (saved) {</span>
+<span class="nc" id="L185">                loadedFromFile = toFile;</span>
+            }
+<span class="nc" id="L187">            return saved;</span>
+        }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        if (!loaded) {</span>
+<span class="nc" id="L190">            return false;</span>
+        }
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (loadedFromFile != null) {</span>
+<span class="nc" id="L194">            return saveFile(loadedFromFile);</span>
+        }
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (loadedFromURL != null) {</span>
+<span class="nc" id="L197">            return saveURL(loadedFromURL);</span>
+        }
+<span class="nc" id="L199">        return false;</span>
+    }
+
+    /**
+     * Indicates whether the configuration can be saved.
+     *
+     * @return true if the configuration can be saved.
+     */
+<span class="nc" id="L207">    public final boolean isChangeable() { return changeable; }</span>
+
+    /**
+     * Indicates whether the configuration has been loaded.
+     *
+     * @return true if the configuration has been loaded.
+     */
+<span class="nc" id="L214">    public final boolean isLoaded() { return loaded; }</span>
+
+    /**
+     * Load the configuration from a &lt;code&gt;File&lt;/code&gt;.
+     *
+     * @param file to load from.
+     * @return true if this call loaded the configuration,
+     * otherwise false, not distinguishing between a load
+     * error or a previously loaded configuration.
+     */
+    public final boolean load(File file) {
+<span class="fc" id="L225">        boolean status = loadFile(file);</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        if (status) {</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            if (pcl != null) {</span>
+<span class="nc" id="L228">                pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);</span>
+            }
+<span class="nc" id="L230">            loadedFromFile = file;</span>
+        }
+<span class="fc" id="L232">        return status;</span>
+    }
+
+    /**
+     * Load the configuration from a &lt;code&gt;URL&lt;/code&gt;.
+     *
+     * @param url to load from.
+     * @return true if this call loaded the configuration,
+     * otherwise false, not distinguishing between a load
+     * error or a previously loaded configuration.
+     */
+    public final boolean load(URL url) {
+<span class="nc" id="L244">        boolean status = loadURL(url);</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (status) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (pcl != null) {</span>
+<span class="nc" id="L247">                pcl.firePropertyChange(Configuration.URL_LOADED, null, url);</span>
+            }
+<span class="nc" id="L249">            loadedFromURL = url;</span>
+        }
+<span class="nc" id="L251">        return status;</span>
+    }
+
+    /**
+     * Save the configuration to a &lt;code&gt;File&lt;/code&gt;.
+     *
+     * @param file to save to.
+     * @return true if this call saved the configuration,
+     * otherwise false.
+     */
+    public final boolean save(File file) {
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (!loaded) {</span>
+<span class="nc" id="L263">            return false;</span>
+        }
+<span class="nc" id="L265">        boolean status = saveFile(file);</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (status) {</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">            if (pcl != null) {</span>
+<span class="nc" id="L268">                pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);</span>
+            }
+        }
+<span class="nc" id="L271">        return status;</span>
+    }
+
+    /**
+     * Save the configuration to a &lt;code&gt;URL&lt;/code&gt;.
+     *
+     * @param url to save to.
+     * @return true if this call saved the configuration,
+     * otherwise false.
+     */
+    public final boolean save(URL url) {
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        if (!loaded) {</span>
+<span class="nc" id="L283">            return false;</span>
+        }
+<span class="nc" id="L285">        boolean status = saveURL(url);</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (status) {</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">            if (pcl != null) {</span>
+<span class="nc" id="L288">                pcl.firePropertyChange(Configuration.URL_SAVED, null, url);</span>
+            }
+        }
+<span class="nc" id="L291">        return status;</span>
+    }
+
+    /**
+     * Returns the string value of a configuration property.
+     *
+     * @param key the configuration key to return.
+     * @param defaultValue the default value key to return
+     * if the key is not found.
+     *
+     * @return the value of the key or the default value
+     * if the key does not exist.
+     */
+    public final String getString(ConfigurationKey key, String defaultValue) {
+<span class="fc" id="L305">        loadIfNecessary();</span>
+<span class="fc" id="L306">        return getValue(key.getKey(), defaultValue);</span>
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the configuration key to return.
+     * @param defaultValue the default value key to return
+     * if the key is not found.
+     *
+     * @return the value of the key or the default value
+     * if the key does not exist.
+     */
+    public final int getInteger(ConfigurationKey key, int defaultValue) {
+<span class="fc" id="L320">        loadIfNecessary();</span>
+        try {
+<span class="fc" id="L322">            String s = getValue(key.getKey(), Integer.toString(defaultValue));</span>
+<span class="fc" id="L323">            return Integer.parseInt(s);</span>
+<span class="nc" id="L324">        } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L325">            return defaultValue;</span>
+        }
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the configuration key to return.
+     * @param defaultValue the default value key to return
+     * if the key is not found.
+     *
+     * @return the value of the key or the default value
+     * if the key does not exist.
+     */
+    public final double getDouble(ConfigurationKey key, double defaultValue) {
+<span class="nc" id="L340">        loadIfNecessary();</span>
+        try {
+<span class="nc" id="L342">            String s = getValue(key.getKey(), Double.toString(defaultValue));</span>
+<span class="nc" id="L343">            return Double.parseDouble(s);</span>
+<span class="nc" id="L344">        } catch (NumberFormatException nfe) {</span>
+<span class="nc" id="L345">            return defaultValue;</span>
+        }
+    }
+
+    /**
+     * Returns the boolean value of a configuration property.
+     *
+     * @param key the configuration key to return.
+     * @param defaultValue the default value key to return
+     * if the key is not found.
+     *
+     * @return the value of the key or the default value
+     * if the key does not exist.
+     */
+    public final boolean getBoolean(ConfigurationKey key,
+                                    boolean defaultValue) {
+<span class="fc" id="L361">        loadIfNecessary();</span>
+<span class="fc" id="L362">        Boolean dflt = Boolean.valueOf(defaultValue);</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">        Boolean b =</span>
+            key != null
+<span class="pc" id="L365">            ? Boolean.valueOf(getValue(key.getKey(), dflt.toString()))</span>
+            : dflt;
+<span class="fc" id="L367">        return b.booleanValue();</span>
+    }
+
+    /**
+     * Internal routine which calls the abstract setValue and handles
+     * all necessary functionality including firing property change
+     * notifications and tracing.
+     *
+     * @param key the configuration key to modify.
+     * @param newValue the new value of the key.
+     */
+    private synchronized void workerSetValue(ConfigurationKey key,
+                                             String newValue) {
+<span class="fc" id="L380">        loadIfNecessary();</span>
+
+<span class="fc" id="L382">        String oldValue = getValue(key.getKey(), &quot;&quot;);</span>
+<span class="fc" id="L383">        setValue(key.getKey(), newValue);</span>
+<span class="fc bfc" id="L384" title="All 2 branches covered.">        if (pcl != null) {</span>
+<span class="fc" id="L385">            pcl.firePropertyChange(key.getKey(), oldValue, newValue);</span>
+        }
+<span class="fc" id="L387">    }</span>
+
+    /**
+     * Sets the string value of a configuration property.
+     *
+     * @param key the configuration key to modify.
+     * @param newValue the value to set the key to.
+     */
+    public final void setString(ConfigurationKey key, String newValue) {
+<span class="fc" id="L396">        workerSetValue(key, newValue);</span>
+<span class="fc" id="L397">    }</span>
+
+    /**
+     * Sets the numeric value of a configuration property.
+     *
+     * @param key the configuration key to modify.
+     * @param value the value to set the key to.
+     */
+    public final void setInteger(ConfigurationKey key, int value) {
+<span class="fc" id="L406">        workerSetValue(key, Integer.toString(value));</span>
+<span class="fc" id="L407">    }</span>
+
+    /**
+     * Sets the numeric value of a configuration property.
+     *
+     * @param key the configuration key to modify.
+     * @param value the value to set the key to.
+     */
+    public final void setDouble(ConfigurationKey key, double value) {
+<span class="nc" id="L416">        workerSetValue(key, Double.toString(value));</span>
+<span class="nc" id="L417">    }</span>
+
+    /**
+     * Sets the boolean value of a configuration property.
+     *
+     * @param key the configuration key to modify.
+     * @param value the value to set the key to.
+     */
+    public final void setBoolean(ConfigurationKey key, boolean value) {
+<span class="fc" id="L426">        Boolean bool = Boolean.valueOf(value);</span>
+<span class="fc" id="L427">        workerSetValue(key, bool.toString());</span>
+<span class="fc" id="L428">    }</span>
+
+    /**
+     * Adds a property change listener.
+     *
+     * @param p The class which will listen for property changes.
+     */
+    public final void addListener(PropertyChangeListener p) {
+<span class="nc bnc" id="L436" title="All 2 branches missed.">        if (pcl == null) {</span>
+<span class="nc" id="L437">            pcl = new PropertyChangeSupport(this);</span>
+        }
+<span class="nc" id="L439">        LOG.log(Level.FINE, &quot;addPropertyChangeListener({0})&quot;, p);</span>
+<span class="nc" id="L440">        pcl.addPropertyChangeListener(p);</span>
+<span class="nc" id="L441">    }</span>
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param p The class to remove as a property change listener.
+     */
+    public final void removeListener(PropertyChangeListener p) {
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        if (pcl != null) {</span>
+<span class="nc" id="L450">            LOG.log(Level.FINE, &quot;removePropertyChangeListener()&quot;);</span>
+<span class="nc" id="L451">            pcl.removePropertyChangeListener(p);</span>
+        }
+<span class="nc" id="L453">    }</span>
+
+    /**
+     * Adds a property change listener.Static for simplicity of use.
+     *
+     * @param key The specific key to listen for.
+     * @param p The class which will listen for property changes.
+     */
+    public final void addListener(ConfigurationKey key,
+                                  PropertyChangeListener p) {
+<span class="fc bfc" id="L463" title="All 2 branches covered.">        if (pcl == null) {</span>
+<span class="fc" id="L464">            pcl = new PropertyChangeSupport(this);</span>
+        }
+<span class="fc" id="L466">        LOG.log(Level.FINE, &quot;addPropertyChangeListener({0})&quot;, key.getKey());</span>
+<span class="fc" id="L467">        pcl.addPropertyChangeListener(key.getKey(), p);</span>
+<span class="fc" id="L468">    }</span>
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param key The specific key being listened for.
+     * @param p The class to remove as a property change listener.
+     */
+    public final void removeListener(ConfigurationKey key,
+                                     PropertyChangeListener p) {
+<span class="nc bnc" id="L478" title="All 2 branches missed.">        if (pcl != null) {</span>
+<span class="nc" id="L479">            LOG.log(Level.FINE, &quot;removePropertyChangeListener({0})&quot;, key.getKey());</span>
+<span class="nc" id="L480">            pcl.removePropertyChangeListener(key.getKey(), p);</span>
+        }
+<span class="nc" id="L482">    }</span>
+
+    /**
+     * Internal processing to load from an unspecified source.
+     *
+     * @return true if the load was successful, otherwise false.
+     */
+    boolean loadUnspecified() {
+<span class="fc" id="L490">        return false;</span>
+    }
+
+    /**
+     * Internal processing to save to an unspecified source.
+     *
+     * @return true if the save was successful, otherwise false.
+     */
+    boolean saveUnspecified() {
+<span class="nc" id="L499">        return false;</span>
+    }
+
+    /**
+     * Internal processing to load a &lt;code&gt;File&lt;/code&gt;.
+     *
+     * @param file the file to load.
+     *
+     * @return true if the load was successful, otherwise false.
+     */
+    public abstract boolean loadFile(File file);
+
+    /**
+     * Internal processing to load a &lt;code&gt;URL&lt;/code&gt;.
+     *
+     * @param url the url to load.
+     *
+     * @return true if the load was successful, otherwise false.
+     */
+    public abstract boolean loadURL(URL url);
+
+    /**
+     * Internal processing to save a &lt;code&gt;File&lt;/code&gt;.
+     *
+     * @param file the file to save.
+     *
+     * @return true if the save was successful, otherwise false.
+     */
+    public abstract boolean saveFile(File file);
+
+    /**
+     * Internal processing to save a &lt;code&gt;URL&lt;/code&gt;.
+     *
+     * @param url the url to save.
+     *
+     * @return true if the save was successful, otherwise false.
+     */
+    public abstract boolean saveURL(URL url);
+
+    /**
+     * Allows query for the existence of a configuration property.
+     * This may be overridden if the implementation has a
+     * more efficient method.
+     *
+     * @param key  the property being checked.
+     *
+     * @return true if the key exists, otherwise false.
+     */
+    public boolean hasKey(ConfigurationKey key) {
+<span class="nc" id="L548">        return getValue(key.getKey(), &quot;true&quot;).equals(getValue(key.getKey(),</span>
+                                                              &quot;false&quot;));
+    }
+
+    /**
+     * Returns the string value of a configuration property.
+     *
+     * @param key the configuration key to return.
+     * @param defaultValue the configuration key to return.
+     *
+     * @return the value of the key or the default value
+     * if the key does not exist.
+     */
+    public abstract String getValue(String key, String defaultValue);
+
+    /**
+     * Sets the string value of a configuration property.
+     *
+     * @param key the configuration key to modify.
+     * @param value the value to set the key to.
+     */
+    public abstract void setValue(String key, String value);
+
+    /**
+     * Remove the property and the assotiated value.
+     *
+     * @param key The key to remove.
+     */
+    public abstract void remove(String key);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

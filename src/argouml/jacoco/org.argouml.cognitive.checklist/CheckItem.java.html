@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.checklist</a> &gt; <span class="el_source">CheckItem.java</span></div><h1>CheckItem.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.checklist;
+
+import java.io.Serializable;
+
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateTrue;
+
+
+/**
+ * This class defines an item that can be placed on a Checklist.
+ * This is a short piece of text to prompt the designer to think of a
+ * specific design issue.  CheckItems are similar to critics in that
+ * they are categorized to be relevant to issues the designer is
+ * interested in, they have a guarding condition that returns true if
+ * the CheckItem should be presented, and they have a piece of text
+ * as design feedback. They are different in that their predicate is
+ * almost always the constant 'true', and the feedback they provide
+ * is much simpler.
+ *
+ * CheckItems are part of Checklists.  And Checklists are registered
+ * with the CheckManager.
+ *
+ * If you have a piece of advice you would like to give a designer,
+ * you can implement it as a CheckItem _very_ easily.  If you can
+ * formalize the advice more, you can implement it as a Critic.
+ *
+ * @see Checklist
+ * @see CheckManager
+ * @author jrobbins
+ */
+public class CheckItem implements Serializable {
+
+    private String category;
+
+    /**
+     * One sentence description of the issue. usually in the form of a
+     * question.
+     */
+    private String description;
+
+    /**
+     * URL for background (textbook?) knowledge about the domain.
+     */
+<span class="fc" id="L82">    private String moreInfoURL = &quot;http://argouml.tigris.org/&quot;;</span>
+
+    /**
+     * The predicate is the condition under which
+     * the checkitem should be listed.
+     */
+<span class="fc" id="L88">    private Predicate predicate = PredicateTrue.getInstance();</span>
+
+
+    /**
+     * The constructor.
+     *
+     * @param c the category
+     * @param d the description
+     */
+<span class="fc" id="L97">    public CheckItem(String c, String d) {</span>
+<span class="fc" id="L98">	setCategory(c);</span>
+<span class="fc" id="L99">	setDescription(d);</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param c the category
+     * @param d the description
+     * @param m the more-info-url
+     * @param p the predicate
+     */
+    public CheckItem(String c, String d, String m, 
+            Predicate p) {
+<span class="fc" id="L112">        this(c, d);</span>
+<span class="fc" id="L113">        setMoreInfoURL(m);</span>
+<span class="fc" id="L114">        predicate = p;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * @return the category
+     */
+<span class="fc" id="L120">    public String getCategory() { return category; }</span>
+
+    /**
+     * @param c the category
+     */
+<span class="fc" id="L125">    public void setCategory(String c) { category = c; }</span>
+
+    /**
+     * @return the description
+     */
+<span class="fc" id="L130">    public String getDescription() { return description; }</span>
+
+    /**
+     * @param dm the design material
+     * @return the description
+     */
+    public String getDescription(Object dm) {
+<span class="nc" id="L137">	return expand(description, dm);</span>
+    }
+    /**
+     * @param d the description
+     */
+<span class="fc" id="L142">    public void setDescription(String d) { description = d; }</span>
+
+    /**
+     * @return the more-info-url
+     */
+<span class="fc" id="L147">    public String getMoreInfoURL() { return moreInfoURL; }</span>
+
+    /**
+     * @param m  the more-info-url
+     */
+<span class="fc" id="L152">    public void setMoreInfoURL(String m) { moreInfoURL = m; }</span>
+
+    /**
+     * @return the predicate
+     */
+    public Predicate getPredicate2() {
+<span class="fc" id="L158">        return predicate;</span>
+    }
+
+    /**
+     * @param p the predicate
+     */
+    public void setPredicate(Predicate p) {
+<span class="fc" id="L165">        predicate = p;</span>
+<span class="fc" id="L166">    }</span>
+    
+    /*
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L173">        return getDescription().hashCode();</span>
+    }
+
+    /*
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">	if (!(o instanceof CheckItem)) {</span>
+<span class="nc" id="L182">	    return false;</span>
+	}
+<span class="fc" id="L184">	CheckItem i = (CheckItem) o;</span>
+<span class="fc" id="L185">	return getDescription().equals(i.getDescription());</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+<span class="nc" id="L192">    public String toString() { return getDescription(); }</span>
+
+    /**
+     * Customize/expand the description string just before it is displayed.
+     * I.e. add offender specific information to the description string
+     * (e.g. its name).
+     *
+     * @param desc       the description
+     * @param dm         the design material
+     * @return           the description
+     */
+<span class="nc" id="L203">    public String expand(String desc, Object dm) { return desc; }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GotoDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">GotoDialog.java</span></div><h1>GotoDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JPanel;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.util.ArgoDialog;
+
+/**
+ * The dialog that allows the user to go to any diagram in the project
+ * by doubleclicking on it.&lt;p&gt;
+ *
+ * This dialog is not modal, and can stay open while the user
+ * is working on the model. It is even possible to open multiple
+ * of these dialogs, although the purpose of such useraction eludes me.&lt;p&gt;
+ *
+ * TODO: This dialog should have multiple tabs named &quot;Help&quot;, &quot;Diagram&quot;,
+ * &quot;Classifier&quot;, &quot;StateVertex&quot;, etc. Which would allow the user to go to other
+ * things than diagrams.
+ *
+ * @author MVW
+ *
+ */
+public class GotoDialog extends ArgoDialog {
+
+<span class="nc" id="L69">    private final TabResults allDiagrams = new TabResults(false); // no related</span>
+
+    /**
+     * The constructor.
+     */
+    public GotoDialog() {
+<span class="nc" id="L75">        super(Translator.localize(&quot;dialog.gotodiagram.title&quot;),</span>
+              ArgoDialog.OK_CANCEL_OPTION, false);
+
+<span class="nc" id="L78">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+
+<span class="nc" id="L80">        allDiagrams.setResults(p.getDiagramList(), p.getDiagramList());</span>
+
+        // TabResults has really large preferred height, so divide in
+        // half to reduce size of dialog which will be sized based on
+        // this preferred size.
+<span class="nc" id="L85">        allDiagrams.setPreferredSize(new Dimension(</span>
+<span class="nc" id="L86">                allDiagrams.getPreferredSize().width,</span>
+<span class="nc" id="L87">                allDiagrams.getPreferredSize().height / 2));</span>
+<span class="nc" id="L88">        allDiagrams.selectResult(0);</span>
+
+<span class="nc" id="L90">        JPanel mainPanel = new JPanel(new BorderLayout());</span>
+        //JTabbedPane tabs = new JTabbedPane();
+        //mainPanel.add(tabs, BorderLayout.CENTER);
+        //tabs.addTab(&quot;All Diagrams&quot;, allDiagrams);
+<span class="nc" id="L94">        mainPanel.add(allDiagrams, BorderLayout.CENTER);</span>
+<span class="nc" id="L95">        setContent(mainPanel);</span>
+        //TODO: tabs for class, state, usecase, help
+<span class="nc" id="L97">    }</span>
+
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (e.getSource() == getOkButton()) {</span>
+<span class="nc" id="L105">            allDiagrams.doDoubleClick();</span>
+        } else {
+<span class="nc" id="L107">            super.actionPerformed(e);</span>
+        }
+<span class="nc" id="L109">    }</span>
+
+    /*
+     * @see org.tigris.swidgets.Dialog#nameButtons()
+     */
+    protected void nameButtons() {
+<span class="nc" id="L115">        super.nameButtons();</span>
+<span class="nc" id="L116">        nameButton(getOkButton(), &quot;button.go-to-selection&quot;);</span>
+<span class="nc" id="L117">        nameButton(getCancelButton(), &quot;button.close&quot;);</span>
+<span class="nc" id="L118">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

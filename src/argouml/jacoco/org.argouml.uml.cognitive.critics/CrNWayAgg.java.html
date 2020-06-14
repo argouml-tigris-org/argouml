@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrNWayAgg.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrNWayAgg.java</span></div><h1>CrNWayAgg.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * A critic to check that no end of a 3-way (or more) association is an
+ * aggregation.&lt;p&gt;
+ *
+ * This is the third well-formedness rule for associations in the UML 1.3
+ * standard (see section 2.5.3 of the standard).&lt;p&gt;
+ *
+ * Well-formedness rule [3] for Association. See page 52 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
+ * &lt;em&gt;Note&lt;/em&gt;. This only applies to 3-way or more
+ * associations. There is a separate critic (see {@link
+ * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
+ * 2-way assocations. &lt;p&gt;
+ *
+ * See ArgoUML User Manual: Two Aggregate ends (roles) in binary Association
+ *
+ * @author jrobbins
+ */
+public class CrNWayAgg extends CrUML {
+
+    /**
+     * Constructor for the critic. &lt;p&gt;
+     *
+     * Sets up the resource name, which will allow headline and description
+     * to found for the current locale. Provides a design issue category
+     * (CONTAINMENT), a knowledge type (SEMANTICS) and add triggers for
+     * &quot;connection&quot; and &quot;end_aggregation&quot;.
+     */
+<span class="fc" id="L80">    public CrNWayAgg() {</span>
+<span class="fc" id="L81">        setupHeadAndDesc();</span>
+<span class="fc" id="L82">        addSupportedDecision(UMLDecision.CONTAINMENT);</span>
+<span class="fc" id="L83">        setKnowledgeTypes(Critic.KT_SEMANTICS);</span>
+
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+<span class="fc" id="L88">        addTrigger(&quot;connection&quot;);</span>
+<span class="fc" id="L89">        addTrigger(&quot;end_aggregation&quot;);</span>
+<span class="fc" id="L90">    }</span>
+
+
+    /**
+     * The trigger for the critic.&lt;p&gt;
+     *
+     * Check that the number of ends more than two, otherwise this should be
+     * handled by the critic for 2-way assocations (see {@link
+     * org.argouml.uml.cognitive.critics.CrMultipleAgg}).&lt;p&gt;
+     *
+     * We do not handle association roles, which are a subclass of
+     * association. An association role should be fine, if its parent is OK,
+     * since it must be more tightly constrained than its parent.&lt;p&gt;
+     *
+     * &lt;em&gt;Note&lt;/em&gt;. ArgoUML does not currently have a constructor to check
+     * that an association role is more tightly constrained than its
+     * parent.&lt;p&gt;
+     *
+     * Then loop through the ends, looking for aggregate ends. Note that we
+     * look for aggregation explicitly, rather than just absence of &quot;no
+     * aggregation&quot;, so we don't trigger if the aggregation is just
+     * undefined.
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only work for associatins
+
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (!(Model.getFacade().isAAssociation(dm))) {</span>
+<span class="nc" id="L129">            return NO_PROBLEM;</span>
+        }
+
+        // Get the assocations and connections. No problem (there is a separate
+        // critic) if this is a binary association or is an association role.
+
+<span class="nc" id="L135">        Object asc = /*(MAssociation)*/ dm;</span>
+
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (Model.getFacade().isAAssociationRole(asc)) {</span>
+<span class="nc" id="L138">            return NO_PROBLEM;</span>
+        }
+
+<span class="nc" id="L141">        Collection conns = Model.getFacade().getConnections(asc);</span>
+
+<span class="nc bnc" id="L143" title="All 4 branches missed.">        if ((conns == null) || (conns.size() &lt;= 2)) {</span>
+<span class="nc" id="L144">            return NO_PROBLEM;</span>
+        }
+
+        // Loop through the associations, looking for one with aggregation
+
+<span class="nc" id="L149">        Iterator assocEnds = conns.iterator();</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        while (assocEnds.hasNext()) {</span>
+<span class="nc" id="L151">            Object ae = /*(MAssociationEnd)*/ assocEnds.next();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">            if (Model.getFacade().isAggregate(ae)</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                    || Model.getFacade().isComposite(ae)) {</span>
+<span class="nc" id="L154">                return PROBLEM_FOUND;</span>
+            }
+<span class="nc" id="L156">        }</span>
+
+        // If drop out, we're OK
+
+<span class="nc" id="L160">        return NO_PROBLEM;</span>
+    }
+
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L169">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L170">        ret.add(Model.getMetaTypes().getAssociationClass());</span>
+<span class="fc" id="L171">        return ret;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 5318978944855930303L;
+} /* end class CrNWayAgg.java */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

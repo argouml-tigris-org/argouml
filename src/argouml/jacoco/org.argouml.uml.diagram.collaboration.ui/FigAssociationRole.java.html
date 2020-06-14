@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigAssociationRole.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.collaboration.ui</a> &gt; <span class="el_source">FigAssociationRole.java</span></div><h1>FigAssociationRole.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.collaboration.ui;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
+import org.tigris.gef.presentation.Fig;
+
+
+/**
+ * This class represents the Fig of an AssociationRole
+ * for a collaboration diagram.
+ *
+ */
+public class FigAssociationRole extends FigAssociation {
+    
+    private FigMessageGroup messages;
+
+    /**
+     * Construct an AssociationRole fig with the given properties and diagram
+     * settings.
+     * 
+     * @param diagramEdgeSettings the properties of the edge
+     * @param settings render settings
+     */
+    public FigAssociationRole(
+            final DiagramEdgeSettings diagramEdgeSettings, 
+            final DiagramSettings settings) {
+<span class="fc" id="L73">        super(diagramEdgeSettings, settings);</span>
+<span class="fc" id="L74">        messages = new FigMessageGroup(getOwner(), settings);</span>
+<span class="fc" id="L75">        addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));</span>
+<span class="fc" id="L76">    }</span>
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
+     */
+    protected int getNotationProviderType() {
+<span class="fc" id="L82">        return NotationProviderFactory2.TYPE_ASSOCIATION_ROLE;</span>
+    }
+
+    /**
+     * @param message the message to be added
+     */
+    public void addMessage(FigMessage message) {
+<span class="fc" id="L89">    	messages.addFig(message);</span>
+<span class="fc" id="L90">    	updatePathItemLocations();</span>
+<span class="fc" id="L91">    	messages.damage();</span>
+<span class="fc" id="L92">    }</span>
+
+    @Override
+    public void computeRouteImpl() {
+<span class="fc" id="L96">        super.computeRouteImpl();</span>
+<span class="fc" id="L97">        messages.updateArrows();</span>
+<span class="fc" id="L98">    }</span>
+    
+} /* end class FigAssociationRole */
+
+/**
+ * A Fig for the group of Messages shown above the Association Role.
+ */
+class FigMessageGroup extends ArgoFigGroup {
+    
+    /**
+     * The constructor.
+     * 
+     * @param owner the UML Message object
+     * @param settings rendering properties
+     */
+    public FigMessageGroup(Object owner, DiagramSettings settings) {
+<span class="fc" id="L114">        super(owner, settings);</span>
+<span class="fc" id="L115">    }</span>
+
+    private void updateFigPositions() {
+<span class="fc" id="L118">    	Collection figs = getFigs(); // the figs that make up this group</span>
+<span class="fc" id="L119">        Iterator it = figs.iterator();</span>
+<span class="pc bpc" id="L120" title="1 of 2 branches missed.">    	if (!figs.isEmpty()) {</span>
+<span class="fc" id="L121">            FigMessage previousFig = null;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            for (int i = 0; it.hasNext(); i++) {</span>
+<span class="fc" id="L123">                FigMessage figMessage = (FigMessage) it.next();</span>
+                int y;
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                if (i != 0) {</span>
+<span class="fc" id="L126">                    y = previousFig.getY() + previousFig.getHeight() + 5;</span>
+                } else {
+<span class="fc" id="L128">                    y = getY();</span>
+                }
+<span class="fc" id="L130">                figMessage.setLocation(getX(), y);</span>
+<span class="fc" id="L131">                figMessage.endTrans();</span>
+<span class="fc" id="L132">                previousFig = figMessage;</span>
+            }
+    	}
+<span class="fc" id="L135">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#calcBounds()
+     */
+    public void calcBounds() {
+<span class="fc" id="L141">	super.calcBounds();</span>
+<span class="fc" id="L142">	Collection figs = getFigs();</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">	if (!figs.isEmpty()) {</span>
+<span class="fc" id="L144">	    Fig last = null;</span>
+<span class="fc" id="L145">	    Fig first = null;</span>
+	    // _x = first.getX();
+	    // _y = first.getY();
+<span class="fc" id="L148">	    _w = 0;</span>
+<span class="fc" id="L149">            Iterator it = figs.iterator();</span>
+<span class="fc" id="L150">            int size = figs.size();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">	    for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L152">                Fig fig = (Fig) it.next();</span>
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">                if (i == 0) {</span>
+<span class="fc" id="L155">                    first = fig;</span>
+                }
+<span class="fc bfc" id="L157" title="All 2 branches covered.">                if (i == size - 1) {</span>
+<span class="fc" id="L158">                    last = fig;</span>
+                }
+
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		if (fig.getWidth() &gt; _w) {</span>
+<span class="fc" id="L162">		    _w = fig.getWidth();</span>
+		}
+	    }
+<span class="fc" id="L165">            _h = last.getY() + last.getHeight() - first.getY();</span>
+<span class="fc" id="L166">	} else {</span>
+<span class="nc" id="L167">	    _w = 0;</span>
+<span class="nc" id="L168">	    _h = 0;</span>
+	}
+<span class="fc" id="L170">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+     */
+    @Override
+    public void addFig(Fig f) {
+<span class="fc" id="L177">	super.addFig(f);</span>
+<span class="fc" id="L178">	updateFigPositions();</span>
+<span class="fc" id="L179">	updateArrows();</span>
+<span class="fc" id="L180">	calcBounds();</span>
+<span class="fc" id="L181">    }</span>
+    
+    void updateArrows() {
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (Fig fm : getFigs()) {</span>
+<span class="fc" id="L185">            ((FigMessage) fm).updateArrow();</span>
+<span class="fc" id="L186">        }</span>
+<span class="fc" id="L187">    }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

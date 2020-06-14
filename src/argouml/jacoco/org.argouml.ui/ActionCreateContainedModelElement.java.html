@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionCreateContainedModelElement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ActionCreateContainedModelElement.java</span></div><h1>ActionCreateContainedModelElement.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.event.ActionEvent;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+
+/**
+ * An action to create a model element to be contained by the 
+ * target model element.
+ *
+ * @author Scott Roberts
+ */
+public class ActionCreateContainedModelElement
+            extends AbstractActionNewModelElement {
+
+    private final Object metaType; 
+    private final String property; 
+
+    /**
+     * Construct the action.
+     * 
+     * @param theMetaType the element to be created
+     * @param container the container that will own the new element
+     */
+    public ActionCreateContainedModelElement(
+            Object theMetaType, 
+            Object container) {
+<span class="nc" id="L70">        this(theMetaType, container,</span>
+                &quot;button.new-&quot;
+<span class="nc" id="L72">                + Model.getMetaTypes().getName(theMetaType).toLowerCase());</span>
+<span class="nc" id="L73">    }</span>
+    
+    
+    /**
+     * Construct the action.
+     * 
+     * @param theMetaType the element to be created
+     * @param container the container that will own the new element
+     * @param menuDescr the description for the menu item label.
+     */
+    public ActionCreateContainedModelElement(
+            Object theMetaType, 
+            Object container,
+            String menuDescr) {
+<span class="nc" id="L87">        super(menuDescr);</span>
+        
+<span class="nc" id="L89">        metaType = theMetaType;</span>
+<span class="nc" id="L90">        property = null;</span>
+        
+<span class="nc" id="L92">        setTarget(container);</span>
+<span class="nc" id="L93">    }</span>
+
+    /**
+     * Construct the action.
+     * 
+     * @param theMetaType the element to be created
+     * @param container the container that will own the new element
+     * @param property the property name that represents the new element with
+     *        the container
+     * @param menuDescr the description for the menu item label.
+     */
+    public ActionCreateContainedModelElement(
+            Object theMetaType, 
+            Object container,
+            String property,
+            String menuDescr) {
+<span class="nc" id="L109">        super(menuDescr);</span>
+        
+<span class="nc" id="L111">        metaType = theMetaType;</span>
+<span class="nc" id="L112">        this.property = property;</span>
+        
+<span class="nc" id="L114">        setTarget(container);</span>
+<span class="nc" id="L115">    }</span>
+
+    public void actionPerformed(ActionEvent e) {
+        // TODO - lets pass in Project as a constructor argument
+<span class="nc" id="L119">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+        
+        Object newElement =
+<span class="nc" id="L122">            Model.getUmlFactory().buildNode(</span>
+                    metaType,
+<span class="nc" id="L124">                    getTarget(),</span>
+                    property,
+<span class="nc" id="L126">                    project.getDefaults());</span>
+            
+<span class="nc" id="L128">        TargetManager.getInstance().setTarget(newElement);                </span>
+<span class="nc" id="L129">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

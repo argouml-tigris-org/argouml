@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SelectionMessage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-diagrams-sequence2</a> &gt; <a href="index.source.html" class="el_package">org.argouml.sequence2.diagram</a> &gt; <span class="el_source">SelectionMessage.java</span></div><h1>SelectionMessage.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Christian L\u00f3pez Esp\u00ednola
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.sequence2.diagram;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.SelectionRerouteEdge;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
+
+/**
+ * A custom select object to handle the special requirements of
+ * rerouting, reshaping or dragging a message.
+ * @author penyaskito
+ */
+class SelectionMessage extends SelectionRerouteEdge {
+
+    /**
+     * Logger.
+     */
+<span class="nc" id="L62">    private static final Logger LOG =</span>
+<span class="nc" id="L63">        Logger.getLogger(SelectionMessage.class.getName());</span>
+
+    /**
+     * The constructor.
+     *
+     * @param feme the fig.
+     */
+    public SelectionMessage(FigEdgeModelElement feme) {
+<span class="nc" id="L71">        super(feme);</span>
+<span class="nc" id="L72">    }</span>
+
+    @Override
+    public void keyPressed(KeyEvent ke) {
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (ke.getKeyCode() == KeyEvent.VK_LEFT</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                || ke.getKeyCode() == KeyEvent.VK_RIGHT) {</span>
+            // we don't let the user move the messages horizontally.
+<span class="nc" id="L79">            ke.consume();</span>
+        } else {
+<span class="nc" id="L81">            handleMovement();</span>
+        }
+<span class="nc" id="L83">    }</span>
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+<span class="nc" id="L87">	FigMessage message = (FigMessage) getContent();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">	if (!message.isSelfMessage()) {</span>
+<span class="nc" id="L89">	    super.mousePressed(me);</span>
+	}
+<span class="nc" id="L91">    }</span>
+
+    @Override
+    public void dragHandle(int x, int y, int w, int h, Handle handle) {
+<span class="nc" id="L95">        FigMessage message = (FigMessage) getContent();</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (message.isSelfMessage()) {</span>
+<span class="nc" id="L97">            message.translate(0, y - message.getY());</span>
+        } else {
+<span class="nc" id="L99">            super.dragHandle(x, y, w, h, handle);</span>
+<span class="nc" id="L100">            handleMovement();</span>
+        }
+
+<span class="nc" id="L103">    }</span>
+
+    private void handleMovement() {
+<span class="nc" id="L106">        FigMessage figMessage = (FigMessage) getContent();</span>
+<span class="nc" id="L107">        FigClassifierRole source =</span>
+<span class="nc" id="L108">            (FigClassifierRole) figMessage.getSourceFigNode();</span>
+<span class="nc" id="L109">        FigClassifierRole dest =</span>
+<span class="nc" id="L110">            (FigClassifierRole) figMessage.getDestFigNode();</span>
+
+        // if the edge is near the bottom of the classifier roles,
+        // we enlarge all the FigClassifierRoles in the diagram.
+<span class="nc" id="L114">        if (figMessage.getFinalY() &gt;</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                source.getY() + source.getHeight() - 10) {</span>
+<span class="nc" id="L116">            final int newHeight = source.getHeight() + 10;</span>
+<span class="nc" id="L117">            final List&lt;Fig&gt; figs = getContent().getLayer().getContents();</span>
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            for (Fig workOnFig : figs) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                if (workOnFig instanceof FigClassifierRole) {</span>
+<span class="nc" id="L121">                    workOnFig.setHeight(newHeight);</span>
+                }
+<span class="nc" id="L123">            }</span>
+        }
+
+<span class="nc" id="L126">        dest.positionHead(figMessage);</span>
+
+        // we recalculate all the activations
+<span class="nc" id="L129">        source.createActivations();</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (!figMessage.isSelfMessage()) {</span>
+<span class="nc" id="L131">            dest.createActivations();</span>
+        }
+<span class="nc" id="L133">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

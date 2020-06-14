@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WizStepChoice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">WizStepChoice.java</span></div><h1>WizStepChoice.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+
+import org.argouml.cognitive.critics.Wizard;
+import org.argouml.swingext.SpacerPanel;
+
+
+/**
+ * A non-modal wizard step that shows instructions and allows
+ * the user to select one of a series of radio-buttons.
+ *
+ * @see org.argouml.cognitive.Critic
+ * @see org.argouml.cognitive.critics.Wizard
+ */
+
+public class WizStepChoice extends WizStep {
+<span class="nc" id="L65">    private JTextArea instructions = new JTextArea();</span>
+<span class="nc" id="L66">    private List&lt;String&gt; choices = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L67">    private int selectedIndex = -1;</span>
+
+
+    /**
+     * The constructor.
+     *
+     * @param w the wizard
+     * @param instr the instructions
+     * @param ch the choices
+     */
+<span class="nc" id="L77">    public WizStepChoice(Wizard w, String instr, List&lt;String&gt; ch) {</span>
+	// store wizard?
+<span class="nc" id="L79">	choices = ch;</span>
+
+<span class="nc" id="L81">	instructions.setText(instr);</span>
+<span class="nc" id="L82">	instructions.setWrapStyleWord(true);</span>
+<span class="nc" id="L83">	instructions.setEditable(false);</span>
+<span class="nc" id="L84">	instructions.setBorder(null);</span>
+<span class="nc" id="L85">	instructions.setBackground(getMainPanel().getBackground());</span>
+
+<span class="nc" id="L87">	getMainPanel().setBorder(new EtchedBorder());</span>
+
+<span class="nc" id="L89">	GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L90">	getMainPanel().setLayout(gb);</span>
+
+<span class="nc" id="L92">	GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L93">	c.ipadx = 3; c.ipady = 3;</span>
+<span class="nc" id="L94">	c.weightx = 0.0; c.weighty = 0.0;</span>
+<span class="nc" id="L95">	c.anchor = GridBagConstraints.EAST;</span>
+
+<span class="nc" id="L97">	JLabel image = new JLabel(&quot;&quot;);</span>
+	//image.setMargin(new Insets(0, 0, 0, 0));
+<span class="nc" id="L99">	image.setIcon(getWizardIcon());</span>
+<span class="nc" id="L100">	image.setBorder(null);</span>
+<span class="nc" id="L101">	c.gridx = 0;</span>
+<span class="nc" id="L102">	c.gridheight = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L103">	c.gridy = 0;</span>
+<span class="nc" id="L104">	c.anchor = GridBagConstraints.NORTH;</span>
+<span class="nc" id="L105">	gb.setConstraints(image, c);</span>
+<span class="nc" id="L106">	getMainPanel().add(image);</span>
+
+<span class="nc" id="L108">	c.weightx = 1.0;</span>
+<span class="nc" id="L109">	c.gridx = 2;</span>
+<span class="nc" id="L110">	c.gridheight = 1;</span>
+<span class="nc" id="L111">	c.gridwidth = 3;</span>
+<span class="nc" id="L112">	c.gridy = 0;</span>
+<span class="nc" id="L113">	c.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L114">	gb.setConstraints(instructions, c);</span>
+<span class="nc" id="L115">	getMainPanel().add(instructions);</span>
+
+<span class="nc" id="L117">	c.gridx = 1;</span>
+<span class="nc" id="L118">	c.gridy = 1;</span>
+<span class="nc" id="L119">	c.weightx = 0.0;</span>
+<span class="nc" id="L120">	c.gridwidth = 1;</span>
+<span class="nc" id="L121">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L122">	SpacerPanel spacer = new SpacerPanel();</span>
+<span class="nc" id="L123">	gb.setConstraints(spacer, c);</span>
+<span class="nc" id="L124">	getMainPanel().add(spacer);</span>
+
+<span class="nc" id="L126">	c.gridx = 2;</span>
+<span class="nc" id="L127">	c.weightx = 1.0;</span>
+<span class="nc" id="L128">	c.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L129">	c.gridwidth = 1;</span>
+<span class="nc" id="L130">	int size = ch.size();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">	for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L132">	    c.gridy = 2 + i;</span>
+<span class="nc" id="L133">	    String s = ch.get(i);</span>
+<span class="nc" id="L134">	    JRadioButton rb = new JRadioButton(s);</span>
+<span class="nc" id="L135">	    rb.setActionCommand(s);</span>
+<span class="nc" id="L136">	    rb.addActionListener(this);</span>
+<span class="nc" id="L137">	    gb.setConstraints(rb, c);</span>
+<span class="nc" id="L138">	    getMainPanel().add(rb);</span>
+	}
+
+<span class="nc" id="L141">	c.gridx = 1;</span>
+<span class="nc" id="L142">	c.gridy = 3 + ch.size();</span>
+<span class="nc" id="L143">	c.weightx = 0.0;</span>
+<span class="nc" id="L144">	c.gridwidth = 1;</span>
+<span class="nc" id="L145">	c.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L146">	SpacerPanel spacer2 = new SpacerPanel();</span>
+<span class="nc" id="L147">	gb.setConstraints(spacer2, c);</span>
+<span class="nc" id="L148">	getMainPanel().add(spacer2);</span>
+
+<span class="nc" id="L150">    }</span>
+
+    /**
+     * @return the index of the selected item
+     */
+    public int getSelectedIndex() {
+<span class="nc" id="L156">        return selectedIndex;</span>
+    }
+
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L165">	super.actionPerformed(e);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">	if (e.getSource() instanceof JRadioButton) {</span>
+<span class="nc" id="L167">	    String cmd = e.getActionCommand();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">	    if (cmd == null) {</span>
+<span class="nc" id="L169">		selectedIndex = -1;</span>
+<span class="nc" id="L170">		return;</span>
+	    }
+<span class="nc" id="L172">	    int size = choices.size();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">	    for (int i = 0; i &lt; size; i++) {</span>
+<span class="nc" id="L174">		String s = choices.get(i);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		if (s.equals(cmd)) {</span>
+<span class="nc" id="L176">                    selectedIndex = i;</span>
+                }
+	    }
+<span class="nc" id="L179">	    getWizard().doAction();</span>
+<span class="nc" id="L180">	    enableButtons();</span>
+	}
+<span class="nc" id="L182">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8055896491830976354L;
+} 
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

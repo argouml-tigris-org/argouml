@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FormatingStrategyUML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal</a> &gt; <span class="el_source">FormatingStrategyUML.java</span></div><h1>FormatingStrategyUML.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal;
+
+import java.util.Iterator;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.profile.FormatingStrategy;
+
+/**
+ * The Formating Strategy based on UML naming conventions.
+ *
+ * @author Marcos Aurï¿½lio
+ */
+<span class="fc" id="L52">public class FormatingStrategyUML implements FormatingStrategy {</span>
+    
+    public String formatElement(Object element, Object namespace) {
+<span class="fc" id="L55">        String value = null;</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        if (element == null) {</span>
+<span class="nc" id="L57">            value = &quot;&quot;;</span>
+        } else {
+<span class="fc" id="L59">            Object elementNs = Model.getFacade().getNamespace(element);</span>
+            //
+            //   if element is an AssociationEnd use
+            //      the namespace of containing association
+            //
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">            if (Model.getFacade().isAAssociationEnd(element)) {</span>
+<span class="nc" id="L65">                Object assoc = Model.getFacade().getAssociation(element);</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">                if (assoc != null) {</span>
+<span class="nc" id="L67">                    elementNs = Model.getFacade().getNamespace(assoc);</span>
+                }
+            }
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if (elementNs == namespace) {</span>
+<span class="fc" id="L71">                value = Model.getFacade().getName(element);</span>
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">                if (value == null || value.length() == 0) {</span>
+<span class="fc" id="L73">                    value = defaultName(element, namespace);</span>
+                }
+            } else {
+<span class="nc" id="L76">                StringBuffer buffer = new StringBuffer();</span>
+<span class="nc" id="L77">                String pathSep = getPathSeparator();</span>
+<span class="nc" id="L78">                buildPath(buffer, element, pathSep);</span>
+<span class="nc" id="L79">                value = buffer.toString();</span>
+            }
+        }
+<span class="fc" id="L82">        return value;</span>
+    }
+
+    /**
+     * Create a default association end name from the type of assocEnd. 
+     * Follows the conventions in UML 2.2 Infrastructure, 
+     * 6.2.1. &quot;Diagram format&quot;.
+     * 
+     * @param assocEnd the given association end name
+     * @param namespace the namespace
+     * @return the default name for the given associationend
+     */
+    protected String defaultAssocEndName(Object assocEnd,
+                                         Object namespace) {
+<span class="fc" id="L96">        String name = null;</span>
+<span class="fc" id="L97">        Object type = Model.getFacade().getType(assocEnd);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (type != null) {</span>
+<span class="fc" id="L99">            name = formatElement(type, namespace);</span>
+<span class="fc" id="L100">            name = ensureFirstCharLowerCase(name);</span>
+        } else {
+<span class="nc" id="L102">            name = Translator.localize(&quot;profile.unknown-type&quot;);</span>
+        }
+<span class="fc" id="L104">        Object mult = Model.getFacade().getMultiplicity(assocEnd);</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (mult != null) {</span>
+<span class="nc" id="L106">            int lower = Model.getFacade().getLower(mult);</span>
+<span class="nc" id="L107">            int upper = Model.getFacade().getUpper(mult);</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">            if (lower == upper &amp;&amp; lower == 1) {</span>
+                // simply use name as it is
+            }
+            else {
+<span class="nc" id="L112">                StringBuffer buf = new StringBuffer(name);</span>
+<span class="nc" id="L113">                buf.append(&quot;[&quot;);</span>
+<span class="nc" id="L114">                buf.append(Integer.toString(lower));</span>
+<span class="nc" id="L115">                buf.append(&quot;..&quot;);</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                if (upper &gt;= 0) {</span>
+<span class="nc" id="L117">                    buf.append(Integer.toString(upper));</span>
+                } else {
+<span class="nc" id="L119">                    buf.append(&quot;*&quot;);</span>
+                }
+<span class="nc" id="L121">                buf.append(&quot;]&quot;);</span>
+<span class="nc" id="L122">                name = buf.toString();</span>
+            }
+        }
+<span class="fc" id="L125">        return name;</span>
+    }
+
+    String ensureFirstCharLowerCase(String s) {
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (s.length() &gt; 0) {</span>
+<span class="fc" id="L130">            return s.substring(0, 1).toLowerCase() + s.substring(1);</span>
+        }
+<span class="fc" id="L132">        return s;</span>
+    }
+
+    /**
+     * Create a default association name from its ends. Follows the conventions
+     * in UML 2.2 Infrastructure, 6.2.1. &quot;Diagram format&quot;.
+     *
+     * @param assoc the given association
+     * @param ns the namespace
+     * @return the default association name
+     */
+    protected String defaultAssocName(Object assoc, Object ns) {
+<span class="fc" id="L144">        StringBuffer buf = new StringBuffer(&quot;A_&quot;);</span>
+<span class="fc" id="L145">        Iterator iter = Model.getFacade().getConnections(assoc).iterator();</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (int i = 0; iter.hasNext(); i++) {</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">            if (i != 0) {</span>
+<span class="fc" id="L148">                buf.append(&quot;_&quot;);</span>
+            }
+<span class="fc" id="L150">            buf.append(defaultAssocEndName(iter.next(), ns));</span>
+        }
+<span class="fc" id="L152">        return buf.toString();</span>
+    }
+
+    /**
+     * Use the term specializes, which is referred some times in the
+     * UML 2.2 Infrastructure specification.
+     * 
+     * @param gen the given Generalization
+     * @param namespace the namespace
+     * @return the default generalization name
+     */
+    protected String defaultGeneralizationName(Object gen, Object namespace) {
+<span class="fc" id="L164">        Object child = Model.getFacade().getSpecific(gen);</span>
+<span class="fc" id="L165">        Object parent = Model.getFacade().getGeneral(gen);</span>
+<span class="fc" id="L166">        return Translator.messageFormat(</span>
+            &quot;profile.default.specializes.expression&quot;,
+<span class="fc" id="L168">            new Object[] {formatElement(child, namespace),</span>
+<span class="fc" id="L169">                formatElement(parent, namespace), });</span>
+    }
+
+    /**
+     * @param element the given modelelement
+     * @param namespace the namespace
+     * @return a default name for this modelelement
+     */
+    protected String defaultName(Object element, Object namespace) {
+<span class="fc" id="L178">        String name = null;</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociationEnd(element)) {</span>
+<span class="nc" id="L180">            name = defaultAssocEndName(element, namespace);</span>
+        } else {
+<span class="fc bfc" id="L182" title="All 2 branches covered.">            if (Model.getFacade().isAAssociation(element)) {</span>
+<span class="fc" id="L183">                name = defaultAssocName(element, namespace);</span>
+            }
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (Model.getFacade().isAGeneralization(element)) {</span>
+<span class="fc" id="L186">                name = defaultGeneralizationName(element, namespace);</span>
+            }
+        }
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">        if (name == null) {</span>
+<span class="nc" id="L190">            name = Translator.localize(&quot;profile.anonymous&quot;);</span>
+        }
+<span class="fc" id="L192">        return name;</span>
+    }
+
+    /**
+     * @return the path separator (currently &quot;::&quot;)
+     */
+    protected String getPathSeparator() {
+<span class="nc" id="L199">        return &quot;::&quot;;</span>
+    }
+
+    /**
+     * @param buffer (out) the buffer that will contain the path build
+     * @param element the given model element
+     * @param pathSep the path separator character(s)
+     */
+    private void buildPath(StringBuffer buffer, Object element, 
+            String pathSep) {
+<span class="nc bnc" id="L209" title="All 2 branches missed.">        if (element != null) {</span>
+<span class="nc" id="L210">            Object parent = Model.getFacade().getNamespace(element);</span>
+<span class="nc bnc" id="L211" title="All 4 branches missed.">            if (parent != null &amp;&amp; parent != element) {</span>
+<span class="nc" id="L212">                buildPath(buffer, parent, pathSep);</span>
+<span class="nc" id="L213">                buffer.append(pathSep);</span>
+            }
+<span class="nc" id="L215">            String name = Model.getFacade().getName(element);</span>
+<span class="nc bnc" id="L216" title="All 4 branches missed.">            if (name == null || name.length() == 0) {</span>
+<span class="nc" id="L217">                name = defaultName(element, null);</span>
+            }
+<span class="nc" id="L219">            buffer.append(name);</span>
+        }
+<span class="nc" id="L221">    }</span>
+
+    /**
+     * @return the string that separates elements
+     */
+    protected String getElementSeparator() {
+<span class="nc" id="L227">        return &quot;, &quot;;</span>
+    }
+
+    /**
+     * @return the string that represents an empty collection
+     */
+    protected String getEmptyCollection() {
+<span class="nc" id="L234">        return Translator.localize(&quot;profile.empty.collection&quot;);</span>
+    }
+
+
+    public String formatCollection(Iterator iter, Object namespace) {
+<span class="nc" id="L239">        String value = null;</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">        if (iter.hasNext()) {</span>
+<span class="nc" id="L241">            StringBuffer buffer = new StringBuffer();</span>
+<span class="nc" id="L242">            String elementSep = getElementSeparator();</span>
+<span class="nc" id="L243">            Object obj = null;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            for (int i = 0; iter.hasNext(); i++) {</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">                if (i &gt; 0) {</span>
+<span class="nc" id="L246">                    buffer.append(elementSep);</span>
+                }
+<span class="nc" id="L248">                obj = iter.next();</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">                if (Model.getFacade().isAModelElement(obj)) {</span>
+<span class="nc" id="L250">                    buffer.append(formatElement(obj, namespace));</span>
+                } else {
+<span class="nc" id="L252">                    buffer.append(obj.toString());</span>
+                }
+            }
+<span class="nc" id="L255">            value = buffer.toString();</span>
+<span class="nc" id="L256">        } else {</span>
+<span class="nc" id="L257">            value = getEmptyCollection();</span>
+        }
+<span class="nc" id="L259">        return value;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

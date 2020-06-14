@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClassGenerationDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.generator.ui</a> &gt; <span class="el_source">ClassGenerationDialog.java</span></div><h1>ClassGenerationDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.generator.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.generator.CodeGenerator;
+import org.argouml.uml.generator.GeneratorManager;
+import org.argouml.uml.generator.Language;
+import org.argouml.util.ArgoDialog;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.swidgets.Dialog;
+
+/**
+ * The dialog that starts the generation of classes.
+ */
+public class ClassGenerationDialog extends ArgoDialog
+        implements ActionListener {
+
+    private static final String SOURCE_LANGUAGE_TAG = &quot;src_lang&quot;;
+
+    /**
+     * Logger.
+     */
+<span class="nc" id="L94">    private static final Logger LOG =</span>
+<span class="nc" id="L95">        Logger.getLogger(ClassGenerationDialog.class.getName());</span>
+
+    private TableModelClassChecks classTableModel;
+
+    private boolean isPathInModel;
+
+    private List&lt;Language&gt; languages;
+
+    private JTable classTable;
+
+    private JComboBox outputDirectoryComboBox;
+
+    /**
+     * Used to select the next language column in case the &quot;Select All&quot; button
+     * is pressed.
+     */
+    private int languageHistory;
+
+    /**
+     * Constructor.
+     *
+     * @param nodes The UML elements, typically classifiers, to generate.
+     */
+    public ClassGenerationDialog(List&lt;Object&gt; nodes) {
+<span class="nc" id="L119">        this(nodes, false);</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * Constructor.
+     * &lt;p&gt;
+     * TODO: Correct?
+     *
+     * @param nodes The UML elements, typically classifiers, to generate.
+     * @param inModel &lt;code&gt;true&lt;/code&gt; if the path is in the model.
+     */
+    public ClassGenerationDialog(List&lt;Object&gt; nodes, boolean inModel) {
+<span class="nc" id="L131">        super(Translator.localize(&quot;dialog.title.generate-classes&quot;),</span>
+                Dialog.OK_CANCEL_OPTION, true);
+<span class="nc" id="L133">        isPathInModel = inModel;</span>
+
+<span class="nc" id="L135">        buildLanguages();</span>
+
+<span class="nc" id="L137">        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));</span>
+
+        // Class Table
+
+<span class="nc" id="L141">        classTableModel = new TableModelClassChecks();</span>
+<span class="nc" id="L142">        classTableModel.setTarget(nodes);</span>
+<span class="nc" id="L143">        classTable = new JTable(classTableModel);</span>
+<span class="nc" id="L144">        classTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+<span class="nc" id="L145">        classTable.setShowVerticalLines(false);</span>
+<span class="nc" id="L146">        setClassTableColumnWidths();</span>
+<span class="nc" id="L147">        classTable.setPreferredScrollableViewportSize(new Dimension(300, 300));</span>
+
+        // Select Buttons
+
+<span class="nc" id="L151">        JButton selectAllButton = new JButton();</span>
+<span class="nc" id="L152">        nameButton(selectAllButton, &quot;button.select-all&quot;);</span>
+<span class="nc" id="L153">        selectAllButton.addActionListener(new ActionListener() {</span>
+            /*
+             * @see
+             * java.awt.event.ActionListener#actionPerformed(java.awt.event.
+             * ActionEvent)
+             */
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L160">                classTableModel.setAllChecks(true);</span>
+<span class="nc" id="L161">                classTable.repaint();</span>
+<span class="nc" id="L162">            }</span>
+        });
+<span class="nc" id="L164">        JButton selectNoneButton = new JButton();</span>
+<span class="nc" id="L165">        nameButton(selectNoneButton, &quot;button.select-none&quot;);</span>
+<span class="nc" id="L166">        selectNoneButton.addActionListener(new ActionListener() {</span>
+            /*
+             * @see
+             * java.awt.event.ActionListener#actionPerformed(java.awt.event.
+             * ActionEvent)
+             */
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L173">                classTableModel.setAllChecks(false);</span>
+<span class="nc" id="L174">                classTable.repaint();</span>
+<span class="nc" id="L175">            }</span>
+        });
+
+<span class="nc" id="L178">        JButton selectCurrentlySelectedButton = new JButton();</span>
+<span class="nc" id="L179">        nameButton(selectCurrentlySelectedButton, &quot;button.select-currently-selected&quot;);</span>
+<span class="nc" id="L180">        selectCurrentlySelectedButton.addActionListener(new ActionListener() {</span>
+           /**
+            * Action performed after clicking the button
+            * @param e
+            * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+            */
+           public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L187">               List classes = new ArrayList();</span>
+<span class="nc" id="L188">               Collection targets = TargetManager.getInstance().getTargets();</span>
+
+               // TODO: Should be improved so that it's recognized whether there is something selected that can actually be generated
+<span class="nc bnc" id="L191" title="All 2 branches missed.">               if (targets.size() &lt; 1) { // Nothing selected in the diagram</span>
+<span class="nc" id="L192">                   JOptionPane.showMessageDialog(null, Translator.localize(&quot;dialog.error.generator.nothing-selected&quot;),</span>
+<span class="nc" id="L193">                           Translator.localize(&quot;dialog.error.title&quot;), JOptionPane.ERROR_MESSAGE);</span>
+               }
+<span class="nc bnc" id="L195" title="All 2 branches missed.">               for (Object target : targets) {</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                   if (target instanceof Fig) {</span>
+<span class="nc" id="L197">                       target = ((Fig) target).getOwner();</span>
+                   }
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                   if (Model.getFacade().isAClass(target)</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                       || Model.getFacade().isAInterface(target)) {</span>
+<span class="nc" id="L201">                       classes.add(target);</span>
+                   }
+<span class="nc" id="L203">               }</span>
+<span class="nc" id="L204">               classTableModel.check(classes);</span>
+<span class="nc" id="L205">               classTable.repaint();</span>
+<span class="nc" id="L206">           }</span>
+        });
+
+<span class="nc" id="L209">        JPanel selectPanel = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L210">        selectPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));</span>
+<span class="nc" id="L211">        JPanel selectButtons = new JPanel(new BorderLayout(5, 0));</span>
+<span class="nc" id="L212">        selectButtons.add(selectAllButton, BorderLayout.CENTER);</span>
+<span class="nc" id="L213">        selectButtons.add(selectNoneButton, BorderLayout.EAST);</span>
+<span class="nc" id="L214">        selectPanel.add(selectCurrentlySelectedButton, BorderLayout.WEST);</span>
+<span class="nc" id="L215">        selectPanel.add(selectButtons, BorderLayout.EAST);</span>
+
+<span class="nc" id="L217">        JPanel centerPanel = new JPanel(new BorderLayout(0, 2));</span>
+<span class="nc" id="L218">        centerPanel.add(new JLabel(Translator</span>
+<span class="nc" id="L219">                .localize(&quot;label.available-classes&quot;)), BorderLayout.NORTH);</span>
+<span class="nc" id="L220">        centerPanel.add(new JScrollPane(classTable), BorderLayout.CENTER);</span>
+<span class="nc" id="L221">        centerPanel.add(selectPanel, BorderLayout.SOUTH);</span>
+<span class="nc" id="L222">        contentPanel.add(centerPanel, BorderLayout.CENTER);</span>
+
+        // Output Directory
+<span class="nc" id="L225">        outputDirectoryComboBox =</span>
+<span class="nc" id="L226">            new JComboBox(getClasspathEntries().toArray());</span>
+
+<span class="nc" id="L228">        JButton browseButton = new JButton();</span>
+<span class="nc" id="L229">        nameButton(browseButton, &quot;button.browse&quot;);</span>
+<span class="nc" id="L230">        browseButton.setText(browseButton.getText() + &quot;...&quot;);</span>
+<span class="nc" id="L231">        browseButton.addActionListener(new ActionListener() {</span>
+            /*
+             * @see
+             * java.awt.event.ActionListener#actionPerformed(java.awt.event.
+             * ActionEvent)
+             */
+            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L238">                doBrowse();</span>
+<span class="nc" id="L239">            }</span>
+        });
+
+<span class="nc" id="L242">        JPanel southPanel = new JPanel(new BorderLayout(0, 2));</span>
+
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (!inModel) {</span>
+<span class="nc" id="L245">            outputDirectoryComboBox.setEditable(true);</span>
+<span class="nc" id="L246">            JPanel outputPanel = new JPanel(new BorderLayout(5, 0));</span>
+<span class="nc" id="L247">            outputPanel.setBorder(BorderFactory.createCompoundBorder(</span>
+<span class="nc" id="L248">                    BorderFactory.createTitledBorder(Translator</span>
+<span class="nc" id="L249">                            .localize(&quot;label.output-directory&quot;)), BorderFactory</span>
+<span class="nc" id="L250">                            .createEmptyBorder(2, 5, 5, 5)));</span>
+<span class="nc" id="L251">            outputPanel.add(outputDirectoryComboBox, BorderLayout.CENTER);</span>
+<span class="nc" id="L252">            outputPanel.add(browseButton, BorderLayout.EAST);</span>
+<span class="nc" id="L253">            southPanel.add(outputPanel, BorderLayout.NORTH);</span>
+        }
+
+        // Compile Checkbox
+
+        // _compileCheckBox = new JCheckBox();
+        // nameButton(_compileCheckBox, &quot;checkbox.compile-generated-source&quot;);
+        // TODO: Implement the compile feature. For now, disable the checkbox.
+        // _compileCheckBox.setEnabled(false);
+        // southPanel.add(_compileCheckBox, BorderLayout.SOUTH);
+
+<span class="nc" id="L264">        contentPanel.add(southPanel, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L266">        setContent(contentPanel);</span>
+
+        // TODO: Get saved default directory
+        // outputDirectoryComboBox.getModel().setSelectedItem(savedDir);
+<span class="nc" id="L270">    }</span>
+
+    /*
+     * @see org.tigris.swidgets.Dialog#nameButtons()
+     */
+    @Override
+    protected void nameButtons() {
+<span class="nc" id="L277">        super.nameButtons();</span>
+<span class="nc" id="L278">        nameButton(getOkButton(), &quot;button.generate&quot;);</span>
+<span class="nc" id="L279">    }</span>
+
+    private void setClassTableColumnWidths() {
+<span class="nc" id="L282">        TableColumn column = null;</span>
+<span class="nc" id="L283">        Component c = null;</span>
+<span class="nc" id="L284">        int width = 0;</span>
+
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        for (int i = 0; i &lt; classTable.getColumnCount() - 1; ++i) {</span>
+<span class="nc" id="L287">            column = classTable.getColumnModel().getColumn(i);</span>
+<span class="nc" id="L288">            width = 30;</span>
+
+<span class="nc" id="L290">            JTableHeader header = classTable.getTableHeader();</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">            if (header != null) {</span>
+<span class="nc" id="L292">                c = header.getDefaultRenderer()</span>
+<span class="nc" id="L293">                        .getTableCellRendererComponent(classTable,</span>
+<span class="nc" id="L294">                                column.getHeaderValue(), false, false, 0, 0);</span>
+<span class="nc" id="L295">                width = Math.max(c.getPreferredSize().width + 8, width);</span>
+            }
+
+<span class="nc" id="L298">            column.setPreferredWidth(width);</span>
+<span class="nc" id="L299">            column.setWidth(width);</span>
+<span class="nc" id="L300">            column.setMinWidth(width);</span>
+<span class="nc" id="L301">            column.setMaxWidth(width);</span>
+        }
+<span class="nc" id="L303">    }</span>
+
+    private void buildLanguages() {
+<span class="nc" id="L306">        languages = new ArrayList&lt;Language&gt;(GeneratorManager</span>
+<span class="nc" id="L307">                .getInstance().getLanguages());</span>
+
+<span class="nc" id="L309">        Collections.sort(languages);</span>
+<span class="nc" id="L310">    }</span>
+
+    private static Collection&lt;String&gt; getClasspathEntries() {
+<span class="nc" id="L313">        String classpath = System.getProperty(&quot;java.class.path&quot;);</span>
+<span class="nc" id="L314">        Collection&lt;String&gt; entries = new TreeSet&lt;String&gt;();</span>
+
+        // TODO: What does the output directory have to do with the class path?
+        // Project p = ProjectManager.getManager().getCurrentProject();
+        // entries.add(p.getProjectSettings().getGenerationOutputDir());
+
+<span class="nc" id="L320">        final String pathSep = System.getProperty(&quot;path.separator&quot;);</span>
+<span class="nc" id="L321">        StringTokenizer allEntries = new StringTokenizer(classpath, pathSep);</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">        while (allEntries.hasMoreElements()) {</span>
+<span class="nc" id="L323">            String entry = allEntries.nextToken();</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (!entry.toLowerCase().endsWith(&quot;.jar&quot;)</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">                    &amp;&amp; !entry.toLowerCase().endsWith(&quot;.zip&quot;)) {</span>
+<span class="nc" id="L326">                entries.add(entry);</span>
+            }
+<span class="nc" id="L328">        }</span>
+<span class="nc" id="L329">        return entries;</span>
+    }
+
+    /*
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L338">        super.actionPerformed(e);</span>
+
+        // Generate Button --------------------------------------
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        if (e.getSource() == getOkButton()) {</span>
+<span class="nc" id="L342">            String path = null;</span>
+            // TODO: Get default output directory from user settings
+            // Project p = ProjectManager.getManager().getCurrentProject();
+            // p.getProjectSettings().setGenerationOutputDir(path);
+<span class="nc" id="L346">            List&lt;String&gt;[] fileNames = new List[languages.size()];</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">            for (int i = 0; i &lt; languages.size(); i++) {</span>
+<span class="nc" id="L348">                fileNames[i] = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L349">                Language language = languages.get(i);</span>
+<span class="nc" id="L350">                GeneratorManager genMan = GeneratorManager.getInstance();</span>
+<span class="nc" id="L351">                CodeGenerator generator = genMan.getGenerator(language);</span>
+<span class="nc" id="L352">                Set nodes = classTableModel.getChecked(language);</span>
+
+<span class="nc bnc" id="L354" title="All 2 branches missed.">                if (!isPathInModel) {</span>
+<span class="nc" id="L355">                    path = ((String) outputDirectoryComboBox.getModel()</span>
+<span class="nc" id="L356">                            .getSelectedItem());</span>
+<span class="nc bnc" id="L357" title="All 2 branches missed.">                    if (path != null) {</span>
+<span class="nc" id="L358">                        path = path.trim();</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">                        if (path.length() &gt; 0) {</span>
+<span class="nc" id="L360">                            Collection&lt;String&gt; files = generator.generateFiles(</span>
+                                    nodes, path, false);
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                            for (String filename : files) {</span>
+<span class="nc" id="L363">                                fileNames[i].add(path</span>
+                                        + CodeGenerator.FILE_SEPARATOR
+                                        + filename);
+<span class="nc" id="L366">                            }</span>
+<span class="nc" id="L367">                        }</span>
+                    }
+                } else {
+                    // classify nodes by base path
+<span class="nc" id="L371">                    Map&lt;String, Set&lt;Object&gt;&gt; nodesPerPath =</span>
+                        new HashMap&lt;String, Set&lt;Object&gt;&gt;();
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                    for (Object node : nodes) {</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">                        if (!Model.getFacade().isAClassifier(node)) {</span>
+<span class="nc" id="L375">                            continue;</span>
+                        }
+<span class="nc" id="L377">                        path = GeneratorManager.getCodePath(node);</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">                        if (path == null) {</span>
+<span class="nc" id="L379">                            Object parent = Model.getFacade()</span>
+<span class="nc" id="L380">                                    .getNamespace(node);</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">                            while (parent != null) {</span>
+<span class="nc" id="L382">                                path = GeneratorManager.getCodePath(parent);</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                                if (path != null) {</span>
+<span class="nc" id="L384">                                    break;</span>
+                                }
+<span class="nc" id="L386">                                parent = Model.getFacade().getNamespace(parent);</span>
+                            }
+                        }
+<span class="nc bnc" id="L389" title="All 2 branches missed.">                        if (path != null) {</span>
+<span class="nc" id="L390">                            final String fileSep = CodeGenerator.FILE_SEPARATOR;</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">                            if (path.endsWith(fileSep)) { // remove trailing /</span>
+<span class="nc" id="L392">                                path = path.substring(0, path.length()</span>
+<span class="nc" id="L393">                                        - fileSep.length());</span>
+                            }
+<span class="nc" id="L395">                            Set&lt;Object&gt; np = nodesPerPath.get(path);</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">                            if (np == null) {</span>
+<span class="nc" id="L397">                                np = new HashSet&lt;Object&gt;();</span>
+<span class="nc" id="L398">                                nodesPerPath.put(path, np);</span>
+                            }
+<span class="nc" id="L400">                            np.add(node);</span>
+<span class="nc" id="L401">                            saveLanguage(node, language);</span>
+                        }
+<span class="nc" id="L403">                    } // end for (all nodes)</span>
+
+                    // generate the files
+<span class="nc bnc" id="L406" title="All 2 branches missed.">                    for (Map.Entry entry : nodesPerPath.entrySet()) {</span>
+<span class="nc" id="L407">                        String basepath = (String) entry.getKey();</span>
+<span class="nc" id="L408">                        Set nodeColl = (Set) entry.getValue();</span>
+                        // TODO: the last argument (recursive flag) should be a
+                        // selectable option
+<span class="nc" id="L411">                        Collection&lt;String&gt; files = generator.generateFiles(</span>
+                                nodeColl, basepath, false);
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                        for (String filename : files) {</span>
+<span class="nc" id="L414">                            fileNames[i].add(basepath</span>
+                                    + CodeGenerator.FILE_SEPARATOR + filename);
+<span class="nc" id="L416">                        }</span>
+<span class="nc" id="L417">                    }</span>
+                } // end if (!isPathInModel) .. else
+            } // end for (all languages)
+            // TODO: do something with the generated list fileNames,
+            // for example, show it to the user in a dialog box.
+        }
+<span class="nc" id="L423">    }</span>
+
+    /**
+     * Save the source language in the model.
+     * &lt;p&gt;
+     * TODO: Support multiple languages now that we have UML 1.4 tagged values.
+     *
+     * @param node
+     * @param language
+     */
+    private void saveLanguage(Object node, Language language) {
+<span class="nc" id="L434">        Object taggedValue = Model.getFacade().getTaggedValue(node,</span>
+                SOURCE_LANGUAGE_TAG);
+<span class="nc bnc" id="L436" title="All 2 branches missed.">        if (taggedValue != null) {</span>
+<span class="nc" id="L437">            String savedLang = Model.getFacade().getValueOfTag(taggedValue);</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">            if (!language.getName().equals(savedLang)) {</span>
+<span class="nc" id="L439">                Model.getExtensionMechanismsHelper().setValueOfTag(taggedValue,</span>
+<span class="nc" id="L440">                        language.getName());</span>
+            }
+<span class="nc" id="L442">        } else {</span>
+<span class="nc" id="L443">            taggedValue = Model.getExtensionMechanismsFactory()</span>
+<span class="nc" id="L444">                    .buildTaggedValue(SOURCE_LANGUAGE_TAG, language.getName());</span>
+<span class="nc" id="L445">            Model.getExtensionMechanismsHelper().addTaggedValue(node,</span>
+                    taggedValue);
+
+        }
+<span class="nc" id="L449">    }</span>
+
+    private void doBrowse() {
+        try {
+            // Show Filechooser to select OutputDirectory
+<span class="nc" id="L454">            JFileChooser chooser = new JFileChooser(</span>
+<span class="nc" id="L455">                    (String) outputDirectoryComboBox.getModel()</span>
+<span class="nc" id="L456">                            .getSelectedItem());</span>
+
+<span class="nc bnc" id="L458" title="All 2 branches missed.">            if (chooser == null) {</span>
+<span class="nc" id="L459">                chooser = new JFileChooser();</span>
+            }
+
+<span class="nc" id="L462">            chooser.setFileHidingEnabled(true);</span>
+<span class="nc" id="L463">            chooser.setMultiSelectionEnabled(false);</span>
+<span class="nc" id="L464">            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);</span>
+<span class="nc" id="L465">            chooser.setDialogTitle(Translator</span>
+<span class="nc" id="L466">                    .localize(&quot;dialog.generation.chooser.choose-output-dir&quot;));</span>
+<span class="nc" id="L467">            chooser.showDialog(this, Translator</span>
+<span class="nc" id="L468">                    .localize(&quot;dialog.generation.chooser.approve-button-text&quot;));</span>
+
+<span class="nc bnc" id="L470" title="All 2 branches missed.">            if (!&quot;&quot;.equals(chooser.getSelectedFile().getPath())) {</span>
+<span class="nc" id="L471">                String path = chooser.getSelectedFile().getPath();</span>
+<span class="nc" id="L472">                outputDirectoryComboBox.addItem(path);</span>
+<span class="nc" id="L473">                outputDirectoryComboBox.getModel().setSelectedItem(path);</span>
+            } // else ignore
+<span class="nc" id="L475">        } catch (Exception userPressedCancel) {</span>
+            // TODO: How does the pressed cancel become a java.lang.Exception?
+<span class="nc" id="L477">            LOG.log(Level.INFO, &quot;user pressed cancel&quot;);</span>
+<span class="nc" id="L478">        }</span>
+<span class="nc" id="L479">    }</span>
+
+    class TableModelClassChecks extends AbstractTableModel {
+
+        /**
+         * List of all possible UML elements for which to generate code. The
+         * Object typed objects are actually UML Elements, but we don't have a
+         * visible type for that.
+         */
+        private List&lt;Object&gt; classes;
+
+        /**
+         * Array of sets of UML elements that the user has selected. One set per
+         * language. The Object typed objects are actually UML Elements, but we
+         * don't have a visible type for that.
+         */
+        private Set&lt;Object&gt;[] checked;
+
+        /**
+         * Constructor.
+         */
+<span class="nc" id="L500">        public TableModelClassChecks() {</span>
+<span class="nc" id="L501">        }</span>
+
+        /**
+         * Set the target.
+         *
+         * @param nodes list of classes
+         */
+        public void setTarget(List&lt;Object&gt; nodes) {
+<span class="nc" id="L509">            classes = nodes;</span>
+<span class="nc" id="L510">            checked = new Set[getLanguagesCount()];</span>
+<span class="nc bnc" id="L511" title="All 2 branches missed.">            for (int j = 0; j &lt; getLanguagesCount(); j++) {</span>
+                // Doesn't really matter what set we use.
+<span class="nc" id="L513">                checked[j] = new HashSet&lt;Object&gt;();</span>
+            }
+
+<span class="nc bnc" id="L516" title="All 2 branches missed.">            for (Object cls : classes) {</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">                for (int j = 0; j &lt; getLanguagesCount(); j++) {</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">                    if (isSupposedToBeGeneratedAsLanguage(languages.get(j), cls)) {</span>
+<span class="nc" id="L519">                        checked[j].add(cls);</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">                    } else if ((languages.get(j)).getName().equals(</span>
+<span class="nc" id="L521">                            Notation.getConfiguredNotation()</span>
+<span class="nc" id="L522">                                    .getConfigurationValue())) {</span>
+<span class="nc" id="L523">                        checked[j].add(cls);</span>
+                    }
+                }
+<span class="nc" id="L526">            }</span>
+<span class="nc" id="L527">            fireTableStructureChanged();</span>
+
+<span class="nc" id="L529">            getOkButton().setEnabled(</span>
+<span class="nc bnc" id="L530" title="All 4 branches missed.">                    classes.size() &gt; 0 &amp;&amp; getChecked().size() &gt; 0);</span>
+<span class="nc" id="L531">        }</span>
+
+        private boolean isSupposedToBeGeneratedAsLanguage(Language lang,
+                Object cls) {
+<span class="nc bnc" id="L535" title="All 4 branches missed.">            if (lang == null || cls == null) {</span>
+<span class="nc" id="L536">                return false;</span>
+            }
+
+<span class="nc" id="L539">            Object taggedValue = Model.getFacade().getTaggedValue(cls,</span>
+                    SOURCE_LANGUAGE_TAG);
+<span class="nc bnc" id="L541" title="All 2 branches missed.">            if (taggedValue == null) {</span>
+<span class="nc" id="L542">                return false;</span>
+            }
+<span class="nc" id="L544">            String savedLang = Model.getFacade().getValueOfTag(taggedValue);</span>
+<span class="nc" id="L545">            return (lang.getName().equals(savedLang));</span>
+        }
+
+        private int getLanguagesCount() {
+<span class="nc bnc" id="L549" title="All 2 branches missed.">            if (languages == null) {</span>
+<span class="nc" id="L550">                return 0;</span>
+            }
+<span class="nc" id="L552">            return languages.size();</span>
+        }
+
+        /**
+         * Return the set of elements which are selected for the given language.
+         *
+         * @param lang the language
+         * @return a set of UML elements
+         */
+        public Set&lt;Object&gt; getChecked(Language lang) {
+<span class="nc" id="L562">            int index = languages.indexOf(lang);</span>
+<span class="nc bnc" id="L563" title="All 2 branches missed.">            if (index == -1) {</span>
+<span class="nc" id="L564">                return Collections.emptySet();</span>
+            }
+<span class="nc" id="L566">            return checked[index];</span>
+        }
+
+        /**
+         * All checked classes.
+         *
+         * @return The union of all languages as a {@link Set}.
+         */
+        public Set&lt;Object&gt; getChecked() {
+<span class="nc" id="L575">            Set&lt;Object&gt; union = new HashSet&lt;Object&gt;();</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">            for (int i = 0; i &lt; getLanguagesCount(); i++) {</span>
+<span class="nc" id="L577">                union.addAll(checked[i]);</span>
+            }
+<span class="nc" id="L579">            return union;</span>
+        }
+
+        // //////////////
+        // TableModel implementation
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnCount()
+         */
+        public int getColumnCount() {
+<span class="nc" id="L589">            return 1 + getLanguagesCount();</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnName(int)
+         */
+        @Override
+        public String getColumnName(int c) {
+<span class="nc bnc" id="L597" title="All 4 branches missed.">            if (c &gt;= 0 &amp;&amp; c &lt; getLanguagesCount()) {</span>
+<span class="nc" id="L598">                return languages.get(c).getName();</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">            } else if (c == getLanguagesCount()) {</span>
+<span class="nc" id="L600">                return &quot;Class Name&quot;;</span>
+            }
+<span class="nc" id="L602">            return &quot;XXX&quot;;</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getColumnClass(int)
+         */
+        public Class getColumnClass(int c) {
+<span class="nc bnc" id="L609" title="All 4 branches missed.">            if (c &gt;= 0 &amp;&amp; c &lt; getLanguagesCount()) {</span>
+<span class="nc" id="L610">                return Boolean.class;</span>
+<span class="nc bnc" id="L611" title="All 2 branches missed.">            } else if (c == getLanguagesCount()) {</span>
+<span class="nc" id="L612">                return String.class;</span>
+            }
+<span class="nc" id="L614">            return String.class;</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#isCellEditable(int, int)
+         */
+        @Override
+        public boolean isCellEditable(int row, int col) {
+<span class="nc" id="L622">            Object cls = classes.get(row);</span>
+<span class="nc bnc" id="L623" title="All 2 branches missed.">            if (col == getLanguagesCount()) {</span>
+<span class="nc" id="L624">                return false;</span>
+            }
+<span class="nc bnc" id="L626" title="All 2 branches missed.">            if (!(Model.getFacade().getName(cls).length() &gt; 0)) {</span>
+<span class="nc" id="L627">                return false;</span>
+            }
+<span class="nc bnc" id="L629" title="All 4 branches missed.">            if (col &gt;= 0 &amp;&amp; col &lt; getLanguagesCount()) {</span>
+<span class="nc" id="L630">                return true;</span>
+            }
+<span class="nc" id="L632">            return false;</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getRowCount()
+         */
+        public int getRowCount() {
+<span class="nc bnc" id="L639" title="All 2 branches missed.">            if (classes == null) {</span>
+<span class="nc" id="L640">                return 0;</span>
+            }
+<span class="nc" id="L642">            return classes.size();</span>
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#getValueAt(int, int)
+         */
+        public Object getValueAt(int row, int col) {
+<span class="nc" id="L649">            Object cls = classes.get(row);</span>
+<span class="nc bnc" id="L650" title="All 2 branches missed.">            if (col == getLanguagesCount()) {</span>
+<span class="nc" id="L651">                String name = Model.getFacade().getName(cls);</span>
+<span class="nc bnc" id="L652" title="All 2 branches missed.">                if (name.length() &gt; 0) {</span>
+<span class="nc" id="L653">                    return name;</span>
+                }
+<span class="nc" id="L655">                return &quot;(anon)&quot;;</span>
+<span class="nc bnc" id="L656" title="All 4 branches missed.">            } else if (col &gt;= 0 &amp;&amp; col &lt; getLanguagesCount()) {</span>
+<span class="nc bnc" id="L657" title="All 2 branches missed.">                if (checked[col].contains(cls)) {</span>
+<span class="nc" id="L658">                    return Boolean.TRUE;</span>
+                }
+<span class="nc" id="L660">                return Boolean.FALSE;</span>
+            } else {
+<span class="nc" id="L662">                return &quot;CC-r:&quot; + row + &quot; c:&quot; + col;</span>
+            }
+        }
+
+        /*
+         * @see javax.swing.table.TableModel#setValueAt( java.lang.Object, int,
+         * int)
+         */
+        @Override
+        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+<span class="nc bnc" id="L672" title="All 2 branches missed.">            if (columnIndex == getLanguagesCount()) {</span>
+<span class="nc" id="L673">                return;</span>
+            }
+<span class="nc bnc" id="L675" title="All 2 branches missed.">            if (columnIndex &gt;= getColumnCount()) {</span>
+<span class="nc" id="L676">                return;</span>
+            }
+<span class="nc bnc" id="L678" title="All 2 branches missed.">            if (!(aValue instanceof Boolean)) {</span>
+<span class="nc" id="L679">                return;</span>
+            }
+<span class="nc" id="L681">            boolean val = ((Boolean) aValue).booleanValue();</span>
+<span class="nc" id="L682">            Object cls = classes.get(rowIndex);</span>
+
+<span class="nc bnc" id="L684" title="All 4 branches missed.">            if (columnIndex &gt;= 0 &amp;&amp; columnIndex &lt; getLanguagesCount()) {</span>
+<span class="nc bnc" id="L685" title="All 2 branches missed.">                if (val) {</span>
+<span class="nc" id="L686">                    checked[columnIndex].add(cls);</span>
+                } else {
+<span class="nc" id="L688">                    checked[columnIndex].remove(cls);</span>
+                }
+            }
+
+<span class="nc bnc" id="L692" title="All 4 branches missed.">            if (val &amp;&amp; !getOkButton().isEnabled()) {</span>
+<span class="nc" id="L693">                getOkButton().setEnabled(true);</span>
+<span class="nc bnc" id="L694" title="All 4 branches missed.">            } else if (!val &amp;&amp; getOkButton().isEnabled()</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">                    &amp;&amp; getChecked().size() == 0) {</span>
+<span class="nc" id="L696">                getOkButton().setEnabled(false);</span>
+            }
+<span class="nc" id="L698">        }</span>
+
+        /**
+         * Sets or clears all checkmarks for the (next) language for all
+         * classes.
+         *
+         * @param value If false then all checkmarks are cleared for all
+         *            languages. If true then all are cleared, except for one
+         *            language column, these are all set.
+         */
+        public void setAllChecks(boolean value) {
+<span class="nc" id="L709">            int rows = getRowCount();</span>
+<span class="nc" id="L710">            int checks = getLanguagesCount();</span>
+
+<span class="nc bnc" id="L712" title="All 2 branches missed.">            if (rows == 0) {</span>
+<span class="nc" id="L713">                return;</span>
+            }
+
+<span class="nc bnc" id="L716" title="All 2 branches missed.">            for (int i = 0; i &lt; rows; ++i) {</span>
+<span class="nc" id="L717">                Object cls = classes.get(i);</span>
+
+<span class="nc bnc" id="L719" title="All 2 branches missed.">                for (int j = 0; j &lt; checks; ++j) {</span>
+<span class="nc bnc" id="L720" title="All 4 branches missed.">                    if (value &amp;&amp; (j == languageHistory)) {</span>
+<span class="nc" id="L721">                        checked[j].add(cls);</span>
+                    } else {
+<span class="nc" id="L723">                        checked[j].remove(cls);</span>
+                    }
+                }
+            }
+<span class="nc bnc" id="L727" title="All 2 branches missed.">            if (value) {</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">                if (++languageHistory &gt;= checks) {</span>
+<span class="nc" id="L729">                    languageHistory = 0;</span>
+                }
+            }
+<span class="nc" id="L732">            getOkButton().setEnabled(value);</span>
+<span class="nc" id="L733">        }</span>
+
+        /**
+         * Checks nodes
+         * @param nodes These will be checked
+         */
+        public void check(List nodes) {
+<span class="nc" id="L740">            int rows = getRowCount();</span>
+<span class="nc" id="L741">            int checks = getLanguagesCount();</span>
+
+<span class="nc bnc" id="L743" title="All 2 branches missed.">            for (int i = 0; i &lt; rows; ++i) {</span>
+<span class="nc" id="L744">                Object cls = classes.get(i);</span>
+<span class="nc bnc" id="L745" title="All 2 branches missed.">                for (int j = 0; j &lt; checks; ++j) {</span>
+<span class="nc bnc" id="L746" title="All 4 branches missed.">                    if (nodes.contains(cls)  &amp;&amp; (j == languageHistory)) {</span>
+<span class="nc" id="L747">                        checked[j].add(cls);</span>
+                    } else {
+<span class="nc" id="L749">                        checked[j].remove(cls);</span>
+                    }
+                }
+            }
+<span class="nc bnc" id="L753" title="All 2 branches missed.">            if (++languageHistory &gt;= checks) {</span>
+<span class="nc" id="L754">                languageHistory = 0;</span>
+            }
+<span class="nc" id="L756">        }</span>
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 6108214254680694765L;
+    } /* end class TableModelClassChecks */
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8897965616334156746L;
+} /* end class ClassGenerationDialog */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

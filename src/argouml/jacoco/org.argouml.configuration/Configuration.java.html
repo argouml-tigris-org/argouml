@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Configuration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.configuration</a> &gt; <span class="el_source">Configuration.java</span></div><h1>Configuration.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.configuration;
+
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.net.URL;
+
+
+/**
+ * This class provides the core user configuration implementation
+ * logic.  All fancy handling and registry access occurs
+ * behind the scenes.
+ *
+ * @stereotype utility
+ * @author Thierry Lach
+ * @since  0.9.4
+ */
+public final class Configuration {
+
+    ////////////////////////////////////////////////////////////////
+    // Instance variables
+
+    /**
+     * Property to indicate configuration load from file.
+     */
+    public static final String FILE_LOADED = &quot;configuration.load.file&quot;;
+
+    /**
+     * Property to indicate configuration load from url.
+     */
+    public static final String URL_LOADED = &quot;configuration.load.url&quot;;
+
+    /**
+     * Property to indicate configuration save to file.
+     */
+    public static final String FILE_SAVED = &quot;configuration.save.file&quot;;
+
+    /**
+     * Property to indicate configuration save to url.
+     */
+    public static final String URL_SAVED = &quot;configuration.save.url&quot;;
+
+    /**
+     * The only occurance of the configuration handler.
+     */
+<span class="fc" id="L83">    private static ConfigurationHandler config =</span>
+<span class="fc" id="L84">	getFactory().getConfigurationHandler();</span>
+
+    /**
+     * Private constructor so it cannot be instantiated.
+     */
+    private Configuration() {
+        // Don't allow instantiation
+    }
+
+    /**
+     * Returns the instance of the configuration singleton.
+     *
+     * @return the configuration handler
+     */
+    public static ConfigurationHandler getConfigurationHandler() {
+<span class="nc" id="L99">	return config;</span>
+    }
+
+    /**
+     * Returns the configuration factory instance.&lt;p&gt;
+     *
+     * This is equivalent to ConfigurationFactory.getInstance() but
+     * using Configuration.getFactory() is shorter to type and
+     * allows us not to have to deal with ConfigurationFactory at
+     * all if we don't need to modify or configure it.
+     *
+     * @return the configuration factory
+     */
+    public static IConfigurationFactory getFactory() {
+<span class="fc" id="L113">	return ConfigurationFactory.getInstance();</span>
+    }
+
+    /**
+     * Load the configuration from the default location.
+     *
+     * The configuration will be automatically loaded from the default
+     * location the first time a value is queried or modified, if it
+     * had not been previously loaded.  Only the first load request
+     * will be honored, so if the configuration is to be loaded from
+     * a non-default location, load(name) must be used prior to any
+     * other call.  The configuration can be loaded only one time.
+     *
+     * Implementations must ignore load requests once a load is
+     * already successful, and must return false for each of those
+     * ignored requests.
+     *
+     * @return true if the load is successful, otherwise false
+     */
+    public static boolean load() {
+<span class="nc" id="L133">	return config.loadDefault();</span>
+    }
+
+    /**
+     * Load the configuration from a specified file.
+     *
+     * @param file the File to load
+     *
+     * @return true if the load is successful, otherwise false
+     */
+    public static boolean load(File file) {
+<span class="nc" id="L144">	return config.load(file);</span>
+    }
+
+    /**
+     * Load the configuration from a specified url.
+     *
+     * @param url the URL to load
+     *
+     * @return true if the load is successful, otherwise false
+     */
+    public static boolean load(URL url) {
+<span class="nc" id="L155">	return config.load(url);</span>
+    }
+
+    /**
+     * Save the configuration to the default location.
+     *
+     * Implementations do not have to handle this method.
+     * If the method is not allowed or it fails, the implementation
+     * must return false.
+     *
+     * @return true if the save is successful, otherwise false
+     */
+    public static boolean save() {
+<span class="nc" id="L168">	return Configuration.save(false);</span>
+    }
+
+    /**
+     * Save the configuration to the default location.
+     *
+     * Implementations do not have to handle this method.
+     * If the method is not allowed or it fails, the implementation
+     * must return false.
+     *
+     * @param force the file to save even if it would not normally
+     * be saved.
+     *
+     * @return true if the save is successful, otherwise false
+     */
+    public static boolean save(boolean force) {
+<span class="nc" id="L184">	return config.saveDefault(force);</span>
+    }
+
+    /**
+     * Returns the string value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     *
+     * @return the string value of the parameter if it exists, otherwise
+     * a zero length string
+     */
+    public static String getString(ConfigurationKey key) {
+<span class="fc" id="L196">	return getString(key, &quot;&quot;);</span>
+    }
+
+    /**
+     * Returns the string value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     * @param defaultValue the value to return if the key does not exist
+     *
+     * @return the string value of the parameter if it exists, otherwise the
+     *   default value
+     */
+    public static String getString(ConfigurationKey key,
+                                   String defaultValue) {
+<span class="fc" id="L210">	return config.getString(key, defaultValue);</span>
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     *
+     * @return the string value of the parameter if it exists, otherwise zero
+     */
+    public static int getInteger(ConfigurationKey key) {
+<span class="fc" id="L221">	return getInteger(key, 0);</span>
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     * @param defaultValue if the key is not found
+     *
+     * @return the string value of the parameter if it exists,
+     *         otherwise the default value
+     */
+    public static double getDouble(ConfigurationKey key,
+                                   double defaultValue) {
+<span class="nc" id="L235">	return config.getDouble(key, defaultValue);</span>
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     *
+     * @return the string value of the parameter if it exists, otherwise zero
+     */
+    public static double getDouble(ConfigurationKey key) {
+<span class="nc" id="L246">	return getDouble(key, 0);</span>
+    }
+
+    /**
+     * Returns the numeric value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     * @param defaultValue the value to return if the key does not exist
+     *
+     * @return the numeric value of the parameter if it exists, otherwise
+     *  the default value
+     */
+    public static int getInteger(ConfigurationKey key, int defaultValue) {
+<span class="fc" id="L259">	return config.getInteger(key, defaultValue);</span>
+    }
+
+    /**
+     * Returns the boolean value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     *
+     * @return the boolean value of the parameter if it exists, otherwise false
+     */
+    public static boolean getBoolean(ConfigurationKey key) {
+<span class="fc" id="L270">	return getBoolean(key, false);</span>
+    }
+
+    /**
+     * Returns the boolean value of a configuration property.
+     *
+     * @param key the key to retrieve the value of
+     * @param defaultValue the value to return if the key does not exist
+     *
+     * @return the boolean value of the parameter if it exists, otherwise
+     *  the default value
+     */
+    public static boolean getBoolean(ConfigurationKey key,
+                                     boolean defaultValue) {
+<span class="fc" id="L284">	return config.getBoolean(key, defaultValue);</span>
+    }
+
+    /**
+     * Sets the string value of a configuration property.
+     *
+     * @param key the key to set
+     * @param newValue the value to set the key to.
+     */
+    public static void setString(ConfigurationKey key, String newValue) {
+<span class="fc" id="L294">	config.setString(key, newValue);</span>
+<span class="fc" id="L295">    }</span>
+
+    /**
+     * Sets the numeric value of a configuration property.
+     *
+     * @param key the key to set
+     * @param newValue the value to set the key to.
+     */
+    public static void setInteger(ConfigurationKey key, int newValue) {
+<span class="fc" id="L304">	config.setInteger(key, newValue);</span>
+<span class="fc" id="L305">    }</span>
+
+    /**
+     * Sets the numeric value of a configuration property.
+     *
+     * @param key the key to set
+     * @param newValue the value to set the key to.
+     */
+    public static void setDouble(ConfigurationKey key, double newValue) {
+<span class="nc" id="L314">	config.setDouble(key, newValue);</span>
+<span class="nc" id="L315">    }</span>
+
+    /**
+     * Sets the boolean value of a configuration property.
+     *
+     * @param key the key to set
+     * @param newValue the value to set the key to.
+     */
+    public static void setBoolean(ConfigurationKey key,
+                                  boolean newValue) {
+<span class="fc" id="L325">	config.setBoolean(key, newValue);</span>
+<span class="fc" id="L326">    }</span>
+
+    /**
+     * Adds a property change listener.
+     *
+     * @param pcl The property change listener to add
+     */
+    public static void addListener(PropertyChangeListener pcl) {
+<span class="nc" id="L334">	config.addListener(pcl);</span>
+<span class="nc" id="L335">    }</span>
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param pcl The property change listener to remove
+     */
+    public static void removeListener(PropertyChangeListener pcl) {
+<span class="nc" id="L343">	config.removeListener(pcl);</span>
+<span class="nc" id="L344">    }</span>
+
+    /**
+     * Adds a property change listener.Static for simplicity of use.
+     *
+     * @param key The key to listen for changes of
+     * @param pcl The property change listener to add
+     */
+    public static void addListener(ConfigurationKey key,
+                                   PropertyChangeListener pcl) {
+<span class="fc" id="L354">	config.addListener(key, pcl);</span>
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Removes a property change listener.
+     *
+     * @param key The key to listen for changes of
+     * @param pcl The property change listener to remove
+     */
+    public static void removeListener(ConfigurationKey key,
+                                      PropertyChangeListener pcl) {
+<span class="nc" id="L365">	config.removeListener(key, pcl);</span>
+<span class="nc" id="L366">    }</span>
+
+    /**
+     * @param key The key to remove.
+     */
+    public static void removeKey(ConfigurationKey key) {
+<span class="nc" id="L372">        config.remove(key.getKey());</span>
+<span class="nc" id="L373">    }</span>
+
+    /**
+     * Create a single component configuration key.
+     *
+     * @param k1 key component 1.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(String k1) {
+<span class="fc" id="L382">	return new ConfigurationKeyImpl(k1);</span>
+    }
+
+    /**
+     * Create a sub-component of an existing configuration key.
+     *
+     * @param ck existing key to extend.
+     * @param k1 key component 1.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(ConfigurationKey ck, String k1) {
+<span class="nc" id="L393">	return new ConfigurationKeyImpl(ck, k1);</span>
+    }
+
+    /**
+     * Create a two-component configuration key.
+     *
+     * @param k1 key component 1.
+     * @param k2 key component 2.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(String k1, String k2) {
+<span class="fc" id="L404">	return new ConfigurationKeyImpl(k1, k2);</span>
+    }
+
+    /**
+     * Create a three-component configuration key.
+     *
+     * @param k1 key component 1.
+     * @param k2 key component 2.
+     * @param k3 key component 3.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(String k1, String k2, String k3) {
+<span class="fc" id="L416">	return new ConfigurationKeyImpl(k1, k2, k3);</span>
+    }
+
+    /**
+     * Create a four-component configuration key.
+     *
+     * @param k1 key component 1.
+     * @param k2 key component 2.
+     * @param k3 key component 3.
+     * @param k4 key component 4.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(String k1, String k2,
+					   String k3, String k4) {
+<span class="fc" id="L430">	return new ConfigurationKeyImpl(k1, k2, k3, k4);</span>
+    }
+
+    /**
+     * Create a five-component configuration key.
+     *
+     * @param k1 key component 1.
+     * @param k2 key component 2.
+     * @param k3 key component 3.
+     * @param k4 key component 4.
+     * @param k5 key component 5.
+     * @return the new {@link ConfigurationKey}.
+     */
+    public static ConfigurationKey makeKey(String k1, String k2,
+					   String k3, String k4,
+					   String k5) {
+<span class="nc" id="L446">	return new ConfigurationKeyImpl(k1, k2, k3, k4, k5);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

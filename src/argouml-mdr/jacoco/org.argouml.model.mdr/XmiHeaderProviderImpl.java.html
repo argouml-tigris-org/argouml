@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmiHeaderProviderImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">XmiHeaderProviderImpl.java</span></div><h1>XmiHeaderProviderImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.model.mdr;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.netbeans.lib.jmi.xmi.WriterBase;
+import org.netbeans.lib.jmi.xmi.XMIHeaderProvider;
+
+/**
+ * Write a header for the XMI file which contains information about
+ * version, etc.
+ */
+class XmiHeaderProviderImpl implements XMIHeaderProvider {
+
+    private static final String UML_VERSION = &quot;1.4&quot;;
+<span class="fc" id="L55">    private static final Logger LOG =</span>
+<span class="fc" id="L56">        Logger.getLogger(XmiHeaderProviderImpl.class.getName());</span>
+
+    private String version;
+
+    /**
+     * Constructor.
+     * @param ver the version of ArgoUML that saved the XMI
+     */
+<span class="fc" id="L64">    public XmiHeaderProviderImpl(String ver) {</span>
+<span class="fc" id="L65">        version = ver;</span>
+<span class="fc" id="L66">    }</span>
+
+    /*
+     * @see org.netbeans.lib.jmi.xmi.XMIHeaderProvider#writeHeader(java.io.Writer)
+     */
+    public void writeHeader (Writer ps) {
+        // NOTE: The &lt;XMI.header&gt;&lt;/XMI.header&gt; is provided for us
+<span class="nc" id="L73">        String header =</span>
+              &quot;    &lt;XMI.documentation&gt;\n&quot;
+            + &quot;      &lt;XMI.exporter&gt;ArgoUML&quot;
+                    + &quot; (using &quot;  + WriterBase.EXPORTER_NAME
+                    + &quot; version &quot; + WriterBase.EXPORTER_VERSION
+                    + &quot;)&lt;/XMI.exporter&gt;\n&quot;
+            + &quot;      &lt;XMI.exporterVersion&gt;&quot; + version
+                    + &quot; revised on &quot;
+                    + &quot;$Date$ &quot;
+                    + &quot;&lt;/XMI.exporterVersion&gt;\n&quot;
+            + &quot;    &lt;/XMI.documentation&gt;\n&quot;
+            + &quot;    &lt;XMI.metamodel xmi.name=\&quot;UML\&quot; xmi.version=\&quot;&quot;
+                    + UML_VERSION + &quot;\&quot;/&gt;&quot;;
+
+        try {
+<span class="nc" id="L88">            ps.write(header);</span>
+<span class="nc" id="L89">        } catch (IOException e) {</span>
+<span class="nc" id="L90">            LOG.log(Level.SEVERE, &quot;Exception while writing XMI header + &quot;, e);</span>
+<span class="nc" id="L91">        }</span>
+<span class="nc" id="L92">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

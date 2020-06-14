@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigEdgeNote.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.static_structure.ui</a> &gt; <span class="el_source">FigEdgeNote.java</span></div><h1>FigEdgeNote.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.static_structure.ui;
+
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Owned;
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.ArgoFigUtil;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * Class to display a UML note connection to a annotated model element.
+ * &lt;p&gt;
+ *
+ * The owner of this fig is always a CommentEdge. Because it is different from
+ * most every other FigEdge in ArgoUML, it doesn't subclass FigEdgeModelElement.
+ *
+ * @author Andreas Rueckert a_rueckert@gmx.net
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class FigEdgeNote extends FigEdgePoly
+        implements ArgoFig, DiagramElement, Owned, IItemUID, PropertyChangeListener {
+
+<span class="fc" id="L77">    private static final Logger LOG =</span>
+<span class="fc" id="L78">        Logger.getLogger(FigEdgeNote.class.getName());</span>
+
+    private Object comment;
+    private Object annotatedElement;
+
+    private DiagramSettings settings;
+
+    private ItemUID itemUid;
+
+    /**
+     * @param element owning CommentEdge object. This is a special case since it
+     *            is not a UML element.
+     * @param theSettings render settings
+     */
+    public FigEdgeNote(Object element, DiagramSettings theSettings) {
+        // element will normally be null when called from PGML parser
+        // It will get it's source &amp; destination set later in attachEdges
+<span class="fc" id="L95">        super();</span>
+<span class="fc" id="L96">        settings = theSettings;</span>
+
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (element != null) {</span>
+<span class="nc" id="L99">            super.setOwner(element);</span>
+        } else {
+<span class="fc" id="L101">            super.setOwner(new CommentEdge());</span>
+        }
+
+<span class="fc" id="L104">        setBetweenNearestPoints(true);</span>
+<span class="fc" id="L105">        getFig().setLineWidth(LINE_WIDTH);</span>
+<span class="fc" id="L106">        getFig().setDashed(true);</span>
+
+        // Unfortunately the Fig and it's associated CommentEdge will not be
+        // fully initialized yet here if we're being loaded from a PGML file.
+        // The remainder of the initialization will happen when
+        // set{Dest|Source}FigNode are called from PGMLStackParser.attachEdges()
+<span class="fc" id="L112">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
+    @Override
+    public void setFig(Fig f) {
+<span class="fc" id="L119">        LOG.log(Level.INFO, &quot;Setting the internal fig to {0}&quot;, f);</span>
+
+<span class="fc" id="L121">        super.setFig(f);</span>
+<span class="fc" id="L122">        getFig().setDashed(true);</span>
+<span class="fc" id="L123">    }</span>
+
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L131">        return Translator.localize(&quot;misc.comment-edge&quot;);</span>
+    }
+
+    /*
+     * Listen for a RemoveAssociationEvent between the comment
+     * and the annotated element. When recieved delete the CommentEdge
+     * and this FigEdgeNote.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent e) {
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (e instanceof RemoveAssociationEvent</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                &amp;&amp; e.getOldValue() == annotatedElement) {</span>
+<span class="nc" id="L143">            removeFromDiagram();</span>
+        }
+<span class="fc" id="L145">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
+    @Override
+    public String getTipString(MouseEvent me) {
+<span class="nc" id="L152">        return &quot;Comment Edge&quot;; // TODO: get tip string from comment</span>
+    }
+
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pve) {
+<span class="fc" id="L161">        modelChanged(pve);</span>
+<span class="fc" id="L162">    }</span>
+
+
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    @Override
+    public final void removeFromDiagram() {
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (comment != null) {</span>
+<span class="fc" id="L172">            removeElementListener(comment);</span>
+        }
+
+<span class="fc" id="L175">        super.removeFromDiagram();</span>
+<span class="fc" id="L176">        damage();</span>
+<span class="fc" id="L177">    }</span>
+
+
+    /**
+     * Returns the source of the edge. The source is the owner of the
+     * node the edge travels from in a binary relationship. For
+     * instance: for a classifierrole, this is the sender.
+     * @return MModelElement
+     */
+    protected Object getSource() {
+<span class="nc" id="L187">        Object theOwner = getOwner();</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (theOwner != null) {</span>
+<span class="nc" id="L189">            return ((CommentEdge) theOwner).getSource();</span>
+        }
+<span class="nc" id="L191">        return null;</span>
+    }
+    /**
+     * Returns the destination of the edge. The destination is the
+     * owner of the node the edge travels to in a binary
+     * relationship. For instance: for a classifierrole, this is the
+     * receiver.
+     * @return Object
+     */
+    protected Object getDestination() {
+<span class="nc" id="L201">        Object theOwner = getOwner();</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (theOwner != null) {</span>
+<span class="nc" id="L203">            return ((CommentEdge) theOwner).getDestination();</span>
+        }
+<span class="nc" id="L205">        return null;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.FigEdge#setDestFigNode(org.tigris.gef.presentation.FigNode)
+     */
+    @Override
+    public void setDestFigNode(FigNode fn) {
+        // When this is called from PGMLStackParser.attachEdges, we finished
+        // the initialization of owning pseudo element (CommentEdge)
+<span class="pc bpc" id="L215" title="1 of 4 branches missed.">        if (fn != null &amp;&amp; Model.getFacade().isAComment(fn.getOwner())) {</span>
+<span class="fc" id="L216">            Object oldComment = comment;</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if (oldComment != null) {</span>
+<span class="nc" id="L218">                removeElementListener(oldComment);</span>
+            }
+<span class="fc" id="L220">            comment = fn.getOwner();</span>
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">            if (comment != null) {</span>
+<span class="fc" id="L222">                addElementListener(comment);</span>
+            }
+
+<span class="fc" id="L225">            ((CommentEdge) getOwner()).setComment(comment);</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        } else if (fn != null</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">                &amp;&amp; !Model.getFacade().isAComment(fn.getOwner())) {</span>
+<span class="fc" id="L228">            annotatedElement = fn.getOwner();</span>
+<span class="fc" id="L229">            ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);</span>
+        }
+
+<span class="fc" id="L232">        super.setDestFigNode(fn);</span>
+<span class="fc" id="L233">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.FigEdge#setSourceFigNode(org.tigris.gef.presentation.FigNode)
+     */
+    @Override
+    public void setSourceFigNode(FigNode fn) {
+        // When this is called from PGMLStackParser.attachEdges, we finished
+        // the initialization of owning pseudo element (CommentEdge)
+<span class="pc bpc" id="L242" title="1 of 4 branches missed.">        if (fn != null &amp;&amp; Model.getFacade().isAComment(fn.getOwner())) {</span>
+<span class="fc" id="L243">            Object oldComment = comment;</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">            if (oldComment != null) {</span>
+<span class="nc" id="L245">                removeElementListener(oldComment);</span>
+            }
+<span class="fc" id="L247">            comment = fn.getOwner();</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">            if (comment != null) {</span>
+<span class="fc" id="L249">                addElementListener(comment);</span>
+            }
+<span class="fc" id="L251">            ((CommentEdge) getOwner()).setComment(comment);</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">        } else if (fn != null</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">                &amp;&amp; !Model.getFacade().isAComment(fn.getOwner())) {</span>
+<span class="fc" id="L254">            annotatedElement = fn.getOwner();</span>
+<span class="fc" id="L255">            ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);</span>
+        }
+<span class="fc" id="L257">        super.setSourceFigNode(fn);</span>
+<span class="fc" id="L258">    }</span>
+
+    private void addElementListener(Object element) {
+<span class="fc" id="L261">        Model.getPump().addModelEventListener(this, element);</span>
+<span class="fc" id="L262">    }</span>
+
+    private void removeElementListener(Object element) {
+<span class="fc" id="L265">        Model.getPump().removeModelEventListener(this, element);</span>
+<span class="fc" id="L266">    }</span>
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public Project getProject() {
+<span class="nc" id="L271">        return ArgoFigUtil.getProject(this);</span>
+    }
+
+    public DiagramSettings getSettings() {
+<span class="nc" id="L275">        return settings;</span>
+    }
+
+    public void renderingChanged() {
+
+<span class="nc" id="L280">    }</span>
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setProject(Project project) {
+        // unimplemented
+<span class="nc" id="L286">    }</span>
+
+    public void setSettings(DiagramSettings theSettings) {
+<span class="nc" id="L289">        settings = theSettings;</span>
+<span class="nc" id="L290">    }</span>
+
+    /**
+     * Setter for the UID
+     * @param newId the new UID
+     */
+    public void setItemUID(ItemUID newId) {
+<span class="nc" id="L297">        itemUid = newId;</span>
+<span class="nc" id="L298">    }</span>
+
+    /**
+     * Getter for the UID
+     * @return the UID
+     */
+    public ItemUID getItemUID() {
+<span class="nc" id="L305">        return itemUid;</span>
+    }
+
+
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     *
+     * @param owner owning UML element
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setOwner(Object owner) {
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        if (owner != getOwner()) {</span>
+<span class="nc" id="L322">            throw new UnsupportedOperationException(</span>
+                    &quot;Owner must be set in constructor and left unchanged&quot;);
+        }
+<span class="nc" id="L325">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

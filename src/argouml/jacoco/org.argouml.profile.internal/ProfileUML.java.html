@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileUML.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal</a> &gt; <span class="el_source">ProfileUML.java</span></div><h1>ProfileUML.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2008-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234 - Initial implementation
+ *    Thomas Neustupny
+ *    Tom Morris - lazy loading
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
+import org.argouml.model.Model;
+import org.argouml.profile.CoreProfileReference;
+import org.argouml.profile.DefaultTypeStrategy;
+import org.argouml.profile.FormatingStrategy;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileModelLoader;
+import org.argouml.profile.ProfileReference;
+import org.argouml.profile.ResourceModelLoader;
+import org.argouml.profile.internal.ocl.CrOCL;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.uml.cognitive.critics.CrAssocNameConflict;
+import org.argouml.uml.cognitive.critics.CrAttrNameConflict;
+import org.argouml.uml.cognitive.critics.CrCircularAssocClass;
+import org.argouml.uml.cognitive.critics.CrCircularInheritance;
+import org.argouml.uml.cognitive.critics.CrClassMustBeAbstract;
+import org.argouml.uml.cognitive.critics.CrCrossNamespaceAssoc;
+import org.argouml.uml.cognitive.critics.CrDupParamName;
+import org.argouml.uml.cognitive.critics.CrDupRoleNames;
+import org.argouml.uml.cognitive.critics.CrFinalSubclassed;
+import org.argouml.uml.cognitive.critics.CrForkOutgoingTransition;
+import org.argouml.uml.cognitive.critics.CrIllegalGeneralization;
+import org.argouml.uml.cognitive.critics.CrInterfaceAllPublic;
+import org.argouml.uml.cognitive.critics.CrInterfaceOperOnly;
+import org.argouml.uml.cognitive.critics.CrInvalidBranch;
+import org.argouml.uml.cognitive.critics.CrInvalidFork;
+import org.argouml.uml.cognitive.critics.CrInvalidHistory;
+import org.argouml.uml.cognitive.critics.CrInvalidInitial;
+import org.argouml.uml.cognitive.critics.CrInvalidJoin;
+import org.argouml.uml.cognitive.critics.CrInvalidJoinTriggerOrGuard;
+import org.argouml.uml.cognitive.critics.CrInvalidPseudoStateTrigger;
+import org.argouml.uml.cognitive.critics.CrInvalidSynch;
+import org.argouml.uml.cognitive.critics.CrJoinIncomingTransition;
+import org.argouml.uml.cognitive.critics.CrMultiComposite;
+import org.argouml.uml.cognitive.critics.CrMultipleAgg;
+import org.argouml.uml.cognitive.critics.CrMultipleDeepHistoryStates;
+import org.argouml.uml.cognitive.critics.CrMultipleShallowHistoryStates;
+import org.argouml.uml.cognitive.critics.CrNWayAgg;
+import org.argouml.uml.cognitive.critics.CrNameConflict;
+import org.argouml.uml.cognitive.critics.CrNameConflictAC;
+import org.argouml.uml.cognitive.critics.CrNameConfusion;
+import org.argouml.uml.cognitive.critics.CrOppEndConflict;
+import org.argouml.uml.cognitive.critics.CrOppEndVsAttr;
+
+/**
+ * This class represents the default UML profile.
+ *
+ * @author maurelio1234
+ */
+public class ProfileUML extends Profile {
+
+<span class="fc" id="L106">    private static final Logger LOG =</span>
+<span class="fc" id="L107">        Logger.getLogger(ProfileUML.class.getName());</span>
+
+    private static final String PROFILE_UML14_FILE = &quot;default-uml14.xmi&quot;;
+    private static final String PROFILE_UML22_FILE = &quot;default-uml22.xmi&quot;;
+
+    static final String NAME_UML14 = &quot;UML 1.4&quot;;
+    static final String NAME_UML22 = &quot;UML 2.2&quot;;
+
+    private FormatingStrategy formatingStrategy;
+    private ProfileModelLoader profileModelLoader;
+    private Collection model;
+
+<span class="fc" id="L119">    private Set&lt;Critic&gt; critics = null;</span>
+
+<span class="fc" id="L121">    private ProfileReference profileReference = null;</span>
+
+    /**
+     * Construct a Profile for UML modeling.
+     * @throws ProfileException
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+<span class="fc" id="L128">    ProfileUML() throws ProfileException {</span>
+<span class="fc" id="L129">        formatingStrategy = new FormatingStrategyUML();</span>
+        try {
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L132">                profileReference =</span>
+                    new CoreProfileReference(PROFILE_UML14_FILE);
+            } else {
+                //TODO: this profile isn't used anymore, see getModel()
+<span class="nc" id="L136">                CoreProfileReference.setProfileDirectory(&quot;uml22&quot;);</span>
+<span class="nc" id="L137">                profileReference =</span>
+                    new CoreProfileReference(PROFILE_UML22_FILE);
+            }
+<span class="nc" id="L140">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L141">            throw new ProfileException(</span>
+                &quot;Exception while creating profile reference.&quot;, e);
+<span class="fc" id="L143">        }</span>
+<span class="fc" id="L144">    }</span>
+
+    private Collection getModel() {
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (model == null) {</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L149">                profileModelLoader = new ResourceModelLoader();</span>
+                try {
+<span class="fc" id="L151">                    model = profileModelLoader.loadModel(profileReference);</span>
+<span class="nc" id="L152">                } catch (ProfileException e) {</span>
+<span class="nc" id="L153">                    LOG.log(Level.SEVERE, &quot;Error loading UML profile&quot;, e);</span>
+<span class="pc" id="L154">                }</span>
+            } else {
+                // We have our own UML2 profile, but it is not used. Instead,
+                // by the following line the build-in eclipse UML2 standard
+                // profile and primitive types implementation are used.
+<span class="nc" id="L159">                model = Model.getUmlFactory().getExtentPackages(</span>
+                        &quot;pathmap://UML_PROFILES/Standard.profile.uml&quot;);
+            }
+
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (model == null) {</span>
+<span class="nc" id="L164">                model = new ArrayList();</span>
+<span class="nc" id="L165">                model.add(Model.getModelManagementFactory().createProfile());</span>
+            }
+        }
+<span class="fc" id="L168">        return model;</span>
+    }
+
+    private void loadWellFormednessRules() {
+<span class="fc" id="L172">        critics = new HashSet&lt;Critic&gt;();</span>
+
+<span class="fc" id="L174">        critics.add(new CrAssocNameConflict());</span>
+<span class="fc" id="L175">        critics.add(new CrAttrNameConflict());</span>
+<span class="fc" id="L176">        critics.add(new CrCircularAssocClass());</span>
+<span class="fc" id="L177">        critics.add(new CrCircularInheritance());</span>
+<span class="fc" id="L178">        critics.add(new CrClassMustBeAbstract());</span>
+<span class="fc" id="L179">        critics.add(new CrCrossNamespaceAssoc());</span>
+<span class="fc" id="L180">        critics.add(new CrDupParamName());</span>
+<span class="fc" id="L181">        critics.add(new CrDupRoleNames());</span>
+<span class="fc" id="L182">        critics.add(new CrNameConfusion());</span>
+
+<span class="fc" id="L184">        critics.add(new CrInvalidHistory());</span>
+<span class="fc" id="L185">        critics.add(new CrInvalidSynch());</span>
+<span class="fc" id="L186">        critics.add(new CrInvalidJoinTriggerOrGuard());</span>
+<span class="fc" id="L187">        critics.add(new CrInvalidPseudoStateTrigger());</span>
+<span class="fc" id="L188">        critics.add(new CrInvalidInitial());</span>
+
+<span class="fc" id="L190">        critics.add(new CrInvalidJoin());</span>
+<span class="fc" id="L191">        critics.add(new CrInvalidFork());</span>
+<span class="fc" id="L192">        critics.add(new CrInvalidBranch());</span>
+
+<span class="fc" id="L194">        critics.add(new CrMultipleDeepHistoryStates());</span>
+<span class="fc" id="L195">        critics.add(new CrMultipleShallowHistoryStates());</span>
+<span class="fc" id="L196">        critics.add(new CrForkOutgoingTransition());</span>
+<span class="fc" id="L197">        critics.add(new CrJoinIncomingTransition());</span>
+
+<span class="fc" id="L199">        critics.add(new CrFinalSubclassed());</span>
+<span class="fc" id="L200">        critics.add(new CrIllegalGeneralization());</span>
+<span class="fc" id="L201">        critics.add(new CrInterfaceAllPublic());</span>
+<span class="fc" id="L202">        critics.add(new CrInterfaceOperOnly());</span>
+<span class="fc" id="L203">        critics.add(new CrMultipleAgg());</span>
+<span class="fc" id="L204">        critics.add(new CrNWayAgg());</span>
+<span class="fc" id="L205">        critics.add(new CrNameConflictAC());</span>
+
+<span class="fc" id="L207">        critics.add(new CrOppEndConflict());</span>
+<span class="fc" id="L208">        critics.add(new CrMultiComposite());</span>
+<span class="fc" id="L209">        critics.add(new CrNameConflict());</span>
+<span class="fc" id="L210">        critics.add(new CrOppEndVsAttr());</span>
+
+        // Missing WFRs
+
+        // Association Class
+        // 4.5.3.2 [1]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L218">            critics.add(new CrOCL(&quot;context AssociationClass inv:&quot;</span>
+                    + &quot;self.allConnections-&gt;&quot;
+                    + &quot;forAll( ar | self.allFeatures-&gt;&quot;
+                    + &quot;forAll( f | f.oclIsKindOf(StructuralFeature) &quot;
+                    + &quot;implies ar.name &lt;&gt; f.name ))&quot;,
+<span class="fc" id="L223">                    Translator.localize(&quot;wfr.UML142.AssociationClass.1-head&quot;),</span>
+<span class="fc" id="L224">                    Translator.localize(&quot;wfr.UML142.AssociationClass.1-desc&quot;),</span>
+<span class="fc" id="L225">                    ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L226">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L227">            e.printStackTrace();</span>
+<span class="fc" id="L228">        }</span>
+
+        // 4.5.3.2 [2]
+        /* Testing: Works Ok. */
+        try {
+<span class="fc" id="L233">            critics.add(new CrOCL(&quot;context AssociationClass inv:&quot;</span>
+                    + &quot;self.allConnections-&gt;&quot;
+                    + &quot;forAll(ar | ar.participant &lt;&gt; self)&quot;,
+<span class="fc" id="L236">                    Translator.localize(&quot;wfr.UML142.AssociationClass.2-head&quot;),</span>
+<span class="fc" id="L237">                    Translator.localize(&quot;wfr.UML142.AssociationClass.2-desc&quot;),</span>
+<span class="fc" id="L238">                    ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L239">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L240">            e.printStackTrace();</span>
+<span class="fc" id="L241">        }</span>
+
+        // Behavioral Feature
+        // 4.5.3.5 [2]
+
+        // it works, but a bug in namespace.contents prevents it from
+        // working when the type of the parameter comes from a profile
+//        try {
+//            Agency.register(new CrOCL(&quot;context BehavioralFeature inv:&quot;
+//                    + &quot;self.parameter-&gt;&quot;
+//                    + &quot;forAll( p | self.owner.namespace.allContents-&gt;&quot;
+//                    + &quot;includes (p.type) )&quot;,
+//                    &quot;The type of the Parameters should be &quot;
+//                            + &quot;included in the Namespace of the Classifier.&quot;,
+//                    null, ToDoItem.HIGH_PRIORITY, null, null,
+//                    &quot;http://www.uml.org/&quot;));
+//        } catch (InvalidOclException e) {
+//            e.printStackTrace();
+//        }
+
+        // Classifier
+        // 4.5.3.8 [5]
+        /* TODO: Partly overlaps CrOppEndVsAttr. */
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L266">            critics.add(new CrOCL(&quot;context Classifier inv:&quot;</span>
+                    + &quot;self.oppositeAssociationEnds-&gt;&quot;
+                    + &quot;forAll( o | not self.allAttributes-&gt;&quot;
+                    + &quot;union (self.allContents)-&gt;&quot;
+                    + &quot;collect ( q | q.name )-&gt;includes (o.name) )&quot;,
+<span class="fc" id="L271">                Translator.localize(&quot;wfr.UML142.Classifier.5-head&quot;),</span>
+<span class="fc" id="L272">                Translator.localize(&quot;wfr.UML142.Classifier.5-desc&quot;),</span>
+<span class="fc" id="L273">                ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L274">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L275">            e.printStackTrace();</span>
+<span class="fc" id="L276">        }</span>
+
+        // DataType
+        // 4.5.3.12 [1]
+        /* Tested with fabricated XMI - OK. */
+        try {
+<span class="fc" id="L282">            critics.add(new CrOCL(&quot;context DataType inv:&quot;</span>
+                    + &quot;self.allFeatures-&gt;forAll(f | f.oclIsKindOf(Operation)&quot;
+                    + &quot; and f.oclAsType(Operation).isQuery)&quot;,
+<span class="fc" id="L285">                    Translator.localize(&quot;wfr.UML142.DataType.1-head&quot;),</span>
+<span class="fc" id="L286">                    Translator.localize(&quot;wfr.UML142.DataType.1-desc&quot;),</span>
+<span class="fc" id="L287">                    ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L288">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L289">            e.printStackTrace();</span>
+<span class="fc" id="L290">        }</span>
+
+        // GeneralizableElement
+        // 4.5.3.20 [1]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L296">            critics.add(new CrOCL(&quot;context GeneralizableElement inv:&quot;</span>
+                    + &quot;self.isRoot implies self.generalization-&gt;isEmpty&quot;,
+<span class="fc" id="L298">                    Translator.localize(&quot;wfr.UML142.GeneralizableElement.1-head&quot;),</span>
+<span class="fc" id="L299">                    Translator.localize(&quot;wfr.UML142.GeneralizableElement.1-desc&quot;),</span>
+<span class="fc" id="L300">                    ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L301">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L302">            e.printStackTrace();</span>
+<span class="fc" id="L303">        }</span>
+
+        // 4.5.3.20 [4]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L308">            critics.add(new CrOCL(&quot;context GeneralizableElement inv:&quot;</span>
+                    + &quot;self.generalization-&gt;&quot;
+                    + &quot;forAll(g |self.namespace.allContents-&gt;&quot;
+                    + &quot;includes(g.parent) )&quot;,
+<span class="fc" id="L312">                    Translator.localize(&quot;wfr.UML142.GeneralizableElement.4-head&quot;),</span>
+<span class="fc" id="L313">                    Translator.localize(&quot;wfr.UML142.GeneralizableElement.4-desc&quot;),</span>
+<span class="fc" id="L314">                    ToDoItem.HIGH_PRIORITY, null, null, &quot;http://www.uml.org/&quot;));</span>
+<span class="nc" id="L315">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L316">            e.printStackTrace();</span>
+<span class="fc" id="L317">        }</span>
+
+        // Namespace
+        // 4.5.3.26 [2]
+        /* Testing: Does not fire. Conflict with CrNameConflict. */
+        try {
+<span class="fc" id="L323">            critics.add(new CrOCL(&quot;context Namespace inv:&quot;</span>
+                    + &quot;self.allContents -&gt; &quot;
+                    + &quot;select(x|x.oclIsKindOf(Association))-&gt;&quot;
+                    + &quot;forAll(a1, a2 |a1.name = a2.name and &quot;
+                    + &quot;a1.connection.participant = a2.connection.participant&quot;
+                    + &quot; implies a1 = a2)&quot;,
+<span class="fc" id="L329">                    Translator.localize(&quot;wfr.UML142.Namespace.2-head&quot;),</span>
+<span class="fc" id="L330">                    Translator.localize(&quot;wfr.UML142.Namespace.2-desc&quot;),</span>
+<span class="fc" id="L331">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L333">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L334">            e.printStackTrace();</span>
+<span class="fc" id="L335">        }</span>
+
+        // Actor
+        // 4.11.3.1 [1]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L341">            critics.add(new CrOCL(&quot;context Actor inv: &quot;</span>
+                    + &quot;self.associations-&gt;forAll(a | &quot;
+                    + &quot;a.connection-&gt;size = 2)&quot;,
+<span class="fc" id="L344">                    Translator.localize(&quot;wfr.UML142.Actor.1a-head&quot;),</span>
+<span class="fc" id="L345">                    Translator.localize(&quot;wfr.UML142.Actor.1a-desc&quot;),</span>
+<span class="fc" id="L346">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L348">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L349">            e.printStackTrace();</span>
+<span class="fc" id="L350">        }</span>
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L353">            critics.add(new CrOCL(&quot;context Actor inv: &quot;</span>
+                    + &quot;self.associations-&gt;forAll(a | &quot;
+//                    + &quot;a.allConnections-&gt;exists(r | r.type.oclIsKindOf(Actor)) and &quot;
+                    + &quot;a.allConnections-&gt;exists(r | &quot;
+                    + &quot;r.type.oclIsKindOf(UseCase) or &quot;
+                    + &quot;r.type.oclIsKindOf(Subsystem) or &quot;
+                    + &quot;r.type.oclIsKindOf(Class)))&quot;,
+<span class="fc" id="L360">                    Translator.localize(&quot;wfr.UML142.Actor.1b-head&quot;),</span>
+<span class="fc" id="L361">                    Translator.localize(&quot;wfr.UML142.Actor.1b-desc&quot;),</span>
+<span class="fc" id="L362">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L364">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L365">            e.printStackTrace();</span>
+<span class="fc" id="L366">        }</span>
+
+        // Actor
+        // 4.11.3.1 [2]
+        /* Tested with fabricated XMI - OK. */
+        try {
+<span class="fc" id="L372">            critics.add(new CrOCL(&quot;context Actor inv:&quot;</span>
+                    + &quot;self.contents-&gt;isEmpty&quot;,
+<span class="fc" id="L374">                    Translator.localize(&quot;wfr.UML142.Actor.2-head&quot;),</span>
+<span class="fc" id="L375">                    Translator.localize(&quot;wfr.UML142.Actor.2-desc&quot;),</span>
+<span class="fc" id="L376">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L378">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L379">            e.printStackTrace();</span>
+<span class="fc" id="L380">        }</span>
+
+        // UseCase
+        // 4.11.3.5 [1]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L386">            critics.add(new CrOCL(&quot;context UseCase inv:&quot;</span>
+                    + &quot;self.associations-&gt;forAll(a | a.connection-&gt;size = 2)&quot;,
+<span class="fc" id="L388">                    Translator.localize(&quot;wfr.UML142.UseCase.1-head&quot;),</span>
+<span class="fc" id="L389">                    Translator.localize(&quot;wfr.UML142.UseCase.1-desc&quot;),</span>
+<span class="fc" id="L390">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L392">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L393">            e.printStackTrace();</span>
+<span class="fc" id="L394">        }</span>
+
+        // UseCase
+        // 4.11.3.5 [2]
+        /* Testing: does not fire. */
+        try {
+<span class="fc" id="L400">            critics.add(new CrOCL(&quot;context UseCase inv:&quot;</span>
+                    + &quot;self.associations-&gt;forAll(a | &quot;
+                    + &quot;a.allConnections-&gt;forAll(s, o| &quot;
+                    + &quot;(s.type.specificationPath-&gt;isEmpty and &quot;
+                    + &quot;o.type.specificationPath-&gt;isEmpty ) &quot;
+                    + &quot;or &quot;
+                    + &quot;(not s.type.specificationPath-&gt;includesAll( &quot;
+                    + &quot;o.type.specificationPath) and &quot;
+                    + &quot;not o.type.specificationPath-&gt;includesAll( &quot;
+                    + &quot;s.type.specificationPath)) &quot;
+                    + &quot;))&quot;,
+<span class="fc" id="L411">                    Translator.localize(&quot;wfr.UML142.UseCase.2-head&quot;),</span>
+<span class="fc" id="L412">                    Translator.localize(&quot;wfr.UML142.UseCase.2-desc&quot;),</span>
+<span class="fc" id="L413">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L415">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L416">            e.printStackTrace();</span>
+<span class="fc" id="L417">        }</span>
+
+        // UseCase
+        // 4.11.3.5 [3]
+        /* Tested with fabricated XMI - OK. */
+        try {
+<span class="fc" id="L423">            critics.add(new CrOCL(&quot;context UseCase inv:&quot;</span>
+                    + &quot;self.contents-&gt;isEmpty&quot;,
+<span class="fc" id="L425">                    Translator.localize(&quot;wfr.UML142.UseCase.3-head&quot;),</span>
+<span class="fc" id="L426">                    Translator.localize(&quot;wfr.UML142.UseCase.3-desc&quot;),</span>
+<span class="fc" id="L427">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L429">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L430">            e.printStackTrace();</span>
+<span class="fc" id="L431">        }</span>
+
+        // UseCase
+        // 4.11.3.5 [4]
+        /* Tested OK, except in some cases, depending on the
+         * sequence of the EPs. Probably the implementation of
+         * &quot;forAll (x, y | ...&quot; does not cover all combinations. */
+        try {
+<span class="fc" id="L439">            critics.add(new CrOCL(&quot;context UseCase inv:&quot;</span>
+                    + &quot;self.allExtensionPoints -&gt; forAll (x, y | &quot;
+                    + &quot;x.name = y.name implies x = y )&quot;,
+<span class="fc" id="L442">                    Translator.localize(&quot;wfr.UML142.UseCase.4-head&quot;),</span>
+<span class="fc" id="L443">                    Translator.localize(&quot;wfr.UML142.UseCase.4-desc&quot;),</span>
+<span class="fc" id="L444">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L446">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L447">            e.printStackTrace();</span>
+<span class="fc" id="L448">        }</span>
+
+        // ActionState
+        // 4.13.3.2 [3]
+        // Issue 715
+        try {
+<span class="fc" id="L454">            critics.add(new CrOCL(&quot;context ActionState inv:&quot;</span>
+                    + &quot;self.outgoing-&gt;forAll(t | t.trigger-&gt;size = 0)&quot;,
+<span class="fc" id="L456">                    Translator.localize(&quot;wfr.UML142.ActionState.3-head&quot;),</span>
+<span class="fc" id="L457">                    Translator.localize(&quot;wfr.UML142.ActionState.3-desc&quot;),</span>
+<span class="fc" id="L458">                    ToDoItem.HIGH_PRIORITY, null, null,</span>
+                    &quot;http://www.uml.org/&quot;));
+<span class="nc" id="L460">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L461">            e.printStackTrace();</span>
+<span class="fc" id="L462">        }</span>
+
+<span class="fc" id="L464">        setCritics(critics);</span>
+<span class="fc" id="L465">    }</span>
+
+    @Override
+    public FormatingStrategy getFormatingStrategy() {
+<span class="fc" id="L469">        return formatingStrategy;</span>
+    }
+
+    @Override
+    public String getDisplayName() {
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L475">            return NAME_UML14;</span>
+        }
+<span class="nc" id="L477">        return NAME_UML22;</span>
+    }
+
+
+    @Override
+    public Set&lt;Critic&gt; getCritics() {
+<span class="fc bfc" id="L483" title="All 2 branches covered.">        if (critics == null) {</span>
+<span class="fc" id="L484">            loadWellFormednessRules();</span>
+        }
+<span class="fc" id="L486">        return super.getCritics();</span>
+    }
+
+    @Override
+    public Collection getProfilePackages() {
+<span class="fc" id="L491">        return Collections.unmodifiableCollection(getModel());</span>
+    }
+
+
+    @Override
+    public Collection&lt;Object&gt; getLoadedPackages() {
+<span class="fc bfc" id="L497" title="All 2 branches covered.">        if (model == null) {</span>
+<span class="fc" id="L498">            return Collections.emptyList();</span>
+        } else {
+<span class="fc" id="L500">            return Collections.unmodifiableCollection(model);</span>
+        }
+    }
+
+    @Override
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+<span class="fc" id="L506">        return new DefaultTypeStrategy() {</span>
+<span class="fc" id="L507">            private Collection model = getModel();</span>
+            public Object getDefaultAttributeType() {
+<span class="fc" id="L509">                return getDefaultType();</span>
+            }
+
+            public Object getDefaultParameterType() {
+<span class="nc" id="L513">                return getDefaultType();</span>
+            }
+
+            public Object getDefaultReturnType() {
+<span class="fc" id="L517">                return null;</span>
+            }
+
+            private Object getDefaultType() {
+<span class="pc bpc" id="L521" title="1 of 2 branches missed.">                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L522">                    return ModelUtils.findTypeInModel(&quot;Integer&quot;, model</span>
+<span class="fc" id="L523">                            .iterator().next());</span>
+                }
+                // no default type for UML2
+<span class="nc" id="L526">                return null;</span>
+            }
+        };
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

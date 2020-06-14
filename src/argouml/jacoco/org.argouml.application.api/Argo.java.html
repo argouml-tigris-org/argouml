@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Argo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.application.api</a> &gt; <span class="el_source">Argo.java</span></div><h1>Argo.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.application.api;
+
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+
+/**
+ * The &lt;code&gt;Argo&lt;/code&gt; class provides static methods and definitions
+ * that can be used as helpers throughout the Argo code.&lt;p&gt;
+ *
+ * This class is a variation of the &lt;em&gt;Expert&lt;/em&gt; design pattern
+ * [Grand].  By incorporating a number of unrelated but commonly
+ * used methods in a single class, it attempts to decrease the
+ * complexity of the overall code while increasing its own complexity.&lt;p&gt;
+ *
+ * These include
+ * &lt;ul&gt;
+ * &lt;li&gt;definitions of configuration keys
+ * &lt;li&gt;definitions of resource bundle identifier strings
+ * &lt;li&gt;methods for localization using &lt;code&gt;gef&lt;/code&gt;
+ * &lt;li&gt;methods for environment manipulation
+ * &lt;/ul&gt;
+ *
+ */
+public final class Argo {
+
+    /**
+     * argo.ini path.
+     * @deprecated for 0.25.4 by tfmorris.  No longer used.
+     */
+    @Deprecated
+    public static final String ARGOINI = &quot;/org/argouml/argo.ini&quot;;
+
+    /**
+     * Key for default startup directory.
+     */
+<span class="fc" id="L74">    public static final ConfigurationKey KEY_STARTUP_DIR =</span>
+<span class="fc" id="L75">	Configuration.makeKey(&quot;default&quot;, &quot;user&quot;, &quot;dir&quot;);</span>
+
+    /**
+     * Key to show splash screen.
+     */
+<span class="fc" id="L80">    public static final ConfigurationKey KEY_SPLASH =</span>
+<span class="fc" id="L81">	Configuration.makeKey(&quot;init&quot;, &quot;splash&quot;);</span>
+
+    /**
+     * Key to report usage statistics.
+     */
+<span class="fc" id="L86">    public static final ConfigurationKey KEY_EDEM =</span>
+<span class="fc" id="L87">	Configuration.makeKey(&quot;init&quot;, &quot;edem&quot;);</span>
+
+    /**
+     * Key for last saved project URI.
+     */
+<span class="fc" id="L92">    public static final ConfigurationKey KEY_MOST_RECENT_PROJECT_FILE =</span>
+<span class="fc" id="L93">	Configuration.makeKey(&quot;project&quot;, &quot;mostrecent&quot;, &quot;file&quot;);</span>
+
+    /**
+     * Key for last generated class/classes directory.
+     */
+<span class="fc" id="L98">    public static final ConfigurationKey KEY_MOST_RECENT_EXPORT_DIRECTORY =</span>
+<span class="fc" id="L99">        Configuration.makeKey(&quot;project&quot;, &quot;mostrecent&quot;, &quot;exportdirectory&quot;);</span>
+
+    /**
+     * Key to reload last saved project on startup.
+     */
+<span class="fc" id="L104">    public static final ConfigurationKey KEY_RELOAD_RECENT_PROJECT =</span>
+<span class="fc" id="L105">	Configuration.makeKey(&quot;init&quot;, &quot;project&quot;, &quot;loadmostrecent&quot;);</span>
+
+    /**
+     * Key for number of last recently used file entries in menu list.
+     */
+<span class="fc" id="L110">    public static final ConfigurationKey KEY_NUMBER_LAST_RECENT_USED =</span>
+<span class="fc" id="L111">	Configuration.makeKey(&quot;project&quot;, &quot;mostrecent&quot;, &quot;maxNumber&quot;);</span>
+
+    /**
+     * Key for screen top.
+     */
+<span class="fc" id="L116">    public static final ConfigurationKey KEY_SCREEN_TOP_Y =</span>
+<span class="fc" id="L117">	Configuration.makeKey(&quot;screen&quot;, &quot;top&quot;);</span>
+
+    /**
+     * Key for screen left.
+     */
+<span class="fc" id="L122">    public static final ConfigurationKey KEY_SCREEN_LEFT_X =</span>
+<span class="fc" id="L123">	Configuration.makeKey(&quot;screen&quot;, &quot;left&quot;);</span>
+
+    /**
+     * Key for screen width.
+     */
+<span class="fc" id="L128">    public static final ConfigurationKey KEY_SCREEN_WIDTH =</span>
+<span class="fc" id="L129">	Configuration.makeKey(&quot;screen&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for screen height.
+     */
+<span class="fc" id="L134">    public static final ConfigurationKey KEY_SCREEN_HEIGHT =</span>
+<span class="fc" id="L135">	Configuration.makeKey(&quot;screen&quot;, &quot;height&quot;);</span>
+
+    /**
+     * Key for screen extended state, i.e. NORMAL, MAXIMIZED;
+     * (see Frame documentation).
+     */
+<span class="fc" id="L141">    public static final ConfigurationKey KEY_SCREEN_MAXIMIZED =</span>
+<span class="fc" id="L142">        Configuration.makeKey(&quot;screen&quot;, &quot;maximized&quot;);</span>
+
+    /**
+     * Key for southwest pane width.
+     */
+<span class="fc" id="L147">    public static final ConfigurationKey KEY_SCREEN_SOUTHWEST_WIDTH =</span>
+<span class="fc" id="L148">	Configuration.makeKey(&quot;screen&quot;, &quot;southwest&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for northwest pane width.
+     */
+<span class="fc" id="L153">    public static final ConfigurationKey KEY_SCREEN_NORTHWEST_WIDTH =</span>
+<span class="fc" id="L154">	Configuration.makeKey(&quot;screen&quot;, &quot;northwest&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for southeast pane width.
+     */
+<span class="fc" id="L159">    public static final ConfigurationKey KEY_SCREEN_SOUTHEAST_WIDTH =</span>
+<span class="fc" id="L160">	Configuration.makeKey(&quot;screen&quot;, &quot;southeast&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for northeast pane width.
+     */
+<span class="fc" id="L165">    public static final ConfigurationKey KEY_SCREEN_NORTHEAST_WIDTH =</span>
+<span class="fc" id="L166">	Configuration.makeKey(&quot;screen&quot;, &quot;northeast&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for west pane width.
+     */
+<span class="fc" id="L171">    public static final ConfigurationKey KEY_SCREEN_WEST_WIDTH =</span>
+<span class="fc" id="L172">	Configuration.makeKey(&quot;screen&quot;, &quot;west&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for east pane width.
+     */
+<span class="fc" id="L177">    public static final ConfigurationKey KEY_SCREEN_EAST_WIDTH =</span>
+<span class="fc" id="L178">	Configuration.makeKey(&quot;screen&quot;, &quot;east&quot;, &quot;width&quot;);</span>
+
+    /**
+     * Key for south pane height.
+     */
+<span class="fc" id="L183">    public static final ConfigurationKey KEY_SCREEN_SOUTH_HEIGHT =</span>
+<span class="fc" id="L184">	Configuration.makeKey(&quot;screen&quot;, &quot;south&quot;, &quot;height&quot;);</span>
+
+    /**
+     * Key for north pane height.
+     */
+<span class="fc" id="L189">    public static final ConfigurationKey KEY_SCREEN_NORTH_HEIGHT =</span>
+<span class="fc" id="L190">	Configuration.makeKey(&quot;screen&quot;, &quot;north&quot;, &quot;height&quot;);</span>
+
+    /**
+     * Key for theme.
+     */
+<span class="fc" id="L195">    public static final ConfigurationKey KEY_SCREEN_THEME =</span>
+<span class="fc" id="L196">	Configuration.makeKey(&quot;screen&quot;, &quot;theme&quot;);</span>
+
+    /**
+     * Key for look and feel class name.
+     */
+<span class="fc" id="L201">    public static final ConfigurationKey KEY_LOOK_AND_FEEL_CLASS =</span>
+<span class="fc" id="L202">        Configuration.makeKey(&quot;screen&quot;, &quot;lookAndFeelClass&quot;);</span>
+
+    /**
+     * Key for theme class name.
+     */
+<span class="fc" id="L207">    public static final ConfigurationKey KEY_THEME_CLASS =</span>
+<span class="fc" id="L208">        Configuration.makeKey(&quot;screen&quot;, &quot;themeClass&quot;);</span>
+
+    /**
+     * Key to enable smooth edges of diagram text and lines (anti-aliasing).
+     */
+<span class="fc" id="L213">    public static final ConfigurationKey KEY_SMOOTH_EDGES =</span>
+<span class="fc" id="L214">        Configuration.makeKey(&quot;screen&quot;, &quot;diagram-antialiasing&quot;);</span>
+
+    /**
+     * Key for user email address.
+     */
+<span class="fc" id="L219">    public static final ConfigurationKey KEY_USER_EMAIL =</span>
+<span class="fc" id="L220">	Configuration.makeKey(&quot;user&quot;, &quot;email&quot;);</span>
+
+    /**
+     * Key for user full name.
+     */
+<span class="fc" id="L225">    public static final ConfigurationKey KEY_USER_FULLNAME =</span>
+<span class="fc" id="L226">	Configuration.makeKey(&quot;user&quot;, &quot;fullname&quot;);</span>
+
+    /**
+     * Key for user java reverse engineering classpath.
+     */
+<span class="fc" id="L231">    public static final ConfigurationKey KEY_USER_IMPORT_CLASSPATH =</span>
+<span class="fc" id="L232">	Configuration.makeKey(&quot;import&quot;, &quot;clazzpath&quot;);</span>
+
+    /**
+     * Key for RE general settings checkbox values.
+     * CSV format (values are true/false):
+     * 1. descend directories recursively
+     * 2. changed/new files only
+     * 3. create diagrams from imported code
+     * 4. minimise class icons in diagrams
+     * 5. perform automatic diagram layout
+     */
+<span class="fc" id="L243">    public static final ConfigurationKey KEY_IMPORT_GENERAL_SETTINGS_FLAGS =</span>
+<span class="fc" id="L244">        Configuration.makeKey(&quot;import&quot;, &quot;general&quot;, &quot;flags&quot;);</span>
+
+    /**
+     * Key for RE general settings: level of import detail. Values:
+     * 0: classifiers only
+     * 1: classifiers plus feature specifications
+     * 2: full import
+     */
+<span class="fc" id="L252">    public static final ConfigurationKey KEY_IMPORT_GENERAL_DETAIL_LEVEL =</span>
+<span class="fc" id="L253">        Configuration.makeKey(&quot;import&quot;, &quot;general&quot;, &quot;detail&quot;, &quot;level&quot;);</span>
+
+    /**
+     * Key for input source file encoding used in RE.
+     *  Will be used for generated file also.
+     */
+<span class="fc" id="L259">    public static final ConfigurationKey KEY_INPUT_SOURCE_ENCODING =</span>
+<span class="fc" id="L260">	Configuration.makeKey(&quot;import&quot;, &quot;file&quot;, &quot;encoding&quot;);</span>
+
+    /**
+     * Key to store setting of stripping diagrams on XMI import.
+     */
+<span class="fc" id="L265">    public static final ConfigurationKey KEY_XMI_STRIP_DIAGRAMS =</span>
+<span class="fc" id="L266">        Configuration.makeKey(&quot;import&quot;, &quot;xmi&quot;, &quot;stripDiagrams&quot;);</span>
+
+    /**
+     * Key to store profile/default model.
+     */
+<span class="fc" id="L271">    public static final ConfigurationKey KEY_DEFAULT_MODEL =</span>
+<span class="fc" id="L272">        Configuration.makeKey(&quot;defaultModel&quot;);</span>
+
+    /**
+     * Key for user explorer perspectives.
+     *&lt;pre&gt;
+     * format:
+     * perspective name,rule,rule,rule;perspective name, etc
+     *&lt;/pre&gt;
+     */
+<span class="fc" id="L281">    public static final ConfigurationKey KEY_USER_EXPLORER_PERSPECTIVES =</span>
+<span class="fc" id="L282">	Configuration.makeKey(&quot;explorer&quot;, &quot;perspectives&quot;);</span>
+
+    /**
+     * Key for selecting the locale.
+     */
+<span class="fc" id="L287">    public static final ConfigurationKey KEY_LOCALE =</span>
+<span class="fc" id="L288">        Configuration.makeKey(&quot;locale&quot;);</span>
+
+    /**
+     * Key for selecting the grid size and if it shows lines, dots or none.
+     */
+<span class="fc" id="L293">    public static final ConfigurationKey KEY_GRID =</span>
+<span class="fc" id="L294">        Configuration.makeKey(&quot;grid&quot;);</span>
+
+    /**
+     * Key for selecting the snap size.
+     */
+<span class="fc" id="L299">    public static final ConfigurationKey KEY_SNAP =</span>
+<span class="fc" id="L300">        Configuration.makeKey(&quot;snap&quot;);</span>
+
+    /**
+     * Standard definition of the logging category for the console. (unused)
+     */
+    public static final String CONSOLE_LOG = &quot;argo.console.log&quot;;
+
+    /**
+     * Standard definition of the logging category for the console.
+     */
+    public static final String ARGO_CONSOLE_SUPPRESS = &quot;argo.console.suppress&quot;;
+
+    /**
+     * Standard definition of system variable to add text prefix to
+     * console log. (unused)
+     */
+    public static final String ARGO_CONSOLE_PREFIX = &quot;argo.console.prefix&quot;;
+
+    /**
+     * Name of the TagDefinition which is used as the type of tagged values
+     * containing documentation for a model element.
+     */
+    public static final String DOCUMENTATION_TAG = &quot;documentation&quot;;
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * the author's name.
+     */
+    public static final String AUTHOR_TAG = &quot;author&quot;;
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * since date.
+     */
+    public static final String SINCE_TAG = &quot;since&quot;;
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * &quot;see&quot; reference.
+     */
+    public static final String SEE_TAG = &quot;see&quot;;
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * deprecated flag.
+     */
+    public static final String DEPRECATED_TAG = &quot;deprecated&quot;;
+
+    /**
+     * Name of the TagDefinition for tagged values containing
+     * version string.
+     */
+    public static final String VERSION_TAG = &quot;version&quot;;
+
+    /**
+     * Alternate name for the TagDefinition which presumably was used at some
+     * point in the past to contain documentation for a model element.  Only
+     * used for backward compatibilty.
+     * @deprecated for 0.25.1 by tfmorris - don't use for new code.
+     */
+    @Deprecated
+    public static final String DOCUMENTATION_TAG_ALT = &quot;javadocs&quot;;
+
+    /**
+     * The scope of the settings: this setting is stored
+     * in the userdirectory and valid for the application.
+     */
+    public static final int SCOPE_APPLICATION = 0;
+
+    /**
+     * The scope of the setting: this setting is stored with the project,
+     * i.e. in e.g. a zargo file. This setting will also apply
+     * when the zargo file is opened by another user,
+     * on another computer.
+     */
+    public static final int SCOPE_PROJECT = 1;
+
+    /**
+     * Don't let this class be instantiated.
+     */
+    private Argo() {
+    }
+
+    /**
+     * Change the default startup directory.
+     *
+     * @param dir the directory to save
+     */
+    public static void setDirectory(String dir) {
+	// Store in the user configuration, and
+	// let gef know also.
+<span class="nc" id="L391">	org.tigris.gef.base.Globals.setLastDirectory(dir);</span>
+
+	// Configuration.setString(KEY_STARTUP_DIR, dir);
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * Get the default startup directory.
+     *
+     * @return the startup directory
+     */
+    public static String getDirectory() {
+	// Use the configuration if it exists, otherwise
+	// use what gef thinks.
+<span class="nc" id="L404">	return Configuration.getString(KEY_STARTUP_DIR,</span>
+				       org.tigris.gef.base.Globals
+<span class="nc" id="L406">				           .getLastDirectory());</span>
+    }
+
+    static {
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {</span>
+//            Category.getRoot().getLoggerRepository().setThreshold(Level.OFF);
+// TODO: Find the proper implementation in java.util.logging API	    
+	}
+<span class="fc" id="L414">    }</span>
+
+    /**
+     * Supply the encoding to be used throughout the persistence
+     * mechanism.
+     * @return the encoding.
+     */
+    public static String getEncoding() {
+<span class="fc" id="L422">        return &quot;UTF-8&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImportStatusScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng.ui</a> &gt; <span class="el_source">ImportStatusScreen.java</span></div><h1>ImportStatusScreen.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008, 2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import org.argouml.i18n.Translator;
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressMonitor;
+
+/**
+ * A window that shows the progress bar and a cancel button. As a convenience to
+ * callers which may be executing on a thread other than the Swing event thread,
+ * all methods use SwingUtilities.invokeLater() or
+ * SwingUtilities.invokeAndWait() to make sure that Swing calls happen on the
+ * appropriate thread.
+ *&lt;p&gt;
+ * TODO: React on the close button as if the Cancel button was pressed.
+ */
+public class ImportStatusScreen extends JDialog 
+    implements ProgressMonitor, WindowListener {
+    
+    private JButton cancelButton;
+    private JLabel progressLabel;
+    private JProgressBar progress;
+    private JTextArea messageArea;
+<span class="nc" id="L83">    private boolean hasMessages = false;</span>
+<span class="nc" id="L84">    private boolean canceled = false;</span>
+
+    /**
+     * The constructor.
+     *
+     * @param title
+     * @param iconName
+     */
+    public ImportStatusScreen(Frame frame, String title, String iconName) {
+<span class="nc" id="L93">        super(frame, true);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (title != null) {</span>
+<span class="nc" id="L95">            setTitle(title);</span>
+        }
+<span class="nc" id="L97">        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="nc" id="L98">        getContentPane().setLayout(new BorderLayout(4, 4));</span>
+<span class="nc" id="L99">        Container panel = new JPanel(new GridBagLayout());</span>
+
+        // Parsing file x of z.
+<span class="nc" id="L102">        progressLabel = new JLabel();</span>
+<span class="nc" id="L103">        progressLabel.setHorizontalAlignment(SwingConstants.RIGHT);</span>
+
+<span class="nc" id="L105">        GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="nc" id="L106">        gbc.anchor = GridBagConstraints.NORTH;</span>
+<span class="nc" id="L107">        gbc.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L108">        gbc.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L109">        gbc.gridheight = 1;</span>
+<span class="nc" id="L110">        gbc.gridx = 0;</span>
+<span class="nc" id="L111">        gbc.gridy = 0;</span>
+<span class="nc" id="L112">        gbc.weightx = 0.1;</span>
+        
+<span class="nc" id="L114">        panel.add(progressLabel, gbc);</span>
+<span class="nc" id="L115">        gbc.gridy++;</span>
+        
+        // progress bar
+<span class="nc" id="L118">        progress = new JProgressBar();</span>
+<span class="nc" id="L119">        gbc.anchor = GridBagConstraints.CENTER;</span>
+<span class="nc" id="L120">        panel.add(progress, gbc);</span>
+<span class="nc" id="L121">        gbc.gridy++;</span>
+        
+<span class="nc" id="L123">        panel.add(</span>
+<span class="nc" id="L124">                new JLabel(Translator.localize(&quot;label.import-messages&quot;)), gbc);</span>
+<span class="nc" id="L125">        gbc.gridy++;</span>
+        
+        // Error/warning messageArea
+<span class="nc" id="L128">        messageArea = new JTextArea(10, 50);</span>
+<span class="nc" id="L129">        gbc.weighty = 0.8;</span>
+//        gbc.gridheight = 10;
+<span class="nc" id="L131">        gbc.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L132">        panel.add(new JScrollPane(messageArea), gbc);</span>
+<span class="nc" id="L133">        gbc.gridy++;</span>
+
+        // cancel/close button
+<span class="nc" id="L136">        cancelButton = new JButton(Translator.localize(&quot;button.cancel&quot;));</span>
+
+<span class="nc" id="L138">        gbc.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L139">        gbc.anchor = GridBagConstraints.SOUTH;</span>
+<span class="nc" id="L140">        gbc.weighty = 0.1;</span>
+<span class="nc" id="L141">        gbc.gridheight = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L142">        panel.add(cancelButton, gbc);</span>
+<span class="nc" id="L143">        gbc.gridy++;</span>
+        
+<span class="nc" id="L145">        cancelButton.addActionListener(new ActionListener() {</span>
+
+            public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L148" title="All 2 branches missed.">                if (isComplete()) {</span>
+<span class="nc" id="L149">                    close();</span>
+                }
+<span class="nc" id="L151">                canceled = true;</span>
+<span class="nc" id="L152">            }</span>
+
+        });
+        
+<span class="nc" id="L156">        getContentPane().add(panel);</span>
+<span class="nc" id="L157">        pack();</span>
+<span class="nc" id="L158">        Dimension contentPaneSize = getContentPane().getPreferredSize();</span>
+<span class="nc" id="L159">        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,</span>
+                scrSize.height / 2 - contentPaneSize.height / 2);
+<span class="nc" id="L161">        setResizable(true);</span>
+<span class="nc" id="L162">        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);</span>
+<span class="nc" id="L163">        addWindowListener(this);</span>
+<span class="nc" id="L164">    }</span>
+
+    public void setMaximumProgress(final int i) {
+<span class="nc" id="L167">        SwingUtilities.invokeLater(new Runnable () {</span>
+            public void run() {
+<span class="nc" id="L169">                progress.setMaximum(i);</span>
+<span class="nc" id="L170">                setVisible(true);</span>
+<span class="nc" id="L171">            }</span>
+        });
+<span class="nc" id="L173">    }</span>
+
+    public void updateProgress(final int i) {
+<span class="nc" id="L176">        SwingUtilities.invokeLater(new Runnable () {</span>
+            public void run() {
+<span class="nc" id="L178">                progress.setValue(i);</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                if (isComplete()) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                    if (hasMessages) {</span>
+<span class="nc" id="L181">                        cancelButton.setText(</span>
+<span class="nc" id="L182">                                Translator.localize(&quot;button.close&quot;));</span>
+                    } else {
+<span class="nc" id="L184">                        close();</span>
+                    }
+                }
+<span class="nc" id="L187">            }</span>
+        });
+<span class="nc" id="L189">    }</span>
+    
+    private boolean isComplete() {
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        return progress.getValue() == progress.getMaximum();</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1336242911879462274L;
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#close()
+     */
+    public void close() {
+<span class="nc" id="L204">        SwingUtilities.invokeLater(new Runnable () {</span>
+            public void run() {
+<span class="nc" id="L206">                setVisible(false);</span>
+<span class="nc" id="L207">                dispose();</span>
+<span class="nc" id="L208">            }</span>
+        });
+<span class="nc" id="L210">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#isCanceled()
+     */
+    public boolean isCanceled() {
+<span class="nc" id="L216">        return canceled;</span>
+    }
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void notifyMessage(final String title, final String introduction,
+            final String message) {
+<span class="nc" id="L224">        hasMessages = true;</span>
+        // TODO: Add filename ?
+<span class="nc" id="L226">        messageArea.setText(messageArea.getText() + title + &quot;\n&quot; + introduction</span>
+                + &quot;\n&quot; + message + &quot;\n\n&quot;);
+<span class="nc" id="L228">        messageArea.setCaretPosition(messageArea.getText().length());</span>
+<span class="nc" id="L229">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
+     */
+    public void notifyNullAction() {
+<span class="nc" id="L235">        String msg = Translator.localize(&quot;label.import.empty&quot;);</span>
+<span class="nc" id="L236">        notifyMessage(msg, msg, msg);</span>
+<span class="nc" id="L237">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#updateMainTask(java.lang.String)
+     */
+    public void updateMainTask(final String name) {
+<span class="nc" id="L243">        SwingUtilities.invokeLater(new Runnable () {</span>
+            public void run() {
+<span class="nc" id="L245">                setTitle(name);</span>
+<span class="nc" id="L246">            }</span>
+        });
+<span class="nc" id="L248">    }</span>
+
+    /*
+     * @see org.argouml.application.api.ProgressMonitor#updateSubTask(java.lang.String)
+     */
+    public void updateSubTask(final String action) {
+<span class="nc" id="L254">        SwingUtilities.invokeLater(new Runnable () {</span>
+            public void run() {
+<span class="nc" id="L256">                progressLabel.setText(action);</span>
+<span class="nc" id="L257">            }</span>
+        });
+<span class="nc" id="L259">    }</span>
+
+    /*
+     * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
+     */
+    public void progress(ProgressEvent event) throws InterruptedException {
+        // ignored
+<span class="nc" id="L266">    }</span>
+
+    public void windowClosing(WindowEvent e) {
+        // User closing the progress window is interpreted as cancel request
+<span class="nc" id="L270">        canceled = true;</span>
+<span class="nc" id="L271">        close();</span>
+<span class="nc" id="L272">    }</span>
+    
+<span class="nc" id="L274">    public void windowActivated(WindowEvent e) { }</span>
+<span class="nc" id="L275">    public void windowClosed(WindowEvent e) { }</span>
+<span class="nc" id="L276">    public void windowDeactivated(WindowEvent e) { }</span>
+<span class="nc" id="L277">    public void windowDeiconified(WindowEvent e) { }</span>
+<span class="nc" id="L278">    public void windowIconified(WindowEvent e) { }</span>
+<span class="nc" id="L279">    public void windowOpened(WindowEvent e) { }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

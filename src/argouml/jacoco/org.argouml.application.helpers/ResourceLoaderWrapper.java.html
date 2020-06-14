@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceLoaderWrapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.application.helpers</a> &gt; <span class="el_source">ResourceLoaderWrapper.java</span></div><h1>ResourceLoaderWrapper.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Thomas Neustupny
+ *    Bob Tarling
+ *
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.application.helpers;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.DataTypesHelper;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+
+
+/**
+ * Wrapper around org.tigris.gef.util.ResourceLoader.&lt;p&gt;
+ *
+ * Necessary since ArgoUML needs some extra init.
+ *
+ * @since Nov 24, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
+ */
+public final class ResourceLoaderWrapper {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L74">    private static final Logger LOG =</span>
+<span class="fc" id="L75">        Logger.getLogger(ResourceLoaderWrapper.class.getName());</span>
+
+    private static ImageIcon initialStateIcon;
+    private static ImageIcon deepIcon;
+    private static ImageIcon shallowIcon;
+    private static ImageIcon forkIcon;
+    private static ImageIcon joinIcon;
+    private static ImageIcon branchIcon;
+    private static ImageIcon junctionIcon;
+    private static ImageIcon realizeIcon;
+    private static ImageIcon signalIcon;
+    private static ImageIcon exceptionIcon;
+    private static ImageIcon commentIcon;
+
+<span class="fc" id="L89">    private Hashtable&lt;Class, Icon&gt; iconCache = new Hashtable&lt;Class, Icon&gt;();</span>
+
+    /**
+     * Singleton implementation.
+     */
+<span class="fc" id="L94">    private static ResourceLoaderWrapper instance = new ResourceLoaderWrapper();</span>
+
+
+    /**
+     * Returns the singleton instance.
+     *
+     * @return ResourceLoaderWrapper
+     */
+    public static ResourceLoaderWrapper getInstance() {
+<span class="fc" id="L103">        return instance;</span>
+    }
+
+    /**
+     * Constructor for ResourceLoaderWrapper.
+     */
+<span class="fc" id="L109">    private ResourceLoaderWrapper() {</span>
+<span class="fc" id="L110">        initResourceLoader();</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Calculate the path to a look and feel object.
+     *
+     * @param classname
+     *            The look and feel classname
+     * @param element
+     *            The en part of the path.
+     * @return the complete path.
+     */
+    private static String lookAndFeelPath(String classname, String element) {
+<span class="fc" id="L123">        return &quot;/org/argouml/Images/plaf/&quot;</span>
+<span class="fc" id="L124">            + classname.replace('.', '/')</span>
+            + &quot;/toolbarButtonGraphics/&quot;
+            + element;
+    }
+
+    /**
+     * Initializes the resourceloader.
+     *
+     * LookupIconResource checks if there are locations and extensions known.
+     * If there are none, this method is called to initialize the resource
+     * loader. Originally, this method was placed within Main but this coupled
+     * Main and the resourceLoader too much.
+     */
+    private static void initResourceLoader() {
+	String lookAndFeelClassName;
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">	if (&quot;true&quot;.equals(System.getProperty(&quot;force.nativelaf&quot;, &quot;false&quot;))) {</span>
+<span class="nc" id="L140">	    lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();</span>
+	} else {
+<span class="fc" id="L142">	    lookAndFeelClassName = &quot;javax.swing.plaf.metal.MetalLookAndFeel&quot;;</span>
+	}
+<span class="fc" id="L144">	String lookAndFeelGeneralImagePath =</span>
+<span class="fc" id="L145">	    lookAndFeelPath(lookAndFeelClassName, &quot;general&quot;);</span>
+<span class="fc" id="L146">	String lookAndFeelNavigationImagePath =</span>
+<span class="fc" id="L147">	    lookAndFeelPath(lookAndFeelClassName, &quot;navigation&quot;);</span>
+<span class="fc" id="L148">	String lookAndFeelDiagramImagePath =</span>
+<span class="fc" id="L149">	    lookAndFeelPath(lookAndFeelClassName, &quot;argouml/diagrams&quot;);</span>
+<span class="fc" id="L150">	String lookAndFeelElementImagePath =</span>
+<span class="fc" id="L151">	    lookAndFeelPath(lookAndFeelClassName, &quot;argouml/elements&quot;);</span>
+<span class="fc" id="L152">	String lookAndFeelArgoUmlImagePath =</span>
+<span class="fc" id="L153">	    lookAndFeelPath(lookAndFeelClassName, &quot;argouml&quot;);</span>
+<span class="fc" id="L154">	ResourceLoader.addResourceExtension(&quot;gif&quot;);</span>
+<span class="fc" id="L155">        ResourceLoader.addResourceExtension(&quot;png&quot;);</span>
+<span class="fc" id="L156">	ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);</span>
+<span class="fc" id="L157">	ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);</span>
+<span class="fc" id="L158">	ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);</span>
+<span class="fc" id="L159">	ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);</span>
+<span class="fc" id="L160">	ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);</span>
+<span class="fc" id="L161">	ResourceLoader.addResourceLocation(&quot;/org/argouml/Images&quot;);</span>
+<span class="fc" id="L162">	ResourceLoader.addResourceLocation(&quot;/org/tigris/gef/Images&quot;);</span>
+
+        // Initialze GEF's version of the loader too
+        // TODO: We should probably be passing icons that we loaded ourselves
+        // but there doesn't seem to be a way to do that with GEF - tfm
+<span class="fc" id="L167">        org.tigris.gef.util.ResourceLoader.addResourceExtension(&quot;gif&quot;);</span>
+<span class="fc" id="L168">        org.tigris.gef.util.ResourceLoader.addResourceExtension(&quot;png&quot;);</span>
+<span class="fc" id="L169">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L170">                .addResourceLocation(lookAndFeelGeneralImagePath);</span>
+<span class="fc" id="L171">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L172">                .addResourceLocation(lookAndFeelNavigationImagePath);</span>
+<span class="fc" id="L173">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L174">                .addResourceLocation(lookAndFeelDiagramImagePath);</span>
+<span class="fc" id="L175">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L176">                .addResourceLocation(lookAndFeelElementImagePath);</span>
+<span class="fc" id="L177">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L178">                .addResourceLocation(lookAndFeelArgoUmlImagePath);</span>
+<span class="fc" id="L179">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L180">                .addResourceLocation(&quot;/org/argouml/Images&quot;);</span>
+<span class="fc" id="L181">        org.tigris.gef.util.ResourceLoader</span>
+<span class="fc" id="L182">                .addResourceLocation(&quot;/org/tigris/gef/Images&quot;);</span>
+
+<span class="fc" id="L184">        initialStateIcon = ResourceLoader.lookupIconResource(&quot;Initial&quot;);</span>
+<span class="fc" id="L185">        deepIcon = ResourceLoader.lookupIconResource(&quot;DeepHistory&quot;);</span>
+<span class="fc" id="L186">        shallowIcon = ResourceLoader.lookupIconResource(&quot;ShallowHistory&quot;);</span>
+<span class="fc" id="L187">        forkIcon = ResourceLoader.lookupIconResource(&quot;Fork&quot;);</span>
+<span class="fc" id="L188">        joinIcon = ResourceLoader.lookupIconResource(&quot;Join&quot;);</span>
+<span class="fc" id="L189">        branchIcon = ResourceLoader.lookupIconResource(&quot;Choice&quot;);</span>
+<span class="fc" id="L190">        junctionIcon = ResourceLoader.lookupIconResource(&quot;Junction&quot;);</span>
+<span class="fc" id="L191">        realizeIcon = ResourceLoader.lookupIconResource(&quot;Realization&quot;);</span>
+<span class="fc" id="L192">        signalIcon = ResourceLoader.lookupIconResource(&quot;SignalSending&quot;);</span>
+<span class="fc" id="L193">        exceptionIcon = ResourceLoader.lookupIconResource(&quot;Exception&quot;);</span>
+<span class="fc" id="L194">        commentIcon = ResourceLoader.lookupIconResource(&quot;Note&quot;);</span>
+<span class="fc" id="L195">    }</span>
+
+    /**
+     * This public operation is needed
+     * to allow modules to add their own images.
+     *
+     * @param location the path were the images are
+     */
+    public static void addResourceLocation(String location) {
+<span class="nc" id="L204">        ResourceLoader.addResourceLocation(location);</span>
+<span class="nc" id="L205">    }</span>
+
+    /**
+     * Find the correct icon for a key.
+     *
+     * @param resource The name of the resource to look up.
+     * @return The ImageIcon.
+     */
+    public static ImageIcon lookupIconResource(String resource) {
+<span class="fc" id="L214">	return ResourceLoader.lookupIconResource(resource);</span>
+    }
+
+    /**
+     * Find the correct icon for a key.
+     *
+     * @param resource The name of the resource to look up.
+     * @param desc The description for the icon.
+     * @return The ImageIcon.
+     */
+    public static ImageIcon lookupIconResource(String resource, String desc) {
+<span class="fc" id="L225">	return ResourceLoader.lookupIconResource(resource, desc);</span>
+    }
+
+    /**
+     * Look up the Icon for a key.
+     *
+     * @param key The key to find.
+     * @return The found Icon.
+     */
+    public static ImageIcon lookupIcon(String key) {
+<span class="fc" id="L235">        return lookupIconResource(getImageBinding(key),</span>
+<span class="fc" id="L236">                		  Translator.localize(key));</span>
+    }
+
+    /**
+     * Find the Icon for a given model element.
+     *
+     * @return The Icon or &lt;code&gt;null&lt;/code&gt; if there is no Icon.
+     * @param value The model element.
+     *
+     * TODO: This should not use string matching on classnames to do this
+     *       since this means that we have knowledge about how the model
+     *       elements are implemented outside of the Model component.
+     */
+    public Icon lookupIcon(Object value) {
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L251">            throw new IllegalArgumentException(</span>
+                    &quot;Attempted to get an icon given a null key&quot;);
+        }
+
+<span class="pc bpc" id="L255" title="1 of 2 branches missed.">        if (value instanceof String) {</span>
+<span class="nc" id="L256">            return null;</span>
+        }
+
+<span class="fc" id="L259">        Icon icon = iconCache.get(value.getClass());</span>
+
+        try {
+<span class="fc bfc" id="L262" title="All 2 branches covered.">            if (Model.getFacade().isAPseudostate(value)) {</span>
+
+<span class="fc" id="L264">                Object kind = Model.getFacade().getKind(value);</span>
+<span class="fc" id="L265">                DataTypesHelper helper = Model.getDataTypesHelper();</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">                if (helper.equalsINITIALKind(kind)) {</span>
+<span class="fc" id="L267">                    icon = initialStateIcon;</span>
+                }
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">                if (helper.equalsDeepHistoryKind(kind)) {</span>
+<span class="nc" id="L270">                    icon = deepIcon;</span>
+                }
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">                if (helper.equalsShallowHistoryKind(kind)) {</span>
+<span class="nc" id="L273">                    icon = shallowIcon;</span>
+                }
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">                if (helper.equalsFORKKind(kind)) {</span>
+<span class="nc" id="L276">                    icon = forkIcon;</span>
+                }
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">                if (helper.equalsJOINKind(kind)) {</span>
+<span class="nc" id="L279">                    icon = joinIcon;</span>
+                }
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">                if (helper.equalsCHOICEKind(kind)) {</span>
+<span class="nc" id="L282">                    icon = branchIcon;</span>
+                }
+<span class="pc bpc" id="L284" title="1 of 2 branches missed.">                if (helper.equalsJUNCTIONKind(kind)) {</span>
+<span class="nc" id="L285">                    icon = junctionIcon;</span>
+                }
+                // if (MPseudostateKind.FINAL.equals(kind))
+                // icon = _FinalStateIcon;
+            }
+
+<span class="fc bfc" id="L291" title="All 2 branches covered.">            if (Model.getFacade().isAAbstraction(value)) {</span>
+<span class="fc" id="L292">                icon = realizeIcon;</span>
+            }
+<span class="fc bfc" id="L294" title="All 2 branches covered.">            if (Model.getFacade().isAException(value)) {</span>
+<span class="fc" id="L295">                icon = exceptionIcon;</span>
+            } else {
+                // needs more work: sending and receiving icons
+<span class="fc bfc" id="L298" title="All 2 branches covered.">                if (Model.getFacade().isASignal(value)) {</span>
+<span class="fc" id="L299">                    icon = signalIcon;</span>
+                }
+            }
+
+<span class="fc bfc" id="L303" title="All 2 branches covered.">            if (Model.getFacade().isAComment(value)) {</span>
+<span class="fc" id="L304">                icon = commentIcon;</span>
+            }
+
+<span class="fc bfc" id="L307" title="All 2 branches covered.">            if (icon == null) {</span>
+
+<span class="fc" id="L309">                String cName = Model.getMetaTypes().getName(value);</span>
+
+<span class="fc" id="L311">                icon = lookupIconResource(cName);</span>
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">                if (icon == null) {</span>
+<span class="nc" id="L313">                    LOG.log(Level.FINE,</span>
+                            &quot;Can't find icon for {0}&quot;, cName);
+                } else {
+<span class="fc" id="L316">                    synchronized (iconCache) {</span>
+<span class="fc" id="L317">                        iconCache.put(value.getClass(), icon);</span>
+<span class="fc" id="L318">                    }</span>
+                }
+
+            }
+<span class="nc" id="L322">        } catch (InvalidElementException e) {</span>
+<span class="nc" id="L323">            LOG.log(Level.FINE, &quot;Attempted to get icon for deleted element&quot;);</span>
+<span class="nc" id="L324">            return null;</span>
+<span class="fc" id="L325">        }</span>
+<span class="fc" id="L326">        return icon;</span>
+    }
+
+    /**
+     * Map to convert tokens into file names.
+     */
+<span class="fc" id="L332">    private static Map&lt;String, String&gt; images = new HashMap&lt;String, String&gt;();</span>
+    static {
+<span class="fc" id="L334">        images.put(&quot;action.about-argouml&quot;, &quot;AboutArgoUML&quot;);</span>
+<span class="fc" id="L335">        images.put(&quot;action.activity-diagram&quot;, &quot;Activity Diagram&quot;);</span>
+<span class="fc" id="L336">        images.put(&quot;action.class-diagram&quot;, &quot;Class Diagram&quot;);</span>
+<span class="fc" id="L337">        images.put(&quot;action.collaboration-diagram&quot;, &quot;Collaboration Diagram&quot;);</span>
+<span class="fc" id="L338">        images.put(&quot;action.deployment-diagram&quot;, &quot;Deployment Diagram&quot;);</span>
+<span class="fc" id="L339">        images.put(&quot;action.sequence-diagram&quot;, &quot;Sequence Diagram&quot;);</span>
+<span class="fc" id="L340">        images.put(&quot;action.state-diagram&quot;, &quot;State Diagram&quot;);</span>
+<span class="fc" id="L341">        images.put(&quot;action.usecase-diagram&quot;, &quot;Use Case Diagram&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L345">        images.put(&quot;action.add-concurrent-region&quot;, &quot;Add Concurrent Region&quot;);</span>
+<span class="fc" id="L346">        images.put(&quot;action.add-message&quot;, &quot;Add Message&quot;);</span>
+<span class="fc" id="L347">        images.put(&quot;action.configure-perspectives&quot;, &quot;ConfigurePerspectives&quot;);</span>
+<span class="fc" id="L348">        images.put(&quot;action.copy&quot;, &quot;Copy&quot;);</span>
+<span class="fc" id="L349">        images.put(&quot;action.cut&quot;, &quot;Cut&quot;);</span>
+<span class="fc" id="L350">        images.put(&quot;action.delete-concurrent-region&quot;, &quot;DeleteConcurrentRegion&quot;);</span>
+<span class="fc" id="L351">        images.put(&quot;action.delete-from-model&quot;, &quot;DeleteFromModel&quot;);</span>
+<span class="fc" id="L352">        images.put(&quot;action.find&quot;, &quot;Find...&quot;);</span>
+<span class="fc" id="L353">        images.put(&quot;action.import-sources&quot;, &quot;Import Sources...&quot;);</span>
+<span class="fc" id="L354">        images.put(&quot;action.more-info&quot;, &quot;More Info...&quot;);</span>
+<span class="fc" id="L355">        images.put(&quot;action.navigate-back&quot;, &quot;NavigateBack&quot;);</span>
+<span class="fc" id="L356">        images.put(&quot;action.navigate-forward&quot;, &quot;NavigateForward&quot;);</span>
+<span class="fc" id="L357">        images.put(&quot;action.navigate-up&quot;, &quot;NavigateUp&quot;);</span>
+<span class="fc" id="L358">        images.put(&quot;action.new&quot;, &quot;New&quot;);</span>
+<span class="fc" id="L359">        images.put(&quot;action.new-profile&quot;, &quot;NewProfile&quot;);</span>
+<span class="fc" id="L360">        images.put(&quot;action.new-todo-item&quot;, &quot;New To Do Item...&quot;);</span>
+<span class="fc" id="L361">        images.put(&quot;action.open-project&quot;, &quot;Open Project...&quot;);</span>
+<span class="fc" id="L362">        images.put(&quot;action.page-setup&quot;, &quot;Page Setup...&quot;);</span>
+<span class="fc" id="L363">        images.put(&quot;action.paste&quot;, &quot;Paste&quot;);</span>
+<span class="fc" id="L364">        images.put(&quot;action.print&quot;, &quot;Print...&quot;);</span>
+<span class="fc" id="L365">        images.put(&quot;action.properties&quot;, &quot;Properties&quot;);</span>
+<span class="fc" id="L366">        images.put(&quot;action.remove-from-diagram&quot;, &quot;Remove From Diagram&quot;);</span>
+<span class="fc" id="L367">        images.put(&quot;action.resolve-item&quot;, &quot;Resolve Item...&quot;);</span>
+<span class="fc" id="L368">        images.put(&quot;action.save-project&quot;, &quot;Save Project&quot;);</span>
+<span class="fc" id="L369">        images.put(&quot;action.save-project-as&quot;, &quot;Save Project As...&quot;);</span>
+<span class="fc" id="L370">        images.put(&quot;action.settings&quot;, &quot;Settings...&quot;);</span>
+<span class="fc" id="L371">        images.put(&quot;action.snooze-critic&quot;, &quot;Snooze Critic&quot;);</span>
+<span class="fc" id="L372">        images.put(&quot;action.system-information&quot;, &quot;System Information&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L376">        images.put(&quot;button.broom&quot;, &quot;Broom&quot;);</span>
+<span class="fc" id="L377">        images.put(&quot;button.new-actionstate&quot;, &quot;ActionState&quot;);</span>
+<span class="fc" id="L378">        images.put(&quot;button.new-actor&quot;, &quot;Actor&quot;);</span>
+<span class="fc" id="L379">        images.put(&quot;button.new-aggregation&quot;, &quot;Aggregation&quot;);</span>
+<span class="fc" id="L380">        images.put(&quot;button.new-association&quot;, &quot;Association&quot;);</span>
+<span class="fc" id="L381">        images.put(&quot;button.new-associationclass&quot;, &quot;AssociationClass&quot;);</span>
+<span class="fc" id="L382">        images.put(&quot;button.new-association-end&quot;, &quot;AssociationEnd&quot;);</span>
+<span class="fc" id="L383">        images.put(&quot;button.new-associationrole&quot;, &quot;AssociationRole&quot;);</span>
+<span class="fc" id="L384">        images.put(&quot;button.new-attribute&quot;, &quot;New Attribute&quot;);</span>
+<span class="fc" id="L385">        images.put(&quot;button.new-callaction&quot;, &quot;CallAction&quot;);</span>
+<span class="fc" id="L386">        images.put(&quot;button.new-terminateaction&quot;, &quot;TerminateAction&quot;);</span>
+<span class="fc" id="L387">        images.put(&quot;button.new-uninterpretedaction&quot;, &quot;UninterpretedAction&quot;);</span>
+<span class="fc" id="L388">        images.put(&quot;button.new-actionsequence&quot;, &quot;ActionSequence&quot;);</span>
+<span class="fc" id="L389">        images.put(&quot;button.new-callaction&quot;, &quot;CallAction&quot;);</span>
+<span class="fc" id="L390">        images.put(&quot;button.new-callevent&quot;, &quot;CallEvent&quot;);</span>
+<span class="fc" id="L391">        images.put(&quot;button.new-callstate&quot;, &quot;CallState&quot;);</span>
+<span class="fc" id="L392">        images.put(&quot;button.new-changeevent&quot;, &quot;ChangeEvent&quot;);</span>
+<span class="fc" id="L393">        images.put(&quot;button.new-choice&quot;, &quot;Choice&quot;);</span>
+<span class="fc" id="L394">        images.put(&quot;button.new-class&quot;, &quot;Class&quot;);</span>
+<span class="fc" id="L395">        images.put(&quot;button.new-classifierrole&quot;, &quot;ClassifierRole&quot;);</span>
+<span class="fc" id="L396">        images.put(&quot;button.new-commentlink&quot;, &quot;CommentLink&quot;);</span>
+<span class="fc" id="L397">        images.put(&quot;button.new-component&quot;, &quot;Component&quot;);</span>
+<span class="fc" id="L398">        images.put(&quot;button.new-componentinstance&quot;, &quot;ComponentInstance&quot;);</span>
+<span class="fc" id="L399">        images.put(&quot;button.new-compositestate&quot;, &quot;CompositeState&quot;);</span>
+<span class="fc" id="L400">        images.put(&quot;button.new-composition&quot;, &quot;Composition&quot;);</span>
+<span class="fc" id="L401">        images.put(&quot;button.new-createaction&quot;, &quot;CreateAction&quot;);</span>
+<span class="fc" id="L402">        images.put(&quot;button.new-datatype&quot;, &quot;DataType&quot;);</span>
+<span class="fc" id="L403">        images.put(&quot;button.new-deephistory&quot;, &quot;DeepHistory&quot;);</span>
+<span class="fc" id="L404">        images.put(&quot;button.new-dependency&quot;, &quot;Dependency&quot;);</span>
+<span class="fc" id="L405">        images.put(&quot;button.new-destroyaction&quot;, &quot;DestroyAction&quot;);</span>
+<span class="fc" id="L406">        images.put(&quot;button.new-entrypoint&quot;, &quot;EntryPoint&quot;);</span>
+<span class="fc" id="L407">        images.put(&quot;button.new-enumeration&quot;, &quot;Enumeration&quot;);</span>
+<span class="fc" id="L408">        images.put(&quot;button.new-enumerationliteral&quot;, &quot;EnumerationLiteral&quot;);</span>
+<span class="fc" id="L409">        images.put(&quot;button.new-exitpoint&quot;, &quot;ExitPoint&quot;);</span>
+<span class="fc" id="L410">        images.put(&quot;button.new-extension-point&quot;, &quot;New Extension Point&quot;);</span>
+<span class="fc" id="L411">        images.put(&quot;button.new-extend&quot;, &quot;Extend&quot;);</span>
+<span class="fc" id="L412">        images.put(&quot;button.new-exception&quot;, &quot;Exception&quot;);</span>
+<span class="fc" id="L413">        images.put(&quot;button.new-extensionpoint&quot;, &quot;ExtensionPoint&quot;);</span>
+<span class="fc" id="L414">        images.put(&quot;button.new-guard&quot;, &quot;Guard&quot;);</span>
+<span class="fc" id="L415">        images.put(&quot;button.new-method&quot;, &quot;Method&quot;);</span>
+<span class="fc" id="L416">        images.put(&quot;button.new-message&quot;, &quot;Message&quot;);</span>
+<span class="fc" id="L417">        images.put(&quot;button.new-argument&quot;, &quot;Argument&quot;);</span>
+<span class="fc" id="L418">        images.put(&quot;button.new-property&quot;, &quot;Property&quot;);</span>
+<span class="fc" id="L419">        images.put(&quot;button.new-state&quot;, &quot;State&quot;);</span>
+<span class="fc" id="L420">        images.put(&quot;button.new-templateparameter&quot;, &quot;TemplateParameter&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L424">        images.put(&quot;button.new-finalstate&quot;, &quot;FinalState&quot;);</span>
+<span class="fc" id="L425">        images.put(&quot;button.new-fork&quot;, &quot;Fork&quot;);</span>
+<span class="fc" id="L426">        images.put(&quot;button.new-generalization&quot;, &quot;Generalization&quot;);</span>
+<span class="fc" id="L427">        images.put(&quot;button.new-include&quot;, &quot;Include&quot;);</span>
+<span class="fc" id="L428">        images.put(&quot;button.new-initial&quot;, &quot;Initial&quot;);</span>
+<span class="fc" id="L429">        images.put(&quot;button.new-region&quot;, &quot;Region&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L433">        images.put(&quot;button.new-inner-class&quot;, &quot;Inner Class&quot;);</span>
+<span class="fc" id="L434">        images.put(&quot;button.new-interface&quot;, &quot;Interface&quot;);</span>
+<span class="fc" id="L435">        images.put(&quot;button.new-join&quot;, &quot;Join&quot;);</span>
+<span class="fc" id="L436">        images.put(&quot;button.new-junction&quot;, &quot;Junction&quot;);</span>
+<span class="fc" id="L437">        images.put(&quot;button.new-link&quot;, &quot;Link&quot;);</span>
+<span class="fc" id="L438">        images.put(&quot;button.new-node&quot;, &quot;Node&quot;);</span>
+<span class="fc" id="L439">        images.put(&quot;button.new-nodeinstance&quot;, &quot;NodeInstance&quot;);</span>
+<span class="fc" id="L440">        images.put(&quot;button.new-object&quot;, &quot;Object&quot;);</span>
+<span class="fc" id="L441">        images.put(&quot;button.new-objectflowstate&quot;, &quot;ObjectFlowState&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L445">        images.put(&quot;button.new-operation&quot;, &quot;New Operation&quot;);</span>
+<span class="fc" id="L446">        images.put(&quot;button.new-package&quot;, &quot;Package&quot;);</span>
+<span class="fc" id="L447">        images.put(&quot;button.new-parameter&quot;, &quot;New Parameter&quot;);</span>
+<span class="fc" id="L448">        images.put(&quot;button.new-partition&quot;, &quot;Partition&quot;);</span>
+<span class="fc" id="L449">        images.put(&quot;button.new-permission&quot;, &quot;Permission&quot;);</span>
+<span class="fc" id="L450">        images.put(&quot;button.new-profile-package&quot;, &quot;ProfilePackage&quot;);</span>
+<span class="fc" id="L451">        images.put(&quot;button.new-raised-signal&quot;, &quot;New Raised Signal&quot;);</span>
+<span class="fc" id="L452">        images.put(&quot;button.new-reception&quot;, &quot;New Reception&quot;);</span>
+<span class="fc" id="L453">        images.put(&quot;button.new-realization&quot;, &quot;Realization&quot;);</span>
+<span class="fc" id="L454">        images.put(&quot;button.new-returnaction&quot;, &quot;ReturnAction&quot;);</span>
+<span class="fc" id="L455">        images.put(&quot;button.new-sendaction&quot;, &quot;SendAction&quot;);</span>
+<span class="fc" id="L456">        images.put(&quot;button.new-shallowhistory&quot;, &quot;ShallowHistory&quot;);</span>
+<span class="fc" id="L457">        images.put(&quot;button.new-signal&quot;, &quot;Signal&quot;);</span>
+<span class="fc" id="L458">        images.put(&quot;button.new-signalevent&quot;, &quot;SignalEvent&quot;);</span>
+<span class="fc" id="L459">        images.put(&quot;button.new-simplestate&quot;, &quot;SimpleState&quot;);</span>
+<span class="fc" id="L460">        images.put(&quot;button.new-stereotype&quot;, &quot;Stereotype&quot;);</span>
+<span class="fc" id="L461">        images.put(&quot;button.new-stubstate&quot;, &quot;StubState&quot;);</span>
+<span class="fc" id="L462">        images.put(&quot;button.new-subactivitystate&quot;, &quot;SubactivityState&quot;);</span>
+<span class="fc" id="L463">        images.put(&quot;button.new-submachinestate&quot;, &quot;SubmachineState&quot;);</span>
+<span class="fc" id="L464">        images.put(&quot;button.new-synchstate&quot;, &quot;SynchState&quot;);</span>
+<span class="fc" id="L465">        images.put(&quot;button.new-timeevent&quot;, &quot;TimeEvent&quot;);</span>
+<span class="fc" id="L466">        images.put(&quot;button.new-tagdefinition&quot;, &quot;TagDefinition&quot;);</span>
+<span class="fc" id="L467">        images.put(&quot;button.new-transition&quot;, &quot;Transition&quot;);</span>
+<span class="fc" id="L468">        images.put(&quot;button.new-uniaggregation&quot;, &quot;UniAggregation&quot;);</span>
+<span class="fc" id="L469">        images.put(&quot;button.new-uniassociation&quot;, &quot;UniAssociation&quot;);</span>
+<span class="fc" id="L470">        images.put(&quot;button.new-unicomposition&quot;, &quot;UniComposition&quot;);</span>
+<span class="fc" id="L471">        images.put(&quot;button.new-usage&quot;, &quot;Usage&quot;);</span>
+<span class="fc" id="L472">        images.put(&quot;button.new-usecase&quot;, &quot;UseCase&quot;);</span>
+    }
+
+    static {
+<span class="fc" id="L476">        images.put(&quot;button.select&quot;, &quot;Select&quot;);</span>
+<span class="fc" id="L477">        images.put(&quot;button.sequence-expand&quot;, &quot;SequenceExpand&quot;);</span>
+<span class="fc" id="L478">        images.put(&quot;button.sequence-contract&quot;, &quot;SequenceContract&quot;);</span>
+<span class="fc" id="L479">    }</span>
+
+    /**
+     * Convert the key to the image file name.
+     *
+     * @param name the new i18n key
+     * @return the file name (base part only).
+     */
+    public static String getImageBinding(String name) {
+<span class="fc" id="L488">        String found = images.get(name);</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">        if (found == null) {</span>
+<span class="fc" id="L490">            return name;</span>
+        }
+<span class="fc" id="L492">        return found;</span>
+    }
+
+    /**
+     * Find the path to a given icon and return it as a URL.
+     *
+     * @param name base name of the icon to search for
+     * @param loader class loader to use or null to use the default class loader
+     * @return the URL where the icon was found
+     */
+    public static URL lookupIconUrl(String name, ClassLoader loader) {
+<span class="nc" id="L503">        return ResourceLoader.lookupIconUrl(name, loader);</span>
+    }
+
+    /**
+     * Find the path to a given icon and return it as a URL.
+     *
+     * @param name base name of the icon to search for
+     * @return the URL where the icon was found
+     */
+    public static URL lookupIconUrl(String name) {
+<span class="nc" id="L513">        return lookupIconUrl(name, null);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

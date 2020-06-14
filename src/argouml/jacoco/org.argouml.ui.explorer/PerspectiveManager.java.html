@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PerspectiveManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">PerspectiveManager.java</span></div><h1>PerspectiveManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    penyaskito
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.model.Model;
+import org.argouml.ui.explorer.rules.GoAssocRoleToMessages;
+import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateDiagram;
+import org.argouml.ui.explorer.rules.GoBehavioralFeatureToStateMachine;
+import org.argouml.ui.explorer.rules.GoClassToAssociatedClass;
+import org.argouml.ui.explorer.rules.GoClassToNavigableClass;
+import org.argouml.ui.explorer.rules.GoClassToSummary;
+import org.argouml.ui.explorer.rules.GoClassifierToBehavioralFeature;
+import org.argouml.ui.explorer.rules.GoClassifierToCollaboration;
+import org.argouml.ui.explorer.rules.GoClassifierToInstance;
+import org.argouml.ui.explorer.rules.GoClassifierToSequenceDiagram;
+import org.argouml.ui.explorer.rules.GoClassifierToStateMachine;
+import org.argouml.ui.explorer.rules.GoClassifierToStructuralFeature;
+import org.argouml.ui.explorer.rules.GoCollaborationToDiagram;
+import org.argouml.ui.explorer.rules.GoCollaborationToInteraction;
+import org.argouml.ui.explorer.rules.GoComponentToResidentModelElement;
+import org.argouml.ui.explorer.rules.GoCompositeStateToSubvertex;
+import org.argouml.ui.explorer.rules.GoCriticsToCritic;
+import org.argouml.ui.explorer.rules.GoDiagramToEdge;
+import org.argouml.ui.explorer.rules.GoDiagramToNode;
+import org.argouml.ui.explorer.rules.GoElementToMachine;
+import org.argouml.ui.explorer.rules.GoEnumerationToLiterals;
+import org.argouml.ui.explorer.rules.GoGeneralizableElementToSpecialized;
+import org.argouml.ui.explorer.rules.GoInteractionToMessages;
+import org.argouml.ui.explorer.rules.GoLinkToStimuli;
+import org.argouml.ui.explorer.rules.GoMessageToAction;
+import org.argouml.ui.explorer.rules.GoModelElementToBehavior;
+import org.argouml.ui.explorer.rules.GoModelElementToComment;
+import org.argouml.ui.explorer.rules.GoModelElementToContainedDiagrams;
+import org.argouml.ui.explorer.rules.GoModelElementToContainedLostElements;
+import org.argouml.ui.explorer.rules.GoModelElementToContents;
+import org.argouml.ui.explorer.rules.GoModelElementToTemplateParameter;
+import org.argouml.ui.explorer.rules.GoModelToBaseElements;
+import org.argouml.ui.explorer.rules.GoModelToCollaboration;
+import org.argouml.ui.explorer.rules.GoModelToDiagrams;
+import org.argouml.ui.explorer.rules.GoModelToElements;
+import org.argouml.ui.explorer.rules.GoModelToNode;
+import org.argouml.ui.explorer.rules.GoNamespaceToClassifierAndPackage;
+import org.argouml.ui.explorer.rules.GoNamespaceToDiagram;
+import org.argouml.ui.explorer.rules.GoNamespaceToOwnedElements;
+import org.argouml.ui.explorer.rules.GoNodeToResidentComponent;
+import org.argouml.ui.explorer.rules.GoOperationToCollaboration;
+import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
+import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
+import org.argouml.ui.explorer.rules.GoPackageToClass;
+import org.argouml.ui.explorer.rules.GoPackageToElementImport;
+import org.argouml.ui.explorer.rules.GoProfileConfigurationToProfile;
+import org.argouml.ui.explorer.rules.GoProfileToCritics;
+import org.argouml.ui.explorer.rules.GoProfileToModel;
+import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
+import org.argouml.ui.explorer.rules.GoProjectToDiagram;
+import org.argouml.ui.explorer.rules.GoProjectToModel;
+import org.argouml.ui.explorer.rules.GoProjectToProfileConfiguration;
+import org.argouml.ui.explorer.rules.GoProjectToRoots;
+import org.argouml.ui.explorer.rules.GoProjectToStateMachine;
+import org.argouml.ui.explorer.rules.GoSignalToReception;
+import org.argouml.ui.explorer.rules.GoStateMachineToState;
+import org.argouml.ui.explorer.rules.GoStateMachineToTop;
+import org.argouml.ui.explorer.rules.GoStateMachineToTransition;
+import org.argouml.ui.explorer.rules.GoStateToDoActivity;
+import org.argouml.ui.explorer.rules.GoStateToDownstream;
+import org.argouml.ui.explorer.rules.GoStateToEntry;
+import org.argouml.ui.explorer.rules.GoStateToExit;
+import org.argouml.ui.explorer.rules.GoStateToIncomingTrans;
+import org.argouml.ui.explorer.rules.GoStateToInternalTrans;
+import org.argouml.ui.explorer.rules.GoStateToOutgoingTrans;
+import org.argouml.ui.explorer.rules.GoStatemachineToDiagram;
+import org.argouml.ui.explorer.rules.GoStereotypeToTagDefinition;
+import org.argouml.ui.explorer.rules.GoStimulusToAction;
+import org.argouml.ui.explorer.rules.GoSubmachineStateToStateMachine;
+import org.argouml.ui.explorer.rules.GoSummaryToAssociation;
+import org.argouml.ui.explorer.rules.GoSummaryToAttribute;
+import org.argouml.ui.explorer.rules.GoSummaryToIncomingDependency;
+import org.argouml.ui.explorer.rules.GoSummaryToInheritance;
+import org.argouml.ui.explorer.rules.GoSummaryToOperation;
+import org.argouml.ui.explorer.rules.GoSummaryToOutgoingDependency;
+import org.argouml.ui.explorer.rules.GoTransitionToGuard;
+import org.argouml.ui.explorer.rules.GoTransitionToSource;
+import org.argouml.ui.explorer.rules.GoTransitionToTarget;
+import org.argouml.ui.explorer.rules.GoTransitiontoEffect;
+import org.argouml.ui.explorer.rules.GoUseCaseToExtensionPoint;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
+
+/**
+ * Provides a model and event management for perspectives(views) of the
+ * Explorer.&lt;p&gt;
+ *
+ * This class defines the complete list of perspective rules, and knows the
+ * default perspectives and their contents.
+ *
+ * @author alexb
+ * @since 0.15.2
+ */
+public final class PerspectiveManager {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L148">    private static final Logger LOG =</span>
+<span class="nc" id="L149">        Logger.getLogger(PerspectiveManager.class.getName());</span>
+
+    private static PerspectiveManager instance;
+
+    private List&lt;PerspectiveManagerListener&gt; perspectiveListeners;
+
+    private List&lt;ExplorerPerspective&gt; perspectives;
+
+    private List&lt;PerspectiveRule&gt; rules;
+
+    /**
+     * @return the instance (singleton)
+     */
+    public static PerspectiveManager getInstance() {
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (instance == null) {</span>
+<span class="nc" id="L164">            instance = new PerspectiveManager();</span>
+        }
+<span class="nc" id="L166">        return instance;</span>
+    }
+
+    /**
+     * Creates a new instance of PerspectiveManager.
+     */
+<span class="nc" id="L172">    private PerspectiveManager() {</span>
+
+<span class="nc" id="L174">        perspectiveListeners = new ArrayList&lt;PerspectiveManagerListener&gt;();</span>
+<span class="nc" id="L175">        perspectives = new ArrayList&lt;ExplorerPerspective&gt;();</span>
+<span class="nc" id="L176">        rules = new ArrayList&lt;PerspectiveRule&gt;();</span>
+<span class="nc" id="L177">        loadRules();</span>
+<span class="nc" id="L178">    }</span>
+
+    /**
+     * @param listener
+     *            the listener to be added
+     */
+    public void addListener(PerspectiveManagerListener listener) {
+<span class="nc" id="L185">        perspectiveListeners.add(listener);</span>
+<span class="nc" id="L186">    }</span>
+
+    /**
+     * @param listener
+     *            the listener to be removed
+     */
+    public void removeListener(PerspectiveManagerListener listener) {
+<span class="nc" id="L193">        perspectiveListeners.remove(listener);</span>
+<span class="nc" id="L194">    }</span>
+
+    /**
+     * @param perspective
+     *            the perspective to be added
+     */
+    public void addPerspective(ExplorerPerspective perspective) {
+<span class="nc" id="L201">        perspectives.add(perspective);</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        for (PerspectiveManagerListener listener : perspectiveListeners) {</span>
+<span class="nc" id="L203">            listener.addPerspective(perspective);</span>
+<span class="nc" id="L204">        }</span>
+<span class="nc" id="L205">    }</span>
+
+    /**
+     * @param newPerspectives
+     *            the collection of perspectives to be added
+     */
+    public void addAllPerspectives(
+            Collection&lt;ExplorerPerspective&gt; newPerspectives) {
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        for (ExplorerPerspective newPerspective : newPerspectives) {</span>
+<span class="nc" id="L214">            addPerspective(newPerspective);</span>
+<span class="nc" id="L215">        }</span>
+<span class="nc" id="L216">    }</span>
+
+    /**
+     * @param perspective
+     *            the perspective to be removed
+     */
+    public void removePerspective(ExplorerPerspective perspective) {
+<span class="nc" id="L223">        perspectives.remove(perspective);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        for (PerspectiveManagerListener listener : perspectiveListeners) {</span>
+<span class="nc" id="L225">            listener.removePerspective(perspective);</span>
+<span class="nc" id="L226">        }</span>
+<span class="nc" id="L227">    }</span>
+
+    /**
+     * Remove all perspectives.
+     */
+    public void removeAllPerspectives() {
+
+<span class="nc" id="L234">        List&lt;ExplorerPerspective&gt; pers = new ArrayList&lt;ExplorerPerspective&gt;();</span>
+
+<span class="nc" id="L236">        pers.addAll(getPerspectives());</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        for (ExplorerPerspective perspective : pers) {</span>
+<span class="nc" id="L238">            removePerspective(perspective);</span>
+<span class="nc" id="L239">        }</span>
+<span class="nc" id="L240">    }</span>
+
+    /**
+     * @return the list of all perspectives
+     */
+    public List&lt;ExplorerPerspective&gt; getPerspectives() {
+<span class="nc" id="L246">        return perspectives;</span>
+    }
+
+    /**
+     * Tries to load user defined perspectives, if it can't it loads the
+     * (predefined) default perspectives.
+     */
+    public void loadUserPerspectives() {
+
+<span class="nc" id="L255">        String userPerspectives =</span>
+<span class="nc" id="L256">            Configuration.getString(</span>
+                    Argo.KEY_USER_EXPLORER_PERSPECTIVES, &quot;&quot;);
+
+<span class="nc" id="L259">        StringTokenizer pst = new StringTokenizer(userPerspectives, &quot;;&quot;);</span>
+
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (pst.hasMoreTokens()) {</span>
+
+            // load user perspectives
+<span class="nc bnc" id="L264" title="All 2 branches missed.">            while (pst.hasMoreTokens()) {</span>
+<span class="nc" id="L265">                String perspective = pst.nextToken();</span>
+<span class="nc" id="L266">                StringTokenizer perspectiveDetails =</span>
+                    new StringTokenizer(perspective, &quot;,&quot;);
+
+                // get the perspective name
+<span class="nc" id="L270">                String perspectiveName = perspectiveDetails.nextToken();</span>
+
+<span class="nc" id="L272">                ExplorerPerspective userDefinedPerspective =</span>
+                    new ExplorerPerspective(perspectiveName);
+
+                // make sure there are some rules...
+<span class="nc bnc" id="L276" title="All 2 branches missed.">                if (perspectiveDetails.hasMoreTokens()) {</span>
+
+                    // get the rules
+<span class="nc bnc" id="L279" title="All 2 branches missed.">                    while (perspectiveDetails.hasMoreTokens()) {</span>
+
+                        // get the rule name
+<span class="nc" id="L282">                        String ruleName = perspectiveDetails.nextToken();</span>
+
+                        // create the rule
+                        try {
+<span class="nc" id="L286">                            Class ruleClass = Class.forName(ruleName);</span>
+
+<span class="nc" id="L288">                            PerspectiveRule rule =</span>
+<span class="nc" id="L289">                                (PerspectiveRule) ruleClass.newInstance();</span>
+
+<span class="nc" id="L291">                            userDefinedPerspective.addRule(rule);</span>
+<span class="nc" id="L292">                        } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L293">                            LOG.log(Level.SEVERE,</span>
+                                    &quot;could not create rule &quot; + ruleName
+                                    + &quot; you can try to &quot;
+                                    + &quot;refresh the perspectives to the &quot;
+                                    + &quot;default settings.&quot;,
+                                    e);
+<span class="nc" id="L299">                        } catch (InstantiationException e) {</span>
+<span class="nc" id="L300">                            LOG.log(Level.SEVERE,</span>
+                                    &quot;could not create rule &quot; + ruleName
+                                    + &quot; you can try to &quot;
+                                    + &quot;refresh the perspectives to the &quot;
+                                    + &quot;default settings.&quot;,
+                                    e);
+<span class="nc" id="L306">                        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L307">                            LOG.log(Level.SEVERE,</span>
+                                    &quot;could not create rule &quot; + ruleName
+                                    + &quot; you can try to &quot;
+                                    + &quot;refresh the perspectives to the &quot;
+                                    + &quot;default settings.&quot;,
+                                    e);
+<span class="nc" id="L313">                        }</span>
+<span class="nc" id="L314">                    }</span>
+                } else {
+                    // rule name but no rules
+                    continue;
+                }
+
+                // add the perspective
+<span class="nc" id="L321">                addPerspective(userDefinedPerspective);</span>
+<span class="nc" id="L322">            }</span>
+        } else {
+            // no user defined perspectives
+<span class="nc" id="L325">            loadDefaultPerspectives();</span>
+        }
+
+        // one last check that some loaded.
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        if (getPerspectives().size() == 0) {</span>
+<span class="nc" id="L330">            loadDefaultPerspectives();</span>
+        }
+<span class="nc" id="L332">    }</span>
+
+    /**
+     * Loads a pre-defined default set of perspectives.
+     */
+    public void loadDefaultPerspectives() {
+<span class="nc" id="L338">        Collection&lt;ExplorerPerspective&gt; c = getDefaultPerspectives();</span>
+
+<span class="nc" id="L340">        addAllPerspectives(c);</span>
+<span class="nc" id="L341">    }</span>
+
+    /**
+     * @return a collection of default perspectives (i.e. the predefined ones)
+     */
+    public Collection&lt;ExplorerPerspective&gt; getDefaultPerspectives() {
+<span class="nc" id="L347">        ExplorerPerspective classPerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.class-centric&quot;);
+<span class="nc" id="L350">        classPerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L351">        classPerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L352">        classPerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L353">        classPerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L354">        classPerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L355">        classPerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L356">        classPerspective.addRule(new GoProjectToRoots());</span>
+<span class="nc" id="L357">        classPerspective.addRule(new GoNamespaceToClassifierAndPackage());</span>
+<span class="nc" id="L358">        classPerspective.addRule(new GoNamespaceToDiagram());</span>
+<span class="nc" id="L359">        classPerspective.addRule(new GoClassToSummary());</span>
+<span class="nc" id="L360">        classPerspective.addRule(new GoSummaryToAssociation());</span>
+<span class="nc" id="L361">        classPerspective.addRule(new GoSummaryToAttribute());</span>
+<span class="nc" id="L362">        classPerspective.addRule(new GoSummaryToOperation());</span>
+<span class="nc" id="L363">        classPerspective.addRule(new GoSummaryToInheritance());</span>
+<span class="nc" id="L364">        classPerspective.addRule(new GoSummaryToIncomingDependency());</span>
+<span class="nc" id="L365">        classPerspective.addRule(new GoSummaryToOutgoingDependency());</span>
+<span class="nc" id="L366">        classPerspective.addRule(new GoModelElementToTemplateParameter());</span>
+
+<span class="nc" id="L368">        ExplorerPerspective packagePerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.package-centric&quot;);
+<span class="nc" id="L371">        packagePerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L372">        packagePerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L373">        packagePerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L374">        packagePerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L375">        packagePerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L376">        packagePerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L377">        packagePerspective.addRule(new GoProjectToRoots());</span>
+<span class="nc" id="L378">        packagePerspective.addRule(new GoNamespaceToOwnedElements());</span>
+<span class="nc" id="L379">        packagePerspective.addRule(new GoPackageToElementImport());</span>
+<span class="nc" id="L380">        packagePerspective.addRule(new GoNamespaceToDiagram());</span>
+<span class="nc" id="L381">        packagePerspective.addRule(new GoUseCaseToExtensionPoint());</span>
+<span class="nc" id="L382">        packagePerspective.addRule(new GoClassifierToStructuralFeature());</span>
+<span class="nc" id="L383">        packagePerspective.addRule(new GoClassifierToBehavioralFeature());</span>
+<span class="nc" id="L384">        packagePerspective.addRule(new GoEnumerationToLiterals());</span>
+<span class="nc" id="L385">        packagePerspective.addRule(new GoCollaborationToInteraction());</span>
+<span class="nc" id="L386">        packagePerspective.addRule(new GoInteractionToMessages());</span>
+<span class="nc" id="L387">        packagePerspective.addRule(new GoMessageToAction());</span>
+<span class="nc" id="L388">        packagePerspective.addRule(new GoSignalToReception());</span>
+<span class="nc" id="L389">        packagePerspective.addRule(new GoLinkToStimuli());</span>
+<span class="nc" id="L390">        packagePerspective.addRule(new GoStimulusToAction());</span>
+<span class="nc" id="L391">        packagePerspective.addRule(new GoClassifierToCollaboration());</span>
+        // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
+<span class="nc" id="L393">        packagePerspective.addRule(new GoOperationToCollaboration());</span>
+<span class="nc" id="L394">        packagePerspective.addRule(new GoOperationToSequenceDiagram());</span>
+<span class="nc" id="L395">        packagePerspective.addRule(new GoModelElementToComment());</span>
+<span class="nc" id="L396">        packagePerspective.addRule(new GoCollaborationToDiagram());</span>
+<span class="nc" id="L397">        packagePerspective.addRule(new GoModelElementToTemplateParameter());</span>
+
+        /*
+         * Removed the next one due to issue 2165.
+         * packagePerspective.addRule(new GoOperationToCollaborationDiagram());
+         */
+<span class="nc" id="L403">        packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());</span>
+        // works for both statediagram as activitygraph
+<span class="nc" id="L405">        packagePerspective.addRule(new GoStatemachineToDiagram());</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().startsWith(&quot;1&quot;)) {</span>
+<span class="nc" id="L407">            packagePerspective.addRule(new GoStateMachineToState());</span>
+<span class="nc" id="L408">            packagePerspective.addRule(new GoCompositeStateToSubvertex());</span>
+        }
+<span class="nc" id="L410">        packagePerspective.addRule(new GoStateToInternalTrans());</span>
+<span class="nc" id="L411">        packagePerspective.addRule(new GoStateToDoActivity());</span>
+<span class="nc" id="L412">        packagePerspective.addRule(new GoStateToEntry());</span>
+<span class="nc" id="L413">        packagePerspective.addRule(new GoStateToExit());</span>
+<span class="nc" id="L414">        packagePerspective.addRule(new GoClassifierToSequenceDiagram());</span>
+<span class="nc" id="L415">        packagePerspective.addRule(new GoClassifierToInstance());</span>
+<span class="nc" id="L416">        packagePerspective.addRule(new GoStateToIncomingTrans());</span>
+<span class="nc" id="L417">        packagePerspective.addRule(new GoStateToOutgoingTrans());</span>
+<span class="nc" id="L418">        packagePerspective.addRule(new GoSubmachineStateToStateMachine());</span>
+<span class="nc" id="L419">        packagePerspective.addRule(new GoStereotypeToTagDefinition());</span>
+<span class="nc" id="L420">        packagePerspective.addRule(new GoModelElementToBehavior());</span>
+<span class="nc" id="L421">        packagePerspective.addRule(new GoModelElementToContainedLostElements());</span>
+
+<span class="nc" id="L423">        ExplorerPerspective diagramPerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.diagram-centric&quot;);
+<span class="nc" id="L426">        diagramPerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L427">        diagramPerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L428">        diagramPerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L429">        diagramPerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L430">        diagramPerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L431">        diagramPerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L432">        diagramPerspective.addRule(new GoModelToDiagrams());</span>
+<span class="nc" id="L433">        diagramPerspective.addRule(new GoDiagramToNode());</span>
+<span class="nc" id="L434">        diagramPerspective.addRule(new GoDiagramToEdge());</span>
+<span class="nc" id="L435">        diagramPerspective.addRule(new GoUseCaseToExtensionPoint());</span>
+<span class="nc" id="L436">        diagramPerspective.addRule(new GoClassifierToStructuralFeature());</span>
+<span class="nc" id="L437">        diagramPerspective.addRule(new GoClassifierToBehavioralFeature());</span>
+
+<span class="nc" id="L439">        ExplorerPerspective inheritancePerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.inheritance-centric&quot;);
+<span class="nc" id="L442">        inheritancePerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L443">        inheritancePerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L444">        classPerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L445">        classPerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L446">        classPerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L447">        classPerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L448">        inheritancePerspective.addRule(new GoModelToBaseElements());</span>
+<span class="nc" id="L449">        inheritancePerspective</span>
+<span class="nc" id="L450">                .addRule(new GoGeneralizableElementToSpecialized());</span>
+
+<span class="nc" id="L452">        ExplorerPerspective associationsPerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.class-associations&quot;);
+<span class="nc" id="L455">        associationsPerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L456">        associationsPerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L457">        associationsPerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L458">        associationsPerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L459">        associationsPerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L460">        associationsPerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L461">        associationsPerspective.addRule(new GoNamespaceToDiagram());</span>
+<span class="nc" id="L462">        associationsPerspective.addRule(new GoPackageToClass());</span>
+<span class="nc" id="L463">        associationsPerspective.addRule(new GoClassToAssociatedClass());</span>
+
+<span class="nc" id="L465">        ExplorerPerspective residencePerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.residence-centric&quot;);
+<span class="nc" id="L468">        residencePerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L469">        residencePerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L470">        residencePerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L471">        residencePerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L472">        residencePerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L473">        residencePerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L474">        residencePerspective.addRule(new GoModelToNode());</span>
+<span class="nc" id="L475">        residencePerspective.addRule(new GoNodeToResidentComponent());</span>
+<span class="nc" id="L476">        residencePerspective.addRule(new GoComponentToResidentModelElement());</span>
+
+<span class="nc" id="L478">        ExplorerPerspective statePerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.state-centric&quot;);
+<span class="nc" id="L481">        statePerspective.addRule(new GoProjectToStateMachine());</span>
+<span class="nc" id="L482">        statePerspective.addRule(new GoStatemachineToDiagram());</span>
+<span class="nc" id="L483">        statePerspective.addRule(new GoStateMachineToState());</span>
+<span class="nc" id="L484">        statePerspective.addRule(new GoCompositeStateToSubvertex());</span>
+<span class="nc" id="L485">        statePerspective.addRule(new GoStateToIncomingTrans());</span>
+<span class="nc" id="L486">        statePerspective.addRule(new GoStateToOutgoingTrans());</span>
+<span class="nc" id="L487">        statePerspective.addRule(new GoTransitiontoEffect());</span>
+<span class="nc" id="L488">        statePerspective.addRule(new GoTransitionToGuard());</span>
+
+<span class="nc" id="L490">        ExplorerPerspective transitionsPerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.transitions-centric&quot;);
+<span class="nc" id="L493">        transitionsPerspective.addRule(new GoProjectToStateMachine());</span>
+<span class="nc" id="L494">        transitionsPerspective.addRule(new GoStatemachineToDiagram());</span>
+<span class="nc" id="L495">        transitionsPerspective.addRule(new GoStateMachineToTransition());</span>
+<span class="nc" id="L496">        transitionsPerspective.addRule(new GoTransitionToSource());</span>
+<span class="nc" id="L497">        transitionsPerspective.addRule(new GoTransitionToTarget());</span>
+<span class="nc" id="L498">        transitionsPerspective.addRule(new GoTransitiontoEffect());</span>
+<span class="nc" id="L499">        transitionsPerspective.addRule(new GoTransitionToGuard());</span>
+
+<span class="nc" id="L501">        ExplorerPerspective compositionPerspective =</span>
+            new ExplorerPerspective(
+                &quot;combobox.item.composite-centric&quot;);
+<span class="nc" id="L504">        compositionPerspective.addRule(new GoProjectToModel());</span>
+<span class="nc" id="L505">        compositionPerspective.addRule(new GoProjectToProfileConfiguration());</span>
+<span class="nc" id="L506">        compositionPerspective.addRule(new GoProfileConfigurationToProfile());</span>
+<span class="nc" id="L507">        compositionPerspective.addRule(new GoProfileToModel());</span>
+<span class="nc" id="L508">        compositionPerspective.addRule(new GoProfileToCritics());</span>
+<span class="nc" id="L509">        compositionPerspective.addRule(new GoCriticsToCritic());</span>
+<span class="nc" id="L510">        compositionPerspective.addRule(new GoProjectToRoots());</span>
+<span class="nc" id="L511">        compositionPerspective.addRule(new GoModelElementToContents());</span>
+<span class="nc" id="L512">        compositionPerspective.addRule(new GoModelElementToContainedDiagrams());</span>
+
+<span class="nc" id="L514">        Collection&lt;ExplorerPerspective&gt; c =</span>
+            new ArrayList&lt;ExplorerPerspective&gt;();
+<span class="nc" id="L516">        c.add(packagePerspective);</span>
+<span class="nc" id="L517">        c.add(classPerspective);</span>
+<span class="nc" id="L518">        c.add(diagramPerspective);</span>
+<span class="nc" id="L519">        c.add(inheritancePerspective);</span>
+<span class="nc" id="L520">        c.add(associationsPerspective);</span>
+<span class="nc" id="L521">        c.add(residencePerspective);</span>
+<span class="nc" id="L522">        c.add(statePerspective);</span>
+<span class="nc" id="L523">        c.add(transitionsPerspective);</span>
+<span class="nc" id="L524">        c.add(compositionPerspective);</span>
+<span class="nc" id="L525">        return c;</span>
+    }
+
+    /**
+     * Get the predefined rules.&lt;p&gt;
+     *
+     * This is a hard coded rules library for now, since it is quite a lot of
+     * work to get all possible rule names in &quot;org.argouml.ui.explorer.rules&quot;
+     * from the classpath (which would also not allow adding rules from other
+     * locations).
+     */
+    public void loadRules() {
+
+<span class="nc" id="L538">        PerspectiveRule[] ruleNamesArray = {</span>
+            new GoAssocRoleToMessages(),
+            new GoBehavioralFeatureToStateDiagram(),
+            new GoBehavioralFeatureToStateMachine(),
+            new GoClassifierToBehavioralFeature(),
+            new GoClassifierToCollaboration(),
+            new GoClassifierToInstance(),
+            new GoClassifierToSequenceDiagram(),
+            new GoClassifierToStateMachine(),
+            new GoClassifierToStructuralFeature(),
+            new GoClassToAssociatedClass(), new GoClassToNavigableClass(),
+            new GoClassToSummary(), new GoCollaborationToDiagram(),
+            new GoCollaborationToInteraction(),
+            new GoComponentToResidentModelElement(),
+            new GoDiagramToEdge(),
+            new GoDiagramToNode(), new GoElementToMachine(),
+            new GoEnumerationToLiterals(),
+            new GoGeneralizableElementToSpecialized(),
+            new GoInteractionToMessages(), new GoLinkToStimuli(),
+            new GoMessageToAction(), new GoModelElementToComment(),
+            new GoModelElementToBehavior(),
+            new GoModelElementToTemplateParameter(),
+            new GoModelElementToContents(),
+            new GoModelElementToContainedDiagrams(),
+            new GoModelElementToContainedLostElements(),
+            new GoModelToBaseElements(), new GoModelToCollaboration(),
+            new GoModelToDiagrams(), new GoModelToElements(),
+            new GoModelToNode(), new GoNamespaceToClassifierAndPackage(),
+            new GoNamespaceToDiagram(), new GoNamespaceToOwnedElements(),
+            new GoNodeToResidentComponent(),
+            new GoOperationToCollaboration(),
+            new GoOperationToCollaborationDiagram(),
+            new GoOperationToSequenceDiagram(),
+            new GoPackageToClass(),
+            new GoPackageToElementImport(),
+            new GoProjectToCollaboration(), new GoProjectToDiagram(),
+            new GoProjectToModel(), new GoProjectToStateMachine(),
+            new GoProjectToProfileConfiguration(),
+            new GoProfileConfigurationToProfile(),
+            new GoProfileToModel(),
+            new GoProfileToCritics(),
+            new GoCriticsToCritic(),
+            new GoProjectToRoots(),
+            new GoSignalToReception(), new GoStateMachineToTop(),
+            new GoStatemachineToDiagram(),
+            new GoStateMachineToTransition(), new GoStateToDoActivity(),
+            new GoStateToDownstream(), new GoStateToEntry(),
+            new GoStateToExit(), new GoStateToIncomingTrans(),
+            new GoStateToOutgoingTrans(),
+            new GoStereotypeToTagDefinition(),
+            new GoStimulusToAction(), new GoSummaryToAssociation(),
+            new GoSummaryToAttribute(),
+            new GoSummaryToIncomingDependency(),
+            new GoSummaryToInheritance(), new GoSummaryToOperation(),
+            new GoSummaryToOutgoingDependency(),
+            new GoTransitionToSource(), new GoTransitionToTarget(),
+            new GoTransitiontoEffect(), new GoTransitionToGuard(),
+            new GoUseCaseToExtensionPoint(),
+            new GoSubmachineStateToStateMachine(),
+            new GoStateToInternalTrans()
+        };
+
+        // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
+<span class="nc" id="L601">        PerspectiveRule[] ruleNamesArray14 = {</span>
+            new GoCompositeStateToSubvertex(),
+            new GoStateMachineToState(),
+        };
+
+<span class="nc" id="L606">        PerspectiveRule[] ruleNamesArray2 = {</span>
+            // Enter here go rules only relevant for UML 2
+            // empty for now
+        };
+
+<span class="nc bnc" id="L611" title="All 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="nc" id="L612">            ruleNamesArray = appendArrays(ruleNamesArray, ruleNamesArray14);</span>
+        } else {
+<span class="nc" id="L614">            ruleNamesArray = appendArrays(ruleNamesArray, ruleNamesArray2);</span>
+        }
+
+<span class="nc" id="L617">        rules = Arrays.asList(ruleNamesArray);</span>
+<span class="nc" id="L618">    }</span>
+
+    private &lt;T&gt; T[] appendArrays(T[] first, T[] second) {
+<span class="nc bnc" id="L621" title="All 2 branches missed.">        if (first.length == 0) {</span>
+<span class="nc" id="L622">            return second;</span>
+        }
+<span class="nc bnc" id="L624" title="All 2 branches missed.">        if (second.length == 0) {</span>
+<span class="nc" id="L625">            return first;</span>
+        }
+<span class="nc" id="L627">        T[] result = Arrays.copyOf(first, first.length + second.length);</span>
+<span class="nc" id="L628">        System.arraycopy(second, 0, result, first.length, second.length);</span>
+<span class="nc" id="L629">        return result;</span>
+    }
+
+    /**
+     * Add a rule to the list of rules.
+     *
+     * @param rule
+     *            the PerspectiveRule to be added
+     */
+    public void addRule(PerspectiveRule rule) {
+<span class="nc" id="L639">        rules.add(rule);</span>
+<span class="nc" id="L640">    }</span>
+
+    /**
+     * Remove a rule from the list.
+     *
+     * @param rule
+     *            the PerspectiveRule to be removed
+     */
+    public void removeRule(PerspectiveRule rule) {
+<span class="nc" id="L649">        rules.remove(rule);</span>
+<span class="nc" id="L650">    }</span>
+
+    /**
+     * @return the collection of rules
+     */
+    public Collection&lt;PerspectiveRule&gt; getRules() {
+<span class="nc" id="L656">        return rules;</span>
+    }
+
+    /**
+     * Save the user perspectives in the ArgoUML configuration.
+     */
+    public void saveUserPerspectives() {
+<span class="nc" id="L663">        Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, this</span>
+<span class="nc" id="L664">                .toString());</span>
+<span class="nc" id="L665">    }</span>
+
+    /**
+     * @return string representation of the perspectives in the same format as
+     *         saved in the user properties.
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+
+<span class="nc" id="L675">        StringBuffer p = new StringBuffer();</span>
+
+<span class="nc bnc" id="L677" title="All 2 branches missed.">        for (ExplorerPerspective perspective : getPerspectives()) {</span>
+<span class="nc" id="L678">            String name = perspective.toString();</span>
+<span class="nc" id="L679">            p.append(name).append(&quot;,&quot;);</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">            for (PerspectiveRule rule : perspective.getList()) {</span>
+<span class="nc" id="L681">                p.append(rule.getClass().getName()).append(&quot;,&quot;);</span>
+<span class="nc" id="L682">            }</span>
+<span class="nc" id="L683">            p.deleteCharAt(p.length() - 1);</span>
+<span class="nc" id="L684">            p.append(&quot;;&quot;);</span>
+<span class="nc" id="L685">        }</span>
+
+<span class="nc" id="L687">        p.deleteCharAt(p.length() - 1);</span>
+<span class="nc" id="L688">        return p.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

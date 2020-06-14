@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoJMenu.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ArgoJMenu.java</span></div><h1>ArgoJMenu.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SwingConstants;
+
+import org.argouml.i18n.Translator;
+
+/**
+ * An extension of the standard swing JMenu class which provides
+ * additional Argo support.
+ *
+ */
+public class ArgoJMenu extends JMenu {
+
+    /**
+     * Constructs a new ArgoJMenu with the key to localize.
+     *
+     * @param key The key to localize.
+     */
+    public ArgoJMenu(String key) {
+<span class="nc" id="L64">        super();</span>
+<span class="nc" id="L65">        localize(this, key);</span>
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Sets a menu item's text and mnemonic values using the specified resource
+     * key.
+     *
+     * @param   menuItem    the menu or menu item to localize
+     * @param   key         the resource string to find
+     */
+    public static final void localize(JMenuItem menuItem, String key) {
+<span class="nc" id="L76">        menuItem.setText(Translator.localize(key));</span>
+
+<span class="nc" id="L78">        String localMnemonic = Translator.localize(key + &quot;.mnemonic&quot;);</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">        if (localMnemonic != null &amp;&amp; localMnemonic.length() == 1) {</span>
+<span class="nc" id="L80">            menuItem.setMnemonic(localMnemonic.charAt(0));</span>
+        }
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * Creates a new checkbox menu item attached to the specified
+     * action object and appends it to the end of this menu.
+     *
+     * @param     a     the Action for the checkbox menu item to be added
+     * @return          the new checkbox menu item
+     */
+    public JCheckBoxMenuItem addCheckItem(Action a) {
+<span class="nc" id="L92">	String name = (String) a.getValue(Action.NAME);</span>
+<span class="nc" id="L93">	Icon icon = (Icon) a.getValue(Action.SMALL_ICON);</span>
+	// Block added by BobTarling 8-Jan-2002 Set the checkbox on or
+	// off according to the SELECTED value of the action.  If no
+	// SELECTED value is found then this defaults to true in order
+	// to remain compatible with previous versions of this code.
+<span class="nc" id="L98">	Boolean selected = (Boolean) a.getValue(&quot;SELECTED&quot;);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">	JCheckBoxMenuItem mi =</span>
+	    new JCheckBoxMenuItem(name, icon,
+				  (selected == null
+<span class="nc bnc" id="L102" title="All 2 branches missed.">				   || selected.booleanValue()));</span>
+	// End of block
+<span class="nc" id="L104">	mi.setHorizontalTextPosition(SwingConstants.RIGHT);</span>
+<span class="nc" id="L105">	mi.setVerticalTextPosition(SwingConstants.CENTER);</span>
+<span class="nc" id="L106">	mi.setEnabled(a.isEnabled());</span>
+<span class="nc" id="L107">	mi.addActionListener(a);</span>
+<span class="nc" id="L108">	add(mi);</span>
+<span class="nc" id="L109">	a.addPropertyChangeListener(createActionChangeListener(mi));</span>
+<span class="nc" id="L110">	return mi;</span>
+    }
+
+    /**
+     * Creates a new radiobutton menu item attached to the specified
+     * action object and appends it to the end of this menu.
+     *
+     * @param     a     the Action for the radiobutton menu item to be added
+     * @return          the new radiobutton menu item
+     */
+    public JRadioButtonMenuItem addRadioItem(Action a) {
+<span class="nc" id="L121">        String name = (String) a.getValue(Action.NAME);</span>
+<span class="nc" id="L122">        Icon icon = (Icon) a.getValue(Action.SMALL_ICON);</span>
+        // Set the checkbox on or
+        // off according to the SELECTED value of the action.  If no
+        // SELECTED value is found then this defaults to true.
+<span class="nc" id="L126">        Boolean selected = (Boolean) a.getValue(&quot;SELECTED&quot;);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        JRadioButtonMenuItem mi =</span>
+            new JRadioButtonMenuItem(name, icon,
+                                  (selected == null
+<span class="nc bnc" id="L130" title="All 2 branches missed.">                                   || selected.booleanValue()));</span>
+<span class="nc" id="L131">        mi.setHorizontalTextPosition(SwingConstants.RIGHT);</span>
+<span class="nc" id="L132">        mi.setVerticalTextPosition(SwingConstants.CENTER);</span>
+<span class="nc" id="L133">        mi.setEnabled(a.isEnabled());</span>
+<span class="nc" id="L134">        mi.addActionListener(a);</span>
+<span class="nc" id="L135">        add(mi);</span>
+<span class="nc" id="L136">        a.addPropertyChangeListener(createActionChangeListener(mi));</span>
+<span class="nc" id="L137">        return mi;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8318663502924796474L;
+} /* end class ArgoJMenu */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExtensionPointNotationUml.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers.uml</a> &gt; <span class="el_source">ExtensionPointNotationUml.java</span></div><h1>ExtensionPointNotationUml.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.providers.uml;
+
+import java.util.StringTokenizer;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.providers.ExtensionPointNotation;
+
+/**
+ * The notation for an extension point for UML.
+ * 
+ * @author michiel
+ */
+public class ExtensionPointNotationUml extends ExtensionPointNotation {
+
+    /**
+     * The constructor.
+     *
+     * @param ep the represented Extension Point
+     */
+    public ExtensionPointNotationUml(Object ep) {
+<span class="fc" id="L61">        super(ep);</span>
+<span class="fc" id="L62">    }</span>
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
+     */
+    public void parse(Object modelElement, String text) {
+        /* TODO: This try-catch will be needed 
+         * once the code below is improved. */
+//        try {
+<span class="nc" id="L71">        parseExtensionPointFig(modelElement, text);</span>
+//        } catch (ParseException pe) {
+//            String msg = &quot;statusmsg.bar.error.parsing.extensionpoint&quot;;
+//            Object[] args = {
+//                pe.getLocalizedMessage(),
+//                Integer.valueOf(pe.getErrorOffset()),
+//            };
+//            ProjectBrowser.getInstance().getStatusBar().showStatus(
+//                    Translator.messageFormat(msg, args));
+//        }
+<span class="nc" id="L81">    }</span>
+    /**
+     * Parse an extension point.&lt;p&gt;
+     *
+     * The syntax is &quot;name: location&quot;, &quot;name:&quot;, &quot;location&quot; or &quot;&quot;. The fields of
+     * the extension point are updated appropriately.
+     *
+     * @param ep      The extension point concerned
+     * @param text    The text to parse
+     */
+    public void parseExtensionPointFig(Object ep, String text) {
+        // We can do nothing if we don't have both the use case and extension
+        // point.
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (ep == null) {</span>
+<span class="nc" id="L95">            return;</span>
+        }
+<span class="nc" id="L97">        Object useCase = Model.getFacade().getUseCase(ep);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (useCase == null) {</span>
+<span class="nc" id="L99">            return;</span>
+        }
+
+        // Parse the string to creat a new extension point.
+<span class="nc" id="L103">        Object newEp = parseExtensionPoint(text);</span>
+
+        // If we got back null we interpret this as meaning delete the
+        // reference to the extension point from the use case, otherwise we set
+        // the fields of the extension point to the values in newEp.
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (newEp == null) {</span>
+<span class="nc" id="L109">            ProjectManager.getManager().getCurrentProject().moveToTrash(ep);</span>
+        } else {
+<span class="nc" id="L111">            Model.getCoreHelper().setName(ep, Model.getFacade().getName(newEp));</span>
+<span class="nc" id="L112">            Model.getUseCasesHelper().setLocation(ep,</span>
+<span class="nc" id="L113">                    Model.getFacade().getLocation(newEp));</span>
+        }
+        /* TODO: This needs more work! 
+         * We simply throw the new extension point away? */
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * Parse a string representing an extension point and return a new extension
+     * point.&lt;p&gt;
+     *
+     * The syntax is &quot;name: location&quot;, &quot;name:&quot;, &quot;location&quot; or &quot;&quot;.
+     * &lt;em&gt;Note:&lt;/em&gt; If either field is blank, it will be set to null
+     * in the extension point.
+     *
+     * We break up the string into tokens at the &quot;:&quot;. We must keep the &quot;:&quot; as a
+     * token, so we can distinguish between &quot;name:&quot; and &quot;location&quot;. The number
+     * of tokens will distinguish our four cases.&lt;p&gt;
+     *
+     * @param text The string to parse
+     *
+     * @return A new extension point, with fields set appropriately, or
+     *         &lt;code&gt;null&lt;/code&gt; if we are given &lt;code&gt;null&lt;/code&gt; or a
+     *         blank string. &lt;em&gt;Note&lt;/em&gt;. The string &quot;:&quot; can be used to set
+     *         both name and location to null.
+     */
+    private Object parseExtensionPoint(String text) {
+
+        // If we are given the null string, return immediately, 
+        // so that the extensionpoint is removed.
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (text == null) {</span>
+<span class="nc" id="L143">            return null;</span>
+        }
+
+        // Build a new extension point
+
+        // This method has insufficient information to call buildExtensionPoint.
+        // Thus we'll need to create one, and pray that whomever called us knows
+        // what kind of mess they got.
+        Object ep =
+<span class="nc" id="L152">            Model.getUseCasesFactory().createExtensionPoint();</span>
+
+<span class="nc" id="L154">        StringTokenizer st = new StringTokenizer(text.trim(), &quot;:&quot;, true);</span>
+<span class="nc" id="L155">        int numTokens = st.countTokens();</span>
+
+        String epLocation;
+        String epName;
+
+<span class="nc bnc" id="L160" title="All 5 branches missed.">        switch (numTokens) {</span>
+
+        case 0:
+
+            // The empty string. Return null
+<span class="nc" id="L165">            ep = null;</span>
+
+<span class="nc" id="L167">            break;</span>
+
+        case 1:
+
+            // A string of the form &quot;location&quot;. This will be confused by the
+            // string &quot;:&quot;, so we pick this out as an instruction to clear both
+            // name and location.
+<span class="nc" id="L174">            epLocation = st.nextToken().trim();</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">            if (epLocation.equals(&quot;:&quot;)) {</span>
+<span class="nc" id="L177">                Model.getCoreHelper().setName(ep, null);</span>
+<span class="nc" id="L178">                Model.getUseCasesHelper().setLocation(ep, null);</span>
+            } else {
+<span class="nc" id="L180">                Model.getCoreHelper().setName(ep, null);</span>
+<span class="nc" id="L181">                Model.getUseCasesHelper().setLocation(ep, epLocation);</span>
+            }
+
+<span class="nc" id="L184">            break;</span>
+
+        case 2:
+
+            // A string of the form &quot;name:&quot;
+<span class="nc" id="L189">            epName = st.nextToken().trim();</span>
+
+<span class="nc" id="L191">            Model.getCoreHelper().setName(ep, epName);</span>
+<span class="nc" id="L192">            Model.getUseCasesHelper().setLocation(ep, null);</span>
+
+<span class="nc" id="L194">            break;</span>
+
+        case 3:
+
+            // A string of the form &quot;name:location&quot;. Discard the middle token
+            // (&quot;:&quot;)
+<span class="nc" id="L200">            epName = st.nextToken().trim();</span>
+<span class="nc" id="L201">            st.nextToken(); // Read past the colon.</span>
+<span class="nc" id="L202">            epLocation = st.nextToken().trim();</span>
+
+<span class="nc" id="L204">            Model.getCoreHelper().setName(ep, epName);</span>
+<span class="nc" id="L205">            Model.getUseCasesHelper().setLocation(ep, epLocation);</span>
+
+            break;
+        }
+
+<span class="nc" id="L210">        return ep;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#getParsingHelp()
+     */
+    public String getParsingHelp() {
+<span class="nc" id="L217">        return &quot;parsing.help.fig-extensionpoint&quot;;</span>
+    }
+
+    private String toString(final Object modelElement) {
+
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L223">            return &quot;&quot;;</span>
+        }
+
+        // The string to build
+<span class="fc" id="L227">        String s = &quot;&quot;;</span>
+
+        // Get the fields we want
+<span class="fc" id="L230">        String epName = Model.getFacade().getName(modelElement);</span>
+<span class="fc" id="L231">        String epLocation = Model.getFacade().getLocation(modelElement);</span>
+
+        // Put in the name field if it's there
+<span class="pc bpc" id="L234" title="2 of 4 branches missed.">        if ((epName != null) &amp;&amp; (epName.length() &gt; 0)) {</span>
+<span class="fc" id="L235">            s += epName + &quot;: &quot;;</span>
+        }
+
+        // Put in the location field if it's there
+<span class="pc bpc" id="L239" title="2 of 4 branches missed.">        if ((epLocation != null) &amp;&amp; (epLocation.length() &gt; 0)) {</span>
+<span class="fc" id="L240">            s += epLocation;</span>
+        }
+
+<span class="fc" id="L243">        return s;</span>
+    }
+
+    /**
+     * Generate the text for an extension point.&lt;p&gt;
+     *
+     * The representation is &quot;name: location&quot;. 
+     * The &quot;name: &quot; is omitted if there
+     * is no name given.
+     */
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+<span class="fc" id="L255">        return toString(modelElement);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

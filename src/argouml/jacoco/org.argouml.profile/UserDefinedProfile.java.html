@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDefinedProfile.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile</a> &gt; <span class="el_source">UserDefinedProfile.java</span></div><h1>UserDefinedProfile.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2007-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234 - Initial implementation
+ *    thn
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile;
+
+import java.awt.Image;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.ImageIcon;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.CrOCL;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * Represents a profile defined by the user.
+ *
+ * @author maurelio1234
+ */
+public class UserDefinedProfile extends Profile {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L83">    private static final Logger LOG =</span>
+<span class="fc" id="L84">        Logger.getLogger(UserDefinedProfile.class.getName());</span>
+
+    private String displayName;
+
+    private File modelFile;
+
+<span class="pc" id="L90">    private Collection profilePackages = null;</span>
+<span class="pc" id="L91">    private Object packageLock = new Object();</span>
+
+<span class="pc" id="L93">    private UserDefinedFigNodeStrategy figNodeStrategy</span>
+        = new UserDefinedFigNodeStrategy();
+
+    private ProfileReference reference;
+
+    private ProfileManager profileManager;
+
+<span class="pc" id="L100">    private boolean criticsLoaded = false;</span>
+
+<span class="fc" id="L102">    private class UserDefinedFigNodeStrategy implements FigNodeStrategy {</span>
+
+<span class="fc" id="L104">        private Map&lt;String, Image&gt; images = new HashMap&lt;String, Image&gt;();</span>
+
+        public Image getIconForStereotype(Object stereotype) {
+<span class="nc" id="L107">            return images.get(Model.getFacade().getName(stereotype));</span>
+        }
+
+        /**
+         * Adds a new descriptor to this strategy
+         *
+         * @param fnd
+         */
+        public void addDesrciptor(FigNodeDescriptor fnd) {
+<span class="nc" id="L116">            images.put(fnd.stereotype, fnd.img);</span>
+<span class="nc" id="L117">        }</span>
+    }
+
+<span class="nc" id="L120">    private class FigNodeDescriptor {</span>
+        private String stereotype;
+
+        private Image img;
+
+        private String src;
+
+        private int length;
+
+        /**
+         * @return if this descriptor is valid
+         */
+        public boolean isValid() {
+<span class="nc bnc" id="L133" title="All 6 branches missed.">            return stereotype != null &amp;&amp; src != null &amp;&amp; length &gt; 0;</span>
+        }
+    }
+
+    /**
+     * The default constructor for this class
+     *
+     * @param file the file from where the model should be read
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
+     * @throws ProfileException if the profile could not be loaded
+     */
+    public UserDefinedProfile(File file, ProfileManager manager)
+<span class="fc" id="L146">        throws ProfileException {</span>
+
+<span class="fc" id="L148">        LOG.log(Level.INFO, &quot;load {0}&quot;, file);</span>
+
+<span class="fc" id="L150">        displayName = file.getName();</span>
+<span class="fc" id="L151">        modelFile = file;</span>
+        try {
+<span class="fc" id="L153">            reference = new UserProfileReference(file.getPath());</span>
+<span class="nc" id="L154">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L155">            throw new ProfileException(</span>
+                    &quot;Failed to create the ProfileReference.&quot;, e);
+<span class="fc" id="L157">        }</span>
+<span class="fc" id="L158">        profileManager = manager;</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * The default constructor for this class
+     *
+     * @param file the file from where the model should be read
+     * @throws ProfileException if the profile could not be loaded
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(File, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(File file) throws ProfileException {
+<span class="nc" id="L172">        this(file, getSomeProfileManager());</span>
+<span class="nc" id="L173">    }</span>
+
+    private static class NullProfileManager implements ProfileManager {
+
+        public void addSearchPathDirectory(String path) {
+<span class="nc" id="L178">        }</span>
+
+        public void addToDefaultProfiles(Profile profile) {
+<span class="nc" id="L181">        }</span>
+
+        public void applyConfiguration(ProfileConfiguration pc) {
+<span class="nc" id="L184">        }</span>
+
+        public List&lt;Profile&gt; getDefaultProfiles() {
+<span class="nc" id="L187">            return new ArrayList&lt;Profile&gt;();</span>
+        }
+
+        public Profile getProfileForClass(String className) {
+<span class="nc" id="L191">            return null;</span>
+        }
+
+        public List&lt;Profile&gt; getRegisteredProfiles() {
+<span class="nc" id="L195">            return new ArrayList&lt;Profile&gt;();</span>
+        }
+
+        public List&lt;String&gt; getSearchPathDirectories() {
+<span class="nc" id="L199">            return new ArrayList&lt;String&gt;();</span>
+        }
+
+        public Profile getUMLProfile() {
+<span class="nc" id="L203">            return null;</span>
+        }
+
+        public Profile lookForRegisteredProfile(String profile) {
+<span class="nc" id="L207">            return null;</span>
+        }
+
+        public void refreshRegisteredProfiles() {
+<span class="nc" id="L211">        }</span>
+
+        public void registerProfile(Profile profile) {
+<span class="nc" id="L214">        }</span>
+
+        public void removeFromDefaultProfiles(Profile profile) {
+<span class="nc" id="L217">        }</span>
+
+        public void removeProfile(Profile profile) {
+<span class="nc" id="L220">        }</span>
+
+        public void removeSearchPathDirectory(String path) {
+<span class="nc" id="L223">        }</span>
+
+    }
+
+    /**
+     * A constructor that reads a file from an URL
+     *
+     * @param url the URL
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
+     * @throws ProfileException if the profile can't be read or is not valid
+     */
+    public UserDefinedProfile(URL url, ProfileManager manager)
+<span class="nc" id="L236">        throws ProfileException {</span>
+
+<span class="nc" id="L238">        LOG.log(Level.INFO, &quot;load {0}&quot;, url);</span>
+
+<span class="nc" id="L240">        reference = new UserProfileReference(url.getPath(), url);</span>
+<span class="nc" id="L241">        profileManager = manager;</span>
+<span class="nc" id="L242">    }</span>
+
+    /**
+     * A constructor that reads a file from an URL
+     *
+     * @param url the URL
+     * @throws ProfileException if the profile could not be loaded
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(URL, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(URL url) throws ProfileException {
+<span class="nc" id="L255">        this(url, getSomeProfileManager());</span>
+<span class="nc" id="L256">    }</span>
+
+    /**
+     * A constructor that reads a file from an URL associated with some
+     * profiles.  Designed for use with URLs which represent entries in a
+     * JAR or Zip file.
+     *
+     * @param dn the display name of the profile
+     * @param url the URL of the profile mode
+     * @param critics the Critics defined by this profile
+     * @param dependencies the dependencies of this profile
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
+     * @throws ProfileException if the model cannot be loaded
+     */
+    public UserDefinedProfile(String dn, URL url, Set&lt;Critic&gt; critics,
+            Set&lt;String&gt; dependencies, ProfileManager manager)
+<span class="fc" id="L273">        throws ProfileException {</span>
+
+<span class="fc" id="L275">        LOG.log(Level.INFO, &quot;load {0}&quot;, url);</span>
+
+<span class="fc" id="L277">        this.displayName = dn;</span>
+<span class="fc" id="L278">        reference = new UserProfileReference(url.getPath(), url);</span>
+
+<span class="fc" id="L280">        this.setCritics(critics);</span>
+
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        for (String profileID : dependencies) {</span>
+<span class="fc" id="L283">            addProfileDependency(profileID);</span>
+<span class="fc" id="L284">        }</span>
+<span class="fc" id="L285">        profileManager = manager;</span>
+<span class="fc" id="L286">    }</span>
+
+    /**
+     * A constructor that reads a file from an URL associated with some profiles
+     *
+     * @param dn the display name of the profile
+     * @param url the URL of the profile mode
+     * @param critics the Critics defined by this profile
+     * @param dependencies the dependencies of this profile
+     * @throws ProfileException if the model cannot be loaded
+     *
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(
+     * String, URL, Set, Set, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(String dn, URL url, Set&lt;Critic&gt; critics,
+            Set&lt;String&gt; dependencies) throws ProfileException {
+<span class="nc" id="L305">        this(dn, url, critics, dependencies, getSomeProfileManager());</span>
+<span class="nc" id="L306">    }</span>
+
+    private static ProfileManager getSomeProfileManager() {
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (ProfileFacade.isInitiated()) {</span>
+<span class="nc" id="L310">            return ProfileFacade.getManager();</span>
+        }
+<span class="nc" id="L312">        return new NullProfileManager();</span>
+    }
+
+    /**
+     * Reads the informations defined as TaggedValues
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
+     */
+    private void loadModel() {
+<span class="fc" id="L321">        synchronized (packageLock) {</span>
+<span class="fc bfc" id="L322" title="All 2 branches covered.">            if (profilePackages == null) {</span>
+                try {
+<span class="fc bfc" id="L324" title="All 2 branches covered.">                    if (modelFile != null) {</span>
+<span class="fc" id="L325">                        profilePackages = new FileModelLoader()</span>
+<span class="fc" id="L326">                                .loadModel(reference);</span>
+                    } else {
+<span class="fc" id="L328">                        profilePackages = new URLModelLoader()</span>
+<span class="fc" id="L329">                                .loadModel(reference);</span>
+                    }
+<span class="fc" id="L331">                } catch (ProfileException e1) {</span>
+<span class="fc" id="L332">                    LOG.log(Level.SEVERE,</span>
+<span class="fc" id="L333">                            &quot;Exception loading profile &quot;+ reference.getPath(),</span>
+                            e1);
+<span class="fc" id="L335">                    profilePackages = Collections.emptySet();</span>
+<span class="fc" id="L336">                    return;</span>
+<span class="fc" id="L337">                }</span>
+            }
+
+<span class="fc" id="L340">            Collection packagesInProfile = filterPackages(profilePackages);</span>
+
+<span class="fc bfc" id="L342" title="All 2 branches covered.">            for (Object obj : packagesInProfile) {</span>
+                // if there is only one package in the model,
+                // we should suppose it's the profile model,
+                // if there is more than one, we take the ones
+                // marked as &lt;&lt;profile&gt;&gt;
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">                if (Model.getFacade().isAModelElement(obj)</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">                        &amp;&amp; (Model.getFacade().isAProfile(obj)</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                                || (packagesInProfile.size() == 1))) {</span>
+
+                    // load profile name
+<span class="fc" id="L352">                    String name = Model.getFacade().getName(obj);</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                    if (name != null) {</span>
+<span class="fc" id="L354">                        displayName = name;</span>
+                    } else {
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">                        if (displayName == null) {</span>
+<span class="nc" id="L357">                            displayName = Translator</span>
+<span class="nc" id="L358">                                    .localize(&quot;misc.profile.unnamed&quot;);</span>
+                        }
+                    }
+<span class="fc" id="L361">                    LOG.log(Level.INFO, &quot;profile {0}&quot;, displayName);</span>
+
+<span class="fc" id="L363">                    loadDependentProfiles(obj);</span>
+                }
+<span class="fc" id="L365">            }</span>
+
+<span class="fc" id="L367">            loadFigNodes(packagesInProfile);</span>
+<span class="fc" id="L368">        }</span>
+<span class="fc" id="L369">    }</span>
+
+
+    private void loadDependentProfiles(Object obj) {
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L374">            loadDependentProfilesUml1(obj);</span>
+        }
+        // TODO: profile dependencies for UML2
+<span class="fc" id="L377">    }</span>
+
+
+    /**
+     * For ArgoUML UML 1.4 profiles dependencies are encoded as a list of
+     * profile names in the TaggedValue named &quot;Dependency&quot; on the profile pkg.
+     *
+     * @param pkg profile package
+     */
+    private void loadDependentProfilesUml1(Object pkg) {
+        // load profile dependencies
+<span class="fc" id="L388">        String dependencyListStr = Model.getFacade().getTaggedValueValue(pkg,</span>
+                &quot;Dependency&quot;);
+<span class="fc" id="L390">        StringTokenizer st = new StringTokenizer(dependencyListStr, &quot; ,;:&quot;);</span>
+
+<span class="fc" id="L392">        String dependencyName = null;</span>
+
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L395">            dependencyName = st.nextToken();</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">            if (dependencyName != null) {</span>
+<span class="nc" id="L397">                LOG.log(Level.FINE, &quot;Adding dependency {0}&quot;, dependencyName);</span>
+<span class="nc" id="L398">                Profile profile = profileManager</span>
+<span class="nc" id="L399">                        .lookForRegisteredProfile(dependencyName);</span>
+<span class="nc bnc" id="L400" title="All 2 branches missed.">                if (profile != null) {</span>
+<span class="nc" id="L401">                    addProfileDependency(profile);</span>
+                } else {
+<span class="nc" id="L403">                    LOG.log(Level.WARNING, &quot;The profile \&quot;&quot; + displayName</span>
+                            + &quot;\&quot; has a dependency named \&quot;&quot; + dependencyName
+                            + &quot;\&quot; which isn't solvable.&quot;);
+                }
+<span class="nc" id="L407">            }</span>
+        }
+<span class="fc" id="L409">    }</span>
+
+
+    /**
+     * Load FigNodes from profile packages.
+     *
+     * @param packagesInProfile
+     */
+    private void loadFigNodes(Collection packagesInProfile) {
+<span class="fc" id="L418">        Collection allStereotypes = Model.getExtensionMechanismsHelper()</span>
+<span class="fc" id="L419">                .getStereotypes(packagesInProfile);</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">        for (Object stereotype : allStereotypes) {</span>
+<span class="fc" id="L421">            Collection tags = Model.getFacade().getTaggedValuesCollection(stereotype);</span>
+
+<span class="pc bpc" id="L423" title="1 of 2 branches missed.">            for (Object tag : tags) {</span>
+<span class="nc" id="L424">                String tagName = Model.getFacade().getTag(tag);</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                if (tagName == null) {</span>
+<span class="nc" id="L426">                    LOG.log(Level.FINE,</span>
+                            &quot;profile package with stereotype {0} contains &quot;
+                            + &quot;a null tag definition&quot;,
+<span class="nc" id="L429">                            Model.getFacade().getName(stereotype));</span>
+<span class="nc bnc" id="L430" title="All 2 branches missed.">                } else if (tagName.toLowerCase().equals(&quot;figure&quot;)) {</span>
+<span class="nc" id="L431">                    LOG.log(Level.FINE, &quot;AddFigNode {0}&quot;,</span>
+<span class="nc" id="L432">                            Model.getFacade().getName(stereotype));</span>
+
+<span class="nc" id="L434">                    String value = Model.getFacade().getValueOfTag(tag);</span>
+<span class="nc" id="L435">                    File f = new File(value);</span>
+<span class="nc" id="L436">                    FigNodeDescriptor fnd = null;</span>
+                    try {
+<span class="nc" id="L438">                        fnd = loadImage(Model.getFacade().getName(stereotype)</span>
+<span class="nc" id="L439">                                .toString(), f);</span>
+<span class="nc" id="L440">                        figNodeStrategy.addDesrciptor(fnd);</span>
+<span class="nc" id="L441">                    } catch (IOException e) {</span>
+<span class="nc" id="L442">                        LOG.log(Level.SEVERE, &quot;Error loading FigNode&quot;, e);</span>
+<span class="nc" id="L443">                    }</span>
+                }
+<span class="nc" id="L445">            }</span>
+<span class="fc" id="L446">        }</span>
+<span class="fc" id="L447">    }</span>
+
+    @Override
+    public Set&lt;Critic&gt; getCritics() {
+<span class="fc bfc" id="L451" title="All 2 branches covered.">        if (!criticsLoaded ) {</span>
+<span class="fc" id="L452">            Set&lt;Critic&gt; myCritics = super.getCritics();</span>
+<span class="fc" id="L453">            myCritics.addAll(getAllCritiquesInModel());</span>
+<span class="fc" id="L454">            this.setCritics(myCritics);</span>
+<span class="fc" id="L455">            criticsLoaded = true;</span>
+        }
+<span class="fc" id="L457">        return super.getCritics();</span>
+    }
+
+    /**
+     * @return the packages in the &lt;code&gt;profilePackages&lt;/code&gt;
+     */
+    private Collection filterPackages(Collection packages) {
+<span class="fc" id="L464">        Collection ret = new ArrayList();</span>
+
+        // TODO: All this profile loading/handling needs to
+        // move someplace in model subsystem probably
+
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        for (Object object : packages) {</span>
+<span class="pc bpc" id="L470" title="1 of 2 branches missed.">            if (Model.getFacade().isAPackage(object)) {</span>
+<span class="fc" id="L471">                ret.add(object);</span>
+            }
+<span class="fc" id="L473">        }</span>
+<span class="fc" id="L474">        return ret;</span>
+    }
+
+    private CrOCL generateCriticFromComment(Object critique) {
+<span class="nc" id="L478">        String ocl = &quot;&quot; + Model.getFacade().getBody(critique);</span>
+<span class="nc" id="L479">        String headline = null;</span>
+<span class="nc" id="L480">        String description = null;</span>
+<span class="nc" id="L481">        int priority = ToDoItem.HIGH_PRIORITY;</span>
+<span class="nc" id="L482">        List&lt;Decision&gt; supportedDecisions = new ArrayList&lt;Decision&gt;();</span>
+<span class="nc" id="L483">        List&lt;String&gt; knowledgeTypes = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L484">        String moreInfoURL = null;</span>
+
+<span class="nc" id="L486">        Collection tags = Model.getFacade().getTaggedValuesCollection(critique);</span>
+<span class="nc" id="L487">        boolean i18nFound = false;</span>
+
+<span class="nc bnc" id="L489" title="All 2 branches missed.">        for (Object tag : tags) {</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">            if (Model.getFacade().getTag(tag).toLowerCase().equals(&quot;i18n&quot;)) {</span>
+<span class="nc" id="L491">                i18nFound = true;</span>
+<span class="nc" id="L492">                String i18nSource = Model.getFacade().getValueOfTag(tag);</span>
+<span class="nc" id="L493">                headline = Translator.localize(i18nSource + &quot;-head&quot;);</span>
+<span class="nc" id="L494">                description = Translator.localize(i18nSource + &quot;-desc&quot;);</span>
+<span class="nc" id="L495">                moreInfoURL = Translator.localize(i18nSource + &quot;-moreInfoURL&quot;);</span>
+<span class="nc bnc" id="L496" title="All 2 branches missed.">            } else if (!i18nFound</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">                    &amp;&amp; Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                            &quot;headline&quot;)) {
+<span class="nc" id="L499">                headline = Model.getFacade().getValueOfTag(tag);</span>
+<span class="nc bnc" id="L500" title="All 2 branches missed.">            } else if (!i18nFound</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">                    &amp;&amp; Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                            &quot;description&quot;)) {
+<span class="nc" id="L503">                description = Model.getFacade().getValueOfTag(tag);</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                    &quot;priority&quot;)) {
+<span class="nc" id="L506">                priority = str2Priority(Model.getFacade().getValueOfTag(tag));</span>
+<span class="nc bnc" id="L507" title="All 2 branches missed.">            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                    &quot;supporteddecision&quot;)) {
+<span class="nc" id="L509">                String decStr = Model.getFacade().getValueOfTag(tag);</span>
+
+<span class="nc" id="L511">                StringTokenizer st = new StringTokenizer(decStr, &quot;,;:&quot;);</span>
+
+<span class="nc bnc" id="L513" title="All 2 branches missed.">                while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L514">                    Decision decision = str2Decision(st.nextToken().trim()</span>
+<span class="nc" id="L515">                            .toLowerCase());</span>
+
+<span class="nc bnc" id="L517" title="All 2 branches missed.">                    if (decision != null) {</span>
+<span class="nc" id="L518">                        supportedDecisions.add(decision);</span>
+                    }
+<span class="nc" id="L520">                }</span>
+<span class="nc bnc" id="L521" title="All 2 branches missed.">            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                    &quot;knowledgetype&quot;)) {
+<span class="nc" id="L523">                String ktStr = Model.getFacade().getValueOfTag(tag);</span>
+
+<span class="nc" id="L525">                StringTokenizer st = new StringTokenizer(ktStr, &quot;,;:&quot;);</span>
+
+<span class="nc bnc" id="L527" title="All 2 branches missed.">                while (st.hasMoreTokens()) {</span>
+<span class="nc" id="L528">                    String knowledge = str2KnowledgeType(st.nextToken().trim()</span>
+<span class="nc" id="L529">                            .toLowerCase());</span>
+
+<span class="nc bnc" id="L531" title="All 2 branches missed.">                    if (knowledge != null) {</span>
+<span class="nc" id="L532">                        knowledgeTypes.add(knowledge);</span>
+                    }
+<span class="nc" id="L534">                }</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">            } else if (!i18nFound</span>
+<span class="nc bnc" id="L536" title="All 2 branches missed.">                    &amp;&amp; Model.getFacade().getTag(tag).toLowerCase().equals(</span>
+                            &quot;moreinfourl&quot;)) {
+<span class="nc" id="L538">                moreInfoURL = Model.getFacade().getValueOfTag(tag);</span>
+            }
+
+<span class="nc" id="L541">        }</span>
+
+<span class="nc" id="L543">        LOG.log(Level.FINE, &quot;OCL-Critic: {0}&quot;, ocl);</span>
+
+        try {
+<span class="nc" id="L546">            return new CrOCL(ocl, headline, description, priority,</span>
+                    supportedDecisions, knowledgeTypes, moreInfoURL);
+<span class="nc" id="L548">        } catch (InvalidOclException e) {</span>
+<span class="nc" id="L549">            LOG.log(Level.SEVERE, &quot;Invalid OCL in XMI!&quot;, e);</span>
+<span class="nc" id="L550">            return null;</span>
+        }
+
+    }
+
+    private String str2KnowledgeType(String token) {
+<span class="nc" id="L556">        String knowledge = null;</span>
+
+<span class="nc bnc" id="L558" title="All 2 branches missed.">        if (token.equals(&quot;completeness&quot;)) {</span>
+<span class="nc" id="L559">            knowledge = Critic.KT_COMPLETENESS;</span>
+        }
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        if (token.equals(&quot;consistency&quot;)) {</span>
+<span class="nc" id="L562">            knowledge = Critic.KT_CONSISTENCY;</span>
+        }
+<span class="nc bnc" id="L564" title="All 2 branches missed.">        if (token.equals(&quot;correctness&quot;)) {</span>
+<span class="nc" id="L565">            knowledge = Critic.KT_CORRECTNESS;</span>
+        }
+<span class="nc bnc" id="L567" title="All 2 branches missed.">        if (token.equals(&quot;designers&quot;)) {</span>
+<span class="nc" id="L568">            knowledge = Critic.KT_DESIGNERS;</span>
+        }
+<span class="nc bnc" id="L570" title="All 2 branches missed.">        if (token.equals(&quot;experiencial&quot;)) {</span>
+<span class="nc" id="L571">            knowledge = Critic.KT_EXPERIENCIAL;</span>
+        }
+<span class="nc bnc" id="L573" title="All 2 branches missed.">        if (token.equals(&quot;optimization&quot;)) {</span>
+<span class="nc" id="L574">            knowledge = Critic.KT_OPTIMIZATION;</span>
+        }
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (token.equals(&quot;organizational&quot;)) {</span>
+<span class="nc" id="L577">            knowledge = Critic.KT_ORGANIZATIONAL;</span>
+        }
+<span class="nc bnc" id="L579" title="All 2 branches missed.">        if (token.equals(&quot;presentation&quot;)) {</span>
+<span class="nc" id="L580">            knowledge = Critic.KT_PRESENTATION;</span>
+        }
+<span class="nc bnc" id="L582" title="All 2 branches missed.">        if (token.equals(&quot;semantics&quot;)) {</span>
+<span class="nc" id="L583">            knowledge = Critic.KT_SEMANTICS;</span>
+        }
+<span class="nc bnc" id="L585" title="All 2 branches missed.">        if (token.equals(&quot;syntax&quot;)) {</span>
+<span class="nc" id="L586">            knowledge = Critic.KT_SYNTAX;</span>
+        }
+<span class="nc bnc" id="L588" title="All 2 branches missed.">        if (token.equals(&quot;tool&quot;)) {</span>
+<span class="nc" id="L589">            knowledge = Critic.KT_TOOL;</span>
+        }
+<span class="nc" id="L591">        return knowledge;</span>
+    }
+
+    private int str2Priority(String prioStr) {
+<span class="nc" id="L595">        int prio = ToDoItem.MED_PRIORITY;</span>
+
+<span class="nc bnc" id="L597" title="All 2 branches missed.">        if (prioStr.toLowerCase().equals(&quot;high&quot;)) {</span>
+<span class="nc" id="L598">            prio = ToDoItem.HIGH_PRIORITY;</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">        } else if (prioStr.toLowerCase().equals(&quot;med&quot;)) {</span>
+<span class="nc" id="L600">            prio = ToDoItem.MED_PRIORITY;</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">        } else if (prioStr.toLowerCase().equals(&quot;low&quot;)) {</span>
+<span class="nc" id="L602">            prio = ToDoItem.LOW_PRIORITY;</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        } else if (prioStr.toLowerCase().equals(&quot;interruptive&quot;)) {</span>
+<span class="nc" id="L604">            prio = ToDoItem.INTERRUPTIVE_PRIORITY;</span>
+        }
+<span class="nc" id="L606">        return prio;</span>
+    }
+
+    private Decision str2Decision(String token) {
+<span class="nc" id="L610">        Decision decision = null;</span>
+
+<span class="nc bnc" id="L612" title="All 2 branches missed.">        if (token.equals(&quot;behavior&quot;)) {</span>
+<span class="nc" id="L613">            decision = UMLDecision.BEHAVIOR;</span>
+        }
+<span class="nc bnc" id="L615" title="All 2 branches missed.">        if (token.equals(&quot;containment&quot;)) {</span>
+<span class="nc" id="L616">            decision = UMLDecision.CONTAINMENT;</span>
+        }
+<span class="nc bnc" id="L618" title="All 2 branches missed.">        if (token.equals(&quot;classselection&quot;)) {</span>
+<span class="nc" id="L619">            decision = UMLDecision.CLASS_SELECTION;</span>
+        }
+<span class="nc bnc" id="L621" title="All 2 branches missed.">        if (token.equals(&quot;codegen&quot;)) {</span>
+<span class="nc" id="L622">            decision = UMLDecision.CODE_GEN;</span>
+        }
+<span class="nc bnc" id="L624" title="All 2 branches missed.">        if (token.equals(&quot;expectedusage&quot;)) {</span>
+<span class="nc" id="L625">            decision = UMLDecision.EXPECTED_USAGE;</span>
+        }
+<span class="nc bnc" id="L627" title="All 2 branches missed.">        if (token.equals(&quot;inheritance&quot;)) {</span>
+<span class="nc" id="L628">            decision = UMLDecision.INHERITANCE;</span>
+        }
+<span class="nc bnc" id="L630" title="All 2 branches missed.">        if (token.equals(&quot;instantiation&quot;)) {</span>
+<span class="nc" id="L631">            decision = UMLDecision.INSTANCIATION;</span>
+        }
+<span class="nc bnc" id="L633" title="All 2 branches missed.">        if (token.equals(&quot;methods&quot;)) {</span>
+<span class="nc" id="L634">            decision = UMLDecision.METHODS;</span>
+        }
+<span class="nc bnc" id="L636" title="All 2 branches missed.">        if (token.equals(&quot;modularity&quot;)) {</span>
+<span class="nc" id="L637">            decision = UMLDecision.MODULARITY;</span>
+        }
+<span class="nc bnc" id="L639" title="All 2 branches missed.">        if (token.equals(&quot;naming&quot;)) {</span>
+<span class="nc" id="L640">            decision = UMLDecision.NAMING;</span>
+        }
+<span class="nc bnc" id="L642" title="All 2 branches missed.">        if (token.equals(&quot;patterns&quot;)) {</span>
+<span class="nc" id="L643">            decision = UMLDecision.PATTERNS;</span>
+        }
+<span class="nc bnc" id="L645" title="All 2 branches missed.">        if (token.equals(&quot;plannedextensions&quot;)) {</span>
+<span class="nc" id="L646">            decision = UMLDecision.PLANNED_EXTENSIONS;</span>
+        }
+<span class="nc bnc" id="L648" title="All 2 branches missed.">        if (token.equals(&quot;relationships&quot;)) {</span>
+<span class="nc" id="L649">            decision = UMLDecision.RELATIONSHIPS;</span>
+        }
+<span class="nc bnc" id="L651" title="All 2 branches missed.">        if (token.equals(&quot;statemachines&quot;)) {</span>
+<span class="nc" id="L652">            decision = UMLDecision.STATE_MACHINES;</span>
+        }
+<span class="nc bnc" id="L654" title="All 2 branches missed.">        if (token.equals(&quot;stereotypes&quot;)) {</span>
+<span class="nc" id="L655">            decision = UMLDecision.STEREOTYPES;</span>
+        }
+<span class="nc bnc" id="L657" title="All 2 branches missed.">        if (token.equals(&quot;storage&quot;)) {</span>
+<span class="nc" id="L658">            decision = UMLDecision.STORAGE;</span>
+        }
+<span class="nc" id="L660">        return decision;</span>
+    }
+
+    // TODO: Is this (critics embedded in comments) actually used by anyone?
+    private List&lt;CrOCL&gt; getAllCritiquesInModel() {
+<span class="fc" id="L665">        List&lt;CrOCL&gt; ret = new ArrayList&lt;CrOCL&gt;();</span>
+
+<span class="fc" id="L667">        Collection&lt;Object&gt; comments =</span>
+<span class="fc" id="L668">            getAllCommentsInModel(getProfilePackages());</span>
+
+<span class="fc bfc" id="L670" title="All 2 branches covered.">        for (Object comment : comments) {</span>
+<span class="pc bpc" id="L671" title="1 of 2 branches missed.">            if (Model.getExtensionMechanismsHelper().hasStereotype(comment,</span>
+                    &quot;Critic&quot;)) {
+<span class="nc" id="L673">                CrOCL cr = generateCriticFromComment(comment);</span>
+
+<span class="nc bnc" id="L675" title="All 2 branches missed.">                if (cr != null) {</span>
+<span class="nc" id="L676">                    ret.add(cr);</span>
+                }
+            }
+<span class="fc" id="L679">        }</span>
+<span class="fc" id="L680">        return ret;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private Collection&lt;Object&gt; getAllCommentsInModel(Collection objs) {
+<span class="fc" id="L685">        Collection&lt;Object&gt; col = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L686" title="All 2 branches covered.">        for (Object obj : objs) {</span>
+<span class="pc bpc" id="L687" title="1 of 2 branches missed.">            if (Model.getFacade().isAComment(obj)) {</span>
+<span class="nc" id="L688">                col.add(obj);</span>
+<span class="pc bpc" id="L689" title="1 of 2 branches missed.">            } else if (Model.getFacade().isANamespace(obj)) {</span>
+                Collection contents = Model
+<span class="fc" id="L691">                        .getModelManagementHelper().getAllContents(obj);</span>
+<span class="pc bpc" id="L692" title="1 of 2 branches missed.">                if (contents != null) {</span>
+<span class="fc" id="L693">                    col.addAll(contents);</span>
+                }
+            }
+<span class="fc" id="L696">        }</span>
+<span class="fc" id="L697">        return col;</span>
+    }
+
+    /**
+     * @return the string that should represent this profile in the GUI.
+     */
+    public String getDisplayName() {
+        // TODO: Seems like overkill to load the model just to get the display
+        // name, but that's where it's stored currently - tfm
+<span class="fc" id="L706">        loadModel();</span>
+<span class="fc" id="L707">        return displayName;</span>
+    }
+
+    /**
+     * Returns null. This profile has no formatting strategy.
+     *
+     * @return null.
+     */
+    @Override
+    public FormatingStrategy getFormatingStrategy() {
+<span class="fc" id="L717">        return null;</span>
+    }
+
+    /**
+     * Returns null. This profile has no figure strategy.
+     *
+     * @return null.
+     */
+    @Override
+    public FigNodeStrategy getFigureStrategy() {
+<span class="fc" id="L727">        return figNodeStrategy;</span>
+    }
+
+    /**
+     * @return the file passed at the constructor
+     */
+    public File getModelFile() {
+<span class="fc" id="L734">        return modelFile;</span>
+    }
+
+    /**
+     * @return the name of the model and the file name
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L742">        File str = getModelFile();</span>
+<span class="nc bnc" id="L743" title="All 2 branches missed.">        return super.toString() + (str != null ? &quot; [&quot; + str + &quot;]&quot; : &quot;&quot;);</span>
+    }
+
+    @Override
+    public Collection getProfilePackages() {
+<span class="fc" id="L748">        loadModel();</span>
+<span class="fc" id="L749">        return profilePackages;</span>
+    }
+
+    @Override
+    public Collection getLoadedPackages() {
+<span class="pc bpc" id="L754" title="1 of 2 branches missed.">        if (profilePackages == null) {</span>
+<span class="nc" id="L755">            return Collections.emptySet();</span>
+        } else {
+<span class="fc" id="L757">            return Collections.unmodifiableCollection(profilePackages);</span>
+        }
+    }
+
+    private FigNodeDescriptor loadImage(String stereotype, File f)
+        throws IOException {
+<span class="nc" id="L763">        FigNodeDescriptor descriptor = new FigNodeDescriptor();</span>
+<span class="nc" id="L764">        descriptor.length = (int) f.length();</span>
+<span class="nc" id="L765">        descriptor.src = f.getPath();</span>
+<span class="nc" id="L766">        descriptor.stereotype = stereotype;</span>
+
+<span class="nc" id="L768">        BufferedInputStream bis = new BufferedInputStream(</span>
+                new FileInputStream(f));
+
+<span class="nc" id="L771">        byte[] buf = new byte[descriptor.length];</span>
+        try {
+<span class="nc" id="L773">            bis.read(buf);</span>
+<span class="nc" id="L774">        } catch (IOException e) {</span>
+<span class="nc" id="L775">            e.printStackTrace();</span>
+<span class="nc" id="L776">        }</span>
+
+<span class="nc" id="L778">        descriptor.img = new ImageIcon(buf).getImage();</span>
+
+<span class="nc" id="L780">        return descriptor;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

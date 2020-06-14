@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-05-09T09:27:53.448">
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/ActivityDiagramGraphModel.java">
+<pmd version="4.3" timestamp="2020-06-14T12:41:04.707">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/ActivityDiagramGraphModel.java">
 <violation beginline="29" endline="29" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="ActivityDiagramGraphModel" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/DiagramElementBuilder.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/DiagramElementBuilder.java">
 <violation beginline="34" endline="36" begincolumn="45" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.activity2.diagram" class="DiagramElementBuilder" method="buildDiagramElement" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigAcceptEventPoly.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigAcceptEventPoly.java">
 <violation beginline="28" endline="40" begincolumn="5" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="FigAcceptEventPoly" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused constructor parameters such as 'fillColor'.
 </violation>
@@ -18,12 +18,12 @@ Avoid unused constructor parameters such as 'fillColor'.
 Avoid unused constructor parameters such as 'lineColor'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseEdge.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseEdge.java">
 <violation beginline="30" endline="30" begincolumn="35" endcolumn="42" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="FigBaseEdge" variable="settings" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'settings'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseNode.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigBaseNode.java">
 <violation beginline="31" endline="31" begincolumn="35" endcolumn="42" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="FigBaseNode" variable="settings" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'settings'.
 </violation>
@@ -31,22 +31,22 @@ Avoid unused private fields such as 'settings'.
 Avoid unused private fields such as 'nameDiagramElement'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigCompartment.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigCompartment.java">
 <violation beginline="81" endline="82" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.activity2.diagram" class="FigCompartment" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedPentagon.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNamedPentagon.java">
 <violation beginline="25" endline="25" begincolumn="30" endcolumn="36" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="FigNamedPentagon" variable="PADDING" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'PADDING'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNotation.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/FigNotation.java">
 <violation beginline="34" endline="34" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="FigNotation" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
 </file>
-<file name="/home/linus/project/argouml/github@-repo/argouml/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/ModePlaceDiagramElement.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/ModePlaceDiagramElement.java">
 <violation beginline="47" endline="47" begincolumn="30" endcolumn="34" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="ModePlaceDiagramElement" variable="WIDTH" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'WIDTH'.
 </violation>

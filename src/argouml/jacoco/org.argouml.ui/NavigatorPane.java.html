@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NavigatorPane.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">NavigatorPane.java</span></div><h1>NavigatorPane.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
+
+import org.argouml.i18n.Translator;
+import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.ui.explorer.ActionPerspectiveConfig;
+import org.argouml.ui.explorer.DnDExplorerTree;
+import org.argouml.ui.explorer.ExplorerTree;
+import org.argouml.ui.explorer.ExplorerTreeModel;
+import org.argouml.ui.explorer.NameOrder;
+import org.argouml.ui.explorer.PerspectiveComboBox;
+import org.argouml.ui.explorer.PerspectiveManager;
+import org.argouml.ui.explorer.TypeThenNameOrder;
+import org.tigris.toolbar.ToolBarFactory;
+
+/**
+ * The upper-left pane of the main ArgoUML window, contains a tree view
+ * of the UML model. Currently named &quot;Explorer&quot; instead of &quot;Navigator&quot;.&lt;p&gt;
+ *
+ * The model can be viewed from different tree &quot;Perspectives&quot;.&lt;p&gt;
+ *
+ * Perspectives are now built in the Perspective Manager.&lt;p&gt;
+ */
+class NavigatorPane
+    extends JPanel {
+
+    /**
+     * Constructs a new navigator panel.&lt;p&gt;
+     *
+     * This panel consists of a Combobox to select a navigation
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model,
+     * and a configuration dialog to tailor the perspectives.
+     *
+     * @param splash The splash screen where to show progress.
+     * @deprecated for 0.31.7 by tfmorris.  
+     * Use {@link NavigatorPane#NavigatorPane(ProgressMonitor)}.
+     */
+    @Deprecated
+    public NavigatorPane(SplashScreen splash) {
+<span class="nc" id="L88">        this(splash, null);</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Construct a new navigator panel.&lt;p&gt;
+     *
+     * This panel consists of a Combobox to select a navigation
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model,
+     * and a configuration dialog to tailor the perspectives.
+     *
+     * @param pm ProgressMonitor to receive progress updates.  May be null.
+     */
+    @Deprecated
+    public NavigatorPane(ProgressMonitor pm) {
+<span class="nc" id="L103">        this(null, pm);</span>
+<span class="nc" id="L104">    }</span>
+    
+    /**
+     * Constructs a new navigator panel.&lt;p&gt;
+     *
+     * This panel consists of a Combobox to select a navigation
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model,
+     * and a configuration dialog to tailor the perspectives.
+     *
+     * @param splash The splash screen where to show progress.
+     */
+<span class="nc" id="L116">    private NavigatorPane(SplashScreen splash, ProgressMonitor pm) {</span>
+
+<span class="nc" id="L118">        JComboBox perspectiveCombo = new PerspectiveComboBox();</span>
+<span class="nc" id="L119">        JComboBox orderByCombo = new JComboBox();</span>
+<span class="nc" id="L120">        ExplorerTree tree = new DnDExplorerTree();</span>
+
+<span class="nc" id="L122">        Collection&lt;Object&gt; toolbarTools = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L123">        toolbarTools.add(new ActionPerspectiveConfig());</span>
+<span class="nc" id="L124">        toolbarTools.add(perspectiveCombo);</span>
+<span class="nc" id="L125">        JToolBar toolbar = (new ToolBarFactory(toolbarTools)).createToolBar();</span>
+<span class="nc" id="L126">        toolbar.setFloatable(false);</span>
+
+<span class="nc" id="L128">        orderByCombo.addItem(new TypeThenNameOrder());</span>
+<span class="nc" id="L129">        orderByCombo.addItem(new NameOrder());</span>
+
+<span class="nc" id="L131">        Collection&lt;Object&gt; toolbarTools2 = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L132">        toolbarTools2.add(orderByCombo);</span>
+<span class="nc" id="L133">        JToolBar toolbar2 = (new ToolBarFactory(toolbarTools2)).createToolBar();</span>
+<span class="nc" id="L134">        toolbar2.setFloatable(false);</span>
+
+<span class="nc" id="L136">        JPanel toolbarpanel = new JPanel();</span>
+<span class="nc" id="L137">        toolbarpanel.setLayout(new BorderLayout());</span>
+<span class="nc" id="L138">        toolbarpanel.add(toolbar, BorderLayout.NORTH);</span>
+<span class="nc" id="L139">        toolbarpanel.add(toolbar2, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L141">        setLayout(new BorderLayout());</span>
+<span class="nc" id="L142">        add(toolbarpanel, BorderLayout.NORTH);</span>
+<span class="nc" id="L143">        add(new JScrollPane(tree), BorderLayout.CENTER);</span>
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L146">            splash.getStatusBar().showStatus(Translator.localize(</span>
+		    &quot;statusmsg.bar.making-navigator-pane-perspectives&quot;));
+<span class="nc" id="L148">            splash.getStatusBar().showProgress(25);</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        } else if (pm != null) {</span>
+<span class="nc" id="L150">            pm.updateSubTask(Translator.localize(</span>
+                    &quot;statusmsg.bar.making-navigator-pane-perspectives&quot;));
+<span class="nc" id="L152">            pm.updateProgress(25);</span>
+        }
+
+<span class="nc" id="L155">        perspectiveCombo.addItemListener((ExplorerTreeModel) tree.getModel());</span>
+<span class="nc" id="L156">        orderByCombo.addItemListener((ExplorerTreeModel) tree.getModel());</span>
+<span class="nc" id="L157">        PerspectiveManager.getInstance().loadUserPerspectives();</span>
+<span class="nc" id="L158">    }</span>
+
+    /*
+     * @see java.awt.Component#getMinimumSize()
+     *
+     * sets minimum size to 120,100
+     */
+    public Dimension getMinimumSize() {
+<span class="nc" id="L166">        return new Dimension(120, 100);</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 8403903607517813289L;
+} /* end class NavigatorPane */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

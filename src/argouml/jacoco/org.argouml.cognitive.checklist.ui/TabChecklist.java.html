@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabChecklist.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.checklist.ui</a> &gt; <span class="el_source">TabChecklist.java</span></div><h1>TabChecklist.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.checklist.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.checklist.CheckItem;
+import org.argouml.cognitive.checklist.CheckManager;
+import org.argouml.cognitive.checklist.Checklist;
+import org.argouml.cognitive.checklist.ChecklistStatus;
+import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * Tab to show the checklist for a certain element.
+ */
+public class TabChecklist extends AbstractArgoJPanel
+    implements TabModelTarget, ActionListener, ListSelectionListener,
+            ComponentListener {
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    private Object target;
+<span class="fc" id="L86">    private TableModelChecklist tableModel = null;</span>
+<span class="fc" id="L87">    private boolean shouldBeEnabled = false;</span>
+<span class="fc" id="L88">    private JTable table = new JTable(10, 2);</span>
+
+    /**
+     * The constructor.
+     */
+    public TabChecklist() {
+<span class="fc" id="L94">	super(&quot;tab.checklist&quot;);</span>
+
+<span class="fc" id="L96">        setIcon(new UpArrowIcon());</span>
+<span class="fc" id="L97">	tableModel = new TableModelChecklist(this);</span>
+<span class="fc" id="L98">	table.setModel(tableModel);</span>
+
+<span class="fc" id="L100">	Font labelFont = LookAndFeelMgr.getInstance().getStandardFont();</span>
+<span class="fc" id="L101">	table.setFont(labelFont);</span>
+
+<span class="fc" id="L103">	table.setIntercellSpacing(new Dimension(0, 1));</span>
+<span class="fc" id="L104">	table.setShowVerticalLines(false);</span>
+<span class="fc" id="L105">	table.getSelectionModel().addListSelectionListener(this);</span>
+<span class="fc" id="L106">	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+
+<span class="fc" id="L108">	TableColumn checkCol = table.getColumnModel().getColumn(0);</span>
+<span class="fc" id="L109">	TableColumn descCol = table.getColumnModel().getColumn(1);</span>
+<span class="fc" id="L110">	checkCol.setMinWidth(20);</span>
+<span class="fc" id="L111">	checkCol.setMaxWidth(30);</span>
+<span class="fc" id="L112">	checkCol.setWidth(30);</span>
+<span class="fc" id="L113">	descCol.setPreferredWidth(900);</span>
+<span class="fc" id="L114">	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+<span class="fc" id="L115">	table.sizeColumnsToFit(-1);</span>
+
+<span class="fc" id="L117">	JScrollPane sp = new JScrollPane(table);</span>
+
+<span class="fc" id="L119">	setLayout(new BorderLayout());</span>
+<span class="fc" id="L120">	add(new JLabel(Translator.localize(&quot;tab.checklist.warning&quot;)),</span>
+	    BorderLayout.NORTH);
+<span class="fc" id="L122">	add(sp, BorderLayout.CENTER);</span>
+
+<span class="fc" id="L124">	addComponentListener(this);</span>
+<span class="fc" id="L125">    }</span>
+
+
+    /**
+     * Converts a selected element to a target that is appropriate for a
+     * checklist.&lt;p&gt;
+     *
+     * The argument can be either
+     * a Fig, if a Figure when something is selected from a diagram
+     * or a model element when an object is selected from the explorer.&lt;p&gt;
+     *
+     * @param t that is an object.
+     * @return target that is always model element.
+     */
+    private Object findTarget(Object t) {
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (t instanceof Fig) {</span>
+<span class="nc" id="L141">            Fig f = (Fig) t;</span>
+<span class="nc" id="L142">            t = f.getOwner();</span>
+        }
+<span class="fc" id="L144">        return t;</span>
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    /**
+     * Actually prepares the Tab.
+     *
+     * @param t is the target to show the list for.
+     */
+    public void setTarget(Object t) {
+<span class="nc" id="L156">        target = findTarget(t);</span>
+
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L159">            shouldBeEnabled = false;</span>
+<span class="nc" id="L160">            return;</span>
+        }
+
+<span class="nc" id="L163">	shouldBeEnabled = true;</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">        if (isVisible()) {</span>
+<span class="nc" id="L165">            setTargetInternal(target);</span>
+        }
+<span class="nc" id="L167">    }</span>
+
+
+    private void setTargetInternal(Object t) {
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (t == null) {</span>
+<span class="fc" id="L172">            return;</span>
+        }
+<span class="nc" id="L174">        Checklist cl = CheckManager.getChecklistFor(t);</span>
+<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (cl == null) {</span>
+<span class="nc" id="L176">            target = null;</span>
+<span class="nc" id="L177">            shouldBeEnabled = false;</span>
+<span class="nc" id="L178">            return;</span>
+        }
+<span class="nc" id="L180">        tableModel.setTarget(t);</span>
+<span class="nc" id="L181">        resizeColumns();</span>
+<span class="nc" id="L182">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L188">        return target;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L195">        setTarget(target);</span>
+<span class="nc" id="L196">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object t) {
+<span class="fc" id="L202">        t = findTarget(t);</span>
+
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        if (t == null) {</span>
+<span class="nc" id="L205">            shouldBeEnabled = false;</span>
+<span class="nc" id="L206">            return shouldBeEnabled;</span>
+        }
+
+<span class="fc" id="L209">	shouldBeEnabled = true;</span>
+<span class="fc" id="L210">	Checklist cl = CheckManager.getChecklistFor(t);</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">	if (cl == null) {</span>
+<span class="fc" id="L212">	    shouldBeEnabled = false;</span>
+<span class="fc" id="L213">	    return shouldBeEnabled;</span>
+	}
+
+<span class="nc" id="L216">	return shouldBeEnabled;</span>
+    }
+
+    /**
+     * Resize the columns to fit.
+     */
+    public void resizeColumns() {
+<span class="nc" id="L223">        TableColumn checkCol = table.getColumnModel().getColumn(0);</span>
+<span class="nc" id="L224">        TableColumn descCol = table.getColumnModel().getColumn(1);</span>
+<span class="nc" id="L225">        checkCol.setMinWidth(20);</span>
+<span class="nc" id="L226">        checkCol.setMaxWidth(30);</span>
+<span class="nc" id="L227">        checkCol.setWidth(30);</span>
+<span class="nc" id="L228">        descCol.setPreferredWidth(900);</span>
+<span class="nc" id="L229">        table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+<span class="nc" id="L230">        table.sizeColumnsToFit(0);</span>
+<span class="nc" id="L231">        validate();</span>
+<span class="nc" id="L232">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    /*
+     * Enable buttons when selection made.
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L243">    }</span>
+
+    /*
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent lse) {
+<span class="nc" id="L249">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+
+<span class="nc" id="L256">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L262">	setTarget(e.getNewTarget());</span>
+<span class="nc" id="L263">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L269">	setTarget(e.getNewTarget());</span>
+<span class="nc" id="L270">    }</span>
+
+
+    /*
+     * @see java.awt.event.ComponentListener#componentShown(java.awt.event.ComponentEvent)
+     */
+    public void componentShown(ComponentEvent e) {
+        // Update our model with our saved target
+<span class="nc" id="L278">        setTargetInternal(target);</span>
+<span class="nc" id="L279">    }</span>
+
+    /*
+     * @see java.awt.event.ComponentListener#componentHidden(java.awt.event.ComponentEvent)
+     */
+    public void componentHidden(ComponentEvent e) {
+        // Stop updating model when we're not visible
+<span class="fc" id="L286">        setTargetInternal(null);</span>
+<span class="fc" id="L287">    }</span>
+
+    public void componentMoved(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L291">    }</span>
+
+    public void componentResized(ComponentEvent e) {
+        // ignored
+<span class="nc" id="L295">    }</span>
+
+} /* end class TabChecklist */
+
+
+
+
+/**
+ * The table model for checklists.
+ */
+class TableModelChecklist extends AbstractTableModel
+    implements VetoableChangeListener, PropertyChangeListener {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L310">    private static final Logger LOG =</span>
+<span class="fc" id="L311">        Logger.getLogger(TableModelChecklist.class.getName());</span>
+
+    ////////////////
+    // instance varables
+    private Object target;
+    private TabChecklist panel;
+
+    ////////////////
+    // constructor
+    /**
+     * Constructor.
+     *
+     * @param tc The TabChecklist to show.
+     */
+<span class="fc" id="L325">    public TableModelChecklist(TabChecklist tc) {</span>
+<span class="fc" id="L326">        panel = tc;</span>
+<span class="fc" id="L327">    }</span>
+
+    ////////////////
+    // accessors
+
+    /**
+     * This function is called when the target is changed (by the user).
+     * It updates the items, and causes events to arrive when the UML model
+     * of the new target gets updated.&lt;p&gt;
+     *
+     * Limited to the target name changes, to reduce the number of events fired.
+     *
+     * @param t the new target
+     */
+    public void setTarget(Object t) {
+<span class="nc bnc" id="L342" title="All 2 branches missed.">	if (Model.getFacade().isAElement(target)) {</span>
+<span class="nc" id="L343">	    Model.getPump().removeModelEventListener(this, target);</span>
+	}
+<span class="nc" id="L345">	target = t;</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">	if (Model.getFacade().isAElement(target)) {</span>
+<span class="nc" id="L347">	    Model.getPump().addModelEventListener(this, target, &quot;name&quot;);</span>
+	}
+<span class="nc" id="L349">	fireTableStructureChanged();</span>
+<span class="nc" id="L350">    }</span>
+
+    ////////////////
+    // TableModel implemetation
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
+    public int getColumnCount() {
+<span class="fc" id="L359">        return 2;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
+    @Override
+    public String  getColumnName(int c) {
+<span class="fc bfc" id="L367" title="All 2 branches covered.">	if (c == 0) {</span>
+<span class="fc" id="L368">	    return &quot;X&quot;;</span>
+	}
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">	if (c == 1) {</span>
+<span class="fc" id="L371">	    return Translator.localize(&quot;tab.checklist.description&quot;);</span>
+	}
+<span class="nc" id="L373">	return &quot;XXX&quot;;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
+    public Class getColumnClass(int c) {
+<span class="nc bnc" id="L380" title="All 2 branches missed.">	if (c == 0) {</span>
+<span class="nc" id="L381">	    return Boolean.class;</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">	} else if (c == 1) {</span>
+<span class="nc" id="L383">	    return String.class;</span>
+	} else {
+<span class="nc" id="L385">	    return String.class;</span>
+	}
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
+    @Override
+    public boolean isCellEditable(int row, int col) {
+<span class="nc bnc" id="L394" title="All 2 branches missed.">	return col == 0;</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
+    public int getRowCount() {
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">	if (target == null) {</span>
+<span class="fc" id="L402">	    return 0;</span>
+	}
+<span class="nc" id="L404">	Checklist cl = CheckManager.getChecklistFor(target);</span>
+<span class="nc bnc" id="L405" title="All 2 branches missed.">	if (cl == null) {</span>
+<span class="nc" id="L406">	    return 0;</span>
+	}
+<span class="nc" id="L408">	return cl.size();</span>
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
+    public Object getValueAt(int row, int col) {
+<span class="nc" id="L415">	Checklist cl = CheckManager.getChecklistFor(target);</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">	if (cl == null) {</span>
+<span class="nc" id="L417">	    return &quot;no checklist&quot;;</span>
+	}
+<span class="nc" id="L419">	CheckItem ci = cl.get(row);</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">	if (col == 0) {</span>
+<span class="nc" id="L421">	    ChecklistStatus stat = CheckManager.getStatusFor(target);</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">	    return (stat.contains(ci)) ? Boolean.TRUE : Boolean.FALSE;</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">	} else if (col == 1) {</span>
+<span class="nc" id="L424">	    return ci.getDescription(target);</span>
+	} else {
+<span class="nc" id="L426">	    return &quot;CL-&quot; + row * 2 + col;</span>
+	}
+    }
+
+    /*
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
+<span class="nc" id="L435">        LOG.log(Level.FINE,</span>
+                &quot;setting table value {0}, {1}&quot;,
+<span class="nc" id="L437">                new Object[]{rowIndex, columnIndex});</span>
+<span class="nc bnc" id="L438" title="All 2 branches missed.">	if (columnIndex != 0) {</span>
+<span class="nc" id="L439">	    return;</span>
+	}
+<span class="nc bnc" id="L441" title="All 2 branches missed.">	if (!(aValue instanceof Boolean)) {</span>
+<span class="nc" id="L442">	    return;</span>
+	}
+<span class="nc" id="L444">	boolean val = ((Boolean) aValue).booleanValue();</span>
+<span class="nc" id="L445">	Checklist cl = CheckManager.getChecklistFor(target);</span>
+<span class="nc bnc" id="L446" title="All 2 branches missed.">	if (cl == null) {</span>
+<span class="nc" id="L447">	    return;</span>
+	}
+<span class="nc" id="L449">	CheckItem ci = cl.get(rowIndex);</span>
+<span class="nc bnc" id="L450" title="All 2 branches missed.">	if (columnIndex == 0) {</span>
+<span class="nc" id="L451">	    ChecklistStatus stat = CheckManager.getStatusFor(target);</span>
+<span class="nc bnc" id="L452" title="All 2 branches missed.">	    if (val) {</span>
+<span class="nc" id="L453">	        stat.add(ci);</span>
+	    } else {
+<span class="nc" id="L455">	        stat.remove(ci);</span>
+	    }
+	}
+<span class="nc" id="L458">    }</span>
+
+    ////////////////
+    // event handlers
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent pce) {
+<span class="nc" id="L467">        SwingUtilities.invokeLater(new Runnable() {</span>
+            public void run() {
+<span class="nc" id="L469">                fireTableStructureChanged();</span>
+<span class="nc" id="L470">                panel.resizeColumns();</span>
+<span class="nc" id="L471">            }</span>
+        });
+<span class="nc" id="L473">    }</span>
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="nc" id="L479">        fireTableStructureChanged();</span>
+<span class="nc" id="L480">        panel.resizeColumns();</span>
+<span class="nc" id="L481">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

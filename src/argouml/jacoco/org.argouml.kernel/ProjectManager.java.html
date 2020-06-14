@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">ProjectManager.java</span></div><h1>ProjectManager.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.event.EventListenerList;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelCommandCreationObserver;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+
+/**
+ * This class manages the projects loaded in argouml,
+ * and what the current project is. &lt;p&gt;
+ *
+ * Classes in ArgoUML can ask this class for the current
+ * project and set the current project.  Since we only have one
+ * project in ArgoUML at the moment, this class does not manage a list
+ * of projects like one would expect. This could be a nice extension
+ * for the future of ArgoUML.  As soon as the current project is
+ * changed, a property changed event is fired. &lt;p&gt;
+ *
+ * TODO: Move everything related to the creation of a project
+ * into the ProjectFactory.
+ *
+ * @since Nov 17, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
+ */
+public final class ProjectManager implements ModelCommandCreationObserver {
+
+    /**
+     * The name of the property that defines the current project.  The values
+     * passed are Projects, not Strings.  The 'name' here refers to the name
+     * of this property, not the name of the project.
+     *
+     * @deprecated for 0.27.2 by tfmorris. Listeners of this event which expect
+     *             it to indicate a new project being opened should listen for
+     *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think
+     *             they need to know a single global current project need
+     *             to be changed to deal with things on a per-project basis.
+     */
+    @Deprecated
+    public static final String CURRENT_PROJECT_PROPERTY_NAME = &quot;currentProject&quot;;
+
+    /**
+     * Property name for list of current open projects.  Old and new property
+     * values are of type Project[] (arrays of Projects).
+     */
+    public static final String OPEN_PROJECTS_PROPERTY = &quot;openProjects&quot;;
+
+<span class="fc" id="L105">    private static final Logger LOG =</span>
+<span class="fc" id="L106">        Logger.getLogger(ProjectManager.class.getName());</span>
+
+    /**
+     * The singleton instance of this class.
+     */
+<span class="fc" id="L111">    private static ProjectManager instance = new ProjectManager();</span>
+
+    /**
+     * The project that is visible in the projectbrowser.
+     */
+    private static Project currentProject;
+
+<span class="fc" id="L118">    private static LinkedList&lt;Project&gt; openProjects = new LinkedList&lt;Project&gt;();</span>
+
+    /**
+     * Flag to indicate we are creating a new current project.
+     * TODO: This isn't a thread-safe way of doing mutual exclusion.
+     */
+    private boolean creatingCurrentProject;
+
+    private Action saveAction;
+
+    /**
+     * The listener list.
+     */
+<span class="fc" id="L131">    private EventListenerList listenerList = new EventListenerList();</span>
+
+    /**
+     * The event to fire.
+     *
+     * TODO: Investigate! Is the purpose really to let the next call to
+     * {@link #firePropertyChanged(String, Object, Object)} fire the old
+     * event again if the previous invocation resulted in an exception?
+     * If so, please document why. If not, fix it.
+     */
+    private PropertyChangeEvent event;
+
+    /**
+     * The singleton accessor method of this class.
+     *
+     * @return The singleton.
+     */
+    public static ProjectManager getManager() {
+<span class="fc" id="L149">        return instance;</span>
+    }
+
+    /**
+     * Constructor for ProjectManager.
+     */
+    private ProjectManager() {
+<span class="fc" id="L156">        super();</span>
+<span class="fc" id="L157">        Model.setModelCommandCreationObserver(this);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Adds a listener to the listener list.
+     *
+     * @param listener The listener to add.
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+<span class="fc" id="L166">        listenerList.add(PropertyChangeListener.class, listener);</span>
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * Removes a listener from the listener list.
+     *
+     * @param listener The listener to remove.
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+<span class="nc" id="L175">        listenerList.remove(PropertyChangeListener.class, listener);</span>
+<span class="nc" id="L176">    }</span>
+
+    /**
+     * Fire an event to all members of the listener list.
+     *
+     * @param propertyName The name of the event.
+     * @param oldValue The old value.
+     * @param newValue The new value.
+     */
+    void firePropertyChanged(String propertyName,
+                                     Object oldValue, Object newValue) {
+        // Guaranteed to return a non-null array
+<span class="fc" id="L188">        Object[] listeners = listenerList.getListenerList();</span>
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if (listeners[i] == PropertyChangeListener.class) {</span>
+                // Lazily create the event:
+<span class="fc bfc" id="L194" title="All 2 branches covered.">                if (event == null) {</span>
+<span class="fc" id="L195">                    event =</span>
+                        new PropertyChangeEvent(
+                            this,
+                            propertyName,
+                            oldValue,
+                            newValue);
+                }
+<span class="fc" id="L202">                ((PropertyChangeListener) listeners[i + 1]).propertyChange(</span>
+                    event);
+            }
+        }
+<span class="fc" id="L206">        event = null;</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Sets the current project (the project that is viewable in the
+     * projectbrowser). Sets the current diagram for the project (if one
+     * exists). This method fires a propertychanged event.
+     * &lt;p&gt;
+     * If the argument is null, then the current project will be forgotten
+     * about.
+     *
+     * @param newProject The new project.
+     * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
+     *             single global &quot;current&quot; project. In the future, multiple
+     *             projects will be able to be open at a time, so all code
+     *             should be prepared to deal with multiple projects and should
+     *             require a Project to be passed as an argument if they need
+     *             access.
+     */
+    public void setCurrentProject(Project newProject) {
+<span class="fc" id="L226">        Project oldProject = currentProject;</span>
+<span class="fc" id="L227">        currentProject = newProject;</span>
+<span class="fc" id="L228">        addProject(newProject);</span>
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">        if (currentProject != null</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">            &amp;&amp; currentProject.getActiveDiagram() == null) {</span>
+<span class="fc" id="L231">            List&lt;ArgoDiagram&gt; diagrams = currentProject.getDiagramList();</span>
+<span class="pc bpc" id="L232" title="2 of 4 branches missed.">            if (diagrams != null &amp;&amp; !diagrams.isEmpty()) {</span>
+<span class="fc" id="L233">                ArgoDiagram activeDiagram = diagrams.get(0);</span>
+<span class="fc" id="L234">                currentProject.setActiveDiagram(activeDiagram);</span>
+            }
+        }
+<span class="fc" id="L237">        notifyProjectAdded(newProject, oldProject);</span>
+<span class="fc" id="L238">    }</span>
+
+    private void notifyProjectAdded(Project newProject, Project oldProject) {
+<span class="fc" id="L241">        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,</span>
+                oldProject, newProject);
+        // TODO: Tentative implementation. Do we want something that updates
+        // the list of open projects or just simple open and close events? -tfm
+<span class="fc" id="L245">        firePropertyChanged(OPEN_PROJECTS_PROPERTY,</span>
+                new Project[] {oldProject}, new Project[] {newProject});
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Returns the current project (ie the project which most recently had the
+     * user focus) or null if there is no current project.
+     * &lt;p&gt;
+     * This should only be used by callers who need to know the global state.
+     * Most things which need a project want the project that contains them,
+     * which they can discover by traversing their containing elements (e.g.
+     * Fig-&gt;Diagram-&gt;DiagramSettings).
+     * &lt;p&gt;
+     *
+     * @return Project the current project or null if none
+     * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
+     *             single global &quot;current&quot; project. In the future, multiple
+     *             projects will be able to be open at a time, so all code
+     *             should be prepared to deal with multiple projects and should
+     *             require a Project to be passed as an argument if they need
+     *             access. To get a list of all currently open projects, use
+     *             {@link #getOpenProjects()}. For settings which affect
+     *             renderings in diagrams use
+     *             {@link org.argouml.uml.diagram.ui.ArgoFig#getSettings()}.
+     */
+    @Deprecated
+    public Project getCurrentProject() {
+<span class="fc" id="L272">        return currentProject;</span>
+    }
+
+    /**
+     * @return a list of the currently open Projects in the order they were
+     * opened
+     */
+    public List&lt;Project&gt; getOpenProjects() {
+<span class="fc" id="L280">        List&lt;Project&gt; result = new ArrayList&lt;Project&gt;();</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">        if (currentProject != null) {</span>
+<span class="fc" id="L282">            result.add(currentProject);</span>
+        }
+<span class="fc" id="L284">        return result;</span>
+    }
+
+    /**
+     * Makes an empty project.
+     * @return Project the empty project
+     */
+    public Project makeEmptyProject() {
+<span class="fc" id="L292">        return makeEmptyProject(true);</span>
+    }
+
+    /**
+     * Make a new empty project optionally including default diagrams.
+     * &lt;p&gt;
+     * Historically new projects have been created with two default diagrams
+     * (Class and Use Case). NOTE: ArgoUML currently requires at least one
+     * diagram for proper operation.
+     *
+     * @param addDefaultDiagrams
+     *            if true the project will be be created with the two standard
+     *            default diagrams (Class and Use Case)
+     * @return Project the newly created project
+     */
+    public Project makeEmptyProject(final boolean addDefaultDiagrams) {
+<span class="fc" id="L308">        final Command cmd = new NonUndoableCommand() {</span>
+
+            @Override
+            public Object execute() {
+<span class="fc" id="L312">                Model.getPump().stopPumpingEvents();</span>
+
+<span class="fc" id="L314">                creatingCurrentProject = true;</span>
+<span class="fc" id="L315">                LOG.log(Level.INFO, &quot;making empty project&quot;);</span>
+<span class="fc" id="L316">                Project newProject = new ProjectImpl();</span>
+<span class="fc" id="L317">                createDefaultModel(newProject);</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">                if (addDefaultDiagrams) {</span>
+<span class="fc" id="L319">                    createDefaultDiagrams(newProject);</span>
+                }
+<span class="fc" id="L321">                creatingCurrentProject = false;</span>
+<span class="fc" id="L322">                setCurrentProject(newProject);</span>
+<span class="fc" id="L323">                Model.getPump().startPumpingEvents();</span>
+<span class="fc" id="L324">                return null;</span>
+            }
+        };
+<span class="fc" id="L327">        cmd.execute();</span>
+<span class="fc" id="L328">        currentProject.getUndoManager().addCommand(cmd);</span>
+<span class="fc" id="L329">        setSaveEnabled(false);</span>
+<span class="fc" id="L330">        return currentProject;</span>
+    }
+
+    /**
+     * Makes an empty profile project.
+     * @return Project the empty profile project
+     */
+    public Project makeEmptyProfileProject() {
+<span class="nc" id="L338">        return makeEmptyProfileProject(true);</span>
+    }
+
+    /**
+     * Make a new empty profile project optionally including default diagrams.
+     * &lt;p&gt;
+     * Historically new projects have been created with two default diagrams
+     * (Class and Use Case). NOTE: ArgoUML currently requires at least one
+     * diagram for proper operation.
+     *
+     * @param addDefaultDiagrams
+     *            if true the project will be be created with the standard
+     *            default diagram (Class)
+     * @return Project the newly created profile project
+     */
+    public Project makeEmptyProfileProject(final boolean addDefaultDiagrams) {
+<span class="nc" id="L354">        final Command cmd = new NonUndoableCommand() {</span>
+
+            @Override
+            public Object execute() {
+<span class="nc" id="L358">                Model.getPump().stopPumpingEvents();</span>
+
+<span class="nc" id="L360">                creatingCurrentProject = true;</span>
+<span class="nc" id="L361">                LOG.log(Level.INFO, &quot;making empty profile project&quot;);</span>
+<span class="nc" id="L362">                Project newProject = new ProjectImpl(Project.PROFILE_PROJECT);</span>
+<span class="nc" id="L363">                createDefaultProfile(newProject);</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                if (addDefaultDiagrams) {</span>
+<span class="nc" id="L365">                    ArgoDiagram d = createClassDiagram(newProject);</span>
+<span class="nc" id="L366">                    createTodoList(newProject);</span>
+<span class="nc" id="L367">                    newProject.setActiveDiagram(d);</span>
+                }
+<span class="nc" id="L369">                creatingCurrentProject = false;</span>
+<span class="nc" id="L370">                setCurrentProject(newProject);</span>
+<span class="nc" id="L371">                Model.getPump().startPumpingEvents();</span>
+<span class="nc" id="L372">                return null;</span>
+            }
+        };
+<span class="nc" id="L375">        cmd.execute();</span>
+<span class="nc" id="L376">        currentProject.getUndoManager().addCommand(cmd);</span>
+<span class="nc" id="L377">        setSaveEnabled(false);</span>
+<span class="nc" id="L378">        return currentProject;</span>
+    }
+
+    /**
+     * Apply all profiles from the profile configuration to a model (can be a
+     * profile too).
+     *
+     * @param project The project with the profile configuration.
+     * @param model The model to apply the profiles to.
+     */
+    private void applyProfileConfiguration(Project project, Object model) {
+<span class="fc" id="L389">        Collection&lt;Profile&gt; c =</span>
+<span class="fc" id="L390">            project.getProfileConfiguration().getProfiles();</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">        if (c != null) {</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">            for (Profile p : c) {</span>
+                try {
+<span class="fc bfc" id="L394" title="All 2 branches covered.">                    for (Object profile : p.getProfilePackages()) {</span>
+<span class="fc" id="L395">                        Model.getExtensionMechanismsHelper()</span>
+<span class="fc" id="L396">                            .applyProfile(model, profile);</span>
+<span class="fc" id="L397">                    }</span>
+<span class="nc" id="L398">                } catch (ProfileException pe) {</span>
+<span class="nc" id="L399">                    LOG.log(Level.WARNING,</span>
+                            &quot;Failed to get profile packages from profile {0}&quot;,
+                            p);
+<span class="fc" id="L402">                }</span>
+<span class="fc" id="L403">            }</span>
+        }
+<span class="fc" id="L405">    }</span>
+
+    /**
+     * Create the default diagrams for the project. Currently a Class Diagram
+     * and a UseCase diagram.
+     *
+     * @param project the project to create the diagrams in.
+     */
+    private void createDefaultDiagrams(Project project) {
+<span class="fc" id="L414">        LOG.log(Level.FINE, &quot;Creating default diagrams&quot;);</span>
+<span class="fc" id="L415">        Object model = project.getRoots().iterator().next();</span>
+<span class="fc" id="L416">        DiagramFactory df = DiagramFactory.getInstance();</span>
+<span class="fc" id="L417">        ArgoDiagram d = createClassDiagram(project);</span>
+<span class="fc" id="L418">        LOG.log(Level.FINE, &quot;Creating use case diagram&quot;);</span>
+<span class="fc" id="L419">        project.addMember(df.create(</span>
+                DiagramFactory.DiagramType.UseCase, model,
+<span class="fc" id="L421">                project.getProjectSettings().getDefaultDiagramSettings()));</span>
+<span class="fc" id="L422">        project.addMember(new ProjectMemberTodoList(&quot;&quot;,</span>
+                project));
+<span class="fc" id="L424">        createTodoList(project);</span>
+<span class="fc" id="L425">        project.setActiveDiagram(d);</span>
+<span class="fc" id="L426">    }</span>
+
+    /**
+     * Create a class diagrams for the project.
+     *
+     * @param project the project to create the diagram in.
+     * @return the created class diagram
+     */
+    private ArgoDiagram createClassDiagram(Project project) {
+<span class="fc" id="L435">        LOG.log(Level.FINE, &quot;Creating class diagram&quot;);</span>
+<span class="fc" id="L436">        Object model = project.getRoots().iterator().next();</span>
+<span class="fc" id="L437">        DiagramFactory df = DiagramFactory.getInstance();</span>
+<span class="fc" id="L438">        ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,</span>
+                model,
+<span class="fc" id="L440">                project.getProjectSettings().getDefaultDiagramSettings());</span>
+<span class="fc" id="L441">        project.addMember(d);</span>
+<span class="fc" id="L442">        return d;</span>
+    }
+
+    /**
+     * Create a todo list for the project.
+     *
+     * @param project the project to create the todo list in.
+     */
+    private void createTodoList(Project project) {
+<span class="fc" id="L451">        LOG.log(Level.FINE, &quot;Creating todo list&quot;);</span>
+<span class="fc" id="L452">        project.addMember(new ProjectMemberTodoList(&quot;&quot;,</span>
+                project));
+<span class="fc" id="L454">    }</span>
+
+    /**
+     * Create the top level model for the project and set it as a root and the
+     * current namespace.
+     *
+     * @param project the project to create the model in.
+     */
+    private void createDefaultModel(Project project) {
+<span class="fc" id="L463">        Object model = Model.getModelManagementFactory().createModel();</span>
+<span class="fc" id="L464">        Model.getCoreHelper().setName(model,</span>
+<span class="fc" id="L465">                Translator.localize(&quot;misc.untitled-model&quot;));</span>
+<span class="fc" id="L466">        Collection roots = new ArrayList();</span>
+<span class="fc" id="L467">        roots.add(model);</span>
+<span class="fc" id="L468">        project.setRoots(roots);</span>
+<span class="fc" id="L469">        project.setCurrentNamespace(model);</span>
+<span class="fc" id="L470">        project.addMember(model);</span>
+        // finally, apply profile configuration to the model
+<span class="fc" id="L472">        applyProfileConfiguration(project, model);</span>
+<span class="fc" id="L473">    }</span>
+
+    /**
+     * Create the top level profile for the project and set it as a root and the
+     * current namespace.
+     *
+     * @param project the project to create the model in.
+     */
+    private void createDefaultProfile(Project project) {
+<span class="nc" id="L482">        Object model = Model.getModelManagementFactory().createProfile();</span>
+<span class="nc" id="L483">        Model.getCoreHelper().setName(model,</span>
+<span class="nc" id="L484">                Translator.localize(&quot;misc.untitled-profile&quot;));</span>
+<span class="nc" id="L485">        Collection roots = new ArrayList();</span>
+<span class="nc" id="L486">        roots.add(model);</span>
+<span class="nc" id="L487">        project.setRoots(roots);</span>
+<span class="nc" id="L488">        project.setCurrentNamespace(model);</span>
+<span class="nc" id="L489">        project.addMember(model);</span>
+        // finally, apply profile configuration to the model
+<span class="nc" id="L491">        applyProfileConfiguration(project, model);</span>
+<span class="nc" id="L492">    }</span>
+
+    /**
+     * Set the save action.
+     *
+     * @param save the action to be used
+     */
+    public void setSaveAction(Action save) {
+<span class="nc" id="L500">        this.saveAction = save;</span>
+        // Register with the save action with other subsystems so that
+        // any changes in those subsystems will enable the
+        // save button/menu item etc.
+<span class="nc" id="L504">        Designer.setSaveAction(save);</span>
+<span class="nc" id="L505">    }</span>
+
+    /**
+     * @return true is the save action is currently enabled
+     * &lt;p&gt;
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link Project#isDirty()}.
+     */
+    public boolean isSaveActionEnabled() {
+<span class="nc" id="L513">        return this.saveAction.isEnabled();</span>
+    }
+
+    /**
+     * Notify the gui that the
+     * current project's save state has changed. There are 2 receivers:
+     * the SaveProject tool icon and the title bar (for showing a *).
+     * &lt;p&gt;
+     * @deprecated for 0.27.2 by tfmorris.  Use
+     * {@link Project#setDirty(boolean)}.
+     */
+    public void setSaveEnabled(boolean newValue) {
+<span class="pc bpc" id="L525" title="1 of 2 branches missed.">        if (saveAction != null) {</span>
+<span class="nc" id="L526">            saveAction.setEnabled(newValue);</span>
+        }
+<span class="fc" id="L528">    }</span>
+
+    private void addProject(Project newProject) {
+<span class="fc" id="L531">        openProjects.addLast(newProject);</span>
+<span class="fc" id="L532">    }</span>
+
+    /**
+     * Remove the project.
+     *
+     * @param oldProject The project to be removed.
+     */
+    public void removeProject(Project oldProject) {
+<span class="fc" id="L540">        openProjects.remove(oldProject);</span>
+
+        // TODO: This code can be removed when getCurrentProject is removed
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        if (currentProject == oldProject) {</span>
+<span class="fc bfc" id="L544" title="All 2 branches covered.">            if (openProjects.size() &gt; 0) {</span>
+<span class="fc" id="L545">                currentProject = openProjects.getLast();</span>
+            } else {
+<span class="fc" id="L547">                currentProject = null;</span>
+            }
+        }
+<span class="fc" id="L550">        oldProject.remove();</span>
+<span class="fc" id="L551">    }</span>
+
+    /**
+     * Updates the top level ModelElements for all projects.
+     */
+    public void updateRoots() {
+<span class="pc bpc" id="L557" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+            // not needed in UML 1.x
+<span class="fc" id="L559">            return;</span>
+        }
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        for (Project p : getOpenProjects()) {</span>
+<span class="nc" id="L562">            p.updateRoots();</span>
+<span class="nc" id="L563">        }</span>
+<span class="nc" id="L564">        firePropertyChanged(OPEN_PROJECTS_PROPERTY,</span>
+                new Project[] {currentProject}, new Project[] {currentProject});
+<span class="nc" id="L566">    }</span>
+
+    /**
+     * Called when the model subsystem creates a command.
+     * We must add this to the UndoManager.
+     *
+     * @param command the command.
+     * @return result of the command, if any
+     * @see org.argouml.model.ModelCommandCreationObserver#execute(ModelCommand)
+     */
+    public Object execute(final ModelCommand command) {
+<span class="fc" id="L577">        setSaveEnabled(true);</span>
+<span class="fc" id="L578">        AbstractCommand wrappedCommand = new AbstractCommand() {</span>
+<span class="fc" id="L579">            private ModelCommand modelCommand = command;</span>
+            public void undo() {
+<span class="nc" id="L581">                modelCommand.undo();</span>
+<span class="nc" id="L582">            }</span>
+            public boolean isUndoable() {
+<span class="nc" id="L584">                return modelCommand.isUndoable();</span>
+            }
+            public boolean isRedoable() {
+<span class="nc" id="L587">                return modelCommand.isRedoable();</span>
+            }
+            public Object execute() {
+<span class="fc" id="L590">                return modelCommand.execute();</span>
+            }
+            public String toString() {
+<span class="nc" id="L593">                return modelCommand.toString();</span>
+            }
+        };
+<span class="fc" id="L596">        Project p = getCurrentProject();</span>
+<span class="fc bfc" id="L597" title="All 2 branches covered.">        if (p != null) {</span>
+<span class="fc" id="L598">            return getCurrentProject().getUndoManager().execute(wrappedCommand);</span>
+        } else {
+<span class="fc" id="L600">            return wrappedCommand.execute();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

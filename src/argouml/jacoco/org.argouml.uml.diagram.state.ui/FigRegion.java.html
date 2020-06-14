@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigRegion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigRegion.java</span></div><h1>FigRegion.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ */
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Dimension;
+import org.tigris.gef.presentation.FigRect;
+
+/**
+ * Displays a region within a composite state
+ */
+public class FigRegion extends FigRect {
+
+    /**
+     * Construct a fig representing a region.
+     * 
+     * @param region owning UML element
+     */
+    public FigRegion(
+            final Object region) {
+<span class="nc" id="L31">        super(0, 0, 0, 0);</span>
+<span class="nc" id="L32">        setLineWidth(0);</span>
+<span class="nc" id="L33">        setOwner(region);</span>
+<span class="nc" id="L34">    }</span>
+    
+    /*
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    @Override
+    public Dimension getMinimumSize() {
+<span class="nc" id="L41">        return new Dimension(180, 80);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SplashScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">SplashScreen.java</span></div><h1>SplashScreen.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+
+import javax.swing.JPanel;
+import javax.swing.JWindow;
+import javax.swing.border.EtchedBorder;
+
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressMonitor;
+import org.tigris.gef.ui.IStatusBar;
+
+/**
+ * The splash screen.
+ */
+public class SplashScreen 
+    extends JWindow 
+    implements IStatusBar, ProgressMonitor {
+
+<span class="nc" id="L63">    private StatusBar statusBar = new StatusBar();</span>
+    
+    /**
+     * Flag indicating that the splash screen has been painted.
+     */
+<span class="nc" id="L68">    private boolean paintCalled = false;</span>
+
+    /**
+     * The constructor.
+     */
+    public SplashScreen() {
+<span class="nc" id="L74">        this(&quot;Splash&quot;);</span>
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param title the title of the window
+     * @param iconName the icon for the window
+     */
+    private SplashScreen(String iconName) {
+<span class="nc" id="L84">	super();</span>
+
+<span class="nc" id="L86">	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</span>
+<span class="nc" id="L87">	getContentPane().setLayout(new BorderLayout(0, 0));</span>
+
+<span class="nc" id="L89">	SplashPanel panel = new SplashPanel(iconName);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">	if (panel.getImage() != null) {</span>
+<span class="nc" id="L91">	    int imgWidth = panel.getImage().getIconWidth();</span>
+<span class="nc" id="L92">	    int imgHeight = panel.getImage().getIconHeight();</span>
+<span class="nc" id="L93">            Point scrCenter = GraphicsEnvironment.getLocalGraphicsEnvironment()</span>
+<span class="nc" id="L94">                    .getCenterPoint();</span>
+<span class="nc" id="L95">	    setLocation(scrCenter.x - imgWidth / 2,</span>
+			scrCenter.y - imgHeight / 2);
+	}
+
+<span class="nc" id="L99">	JPanel splash = new JPanel(new BorderLayout());</span>
+<span class="nc" id="L100">	splash.setBorder(new EtchedBorder(EtchedBorder.RAISED));</span>
+<span class="nc" id="L101">	splash.add(panel, BorderLayout.CENTER);</span>
+<span class="nc" id="L102">	splash.add(statusBar, BorderLayout.SOUTH);</span>
+<span class="nc" id="L103">	getContentPane().add(splash);</span>
+	// add preloading progress bar?
+<span class="nc" id="L105">	Dimension contentPaneSize = getContentPane().getPreferredSize();</span>
+<span class="nc" id="L106">	setSize(contentPaneSize.width, contentPaneSize.height);</span>
+<span class="nc" id="L107">	pack();</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * @return the status bar of this dialog
+     * @deprecated for 0.31.7 by tfmorris. Use methods from the
+     *             {@link IStatusBar} interface implemented by this class 
+     *             e.g. {@link #showStatus(String)}/
+     */
+    @Deprecated
+    public StatusBar getStatusBar() {
+<span class="nc" id="L118">        return statusBar;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
+     */
+    public void showStatus(String s) {
+<span class="nc" id="L125">        statusBar.showStatus(s);</span>
+<span class="nc" id="L126">    }</span>
+    
+    /*
+     * Override paint so we can set a flag the first time we're called
+     * and notify any waiting threads that the splash screen has been
+     * painted.
+     * @see java.awt.Component#paint(java.awt.Graphics)
+     */
+    @Override
+    public void paint(Graphics g) {
+<span class="nc" id="L136">        super.paint(g);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        if (!paintCalled) {</span>
+<span class="nc" id="L138">            synchronized (this) {</span>
+<span class="nc" id="L139">                paintCalled = true;</span>
+<span class="nc" id="L140">                notifyAll();</span>
+<span class="nc" id="L141">            }</span>
+        }
+<span class="nc" id="L143">    }</span>
+
+    /**
+     * @param called true if paint() is already called
+     */
+    public void setPaintCalled(boolean called) {
+<span class="nc" id="L149">        this.paintCalled = called;</span>
+<span class="nc" id="L150">    }</span>
+
+    /**
+     * @return true if paint() is already called
+     */
+    public boolean isPaintCalled() {
+<span class="nc" id="L156">        return paintCalled;</span>
+    }
+
+    public void progress(ProgressEvent event) throws InterruptedException {
+<span class="nc" id="L160">        statusBar.progress(event);        </span>
+<span class="nc" id="L161">    }</span>
+
+    public void updateProgress(int progress) {
+<span class="nc" id="L164">        statusBar.updateProgress(progress);</span>
+<span class="nc" id="L165">    }</span>
+
+    public void updateSubTask(String name) {
+<span class="nc" id="L168">        statusBar.updateSubTask(name);</span>
+<span class="nc" id="L169">    }</span>
+
+    public void updateMainTask(String name) {
+<span class="nc" id="L172">        statusBar.updateMainTask(name);</span>
+<span class="nc" id="L173">    }</span>
+
+    public boolean isCanceled() {
+<span class="nc" id="L176">        return false;</span>
+    }
+
+    public void setMaximumProgress(int max) {
+<span class="nc" id="L180">        statusBar.setMaximumProgress(max);</span>
+<span class="nc" id="L181">    }</span>
+
+    public void notifyNullAction() {
+        // ignored - will never be called
+<span class="nc" id="L185">    }</span>
+
+    public void notifyMessage(
+            String title, 
+            String introduction, 
+            String message) {
+        // TODO: Auto-generated method stub
+        
+<span class="nc" id="L193">    }</span>
+
+    public void close() {
+        // TODO: Auto-generated method stub        
+<span class="nc" id="L197">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

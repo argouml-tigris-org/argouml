@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToDoByGoal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">ToDoByGoal.java</span></div><h1>ToDoByGoal.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoListEvent;
+import org.argouml.cognitive.ToDoListListener;
+
+/**
+ * Represents a perspective for ToDo items: grouping by goal type.
+ *
+ */
+public class ToDoByGoal extends ToDoPerspective
+    implements ToDoListListener {
+<span class="nc" id="L56">    private static final Logger LOG =</span>
+<span class="nc" id="L57">        Logger.getLogger(ToDoByGoal.class.getName());</span>
+
+
+    /**
+     * The constructor.
+     *
+     */
+    public ToDoByGoal() {
+<span class="nc" id="L65">	super(&quot;combobox.todo-perspective-goal&quot;);</span>
+<span class="nc" id="L66">	addSubTreeModel(new GoListToGoalsToItems());</span>
+<span class="nc" id="L67">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // ToDoListListener implementation
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsChanged(ToDoListEvent tde) {
+<span class="nc" id="L76">        LOG.log(Level.FINE, &quot;toDoItemsChanged&quot;);</span>
+<span class="nc" id="L77">	Object[] path = new Object[2];</span>
+<span class="nc" id="L78">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        for (Goal g : Designer.theDesigner().getGoalList()) {</span>
+<span class="nc" id="L81">	    path[1] = g;</span>
+<span class="nc" id="L82">	    int nMatchingItems = 0;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            for (ToDoItem item : tde.getToDoItemList()) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (!item.supports(g)) {</span>
+<span class="nc" id="L85">                    continue;</span>
+                }
+<span class="nc" id="L87">		nMatchingItems++;</span>
+<span class="nc" id="L88">	    }</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">	    if (nMatchingItems == 0) {</span>
+<span class="nc" id="L90">	        continue;</span>
+	    }
+<span class="nc" id="L92">	    int[] childIndices = new int[nMatchingItems];</span>
+<span class="nc" id="L93">	    Object[] children = new Object[nMatchingItems];</span>
+<span class="nc" id="L94">	    nMatchingItems = 0;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">            for (ToDoItem item : tde.getToDoItemList()) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (!item.supports(g)) {</span>
+<span class="nc" id="L97">                    continue;</span>
+                }
+<span class="nc" id="L99">		childIndices[nMatchingItems] = getIndexOfChild(g, item);</span>
+<span class="nc" id="L100">		children[nMatchingItems] = item;</span>
+<span class="nc" id="L101">		nMatchingItems++;</span>
+<span class="nc" id="L102">	    }</span>
+<span class="nc" id="L103">	    fireTreeNodesChanged(this, path, childIndices, children);</span>
+<span class="nc" id="L104">	}</span>
+<span class="nc" id="L105">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsAdded(ToDoListEvent tde) {
+<span class="nc" id="L111">        LOG.log(Level.FINE, &quot;toDoItemAdded&quot;);</span>
+<span class="nc" id="L112">	Object[] path = new Object[2];</span>
+<span class="nc" id="L113">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        for (Goal g : Designer.theDesigner().getGoalList()) {</span>
+<span class="nc" id="L116">	    path[1] = g;</span>
+<span class="nc" id="L117">	    int nMatchingItems = 0;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            for (ToDoItem item : tde.getToDoItemList()) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if (!item.supports(g)) {</span>
+<span class="nc" id="L120">		    continue;</span>
+		}
+<span class="nc" id="L122">		nMatchingItems++;</span>
+<span class="nc" id="L123">	    }</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">	    if (nMatchingItems == 0) {</span>
+<span class="nc" id="L125">		continue;</span>
+	    }
+<span class="nc" id="L127">	    int[] childIndices = new int[nMatchingItems];</span>
+<span class="nc" id="L128">	    Object[] children = new Object[nMatchingItems];</span>
+<span class="nc" id="L129">	    nMatchingItems = 0;</span>
+            // TODO: This shouldn't require two passes through the list - tfm
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            for (ToDoItem item : tde.getToDoItemList()) {</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (!item.supports(g)) {</span>
+<span class="nc" id="L133">                    continue;</span>
+                }
+<span class="nc" id="L135">		childIndices[nMatchingItems] = getIndexOfChild(g, item);</span>
+<span class="nc" id="L136">		children[nMatchingItems] = item;</span>
+<span class="nc" id="L137">		nMatchingItems++;</span>
+<span class="nc" id="L138">	    }</span>
+<span class="nc" id="L139">	    fireTreeNodesInserted(this, path, childIndices, children);</span>
+<span class="nc" id="L140">	}</span>
+<span class="nc" id="L141">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
+    public void toDoItemsRemoved(ToDoListEvent tde) {
+<span class="nc" id="L147">        LOG.log(Level.FINE, &quot;toDoItemAdded&quot;);</span>
+<span class="nc" id="L148">	Object[] path = new Object[2];</span>
+<span class="nc" id="L149">	path[0] = Designer.theDesigner().getToDoList();</span>
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        for (Goal g : Designer.theDesigner().getGoalList()) {</span>
+<span class="nc" id="L152">            LOG.log(Level.FINE, &quot;toDoItemRemoved updating decision node!&quot;);</span>
+<span class="nc" id="L153">	    boolean anyInGoal = false;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            for (ToDoItem item : tde.getToDoItemList()) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		if (item.supports(g)) {</span>
+<span class="nc" id="L156">		    anyInGoal = true;</span>
+		}
+<span class="nc" id="L158">	    }</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">	    if (!anyInGoal) {</span>
+<span class="nc" id="L160">	        continue;</span>
+	    }
+<span class="nc" id="L162">	    path[1] = g;</span>
+	    //fireTreeNodesChanged(this, path, childIndices, children);
+<span class="nc" id="L164">	    fireTreeStructureChanged(path);</span>
+<span class="nc" id="L165">	}</span>
+<span class="nc" id="L166">    }</span>
+
+    /*
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
+<span class="nc" id="L171">    public void toDoListChanged(ToDoListEvent tde) { }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionCompartmentDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionCompartmentDisplay.java</span></div><h1>ActionCompartmentDisplay.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+
+
+/**
+ * A class to implement the actions involved in hiding and showing
+ * compartments on interfaces, classes and use cases.&lt;p&gt;
+ *
+ * This implementation may easily be extended for other
+ * compartments of other figs.&lt;p&gt;
+ *
+ * The class declares a number of static instances, each with an
+ * actionPerformed method that performs the required action.
+ */
+public class ActionCompartmentDisplay extends UndoableAction {
+
+    /**
+     * A flag to indicate whether the action should show or hide the
+     * relevant compartment.
+     */
+<span class="nc" id="L73">    private boolean display = false;</span>
+
+    /**
+     * Compartment type(s) field.
+     * Bitfield of flags with a bit for each compartment type
+     */
+    private int cType;
+
+    private static final int COMPARTMENT_ATTRIBUTE = 1;
+    private static final int COMPARTMENT_OPERATION = 2;
+    private static final int COMPARTMENT_EXTENSIONPOINT = 4;
+    private static final int COMPARTMENT_ENUMLITERAL = 8;
+
+
+    /**
+     * Static instance to show the attribute compartment of a class.
+     */
+<span class="nc" id="L90">    private static final UndoableAction SHOW_ATTR_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(true,
+                &quot;action.show-attribute-compartment&quot;, COMPARTMENT_ATTRIBUTE);
+
+    /**
+     * Static instance to hide the attribute compartment of a class.
+     */
+<span class="nc" id="L97">    private static final UndoableAction HIDE_ATTR_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(false,
+                &quot;action.hide-attribute-compartment&quot;, COMPARTMENT_ATTRIBUTE);
+
+    /**
+     * Static instance to show the operation compartment of a class.
+     */
+<span class="nc" id="L104">    private static final UndoableAction SHOW_OPER_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(true,
+                &quot;action.show-operation-compartment&quot;, COMPARTMENT_OPERATION);
+
+    /**
+     * Static instance to hide the operation compartment of a class.
+     */
+<span class="nc" id="L111">    private static final UndoableAction HIDE_OPER_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(false,
+		&quot;action.hide-operation-compartment&quot;, COMPARTMENT_OPERATION);
+
+    /**
+     * Static instance to show the extension point compartment of a use
+     * case.
+     */
+<span class="nc" id="L119">    private static final UndoableAction SHOW_EXTPOINT_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(true,
+                &quot;action.show-extension-point-compartment&quot;, 
+                COMPARTMENT_EXTENSIONPOINT);
+
+    /**
+     * Static instance to hide the extension point compartment of a use
+     * case.
+     */
+<span class="nc" id="L128">    private static final UndoableAction HIDE_EXTPOINT_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(false,
+                &quot;action.hide-extension-point-compartment&quot;, 
+                COMPARTMENT_EXTENSIONPOINT);
+
+    /**
+     * Static instance to show both compartments of a class or enumeration.
+     */
+<span class="nc" id="L136">    private static final UndoableAction SHOW_ALL_COMPARTMENTS =</span>
+        new ActionCompartmentDisplay(true, &quot;action.show-all-compartments&quot;, 
+                COMPARTMENT_ATTRIBUTE 
+                | COMPARTMENT_OPERATION 
+                | COMPARTMENT_ENUMLITERAL);
+
+    /**
+     * Static instance to hide both compartments of a class or enumeration.
+     */
+<span class="nc" id="L145">    private static final UndoableAction HIDE_ALL_COMPARTMENTS =</span>
+        new ActionCompartmentDisplay(false, &quot;action.hide-all-compartments&quot;, 
+                COMPARTMENT_ATTRIBUTE 
+                | COMPARTMENT_OPERATION
+                | COMPARTMENT_ENUMLITERAL);
+
+    /**
+     * Static instance to show the enumeration literals compartment of an
+     * enumeration.
+     */
+<span class="nc" id="L155">    private static final UndoableAction SHOW_ENUMLITERAL_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(true,
+                &quot;action.show-enumeration-literal-compartment&quot;, 
+                COMPARTMENT_ENUMLITERAL);
+
+    /**
+     * Static instance to hide the enumeration literals compartment of an
+     * enumeration.
+     */
+<span class="nc" id="L164">    private static final UndoableAction HIDE_ENUMLITERAL_COMPARTMENT =</span>
+        new ActionCompartmentDisplay(false,
+                &quot;action.hide-enumeration-literal-compartment&quot;, 
+                COMPARTMENT_ENUMLITERAL);
+
+
+
+    /**
+     * Constructor for a new instance. Can only be called by this class or
+     * its children, since used to create static instances only.
+     *
+     * @param d    &lt;code&gt;true&lt;/code&gt; if the compartment is to be shown,
+     *             &lt;code&gt;false&lt;/code&gt; if it is to be hidden
+     *
+     * @param c    the text to be displayed for this action
+     * @param type the type of compartment. See definition at {@link #cType}
+     */
+    protected ActionCompartmentDisplay(boolean d, String c, int type) {
+<span class="nc" id="L182">	super(Translator.localize(c));</span>
+<span class="nc" id="L183">	display = d;</span>
+<span class="nc" id="L184">        cType = type;</span>
+<span class="nc" id="L185">    }</span>
+
+
+    /**
+     * Return the compartment show and/or hide actions needed for the selected
+     * Figs.
+     * 
+     * @return Only returns the actions for the menu-items that make sense for
+     *         the current selection.
+     */
+    public static Collection&lt;Action&gt; getActions() {
+<span class="nc" id="L196">        Collection&lt;Action&gt; actions = new ArrayList&lt;Action&gt;();</span>
+<span class="nc" id="L197">        Editor ce = Globals.curEditor();</span>
+
+<span class="nc" id="L199">        int present = 0;</span>
+<span class="nc" id="L200">        int visible = 0;</span>
+        
+<span class="nc" id="L202">        boolean operPresent = false;</span>
+<span class="nc" id="L203">        boolean operVisible = false;</span>
+        
+<span class="nc" id="L205">        boolean attrPresent = false;</span>
+<span class="nc" id="L206">        boolean attrVisible = false;</span>
+        
+<span class="nc" id="L208">        boolean epPresent = false;</span>
+<span class="nc" id="L209">        boolean epVisible = false;</span>
+        
+<span class="nc" id="L211">        boolean enumPresent = false;</span>
+<span class="nc" id="L212">        boolean enumVisible = false;</span>
+
+<span class="nc" id="L214">        List&lt;Fig&gt; figs = ce.getSelectionManager().getSelectedFigs();</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">        for (Fig f : figs) {</span>
+<span class="nc" id="L216">            final FigCompartmentBox fcb = (FigCompartmentBox) f;</span>
+
+<span class="nc" id="L218">            final FigCompartment attributeCompartment =</span>
+<span class="nc" id="L219">                fcb.getCompartment(Model.getMetaTypes().getAttribute());</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            if (attributeCompartment != null) {</span>
+<span class="nc" id="L221">                present++;</span>
+<span class="nc" id="L222">                attrPresent = true;</span>
+<span class="nc" id="L223">                attrVisible = attributeCompartment.isVisible();</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">                if (attrVisible) {</span>
+<span class="nc" id="L225">                    visible++;</span>
+                }
+            }
+<span class="nc" id="L228">            final FigCompartment operationCompartment =</span>
+<span class="nc" id="L229">                fcb.getCompartment(Model.getMetaTypes().getOperation());</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            if (operationCompartment != null) {</span>
+<span class="nc" id="L231">                present++;</span>
+<span class="nc" id="L232">                operPresent = true;</span>
+<span class="nc" id="L233">                operVisible = operationCompartment.isVisible();</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                if (operVisible) {</span>
+<span class="nc" id="L235">                    visible++;</span>
+                }
+            }
+<span class="nc" id="L238">            final FigCompartment epCompartment =</span>
+<span class="nc" id="L239">                fcb.getCompartment(Model.getMetaTypes().getExtensionPoint());</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">            if (epCompartment != null) {</span>
+<span class="nc" id="L241">                present++;</span>
+<span class="nc" id="L242">                epPresent = true;</span>
+<span class="nc" id="L243">                epVisible = epCompartment.isVisible();</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">                if (epVisible) {</span>
+<span class="nc" id="L245">                    visible++;</span>
+                }
+            }
+<span class="nc" id="L248">            final FigCompartment elCompartment =</span>
+<span class="nc" id="L249">                fcb.getCompartment(Model.getMetaTypes().getEnumerationLiteral());</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">            if (elCompartment != null) {</span>
+<span class="nc" id="L251">                present++;</span>
+<span class="nc" id="L252">                enumPresent = true;</span>
+<span class="nc" id="L253">                enumVisible = elCompartment.isVisible();</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                if (enumVisible) {</span>
+<span class="nc" id="L255">                    visible++;</span>
+                }
+            }
+<span class="nc" id="L258">        }</span>
+
+        // Set up hide all / show all
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (present &gt; 1) {</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (visible &gt; 0) {</span>
+<span class="nc" id="L263">                actions.add(HIDE_ALL_COMPARTMENTS);</span>
+            }
+<span class="nc bnc" id="L265" title="All 2 branches missed.">            if (present - visible &gt; 0) {</span>
+<span class="nc" id="L266">                actions.add(SHOW_ALL_COMPARTMENTS);</span>
+            }
+        }
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (attrPresent) {</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (attrVisible) {</span>
+<span class="nc" id="L272">                actions.add(HIDE_ATTR_COMPARTMENT);                </span>
+            } else {
+<span class="nc" id="L274">                actions.add(SHOW_ATTR_COMPARTMENT);               </span>
+            }
+        }
+
+<span class="nc bnc" id="L278" title="All 2 branches missed.">        if (enumPresent) {</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">            if (enumVisible) {</span>
+<span class="nc" id="L280">                actions.add(HIDE_ENUMLITERAL_COMPARTMENT);</span>
+            } else {
+<span class="nc" id="L282">                actions.add(SHOW_ENUMLITERAL_COMPARTMENT);</span>
+            }
+        }
+        
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (operPresent) {</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">            if (operVisible) {</span>
+<span class="nc" id="L288">                actions.add(HIDE_OPER_COMPARTMENT);                </span>
+            } else {
+<span class="nc" id="L290">                actions.add(SHOW_OPER_COMPARTMENT);               </span>
+            }
+        }
+
+
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (epPresent) {</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            if (epVisible) {</span>
+<span class="nc" id="L297">                actions.add(HIDE_EXTPOINT_COMPARTMENT);</span>
+            } else {
+<span class="nc" id="L299">                actions.add(SHOW_EXTPOINT_COMPARTMENT);               </span>
+            }
+        }
+
+<span class="nc" id="L303">        return actions;</span>
+    }
+
+
+    /**
+     * Action method invoked when an event triggers this action.&lt;p&gt;
+     *
+     * The {@link #cType} instance variable defines the action to
+     * take, and the {@link #display} instance variable whether it should
+     * set visibility or not.&lt;p&gt;
+     *
+     * @param ae  The event that triggered us.
+     */
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        for (Selection sel : Globals.curEditor().getSelectionManager().getSelections()) {</span>
+<span class="nc" id="L319">	    final Fig f = sel.getContent();</span>
+
+            // Perform the action
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            if ((cType &amp; COMPARTMENT_ATTRIBUTE) != 0) {</span>
+<span class="nc" id="L323">                final FigCompartmentBox fcb = (FigCompartmentBox) f;</span>
+<span class="nc" id="L324">                fcb.showCompartment(</span>
+<span class="nc" id="L325">                        Model.getMetaTypes().getAttribute(),</span>
+                        display);
+		
+            }
+<span class="nc bnc" id="L329" title="All 2 branches missed.">            if ((cType &amp; COMPARTMENT_OPERATION) != 0) {</span>
+<span class="nc" id="L330">                final FigCompartmentBox fcb = (FigCompartmentBox) f;</span>
+<span class="nc" id="L331">                fcb.showCompartment(</span>
+<span class="nc" id="L332">                        Model.getMetaTypes().getOperation(),</span>
+                        display);
+            }
+
+<span class="nc bnc" id="L336" title="All 2 branches missed.">            if ((cType &amp; COMPARTMENT_EXTENSIONPOINT) != 0) {</span>
+<span class="nc" id="L337">                final FigCompartmentBox fcb = (FigCompartmentBox) f;</span>
+<span class="nc" id="L338">                fcb.showCompartment(</span>
+<span class="nc" id="L339">                        Model.getMetaTypes().getExtensionPoint(),</span>
+                        display);
+            }
+<span class="nc bnc" id="L342" title="All 2 branches missed.">            if ((cType &amp; COMPARTMENT_ENUMLITERAL) != 0) {</span>
+<span class="nc" id="L343">                final FigCompartmentBox fcb = (FigCompartmentBox) f;</span>
+<span class="nc" id="L344">                fcb.showCompartment(</span>
+<span class="nc" id="L345">                        Model.getMetaTypes().getEnumerationLiteral(),</span>
+                        display);
+            }
+<span class="nc" id="L348">	}</span>
+<span class="nc" id="L349">    }</span>
+
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

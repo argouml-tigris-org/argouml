@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SelectionNodeClarifiers2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">SelectionNodeClarifiers2.java</span></div><h1>SelectionNodeClarifiers2.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
+import org.tigris.gef.base.ModeManager;
+import org.tigris.gef.base.ModeModify;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.base.SelectionButtons;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.Handle;
+
+/**
+ * Enhanced version of SelectionNodeClarifiers with the new methods
+ * necessary for the enhanced support marked as abstract so that implementors
+ * are forced to implement them.  SelectionNodeClarifiers is simple
+ * extension of this which implements null versions of the required
+ * methods for backward compatibility with the previous implementation.
+ * &lt;p&gt;
+ * To upgrade subtypes of SelectionNodeClarifiers, change them to
+ * extend this class instead and implement the required abstract methods.
+ * The methods paintButtons, dragHandle, hitHandle, and createEdge* can
+ * all usually be removed.
+ *
+ * @author jrobbins
+ * @author Tom Morris
+ */
+public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
+
+<span class="nc" id="L79">    private static final Logger LOG =</span>
+<span class="nc" id="L80">        Logger.getLogger(SelectionNodeClarifiers2.class.getName());</span>
+
+    /** Base index of array */
+    protected static final int BASE = 10;
+    /** Top Handle */
+    protected static final int TOP = 10;
+    /** Bottom Handle */
+    protected static final int BOTTOM = 11;
+    /** Left Handle */
+    protected static final int LEFT = 12;
+    /** Right Handle */
+    protected static final int RIGHT = 13;
+    /** Lower left corner Handle */
+    protected static final int LOWER_LEFT = 14;
+
+    private static final int OFFSET = 2;
+
+<span class="nc" id="L97">    private Object newEdge = null;</span>
+
+    private int button;
+
+    /**
+     * Construct a new SelectionNodeClarifiers for the given Fig
+     *
+     * @param f
+     *            the given Fig
+     */
+    public SelectionNodeClarifiers2(Fig f) {
+<span class="nc" id="L108">        super(f);</span>
+<span class="nc" id="L109">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#paint(java.awt.Graphics)
+     */
+    @Override
+    public void paint(Graphics g) {
+<span class="nc" id="L116">        final Mode topMode = Globals.curEditor().getModeManager().top();</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (!(topMode instanceof ModePlace)) {</span>
+            // If the user has selected ModePlace either by a diagram
+            // tool or AddToDiagram then we don't want to show the
+            // clarifiers.
+<span class="nc" id="L121">            ((Clarifiable) getContent()).paintClarifiers(g);</span>
+        }
+<span class="nc" id="L123">        super.paint(g);</span>
+<span class="nc" id="L124">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
+     */
+    public void paintButtons(Graphics g) {
+<span class="nc" id="L130">        final Mode topMode = Globals.curEditor().getModeManager().top();</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!(topMode instanceof ModePlace)) {</span>
+            // If the user has selected ModePlace either by a diagram
+            // tool or AddToDiagram then we don't want to show the
+            // toolbelt items.
+<span class="nc" id="L135">            Icon[] icons = getIcons();</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (icons == null) {</span>
+<span class="nc" id="L137">                return;</span>
+            }
+<span class="nc" id="L139">            int cx = getContent().getX();</span>
+<span class="nc" id="L140">            int cy = getContent().getY();</span>
+<span class="nc" id="L141">            int cw = getContent().getWidth();</span>
+<span class="nc" id="L142">            int ch = getContent().getHeight();</span>
+
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (icons[0] != null) {</span>
+<span class="nc" id="L145">                paintButtonAbove(icons[0], g, cx + cw / 2, cy - OFFSET, TOP);</span>
+            }
+<span class="nc bnc" id="L147" title="All 2 branches missed.">            if (icons[1] != null) {</span>
+<span class="nc" id="L148">                paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET,</span>
+                        BOTTOM);
+            }
+<span class="nc bnc" id="L151" title="All 2 branches missed.">            if (icons[2] != null) {</span>
+<span class="nc" id="L152">                paintButtonLeft(icons[2], g, cx - OFFSET, cy + ch / 2, LEFT);</span>
+            }
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            if (icons[3] != null) {</span>
+<span class="nc" id="L155">                paintButtonRight(icons[3], g, cx + cw + OFFSET, cy + ch / 2,</span>
+                        RIGHT);
+            }
+<span class="nc bnc" id="L158" title="All 2 branches missed.">            if (icons[4] != null) {</span>
+<span class="nc" id="L159">                paintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);</span>
+            }
+        }
+<span class="nc" id="L162">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.SelectionButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int arg0) {
+<span class="nc" id="L168">        return null;</span>
+    }
+
+    /**
+     * Compute handle selection, if any, from cursor location.
+     *
+     * @param cursor
+     *            cursor point represented by a 0-size rectangle
+     * @param h
+     *            handle in which to return selected Handle information (output
+     *            parameter). A handle index of -1 indicates that the cursor is
+     *            not over any handle.
+     *
+     * If GEF had any API documentation you could see the following:
+     * @see org.tigris.gef.base.SelectionResize#hitHandle(java.awt.Rectangle,
+     *      org.tigris.gef.presentation.Handle)
+     */
+    public void hitHandle(Rectangle cursor, Handle h) {
+<span class="nc" id="L186">        super.hitHandle(cursor, h);</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">        if (h.index != -1) {</span>
+            // super implementation found a hit
+<span class="nc" id="L189">            return;</span>
+        }
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        if (!isPaintButtons()) {</span>
+<span class="nc" id="L192">            return;</span>
+        }
+<span class="nc" id="L194">        Icon[] icons = getIcons();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        if (icons == null) {</span>
+<span class="nc" id="L196">            return;</span>
+        }
+<span class="nc" id="L198">        Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L199">        SelectionManager sm = ce.getSelectionManager();</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">        if (sm.size() != 1) {</span>
+<span class="nc" id="L201">            return;</span>
+        }
+<span class="nc" id="L203">        ModeManager mm = ce.getModeManager();</span>
+<span class="nc bnc" id="L204" title="All 4 branches missed.">        if (mm.includes(ModeModify.class) &amp;&amp; getPressedButton() == -1) {</span>
+<span class="nc" id="L205">            return;</span>
+        }
+<span class="nc" id="L207">        int cx = getContent().getX();</span>
+<span class="nc" id="L208">        int cy = getContent().getY();</span>
+<span class="nc" id="L209">        int cw = getContent().getWidth();</span>
+<span class="nc" id="L210">        int ch = getContent().getHeight();</span>
+
+        /*
+         * Crazy numbering scheme at work here.  Here's how the handle numbers
+         * are laid out.  Values 0-7 are defined by GEF and go left to
+         * right, top to bottom (ie not clockwise or counterclockwise).
+         * Values 10-14 zigzag North, South, West, East, Southwest.
+         * If you can correctly guess where 15 will go, you should buy
+         * a lottery ticket immediately.
+         *  &lt;pre&gt;
+         *            10
+         *     0-------1-------2
+         *     |               |
+         *  12 3               4 13
+         *     |               |
+         *  14 5-------6-------7
+         *            11
+         * &lt;/pre&gt;
+         */
+<span class="nc bnc" id="L229" title="All 4 branches missed.">        if (icons[0] != null &amp;&amp; hitAbove(cx + cw / 2, cy,</span>
+<span class="nc" id="L230">                icons[0].getIconWidth(), icons[0].getIconHeight(),</span>
+                cursor)) {
+<span class="nc" id="L232">            h.index = TOP;</span>
+<span class="nc bnc" id="L233" title="All 4 branches missed.">        } else if (icons[1] != null &amp;&amp; hitBelow(cx + cw / 2, cy + ch,</span>
+<span class="nc" id="L234">                icons[1].getIconWidth(), icons[1].getIconHeight(),</span>
+                cursor)) {
+<span class="nc" id="L236">            h.index = BOTTOM;</span>
+<span class="nc bnc" id="L237" title="All 4 branches missed.">        } else if (icons[2] != null &amp;&amp; hitLeft(cx, cy + ch / 2,</span>
+<span class="nc" id="L238">                icons[2].getIconWidth(), icons[2].getIconHeight(),</span>
+                cursor)) {
+<span class="nc" id="L240">            h.index = LEFT;</span>
+<span class="nc bnc" id="L241" title="All 4 branches missed.">        } else if (icons[3] != null &amp;&amp; hitRight(cx + cw, cy + ch / 2,</span>
+<span class="nc" id="L242">                icons[3].getIconWidth(), icons[3].getIconHeight(),</span>
+                cursor)) {
+<span class="nc" id="L244">            h.index = RIGHT;</span>
+<span class="nc bnc" id="L245" title="All 4 branches missed.">        } else if (icons[4] != null &amp;&amp; hitLeft(cx, cy + ch,</span>
+<span class="nc" id="L246">                icons[4].getIconWidth(), icons[4].getIconHeight(),</span>
+                cursor)) {
+<span class="nc" id="L248">            h.index = LOWER_LEFT;</span>
+        } else {
+<span class="nc" id="L250">            h.index = -1;</span>
+        }
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        if (h.index == -1) {</span>
+<span class="nc" id="L253">            h.instructions = getInstructions(15);</span>
+        } else {
+<span class="nc" id="L255">            h.instructions = getInstructions(h.index);</span>
+        }
+<span class="nc" id="L257">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
+     * org.tigris.gef.presentation.Handle)
+     */
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+
+        // Don't allow drag outside of bounds of diagram
+<span class="nc" id="L266">        mX = Math.max(mX, 0);</span>
+<span class="nc" id="L267">        mY = Math.max(mY, 0);</span>
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        if (hand.index &lt; 10) {</span>
+<span class="nc" id="L270">            setPaintButtons(false);</span>
+<span class="nc" id="L271">            super.dragHandle(mX, mY, anX, anY, hand);</span>
+<span class="nc" id="L272">            return;</span>
+        }
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (!isDraggableHandle(hand.index)) {</span>
+<span class="nc" id="L275">            return;</span>
+        }
+<span class="nc" id="L277">        int cx = getContent().getX(), cy = getContent().getY();</span>
+<span class="nc" id="L278">        int cw = getContent().getWidth(), ch = getContent().getHeight();</span>
+
+<span class="nc" id="L280">        int bx = mX, by = mY;</span>
+
+        // Remember what handle was clicked for the case where the drag
+        // is released over empty space
+<span class="nc" id="L284">        button = hand.index;</span>
+
+<span class="nc bnc" id="L286" title="All 6 branches missed.">        switch (hand.index) {</span>
+        case TOP:
+<span class="nc" id="L288">            by = cy;</span>
+<span class="nc" id="L289">            bx = cx + cw / 2;</span>
+<span class="nc" id="L290">            break;</span>
+        case BOTTOM:
+<span class="nc" id="L292">            by = cy + ch;</span>
+<span class="nc" id="L293">            bx = cx + cw / 2;</span>
+<span class="nc" id="L294">            break;</span>
+        case LEFT:
+<span class="nc" id="L296">            by = cy + ch / 2;</span>
+<span class="nc" id="L297">            bx = cx;</span>
+<span class="nc" id="L298">            break;</span>
+        case RIGHT:
+<span class="nc" id="L300">            by = cy + ch / 2;</span>
+<span class="nc" id="L301">            bx = cx + cw;</span>
+<span class="nc" id="L302">            break;</span>
+        case LOWER_LEFT:
+<span class="nc" id="L304">            by = cy + ch;</span>
+<span class="nc" id="L305">            bx = cx;</span>
+<span class="nc" id="L306">            break;</span>
+        default:
+<span class="nc" id="L308">            LOG.log(Level.WARNING, &quot;invalid handle number&quot;);</span>
+            break;
+        }
+
+<span class="nc" id="L312">        Object nodeType = getNewNodeType(hand.index);</span>
+<span class="nc" id="L313">        Object edgeType = getNewEdgeType(hand.index);</span>
+<span class="nc" id="L314">        boolean reverse = isReverseEdge(hand.index);</span>
+
+<span class="nc bnc" id="L316" title="All 4 branches missed.">        if (edgeType != null &amp;&amp; nodeType != null) {</span>
+<span class="nc" id="L317">            Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L318">            ModeCreateEdgeAndNode m =</span>
+<span class="nc" id="L319">                getNewModeCreateEdgeAndNode(ce,</span>
+<span class="nc" id="L320">                        edgeType, isEdgePostProcessRequested(), this);</span>
+<span class="nc" id="L321">            m.setup((FigNode) getContent(), getContent().getOwner(),</span>
+                    bx, by, reverse);
+<span class="nc" id="L323">            ce.pushMode(m);</span>
+        }
+<span class="nc" id="L325">    }</span>
+
+    /**
+     * Override this to implement post-processing.
+     *
+     * @param ce the current Editor
+     * @param edgeType the new edge type
+     * @param postProcess true if post-processing is wanted
+     * @param nodeCreator this class will create the node
+     * @return the ModeCreate
+     */
+    protected ModeCreateEdgeAndNode getNewModeCreateEdgeAndNode(
+            Editor ce, Object edgeType, boolean postProcess,
+            SelectionNodeClarifiers2 nodeCreator) {
+<span class="nc" id="L339">        return  new ModeCreateEdgeAndNode(ce,</span>
+              edgeType, postProcess, nodeCreator);
+    }
+
+    @Override
+    public void buttonClicked(int buttonCode) {
+<span class="nc" id="L345">        super.buttonClicked(buttonCode);</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">        if (isEdgePostProcessRequested()) {</span>
+<span class="nc" id="L347">            postProcessEdge2(newEdge);</span>
+        }
+<span class="nc" id="L349">    }</span>
+
+    protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
+<span class="nc" id="L352">        return createEdge(gm, newNode, TOP);</span>
+    }
+
+    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
+<span class="nc" id="L356">        return createEdge(gm, newNode, BOTTOM);</span>
+    }
+
+    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
+<span class="nc" id="L360">        return createEdge(gm, newNode, LEFT);</span>
+    }
+
+    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
+<span class="nc" id="L364">        return createEdge(gm, newNode, RIGHT);</span>
+    }
+
+    private Object createEdge(MutableGraphModel gm, Object newNode, int index) {
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (isReverseEdge(index)) {</span>
+<span class="nc" id="L369">            newEdge = gm.connect(</span>
+<span class="nc" id="L370">                    newNode, getContent().getOwner(), getNewEdgeType(index));</span>
+        } else {
+<span class="nc" id="L372">            newEdge = gm.connect(</span>
+<span class="nc" id="L373">                    getContent().getOwner(), newNode, getNewEdgeType(index));</span>
+        }
+<span class="nc" id="L375">        return newEdge;</span>
+    }
+
+    protected Object createEdgeToSelf(MutableGraphModel gm) {
+<span class="nc" id="L379">        Object edge = gm.connect(</span>
+<span class="nc" id="L380">                getContent().getOwner(), getContent().getOwner(),</span>
+<span class="nc" id="L381">                getNewEdgeType(LOWER_LEFT));</span>
+<span class="nc" id="L382">        return edge;</span>
+    }
+
+    /**
+     * Get array of icons to use when drawing handles.
+     * @return icon or null
+     */
+    protected abstract Icon[] getIcons();
+
+    /**
+     * Get the &quot;instructions&quot; string to pass to GEF for the given handle number.
+     *
+     * @param index
+     *            handle number that is being dragged from
+     * @return string or null
+     */
+    protected abstract String getInstructions(int index);
+
+    /**
+     * Get the node type to create when dragging from the given handle number.
+     *
+     * @param index
+     *            handle number that is being dragged from
+     * @return metatype for model element. Null to disallow drag.
+     */
+    protected abstract Object getNewNodeType(int index);
+
+    /**
+     * Get the edge type to create when dragging from the given handle number.
+     *
+     * @param index
+     *            handle number that is being dragged from
+     * @return metatype for model element. Null to disallow drag.
+     */
+    protected abstract Object getNewEdgeType(int index);
+
+    /**
+     * Get the node type to create when dragging from the given handle number.
+     *
+     * @param index
+     *            handle number that is being dragged from
+     * @return true to reverse direction of association from direction of drag.
+     *         e.g. specialization instead of generalization.  Default
+     *         implementation always returns false.
+     */
+    protected boolean isReverseEdge(int index) {
+<span class="nc" id="L428">        return false;</span>
+    }
+
+    /**
+     * Get the draggability of a particular handle. Default implementation
+     * always returns true. Override to return false for handles which shouldn't
+     * be draggable (i.e. they only support clicks, not drags).
+     *
+     * @param index
+     *            handle index to check draggability for
+     * @return true if this handle is draggable, false otherwise
+     */
+    protected boolean isDraggableHandle(int index) {
+<span class="nc" id="L441">        return true;</span>
+    }
+
+    /**
+     * Request post processing of edge by GEF after it is created using
+     * {@link ModeCreateEdgeAndNode#ModeCreateEdgeAndNode(Editor, Object, Object, boolean)}
+     *
+     * @return true if postprocessing requested
+     */
+    protected boolean isEdgePostProcessRequested() {
+<span class="nc" id="L451">        return false;</span>
+    }
+
+    /**
+     * @param newEdge the new edge to post-process
+     */
+    protected void postProcessEdge2(Object newEdge) {
+        // do nothing by default
+<span class="nc" id="L459">    }</span>
+
+    /**
+     * @return index of last button/handle that was clicked
+     */
+    protected int getButton() {
+<span class="nc" id="L465">        return button;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

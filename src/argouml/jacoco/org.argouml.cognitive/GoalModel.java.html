@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GoalModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">GoalModel.java</span></div><h1>GoalModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+/**
+ * Models the designers goals in making this design.  Provides useful
+ * control information to the Agency so that only critics relevant to
+ * the designers goals are ever executed.
+ *
+ * TODO: Really this should be part of a domain extension
+ * and not the kernel.  I have not developed this part of Argo very
+ * much.
+ *
+ * @author Jason Robbins
+ */
+public class GoalModel extends Observable implements Serializable {
+<span class="fc" id="L58">    private List&lt;Goal&gt; goals = new ArrayList&lt;Goal&gt;();</span>
+
+    /**
+     * The constructor.
+     *
+     */
+<span class="fc" id="L64">    public GoalModel() {</span>
+<span class="fc" id="L65">	addGoal(Goal.getUnspecifiedGoal());</span>
+<span class="fc" id="L66">    }</span>
+
+
+    /**
+     * @return the list of goals
+     */
+    public List&lt;Goal&gt; getGoalList() {
+<span class="fc" id="L73">        return goals;</span>
+    }
+
+    
+    /**
+     * @param g the goal to be added
+     */
+    public void addGoal(Goal g) {
+<span class="fc" id="L81">        goals.add(g);</span>
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * @param g the goal to be removed
+     */
+    public void removeGoal(Goal g) {
+<span class="fc" id="L88">        goals.remove(g);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Reply true iff the Designer wants to achieve the given goal.
+     *
+     * @param goalName the given goal
+     * @return true if the designer wants this
+     */
+    public boolean hasGoal(String goalName) {
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        for (Goal g : goals) {</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">	    if (g.getName().equals(goalName)) {</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">		return g.getPriority() &gt; 0;</span>
+	    }
+<span class="nc" id="L102">	}</span>
+<span class="nc" id="L103">	return false;</span>
+    }
+
+    /**
+     * @param goalName the given goal
+     * @param priority the new priority for the goal
+     */
+    public synchronized void setGoalPriority(String goalName, int priority) {
+<span class="fc" id="L111">	Goal g = new Goal(goalName, priority);</span>
+<span class="fc" id="L112">	goals.remove(g);</span>
+<span class="fc" id="L113">	goals.add(g);</span>
+<span class="fc" id="L114">    }</span>
+
+    //   public Object getGoalInfo(String goal) {
+    //     return _goals.getProperty(goal);
+    //     /* TODO: we need a better representation of goals */
+    //   }
+
+    //   public void setGoalInfo(String goal, String info) {
+    //     _goals.put(goal, info);
+    //     /* TODO: we need a better representation of goals */
+    //   }
+
+    /**
+     * The Designer wants to achieve the given goal.
+     *
+     * @param goalName the wanted goal
+     */
+    public void startDesiring(String goalName) {
+<span class="fc" id="L132">	addGoal(new Goal(goalName, 1));</span>
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * The Designer does not care about the given goal.
+     *
+     * @param goalName the unwanted goal
+     */
+    public void stopDesiring(String goalName) {
+<span class="fc" id="L141">	removeGoal(new Goal(goalName, 0));</span>
+<span class="fc" id="L142">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

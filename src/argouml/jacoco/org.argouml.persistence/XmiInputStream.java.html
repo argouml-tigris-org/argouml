@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XmiInputStream.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">XmiInputStream.java</span></div><h1>XmiInputStream.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.StringTokenizer;
+
+import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
+
+/**
+ * A BufferInputStream that is aware of XML structure.
+ * It can search for the first occurrence of a named tag
+ * and reads only the data (inclusively) from that tag
+ * to the matching end tag or it can search for the first
+ * occurrence of a named tag and read on the child tags.
+ * The tag is not expected to be an empty tag.
+ * @author Bob Tarling
+ */
+class XmiInputStream extends BufferedInputStream {
+    
+    private String tagName;
+    private String endTagName;
+    private String attributes;
+    private boolean extensionFound;
+    private boolean endFound;
+    private boolean parsingExtension;
+    private boolean readingName;
+    
+    private XmiExtensionParser xmiExtensionParser;
+    
+    private StringBuffer stringBuffer;
+    private String type;
+    
+    /**
+     * The number of bytes to be read between each progress
+     * event.
+     */
+    private long eventSpacing;
+
+    /**
+     * The number of characters read so far.
+     */
+    private long readCount;
+
+    /**
+     * The expected stream length.
+     */
+    private ProgressMgr progressMgr;
+
+    /**
+     * Construct a new XmlInputStream.
+     *
+     * @param inputStream the input stream to wrap.
+     * @param extParser the parser to call to read any
+     *                           XMI.extension elements
+     * @param spacing the number of characters to read before
+     *        firing a progress event.
+     * @param prgrssMgr the progress manager
+     */
+    public XmiInputStream(
+            InputStream inputStream,
+            XmiExtensionParser extParser,
+            long spacing,
+            ProgressMgr prgrssMgr) {
+<span class="fc" id="L103">        super(inputStream);</span>
+<span class="fc" id="L104">        eventSpacing = spacing;</span>
+<span class="fc" id="L105">        xmiExtensionParser  = extParser;</span>
+<span class="fc" id="L106">        progressMgr  = prgrssMgr;</span>
+<span class="fc" id="L107">    }</span>
+
+
+    /*
+     * @see java.io.InputStream#read()
+     */
+    @Override
+    public synchronized int read() throws IOException {
+
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (endFound) {</span>
+<span class="nc" id="L117">            extensionFound = false;</span>
+<span class="nc" id="L118">            parsingExtension = false;</span>
+<span class="nc" id="L119">            endFound = false;</span>
+<span class="nc" id="L120">            readingName = false;</span>
+<span class="nc" id="L121">            tagName = null;</span>
+<span class="nc" id="L122">            endTagName = null;</span>
+        }
+
+<span class="nc" id="L125">        int ch = super.read();</span>
+        
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (parsingExtension) {</span>
+<span class="nc" id="L128">            stringBuffer.append((char) ch);</span>
+        }
+        // else {
+        // TODO: Only progress when reading standard XMI
+        // extension parsers will continue progression.
+<span class="nc" id="L133">        ++readCount;</span>
+<span class="nc bnc" id="L134" title="All 4 branches missed.">        if (progressMgr != null &amp;&amp; readCount == eventSpacing) {</span>
+            try {
+<span class="nc" id="L136">                readCount = 0;</span>
+<span class="nc" id="L137">                progressMgr.nextPhase();</span>
+<span class="nc" id="L138">            } catch (InterruptedException e) {</span>
+<span class="nc" id="L139">                throw new InterruptedIOException(e);</span>
+<span class="nc" id="L140">            }</span>
+        }
+//        }
+        
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (xmiExtensionParser != null) {</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">            if (readingName) {</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">                if (isNameTerminator((char) ch)) {</span>
+<span class="nc" id="L147">                    readingName = false;</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">                    if (parsingExtension &amp;&amp; endTagName == null) {</span>
+<span class="nc" id="L149">                        endTagName = &quot;/&quot; + tagName;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                    } else if (tagName.equals(&quot;XMI.extension&quot;)) {</span>
+<span class="nc" id="L151">                        extensionFound = true;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                    } else if (tagName.equals(endTagName)) {</span>
+<span class="nc" id="L153">                        endFound = true;</span>
+<span class="nc" id="L154">                        xmiExtensionParser.parse(type, stringBuffer.toString());</span>
+<span class="nc" id="L155">                        stringBuffer.delete(0, stringBuffer.length());</span>
+                    }
+                } else {
+<span class="nc" id="L158">                    tagName += (char) ch;</span>
+                }
+            }
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (extensionFound) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                if (ch == '&gt;') {</span>
+<span class="nc" id="L164">                    extensionFound = false;</span>
+<span class="nc" id="L165">                    callExtensionParser();</span>
+                } else {
+<span class="nc" id="L167">                    attributes += (char) ch;</span>
+                }
+            }
+            
+<span class="nc bnc" id="L171" title="All 2 branches missed.">            if (ch == '&lt;') {</span>
+<span class="nc" id="L172">                readingName = true;</span>
+<span class="nc" id="L173">                tagName = &quot;&quot;;</span>
+            }
+        }
+<span class="nc" id="L176">        return ch;</span>
+    }
+    
+    private void callExtensionParser() {
+<span class="nc" id="L180">        String label = null;</span>
+<span class="nc" id="L181">        String extender = null;</span>
+<span class="nc" id="L182">        for (StringTokenizer st = new StringTokenizer(attributes, &quot; =&quot;);</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                st.hasMoreTokens(); ) {</span>
+<span class="nc" id="L184">            String attributeType = st.nextToken();</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (attributeType.equals(&quot;xmi.extender&quot;)) {</span>
+<span class="nc" id="L186">                extender = st.nextToken();</span>
+<span class="nc" id="L187">                extender = extender.substring(1, extender.length() - 1);</span>
+            }
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            if (attributeType.equals(&quot;xmi.label&quot;)) {</span>
+<span class="nc" id="L190">                label = st.nextToken();</span>
+<span class="nc" id="L191">                label = label.substring(1, label.length() - 1);</span>
+            }
+<span class="nc" id="L193">        }</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (&quot;ArgoUML&quot;.equals(extender)) {</span>
+<span class="nc" id="L195">            type = label;</span>
+<span class="nc" id="L196">            stringBuffer = new StringBuffer();</span>
+<span class="nc" id="L197">            parsingExtension = true;</span>
+<span class="nc" id="L198">            endTagName = null;</span>
+        }
+<span class="nc" id="L200">    }</span>
+    
+    /*
+     * @see java.io.InputStream#read(byte[], int, int)
+     */
+    @Override
+    public synchronized int read(byte[] b, int off, int len)
+        throws IOException {
+
+        int cnt;
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        for (cnt = 0; cnt &lt; len; ++cnt) {</span>
+<span class="nc" id="L211">            int read = read();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">            if (read == -1) {</span>
+<span class="nc" id="L213">                break;</span>
+            }
+<span class="nc" id="L215">            b[cnt + off] = (byte) read;</span>
+        }
+
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        if (cnt &gt; 0) {</span>
+<span class="nc" id="L219">            return cnt;</span>
+        }
+<span class="nc" id="L221">        return -1;</span>
+    }
+
+
+    private boolean isNameTerminator(char ch) {
+<span class="nc bnc" id="L226" title="All 4 branches missed.">        return (ch == '&gt;' || Character.isWhitespace(ch));</span>
+    }
+
+    /**
+     * The close method is overridden to prevent some class out of
+     * our control from closing the stream (such as a SAX parser).
+     * Use realClose() to finally close the stream for real.
+     * @throws IOException to satisfy ancestor but will never happen.
+     */
+    @Override
+    public void close() throws IOException {
+<span class="nc" id="L237">    }</span>
+
+    /**
+     * Really close the input.
+     *
+     * @throws IOException if an I/O error occurs.
+     */
+    public void realClose() throws IOException {
+<span class="nc" id="L245">        super.close();</span>
+<span class="nc" id="L246">    }</span>
+}
+
+class InterruptedIOException extends IOException {
+    
+    private static final long serialVersionUID = 5654808047803205851L;
+    
+    private InterruptedException cause;
+    
+<span class="nc" id="L255">    public InterruptedIOException(InterruptedException theCause) {</span>
+<span class="nc" id="L256">        cause = theCause;</span>
+<span class="nc" id="L257">    }</span>
+    
+    public InterruptedException getInterruptedException() {
+<span class="nc" id="L260">        return cause;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

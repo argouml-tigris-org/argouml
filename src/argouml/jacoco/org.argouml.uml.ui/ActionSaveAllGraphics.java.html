@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionSaveAllGraphics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">ActionSaveAllGraphics.java</span></div><h1>ActionSaveAllGraphics.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
+import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.util.ArgoFrame;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.SaveGraphicsAction;
+import org.tigris.gef.util.Util;
+
+/**
+ * Wraps a SaveGraphicsAction allow selection of an output directory to which
+ * all diagrams will be written. Introduced thanks to issue 2126. Saves diagrams
+ * only using the default format.
+ * &lt;p&gt;
+ *
+ * TODO: Add a user choice for other formats (PNG, SVG,...) &lt;p&gt;
+ *
+ * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
+ */
+
+public class ActionSaveAllGraphics extends AbstractAction
+    implements CommandLineInterface {
+
+<span class="nc" id="L85">    private static final Logger LOG =</span>
+<span class="nc" id="L86">        Logger.getLogger(ActionSaveAllGraphics.class.getName());</span>
+
+    private boolean overwrite;
+
+    /**
+     * The constructor.
+     *
+     */
+    public ActionSaveAllGraphics() {
+<span class="nc" id="L95">        super(Translator.localize(&quot;action.save-all-graphics&quot;),</span>
+                null);
+        // Set the tooltip string:
+<span class="nc" id="L98">        putValue(Action.SHORT_DESCRIPTION,</span>
+<span class="nc" id="L99">                Translator.localize(&quot;action.save-all-graphics&quot;));</span>
+<span class="nc" id="L100">    }</span>
+
+    public void actionPerformed( ActionEvent ae ) {
+<span class="nc" id="L103">        trySave( false );</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * @param canOverwrite true if we can overwrite without asking
+     * @return success
+     */
+    public boolean trySave(boolean canOverwrite) {
+<span class="nc" id="L111">        return trySave(canOverwrite, null);</span>
+    }
+
+    /**
+     * @param canOverwrite
+     *            true if we can overwrite without asking
+     * @param directory
+     *            directory to save to. If null, user will be prompted to
+     *            choose.
+     * @return success save status
+     */
+    public boolean trySave(boolean canOverwrite, File directory) {
+<span class="nc" id="L123">        overwrite = canOverwrite;</span>
+<span class="nc" id="L124">        Project p =  ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L125">        TargetManager tm = TargetManager.getInstance();</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        File saveDir = (directory != null) ? directory : getSaveDir(p);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        if (saveDir == null) {</span>
+            /* The user cancelled! */
+<span class="nc" id="L129">            return false;</span>
+        }
+<span class="nc" id="L131">        boolean okSoFar = true;</span>
+<span class="nc" id="L132">        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        for (ArgoDiagram d : p.getDiagramList()) {</span>
+<span class="nc" id="L134">            tm.setTarget(d);</span>
+<span class="nc" id="L135">            okSoFar = trySaveDiagram(d, saveDir);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            if (!okSoFar) {</span>
+<span class="nc" id="L137">                break;</span>
+            }
+<span class="nc" id="L139">        }</span>
+<span class="nc" id="L140">        tm.setTarget(activeDiagram);</span>
+<span class="nc" id="L141">        return okSoFar;</span>
+    }
+
+    /**
+     * @param target the diagram
+     * @param saveDir the directory to save to
+     * @return continue exporting diagrams if true
+     */
+    protected boolean trySaveDiagram(Object target,
+            File saveDir) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if ( target instanceof Diagram ) {</span>
+<span class="nc" id="L152">            String defaultName = ((Diagram) target).getName();</span>
+<span class="nc" id="L153">            defaultName = Util.stripJunk(defaultName);</span>
+            // TODO: It's probably worthwhile to abstract and factor
+            // this chooser and directory stuff. More file handling is
+            // coming, I'm sure.
+            try {
+<span class="nc" id="L158">                File theFile = new File(saveDir, defaultName + &quot;.&quot;</span>
+<span class="nc" id="L159">                    + SaveGraphicsManager.getInstance().getDefaultSuffix());</span>
+<span class="nc" id="L160">                String name = theFile.getName();</span>
+<span class="nc" id="L161">                String path = theFile.getParent();</span>
+<span class="nc" id="L162">                SaveGraphicsAction cmd = SaveGraphicsManager.getInstance()</span>
+<span class="nc" id="L163">                    .getSaveActionBySuffix(</span>
+<span class="nc" id="L164">                        SaveGraphicsManager.getInstance().getDefaultSuffix());</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                if (cmd == null) {</span>
+<span class="nc" id="L166">                    showStatus(&quot;Unknown graphics file type with extension &quot;</span>
+<span class="nc" id="L167">                            + SaveGraphicsManager.getInstance()</span>
+<span class="nc" id="L168">                                    .getDefaultSuffix());</span>
+<span class="nc" id="L169">                    return false;</span>
+                }
+<span class="nc" id="L171">                showStatus( &quot;Writing &quot; + path + name + &quot;...&quot; );</span>
+<span class="nc" id="L172">                boolean result = saveGraphicsToFile(theFile, cmd);</span>
+<span class="nc" id="L173">                showStatus( &quot;Wrote &quot; + path + name );</span>
+<span class="nc" id="L174">                return result;</span>
+            }
+<span class="nc" id="L176">            catch ( FileNotFoundException ignore ) {</span>
+<span class="nc" id="L177">                LOG.log(Level.SEVERE, &quot;got a FileNotFoundException&quot;, ignore);</span>
+            }
+<span class="nc" id="L179">            catch ( IOException ignore ) {</span>
+<span class="nc" id="L180">                LOG.log(Level.SEVERE, &quot;got an IOException&quot;, ignore);</span>
+<span class="nc" id="L181">            }</span>
+        }
+<span class="nc" id="L183">        return false;</span>
+    }
+
+
+    /**
+     * @param p the current project
+     * @return returns null if the user did not approve his choice
+     */
+    protected File getSaveDir(Project p) {
+<span class="nc" id="L192">        JFileChooser chooser = getFileChooser(p);</span>
+
+<span class="nc" id="L194">        String fn = Configuration.getString(</span>
+                SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH);
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (fn.length() &gt; 0) {</span>
+<span class="nc" id="L197">            chooser.setSelectedFile(new File(fn));</span>
+        }
+
+<span class="nc" id="L200">        int retval = chooser.showSaveDialog(ArgoFrame.getFrame());</span>
+
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if ( retval == JFileChooser.APPROVE_OPTION ) {</span>
+<span class="nc" id="L203">            File theFile = chooser.getSelectedFile();</span>
+<span class="nc" id="L204">            String path = theFile.getPath();</span>
+<span class="nc" id="L205">            Configuration.setString(</span>
+                    SaveGraphicsManager.KEY_SAVEALL_GRAPHICS_PATH,
+                    path);
+<span class="nc" id="L208">            return theFile;</span>
+        }
+<span class="nc" id="L210">        return null;</span>
+    }
+
+    /**
+     * @param theFile the file to write
+     * @param cmd the action to execute to save the graphics
+     * @return continue exporting diagrams if true
+     * @throws IOException
+     */
+    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd)
+        throws IOException {
+<span class="nc bnc" id="L221" title="All 4 branches missed.">        if ( theFile.exists() &amp;&amp; !overwrite ) {</span>
+<span class="nc" id="L222">            String message = Translator.messageFormat(</span>
+                    &quot;optionpane.confirm-overwrite&quot;,
+                    new Object[] {theFile});
+<span class="nc" id="L225">            String title = Translator.localize(</span>
+                    &quot;optionpane.confirm-overwrite-title&quot;);
+            //Custom button text:
+<span class="nc" id="L228">            Object[] options =</span>
+<span class="nc" id="L229">            {Translator.localize(</span>
+                    &quot;optionpane.confirm-overwrite.overwrite&quot;), // 0
+<span class="nc" id="L231">             Translator.localize(</span>
+                    &quot;optionpane.confirm-overwrite.overwrite-all&quot;), // 1
+<span class="nc" id="L233">             Translator.localize(</span>
+                    &quot;optionpane.confirm-overwrite.skip-this-one&quot;), // 2
+<span class="nc" id="L235">             Translator.localize(</span>
+                    &quot;optionpane.confirm-overwrite.cancel&quot;)}; // 3
+
+            int response =
+<span class="nc" id="L239">		JOptionPane.showOptionDialog(ArgoFrame.getFrame(),</span>
+                    message,
+                    title,
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            if (response == 1) {</span>
+<span class="nc" id="L249">                overwrite = true;</span>
+            }
+<span class="nc bnc" id="L251" title="All 2 branches missed.">            if (response == 2) {</span>
+<span class="nc" id="L252">                return true;</span>
+            }
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (response == 3) {</span>
+<span class="nc" id="L255">                return false;</span>
+            }
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (response == JOptionPane.CLOSED_OPTION) {</span>
+<span class="nc" id="L258">                return false;</span>
+            }
+        }
+<span class="nc" id="L261">        FileOutputStream fo = null;</span>
+        try {
+<span class="nc" id="L263">            fo = new FileOutputStream( theFile );</span>
+<span class="nc" id="L264">            cmd.setStream(fo);</span>
+<span class="nc" id="L265">            cmd.setScale(Configuration.getInteger(</span>
+                    SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1));
+<span class="nc" id="L267">            cmd.actionPerformed(null);</span>
+        } finally {
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (fo != null) {</span>
+<span class="nc" id="L270">                fo.close();</span>
+            }
+        }
+<span class="nc" id="L273">        return true;</span>
+    }
+
+    private JFileChooser getFileChooser(Project p) {
+<span class="nc" id="L277">        JFileChooser chooser = null;</span>
+        try {
+<span class="nc bnc" id="L279" title="All 2 branches missed.">	    if ( p != null</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                &amp;&amp; p.getURI() != null</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                &amp;&amp; p.getURI().toURL().getFile().length() &gt; 0 ) {</span>
+<span class="nc" id="L282">	        chooser = new JFileChooser(p.getURI().toURL().getFile());</span>
+            }
+        }
+<span class="nc" id="L285">        catch ( MalformedURLException ex ) {</span>
+<span class="nc" id="L286">            LOG.log(Level.SEVERE, &quot;exception in opening JFileChooser&quot;, ex);</span>
+<span class="nc" id="L287">        }</span>
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        if ( chooser == null ) {</span>
+<span class="nc" id="L290">            chooser = new JFileChooser();</span>
+        }
+<span class="nc" id="L292">        chooser.setDialogTitle(</span>
+<span class="nc" id="L293">                Translator.localize(&quot;filechooser.save-all-graphics&quot;));</span>
+<span class="nc" id="L294">        chooser.setDialogType(JFileChooser.OPEN_DIALOG);</span>
+<span class="nc" id="L295">        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);</span>
+<span class="nc" id="L296">        chooser.setMultiSelectionEnabled(false);</span>
+<span class="nc" id="L297">        return chooser;</span>
+    }
+
+    private void showStatus(String text) {
+<span class="nc" id="L301">        ArgoEventPump.fireEvent(new ArgoStatusEvent(</span>
+                ArgoEventTypes.STATUS_TEXT, this, text));
+<span class="nc" id="L303">    }</span>
+
+    /**
+     * Execute this action from the command line.
+     *
+     * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
+     * @param argument is the directory name that we save to.
+     * @return true if it is OK.
+     */
+    public boolean doCommand(String argument) {
+<span class="nc" id="L313">        File dir = new File(argument);</span>
+<span class="nc bnc" id="L314" title="All 4 branches missed.">        if (!dir.exists() || !dir.isDirectory()) {</span>
+<span class="nc" id="L315">            LOG.log(Level.SEVERE, &quot;The argument must be a path to an existing directory.&quot;);</span>
+<span class="nc" id="L316">            return false;</span>
+        }
+<span class="nc" id="L318">        boolean result = true;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        for (Project p : ProjectManager.getManager().getOpenProjects()) {</span>
+<span class="nc" id="L320">            TargetManager tm = TargetManager.getInstance();</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">            for (ArgoDiagram d : p.getDiagramList()) {</span>
+<span class="nc" id="L322">                tm.setTarget(d);</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">                if (!trySaveDiagram(d, dir)) {</span>
+<span class="nc" id="L324">                    result = false;</span>
+                }
+<span class="nc" id="L326">            }</span>
+<span class="nc" id="L327">        }</span>
+<span class="nc" id="L328">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

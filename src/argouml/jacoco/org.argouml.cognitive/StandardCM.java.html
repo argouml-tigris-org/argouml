@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardCM.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">StandardCM.java</span></div><h1>StandardCM.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The standard Control Mech. It extends an ANDControlMech with the individual
+ * cm's
+ * &lt;ul&gt;
+ * &lt;li&gt;EnabledCM
+ * &lt;li&gt;NotSnoozedCM
+ * &lt;li&gt;DesignGoalsCM
+ * &lt;li&gt;CurDecisionCM
+ * &lt;/ul&gt;
+ *
+ * implying that a critic is relevant if and if only it is enabled, not snoozed,
+ * applicable to the current goals and relevant decisions to be supported.&lt;p&gt;
+ * 
+ * Mech is short for Mechanism. 
+ * A Control Mechanism is a structured way 
+ * to calculate a single condition from multiple different unrelated ones. 
+ * In the case of a StandardCM, 
+ * the single condition holds if we are enabled, 
+ * and not snoozed, 
+ * and fulfill designgoals, 
+ * and the designer is interested in these decisions.
+ */
+public class StandardCM extends AndCM {
+
+    /**
+     * The constructor.
+     *
+     */
+<span class="fc" id="L72">    public StandardCM() {</span>
+<span class="fc" id="L73">        addMech(new EnabledCM());</span>
+<span class="fc" id="L74">        addMech(new NotSnoozedCM());</span>
+<span class="fc" id="L75">        addMech(new DesignGoalsCM());</span>
+<span class="fc" id="L76">        addMech(new CurDecisionCM());</span>
+<span class="fc" id="L77">    }</span>
+} /* end class StandardCM */
+
+
+<span class="fc" id="L81">class EnabledCM implements ControlMech {</span>
+    
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="fc" id="L87">        return c.isEnabled();</span>
+    }
+} // end class EnabledCM
+
+<span class="fc" id="L91">class NotSnoozedCM implements ControlMech {</span>
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        return !c.snoozeOrder().getSnoozed();</span>
+    }
+} // end class NotSnoozedCM
+
+<span class="fc" id="L100">class DesignGoalsCM implements ControlMech {</span>
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="fc" id="L105">        return c.isRelevantToGoals(d);</span>
+    }
+} // end class DesignGoalsCM
+
+// How much control should critics have over when they are relavant?
+// Does doing that in code instead of declaratively limit reasoning?
+// How does using more semantically rich method calls impact
+// componentization?
+
+<span class="fc" id="L114">class CurDecisionCM implements ControlMech {</span>
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="fc" id="L119">        return c.isRelevantToDecisions(d);</span>
+    }
+} // end class CurDecisionCM
+
+<span class="fc" id="L123">abstract class CompositeCM implements ControlMech {</span>
+<span class="fc" id="L124">    private List&lt;ControlMech&gt; mechs = new ArrayList&lt;ControlMech&gt;();</span>
+
+    /**
+     * @return a list of the ControlMechs.
+     */
+    protected List&lt;ControlMech&gt; getMechList() {
+<span class="nc" id="L130">        return mechs;</span>
+    }
+
+    /**
+     * @param cm
+     *            the ControlMech
+     */
+    public void addMech(ControlMech cm) {
+<span class="fc" id="L138">        mechs.add(cm);</span>
+<span class="fc" id="L139">    }</span>
+} // end class CompositeCM
+
+<span class="fc" id="L142">class AndCM extends CompositeCM {</span>
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        for (ControlMech cm : getMechList()) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (!cm.isRelevant(c, d)) {</span>
+<span class="nc" id="L149">                return false;</span>
+            }
+<span class="nc" id="L151">        }</span>
+<span class="nc" id="L152">        return true;</span>
+    }
+} // end class AndCM
+
+<span class="nc" id="L156">class OrCM extends CompositeCM {</span>
+    /*
+     * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
+     */
+    public boolean isRelevant(Critic c, Designer d) {
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        for (ControlMech cm : getMechList()) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (cm.isRelevant(c, d)) {</span>
+<span class="nc" id="L163">                return true;</span>
+            }
+<span class="nc" id="L165">        }</span>
+<span class="nc" id="L166">        return false;</span>
+    }
+} // end class OrCM
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

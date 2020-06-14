@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Translator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.i18n</a> &gt; <span class="el_source">Translator.java</span></div><h1>Translator.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.i18n;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.tigris.gef.util.Localizer;
+
+/**
+ * The API class to the localization. All localization calls goes through
+ * this class.
+ *
+ * @author Jean-Hugues de Raigniac
+ * @author Linus Tolke
+ */
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">public final class Translator {</span>
+    /**
+     * Logger.
+     */
+<span class="fc" id="L66">    private static final Logger LOG =</span>
+<span class="fc" id="L67">        Logger.getLogger(Translator.class.getName());</span>
+
+    /**
+     * Where we search for bundles.
+     */
+    private static final String BUNDLES_PATH = &quot;org.argouml.i18n&quot;;
+
+    /**
+     * Store bundles for current Locale.
+     */
+    private static Map&lt;String, ResourceBundle&gt; bundles;
+
+    /**
+     * Store of ClassLoaders where we could find the bundles.
+     */
+<span class="fc" id="L82">    private static List&lt;ClassLoader&gt; classLoaders =</span>
+        new ArrayList&lt;ClassLoader&gt;();
+
+    /**
+     * Used to make this class self-initializing when needed.
+     */
+    private static boolean initialized;
+
+    /**
+     * Used to keep track of the original system default locale
+     */
+    private static Locale systemDefaultLocale;
+
+    /**
+     * This class should only be used in a static context so make
+     * the constructor private.
+     */
+    private Translator() {
+    }
+
+
+    /**
+     * Alternate initialization entry point for use by ArgoEclipse.
+     * It leaves out telling GEF about bundles that it won't be able
+     * to access. &lt;p&gt;
+     *
+     * NOTE: This must be called *before* any other methods are called to
+     * work properly.
+     *
+     * @param locale the configured locale or &quot;&quot; or null
+     */
+    public static void initForEclipse (String locale) {
+<span class="nc" id="L114">        initInternal(locale);</span>
+<span class="nc" id="L115">    }</span>
+
+
+    /**
+     * Initialize the locale.
+     *
+     * @param locale a string with the locale
+     */
+    public static void init(String locale) {
+//        assert !initialized; // GUITestActionOpenProject fails over this...
+<span class="fc" id="L125">        initialized = true;</span>
+
+        // Retain the original one:
+<span class="fc" id="L128">        systemDefaultLocale = Locale.getDefault();</span>
+
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">        if ((!&quot;&quot;.equals(locale)) &amp;&amp; (locale != null)) {</span>
+<span class="fc" id="L131">            setLocale(locale);</span>
+        } else {
+<span class="nc" id="L133">            setLocale(new Locale(</span>
+<span class="nc" id="L134">                    System.getProperty(&quot;user.language&quot;, &quot;en&quot;),</span>
+<span class="nc" id="L135">                    System.getProperty(&quot;user.country&quot;, &quot;&quot;)));</span>
+        }
+
+        /* TODO: This is using internal knowledge of GEF.  It should
+         * handle this itself. - tfm
+         * MVW: Move into something like Main.initGEF() */
+<span class="fc" id="L141">        Localizer.addResource(&quot;GefBase&quot;,</span>
+                              &quot;org.tigris.gef.base.BaseResourceBundle&quot;);
+<span class="fc" id="L143">        Localizer.addResource(</span>
+                &quot;GefPres&quot;,
+                &quot;org.tigris.gef.presentation.PresentationResourceBundle&quot;);
+<span class="fc" id="L146">    }</span>
+
+    /*
+     * Internal initialization method.  Handles initialization which
+     * is common to both public methods.
+     */
+    private static void initInternal (String s) {
+<span class="nc bnc" id="L153" title="All 4 branches missed.">        assert !initialized;</span>
+<span class="nc" id="L154">        initialized = true;</span>
+        // Retain the original one:
+<span class="nc" id="L156">        systemDefaultLocale = Locale.getDefault();</span>
+
+<span class="nc bnc" id="L158" title="All 4 branches missed.">        if ((!&quot;&quot;.equals(s)) &amp;&amp; (s != null)) {</span>
+<span class="nc" id="L159">            setLocale(s);</span>
+        } else {
+<span class="nc" id="L161">            setLocale(new Locale(</span>
+<span class="nc" id="L162">                    System.getProperty(&quot;user.language&quot;, &quot;en&quot;),</span>
+<span class="nc" id="L163">                    System.getProperty(&quot;user.country&quot;, &quot;&quot;)));</span>
+        }
+
+        // TODO: This is using internal knowledge of GEF.  It should
+        // handle this itself. - tfm
+<span class="nc" id="L168">        Localizer.addResource(&quot;GefBase&quot;,</span>
+			      &quot;org.tigris.gef.base.BaseResourceBundle&quot;);
+<span class="nc" id="L170">        Localizer.addResource(</span>
+		&quot;GefPres&quot;,
+		&quot;org.tigris.gef.presentation.PresentationResourceBundle&quot;);
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * For Locale selection.&lt;p&gt;
+     *
+     * TODO: Detect the available locales from the available files.
+     *
+     * @return Locales used in ArgoUML
+     */
+    public static Locale[] getLocales() {
+<span class="fc" id="L183">        return new Locale[] {</span>
+            Locale.ENGLISH,
+            Locale.FRENCH,
+            new Locale(&quot;es&quot;, &quot;&quot;),
+            Locale.GERMAN,
+            Locale.ITALIAN,
+            new Locale(&quot;nb&quot;, &quot;&quot;),
+            new Locale(&quot;pt&quot;, &quot;&quot;),
+            new Locale(&quot;pt&quot;, &quot;BR&quot;),
+            new Locale(&quot;ru&quot;, &quot;&quot;),
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE,
+            Locale.UK,
+        };
+    }
+
+    /**
+     * Change the current Locale. The string with the name follows
+     * this BNF format: &lt;p&gt;
+     *     language [ &quot;_&quot; country ]
+     * &lt;p&gt;
+     * Only use this before the GUI is initialized.
+     *
+     * @param name the name of the new locale
+     */
+    public static void setLocale(String name) {
+        /* This is needed for the JUnit tests.
+         * Otherwise a &quot;assert initialized&quot; would suffice. */
+<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (!initialized) {</span>
+<span class="fc" id="L212">            init(&quot;en&quot;);</span>
+        }
+<span class="fc" id="L214">        String language = name;</span>
+<span class="fc" id="L215">        String country = &quot;&quot;;</span>
+<span class="fc" id="L216">        int i = name.indexOf(&quot;_&quot;);</span>
+<span class="pc bpc" id="L217" title="3 of 4 branches missed.">        if ((i &gt; 0) &amp;&amp; (name.length() &gt; i + 1)) {</span>
+<span class="nc" id="L218">            language = name.substring(0, i);</span>
+<span class="nc" id="L219">            country = name.substring(i + 1);</span>
+        }
+<span class="fc" id="L221">        setLocale(new Locale(language, country));</span>
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * Change the current Locale.
+     * &lt;p&gt;
+     * Only use this before the GUI is initialized.
+     *
+     * @param locale the new Locale
+     */
+    public static void setLocale(Locale locale) {
+<span class="fc" id="L232">        Locale.setDefault(locale);</span>
+<span class="fc" id="L233">        bundles = new HashMap&lt;String, ResourceBundle&gt;();</span>
+<span class="fc" id="L234">    }</span>
+
+    /**
+     * Returns the original value of the default locale for this instance
+     * of the Java Virtual Machine (which is independent from the selected
+     * configuration).
+     *
+     * @return the original system default locale
+     */
+    public static Locale getSystemDefaultLocale() {
+<span class="fc" id="L244">        return systemDefaultLocale;</span>
+    }
+
+    /**
+     * Add another class loader that the resource bundle could be located
+     * through.
+     *
+     * @param cl The ClassLoader to add.
+     */
+    public static void addClassLoader(ClassLoader cl) {
+<span class="nc" id="L254">	classLoaders.add(cl);</span>
+<span class="nc" id="L255">    }</span>
+
+
+    /**
+     * Loads the bundle (if not already loaded).
+     *
+     * @param name The name of the bundle to load.
+     */
+    private static void loadBundle(String name) {
+<span class="fc bfc" id="L264" title="All 2 branches covered.">        if (bundles.containsKey(name)) {</span>
+<span class="fc" id="L265">            return;</span>
+        }
+<span class="fc" id="L267">        String resource = BUNDLES_PATH + &quot;.&quot; + name;</span>
+<span class="fc" id="L268">        ResourceBundle bundle = null;</span>
+        try {
+<span class="fc" id="L270">            LOG.log(Level.FINE, &quot;Loading {0}&quot;, resource);</span>
+<span class="fc" id="L271">            Locale locale = Locale.getDefault();</span>
+<span class="fc" id="L272">            bundle = ResourceBundle.getBundle(resource, locale);</span>
+<span class="nc" id="L273">        } catch (MissingResourceException e1) {</span>
+<span class="nc" id="L274">            LOG.log(Level.FINE,</span>
+                    &quot;Resource {0} not found in the default class loader.&quot;,
+                    resource);
+
+<span class="nc" id="L278">	    Iterator iter = classLoaders.iterator();</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">	    while (iter.hasNext()) {</span>
+<span class="nc" id="L280">		ClassLoader cl = (ClassLoader) iter.next();</span>
+		try {
+<span class="nc" id="L282">            LOG.log(Level.FINE,</span>
+                    &quot;Loading {0} from {1}&quot;,
+                    new Object[]{resource, cl});
+<span class="nc" id="L285">		    bundle =</span>
+<span class="nc" id="L286">			ResourceBundle.getBundle(resource,</span>
+<span class="nc" id="L287">						 Locale.getDefault(),</span>
+						 cl);
+<span class="nc" id="L289">		    break;</span>
+<span class="nc" id="L290">		} catch (MissingResourceException e2) {</span>
+<span class="nc" id="L291">                    LOG.log(Level.FINE,</span>
+                            &quot;Resource &quot; + resource + &quot; not found in &quot; + cl);
+		}
+<span class="nc" id="L294">	    }</span>
+<span class="fc" id="L295">        }</span>
+
+<span class="fc" id="L297">        bundles.put(name, bundle);</span>
+<span class="fc" id="L298">    }</span>
+
+    /**
+     * Calculate the name from the key.
+     *
+     * @param key The key to look up.
+     * @return The name of the file or &lt;code&gt;null&lt;/code&gt; if not possible.
+     */
+    private static String getName(String key) {
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">        if (key == null) {</span>
+<span class="nc" id="L308">            return null;</span>
+        }
+
+<span class="fc" id="L311">        int indexOfDot = key.indexOf(&quot;.&quot;);</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">        if (indexOfDot &gt; 0) {</span>
+<span class="fc" id="L313">            return key.substring(0, indexOfDot);</span>
+        }
+<span class="fc" id="L315">        return null;</span>
+    }
+
+
+    /**
+     * Synonym for messageFormat to encourage developers to convert
+     * existing uses of localize() + string concatenation to use
+     * this method instead.&lt;p&gt;
+     *
+     * The localized string is a pattern to be processed by
+     * {@link MessageFormat}.
+     *
+     * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
+     *
+     * @param key the key to localize
+     * @param args the arguments as Objects to be inserted in string
+     * @return String the localized string
+     */
+    public static String localize(String key, Object[] args) {
+<span class="fc" id="L334">        return messageFormat(key, args);</span>
+    }
+
+    /**
+     * The main function of this class that localizes strings.
+     *
+     * @param key The key to localize.
+     * @return The localized String.
+     */
+    public static String localize(String key) {
+        /* This is needed for the JUnit tests.
+         * Otherwise a &quot;assert initialized&quot; would suffice. */
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        if (!initialized) {</span>
+<span class="fc" id="L347">            init(&quot;en&quot;);</span>
+        }
+
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        if (key == null) {</span>
+<span class="fc" id="L351">            throw new IllegalArgumentException(&quot;null&quot;);</span>
+        }
+
+<span class="fc" id="L354">        String name = getName(key);</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        if (name == null) {</span>
+<span class="fc" id="L356">            return Localizer.localize(&quot;UMLMenu&quot;, key);</span>
+        }
+
+<span class="fc" id="L359">        loadBundle(name);</span>
+
+<span class="fc" id="L361">        ResourceBundle bundle = bundles.get(name);</span>
+<span class="pc bpc" id="L362" title="1 of 2 branches missed.">        if (bundle == null) {</span>
+<span class="nc" id="L363">            LOG.log(Level.FINE,</span>
+                    &quot;Bundle ({0}) for resource {1} not found.&quot;,
+                    new Object[]{name, key});
+<span class="nc" id="L366">            return key;</span>
+        }
+
+        try {
+<span class="fc" id="L370">            return bundle.getString(key);</span>
+<span class="nc" id="L371">        } catch (MissingResourceException e) {</span>
+<span class="nc" id="L372">            LOG.log(Level.FINE, &quot;Resource {0} not found.&quot;, key);</span>
+<span class="nc" id="L373">            return key;</span>
+        }
+    }
+
+    /**
+     * Generates an localized String with arguments.&lt;p&gt;
+     *
+     * The localized string is a pattern to be processed by
+     * {@link MessageFormat}.
+     *
+     * @param key the key to localize
+     * @param args the arguments as Objects, inserted in the localized String
+     * @return the localized String with inserted arguments
+     */
+    public static String messageFormat(String key, Object[] args) {
+<span class="fc" id="L388">        String localized = localize(key);</span>
+<span class="fc" id="L389">        return new MessageFormat(localized).format(args);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

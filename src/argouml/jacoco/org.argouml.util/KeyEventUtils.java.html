@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeyEventUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util</a> &gt; <span class="el_source">KeyEventUtils.java</span></div><h1>KeyEventUtils.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+
+import javax.swing.KeyStroke;
+
+/**
+ * Utility class for KeyEvents
+ * 
+ * @author andrea.nironi@gmail.com
+ */
+<span class="nc" id="L53">public class KeyEventUtils {</span>
+
+    /** 
+     * The expression between modifier/modifier and between modifier/text 
+     */
+    public static final String MODIFIER_JOINER = &quot; + &quot;;
+    /** 
+     * The text for the shift modifier 
+     */
+    public static final String SHIFT_MODIFIER = &quot;SHIFT&quot;;
+    /** 
+     * The text for the ctrl modifier 
+     */
+    public static final String CTRL_MODIFIER = &quot;CTRL&quot;;
+    /** 
+     * The text for the meta modifier 
+     */
+    public static final String META_MODIFIER = &quot;META&quot;;
+    /** 
+     * The text for the alt modifier 
+     */
+    public static final String ALT_MODIFIER = &quot;ALT&quot;;
+    /** 
+     * The text for the alt-gr modifier 
+     */
+    public static final String ALT_GRAPH_MODIFIER = &quot;altGraph&quot;;
+
+
+    /**
+     * Returns whether the key in this event is an &quot;action&quot; key. This is a
+     * customization of KeyEvent#isActionKey()
+     * 
+     * @param evt
+     *            the event to be verified
+     * @return true if the event is an
+     * @see java.awt.event.KeyEvent#isActionKey()
+     */
+    public static final boolean isActionEvent(KeyEvent evt) {
+<span class="nc" id="L91">        int keyCode = evt.getKeyCode();</span>
+
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        switch (keyCode) {</span>
+
+        // Argo customization
+        case KeyEvent.VK_BACK_SPACE:
+        case KeyEvent.VK_DELETE:
+        case KeyEvent.VK_CANCEL:
+
+            // KeyEvent.isActionKey() method
+        case KeyEvent.VK_HOME:
+        case KeyEvent.VK_END:
+        case KeyEvent.VK_PAGE_UP:
+        case KeyEvent.VK_PAGE_DOWN:
+        case KeyEvent.VK_UP:
+        case KeyEvent.VK_DOWN:
+        case KeyEvent.VK_LEFT:
+        case KeyEvent.VK_RIGHT:
+
+        case KeyEvent.VK_KP_LEFT:
+        case KeyEvent.VK_KP_UP:
+        case KeyEvent.VK_KP_RIGHT:
+        case KeyEvent.VK_KP_DOWN:
+
+        case KeyEvent.VK_F1:
+        case KeyEvent.VK_F2:
+        case KeyEvent.VK_F3:
+        case KeyEvent.VK_F4:
+        case KeyEvent.VK_F5:
+        case KeyEvent.VK_F6:
+        case KeyEvent.VK_F7:
+        case KeyEvent.VK_F8:
+        case KeyEvent.VK_F9:
+        case KeyEvent.VK_F10:
+        case KeyEvent.VK_F11:
+        case KeyEvent.VK_F12:
+        case KeyEvent.VK_F13:
+        case KeyEvent.VK_F14:
+        case KeyEvent.VK_F15:
+        case KeyEvent.VK_F16:
+        case KeyEvent.VK_F17:
+        case KeyEvent.VK_F18:
+        case KeyEvent.VK_F19:
+        case KeyEvent.VK_F20:
+        case KeyEvent.VK_F21:
+        case KeyEvent.VK_F22:
+        case KeyEvent.VK_F23:
+        case KeyEvent.VK_F24:
+        case KeyEvent.VK_PRINTSCREEN:
+        case KeyEvent.VK_SCROLL_LOCK:
+        case KeyEvent.VK_CAPS_LOCK:
+        case KeyEvent.VK_NUM_LOCK:
+        case KeyEvent.VK_PAUSE:
+        case KeyEvent.VK_INSERT:
+
+        case KeyEvent.VK_FINAL:
+        case KeyEvent.VK_CONVERT:
+        case KeyEvent.VK_NONCONVERT:
+        case KeyEvent.VK_ACCEPT:
+        case KeyEvent.VK_MODECHANGE:
+        case KeyEvent.VK_KANA:
+        case KeyEvent.VK_KANJI:
+        case KeyEvent.VK_ALPHANUMERIC:
+        case KeyEvent.VK_KATAKANA:
+        case KeyEvent.VK_HIRAGANA:
+        case KeyEvent.VK_FULL_WIDTH:
+        case KeyEvent.VK_HALF_WIDTH:
+        case KeyEvent.VK_ROMAN_CHARACTERS:
+        case KeyEvent.VK_ALL_CANDIDATES:
+        case KeyEvent.VK_PREVIOUS_CANDIDATE:
+        case KeyEvent.VK_CODE_INPUT:
+        case KeyEvent.VK_JAPANESE_KATAKANA:
+        case KeyEvent.VK_JAPANESE_HIRAGANA:
+        case KeyEvent.VK_JAPANESE_ROMAN:
+        case KeyEvent.VK_KANA_LOCK:
+        case KeyEvent.VK_INPUT_METHOD_ON_OFF:
+
+        case KeyEvent.VK_AGAIN:
+        case KeyEvent.VK_UNDO:
+        case KeyEvent.VK_COPY:
+        case KeyEvent.VK_PASTE:
+        case KeyEvent.VK_CUT:
+        case KeyEvent.VK_FIND:
+        case KeyEvent.VK_PROPS:
+        case KeyEvent.VK_STOP:
+
+        case KeyEvent.VK_HELP:
+<span class="nc" id="L178">            return true;</span>
+        }
+<span class="nc" id="L180">        return false;</span>
+    }
+    
+    /**
+     * Returns a unique text for a KeyEvent code 
+     * 
+     * @param keyCode   the keyCode to be &quot;translated&quot;
+     * @return          the corrisponding text for the keyCode 
+     */
+    public static String getKeyText(int keyCode) {
+<span class="nc" id="L190">        int expectedModifiers = </span>
+            (Modifier.PUBLIC | Modifier.STATIC | Modifier.FINAL);
+        
+<span class="nc" id="L193">        Field[] fields = KeyEvent.class.getDeclaredFields();</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        for (int i = 0; i &lt; fields.length; i++) {</span>
+            try {
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                if (fields[i].getModifiers() == expectedModifiers</span>
+<span class="nc bnc" id="L197" title="All 2 branches missed.">                        &amp;&amp; fields[i].getType() == Integer.TYPE</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                        &amp;&amp; fields[i].getName().startsWith(&quot;VK_&quot;)</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                        &amp;&amp; fields[i].getInt(KeyEvent.class) == keyCode) {</span>
+
+<span class="nc" id="L201">                    return fields[i].getName().substring(3);</span>
+                }
+<span class="nc" id="L203">            } catch (IllegalAccessException e) {</span>
+
+<span class="nc" id="L205">            }</span>
+        }
+<span class="nc" id="L207">        return &quot;UNKNOWN&quot;;</span>
+    }
+    
+    /**
+     * Returns a unique text for the given key modifiers 
+     * 
+     * @param modifiers   the modifiers to be &quot;translated&quot;
+     * @return          the corrisponding text for the keyCode 
+     */
+    public static String getModifiersText(int modifiers) {
+<span class="nc" id="L217">        StringBuffer buf = new StringBuffer();</span>
+
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if ((modifiers &amp; InputEvent.SHIFT_MASK) != 0) {</span>
+<span class="nc" id="L220">            buf.append(SHIFT_MODIFIER).append(MODIFIER_JOINER);</span>
+        }
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        if ((modifiers &amp; InputEvent.CTRL_MASK) != 0) {</span>
+<span class="nc" id="L223">            buf.append(CTRL_MODIFIER).append(MODIFIER_JOINER);</span>
+        }
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if ((modifiers &amp; InputEvent.META_MASK) != 0) {</span>
+<span class="nc" id="L226">            buf.append(META_MODIFIER).append(MODIFIER_JOINER);</span>
+        }
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if ((modifiers &amp; InputEvent.ALT_MASK) != 0) {</span>
+<span class="nc" id="L229">            buf.append(ALT_MODIFIER).append(MODIFIER_JOINER);</span>
+        }
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if ((modifiers &amp; InputEvent.ALT_GRAPH_MASK) != 0) {</span>
+<span class="nc" id="L232">            buf.append(ALT_GRAPH_MODIFIER).append(MODIFIER_JOINER);</span>
+        }
+<span class="nc" id="L234">        return buf.toString();</span>
+    }
+    
+    /**
+     * Formats a given KeyStroke into a string
+     * 
+     * @param keyStroke         the KeyStroke to be formatted
+     * @return                  the formatted String
+     */
+    public static String formatKeyStroke(KeyStroke keyStroke) {
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (keyStroke != null) {</span>
+<span class="nc" id="L245">            return getModifiersText(keyStroke.getModifiers())</span>
+<span class="nc" id="L246">                    + KeyEventUtils.getKeyText(keyStroke.getKeyCode());</span>
+        } else {
+<span class="nc" id="L248">            return &quot;&quot;;</span>
+        }        
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

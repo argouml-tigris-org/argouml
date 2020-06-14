@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExplorerPopup.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">ExplorerPopup.java</span></div><h1>ExplorerPopup.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2014 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *    Laurent Braud
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ActionList;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.IllegalModelElementConnectionException;
+import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.ActionCreateEdgeModelElement;
+import org.argouml.ui.ContextActionFactoryManager;
+import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
+import org.argouml.uml.diagram.SequenceDiagram;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
+import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
+import org.argouml.uml.diagram.ui.ActionAddExistingNode;
+import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
+import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.uml.diagram.ui.ModeAddToDiagram;
+import org.argouml.uml.ui.ActionActivityDiagram;
+import org.argouml.uml.ui.ActionClassDiagram;
+import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.uml.ui.ActionDeploymentDiagram;
+import org.argouml.uml.ui.ActionSequenceDiagram;
+import org.argouml.uml.ui.ActionSetSourcePath;
+import org.argouml.uml.ui.ActionStateDiagram;
+import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+
+/**
+ * PopUp for extra functionality for the Explorer.
+ *
+ * @author alexb
+ * @since 0.15.2
+ */
+public class ExplorerPopup extends JPopupMenu {
+
+<span class="nc" id="L108">    private JMenu createDiagrams =</span>
+<span class="nc" id="L109">        new JMenu(menuLocalize(&quot;menu.popup.create-diagram&quot;));</span>
+
+<span class="nc" id="L111">    private static final Logger LOG =</span>
+<span class="nc" id="L112">        Logger.getLogger(ExplorerPopup.class.getName());</span>
+
+    /**
+     * Creates a new instance of ExplorerPopup.
+     *
+     * @param selectedItem
+     *            is the item that we are pointing at.
+     * @param me
+     *            is the event.
+     */
+    public ExplorerPopup(Object selectedItem, MouseEvent me) {
+<span class="nc" id="L123">        super(&quot;Explorer popup menu&quot;);</span>
+
+        /* Check if multiple items are selected. */
+        boolean multiSelect =
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                TargetManager.getInstance().getTargets().size() &gt; 1;</span>
+
+<span class="nc" id="L129">        boolean mutableModelElementsOnly = true;</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (Object element : TargetManager.getInstance().getTargets()) {</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            if (!Model.getFacade().isAUMLElement(element)</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                    || Model.getModelManagementHelper().isReadOnly(element)) {</span>
+<span class="nc" id="L133">                mutableModelElementsOnly = false;</span>
+<span class="nc" id="L134">                break;</span>
+            }
+<span class="nc" id="L136">        }</span>
+
+<span class="nc" id="L138">        final ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();</span>
+
+        // TODO: I've made some attempt to rationalize the conditions here
+        // and make them more readable. However I'd suggest that the
+        // conditions should move to each diagram.
+        // Break up one complex method into a few simple ones and
+        // give the diagrams more knowledge of themselves
+        // (although the diagrams may in fact delegate this in
+        // turn to the Model component).
+        // Bob Tarling 31 Jan 2004
+        // eg the code here should be something like -
+        // if (activeDiagram.canAdd(selectedItem)) {
+        // UMLAction action =
+        // new ActionAddExistingNode(
+        // menuLocalize(&quot;menu.popup.add-to-diagram&quot;),
+        // selectedItem);
+        // action.setEnabled(action.shouldBeEnabled());
+        // this.add(action);
+        // }
+
+        // profile section: dealing with profiles in different states
+
+        // 1. a noneditable applied profile
+        try {
+<span class="nc bnc" id="L162" title="All 4 branches missed.">            if (!multiSelect &amp;&amp; selectedItem instanceof Profile</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                    &amp;&amp; !((Profile) selectedItem).getProfilePackages().isEmpty()) {</span>
+<span class="nc" id="L164">                this.add(new ActionExportProfileXMI((Profile) selectedItem));</span>
+            }
+<span class="nc" id="L166">        } catch (Exception e) {</span>
+            // just no item added in this case
+<span class="nc" id="L168">        }</span>
+
+        // 2. the profile configuration, holding noneditable applied profiles
+<span class="nc bnc" id="L171" title="All 4 branches missed.">        if (!multiSelect &amp;&amp; selectedItem instanceof ProfileConfiguration) {</span>
+<span class="nc" id="L172">            this.add(new ActionManageProfiles());</span>
+        }
+
+        // 3. the editable unapplied profile
+
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (Model.getFacade().isAProfile(selectedItem)) {</span>
+<span class="nc" id="L178">            this.add(new ActionDeployProfile(selectedItem));</span>
+        }
+
+        // end of profile section
+
+<span class="nc bnc" id="L183" title="All 4 branches missed.">        if (!multiSelect &amp;&amp; mutableModelElementsOnly) {</span>
+<span class="nc" id="L184">            initMenuCreateDiagrams();</span>
+<span class="nc" id="L185">            this.add(createDiagrams);</span>
+        }
+
+<span class="nc" id="L188">        initMenuCreateModuleActions();</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (mutableModelElementsOnly) {</span>
+<span class="nc" id="L191">            initMenuCreateModelElements();</span>
+        }
+
+        final boolean modelElementSelected =
+<span class="nc" id="L195">            Model.getFacade().isAUMLElement(selectedItem);</span>
+
+<span class="nc bnc" id="L197" title="All 2 branches missed.">        if (modelElementSelected) {</span>
+            final boolean nAryAssociationSelected =
+<span class="nc" id="L199">                Model.getFacade().isANaryAssociation(selectedItem);</span>
+            final boolean classifierSelected =
+<span class="nc" id="L201">                Model.getFacade().isAClassifier(selectedItem);</span>
+            final boolean packageSelected =
+<span class="nc" id="L203">                Model.getFacade().isAPackage(selectedItem);</span>
+            final boolean commentSelected =
+<span class="nc" id="L205">                Model.getFacade().isAComment(selectedItem);</span>
+            final boolean stateVertexSelected =
+<span class="nc" id="L207">                Model.getFacade().isAStateVertex(selectedItem);</span>
+            final boolean instanceSelected =
+<span class="nc" id="L209">                Model.getFacade().isAInstance(selectedItem);</span>
+            final boolean dataValueSelected =
+<span class="nc" id="L211">                Model.getFacade().isADataValue(selectedItem);</span>
+            final boolean relationshipSelected =
+<span class="nc" id="L213">                Model.getFacade().isARelationship(selectedItem);</span>
+            final boolean flowSelected =
+<span class="nc" id="L215">                Model.getFacade().isAFlow(selectedItem);</span>
+            final boolean linkSelected =
+<span class="nc" id="L217">                Model.getFacade().isALink(selectedItem);</span>
+            final boolean transitionSelected =
+<span class="nc" id="L219">                Model.getFacade().isATransition(selectedItem);</span>
+<span class="nc" id="L220">            final boolean activityDiagramActive =</span>
+                activeDiagram instanceof UMLActivityDiagram;
+<span class="nc" id="L222">            final boolean sequenceDiagramActive =</span>
+                activeDiagram instanceof SequenceDiagram;
+<span class="nc" id="L224">            final boolean stateDiagramActive =</span>
+                activeDiagram instanceof UMLStateDiagram;
+<span class="nc bnc" id="L226" title="All 2 branches missed.">            final Object selectedStateMachine =</span>
+                (stateVertexSelected) ? Model
+<span class="nc" id="L228">                    .getStateMachinesHelper().getStateMachine(selectedItem)</span>
+                    : null;
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            final Object diagramStateMachine =</span>
+                (stateDiagramActive) ? ((UMLStateDiagram) activeDiagram)
+<span class="nc" id="L232">                    .getStateMachine()</span>
+                    : null;
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            final Object diagramActivity =</span>
+                (activityDiagramActive)
+<span class="nc" id="L236">                    ? ((UMLActivityDiagram) activeDiagram).getStateMachine()</span>
+                    : null;
+
+            Collection projectModels =
+<span class="nc" id="L240">                ProjectManager.getManager().getCurrentProject().getModels();</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">            if (!multiSelect) {</span>
+<span class="nc bnc" id="L242" title="All 6 branches missed.">                if ((classifierSelected &amp;&amp; !relationshipSelected)</span>
+                        || (packageSelected
+                                // TODO: Allow adding models to a diagram - issue 4172.
+<span class="nc bnc" id="L245" title="All 24 branches missed.">                                &amp;&amp; !projectModels.contains(selectedItem))</span>
+                        || (stateVertexSelected
+                                &amp;&amp; activityDiagramActive
+                                &amp;&amp; diagramActivity == selectedStateMachine)
+                        || (stateVertexSelected
+                                &amp;&amp; stateDiagramActive
+                                &amp;&amp; diagramStateMachine == selectedStateMachine)
+                        || (instanceSelected
+                                &amp;&amp; !dataValueSelected
+                                &amp;&amp; !sequenceDiagramActive)
+                        || nAryAssociationSelected || commentSelected) {
+                    // TODO: Why can't we use ActionAddExistingNodes here? Bob.
+<span class="nc" id="L257">                    Action action =</span>
+                        new ActionAddExistingNode(
+<span class="nc" id="L259">                            menuLocalize(&quot;menu.popup.add-to-diagram&quot;),</span>
+                            selectedItem);
+<span class="nc" id="L261">                    this.add(action);</span>
+                }
+
+<span class="nc bnc" id="L264" title="All 12 branches missed.">                if ((relationshipSelected</span>
+                        &amp;&amp; !flowSelected
+                        &amp;&amp; !nAryAssociationSelected)
+                        || (linkSelected &amp;&amp; !sequenceDiagramActive)
+                        || transitionSelected) {
+
+<span class="nc" id="L270">                    Action action =</span>
+                        new ActionAddExistingEdge(
+<span class="nc" id="L272">                            menuLocalize(&quot;menu.popup.add-to-diagram&quot;),</span>
+                            selectedItem);
+<span class="nc" id="L274">                    this.add(action);</span>
+<span class="nc" id="L275">                    addMenuItemForBothEndsOf(selectedItem);</span>
+                }
+
+<span class="nc bnc" id="L278" title="All 4 branches missed.">                if (classifierSelected</span>
+                        || packageSelected) {
+<span class="nc" id="L280">                    this.add(new ActionSetSourcePath());</span>
+                }
+            }
+
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">            if (mutableModelElementsOnly</span>
+                    // Can't delete last top level model
+<span class="nc bnc" id="L287" title="All 2 branches missed.">                    &amp;&amp; !(projectModels.size() == 1</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">                            &amp;&amp; projectModels.contains(selectedItem))) {</span>
+                // TODO: Shouldn't be creating a new instance here. We should
+                // hold the delete action in some central place.
+<span class="nc" id="L291">                this.add(new ActionDeleteModelElements());</span>
+            }
+        }
+        // TODO: Make sure this shouldn't go into a previous
+        // condition -tml
+<span class="nc bnc" id="L296" title="All 2 branches missed.">        if (!multiSelect) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">            if (selectedItem instanceof UMLClassDiagram) {</span>
+<span class="nc" id="L298">                Action action =</span>
+                    new ActionAddAllClassesFromModel(
+<span class="nc" id="L300">                        menuLocalize(&quot;menu.popup.add-all-classes-to-diagram&quot;),</span>
+                        selectedItem);
+<span class="nc" id="L302">                this.add(action);</span>
+            }
+        }
+
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (multiSelect) {</span>
+<span class="nc" id="L307">            List&lt;Object&gt; classifiers = new ArrayList&lt;Object&gt;();</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">            for (Object o : TargetManager.getInstance().getTargets()) {</span>
+                // TODO: Should be anything allowed by current diagram
+<span class="nc bnc" id="L310" title="All 2 branches missed.">                if (Model.getFacade().isAClassifier(o)</span>
+<span class="nc bnc" id="L311" title="All 2 branches missed.">                        &amp;&amp; !Model.getFacade().isARelationship(o)) {</span>
+<span class="nc" id="L312">                    classifiers.add(o);</span>
+                }
+<span class="nc" id="L314">            }</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (!classifiers.isEmpty()) {</span>
+<span class="nc" id="L316">                Action action =</span>
+                    new ActionAddExistingNodes(
+<span class="nc" id="L318">                        menuLocalize(&quot;menu.popup.add-to-diagram&quot;),</span>
+                        classifiers);
+<span class="nc" id="L320">                this.add(action);</span>
+            }
+            // Determine if only diagrams are in the target list.
+<span class="nc" id="L323">            boolean haveAtLeastOneDiagram = false;</span>
+<span class="nc" id="L324">            boolean onlyDiagram = true;</span>
+<span class="nc bnc" id="L325" title="All 2 branches missed.">            for (Object element : TargetManager.getInstance().getTargets()) {</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">                if (element instanceof Diagram) {</span>
+<span class="nc" id="L327">                    haveAtLeastOneDiagram = true;</span>
+                } else {
+<span class="nc" id="L329">                    onlyDiagram = false;</span>
+                }
+<span class="nc" id="L331">            }</span>
+<span class="nc bnc" id="L332" title="All 4 branches missed.">            onlyDiagram = onlyDiagram &amp;&amp; haveAtLeastOneDiagram;</span>
+
+<span class="nc bnc" id="L334" title="All 2 branches missed.">            if (onlyDiagram) {</span>
+<span class="nc" id="L335">                ActionDeleteModelElements ad = new ActionDeleteModelElements();</span>
+<span class="nc" id="L336">                ad.setEnabled(ad.shouldBeEnabled());</span>
+<span class="nc" id="L337">                this.add(ad);</span>
+            }
+
+
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        } else if (selectedItem instanceof Diagram) {</span>
+<span class="nc" id="L342">            this.add(new ActionSaveDiagramToClipboard());</span>
+            // TODO: Delete should be available on any combination of model
+            // elements and diagrams.
+            // TODO: Shouldn't be creating a new instance here. We should
+            // hold the delete action in some central place.
+<span class="nc" id="L347">            ActionDeleteModelElements ad = new ActionDeleteModelElements();</span>
+<span class="nc" id="L348">            ad.setEnabled(ad.shouldBeEnabled());</span>
+<span class="nc" id="L349">            this.add(ad);</span>
+        }
+<span class="nc" id="L351">    }</span>
+
+    /**
+     * initialize the menu for diagram construction in the explorer popup menu.
+     *
+     */
+    private void initMenuCreateDiagrams() {
+<span class="nc" id="L358">        createDiagrams.add(new ActionUseCaseDiagram());</span>
+
+<span class="nc" id="L360">        createDiagrams.add(new ActionClassDiagram());</span>
+
+<span class="nc" id="L362">        createDiagrams.add(new ActionSequenceDiagram());</span>
+
+<span class="nc" id="L364">        createDiagrams.add(new ActionCollaborationDiagram());</span>
+
+<span class="nc" id="L366">        createDiagrams.add(new ActionStateDiagram());</span>
+
+<span class="nc" id="L368">        createDiagrams.add(new ActionActivityDiagram());</span>
+
+<span class="nc" id="L370">        createDiagrams.add(new ActionDeploymentDiagram());</span>
+<span class="nc" id="L371">    }</span>
+
+    /**
+     * initialize the menu for diagram construction in the explorer popup menu.
+     *
+     */
+    private void initMenuCreateModelElements() {
+<span class="nc" id="L378">        List targets = TargetManager.getInstance().getTargets();</span>
+<span class="nc" id="L379">        Set&lt;JMenuItem&gt; menuItems = new TreeSet&lt;JMenuItem&gt;();</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (targets.size() &gt;= 2) {</span>
+            // Check to see if all targets are classifiers
+            // before adding an option to create an association between
+            // them all
+<span class="nc" id="L384">            boolean classifierRoleFound = false;</span>
+<span class="nc" id="L385">            boolean classifierRolesOnly = true;</span>
+<span class="nc" id="L386">            for (Iterator it = targets.iterator();</span>
+<span class="nc bnc" id="L387" title="All 4 branches missed.">                    it.hasNext() &amp;&amp; classifierRolesOnly; ) {</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">                if (Model.getFacade().isAClassifierRole(it.next())) {</span>
+<span class="nc" id="L389">                    classifierRoleFound = true;</span>
+                } else {
+<span class="nc" id="L391">                    classifierRolesOnly = false;</span>
+                }
+            }
+<span class="nc bnc" id="L394" title="All 2 branches missed.">            if (classifierRolesOnly) {</span>
+<span class="nc" id="L395">                menuItems.add(new OrderedMenuItem(</span>
+                        new ActionCreateAssociationRole(
+<span class="nc" id="L397">                                Model.getMetaTypes().getAssociationRole(),</span>
+                                targets)));
+<span class="nc bnc" id="L399" title="All 2 branches missed.">            } else if (!classifierRoleFound) {</span>
+<span class="nc" id="L400">                boolean classifiersOnly = true;</span>
+<span class="nc" id="L401">                for (Iterator it = targets.iterator();</span>
+<span class="nc bnc" id="L402" title="All 4 branches missed.">                        it.hasNext() &amp;&amp; classifiersOnly; ) {</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">                    if (!Model.getFacade().isAClassifier(it.next())) {</span>
+<span class="nc" id="L404">                        classifiersOnly = false;</span>
+                    }
+                }
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                if (classifiersOnly) {</span>
+<span class="nc" id="L408">                    menuItems.add(new OrderedMenuItem(</span>
+                            new ActionCreateAssociation(
+<span class="nc" id="L410">                                    Model.getMetaTypes().getAssociation(),</span>
+                                    targets)));
+<span class="nc bnc" id="L412" title="All 2 branches missed.">                    if (targets.size() == 2) menuItems.add(new OrderedMenuItem(</span>
+                            new ActionCreateAssociation(
+<span class="nc" id="L414">                                    Model.getMetaTypes().getAssociationClass(), </span>
+                                    targets)));
+                }
+            }
+        }
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        if (targets.size() == 2) {</span>
+<span class="nc" id="L420">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L422">                    Model.getMetaTypes().getDependency(),</span>
+<span class="nc" id="L423">                    &quot; &quot; + menuLocalize(&quot;menu.popup.depends-on&quot;) + &quot; &quot;);</span>
+
+<span class="nc" id="L425">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L427">                    Model.getMetaTypes().getGeneralization(),</span>
+<span class="nc" id="L428">                    &quot; &quot; + menuLocalize(&quot;menu.popup.generalizes&quot;) + &quot; &quot;);</span>
+<span class="nc" id="L429">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L431">                    Model.getMetaTypes().getInclude(),</span>
+<span class="nc" id="L432">                    &quot; &quot; + menuLocalize(&quot;menu.popup.includes&quot;) + &quot; &quot;);</span>
+<span class="nc" id="L433">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L435">                    Model.getMetaTypes().getExtend(),</span>
+<span class="nc" id="L436">                    &quot; &quot; + menuLocalize(&quot;menu.popup.extends&quot;) + &quot; &quot;);</span>
+<span class="nc" id="L437">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L439">                    Model.getMetaTypes().getPackageImport(),</span>
+<span class="nc" id="L440">                    &quot; &quot; + menuLocalize(&quot;menu.popup.has-permission-on&quot;) + &quot; &quot;);</span>
+<span class="nc" id="L441">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L443">                    Model.getMetaTypes().getUsage(),</span>
+<span class="nc" id="L444">                    &quot; &quot; + menuLocalize(&quot;menu.popup.uses&quot;) + &quot; &quot;);</span>
+<span class="nc" id="L445">            addCreateModelElementAction(</span>
+                    menuItems,
+<span class="nc" id="L447">                    Model.getMetaTypes().getAbstraction(),</span>
+<span class="nc" id="L448">                    &quot; &quot; + menuLocalize(&quot;menu.popup.realizes&quot;) + &quot; &quot;);</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">        } else if (targets.size() == 1) {</span>
+
+<span class="nc" id="L451">            Object target = targets.get(0);</span>
+
+            // iterate through all possible model elements to determine which
+            // are valid to be contained by the selected target
+<span class="nc bnc" id="L455" title="All 2 branches missed.">            for (Object metaType : Model.getMetaTypes().getAllMetaTypes()) {</span>
+                // test if this element can be contained by the target
+<span class="nc bnc" id="L457" title="All 2 branches missed.">                if (Model.getUmlFactory().isContainmentValid(metaType, target)) {</span>
+                    // this element can be contained add a menu item
+                    // that allows the user to take that action
+<span class="nc" id="L460">                    menuItems.add(new OrderedMenuItem(</span>
+                            new ActionCreateContainedModelElement(
+                                    metaType, target)));
+                }
+<span class="nc" id="L464">            }</span>
+        }
+
+<span class="nc bnc" id="L467" title="All 2 branches missed.">        if (menuItems.size() == 1) {</span>
+<span class="nc" id="L468">            add(menuItems.iterator().next());</span>
+<span class="nc bnc" id="L469" title="All 2 branches missed.">        } else if (menuItems.size() &gt; 1) {</span>
+<span class="nc" id="L470">            JMenu menu =</span>
+<span class="nc" id="L471">                new JMenu(menuLocalize(&quot;menu.popup.create-model-element&quot;));</span>
+<span class="nc" id="L472">            add(menu);</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">            for (JMenuItem item : menuItems) {</span>
+<span class="nc" id="L474">                menu.add(item);</span>
+<span class="nc" id="L475">            }</span>
+        }
+<span class="nc" id="L477">    }</span>
+
+    private void initMenuCreateModuleActions() {
+        final List&lt;Action&gt; contextActions =
+<span class="nc" id="L481">            ContextActionFactoryManager.getContextPopupActions();</span>
+        
+<span class="nc" id="L483">        LOG.log(Level.INFO, &quot;{0}&quot;, contextActions);</span>
+        
+<span class="nc bnc" id="L485" title="All 2 branches missed.">        if (contextActions instanceof ActionList) {</span>
+<span class="nc" id="L486">            recursiveAdd(this, (Action) contextActions);</span>
+        } else {
+<span class="nc bnc" id="L488" title="All 2 branches missed.">            for (Action a : contextActions) {</span>
+<span class="nc" id="L489">                recursiveAdd(this, a);</span>
+<span class="nc" id="L490">            }</span>
+        }
+<span class="nc" id="L492">    }</span>
+
+    private void recursiveAdd(MenuElement menu, Action a) {
+<span class="nc bnc" id="L495" title="All 2 branches missed.">        if (a instanceof List&lt;?&gt;) {</span>
+<span class="nc" id="L496">            JMenu m = new JMenu(a);</span>
+<span class="nc bnc" id="L497" title="All 2 branches missed.">            if (menu instanceof JPopupMenu) {</span>
+<span class="nc" id="L498">                ((JPopupMenu) menu).add(m);</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">            } else if (menu instanceof JMenu) {</span>
+<span class="nc" id="L500">                ((JMenu) menu).add(m);</span>
+            }
+<span class="nc bnc" id="L502" title="All 2 branches missed.">            for (Action subAction : (List&lt;Action&gt;) a) {</span>
+<span class="nc" id="L503">                recursiveAdd(m, subAction);</span>
+<span class="nc" id="L504">            }</span>
+<span class="nc" id="L505">        } else {</span>
+<span class="nc bnc" id="L506" title="All 2 branches missed.">            if (menu instanceof JPopupMenu) {</span>
+<span class="nc" id="L507">                ((JPopupMenu) menu).add(a);</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">            } else if (menu instanceof JMenu) {</span>
+<span class="nc" id="L509">                ((JMenu) menu).add(a);</span>
+            }
+        }
+<span class="nc" id="L512">    }</span>
+
+    private void addCreateModelElementAction(
+                Set&lt;JMenuItem&gt; menuItems,
+                Object metaType,
+                String relationshipDescr) {
+<span class="nc" id="L518">        List targets = TargetManager.getInstance().getTargets();</span>
+<span class="nc" id="L519">        Object source = targets.get(0);</span>
+<span class="nc" id="L520">        Object dest = targets.get(1);</span>
+<span class="nc" id="L521">        JMenu subMenu = new OrderedMenu(</span>
+<span class="nc" id="L522">                menuLocalize(&quot;menu.popup.create&quot;) + &quot; &quot;</span>
+<span class="nc" id="L523">                + Model.getMetaTypes().getName(metaType));</span>
+<span class="nc" id="L524">        buildDirectionalCreateMenuItem(</span>
+            metaType, dest, source, relationshipDescr, subMenu);
+<span class="nc" id="L526">        buildDirectionalCreateMenuItem(</span>
+            metaType, source, dest, relationshipDescr, subMenu);
+<span class="nc bnc" id="L528" title="All 2 branches missed.">        if (subMenu.getMenuComponents().length &gt; 0) {</span>
+<span class="nc" id="L529">            menuItems.add(subMenu);</span>
+        }
+<span class="nc" id="L531">    }</span>
+
+    /**
+     * Attempt to build a menu item to create the given model element type
+     * as a relation betwen two existing model elements.
+     * If succesful then the menu item is added to the given menu
+     * @param metaType The type of model element the menu item should create
+     * @param source The source model element
+     * @param dest The destination model element
+     * @param relationshipDescr A textual description that describes how
+     *                          source relates to dest
+     * @param menu The menu to which the menu item should be added
+     */
+    private void buildDirectionalCreateMenuItem(
+            Object metaType,
+            Object source,
+            Object dest,
+            String relationshipDescr,
+            JMenu menu) {
+<span class="nc bnc" id="L550" title="All 2 branches missed.">        if (Model.getUmlFactory().isConnectionValid(</span>
+                    metaType, source, dest, true)) {
+<span class="nc" id="L552">            JMenuItem menuItem = new JMenuItem(</span>
+                    new ActionCreateEdgeModelElement(
+                            metaType,
+                            source,
+                            dest,
+                            relationshipDescr));
+<span class="nc bnc" id="L558" title="All 2 branches missed.">            if (menuItem != null) {</span>
+<span class="nc" id="L559">                menu.add(menuItem);</span>
+            }
+        }
+<span class="nc" id="L562">    }</span>
+
+
+    /**
+     * Localize a popup menu item in the navigator pane.
+     *
+     * @param key
+     *            The key for the string to localize.
+     * @return The localized string.
+     */
+    private String menuLocalize(String key) {
+<span class="nc" id="L573">        return Translator.localize(key);</span>
+    }
+
+    /**
+     * Add popup menu items for adding to diagram both edge ends.
+     *
+     * @param edge
+     *            The edge for which the menu item will be added.
+     */
+    private void addMenuItemForBothEndsOf(Object edge) {
+<span class="nc" id="L583">        Collection coll = null;</span>
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if (Model.getFacade().isAAssociation(edge)</span>
+<span class="nc bnc" id="L585" title="All 2 branches missed.">                || Model.getFacade().isALink(edge)) {</span>
+<span class="nc" id="L586">            coll = Model.getFacade().getConnections(edge);</span>
+<span class="nc bnc" id="L587" title="All 2 branches missed.">        } else if (Model.getFacade().isAAbstraction(edge)</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">                || Model.getFacade().isADependency(edge)) {</span>
+<span class="nc" id="L589">            coll = new ArrayList();</span>
+<span class="nc" id="L590">            coll.addAll(Model.getFacade().getClients(edge));</span>
+<span class="nc" id="L591">            coll.addAll(Model.getFacade().getSuppliers(edge));</span>
+<span class="nc bnc" id="L592" title="All 2 branches missed.">        } else if (Model.getFacade().isAGeneralization(edge)) {</span>
+<span class="nc" id="L593">            coll = new ArrayList();</span>
+<span class="nc" id="L594">            Object parent = Model.getFacade().getGeneral(edge);</span>
+<span class="nc" id="L595">            coll.add(parent);</span>
+<span class="nc" id="L596">            coll.addAll(Model.getFacade().getChildren(parent));</span>
+        }
+<span class="nc bnc" id="L598" title="All 2 branches missed.">        if (coll == null) {</span>
+<span class="nc" id="L599">            return;</span>
+        }
+<span class="nc" id="L601">        Iterator iter = coll.iterator();</span>
+<span class="nc bnc" id="L602" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L603">            Object me = iter.next();</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">            if (me != null) {</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">                if (Model.getFacade().isAAssociationEnd(me)) {</span>
+<span class="nc" id="L606">                    me = Model.getFacade().getType(me);</span>
+                }
+<span class="nc bnc" id="L608" title="All 2 branches missed.">                if (me != null) {</span>
+<span class="nc" id="L609">                    String name = Model.getFacade().getName(me);</span>
+<span class="nc bnc" id="L610" title="All 4 branches missed.">                    if (name == null || name.length() == 0) {</span>
+<span class="nc" id="L611">                        name = &quot;(anon element)&quot;;</span>
+                    }
+<span class="nc" id="L613">                    Action action =</span>
+                        new ActionAddExistingRelatedNode(
+<span class="nc" id="L615">                            menuLocalize(&quot;menu.popup.add-to-diagram&quot;) + &quot;: &quot;</span>
+                             + name,
+                            me);
+<span class="nc" id="L618">                    this.add(action);</span>
+                }
+            }
+<span class="nc" id="L621">        }</span>
+<span class="nc" id="L622">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -5663884871599931780L;
+
+
+    private class ActionAddExistingRelatedNode extends UndoableAction {
+
+        /**
+         * The UML object to be added to the diagram.
+         */
+        private Object object;
+
+        /**
+         * The Constructor.
+         *
+         * @param name the localized name of the action
+         * @param o the node UML object to be added
+         */
+<span class="nc" id="L643">        public ActionAddExistingRelatedNode(String name, Object o) {</span>
+<span class="nc" id="L644">            super(name);</span>
+<span class="nc" id="L645">            object = o;</span>
+<span class="nc" id="L646">        }</span>
+
+        /**
+         * @see javax.swing.Action#isEnabled()
+         */
+        public boolean isEnabled() {
+<span class="nc" id="L652">            ArgoDiagram dia = DiagramUtils.getActiveDiagram();</span>
+<span class="nc bnc" id="L653" title="All 2 branches missed.">            if (dia == null) {</span>
+<span class="nc" id="L654">                return false;</span>
+            }
+<span class="nc" id="L656">            MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();</span>
+<span class="nc" id="L657">            return gm.canAddNode(object);</span>
+        }
+
+        public void actionPerformed(ActionEvent ae) {
+<span class="nc" id="L661">            super.actionPerformed(ae);</span>
+<span class="nc" id="L662">            Editor ce = Globals.curEditor();</span>
+<span class="nc" id="L663">            GraphModel gm = ce.getGraphModel();</span>
+<span class="nc bnc" id="L664" title="All 2 branches missed.">            if (!(gm instanceof MutableGraphModel)) {</span>
+<span class="nc" id="L665">                return;</span>
+            }
+
+<span class="nc" id="L668">            String instructions = null;</span>
+<span class="nc bnc" id="L669" title="All 2 branches missed.">            if (object != null) {</span>
+<span class="nc" id="L670">                instructions =</span>
+<span class="nc" id="L671">                    Translator.localize(</span>
+                        &quot;misc.message.click-on-diagram-to-add&quot;,
+                        new Object[] {
+<span class="nc" id="L674">                                Model.getFacade().toString(object),</span>
+                        });
+<span class="nc" id="L676">                Globals.showStatus(instructions);</span>
+            }
+
+<span class="nc" id="L679">            ArrayList&lt;Object&gt; elementsToAdd = new ArrayList&lt;Object&gt;(1);</span>
+<span class="nc" id="L680">            elementsToAdd.add(object);</span>
+<span class="nc" id="L681">            final ModeAddToDiagram placeMode =</span>
+                new ModeAddToDiagram(elementsToAdd, instructions);
+
+<span class="nc" id="L684">            Globals.mode(placeMode, false);</span>
+<span class="nc" id="L685">        }</span>
+    } /* end class ActionAddExistingRelatedNode */
+
+    /**
+     * A JMenuItem that will order by display name
+     *
+     * @author Bob Tarling
+     */
+    private class OrderedMenuItem extends JMenuItem implements Comparable {
+
+        /**
+         * Instantiate OrderedMenuItem
+         * @param action
+         */
+<span class="nc" id="L699">        public OrderedMenuItem(Action action) {</span>
+<span class="nc" id="L700">            super(action);</span>
+<span class="nc" id="L701">        }</span>
+
+        /**
+         * Instantiate OrderedMenuItem
+         * @param name
+         */
+<span class="nc" id="L707">        public OrderedMenuItem(String name) {</span>
+<span class="nc" id="L708">            super(name);</span>
+<span class="nc" id="L709">            setName(name);</span>
+<span class="nc" id="L710">        }</span>
+
+        public int compareTo(Object o) {
+<span class="nc" id="L713">            JMenuItem other = (JMenuItem) o;</span>
+<span class="nc" id="L714">            return toString().compareTo(other.toString());</span>
+        }
+    }
+
+    /**
+     * A JMenuItem that will order by display name
+     *
+     * @author Bob Tarling
+     */
+    private class OrderedMenu extends JMenu implements Comparable {
+
+        /**
+         * Instantiate OrderedMenu
+         * @param name
+         */
+<span class="nc" id="L729">        public OrderedMenu(String name) {</span>
+<span class="nc" id="L730">            super(name);</span>
+<span class="nc" id="L731">        }</span>
+
+        public int compareTo(Object o) {
+<span class="nc" id="L734">            JMenuItem other = (JMenuItem) o;</span>
+<span class="nc" id="L735">            return toString().compareTo(other.toString());</span>
+        }
+    }
+
+    /**
+     * An action to create an association between 2 or more model elements.
+     *
+     * @author Bob Tarling
+     */
+    private class ActionCreateAssociation extends AbstractAction {
+
+        private Object metaType;
+        private List classifiers;
+
+        public ActionCreateAssociation(
+                Object theMetaType,
+<span class="nc" id="L751">                List classifiersList) {</span>
+<span class="nc" id="L752">            super(menuLocalize(&quot;menu.popup.create&quot;) + &quot; &quot;</span>
+<span class="nc" id="L753">                    + Model.getMetaTypes().getName(theMetaType));</span>
+<span class="nc" id="L754">            this.metaType = theMetaType;</span>
+<span class="nc" id="L755">            this.classifiers = classifiersList;</span>
+<span class="nc" id="L756">        }</span>
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+<span class="nc" id="L760">                Object newElement = Model.getUmlFactory().buildConnection(</span>
+                    metaType,
+<span class="nc" id="L762">                    classifiers.get(0),</span>
+                    null,
+<span class="nc" id="L764">                    classifiers.get(1),</span>
+                    null,
+                    null,
+                    null);
+<span class="nc bnc" id="L768" title="All 2 branches missed.">                for (int i = 2; i &lt; classifiers.size(); ++i) {</span>
+<span class="nc" id="L769">                    Model.getUmlFactory().buildConnection(</span>
+<span class="nc" id="L770">                            Model.getMetaTypes().getAssociationEnd(),</span>
+                            newElement,
+                            null,
+<span class="nc" id="L773">                            classifiers.get(i),</span>
+                            null,
+                            null,
+                            null);
+                }
+<span class="nc" id="L778">            } catch (IllegalModelElementConnectionException e1) {</span>
+<span class="nc" id="L779">                LOG.log(Level.SEVERE, &quot;Exception&quot;, e1);</span>
+<span class="nc" id="L780">            }</span>
+<span class="nc" id="L781">        }</span>
+    }
+
+
+    /**
+     * An action to create an associationRole between 2 or more model elements.
+     *
+     * @author Bob Tarling
+     */
+    private class ActionCreateAssociationRole extends AbstractAction {
+
+        private Object metaType;
+        private List classifierRoles;
+
+        public ActionCreateAssociationRole(
+                Object theMetaType,
+<span class="nc" id="L797">                List classifierRolesList) {</span>
+<span class="nc" id="L798">            super(menuLocalize(&quot;menu.popup.create&quot;) + &quot; &quot;</span>
+<span class="nc" id="L799">                    + Model.getMetaTypes().getName(theMetaType));</span>
+<span class="nc" id="L800">            this.metaType = theMetaType;</span>
+<span class="nc" id="L801">            this.classifierRoles = classifierRolesList;</span>
+<span class="nc" id="L802">        }</span>
+
+        public void actionPerformed(ActionEvent e) {
+            try {
+<span class="nc" id="L806">                Object newElement = Model.getUmlFactory().buildConnection(</span>
+                        metaType,
+<span class="nc" id="L808">                        classifierRoles.get(0),</span>
+                        null,
+<span class="nc" id="L810">                        classifierRoles.get(1),</span>
+                        null,
+                        null,
+                        null);
+<span class="nc bnc" id="L814" title="All 2 branches missed.">                for (int i = 2; i &lt; classifierRoles.size(); ++i) {</span>
+<span class="nc" id="L815">                    Model.getUmlFactory().buildConnection(</span>
+<span class="nc" id="L816">                            Model.getMetaTypes().getAssociationEndRole(),</span>
+                            newElement,
+                            null,
+<span class="nc" id="L819">                            classifierRoles.get(i),</span>
+                            null,
+                            null,
+                            null);
+                }
+<span class="nc" id="L824">            } catch (IllegalModelElementConnectionException e1) {</span>
+<span class="nc" id="L825">                LOG.log(Level.SEVERE, &quot;Exception&quot;, e1);</span>
+<span class="nc" id="L826">            }</span>
+<span class="nc" id="L827">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

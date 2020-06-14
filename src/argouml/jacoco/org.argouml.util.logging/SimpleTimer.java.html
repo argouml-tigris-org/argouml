@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleTimer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util.logging</a> &gt; <span class="el_source">SimpleTimer.java</span></div><h1>SimpleTimer.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    penyaskito
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.util.logging;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+/**
+ * This class makes it easy to get the time between two or several
+ * points in the code.
+ *
+ * @author Linus Tolke
+ */
+public class SimpleTimer {
+<span class="nc" id="L52">    private List&lt;Long&gt; points = new ArrayList&lt;Long&gt;();</span>
+<span class="nc" id="L53">    private List&lt;String&gt; labels = new ArrayList&lt;String&gt;();</span>
+
+    /**
+     * The constructor. Creates a simple timer.
+     */
+<span class="nc" id="L58">    public SimpleTimer() {</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Mark (Store) the current time.
+     */
+    public void mark() {
+<span class="nc" id="L65">	points.add(new Long(System.currentTimeMillis()));</span>
+<span class="nc" id="L66">	labels.add(null);</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Mark (Store) the current time.
+     *
+     * @param label the mark will be labeled with this string
+     */
+    public void mark(String label) {
+<span class="nc" id="L75">	mark();</span>
+<span class="nc" id="L76">	labels.set(labels.size() - 1, label);</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * Returns an enumeration of formatted distances.
+     *
+     * @return an enumeration representing the results
+     */
+    public Enumeration result() {
+<span class="nc" id="L85">	mark();</span>
+<span class="nc" id="L86">	return new SimpleTimerEnumeration();</span>
+    }
+
+    /**
+     * An enumeration to walk through all entries.&lt;p&gt;
+     *
+     * This allows us to get a summary at the end.
+     *
+     * @author Linus Tolke
+     */
+<span class="nc" id="L96">    class SimpleTimerEnumeration implements Enumeration&lt;String&gt; {</span>
+        /**
+         * Keep track of where we are in the list.
+         */
+<span class="nc" id="L100">        private int count = 1;</span>
+
+        /*
+         * @see java.util.Enumeration#hasMoreElements()
+         */
+        public boolean hasMoreElements() {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            return count &lt;= points.size();</span>
+        }
+
+        /*
+         * @see java.util.Enumeration#nextElement()
+         */
+        public String nextElement() {
+<span class="nc" id="L113">            StringBuffer res = new StringBuffer();</span>
+<span class="nc" id="L114">            synchronized (points) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                if (count &lt; points.size()) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                    if (labels.get(count - 1) == null) {</span>
+<span class="nc" id="L117">                        res.append(&quot;phase &quot;).append(count);</span>
+                    } else {
+<span class="nc" id="L119">                        res.append(labels.get(count - 1));</span>
+                    }
+<span class="nc" id="L121">                    res.append(&quot;                            &quot;);</span>
+<span class="nc" id="L122">                    res.append(&quot;                            &quot;);</span>
+<span class="nc" id="L123">                    res.setLength(60);</span>
+<span class="nc" id="L124">    		    res.append(points.get(count) - points.get(count - 1));</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                } else if (count == points.size()) {</span>
+<span class="nc" id="L126">                    res.append(&quot;Total                      &quot;);</span>
+<span class="nc" id="L127">                    res.setLength(18);</span>
+<span class="nc" id="L128">                    res.append(points.get(points.size() - 1) - (points.get(0)));</span>
+                }
+<span class="nc" id="L130">            }</span>
+<span class="nc" id="L131">            count++;</span>
+<span class="nc" id="L132">            return res.toString();</span>
+        }
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+<span class="nc" id="L140">	StringBuffer sb = new StringBuffer(&quot;&quot;);</span>
+
+<span class="nc bnc" id="L142" title="All 2 branches missed.">	for (Enumeration e = result(); e.hasMoreElements();) {</span>
+<span class="nc" id="L143">	    sb.append((String) e.nextElement());</span>
+<span class="nc" id="L144">	    sb.append(&quot;\n&quot;);</span>
+	}
+<span class="nc" id="L146">	return sb.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

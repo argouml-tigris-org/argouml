@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLChangeDispatch.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLChangeDispatch.java</span></div><h1>UMLChangeDispatch.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.Component;
+import java.awt.Container;
+
+/**
+ * This class is used to dispatch a UML model change event (which may
+ * occur on a non-UI) thread) to user interface components.  The class
+ * is created in response to a UML Model change event being captured by a
+ * UMLUserInterfaceContainer and then is passed as an argument to
+ * InvokeLater to be run on the user interface thread.&lt;p&gt;
+ *
+ * This class is updated to cope with changes to the targetchanged
+ * mechanism.
+ */
+public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
+    private int eventType;
+    private Container container;
+
+    /**
+     * The target of the proppanel that constructs this umlchangedispatch.
+     */
+    private Object target;
+
+    /**
+     * Dispatch a target changed event
+     */
+    public static final int TARGET_CHANGED_ADD = -1;
+
+
+    /**
+     * Dispatch a target changed event.
+     */
+    public static final int TARGET_CHANGED = 0;
+    /**
+     * Dispatch a target reasserted event.
+     */
+    public static final int TARGET_REASSERTED = 7;
+
+    /**
+     * Creates a UMLChangeDispatch.  eventType is overriden if a call to
+     * one of the event functions is called.
+     *
+     * @param uic user interface container to which changes are dispatched.
+     * @param et -1 will add event listener to new target, 0 for default.
+     */
+<span class="fc" id="L85">    public UMLChangeDispatch(Container uic, int et) {</span>
+<span class="fc" id="L86">        synchronized (uic) {</span>
+<span class="fc" id="L87">            container = uic;</span>
+<span class="fc" id="L88">            eventType = et;</span>
+<span class="pc bpc" id="L89" title="1 of 2 branches missed.">            if (uic instanceof PropPanel) {</span>
+<span class="fc" id="L90">            	target = ((PropPanel) uic).getTarget();</span>
+            }
+<span class="fc" id="L92">        }</span>
+<span class="fc" id="L93">    }</span>
+
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
+    public void targetChanged() {
+<span class="nc" id="L99">        eventType = 0;</span>
+<span class="nc" id="L100">    }</span>
+    
+    /*
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
+    public void targetReasserted() {
+<span class="nc" id="L106">        eventType = 7;</span>
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Called by InvokeLater on user interface thread.  Dispatches
+     * event to all contained objects implementing
+     * UMLUserInterfaceComponent.  If event == TARGET_CHANGED_ADD, adds change
+     * listener to new target on completion of dispatch.
+     */
+    public void run() {
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (target != null) {</span>
+<span class="fc" id="L117">            synchronizedDispatch(container);</span>
+        } else {
+<span class="nc" id="L119">	    dispatch(container);</span>
+        }
+<span class="fc" id="L121">    }</span>
+
+    /**
+     * Iterates through all children of this container.  If a child
+     * is another container then calls dispatch recursively, if
+     * a child supports UMLUserInterfaceComponent then calls the
+     * appropriate method.
+     *
+     * @param theAWTContainer AWT container
+     */
+    private void dispatch(Container theAWTContainer) {
+
+<span class="fc" id="L133">        int count = theAWTContainer.getComponentCount();</span>
+        Component component;
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (int i = 0; i &lt; count; i++) {</span>
+<span class="fc" id="L136">            component = theAWTContainer.getComponent(i);</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">            if (component instanceof Container) {</span>
+<span class="fc" id="L138">                dispatch((Container) component);</span>
+            }
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (component instanceof UMLUserInterfaceComponent</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">                    &amp;&amp; component.isVisible()) {</span>
+
+<span class="nc bnc" id="L143" title="All 3 branches missed.">                switch(eventType) {</span>
+                case TARGET_CHANGED_ADD:
+                case TARGET_CHANGED:
+<span class="nc" id="L146">                    ((UMLUserInterfaceComponent) component).targetChanged();</span>
+<span class="nc" id="L147">                    break;</span>
+
+                case TARGET_REASSERTED:
+<span class="nc" id="L150">                    ((UMLUserInterfaceComponent) component).targetReasserted();</span>
+                    break;
+                }
+            }
+        }
+<span class="fc" id="L155">    }</span>
+
+    private void synchronizedDispatch(Container cont) {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        if (target == null) {</span>
+<span class="nc" id="L159">	    throw new IllegalStateException(&quot;Target may not be null in &quot;</span>
+					    + &quot;synchronized dispatch&quot;);
+	}
+<span class="fc" id="L162">        synchronized (target) {</span>
+<span class="fc" id="L163">            dispatch(cont);</span>
+<span class="fc" id="L164">        }</span>
+<span class="fc" id="L165">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

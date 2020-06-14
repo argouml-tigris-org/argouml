@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StereotypeUtility.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml</a> &gt; <span class="el_source">StereotypeUtility.java</span></div><h1>StereotypeUtility.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Thomas Neustupny
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.swing.Action;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.uml.util.PathComparator;
+import org.argouml.util.MyTokenizer;
+
+/**
+ * Utility classes for use in diagram popup menus for stereotypes.
+ */
+public class StereotypeUtility {
+
+    /**
+     * Private default constructor.
+     */
+    private StereotypeUtility() {
+        super();
+    }
+
+    /**
+     * Returns an array of all applicable actions for adding stereotypes for a
+     * given model element.
+     * 
+     * @param modelElement the given model element
+     * @return the array with actions for adding stereotype UML objects
+     */
+    public static Action[] getApplyStereotypeActions(Object modelElement) {
+<span class="nc" id="L77">        Set availableStereotypes = getAvailableStereotypes(modelElement);</span>
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (!availableStereotypes.isEmpty()) {</span>
+<span class="nc" id="L80">            Action[] menuActions = new Action[availableStereotypes.size()];</span>
+
+<span class="nc" id="L82">            Iterator it = availableStereotypes.iterator();</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            for (int i = 0; it.hasNext(); ++i) {</span>
+<span class="nc" id="L84">                menuActions[i] = new ActionAddStereotype(modelElement,</span>
+<span class="nc" id="L85">                        it.next());</span>
+            }
+<span class="nc" id="L87">            return menuActions;</span>
+        }
+<span class="nc" id="L89">        return new Action[0];</span>
+    }
+
+    /**
+     * Returns an array of all applicable actions for adding stereotypes for a
+     * given collection of model elements.
+     * 
+     * @param elements the given collection of model elements
+     * @return the array with actions for adding stereotype UML objects
+     */
+    public static Action[] getApplyStereotypeActions(Collection elements) {
+<span class="nc" id="L100">        Set availableStereotypes = getAvailableStereotypes(elements);</span>
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (!availableStereotypes.isEmpty()) {</span>
+<span class="nc" id="L103">            Action[] menuActions = new Action[availableStereotypes.size()];</span>
+
+<span class="nc" id="L105">            Iterator it = availableStereotypes.iterator();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            for (int i = 0; it.hasNext(); ++i) {</span>
+<span class="nc" id="L107">                menuActions[i] = new ActionAddStereotype(elements, it.next());</span>
+            }
+<span class="nc" id="L109">            return menuActions;</span>
+        }
+<span class="nc" id="L111">        return new Action[0];</span>
+    }
+
+    /**
+     * Returns a set of all unique applicable stereotypes for a given
+     * modelelement.
+     * 
+     * @param modelElement the given modelelement
+     * @return the set with stereotype UML objects
+     */
+    public static Set&lt;Object&gt; getAvailableStereotypes(Object modelElement) {
+<span class="fc" id="L122">        Set&lt;List&gt; paths = new HashSet&lt;List&gt;();</span>
+<span class="fc" id="L123">        Set&lt;Object&gt; availableStereotypes = new TreeSet&lt;Object&gt;(</span>
+                new PathComparator());
+
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+
+<span class="fc" id="L128">            Collection models = ProjectManager.getManager().getCurrentProject()</span>
+<span class="fc" id="L129">                    .getModels();</span>
+
+<span class="fc" id="L131">            Collection topLevelModels = ProjectManager.getManager()</span>
+<span class="fc" id="L132">                    .getCurrentProject().getModels();</span>
+
+            // adds all stereotypes defined at the top level namespaces
+<span class="fc" id="L135">            Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);</span>
+
+<span class="fc" id="L137">            Collection validTopLevelStereotypes = new ArrayList();</span>
+
+<span class="fc" id="L139">            addAllUniqueModelElementsFrom(availableStereotypes, paths,</span>
+<span class="fc" id="L140">                    Model.getExtensionMechanismsHelper()</span>
+<span class="fc" id="L141">                            .getAllPossibleStereotypes(models, modelElement));</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            for (Object stereotype : topLevelStereotypes) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                if (Model.getExtensionMechanismsHelper().isValidStereotype(</span>
+                        modelElement, stereotype)) {
+<span class="fc" id="L145">                    validTopLevelStereotypes.add(stereotype);</span>
+                }
+<span class="fc" id="L147">            }</span>
+
+<span class="fc" id="L149">            addAllUniqueModelElementsFrom(availableStereotypes, paths,</span>
+                    validTopLevelStereotypes);
+
+            // adds all stereotypes defined at the profiles applied to the
+            // current namespace
+<span class="fc" id="L154">            Object namespace = Model.getFacade().getNamespace(modelElement);</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">            if (namespace != null) {</span>
+                while (true) {
+<span class="fc" id="L157">                    getApplicableStereotypesInNamespace(modelElement, paths,</span>
+                            availableStereotypes, namespace);
+<span class="fc" id="L159">                    Object newNamespace = Model.getFacade().getNamespace(</span>
+                            namespace);
+
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">                    if (newNamespace == null) {</span>
+<span class="fc" id="L163">                        break;</span>
+                    }
+
+<span class="nc" id="L166">                    namespace = newNamespace;</span>
+<span class="nc" id="L167">                }</span>
+            }
+        }
+
+        // adds all stereotypes defined at the profiles applied
+        // to the current project
+<span class="fc" id="L173">        addAllUniqueModelElementsFrom(availableStereotypes, paths,</span>
+<span class="fc" id="L174">                ProjectManager.getManager().getCurrentProject()</span>
+<span class="fc" id="L175">                        .getProfileConfiguration()</span>
+<span class="fc" id="L176">                        .findAllStereotypesForModelElement(modelElement));</span>
+
+<span class="fc" id="L178">        return availableStereotypes;</span>
+    }
+
+    /**
+     * Returns a set (union) of all unique applicable stereotypes for a given
+     * collection of model elements. TODO: This is not optimized for
+     * performance.
+     * 
+     * @param elements the given collection of model elements
+     * @return the set with stereotype UML objects
+     */
+    public static Set&lt;Object&gt; getAvailableStereotypes(Collection elements) {
+<span class="nc" id="L190">        Set&lt;Object&gt; availableStereotypes = new TreeSet&lt;Object&gt;(</span>
+                new PathComparator());
+<span class="nc bnc" id="L192" title="All 2 branches missed.">        if (elements != null) {</span>
+<span class="nc bnc" id="L193" title="All 2 branches missed.">            for (Object element : elements) {</span>
+<span class="nc" id="L194">                availableStereotypes.addAll(getAvailableStereotypes(element));</span>
+<span class="nc" id="L195">            }</span>
+        }
+<span class="nc" id="L197">        return availableStereotypes;</span>
+    }
+
+    private static Collection&lt;Object&gt; getTopLevelStereotypes(
+            Collection&lt;Object&gt; topLevelModels) {
+<span class="fc" id="L202">        Collection&lt;Object&gt; ret = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        for (Object model : topLevelModels) {</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">            for (Object stereotype : Model.getExtensionMechanismsHelper()</span>
+<span class="fc" id="L205">                    .getStereotypes(model)) {</span>
+<span class="fc" id="L206">                Object namespace = Model.getFacade().getNamespace(stereotype);</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">                if (Model.getFacade().getNamespace(namespace) == null) {</span>
+<span class="fc" id="L208">                    ret.add(stereotype);</span>
+                }
+<span class="fc" id="L210">            }</span>
+<span class="fc" id="L211">        }</span>
+<span class="fc" id="L212">        return ret;</span>
+    }
+
+    private static void getApplicableStereotypesInNamespace(
+            Object modelElement, Set&lt;List&gt; paths,
+            Set&lt;Object&gt; availableStereotypes, Object namespace) {
+
+<span class="fc" id="L219">        Collection allProfiles = getAllProfilePackages(Model.getFacade()</span>
+<span class="fc" id="L220">                .getRoot(modelElement));</span>
+<span class="fc" id="L221">        Collection&lt;Object&gt; allAppliedProfiles = new ArrayList&lt;Object&gt;();</span>
+
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">        for (Object profilePackage : allProfiles) {</span>
+<span class="nc" id="L224">            Collection allDependencies = Model.getCoreHelper().getDependencies(</span>
+                    profilePackage, namespace);
+
+<span class="nc bnc" id="L227" title="All 2 branches missed.">            for (Object dependency : allDependencies) {</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">                if (Model.getExtensionMechanismsHelper().hasStereotype(</span>
+                        dependency, &quot;appliedProfile&quot;)) {
+<span class="nc" id="L230">                    allAppliedProfiles.add(profilePackage);</span>
+<span class="nc" id="L231">                    break;</span>
+                }
+<span class="nc" id="L233">            }</span>
+<span class="nc" id="L234">        }</span>
+
+<span class="fc" id="L236">        addAllUniqueModelElementsFrom(availableStereotypes, paths,</span>
+<span class="fc" id="L237">                getApplicableStereotypes(modelElement, allAppliedProfiles));</span>
+<span class="fc" id="L238">    }</span>
+
+    private static Collection&lt;Object&gt; getApplicableStereotypes(
+            Object modelElement, Collection&lt;Object&gt; allAppliedProfiles) {
+<span class="fc" id="L242">        Collection&lt;Object&gt; ret = new ArrayList&lt;Object&gt;();</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        for (Object profile : allAppliedProfiles) {</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">            for (Object stereotype : Model.getExtensionMechanismsHelper()</span>
+<span class="nc" id="L245">                    .getStereotypes(profile)) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">                if (Model.getExtensionMechanismsHelper().isValidStereotype(</span>
+                        modelElement, stereotype)) {
+<span class="nc" id="L248">                    ret.add(stereotype);</span>
+                }
+<span class="nc" id="L250">            }</span>
+<span class="nc" id="L251">        }</span>
+
+<span class="fc" id="L253">        return ret;</span>
+    }
+
+    private static Collection&lt;Object&gt; getAllProfilePackages(Object model) {
+<span class="fc" id="L257">        Collection col = Model.getModelManagementHelper()</span>
+<span class="fc" id="L258">                .getAllModelElementsOfKind(model,</span>
+<span class="fc" id="L259">                        Model.getMetaTypes().getPackage());</span>
+<span class="fc" id="L260">        Collection&lt;Object&gt; ret = new ArrayList&lt;Object&gt;();</span>
+
+<span class="pc bpc" id="L262" title="1 of 2 branches missed.">        for (Object element : col) {</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            if (Model.getFacade().isAPackage(element)</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">                    &amp;&amp; Model.getExtensionMechanismsHelper().hasStereotype(</span>
+                            element, &quot;profile&quot;)) {
+<span class="nc" id="L266">                ret.add(element);</span>
+            }
+<span class="nc" id="L268">        }</span>
+<span class="fc" id="L269">        return ret;</span>
+    }
+
+    /**
+     * Helper method for buildModelList.
+     * &lt;p&gt;
+     * Adds those elements from source that do not have the same path as any
+     * path in paths to elements, and its path to paths. Thus elements will
+     * never contain two objects with the same path, unless they are added by
+     * other means.
+     */
+    private static void addAllUniqueModelElementsFrom(Set&lt;Object&gt; elements,
+            Set&lt;List&gt; paths, Collection&lt;Object&gt; source) {
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        for (Object obj : source) {</span>
+<span class="fc" id="L283">            List path = Model.getModelManagementHelper().getPathList(obj);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">            if (!paths.contains(path)) {</span>
+<span class="fc" id="L285">                paths.add(path);</span>
+<span class="fc" id="L286">                elements.add(obj);</span>
+            }
+<span class="fc" id="L288">        }</span>
+<span class="fc" id="L289">    }</span>
+
+    /**
+     * Replace the previous set of stereotypes applied to the given modelelement
+     * with a new set, given in the form of a &quot;,&quot; separated string of stereotype
+     * names.
+     * 
+     * @param element the UML element to modify
+     * @param stereotype Comma separated list of stereotype names. Empty string
+     *            or &lt;code&gt;null&lt;/code&gt; represents no stereotypes.
+     * @param removeCurrent true if all current stereotypes should be removed
+     *            before adding the new stereotypes, false if new stereotypes
+     *            should be added to existing ones.
+     */
+    public static void dealWithStereotypes(Object element,
+            StringBuilder stereotype, boolean removeCurrent) {
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (stereotype == null) {</span>
+<span class="fc" id="L306">            dealWithStereotypes(element, (String) null, removeCurrent);</span>
+        } else {
+<span class="fc" id="L308">            dealWithStereotypes(element, stereotype.toString(), removeCurrent);</span>
+        }
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * This function shall replace the previous set of stereotypes of the given
+     * modelelement with a new set, given in the form of a &quot;,&quot; separated string
+     * of stereotype names.
+     * 
+     * @param umlobject the UML element to adapt
+     * @param stereotype Comma separated list stereotype names. Empty string or
+     *            &lt;code&gt;null&lt;/code&gt; represents no stereotypes.
+     * @param full false if stereotypes are only added, true if removal should
+     *            be done, too.
+     */
+    public static void dealWithStereotypes(Object umlobject, String stereotype,
+            boolean full) {
+        String token;
+        MyTokenizer mst;
+<span class="fc" id="L327">        Collection&lt;String&gt; stereotypes = new ArrayList&lt;String&gt;();</span>
+
+        /*
+         * Convert the string (e.g. &quot;aaa,bbb,ccc&quot;) into separate
+         * stereotype-names (e.g. &quot;aaa&quot;, &quot;bbb&quot;, &quot;ccc&quot;).
+         */
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (stereotype != null) {</span>
+<span class="fc" id="L334">            mst = new MyTokenizer(stereotype, &quot; ,\\,&quot;);</span>
+<span class="fc bfc" id="L335" title="All 2 branches covered.">            while (mst.hasMoreTokens()) {</span>
+<span class="fc" id="L336">                token = mst.nextToken();</span>
+<span class="fc bfc" id="L337" title="All 4 branches covered.">                if (!&quot;,&quot;.equals(token) &amp;&amp; !&quot; &quot;.equals(token)) {</span>
+<span class="fc" id="L338">                    stereotypes.add(token);</span>
+                }
+            }
+        }
+
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        if (full) {</span>
+            // collect the to be removed stereotypes
+<span class="fc" id="L345">            Collection&lt;Object&gt; toBeRemoved = new ArrayList&lt;Object&gt;();</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">            for (Object stereo : Model.getFacade().getStereotypes(umlobject)) {</span>
+<span class="fc" id="L347">                String stereotypename = Model.getFacade().getName(stereo);</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">                if (stereotypename != null</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                        &amp;&amp; !stereotypes.contains(stereotypename)) {</span>
+<span class="fc" id="L350">                    toBeRemoved.add(getStereotype(umlobject, stereotypename));</span>
+                }
+<span class="fc" id="L352">            }</span>
+
+            // and now remove them
+<span class="fc bfc" id="L355" title="All 2 branches covered.">            for (Object o : toBeRemoved) {</span>
+<span class="fc" id="L356">                Model.getCoreHelper().removeStereotype(umlobject, o);</span>
+<span class="fc" id="L357">            }</span>
+        }
+
+        // add stereotypes
+<span class="fc bfc" id="L361" title="All 2 branches covered.">        for (String stereotypename : stereotypes) {</span>
+<span class="fc bfc" id="L362" title="All 2 branches covered.">            if (!Model.getExtensionMechanismsHelper().hasStereotype(umlobject,</span>
+                    stereotypename)) {
+<span class="fc" id="L364">                Object umlstereo = getStereotype(umlobject, stereotypename);</span>
+<span class="pc bpc" id="L365" title="1 of 2 branches missed.">                if (umlstereo != null) {</span>
+<span class="fc" id="L366">                    Model.getCoreHelper().addStereotype(umlobject, umlstereo);</span>
+                }
+            }
+<span class="fc" id="L369">        }</span>
+<span class="fc" id="L370">        ProjectManager.getManager().updateRoots();</span>
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Finds a stereotype with the given name either in the user model, or in
+     * one of the profiles' models. If it's not found, a new stereotype will be
+     * created in the root model.
+     * 
+     * @param obj A ModelElement to find a suitable stereotype for.
+     * @param name The name of the stereotype to search for.
+     * @return A stereotype named name, or possibly null.
+     */
+    private static Object getStereotype(Object obj, String name) {
+<span class="fc" id="L383">        Object root = Model.getFacade().getRoot(obj);</span>
+        Object stereo;
+
+<span class="fc" id="L386">        stereo = findStereotypeContained(obj, root, name);</span>
+        // TODO: The following rather than the above is probably the correct
+        // way to search
+        // stereo = findStereotype(obj, null, name);
+<span class="fc bfc" id="L390" title="All 2 branches covered.">        if (stereo != null) {</span>
+<span class="fc" id="L391">            return stereo;</span>
+        }
+
+<span class="fc" id="L394">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc" id="L395">        stereo = project.getProfileConfiguration().findStereotypeForObject(</span>
+                name, obj);
+
+<span class="pc bpc" id="L398" title="1 of 2 branches missed.">        if (stereo != null) {</span>
+<span class="nc" id="L399">            return stereo;</span>
+        }
+
+<span class="pc bpc" id="L402" title="2 of 4 branches missed.">        if (root != null &amp;&amp; name.length() &gt; 0) {</span>
+<span class="fc" id="L403">            stereo = Model.getExtensionMechanismsFactory().buildStereotype(obj,</span>
+                    name, root);
+        }
+
+<span class="fc" id="L407">        return stereo;</span>
+    }
+
+    /**
+     * Search for a stereotype with the name given in a namespace and its
+     * containing namespaces.
+     * 
+     * @param obj The model element to be suitable for.
+     * @param namespace The namespace to start search at. If null, the namespace
+     *            of the given model element will be used as the starting point.
+     * @param name The name of the stereotype to search for.
+     * @return An stereotype named name, or null if none is found.
+     */
+    private static Object findStereotype(final Object obj,
+            final Object namespace, final String name) {
+<span class="nc" id="L422">        Object ns = namespace;</span>
+<span class="nc bnc" id="L423" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L424">            ns = Model.getFacade().getNamespace(obj);</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">            if (ns == null) {</span>
+<span class="nc" id="L426">                return null;</span>
+            }
+        }
+
+<span class="nc" id="L430">        Collection ownedElements = Model.getFacade().getOwnedElements(ns);</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        for (Object element : ownedElements) {</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">            if (Model.getFacade().isAStereotype(element)</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">                    &amp;&amp; name.equals(Model.getFacade().getName(element))) {</span>
+<span class="nc" id="L434">                return element;</span>
+            }
+<span class="nc" id="L436">        }</span>
+
+        // If not found, try the parent namespace
+<span class="nc" id="L439">        ns = Model.getFacade().getNamespace(ns);</span>
+<span class="nc bnc" id="L440" title="All 2 branches missed.">        if (namespace != null) {</span>
+<span class="nc" id="L441">            return findStereotype(obj, ns, name);</span>
+        }
+
+<span class="nc" id="L444">        return null;</span>
+    }
+
+    /**
+     * Search descending recursively for a stereotype with the name given in
+     * name. NOTE: You probably don't want to use this because it's searching
+     * the wrong direction!
+     * 
+     * @param obj The model element to be suitable for.
+     * @param root The model element to search from.
+     * @param name The name of the stereotype to search for.
+     * @return An stereotype named name, or null if none is found.
+     */
+    private static Object findStereotypeContained(Object obj, Object root,
+            String name) {
+        Object stereo;
+
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">        if (root == null) {</span>
+<span class="nc" id="L462">            return null;</span>
+        }
+
+<span class="fc bfc" id="L465" title="All 2 branches covered.">        if (Model.getFacade().isAStereotype(root)</span>
+<span class="fc bfc" id="L466" title="All 2 branches covered.">                &amp;&amp; name.equals(Model.getFacade().getName(root))) {</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">            if (Model.getExtensionMechanismsHelper().isValidStereotype(obj,</span>
+                    root)) {
+<span class="fc" id="L469">                return root;</span>
+            }
+        }
+
+<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (!Model.getFacade().isANamespace(root)) {</span>
+<span class="fc" id="L474">            return null;</span>
+        }
+
+<span class="fc" id="L477">        Collection ownedElements = Model.getFacade().getOwnedElements(root);</span>
+
+        // Loop through each element in the namespace, recursing.
+<span class="fc bfc" id="L480" title="All 2 branches covered.">        for (Object ownedElement : ownedElements) {</span>
+<span class="fc" id="L481">            stereo = findStereotypeContained(obj, ownedElement, name);</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">            if (stereo != null) {</span>
+<span class="fc" id="L483">                return stereo;</span>
+            }
+<span class="fc" id="L485">        }</span>
+<span class="fc" id="L486">        return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

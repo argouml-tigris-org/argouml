@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabSrc.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">TabSrc.java</span></div><h1>TabSrc.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    euluis
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JComboBox;
+
+import org.argouml.application.api.Predicate;
+import org.argouml.language.ui.LanguageComboBox;
+import org.argouml.model.Model;
+import org.argouml.ui.TabText;
+import org.argouml.uml.generator.GeneratorHelper;
+import org.argouml.uml.generator.Language;
+import org.argouml.uml.generator.SourceUnit;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * Details panel tabbed panel for displaying a source code representation of
+ * a UML model element in a particular Language.
+ */
+public class TabSrc
+    extends TabText
+    implements ItemListener {
+
+    private static final long serialVersionUID = -4958164807996827484L;
+
+<span class="fc" id="L72">    private static final Logger LOG = Logger.getLogger(TabSrc.class.getName());</span>
+
+<span class="fc" id="L74">    private Language langName = null;</span>
+<span class="fc" id="L75">    private String fileName = null;</span>
+<span class="fc" id="L76">    private SourceUnit[] files = null;</span>
+
+<span class="fc" id="L78">    private LanguageComboBox cbLang = new LanguageComboBox();</span>
+<span class="fc" id="L79">    private JComboBox cbFiles = new JComboBox();</span>
+
+    /**
+     * These predicates determine if this tab is enabled.
+     */
+<span class="fc" id="L84">    private static List&lt;Predicate&gt; predicates = new ArrayList&lt;Predicate&gt;();</span>
+    static {
+        /* Add a predicate for ArgoUML's default capabilities: */
+<span class="fc" id="L87">        predicates.add(new DefaultPredicate());</span>
+<span class="fc" id="L88">    }</span>
+
+
+    /**
+     * Create a tab that contains a toolbar.
+     * Then add a language selector onto it.
+     */
+    public TabSrc() {
+<span class="fc" id="L96">        super(&quot;tab.source&quot;, true);</span>
+
+<span class="fc" id="L98">        setEditable(false);</span>
+<span class="fc" id="L99">        langName = (Language) cbLang.getSelectedItem();</span>
+<span class="fc" id="L100">        fileName = null;</span>
+<span class="fc" id="L101">        getToolbar().add(cbLang);</span>
+<span class="fc" id="L102">        getToolbar().addSeparator();</span>
+<span class="fc" id="L103">        cbLang.addItemListener(this);</span>
+<span class="fc" id="L104">        getToolbar().add(cbFiles);</span>
+<span class="fc" id="L105">        getToolbar().addSeparator();</span>
+<span class="fc" id="L106">        cbFiles.addItemListener(this);</span>
+<span class="fc" id="L107">    }</span>
+
+
+    @Override
+    protected void finalize() {
+<span class="nc" id="L112">        cbLang.removeItemListener(this);</span>
+<span class="nc" id="L113">    }</span>
+
+
+    /**
+     * Populate files[] and cbFiles, using the specified element.
+     */
+    private void generateSource(Object elem) {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">      if ( LOG.isLoggable( Level.FINE ) ) {</span>
+<span class="nc" id="L121">          LOG.log(Level.FINE, &quot;TabSrc.genText(): getting src for {0}&quot;,</span>
+<span class="nc" id="L122">                  Model.getFacade().getName(elem));</span>
+      }
+<span class="nc" id="L124">	Collection code =</span>
+<span class="nc" id="L125">	    GeneratorHelper.generate(langName, elem, false);</span>
+<span class="nc" id="L126">	cbFiles.removeAllItems();</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">	if (!code.isEmpty()) {</span>
+<span class="nc" id="L128">	    files = new SourceUnit[code.size()];</span>
+<span class="nc" id="L129">	    files = (SourceUnit[]) code.toArray(files);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">	    for (int i = 0; i &lt; files.length; i++) {</span>
+<span class="nc" id="L131">		StringBuilder title = new StringBuilder(files[i].getName());</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		if (files[i].getBasePath().length() &gt; 0) {</span>
+<span class="nc" id="L133">		    title.append(&quot; ( &quot; + files[i].getFullName() + &quot;)&quot;);</span>
+		}
+<span class="nc" id="L135">		cbFiles.addItem(title.toString());</span>
+	    }
+	}
+<span class="nc" id="L138">    }</span>
+
+
+    @Override
+    protected String genText(Object modelObject) {
+<span class="nc bnc" id="L143" title="All 2 branches missed.">        if (files == null) {</span>
+<span class="nc" id="L144">	    generateSource(modelObject);</span>
+        }
+<span class="nc bnc" id="L146" title="All 4 branches missed.">        if (files != null &amp;&amp; files.length &gt; cbFiles.getSelectedIndex()) {</span>
+<span class="nc" id="L147">            return files[cbFiles.getSelectedIndex()].getContent();</span>
+        }
+<span class="nc" id="L149">        return null;</span>
+    }
+
+    @Override
+    protected void parseText(String s) {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if ( LOG.isLoggable(Level.FINE) ) {</span>
+<span class="nc" id="L155">            LOG.log(Level.FINE, &quot;TabSrc setting src for {0}&quot;,</span>
+<span class="nc" id="L156">                    Model.getFacade().getName(getTarget()));</span>
+        }
+<span class="nc" id="L158">        Object modelObject = getTarget();</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (getTarget() instanceof FigNode) {</span>
+<span class="nc" id="L160">            modelObject = ((FigNode) getTarget()).getOwner();</span>
+        }
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (getTarget() instanceof FigEdge) {</span>
+<span class="nc" id="L163">            modelObject = ((FigEdge) getTarget()).getOwner();</span>
+        }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        if (modelObject == null) {</span>
+<span class="nc" id="L166">            return;</span>
+        }
+        /* TODO: Implement this! */
+        //Parser.ParseAndUpdate(modelObject, s);
+<span class="nc" id="L170">    }</span>
+
+
+    @Override
+    public void setTarget(Object t) {
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;</span>
+<span class="fc" id="L176">        setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));</span>
+<span class="fc" id="L177">	cbFiles.removeAllItems();</span>
+<span class="fc" id="L178">	files = null;</span>
+<span class="fc" id="L179">        super.setTarget(t);</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Determines if the current tab should be enabled with the given target.
+     * Returns true if the given target is or represents a Classifier.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldBeEnabled(Object target) {
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;</span>
+
+<span class="fc" id="L192">        setShouldBeEnabled(false);</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (Predicate p : predicates) {</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            if (p.evaluate(target)) {</span>
+<span class="fc" id="L195">                setShouldBeEnabled(true);</span>
+            }
+<span class="fc" id="L197">        }</span>
+
+<span class="fc" id="L199">        return shouldBeEnabled();</span>
+    }
+
+    /*
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent event) {
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (event.getSource() == cbLang) {</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (event.getStateChange() == ItemEvent.SELECTED) {</span>
+<span class="nc" id="L208">		Language newLang = (Language) cbLang.getSelectedItem();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (!newLang.equals(langName)) {</span>
+<span class="nc" id="L210">		    langName = newLang;</span>
+<span class="nc" id="L211">		    refresh();</span>
+		}
+<span class="nc" id="L213">            }</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        } else if (event.getSource() == cbFiles) {</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">            if (event.getStateChange() == ItemEvent.SELECTED) {</span>
+<span class="nc" id="L216">		String newFile = (String) cbFiles.getSelectedItem();</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (!newFile.equals(fileName)) {</span>
+<span class="nc" id="L218">		    fileName = newFile;</span>
+<span class="nc" id="L219">		    super.setTarget(getTarget());</span>
+		}
+            }
+        }
+<span class="nc" id="L223">    }</span>
+
+    @Override
+    public void refresh() {
+<span class="nc" id="L227">        setTarget(getTarget());</span>
+<span class="nc" id="L228">    }</span>
+
+    /**
+     * This function allows extra predicates to be added.
+     * The predicates are conditions for cases where the
+     * TabSrc should show source code. If a plugin module
+     * is able to generate code for certain objects, for
+     * which ArgoUML itself does not generate code, then
+     * this function will allow the module to show the tab.
+     *
+     * @param predicate the predicate to be added
+     */
+    public static void addPredicate(Predicate predicate) {
+<span class="nc" id="L241">        predicates.add(predicate);</span>
+<span class="nc" id="L242">    }</span>
+
+    private static class DefaultPredicate implements Predicate {
+        public boolean evaluate(Object object) {
+<span class="fc" id="L246">            return (Model.getFacade().isAClassifier(object));</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

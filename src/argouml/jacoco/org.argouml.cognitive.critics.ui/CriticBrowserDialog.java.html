@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CriticBrowserDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.critics.ui</a> &gt; <span class="el_source">CriticBrowserDialog.java</span></div><h1>CriticBrowserDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.critics.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.text.Document;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
+import org.argouml.util.ArgoDialog;
+import org.argouml.util.osdep.StartBrowser;
+import org.tigris.swidgets.BorderSplitPane;
+
+/**
+ * Dialog box to list all critics and allow editing of some of their
+ * properties. &lt;p&gt;
+ *
+ * TODO: supported goals, critic network.
+ */
+public class CriticBrowserDialog extends ArgoDialog
+    implements ActionListener,
+	       ListSelectionListener,
+	       ItemListener,
+	       DocumentListener,
+               TableModelListener,
+               Observer {
+<span class="nc" id="L92">    private static final Logger LOG =</span>
+<span class="nc" id="L93">        Logger.getLogger(CriticBrowserDialog.class.getName());</span>
+
+<span class="nc" id="L95">    private static int numCriticBrowser = 0;</span>
+
+    private static final int NUM_COLUMNS = 25;
+
+<span class="nc" id="L99">    private static final String HIGH =</span>
+<span class="nc" id="L100">        Translator.localize(&quot;misc.level.high&quot;);</span>
+<span class="nc" id="L101">    private static final String MEDIUM =</span>
+<span class="nc" id="L102">        Translator.localize(&quot;misc.level.medium&quot;);</span>
+<span class="nc" id="L103">    private static final String LOW =</span>
+<span class="nc" id="L104">        Translator.localize(&quot;misc.level.low&quot;);</span>
+<span class="nc" id="L105">    private static final String[] PRIORITIES = {</span>
+	HIGH, MEDIUM, LOW,
+    };
+
+<span class="nc" id="L109">    private static final String ALWAYS =</span>
+<span class="nc" id="L110">        Translator.localize(&quot;dialog.browse.use-clarifier.always&quot;);</span>
+<span class="nc" id="L111">    private static final String IF_ONLY_ONE =</span>
+<span class="nc" id="L112">        Translator.localize(&quot;dialog.browse.use-clarifier.if-only-one&quot;);</span>
+<span class="nc" id="L113">    private static final String NEVER =</span>
+<span class="nc" id="L114">        Translator.localize(&quot;dialog.browse.use-clarifier.never&quot;);</span>
+<span class="nc" id="L115">    private static final String[] USE_CLAR = {</span>
+	ALWAYS, IF_ONLY_ONE, NEVER,
+    };
+
+    private static final int INSET_PX = 3;
+
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+
+<span class="nc" id="L124">    private JLabel criticsLabel   = new JLabel(</span>
+<span class="nc" id="L125">            Translator.localize(&quot;dialog.browse.label.critics&quot;));</span>
+<span class="nc" id="L126">    private JLabel clsNameLabel   = new JLabel(</span>
+<span class="nc" id="L127">            Translator.localize(&quot;dialog.browse.label.critic-class&quot;));</span>
+<span class="nc" id="L128">    private JLabel headlineLabel  = new JLabel(</span>
+<span class="nc" id="L129">            Translator.localize(&quot;dialog.browse.label.headline&quot;));</span>
+<span class="nc" id="L130">    private JLabel priorityLabel  = new JLabel(</span>
+<span class="nc" id="L131">            Translator.localize(&quot;dialog.browse.label.priority&quot;));</span>
+<span class="nc" id="L132">    private JLabel moreInfoLabel  = new JLabel(</span>
+<span class="nc" id="L133">            Translator.localize(&quot;dialog.browse.label.more-info&quot;));</span>
+<span class="nc" id="L134">    private JLabel descLabel      = new JLabel(</span>
+<span class="nc" id="L135">            Translator.localize(&quot;dialog.browse.label.description&quot;));</span>
+<span class="nc" id="L136">    private JLabel clarifierLabel = new JLabel(</span>
+<span class="nc" id="L137">            Translator.localize(&quot;dialog.browse.label.use-clarifier&quot;));</span>
+
+    private TableCritics table;
+
+<span class="nc" id="L141">    private JTextField className = new JTextField(&quot;&quot;, NUM_COLUMNS);</span>
+<span class="nc" id="L142">    private JTextField headline = new JTextField(&quot;&quot;, NUM_COLUMNS);</span>
+<span class="nc" id="L143">    private JComboBox priority  = new JComboBox(PRIORITIES);</span>
+<span class="nc" id="L144">    private JTextField moreInfo = new JTextField(&quot;&quot;, NUM_COLUMNS - 4);</span>
+<span class="nc" id="L145">    private JTextArea desc      = new JTextArea(&quot;&quot;, 6, NUM_COLUMNS);</span>
+<span class="nc" id="L146">    private JComboBox useClar   = new JComboBox(USE_CLAR);</span>
+
+<span class="nc" id="L148">    private JButton wakeButton    = new JButton(</span>
+<span class="nc" id="L149">            Translator.localize(&quot;dialog.browse.button.wake&quot;));</span>
+<span class="nc" id="L150">    private JButton configButton  = new JButton(</span>
+<span class="nc" id="L151">            Translator.localize(&quot;dialog.browse.button.configure&quot;));</span>
+<span class="nc" id="L152">    private JButton networkButton = new JButton(</span>
+<span class="nc" id="L153">            Translator.localize(&quot;dialog.browse.button.edit-network&quot;));</span>
+<span class="nc" id="L154">    private JButton goButton      = new JButton(</span>
+<span class="nc" id="L155">            Translator.localize(&quot;dialog.browse.button.go&quot;));</span>
+<span class="nc" id="L156">    private JButton advancedButton  = new JButton(</span>
+<span class="nc" id="L157">            Translator.localize(&quot;dialog.browse.button.advanced&quot;));</span>
+
+    private Critic target;
+
+
+    /**
+     * The constructor.
+     */
+    public CriticBrowserDialog() {
+<span class="nc" id="L166">	super(Translator.localize(&quot;dialog.browse.label.critics&quot;), false);</span>
+
+<span class="nc" id="L168">	JPanel mainContent = new JPanel();</span>
+<span class="nc" id="L169">	mainContent.setLayout(new BorderLayout(10, 10));</span>
+<span class="nc" id="L170">        BorderSplitPane bsp = new BorderSplitPane();</span>
+
+	// Critics Table
+<span class="nc" id="L173">	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));</span>
+<span class="nc" id="L174">        table = new TableCritics(new TableModelCritics(false), this, this);</span>
+<span class="nc" id="L175">        criticsLabel.setText(criticsLabel.getText() + &quot; (&quot;</span>
+<span class="nc" id="L176">                + table.getModel().getRowCount() + &quot;)&quot;);</span>
+<span class="nc" id="L177">        tablePanel.add(criticsLabel, BorderLayout.NORTH);</span>
+<span class="nc" id="L178">	JScrollPane tableSP = new JScrollPane(table);</span>
+<span class="nc" id="L179">	tablePanel.add(tableSP, BorderLayout.CENTER);</span>
+
+	// Set tableSP's preferred height to 0 so that details height
+	// is used in pack()
+<span class="nc" id="L183">	tableSP.setPreferredSize(table.getInitialSize());</span>
+<span class="nc" id="L184">        bsp.add(tablePanel, BorderSplitPane.CENTER);</span>
+
+	// Critic Details panel
+<span class="nc" id="L187">        JPanel detailsPanel = new JPanel(new GridBagLayout());</span>
+<span class="nc" id="L188">        detailsPanel.setBorder(BorderFactory.createTitledBorder(</span>
+<span class="nc" id="L189">                Translator.localize(</span>
+                        &quot;dialog.browse.titled-border.critic-details&quot;)));
+
+<span class="nc" id="L192">	GridBagConstraints labelConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L193">	labelConstraints.anchor = GridBagConstraints.EAST;</span>
+<span class="nc" id="L194">        labelConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L195">	labelConstraints.gridy = 0;</span>
+<span class="nc" id="L196">	labelConstraints.gridx = 0;</span>
+<span class="nc" id="L197">	labelConstraints.gridwidth = 1;</span>
+<span class="nc" id="L198">	labelConstraints.gridheight = 1;</span>
+<span class="nc" id="L199">	labelConstraints.insets = new Insets(0, 10, 5, 4);</span>
+
+<span class="nc" id="L201">	GridBagConstraints fieldConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L202">	fieldConstraints.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L203">	fieldConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L204">	fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L205">	fieldConstraints.gridx = 1;</span>
+<span class="nc" id="L206">	fieldConstraints.gridwidth = 3;</span>
+<span class="nc" id="L207">	fieldConstraints.gridheight = 1;</span>
+<span class="nc" id="L208">        fieldConstraints.weightx = 1.0;</span>
+<span class="nc" id="L209">	fieldConstraints.insets = new Insets(0, 4, 5, 10);</span>
+
+<span class="nc" id="L211">	className.setBorder(null);</span>
+<span class="nc" id="L212">	labelConstraints.gridy = 0;</span>
+<span class="nc" id="L213">	fieldConstraints.gridy = 0;</span>
+<span class="nc" id="L214">	detailsPanel.add(clsNameLabel, labelConstraints);</span>
+<span class="nc" id="L215">	detailsPanel.add(className, fieldConstraints);</span>
+
+<span class="nc" id="L217">	labelConstraints.gridy = 1;</span>
+<span class="nc" id="L218">	fieldConstraints.gridy = 1;</span>
+<span class="nc" id="L219">	detailsPanel.add(headlineLabel, labelConstraints);</span>
+<span class="nc" id="L220">	detailsPanel.add(headline, fieldConstraints);</span>
+
+<span class="nc" id="L222">	labelConstraints.gridy = 2;</span>
+<span class="nc" id="L223">	fieldConstraints.gridy = 2;</span>
+<span class="nc" id="L224">	detailsPanel.add(priorityLabel, labelConstraints);</span>
+<span class="nc" id="L225">	detailsPanel.add(priority, fieldConstraints);</span>
+
+<span class="nc" id="L227">	labelConstraints.gridy = 3;</span>
+<span class="nc" id="L228">	fieldConstraints.gridy = 3;</span>
+<span class="nc" id="L229">	detailsPanel.add(moreInfoLabel, labelConstraints);</span>
+<span class="nc" id="L230">	JPanel moreInfoPanel =</span>
+	    new JPanel(new GridBagLayout());
+<span class="nc" id="L232">        GridBagConstraints gridConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L233">        gridConstraints.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L234">        gridConstraints.gridx = 0;</span>
+<span class="nc" id="L235">        gridConstraints.gridy = 0;</span>
+<span class="nc" id="L236">        gridConstraints.weightx = 100;</span>
+<span class="nc" id="L237">        gridConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L238">        gridConstraints.insets = new Insets(0, 0, 5, 0);</span>
+<span class="nc" id="L239">	moreInfoPanel.add(moreInfo, gridConstraints);</span>
+
+<span class="nc" id="L241">        gridConstraints.anchor = GridBagConstraints.EAST;</span>
+<span class="nc" id="L242">        gridConstraints.gridx = 1;</span>
+<span class="nc" id="L243">        gridConstraints.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L244">        gridConstraints.insets = new Insets(0, 10, 5, 0);</span>
+<span class="nc" id="L245">        gridConstraints.weightx = 0;</span>
+<span class="nc" id="L246">	moreInfoPanel.add(goButton, gridConstraints);</span>
+<span class="nc" id="L247">        moreInfoPanel.setMinimumSize(new Dimension(priority.getWidth(),</span>
+<span class="nc" id="L248">                priority.getHeight()));</span>
+<span class="nc" id="L249">	detailsPanel.add(moreInfoPanel, fieldConstraints);</span>
+
+<span class="nc" id="L251">	labelConstraints.gridy = 4;</span>
+<span class="nc" id="L252">	fieldConstraints.gridy = 4;</span>
+<span class="nc" id="L253">        fieldConstraints.weighty = 3.0;</span>
+<span class="nc" id="L254">	labelConstraints.anchor = GridBagConstraints.NORTHEAST;</span>
+<span class="nc" id="L255">	detailsPanel.add(descLabel, labelConstraints);</span>
+<span class="nc" id="L256">	detailsPanel.add(new JScrollPane(desc), fieldConstraints);</span>
+<span class="nc" id="L257">	desc.setLineWrap(true);</span>
+<span class="nc" id="L258">	desc.setWrapStyleWord(true);</span>
+<span class="nc" id="L259">	desc.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));</span>
+
+<span class="nc" id="L261">	labelConstraints.anchor = GridBagConstraints.EAST;</span>
+<span class="nc" id="L262">	labelConstraints.gridy = 5;</span>
+<span class="nc" id="L263">	fieldConstraints.gridy = 5;</span>
+<span class="nc" id="L264">        fieldConstraints.weighty = 0;</span>
+<span class="nc" id="L265">	detailsPanel.add(clarifierLabel, labelConstraints);</span>
+<span class="nc" id="L266">	detailsPanel.add(useClar, fieldConstraints);</span>
+
+<span class="nc" id="L268">	labelConstraints.gridy = 6;</span>
+<span class="nc" id="L269">	fieldConstraints.gridy = 6;</span>
+<span class="nc" id="L270">	JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));</span>
+<span class="nc" id="L271">	buttonPanel.add(wakeButton);</span>
+<span class="nc" id="L272">        buttonPanel.add(advancedButton);</span>
+        /* TODO: These buttons for future enhancement:
+	buttonPanel.add(configButton);
+	buttonPanel.add(networkButton); */
+<span class="nc" id="L276">	detailsPanel.add(new JLabel(&quot;&quot;), labelConstraints);</span>
+<span class="nc" id="L277">	detailsPanel.add(buttonPanel, fieldConstraints);</span>
+<span class="nc" id="L278">        bsp.add(detailsPanel, BorderSplitPane.EAST);</span>
+
+<span class="nc" id="L280">	this.addListeners();</span>
+<span class="nc" id="L281">        this.enableFieldsAndButtons();</span>
+
+<span class="nc" id="L283">        mainContent.add(bsp);</span>
+<span class="nc" id="L284">	setResizable(true);</span>
+<span class="nc" id="L285">	setContent(mainContent);</span>
+<span class="nc" id="L286">	numCriticBrowser++;</span>
+<span class="nc" id="L287">    }</span>
+
+    private void addListeners() {
+<span class="nc" id="L290">        goButton.addActionListener(this);</span>
+<span class="nc" id="L291">        networkButton.addActionListener(this);</span>
+<span class="nc" id="L292">        wakeButton.addActionListener(this);</span>
+<span class="nc" id="L293">        advancedButton.addActionListener(this);</span>
+<span class="nc" id="L294">        configButton.addActionListener(this);</span>
+<span class="nc" id="L295">        headline.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L296">        moreInfo.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L297">        desc.getDocument().addDocumentListener(this);</span>
+<span class="nc" id="L298">        priority.addItemListener(this);</span>
+<span class="nc" id="L299">        useClar.addItemListener(this);</span>
+<span class="nc" id="L300">    }</span>
+
+    private void enableFieldsAndButtons() {
+<span class="nc" id="L303">        className.setEditable(false);</span>
+<span class="nc" id="L304">        headline.setEditable(false);</span>
+<span class="nc" id="L305">        priority.setEnabled(false);</span>
+<span class="nc" id="L306">        desc.setEditable(false);</span>
+<span class="nc" id="L307">        moreInfo.setEditable(false);</span>
+
+<span class="nc" id="L309">        goButton.setEnabled(false);</span>
+<span class="nc" id="L310">        wakeButton.setEnabled(false);</span>
+<span class="nc" id="L311">        advancedButton.setEnabled(true);</span>
+<span class="nc" id="L312">        networkButton.setEnabled(false);</span>
+<span class="nc" id="L313">        configButton.setEnabled(false);</span>
+
+<span class="nc" id="L315">        useClar.setSelectedItem(null);</span>
+<span class="nc" id="L316">        useClar.repaint();</span>
+<span class="nc" id="L317">    }</span>
+
+    /**
+     * @param t the new target
+     */
+    private void setTarget(Critic cr) {
+<span class="nc bnc" id="L323" title="All 2 branches missed.">        if (cr == null) {</span>
+<span class="nc" id="L324">            enableFieldsAndButtons();</span>
+<span class="nc" id="L325">            className.setText(&quot;&quot;);</span>
+<span class="nc" id="L326">            headline.setText(&quot;&quot;);</span>
+<span class="nc" id="L327">            priority.setSelectedItem(null);</span>
+<span class="nc" id="L328">            priority.repaint();</span>
+<span class="nc" id="L329">            moreInfo.setText(&quot;&quot;);</span>
+<span class="nc" id="L330">            desc.setText(&quot;&quot;);</span>
+<span class="nc" id="L331">            return;</span>
+        }
+<span class="nc" id="L333">        updateButtonsEnabled();</span>
+<span class="nc" id="L334">	className.setText(cr.getClass().getName());</span>
+<span class="nc" id="L335">	headline.setText(cr.getHeadline());</span>
+
+<span class="nc" id="L337">	int p = cr.getPriority();</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">	if (p == ToDoItem.HIGH_PRIORITY) {</span>
+<span class="nc" id="L339">	    priority.setSelectedItem(HIGH);</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">	} else if (p == ToDoItem.MED_PRIORITY) {</span>
+<span class="nc" id="L341">	    priority.setSelectedItem(MEDIUM);</span>
+	} else {
+<span class="nc" id="L343">	    priority.setSelectedItem(LOW);</span>
+	}
+<span class="nc" id="L345">	priority.repaint();</span>
+
+<span class="nc" id="L347">	moreInfo.setText(cr.getMoreInfoURL());</span>
+<span class="nc" id="L348">	desc.setText(cr.getDescriptionTemplate());</span>
+<span class="nc" id="L349">	desc.setCaretPosition(0);</span>
+<span class="nc" id="L350">	useClar.setSelectedItem(ALWAYS);</span>
+<span class="nc" id="L351">	useClar.repaint();</span>
+<span class="nc" id="L352">    }</span>
+
+    /**
+     * Updates the states of the buttons
+     */
+    protected void updateButtonsEnabled() {
+<span class="nc" id="L358">        this.configButton.setEnabled(false);</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">        this.goButton.setEnabled(this.target != null</span>
+<span class="nc bnc" id="L360" title="All 2 branches missed.">                &amp;&amp; this.target.getMoreInfoURL() != null</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">                &amp;&amp; this.target.getMoreInfoURL().length() &gt; 0);</span>
+<span class="nc" id="L362">        this.networkButton.setEnabled(false);</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">        this.wakeButton.setEnabled(this.target != null</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">                               &amp;&amp; (this.target.isSnoozed()</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">                                       || !this.target.isEnabled()));</span>
+<span class="nc" id="L366">    }</span>
+
+    private void setTargetHeadline() {
+<span class="nc bnc" id="L369" title="All 2 branches missed.">	if (target == null) {</span>
+<span class="nc" id="L370">	    return;</span>
+	}
+<span class="nc" id="L372">	String h = headline.getText();</span>
+<span class="nc" id="L373">	target.setHeadline(h);</span>
+<span class="nc" id="L374">    }</span>
+
+    private void setTargetPriority() {
+<span class="nc bnc" id="L377" title="All 2 branches missed.">	if (target == null) {</span>
+<span class="nc" id="L378">	    return;</span>
+	}
+<span class="nc" id="L380">	String p = (String) priority.getSelectedItem();</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">	if (p == null) {</span>
+<span class="nc" id="L382">	    return;</span>
+	}
+<span class="nc bnc" id="L384" title="All 2 branches missed.">	if (p.equals(PRIORITIES[0])) {</span>
+<span class="nc" id="L385">	    target.setPriority(ToDoItem.HIGH_PRIORITY);</span>
+	}
+<span class="nc bnc" id="L387" title="All 2 branches missed.">	if (p.equals(PRIORITIES[1])) {</span>
+<span class="nc" id="L388">	    target.setPriority(ToDoItem.MED_PRIORITY);</span>
+	}
+<span class="nc bnc" id="L390" title="All 2 branches missed.">	if (p.equals(PRIORITIES[2])) {</span>
+<span class="nc" id="L391">	    target.setPriority(ToDoItem.LOW_PRIORITY);</span>
+	}
+<span class="nc" id="L393">    }</span>
+
+    private void setTargetMoreInfo() {
+<span class="nc bnc" id="L396" title="All 2 branches missed.">	if (target == null) {</span>
+<span class="nc" id="L397">	    return;</span>
+	}
+<span class="nc" id="L399">	String mi = moreInfo.getText();</span>
+<span class="nc" id="L400">	target.setMoreInfoURL(mi);</span>
+<span class="nc" id="L401">    }</span>
+
+    private void setTargetDesc() {
+<span class="nc bnc" id="L404" title="All 2 branches missed.">	if (target == null) {</span>
+<span class="nc" id="L405">	    return;</span>
+	}
+<span class="nc" id="L407">	String d = desc.getText();</span>
+<span class="nc" id="L408">	target.setDescription(d);</span>
+<span class="nc" id="L409">    }</span>
+
+    private void setTargetUseClarifiers() {
+<span class="nc" id="L412">        LOG.log(Level.FINE, &quot;setting clarifier usage rule&quot;);</span>
+<span class="nc" id="L413">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L423">	super.actionPerformed(e);</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">	if (e.getSource() == goButton) {</span>
+<span class="nc" id="L425">	    StartBrowser.openUrl(moreInfo.getText());</span>
+<span class="nc" id="L426">	    return;</span>
+	}
+<span class="nc bnc" id="L428" title="All 2 branches missed.">	if (e.getSource() == networkButton) {</span>
+<span class="nc" id="L429">            LOG.log(Level.FINE, &quot;TODO: network!&quot;);</span>
+<span class="nc" id="L430">	    return;</span>
+	}
+<span class="nc bnc" id="L432" title="All 2 branches missed.">	if (e.getSource() == configButton) {</span>
+<span class="nc" id="L433">            LOG.log(Level.FINE, &quot;TODO: config!&quot;);</span>
+<span class="nc" id="L434">	    return;</span>
+	}
+<span class="nc bnc" id="L436" title="All 2 branches missed.">	if (e.getSource() == wakeButton) {</span>
+<span class="nc" id="L437">            target.unsnooze();</span>
+<span class="nc" id="L438">            target.setEnabled(true);</span>
+<span class="nc" id="L439">            table.repaint();</span>
+<span class="nc" id="L440">	    return;</span>
+	}
+<span class="nc bnc" id="L442" title="All 2 branches missed.">        if (e.getSource() == advancedButton) {</span>
+<span class="nc" id="L443">            table.setAdvanced(true);</span>
+<span class="nc" id="L444">            advancedButton.setEnabled(false);</span>
+        }
+<span class="nc" id="L446">        LOG.log(Level.FINE,</span>
+<span class="nc" id="L447">                &quot;unknown src in CriticBrowserDialog: {0}&quot;, e.getSource());</span>
+<span class="nc" id="L448">    }</span>
+
+    /*
+     * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+     */
+    public void valueChanged(ListSelectionEvent lse) {
+<span class="nc bnc" id="L454" title="All 2 branches missed.">	if (lse.getValueIsAdjusting()) {</span>
+<span class="nc" id="L455">	    return;</span>
+	}
+<span class="nc" id="L457">	Object src = lse.getSource();</span>
+<span class="nc bnc" id="L458" title="All 2 branches missed.">	if (src != table.getSelectionModel()) {</span>
+<span class="nc" id="L459">            LOG.log(Level.FINE, &quot;src = {0}&quot;, src);</span>
+<span class="nc" id="L460">	    return;</span>
+	}
+<span class="nc" id="L462">        LOG.log(Level.FINE, &quot;got valueChanged from {0}&quot;, src);</span>
+<span class="nc" id="L463">	int row = table.getSelectedRow();</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">        if (this.target != null) {</span>
+<span class="nc" id="L465">            this.target.deleteObserver(this);</span>
+        }
+<span class="nc bnc" id="L467" title="All 2 branches missed.">	setTarget((row == -1) ? null : table.getCriticAtRow(row));</span>
+<span class="nc bnc" id="L468" title="All 2 branches missed.">        if (this.target != null) {</span>
+<span class="nc" id="L469">            this.target.addObserver(this);</span>
+        }
+<span class="nc" id="L471">    }</span>
+
+    /*
+     * Updates the button if the current row changes
+     *
+     * @see javax.swing.event.TableModelListener#tableChanged(javax.swing.event.TableModelEvent)
+     */
+    public void tableChanged(TableModelEvent e) {
+<span class="nc" id="L479">        updateButtonsEnabled();</span>
+<span class="nc" id="L480">        table.repaint();</span>
+<span class="nc" id="L481">    }</span>
+
+    /*
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void insertUpdate(DocumentEvent e) {
+<span class="nc" id="L487">        LOG.log(Level.FINE, &quot;{0} insert&quot;, getClass().getName());</span>
+<span class="nc" id="L488">	Document hDoc = headline.getDocument();</span>
+<span class="nc" id="L489">	Document miDoc = moreInfo.getDocument();</span>
+<span class="nc" id="L490">	Document dDoc = desc.getDocument();</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">	if (e.getDocument() == hDoc) {</span>
+<span class="nc" id="L492">	    setTargetHeadline();</span>
+	}
+<span class="nc bnc" id="L494" title="All 2 branches missed.">	if (e.getDocument() == miDoc) {</span>
+<span class="nc" id="L495">	    setTargetMoreInfo();</span>
+	}
+<span class="nc bnc" id="L497" title="All 2 branches missed.">	if (e.getDocument() == dDoc) {</span>
+<span class="nc" id="L498">	    setTargetDesc();</span>
+	}
+<span class="nc" id="L500">    }</span>
+
+    /*
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
+<span class="nc" id="L505">    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }</span>
+
+    /*
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
+    public void changedUpdate(DocumentEvent e) {
+<span class="nc" id="L511">        LOG.log(Level.FINE, &quot;{0} changed&quot;, getClass().getName());</span>
+	// Apparently, this method is never called.
+<span class="nc" id="L513">    }</span>
+
+    /*
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+<span class="nc" id="L519">	Object src = e.getSource();</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">	if (src == priority) {</span>
+<span class="nc" id="L521">	    setTargetPriority();</span>
+	}
+<span class="nc bnc" id="L523" title="All 2 branches missed.">	else if (src == useClar) {</span>
+<span class="nc" id="L524">	    setTargetUseClarifiers();</span>
+	} else {
+<span class="nc" id="L526">            LOG.log(Level.FINE, &quot;unknown itemStateChanged src: {0}&quot;, src);</span>
+	}
+<span class="nc" id="L528">    }</span>
+
+    /*
+     * Refresh the table when a critique is enabled/disabled
+     *
+     * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+     */
+    public void update(Observable o, Object arg) {
+<span class="nc" id="L536">        table.repaint();</span>
+<span class="nc" id="L537">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

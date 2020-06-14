@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExplorerTreeModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui.explorer</a> &gt; <span class="el_source">ExplorerTreeModel.java</span></div><h1>ExplorerTreeModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui.explorer;
+
+import java.awt.EventQueue;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InvalidElementException;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
+
+/**
+ * The model for the Explorer tree view of the uml model.
+ *
+ * provides:
+ *  - receives events from the uml model and updates itself and the tree ui.
+ *  - responds to changes in perspective and ordering.
+ *
+ * @author  alexb
+ * @since 0.15.2
+ */
+public class ExplorerTreeModel extends DefaultTreeModel
+		implements TreeModelUMLEventListener, ItemListener {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L85">    private static final Logger LOG =</span>
+<span class="nc" id="L86">        Logger.getLogger(ExplorerTreeModel.class.getName());</span>
+
+    /**
+     * an array of
+     * {@link org.argouml.ui.explorer.rules.PerspectiveRule PerspectiveRules},
+     * that determine the tree view.
+     */
+    private List&lt;PerspectiveRule&gt; rules;
+
+    /**
+     * a map used to resolve model elements to tree nodes when determining
+     * what effect a model event will have on the tree.
+     */
+    private Map&lt;Object, Set&lt;ExplorerTreeNode&gt;&gt; modelElementMap;
+
+    /**
+     * the global order for siblings in the tree.
+     */
+    private Comparator order;
+
+    /**
+     * The children currently being updated.
+     */
+<span class="nc" id="L109">    private List&lt;ExplorerTreeNode&gt; updatingChildren =</span>
+            new ArrayList&lt;ExplorerTreeNode&gt;();
+
+    /**
+     * A Runnable object that when executed does update some
+     * currently pending nodes.
+     */
+<span class="nc" id="L116">    private ExplorerUpdater nodeUpdater = new ExplorerUpdater();</span>
+
+    private ExplorerTree tree;
+
+    /**
+     * Help class to semi-lazily update nodes in the tree.
+     * This class is thread safe.
+     */
+<span class="nc" id="L124">    class ExplorerUpdater implements Runnable {</span>
+	/**
+	 * The set of nodes pending being updated.
+	 */
+<span class="nc" id="L128">	private LinkedList&lt;ExplorerTreeNode&gt; pendingUpdates =</span>
+	    new LinkedList&lt;ExplorerTreeNode&gt;();
+
+	/**
+	 * Is this object currently waiting to be run.
+	 */
+	private boolean hot;
+
+	/**
+         * The maximum number of nodes to update in one chunk.
+         */
+	public static final int MAX_UPDATES_PER_RUN = 100;
+
+	/**
+	 * Schedule this object to run on AWT-EventQueue-0 at some later time.
+	 */
+	private synchronized void schedule() {
+<span class="nc bnc" id="L145" title="All 2 branches missed.">	    if (hot) {</span>
+<span class="nc" id="L146">                return;</span>
+            }
+<span class="nc" id="L148">	    hot = true;</span>
+<span class="nc" id="L149">	    EventQueue.invokeLater(this);</span>
+<span class="nc" id="L150">	}</span>
+
+	/**
+	 * Schedule updateChildren to be called on node at some later time.
+	 * Does nothing if there already is a pending update of node.
+	 *
+	 * @param node The ExplorerTreeNode to be updated.
+	 * @throws NullPointerException If node is null.
+	 */
+	public synchronized void schedule(ExplorerTreeNode node) {
+<span class="nc bnc" id="L160" title="All 2 branches missed.">	    if (node.getPending()) {</span>
+<span class="nc" id="L161">                return;</span>
+            }
+
+<span class="nc" id="L164">	    pendingUpdates.add(node);</span>
+<span class="nc" id="L165">	    node.setPending(true);</span>
+<span class="nc" id="L166">	    schedule();</span>
+<span class="nc" id="L167">	}</span>
+
+	/**
+	 * Call updateChildren for some pending nodes. Will call at most
+	 * MAX_UPDATES_PER_RUN each time. Should there still be pending
+	 * updates after that then it will reschedule itself.&lt;p&gt;
+	 *
+	 * This method should not be called explicitly, instead schedule
+	 * should be called and this method will be called automatically.
+	 */
+	public void run() {
+<span class="nc" id="L178">	    boolean done = false;</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">	    for (int i = 0; i &lt; MAX_UPDATES_PER_RUN; i++) {</span>
+<span class="nc" id="L181">		ExplorerTreeNode node = null;</span>
+<span class="nc" id="L182">		synchronized (this) {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">		    if (!pendingUpdates.isEmpty()) {</span>
+<span class="nc" id="L184">			node = pendingUpdates.removeFirst();</span>
+<span class="nc" id="L185">			node.setPending(false);</span>
+		    } else {
+<span class="nc" id="L187">			done = true;</span>
+<span class="nc" id="L188">			hot = false;</span>
+<span class="nc" id="L189">			break;</span>
+		    }
+<span class="nc" id="L191">		}</span>
+
+<span class="nc" id="L193">		updateChildren(new TreePath(getPathToRoot(node)));</span>
+	    }
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">	    if (!done) {</span>
+<span class="nc" id="L197">		schedule();</span>
+            } else {
+                // TODO: This seems like a brute force workaround (and a very
+                // indirect one at that).  It appears to be needed though until
+                // we fix the problem properly. - tfm 20070904
+                /* This solves issue 2287. */
+<span class="nc" id="L203">                tree.refreshSelection();</span>
+            }
+<span class="nc" id="L205">	}</span>
+    }
+
+    /**
+     * The constructor of ExplorerTreeModel.
+     *
+     * @param root an object to place at the root
+     * @param myTree the tree
+     */
+    public ExplorerTreeModel(Object root, ExplorerTree myTree) {
+<span class="nc" id="L215">	super(new DefaultMutableTreeNode());</span>
+
+<span class="nc" id="L217">        tree = myTree;</span>
+<span class="nc" id="L218">	setRoot(new ExplorerTreeNode(root, this));</span>
+<span class="nc" id="L219">	setAsksAllowsChildren(false);</span>
+<span class="nc" id="L220">	modelElementMap = new HashMap&lt;Object, Set&lt;ExplorerTreeNode&gt;&gt;();</span>
+
+<span class="nc" id="L222">	ExplorerEventAdaptor.getInstance()</span>
+<span class="nc" id="L223">	    .setTreeModelUMLEventListener(this);</span>
+
+<span class="nc" id="L225">	order = new TypeThenNameOrder();</span>
+<span class="nc" id="L226">    }</span>
+
+    /*
+     * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementChanged(java.lang.Object)
+     */
+    public void modelElementChanged(Object node) {
+<span class="nc" id="L232">        traverseModified((TreeNode) getRoot(), node);</span>
+<span class="nc" id="L233">    }</span>
+
+    /*
+     * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementAdded(java.lang.Object)
+     */
+    public void modelElementAdded(Object node) {
+<span class="nc" id="L239">        traverseModified((TreeNode) getRoot(), node);</span>
+<span class="nc" id="L240">    }</span>
+
+    /**
+     * Traverses the children, finds those affected by the given node,
+     * and notifies them that they are modified.
+     *
+     * @param start the node to start from
+     * @param node the given node
+     */
+    private void traverseModified(TreeNode start, Object node) {
+<span class="nc" id="L250">	Enumeration children = start.children();</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">	while (children.hasMoreElements()) {</span>
+<span class="nc" id="L252">	    TreeNode child = (TreeNode) children.nextElement();</span>
+<span class="nc" id="L253">	    traverseModified(child, node);</span>
+<span class="nc" id="L254">	}</span>
+
+<span class="nc bnc" id="L256" title="All 2 branches missed.">	if (start instanceof ExplorerTreeNode) {</span>
+<span class="nc" id="L257">	    ((ExplorerTreeNode) start).nodeModified(node);</span>
+	}
+<span class="nc" id="L259">    }</span>
+
+    /*
+     * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementRemoved(java.lang.Object)
+     */
+    public void modelElementRemoved(Object node) {
+        for (ExplorerTreeNode changeNode
+<span class="nc bnc" id="L266" title="All 2 branches missed.">                : new ArrayList&lt;ExplorerTreeNode&gt;(findNodes(node))) {</span>
+<span class="nc bnc" id="L267" title="All 2 branches missed.">            if (changeNode.getParent() != null) {</span>
+<span class="nc" id="L268">                removeNodeFromParent(changeNode);</span>
+            }
+<span class="nc" id="L270">        }</span>
+
+<span class="nc" id="L272">        traverseModified((TreeNode) getRoot(), node);</span>
+<span class="nc" id="L273">    }</span>
+
+    /*
+     * the model structure has changed significantly, eg a new project.
+     * @see org.argouml.ui.explorer.TreeModelUMLEventListener#structureChanged()
+     */
+    public void structureChanged() {
+	// remove references for gc
+<span class="nc bnc" id="L281" title="All 2 branches missed.">	if (getRoot() instanceof ExplorerTreeNode) {</span>
+<span class="nc" id="L282">            ((ExplorerTreeNode) getRoot()).remove();</span>
+        }
+
+	// This should only be helpful for old garbage collectors.
+<span class="nc bnc" id="L286" title="All 2 branches missed.">	for (Collection nodes : modelElementMap.values()) {</span>
+<span class="nc" id="L287">	    nodes.clear();</span>
+<span class="nc" id="L288">	}</span>
+<span class="nc" id="L289">	modelElementMap.clear();</span>
+
+	// This is somewhat inconsistent with the design of the constructor
+	// that receives the root object by argument. If this is okay
+	// then there may be no need for a constructor with that argument.
+<span class="nc" id="L294">	modelElementMap = new HashMap&lt;Object, Set&lt;ExplorerTreeNode&gt;&gt;();</span>
+<span class="nc" id="L295">	Project proj = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc" id="L296">	ExplorerTreeNode rootNode = new ExplorerTreeNode(proj, this);</span>
+
+<span class="nc" id="L298">	addToMap(proj, rootNode);</span>
+<span class="nc" id="L299">	setRoot(rootNode);</span>
+<span class="nc" id="L300">    }</span>
+
+    /**
+     * updates next level of the explorer tree for a given tree path.
+     *
+     * @param path the path to the node whose children to update.
+     * @throws IllegalArgumentException if node has a child that is not a
+     *         (descendant of) DefaultMutableTreeNode.
+     */
+    public void updateChildren(TreePath path) {
+<span class="nc" id="L310">	ExplorerTreeNode node = (ExplorerTreeNode) path.getLastPathComponent();</span>
+<span class="nc" id="L311">        Object modelElement = node.getUserObject();</span>
+
+	// Avoid doing this too early in the initialization process
+<span class="nc bnc" id="L314" title="All 2 branches missed.">	if (rules == null) {</span>
+<span class="nc" id="L315">	    return;</span>
+	}
+
+	// Avoid recursively updating the same child
+<span class="nc bnc" id="L319" title="All 2 branches missed.">	if (updatingChildren.contains(node)) {</span>
+<span class="nc" id="L320">	    return;</span>
+	}
+<span class="nc" id="L322">	updatingChildren.add(node);</span>
+
+<span class="nc" id="L324">	List children = reorderChildren(node);</span>
+
+<span class="nc" id="L326">	List newChildren = new ArrayList();</span>
+<span class="nc" id="L327">	Set deps = new HashSet();</span>
+<span class="nc" id="L328">	collectChildren(modelElement, newChildren, deps);</span>
+
+<span class="nc" id="L330">	node.setModifySet(deps);</span>
+
+<span class="nc" id="L332">	mergeChildren(node, children, newChildren);</span>
+
+<span class="nc" id="L334">	updatingChildren.remove(node);</span>
+<span class="nc" id="L335">    }</span>
+
+    /**
+     * Sorts the child nodes of node using the current ordering.&lt;p&gt;
+     *
+     * Note: UserObject is only available from descendants of
+     * DefaultMutableTreeNode, so any other children couldn't be sorted.
+     * Thus these are currently forbidden. But currently no such node is
+     * ever inserted into the tree.
+     *
+     * @param node the node whose children to sort
+     * @return the UserObjects of the children, in the same order as the
+     *         children.
+     * @throws IllegalArgumentException if node has a child that is not a
+     *         (descendant of) DefaultMutableTreeNode.
+     */
+    private List&lt;Object&gt; reorderChildren(ExplorerTreeNode node) {
+<span class="nc" id="L352">	List&lt;Object&gt; childUserObjects = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L353">	List&lt;ExplorerTreeNode&gt; reordered = new ArrayList&lt;ExplorerTreeNode&gt;();</span>
+
+	// Enumerate the current children of node to find out which now sorts
+	// in different order, since these must be moved
+<span class="nc" id="L357">	Enumeration enChld = node.children();</span>
+<span class="nc" id="L358">	Object lastObj = null;</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">	while (enChld.hasMoreElements()) {</span>
+<span class="nc" id="L360">	    Object child = enChld.nextElement();</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">	    if (child instanceof ExplorerTreeNode) {</span>
+<span class="nc" id="L362">		Object obj = ((ExplorerTreeNode) child).getUserObject();</span>
+<span class="nc bnc" id="L363" title="All 4 branches missed.">		if (lastObj != null &amp;&amp; order.compare(lastObj, obj) &gt; 0) {</span>
+		    /*
+		     * If a node to be moved is currently selected,
+		     * move its predecessors instead so don't lose selection.
+		     * This fixes issue 3249.
+		     * NOTE: this does not deal with the case where
+                     * multiple nodes are selected and they are out
+                     * of order with respect to each other, but I
+                     * don't think more than one node is ever reordered
+		     * at a time - tfm
+		     */
+<span class="nc bnc" id="L374" title="All 2 branches missed.">		    if (!tree.isPathSelected(new TreePath(</span>
+<span class="nc" id="L375">                            getPathToRoot((ExplorerTreeNode) child)))) {</span>
+<span class="nc" id="L376">			reordered.add((ExplorerTreeNode) child);</span>
+		    } else {
+<span class="nc" id="L378">		        ExplorerTreeNode prev =</span>
+		            (ExplorerTreeNode) ((ExplorerTreeNode) child)
+<span class="nc" id="L380">                                .getPreviousSibling();</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">			while (prev != null</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">                                &amp;&amp; (order.compare(prev.getUserObject(), obj)</span>
+                                        &gt;= 0)) {
+<span class="nc" id="L384">			    reordered.add(prev);</span>
+<span class="nc" id="L385">			    childUserObjects.remove(childUserObjects.size() - 1);</span>
+<span class="nc" id="L386">			    prev = (ExplorerTreeNode) prev.getPreviousSibling();</span>
+			}
+<span class="nc" id="L388">			childUserObjects.add(obj);</span>
+<span class="nc" id="L389">			lastObj = obj;</span>
+<span class="nc" id="L390">		    }</span>
+		} else {
+<span class="nc" id="L392">		    childUserObjects.add(obj);</span>
+<span class="nc" id="L393">		    lastObj = obj;</span>
+		}
+<span class="nc" id="L395">	    } else {</span>
+<span class="nc" id="L396">		throw new IllegalArgumentException(</span>
+<span class="nc" id="L397">			&quot;Incomprehencible child node &quot; + child.toString());</span>
+	    }
+<span class="nc" id="L399">	}</span>
+
+<span class="nc bnc" id="L401" title="All 2 branches missed.">	for (ExplorerTreeNode child : reordered) {</span>
+	    // Avoid our deinitialization here
+	    // The node will be added back to the tree again
+<span class="nc" id="L404">	    super.removeNodeFromParent(child);</span>
+<span class="nc" id="L405">	}</span>
+
+	// For each reordered node, find it's new position among the current
+	// children and move it there
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        for (ExplorerTreeNode child : reordered) {</span>
+<span class="nc" id="L410">	    Object obj = child.getUserObject();</span>
+<span class="nc" id="L411">	    int ip = Collections.binarySearch(childUserObjects, obj, order);</span>
+
+<span class="nc bnc" id="L413" title="All 2 branches missed.">	    if (ip &lt; 0) {</span>
+<span class="nc" id="L414">		ip = -(ip + 1);</span>
+	    }
+
+	    // Avoid our initialization here
+<span class="nc" id="L418">	    super.insertNodeInto(child, node, ip);</span>
+<span class="nc" id="L419">	    childUserObjects.add(ip, obj);</span>
+<span class="nc" id="L420">	}</span>
+
+<span class="nc" id="L422">	return childUserObjects;</span>
+    }
+
+    /**
+     * Collects the set of children modelElement should have at this point in
+     * time. The children are added to newChildren.&lt;p&gt;
+     *
+     * Note: Both newChildren and deps are modified by this function, it
+     * is in fact it's primary purpose to modify these collections. It is your
+     * responsibility to make sure that they are empty when it is called, or
+     * to know what you are doing if they are not.
+     *
+     * @param modelElement the element to collect children for.
+     * @param newChildren the new children of modelElement.
+     * @param deps the set of objects that should be monitored for changes
+     *        since these could affect this list.
+     * @throws UnsupportedOperationException if add is not supported by
+     *         newChildren or addAll isn't supported by deps.
+     * @throws NullPointerException if newChildren or deps is null.
+     * @throws ClassCastException if newChildren or deps rejects some element.
+     * @throws IllegalArgumentException if newChildren or deps rejects some
+     *         element.
+     */
+    private void collectChildren(Object modelElement, List newChildren,
+				 Set deps) {
+<span class="nc bnc" id="L447" title="All 2 branches missed.">	if (modelElement == null) {</span>
+<span class="nc" id="L448">	    return;</span>
+	}
+
+	// Collect the current set of objects that should be children to
+	// this node
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        for (PerspectiveRule rule : rules) {</span>
+
+            // TODO: A better implementation would be to batch events into
+            // logical groups and update the tree one time for the entire
+            // group, synchronizing access to the model repository so that
+            // it stays consistent during the query.  This would likely
+            // require doing the updates in a different thread than the
+            // event delivery thread to prevent deadlocks, so for right now
+            // we protect ourselves with try/catch blocks.
+<span class="nc" id="L462">            Collection children = Collections.emptySet();</span>
+            try {
+<span class="nc" id="L464">                children = rule.getChildren(modelElement);</span>
+<span class="nc" id="L465">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L466">                LOG.log(Level.FINE, &quot;InvalidElementException in ExplorerTree : &quot;, e );</span>
+<span class="nc" id="L467">            }</span>
+
+<span class="nc bnc" id="L469" title="All 2 branches missed.">            for (Object child : children) {</span>
+<span class="nc bnc" id="L470" title="All 2 branches missed.">                if (child == null) {</span>
+<span class="nc" id="L471">                    LOG.log(Level.WARNING, &quot;PerspectiveRule &quot; + rule + &quot; wanted to &quot;</span>
+                            + &quot;add null to the explorer tree!&quot;);
+<span class="nc bnc" id="L473" title="All 2 branches missed.">                } else if (!newChildren.contains(child)) {</span>
+<span class="nc" id="L474">                    newChildren.add(child);</span>
+                }
+<span class="nc" id="L476">            }</span>
+
+
+            try {
+<span class="nc" id="L480">                Set dependencies = rule.getDependencies(modelElement);</span>
+<span class="nc" id="L481">                deps.addAll(dependencies);</span>
+<span class="nc" id="L482">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L483">                LOG.log(Level.FINE, &quot;InvalidElementException in ExplorerTree : &quot;, e );</span>
+<span class="nc" id="L484">            }</span>
+
+<span class="nc" id="L486">        }</span>
+
+	// Order the new children, the dependencies cannot and
+	// need not be ordered
+<span class="nc" id="L490">	Collections.sort(newChildren, order);</span>
+<span class="nc" id="L491">	deps.addAll(newChildren);</span>
+<span class="nc" id="L492">    }</span>
+
+    /**
+     * Returns a Set of current children to remove and modifies newChildren
+     * to only contain the children not already in children and not subsumed
+     * by any WeakExplorerNode in children.&lt;p&gt;
+     *
+     * Note: newChildren will be modified by this call.&lt;p&gt;
+     *
+     * Note: It is expected that a WeakExplorerNode will not be reused and
+     * thus they will always initially be slated for removal, and only those
+     * nodes are in fact used to check subsumption of new nodes. New nodes
+     * are not checked among themselves for subsumtion.
+     *
+     * @param children is the list of current children.
+     * @param newChildren is the list of expected children.
+     * @return the Set of current children to remove.
+     * @throws UnsupportedOperationException if newChildren doesn't support
+     *         remove or removeAll.
+     * @throws NullPointerException if either argument is null.
+     */
+    private Set prepareAddRemoveSets(List children, List newChildren) {
+<span class="nc" id="L514">	Set removeSet = new HashSet();</span>
+<span class="nc" id="L515">	Set commonObjects = new HashSet();</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">	if (children.size() &lt; newChildren.size()) {</span>
+<span class="nc" id="L517">	    commonObjects.addAll(children);</span>
+<span class="nc" id="L518">	    commonObjects.retainAll(newChildren);</span>
+	} else {
+<span class="nc" id="L520">	    commonObjects.addAll(newChildren);</span>
+<span class="nc" id="L521">	    commonObjects.retainAll(children);</span>
+	}
+<span class="nc" id="L523">	newChildren.removeAll(commonObjects);</span>
+<span class="nc" id="L524">	removeSet.addAll(children);</span>
+<span class="nc" id="L525">	removeSet.removeAll(commonObjects);</span>
+
+	// Handle WeakExplorerNodes
+<span class="nc" id="L528">	Iterator it = removeSet.iterator();</span>
+<span class="nc" id="L529">	List weakNodes = null;</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">	while (it.hasNext()) {</span>
+<span class="nc" id="L531">	    Object obj = it.next();</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">	    if (!(obj instanceof WeakExplorerNode)) {</span>
+<span class="nc" id="L533">		continue;</span>
+	    }
+<span class="nc" id="L535">	    WeakExplorerNode node = (WeakExplorerNode) obj;</span>
+
+<span class="nc bnc" id="L537" title="All 2 branches missed.">	    if (weakNodes == null) {</span>
+<span class="nc" id="L538">		weakNodes = new LinkedList();</span>
+<span class="nc" id="L539">		Iterator it2 = newChildren.iterator();</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">		while (it2.hasNext()) {</span>
+<span class="nc" id="L541">		    Object obj2 = it2.next();</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">		    if (obj2 instanceof WeakExplorerNode) {</span>
+<span class="nc" id="L543">			weakNodes.add(obj2);</span>
+		    }
+<span class="nc" id="L545">		}</span>
+	    }
+
+<span class="nc" id="L548">	    Iterator it3 = weakNodes.iterator();</span>
+<span class="nc bnc" id="L549" title="All 2 branches missed.">	    while (it3.hasNext()) {</span>
+<span class="nc" id="L550">		Object obj3 = it3.next();</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">		if (node.subsumes(obj3)) {</span>
+		    // Remove the node from removeSet
+<span class="nc" id="L553">		    it.remove();</span>
+		    // Remove obj3 from weakNodes and newChildren
+<span class="nc" id="L555">		    newChildren.remove(obj3);</span>
+<span class="nc" id="L556">		    it3.remove();</span>
+<span class="nc" id="L557">		    break;</span>
+		}
+<span class="nc" id="L559">	    }</span>
+<span class="nc" id="L560">	}</span>
+
+<span class="nc" id="L562">	return removeSet;</span>
+    }
+
+    /**
+     * Merges the current children with the new children removing children no
+     * longer present and adding new children in the right place.
+     *
+     * @param node the TreeNode were merging lists for.
+     * @param children the current child UserObjects, in order.
+     * @param newChildren the expected child UserObjects, in order.
+     * @throws UnsupportedOperationException if the Iterator returned by
+     *         newChildren doesn't support the remove operation, or if
+     *         newChildren itself doesn't support remove or removeAll.
+     * @throws NullPointerException if node, children or newChildren are null.
+     */
+    private void mergeChildren(ExplorerTreeNode node, List children,
+			       List newChildren) {
+<span class="nc" id="L579">	Set removeObjects = prepareAddRemoveSets(children, newChildren);</span>
+	// Remember that children are not TreeNodes but UserObjects
+<span class="nc" id="L581">	List&lt;ExplorerTreeNode&gt; actualNodes = new ArrayList&lt;ExplorerTreeNode&gt;();</span>
+<span class="nc" id="L582">	Enumeration childrenEnum = node.children();</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">	while (childrenEnum.hasMoreElements()) {</span>
+<span class="nc" id="L584">	    actualNodes.add((ExplorerTreeNode) childrenEnum.nextElement());</span>
+	}
+
+<span class="nc" id="L587">	int position = 0;</span>
+<span class="nc" id="L588">	Iterator childNodes = actualNodes.iterator();</span>
+<span class="nc" id="L589">	Iterator newNodes = newChildren.iterator();</span>
+<span class="nc bnc" id="L590" title="All 2 branches missed.">	Object firstNew = newNodes.hasNext() ? newNodes.next() : null;</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">	while (childNodes.hasNext()) {</span>
+<span class="nc" id="L592">	    Object childObj = childNodes.next();</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">	    if (!(childObj instanceof ExplorerTreeNode)) {</span>
+<span class="nc" id="L594">		continue;</span>
+	    }
+
+<span class="nc" id="L597">	    ExplorerTreeNode child = (ExplorerTreeNode) childObj;</span>
+<span class="nc" id="L598">	    Object userObject = child.getUserObject();</span>
+
+<span class="nc bnc" id="L600" title="All 2 branches missed.">	    if (removeObjects.contains(userObject)) {</span>
+<span class="nc" id="L601">		removeNodeFromParent(child);</span>
+	    } else {
+<span class="nc bnc" id="L603" title="All 2 branches missed.">		while (firstNew != null</span>
+<span class="nc bnc" id="L604" title="All 2 branches missed.">		       &amp;&amp; order.compare(firstNew, userObject) &lt; 0) {</span>
+<span class="nc" id="L605">		    insertNodeInto(new ExplorerTreeNode(firstNew, this),</span>
+				   node,
+				   position);
+<span class="nc" id="L608">		    position++;</span>
+<span class="nc bnc" id="L609" title="All 2 branches missed.">		    firstNew = newNodes.hasNext() ? newNodes.next() : null;</span>
+		}
+<span class="nc" id="L611">		position++;</span>
+	    }
+<span class="nc" id="L613">	}</span>
+
+	// Add any remaining nodes
+<span class="nc bnc" id="L616" title="All 2 branches missed.">	while (firstNew != null) {</span>
+<span class="nc" id="L617">	    insertNodeInto(new ExplorerTreeNode(firstNew, this),</span>
+			   node,
+			   position);
+<span class="nc" id="L620">	    position++;</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">	    firstNew = newNodes.hasNext() ? newNodes.next() : null;</span>
+	}
+<span class="nc" id="L623">    }</span>
+
+    /*
+     * @see javax.swing.tree.DefaultTreeModel#insertNodeInto(javax.swing.tree.MutableTreeNode, javax.swing.tree.MutableTreeNode, int)
+     */
+    @Override
+    public void insertNodeInto(MutableTreeNode newChild,
+			       MutableTreeNode parent, int index) {
+<span class="nc" id="L631">	super.insertNodeInto(newChild, parent, index);</span>
+<span class="nc bnc" id="L632" title="All 2 branches missed.">        if (newChild instanceof ExplorerTreeNode) {</span>
+<span class="nc" id="L633">            addNodesToMap((ExplorerTreeNode) newChild);</span>
+        }
+<span class="nc" id="L635">    }</span>
+
+    /*
+     * @see javax.swing.tree.DefaultTreeModel#removeNodeFromParent(javax.swing.tree.MutableTreeNode)
+     */
+    @Override
+    public void removeNodeFromParent(MutableTreeNode node) {
+<span class="nc bnc" id="L642" title="All 2 branches missed.">	if (node instanceof ExplorerTreeNode) {</span>
+<span class="nc" id="L643">	    removeNodesFromMap((ExplorerTreeNode) node);</span>
+<span class="nc" id="L644">	    ((ExplorerTreeNode) node).remove();</span>
+	}
+<span class="nc" id="L646">	super.removeNodeFromParent(node);</span>
+<span class="nc" id="L647">    }</span>
+
+    /**
+     * Map all nodes in the subtree rooted at node.
+     *
+     * @param node the node to be added
+     */
+    private void addNodesToMap(ExplorerTreeNode node) {
+<span class="nc" id="L655">	Enumeration children = node.children();</span>
+<span class="nc bnc" id="L656" title="All 2 branches missed.">	while (children.hasMoreElements()) {</span>
+<span class="nc" id="L657">	    ExplorerTreeNode child = (ExplorerTreeNode) children.nextElement();</span>
+<span class="nc" id="L658">	    addNodesToMap(child);</span>
+<span class="nc" id="L659">	}</span>
+<span class="nc" id="L660">	addToMap(node.getUserObject(), node);</span>
+<span class="nc" id="L661">    }</span>
+
+    /**
+     * Unmap all nodes in the subtree rooted at the given node.
+     *
+     * @param node the given node
+     */
+    private void removeNodesFromMap(ExplorerTreeNode node) {
+<span class="nc" id="L669">	Enumeration children = node.children();</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">	while (children.hasMoreElements()) {</span>
+<span class="nc" id="L671">	    ExplorerTreeNode child = (ExplorerTreeNode) children.nextElement();</span>
+<span class="nc" id="L672">	    removeNodesFromMap(child);</span>
+<span class="nc" id="L673">	}</span>
+<span class="nc" id="L674">	removeFromMap(node.getUserObject(), node);</span>
+<span class="nc" id="L675">    }</span>
+
+    /**
+     * Adds a new tree node and model element to the map.
+     * nodes are removed from the map when a {@link #modelElementRemoved(Object)
+     * modelElementRemoved} event is received.
+     *
+     * @param modelElement the modelelement to be added
+     * @param node the node to be added
+     */
+    private void addToMap(Object modelElement, ExplorerTreeNode node) {
+<span class="nc" id="L686">	Set&lt;ExplorerTreeNode&gt; nodes = modelElementMap.get(modelElement);</span>
+
+<span class="nc bnc" id="L688" title="All 2 branches missed.">	if (nodes != null) {</span>
+<span class="nc" id="L689">	    nodes.add(node);</span>
+	} else {
+<span class="nc" id="L691">	    nodes = new HashSet&lt;ExplorerTreeNode&gt;();</span>
+<span class="nc" id="L692">	    nodes.add(node);</span>
+<span class="nc" id="L693">	    modelElementMap.put(modelElement, nodes);</span>
+	}
+<span class="nc" id="L695">    }</span>
+
+    /**
+     * removes a new tree node and model element from the map.
+     *
+     * @param modelElement the modelelement to be removed
+     * @param node the node to be removed
+     */
+    private void removeFromMap(Object modelElement, ExplorerTreeNode node) {
+<span class="nc" id="L704">	Collection&lt;ExplorerTreeNode&gt; nodes = modelElementMap.get(modelElement);</span>
+<span class="nc bnc" id="L705" title="All 2 branches missed.">	if (nodes != null) {</span>
+<span class="nc" id="L706">	    nodes.remove(node);</span>
+<span class="nc bnc" id="L707" title="All 2 branches missed.">	    if (nodes.isEmpty()) {</span>
+<span class="nc" id="L708">                modelElementMap.remove(modelElement);</span>
+            }
+	}
+<span class="nc" id="L711">    }</span>
+
+    /**
+     * Node lookup for a given model element.
+     *
+     * @param modelElement the given modelelement
+     * @return the nodes sought
+     */
+    private Collection&lt;ExplorerTreeNode&gt; findNodes(Object modelElement) {
+<span class="nc" id="L720">	Collection&lt;ExplorerTreeNode&gt; nodes = modelElementMap.get(modelElement);</span>
+
+<span class="nc bnc" id="L722" title="All 2 branches missed.">	if (nodes == null) {</span>
+<span class="nc" id="L723">	    return Collections.EMPTY_LIST;</span>
+	}
+<span class="nc" id="L725">        return nodes;</span>
+    }
+
+    /**
+     * Updates the explorer for new perspectives / orderings.
+     *
+     * {@inheritDoc}
+     */
+    public void itemStateChanged(ItemEvent e) {
+<span class="nc bnc" id="L734" title="All 2 branches missed.">	if (e.getSource() instanceof PerspectiveComboBox) {</span>
+<span class="nc" id="L735">            rules = ((ExplorerPerspective) e.getItem()).getList();</span>
+	} else { // it is the combo for &quot;order&quot;
+<span class="nc" id="L737">	    order = (Comparator) e.getItem();</span>
+	}
+<span class="nc" id="L739">	structureChanged();</span>
+	// TODO: temporary - let tree expand implicitly - tfm
+<span class="nc" id="L741">	tree.expandPath(tree.getPathForRow(1));</span>
+<span class="nc" id="L742">    }</span>
+
+    /**
+     * @return Returns the nodeUpdater.
+     */
+    ExplorerUpdater getNodeUpdater() {
+<span class="nc" id="L748">        return nodeUpdater;</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3132732494386565870L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

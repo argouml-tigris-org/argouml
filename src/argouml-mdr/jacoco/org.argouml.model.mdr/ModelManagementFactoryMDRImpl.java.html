@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelManagementFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ModelManagementFactoryMDRImpl.java</span></div><h1>ModelManagementFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2005-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import javax.jmi.reflect.InvalidObjectException;
+
+import org.argouml.model.ModelManagementFactory;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.modelmanagement.ElementImport;
+import org.omg.uml.modelmanagement.Model;
+import org.omg.uml.modelmanagement.ModelManagementPackage;
+import org.omg.uml.modelmanagement.Subsystem;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * The ModelManagementFactory.&lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * derived from NSUML implementation by:
+ * @author Linus Tolke
+ */
+final class ModelManagementFactoryMDRImpl extends
+        AbstractUmlModelFactoryMDR implements ModelManagementFactory {
+
+    /**
+     * The model.
+     */
+    private Object theRootModel;
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor.
+     *
+     * @param mi
+     *            The MDRModelImplementation.
+     */
+<span class="fc" id="L81">    public ModelManagementFactoryMDRImpl(MDRModelImplementation mi) {</span>
+<span class="fc" id="L82">        modelImpl = mi;</span>
+<span class="fc" id="L83">    }</span>
+
+
+    public Model createModel() {
+<span class="fc" id="L87">        ModelManagementPackage mmp = getModelManagementPackage();</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (mmp == null) {</span>
+            // Normally the extent should exist already, but in the case of
+            // making an empty project, we may not have an extent yet, so
+            // create a default extent
+<span class="nc" id="L92">            modelImpl.createDefaultExtent();</span>
+        }
+<span class="fc" id="L94">        Model myModel = getModelManagementPackage().getModel().createModel();</span>
+<span class="fc" id="L95">        super.initialize(myModel);</span>
+<span class="fc" id="L96">        return myModel;</span>
+    }
+
+    private ModelManagementPackage getModelManagementPackage() {
+<span class="fc" id="L100">        org.omg.uml.UmlPackage umlPackage = modelImpl.getUmlPackage();</span>
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (umlPackage == null) {</span>
+<span class="nc" id="L102">            return null;</span>
+        }
+        try {
+<span class="fc" id="L105">            return umlPackage.getModelManagement();</span>
+<span class="nc" id="L106">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L107">            return null;</span>
+        }
+    }
+
+    @Deprecated
+    public void setRootModel(Object rootModel) {
+<span class="nc bnc" id="L113" title="All 4 branches missed.">        if (rootModel != null &amp;&amp; !(rootModel instanceof Model)) {</span>
+<span class="nc" id="L114">            throw new IllegalArgumentException(</span>
+                    &quot;The rootModel supplied must be a Model. Got a &quot;
+<span class="nc" id="L116">                            + rootModel.getClass().getName());</span>
+        }
+<span class="nc" id="L118">        theRootModel = rootModel;</span>
+<span class="nc" id="L119">    }</span>
+
+
+    @Deprecated
+    public Object getRootModel() {
+<span class="nc" id="L124">        return theRootModel;</span>
+    }
+
+
+    public ElementImport createElementImport() {
+<span class="nc" id="L129">        ElementImport myElementImport =</span>
+<span class="nc" id="L130">            getModelManagementPackage().getElementImport().createElementImport();</span>
+<span class="nc" id="L131">        super.initialize(myElementImport);</span>
+<span class="nc" id="L132">        return myElementImport;</span>
+    }
+
+
+    public ElementImport buildElementImport(Object pack, Object me) {
+<span class="nc bnc" id="L137" title="All 4 branches missed.">        if (pack instanceof UmlPackage &amp;&amp; me instanceof ModelElement) {</span>
+<span class="nc" id="L138">            ElementImport ei = createElementImport();</span>
+<span class="nc" id="L139">            ei.setImportedElement((ModelElement) me);</span>
+<span class="nc" id="L140">            ei.setUmlPackage((UmlPackage) pack);</span>
+<span class="nc" id="L141">            return ei;</span>
+        }
+<span class="nc" id="L143">        throw new IllegalArgumentException(</span>
+                &quot;To build an ElementImport we need a &quot;
+                + &quot;Package and a ModelElement.&quot;);
+    }
+
+    public UmlPackage createPackage() {
+<span class="fc" id="L149">        UmlPackage myUmlPackage =</span>
+<span class="fc" id="L150">            getModelManagementPackage().getUmlPackage().createUmlPackage();</span>
+<span class="fc" id="L151">        super.initialize(myUmlPackage);</span>
+<span class="fc" id="L152">        return myUmlPackage;</span>
+    }
+
+    public Model createProfile() {
+<span class="nc" id="L156">        Model profile = createModel();</span>
+        // apply &lt;&lt;profile&gt;&gt; stereotype to make it a &quot;profile&quot; (our convention)
+        // (hack: create that stereotype instead using the UML 1.4 profile)
+<span class="nc" id="L159">        Stereotype stereo =</span>
+<span class="nc" id="L160">            (Stereotype)modelImpl.getExtensionMechanismsFactory()</span>
+<span class="nc" id="L161">                .buildStereotype(&quot;profile&quot;, profile);</span>
+<span class="nc" id="L162">        profile.getStereotype().add(stereo);</span>
+<span class="nc" id="L163">        return profile;</span>
+    }
+
+    public Object buildPackage(String name) {
+<span class="nc" id="L167">        UmlPackage pkg = createPackage();</span>
+<span class="nc" id="L168">        pkg.setName(name);</span>
+<span class="nc" id="L169">        return pkg;</span>
+    }
+
+    public Object createSubsystem() {
+<span class="nc" id="L173">        Subsystem mySubsystem =</span>
+<span class="nc" id="L174">            getModelManagementPackage().getSubsystem().createSubsystem();</span>
+<span class="nc" id="L175">        super.initialize(mySubsystem);</span>
+<span class="nc" id="L176">        return mySubsystem;</span>
+    }
+
+
+    public Object copyPackage(Object source, Object ns) {
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (!(source instanceof UmlPackage)) {</span>
+<span class="nc" id="L182">            throw new IllegalArgumentException(&quot;source&quot;);</span>
+        }
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L185">            throw new IllegalArgumentException(&quot;namespace&quot;);</span>
+        }
+
+<span class="nc" id="L188">        UmlPackage p = createPackage();</span>
+<span class="nc" id="L189">        ((Namespace) ns).getOwnedElement().add(p);</span>
+<span class="nc" id="L190">        doCopyPackage((UmlPackage) source, p);</span>
+<span class="nc" id="L191">        return p;</span>
+    }
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source
+     *            The source package.
+     * @param target
+     *            The target package.
+     */
+    private void doCopyPackage(UmlPackage source, UmlPackage target) {
+<span class="nc" id="L203">        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())</span>
+<span class="nc" id="L204">            .doCopyNamespace(source, target);</span>
+<span class="nc" id="L205">    }</span>
+
+    /**
+     * @param elem
+     *            to be deleted
+     */
+    void deleteElementImport(Object elem) {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">        if (!(elem instanceof ElementImport)) {</span>
+<span class="nc" id="L213">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L216">    }</span>
+
+    /**
+     * @param elem
+     *            to be deleted
+     */
+    void deleteModel(Object elem) {
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (!(elem instanceof Model)) {</span>
+<span class="nc" id="L224">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L227">    }</span>
+
+    /**
+     * @param elem
+     *            to be deleted
+     */
+    void deletePackage(Object elem) {
+<span class="nc bnc" id="L234" title="All 2 branches missed.">        if (!(elem instanceof UmlPackage)) {</span>
+<span class="nc" id="L235">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L238">    }</span>
+
+    /**
+     * @param elem
+     *            to be deleted
+     */
+    void deleteSubsystem(Object elem) {
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (!(elem instanceof Subsystem)) {</span>
+<span class="nc" id="L246">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L249">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

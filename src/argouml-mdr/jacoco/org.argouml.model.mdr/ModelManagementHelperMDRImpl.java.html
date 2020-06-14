@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ModelManagementHelperMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ModelManagementHelperMDRImpl.java</span></div><h1>ModelManagementHelperMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefClass;
+import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
+
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.ModelManagementHelper;
+import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.GeneralizableElement;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
+import org.omg.uml.modelmanagement.ElementImport;
+import org.omg.uml.modelmanagement.Subsystem;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Helper class for UML ModelManagement Package.
+ * &lt;p&gt;
+ *
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * &lt;p&gt;
+ * derived from NSUML implementation by:
+ * @author Thierry Lach
+ */
+class ModelManagementHelperMDRImpl implements ModelManagementHelper {
+
+<span class="fc" id="L84">    private static final Logger LOG =</span>
+<span class="fc" id="L85">        Logger.getLogger(ModelManagementHelperMDRImpl.class.getName());</span>
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Construct a ModelManagementHelper.  Not for use outside of the
+     * Model subsystem implementation.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L99">    ModelManagementHelperMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L100">        modelImpl = implementation;</span>
+<span class="fc" id="L101">    }</span>
+
+
+    public Collection getAllSubSystems(Object ns) {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L106">            return new ArrayList();</span>
+        }
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L109">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L112">        Iterator it = ((Namespace) ns).getOwnedElement().iterator();</span>
+<span class="nc" id="L113">        List list = new ArrayList();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L115">            Object o = it.next();</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (o instanceof Namespace) {</span>
+<span class="nc" id="L117">                list.addAll(getAllSubSystems(o));</span>
+            }
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (o instanceof Subsystem) {</span>
+<span class="nc" id="L120">                list.add(o);</span>
+            }
+
+<span class="nc" id="L123">        }</span>
+<span class="nc" id="L124">        return list;</span>
+    }
+
+    /*
+     * This method is CPU intensive and therefore needs to be as efficient as
+     * possible.
+     */
+    public Collection getAllNamespaces(Object ns) {
+
+<span class="nc bnc" id="L133" title="All 4 branches missed.">        if (ns == null || !(ns instanceof Namespace)) {</span>
+<span class="nc" id="L134">            return Collections.EMPTY_LIST;</span>
+        }
+
+<span class="nc" id="L137">        Collection namespaces = ((Namespace) ns).getOwnedElement();</span>
+        // the list of namespaces to return
+<span class="nc" id="L139">        List list = Collections.EMPTY_LIST;</span>
+
+        // if there are no owned elements then return empty list
+<span class="nc bnc" id="L142" title="All 4 branches missed.">        if (namespaces == Collections.EMPTY_LIST || namespaces.size() == 0) {</span>
+<span class="nc" id="L143">            return Collections.EMPTY_LIST;</span>
+        }
+
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        for (Iterator it = namespaces.iterator(); it.hasNext();) {</span>
+<span class="nc" id="L147">            Object o = it.next();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (o instanceof Namespace) {</span>
+
+                // only build a namepace if needed, with
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                if (list == Collections.EMPTY_LIST) {</span>
+<span class="nc" id="L152">                    list = new ArrayList(namespaces.size());</span>
+                }
+
+<span class="nc" id="L155">                list.add(o);</span>
+
+<span class="nc" id="L157">                Collection namespaces1 = getAllNamespaces(o);</span>
+                // only add all if there are some to add.
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                if (namespaces1 != Collections.EMPTY_LIST</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                        &amp;&amp; namespaces1.size() &gt; 0) {</span>
+<span class="nc" id="L161">                    list.addAll(namespaces1);</span>
+                }
+            }
+<span class="nc" id="L164">        }</span>
+<span class="nc" id="L165">        return list;</span>
+    }
+
+
+    public Collection getAllModelElementsOfKindWithModel(Object model,
+            Object type) {
+<span class="nc bnc" id="L171" title="All 2 branches missed.">        if (model == null) {</span>
+<span class="nc" id="L172">            throw new IllegalArgumentException(&quot;A model must be supplied&quot;);</span>
+        }
+<span class="nc" id="L174">        Class kind = (Class) type;</span>
+<span class="nc" id="L175">        Collection ret = getAllModelElementsOfKind(model, kind);</span>
+<span class="nc bnc" id="L176" title="All 4 branches missed.">        if (kind.isAssignableFrom(model.getClass()) &amp;&amp; !ret.contains(model)) {</span>
+            // TODO: It doesn't really make sense that a namespace would be
+            // returned as part of its own contents, but that's the historical
+            // behavior.
+<span class="nc" id="L180">            ret = new ArrayList(ret);</span>
+<span class="nc" id="L181">            ret.add(model);</span>
+        }
+<span class="nc" id="L183">        return ret;</span>
+    }
+
+
+    public Collection getAllModelElementsOfKind(Object nsa, Object type) {
+        // TODO: Performance critical method
+<span class="nc" id="L189">        long startTime = System.currentTimeMillis();</span>
+<span class="nc bnc" id="L190" title="All 4 branches missed.">        if (nsa == null || type == null) {</span>
+<span class="nc" id="L191">            return Collections.EMPTY_LIST;</span>
+        }
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (type instanceof String) {</span>
+<span class="nc" id="L194">            return getAllModelElementsOfKind(nsa, (String) type);</span>
+        }
+<span class="nc bnc" id="L196" title="All 4 branches missed.">        if (!(nsa instanceof Namespace) || !(type instanceof Class)) {</span>
+<span class="nc" id="L197">            throw new IllegalArgumentException(&quot;illegal argument - namespace: &quot;</span>
+                    + nsa + &quot; type: &quot; + type);
+        }
+
+        /*
+         * Because we get the metatype class stripped of its reflective
+         * proxies, we need to jump through a hoop or two to find it
+         * in the metamodel, then work from there to get its proxy.
+         */
+<span class="nc" id="L206">        String name = ((Class) type).getName();</span>
+<span class="nc" id="L207">        name = name.substring(name.lastIndexOf(&quot;.&quot;) + 1);</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">        if (name.startsWith(&quot;Uml&quot;)) {</span>
+<span class="nc" id="L209">            name = name.substring(3);</span>
+        }
+
+<span class="nc" id="L212">        Collection allOfType = Collections.emptySet();</span>
+        try {
+<span class="nc" id="L214">            RefPackage extent = ((RefObject) nsa).refOutermostPackage();</span>
+<span class="nc" id="L215">            RefClass classProxy = ((FacadeMDRImpl) modelImpl.getFacade())</span>
+<span class="nc" id="L216">                    .getProxy(name, extent);</span>
+<span class="nc" id="L217">            allOfType = classProxy.refAllOfType();</span>
+<span class="nc" id="L218">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L219">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L220">        }</span>
+
+        // Remove any elements not in requested namespace
+<span class="nc" id="L223">        Collection returnElements = new ArrayList();</span>
+        // TODO: Perhaps use a HashSet or other collection with faster lookup
+        // performance in case our callers are doing naive .contains() lookups
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        for (Iterator i = allOfType.iterator(); i.hasNext();) {</span>
+<span class="nc" id="L227">            Object me = i.next();</span>
+            // TODO: Optimize for root model case? - tfm
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if (contained(nsa, me)) {</span>
+<span class="nc" id="L230">                returnElements.add(me);</span>
+            }
+<span class="nc" id="L232">        }</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if ( LOG.isLoggable( Level.FINE ) ) {</span>
+<span class="nc" id="L234">            long duration = System.currentTimeMillis() - startTime;</span>
+<span class="nc" id="L235">            LOG.log(Level.FINE, &quot;Get allOfKind took {0} msec.&quot;, duration);</span>
+        }
+<span class="nc" id="L237">        return returnElements;</span>
+    }
+
+    /*
+     * Check whether model element is contained in given namespace/container.
+     */
+    private boolean contained(Object container, Object candidate) {
+<span class="nc" id="L244">        Object current = ((RefObject) candidate).refImmediateComposite();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        while (current != null) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (container.equals(current)) {</span>
+<span class="nc" id="L247">                return true;</span>
+            }
+<span class="nc" id="L249">            current = ((RefObject) current).refImmediateComposite();</span>
+        }
+<span class="nc" id="L251">        return false;</span>
+    }
+
+
+    public Collection getAllModelElementsOfKind(Object nsa, String kind) {
+
+<span class="nc bnc" id="L257" title="All 4 branches missed.">        if (nsa == null || kind == null) {</span>
+<span class="nc" id="L258">            return Collections.EMPTY_LIST;</span>
+        }
+<span class="nc bnc" id="L260" title="All 2 branches missed.">        if (!(nsa instanceof Namespace)) {</span>
+<span class="nc" id="L261">            throw new IllegalArgumentException(&quot;given argument &quot; + nsa</span>
+                    + &quot; is not a namespace&quot;);
+        }
+<span class="nc" id="L264">        Collection col = null;</span>
+        try {
+<span class="nc" id="L266">            col = getAllModelElementsOfKind(nsa, Class.forName(kind));</span>
+<span class="nc" id="L267">        } catch (ClassNotFoundException cnfe) {</span>
+<span class="nc" id="L268">            throw new IllegalArgumentException(</span>
+                    &quot;Can't derive a class name from &quot; + kind);
+<span class="nc" id="L270">        }</span>
+<span class="nc" id="L271">        return col;</span>
+    }
+
+
+    public Collection getAllSurroundingNamespaces(Object ns) {
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L277">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L280">        Set set = new HashSet();</span>
+<span class="nc" id="L281">        set.add(ns);</span>
+<span class="nc" id="L282">        Namespace namespace = ((Namespace) ns);</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">        if (namespace.getNamespace() != null) {</span>
+<span class="nc" id="L284">            set.addAll(getAllSurroundingNamespaces(namespace.getNamespace()));</span>
+        }
+<span class="nc" id="L286">        return set;</span>
+    }
+
+    /*
+     * TODO: As currently coded, this actually returns all BehavioralFeatures
+     * which are owned by Classifiers contained in the given namespace, which
+     * is slightly different then what's documented.  It will not include any
+     * BehavioralFeatures which are part of the Namespace, but which don't have
+     * an owner.
+     */
+    public Collection getAllBehavioralFeatures(Object ns) {
+        // Get Classifiers in Namespace
+<span class="nc" id="L298">        ArrayList features = new ArrayList();</span>
+        try {
+<span class="nc" id="L300">            Collection classifiers = getAllModelElementsOfKind(ns,</span>
+<span class="nc" id="L301">                    modelImpl.getMetaTypes().getClassifier());</span>
+<span class="nc" id="L302">            Iterator i = classifiers.iterator();</span>
+            // Get Features owned by those Classifiers
+<span class="nc bnc" id="L304" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L305">                features.addAll(modelImpl.getFacade().getFeatures(i.next()));</span>
+            }
+<span class="nc" id="L307">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L308">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L309">        }</span>
+        // Select those Features which are BehavioralFeatures
+<span class="nc" id="L311">        ArrayList behavioralfeatures = new ArrayList();</span>
+<span class="nc" id="L312">        Iterator ii = features.iterator();</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        while (ii.hasNext()) {</span>
+<span class="nc" id="L314">            Object f = ii.next();</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">            if (f instanceof BehavioralFeature) {</span>
+<span class="nc" id="L316">                behavioralfeatures.add(f);</span>
+            }
+<span class="nc" id="L318">        }</span>
+<span class="nc" id="L319">        return behavioralfeatures;</span>
+    }
+
+
+    public Collection getAllPossibleImports(Object pack) {
+        // TODO: Fully implement this!
+
+<span class="nc" id="L326">        Object container = pack;</span>
+<span class="nc" id="L327">        Object cc = modelImpl.getFacade().getModelElementContainer(pack);</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        while (cc != null) {</span>
+<span class="nc" id="L329">            container = cc;</span>
+<span class="nc" id="L330">            cc = modelImpl.getFacade().getModelElementContainer(cc);</span>
+        }
+
+<span class="nc" id="L333">        Collection mes = getAllModelElementsOfKind(container,</span>
+<span class="nc" id="L334">                modelImpl.getMetaTypes().getModelElement());</span>
+
+<span class="nc" id="L336">        Collection vmes = new ArrayList();</span>
+<span class="nc" id="L337">        Iterator i = mes.iterator();</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">        while (i.hasNext()) {</span>
+<span class="nc" id="L339">            Object me = i.next();</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">            if (modelImpl.getCoreHelper().isValidNamespace(me, pack)) {</span>
+<span class="nc" id="L341">                vmes.add(me);</span>
+            }
+<span class="nc" id="L343">        }</span>
+
+<span class="nc" id="L345">        return vmes;</span>
+    }
+
+    public Object getElement(List&lt;String&gt; path, Object theRootNamespace) {
+<span class="nc" id="L349">        ModelElement root = (ModelElement) theRootNamespace;</span>
+
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (root == null) {</span>
+<span class="nc" id="L352">            return getElement(path);</span>
+        } else {
+
+<span class="nc bnc" id="L355" title="All 2 branches missed.">            for (int i = 0; i &lt; path.size(); i++) {</span>
+<span class="nc bnc" id="L356" title="All 4 branches missed.">                if (root == null || !(root instanceof Namespace)) {</span>
+<span class="nc" id="L357">                    return null;</span>
+                }
+
+<span class="nc" id="L360">                String name = path.get(i);</span>
+<span class="nc" id="L361">                boolean found = false;</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">                for (ModelElement me : ((Namespace) root).getOwnedElement()) {</span>
+<span class="nc bnc" id="L363" title="All 4 branches missed.">                    if (i &lt; path.size() - 1 &amp;&amp; !(me instanceof Namespace)) {</span>
+<span class="nc" id="L364">                        continue;</span>
+                    }
+<span class="nc bnc" id="L366" title="All 2 branches missed.">                    if (name.equals(me.getName())) {</span>
+<span class="nc" id="L367">                        root = me;</span>
+<span class="nc" id="L368">                        found = true;</span>
+<span class="nc" id="L369">                        break;</span>
+                    }
+<span class="nc" id="L371">                }</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">                if (!found) {</span>
+<span class="nc" id="L373">                    return null;</span>
+                }
+            }
+<span class="nc" id="L376">            return root;</span>
+        }
+    }
+
+
+    public Object getElement (List&lt;String&gt; fullPath) {
+<span class="nc bnc" id="L382" title="All 4 branches missed.">        if (fullPath == null || fullPath.isEmpty()) {</span>
+<span class="nc" id="L383">            return null;</span>
+        }
+<span class="nc" id="L385">        Object element = null;</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        for (Object root : modelImpl.getFacade().getRootElements()) {</span>
+            /*
+             * modelImpl.getFacade().getRootElements()  gets all root elements
+             * in the UML repository, including available profiles that are not
+             * part of the current project (degrades performance).
+             *
+             * ProjectManager.getManager().getCurrentProject().getRoots() only
+             * returns user model roots, and no profiles.
+             *
+             * ProjectManager.getManager().getCurrentProject().getModels() gets
+             * all root models, but no root namespaces.
+             *
+             * TODO: Which is best? Is there any other way?
+             */
+<span class="nc bnc" id="L400" title="All 2 branches missed.">            if (((ModelElement) root).getName().equals(fullPath.get(0))) {</span>
+<span class="nc" id="L401">                element = root;</span>
+<span class="nc bnc" id="L402" title="All 4 branches missed.">                if (root instanceof Namespace &amp;&amp; fullPath.size() &gt; 1) {</span>
+<span class="nc" id="L403">                    element =</span>
+<span class="nc" id="L404">                            modelImpl.getModelManagementHelper().getElement(</span>
+<span class="nc" id="L405">                                    fullPath.subList(1, fullPath.size()), root);</span>
+                }
+<span class="nc bnc" id="L407" title="All 2 branches missed.">                if (element != null) {</span>
+<span class="nc" id="L408">                    break;</span>
+                }
+            }
+<span class="nc" id="L411">        }</span>
+<span class="nc" id="L412">        return element;</span>
+    }
+
+
+    public List&lt;String&gt; getPathList(Object element) {
+
+<span class="nc bnc" id="L418" title="All 2 branches missed.">        if (element == null) {</span>
+<span class="nc" id="L419">            return new ArrayList&lt;String&gt;();</span>
+        }
+<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (!(element instanceof RefObject)) {</span>
+<span class="nc" id="L422">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L425">        List&lt;String&gt; path = getPathList(((RefObject) element)</span>
+<span class="nc" id="L426">                .refImmediateComposite());</span>
+<span class="nc" id="L427">        path.add(modelImpl.getFacade().getName(element));</span>
+
+<span class="nc" id="L429">        return path;</span>
+    }
+
+
+    public List&lt;Object&gt; getRootElements(Object model) {
+<span class="nc" id="L434">        List&lt;Object&gt; contents = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L435">        contents.add(model);</span>
+<span class="nc" id="L436">        return contents;</span>
+    }
+
+
+    public boolean isCyclicOwnership(Object parent, Object child) {
+<span class="nc bnc" id="L441" title="All 4 branches missed.">        return (getOwnerShipPath(parent).contains(child) || parent == child);</span>
+    }
+
+    /**
+     * Return a list of all ModelElements which contain this one, starting with
+     * the immediate parent and ending with the top level ModelElement.
+     *
+     * @param elem
+     *            the model element to search for
+     * @return a list of ModelElements
+     */
+    private List getOwnerShipPath(Object elem) {
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        if (elem instanceof ModelElement) {</span>
+<span class="nc" id="L454">            List ownershipPath = new ArrayList();</span>
+<span class="nc" id="L455">            Object parent = modelImpl.getFacade()</span>
+<span class="nc" id="L456">                    .getModelElementContainer(elem);</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">            while (parent != null) {</span>
+<span class="nc" id="L458">                ownershipPath.add(parent);</span>
+<span class="nc" id="L459">                parent = modelImpl.getFacade().getModelElementContainer(parent);</span>
+            }
+<span class="nc" id="L461">            return ownershipPath;</span>
+        }
+<span class="nc" id="L463">        throw new IllegalArgumentException(&quot;Not a base&quot;);</span>
+    }
+
+
+    public void removeImportedElement(Object pack, Object me) {
+        try {
+<span class="nc bnc" id="L469" title="All 4 branches missed.">            if (pack instanceof UmlPackage &amp;&amp; me instanceof ModelElement) {</span>
+<span class="nc" id="L470">                Collection c = ((UmlPackage) pack).getElementImport();</span>
+<span class="nc" id="L471">                ElementImport match = null;</span>
+<span class="nc" id="L472">                Iterator it = c.iterator();</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">                while (it.hasNext()) {</span>
+<span class="nc" id="L474">                    ElementImport ei = (ElementImport) it.next();</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">                    if (ei.getImportedElement() == me) {</span>
+<span class="nc" id="L476">                        match = ei;</span>
+<span class="nc" id="L477">                        break;</span>
+                    }
+<span class="nc" id="L479">                }</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">                if (match != null) c.remove(match);</span>
+<span class="nc" id="L481">                return;</span>
+            }
+<span class="nc" id="L483">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L484">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L485">        }</span>
+<span class="nc" id="L486">        throw new IllegalArgumentException(</span>
+                &quot;There must be a Package and a ModelElement we got &quot; + pack + &quot; and &quot; + me);
+    }
+
+
+    public void setImportedElements(Object pack, Collection imports) {
+<span class="nc bnc" id="L492" title="All 2 branches missed.">        if (pack instanceof UmlPackage) {</span>
+<span class="nc" id="L493">            Collection&lt;ElementImport&gt; currentImports =</span>
+<span class="nc" id="L494">                ((UmlPackage) pack).getElementImport();</span>
+<span class="nc" id="L495">            Collection&lt;ElementImport&gt; toRemove =</span>
+                new ArrayList&lt;ElementImport&gt;();
+<span class="nc" id="L497">            Collection toAdd = new ArrayList(imports);</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">            for (final ElementImport ei : currentImports) {</span>
+<span class="nc bnc" id="L499" title="All 2 branches missed.">                if (imports.contains(ei.getImportedElement())) {</span>
+<span class="nc" id="L500">                    toAdd.remove(ei.getImportedElement());</span>
+                } else {
+<span class="nc" id="L502">                    toRemove.add(ei);</span>
+                }
+<span class="nc" id="L504">            }</span>
+<span class="nc" id="L505">            currentImports.removeAll(toRemove); // Should these also be deleted?</span>
+
+<span class="nc" id="L507">            Collection toAddEIs = new ArrayList();</span>
+<span class="nc" id="L508">            Iterator i = toAdd.iterator();</span>
+<span class="nc bnc" id="L509" title="All 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L510">                ModelElement me = (ModelElement) i.next();</span>
+<span class="nc" id="L511">                toAddEIs.add(modelImpl.getModelManagementFactory()</span>
+<span class="nc" id="L512">                        .buildElementImport(pack, me));</span>
+<span class="nc" id="L513">            }</span>
+<span class="nc" id="L514">            currentImports.addAll(toAddEIs);</span>
+<span class="nc" id="L515">            return;</span>
+        }
+<span class="nc" id="L517">        throw new IllegalArgumentException(</span>
+                &quot;There must be a Package and a ModelElement&quot;);
+    }
+
+
+    public void setAlias(Object handle, String alias) {
+<span class="nc bnc" id="L523" title="All 4 branches missed.">        if ((handle instanceof ElementImport) &amp;&amp; (alias != null)) {</span>
+<span class="nc" id="L524">            ((ElementImport) handle).setAlias(alias);</span>
+<span class="nc" id="L525">            return;</span>
+        }
+<span class="nc" id="L527">        throw new IllegalArgumentException(&quot;handle: &quot; + handle + &quot; or alias: &quot;</span>
+                + alias);
+    }
+
+    public void setSpecification(Object handle, boolean specification) {
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        if (handle instanceof ElementImport) {</span>
+<span class="nc" id="L533">            ((ElementImport) handle).setSpecification(specification);</span>
+<span class="nc" id="L534">            return;</span>
+        }
+<span class="nc" id="L536">        throw new IllegalArgumentException(&quot;handle: &quot; + handle);</span>
+    }
+
+    public Collection&lt;ModelElement&gt; getContents(Object modelelement) {
+<span class="nc bnc" id="L540" title="All 2 branches missed.">        if (modelelement instanceof UmlPackage) {</span>
+<span class="nc" id="L541">            return getContents((UmlPackage) modelelement);</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">        } else if (modelelement instanceof Namespace) {</span>
+<span class="nc" id="L543">            return getContents((Namespace) modelelement);</span>
+<span class="nc bnc" id="L544" title="All 2 branches missed.">        } else if (modelelement instanceof Instance) {</span>
+<span class="nc" id="L545">            return getContents((Instance) modelelement);</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">        } else if (modelelement == null) {</span>
+            // This is silly, but for backward compatibility
+<span class="nc" id="L548">            return Collections.emptySet();</span>
+        }
+<span class="nc" id="L550">        throw new IllegalArgumentException(&quot;Unsupported element type &quot;</span>
+                + modelelement);
+    }
+
+    /**
+     * &lt;p&gt;A helper method to make {@link #getContents(Object)} as
+     * efficient as possible.&lt;/p&gt;
+     * &lt;p&gt;This is called passing in a collection to place the result
+     * rather than creating a new instance of a collection to return&lt;/p&gt;
+     * @param results a collection of model elements to which the contents
+     * are to be added
+     * @param modelelement the model element to get the contents from
+     */
+    private void getContents(
+            final Collection&lt;ModelElement&gt; results,
+            final Object modelelement) {
+<span class="nc bnc" id="L566" title="All 2 branches missed.">        if (modelelement instanceof UmlPackage) {</span>
+<span class="nc" id="L567">            getContents(results, (UmlPackage) modelelement);</span>
+<span class="nc" id="L568">            return;</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">        } else if (modelelement instanceof Namespace) {</span>
+<span class="nc" id="L570">            getContents(results, (Namespace) modelelement);</span>
+<span class="nc" id="L571">            return;</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">        } else if (modelelement instanceof Instance) {</span>
+<span class="nc" id="L573">            getContents(results, (Instance) modelelement);</span>
+<span class="nc" id="L574">            return;</span>
+<span class="nc bnc" id="L575" title="All 2 branches missed.">        } else if (modelelement == null) {</span>
+<span class="nc" id="L576">            return;</span>
+        }
+<span class="nc" id="L578">        throw new IllegalArgumentException(&quot;Unsupported element type &quot;</span>
+                + modelelement);
+    }
+
+    /**
+     * Get the contents of a Package.
+     * &lt;p&gt;
+     * For a Package: &lt;pre&gt;
+     * [1] The operation contents results in a Set containing
+     * the ModelElements owned by or imported by the Package.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement-&gt;union(self.importedElement)
+     * &lt;/pre&gt;
+     * For a Subsystem (subtype of Package): &lt;pre&gt;
+     * [2] The operation contents results in a Set containing
+     * the ModelElements owned by or imported by the Subsystem.
+     *   contents : Set(ModelElement)
+     *   contents = self.ownedElement-&gt;union(self.importedElement)
+     * &lt;/pre&gt;
+     * @param pkg package to get contents of
+     * @return all owned plus imported elements
+     */
+    static Collection&lt;ModelElement&gt; getContents(UmlPackage pkg) {
+<span class="nc" id="L601">        Collection&lt;ModelElement&gt; results = new ArrayList&lt;ModelElement&gt;();</span>
+<span class="nc" id="L602">        Collection&lt;ElementImport&gt; c = pkg.getElementImport();</span>
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        for (ElementImport ei : c) {</span>
+<span class="nc" id="L604">            results.add(ei.getImportedElement());</span>
+<span class="nc" id="L605">        }</span>
+<span class="nc" id="L606">        results.addAll(getContents((Namespace) pkg));</span>
+<span class="nc" id="L607">        return results;</span>
+    }
+
+    /**
+     * Adds the contents of a package to the given collection.
+     * Same as {@link #getContents(UmlPackage)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection&lt;ModelElement&gt; results,
+            final UmlPackage pkg) {
+<span class="nc" id="L618">        Collection&lt;ElementImport&gt; c = pkg.getElementImport();</span>
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        for (ElementImport ei : c) {</span>
+<span class="nc" id="L620">            results.add(ei.getImportedElement());</span>
+<span class="nc" id="L621">        }</span>
+<span class="nc" id="L622">        getContents(results, (Namespace) pkg);</span>
+<span class="nc" id="L623">    }</span>
+
+    /**
+     * Get the contents of a Namespace (which includes the contents of
+     * all owning namespaces).
+     * &lt;p&gt;
+     * For a Namespace: &lt;pre&gt;
+     * [1] The operation contents results in a Set containing
+     * all ModelElements contained by the Namespace.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement -&gt; union(self.namespace, contents)
+     * &lt;/pre&gt;
+     * @param namespace Namespace to get contents of
+     * @return contents of namespace and all containing namespaces
+     */
+    static Collection&lt;ModelElement&gt; getContents(Namespace namespace) {
+<span class="nc" id="L639">        Collection&lt;ModelElement&gt; results = new ArrayList&lt;ModelElement&gt;();</span>
+<span class="nc" id="L640">        results.addAll(namespace.getOwnedElement());</span>
+<span class="nc" id="L641">        Namespace owner = namespace.getNamespace();</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L643">            results.addAll(getContents(owner));</span>
+        }
+        // TODO: Should we handle &lt;&lt;access&gt;&gt; and &lt;&lt;import&gt;&gt; here?
+<span class="nc" id="L646">        return results;</span>
+    }
+
+    /**
+     * Adds the contents of a namespace to the given collection.
+     * Same as {@link #getContents(Namespace)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection&lt;ModelElement&gt; results,
+            final Namespace namespace) {
+<span class="nc" id="L657">        results.addAll(namespace.getOwnedElement());</span>
+<span class="nc" id="L658">        Namespace owner = namespace.getNamespace();</span>
+<span class="nc bnc" id="L659" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L660">            getContents(results, owner);</span>
+        }
+        // TODO: Should we handle &lt;&lt;access&gt;&gt; and &lt;&lt;import&gt;&gt;?
+<span class="nc" id="L663">    }</span>
+
+    /**
+     * Return the contents of an Instance.
+     * For a Instance: &lt;pre&gt;
+     * [5] The operation contents results in a Set containing all
+     * ModelElements contained by the Instance.
+     *   contents: Set(ModelElement);
+     *   contents = self.ownedInstance-&gt;union(self.ownedLink)
+     * &lt;/pre&gt;
+     * @param instance the instance
+     * @return a collection containing all owned instances and links
+     */
+    static Collection&lt;ModelElement&gt; getContents(Instance instance) {
+<span class="nc" id="L677">        Collection&lt;ModelElement&gt; results = new ArrayList&lt;ModelElement&gt;();</span>
+<span class="nc" id="L678">        results.addAll(instance.getOwnedInstance());</span>
+<span class="nc" id="L679">        results.addAll(instance.getOwnedLink());</span>
+<span class="nc" id="L680">        return results;</span>
+    }
+
+    /**
+     * Adds the contents of an instance to the given collection.
+     * Same as {@link #getContents(Instance)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection&lt;ModelElement&gt; results,
+            final Instance instance) {
+<span class="nc" id="L691">        results.addAll(instance.getOwnedInstance());</span>
+<span class="nc" id="L692">        results.addAll(instance.getOwnedLink());</span>
+<span class="nc" id="L693">    }</span>
+
+    public Collection&lt;ModelElement&gt; getAllImportedElements(Object pack) {
+<span class="nc bnc" id="L696" title="All 2 branches missed.">        if (!(pack instanceof Namespace)) {</span>
+<span class="nc" id="L697">            return Collections.emptyList();</span>
+        }
+<span class="nc" id="L699">        Collection&lt;ModelElement&gt; ret = new ArrayList&lt;ModelElement&gt;();</span>
+<span class="nc" id="L700">        getAllImportedElements(ret, pack);</span>
+<span class="nc" id="L701">        return ret;</span>
+    }
+
+    /**
+     * &lt;p&gt;A helper method to make {@link #getAllImportedElements(Object)} as
+     * efficient as possible.&lt;/p&gt;
+     * &lt;p&gt;This is called passing in a collection to place the result
+     * rather than creating a new instance of a collection to return&lt;/p&gt;
+     * @param results a collection of modelelements to which the imported
+     * elements are to be added
+     * @param pack the package to get the imported elements from
+     */
+    private void getAllImportedElements(
+            final Collection&lt;ModelElement&gt; results,
+            final Object pack) {
+<span class="nc bnc" id="L716" title="All 2 branches missed.">        if (!(pack instanceof Namespace)) {</span>
+<span class="nc" id="L717">            return;</span>
+        }
+<span class="nc" id="L719">        Namespace ns = ((Namespace) pack);</span>
+        try {
+            /* TODO: This is not according the contract for this function, but
+             * it is used in several places, and I (MVW) presume that
+             * we need this generally.
+             * This part (1) is about drawing an &lt;&lt;import&gt;&gt; permission
+             * between packages.
+             * The part (2) below is about ModelManagement.ElementImport. */
+<span class="nc" id="L727">            Collection&lt;Dependency&gt; deps = ns.getClientDependency();</span>
+<span class="nc bnc" id="L728" title="All 2 branches missed.">            for (Dependency dep : deps) {</span>
+<span class="nc bnc" id="L729" title="All 2 branches missed.">                if (dep instanceof Permission) {</span>
+<span class="nc" id="L730">                    if (modelImpl.getExtensionMechanismsHelper()</span>
+<span class="nc bnc" id="L731" title="All 2 branches missed.">                            .hasStereotype(dep, FRIEND_STEREOTYPE)) {</span>
+<span class="nc bnc" id="L732" title="All 2 branches missed.">                        for (ModelElement o : dep.getSupplier()) {</span>
+<span class="nc bnc" id="L733" title="All 2 branches missed.">                            if (o instanceof Namespace) {</span>
+<span class="nc" id="L734">                                results.addAll(((Namespace) o).getOwnedElement());</span>
+                            }
+<span class="nc" id="L736">                        }</span>
+<span class="nc" id="L737">                    } else if (modelImpl.getExtensionMechanismsHelper()</span>
+<span class="nc bnc" id="L738" title="All 2 branches missed.">                            .hasStereotype(dep, IMPORT_STEREOTYPE)</span>
+<span class="nc" id="L739">                            || modelImpl.getExtensionMechanismsHelper()</span>
+<span class="nc bnc" id="L740" title="All 2 branches missed.">                                    .hasStereotype(dep, ACCESS_STEREOTYPE)) {</span>
+<span class="nc bnc" id="L741" title="All 2 branches missed.">                        for (ModelElement o : dep.getSupplier()) {</span>
+<span class="nc bnc" id="L742" title="All 2 branches missed.">                            if (o instanceof Namespace) {</span>
+<span class="nc" id="L743">                                results.addAll(CoreHelperMDRImpl</span>
+<span class="nc" id="L744">                                        .getAllVisibleElements((Namespace) o));</span>
+                            }
+<span class="nc" id="L746">                        }</span>
+                    }
+                }
+<span class="nc" id="L749">            }</span>
+            /* TODO: This is the 2nd part of this method: */
+<span class="nc bnc" id="L751" title="All 2 branches missed.">            if (ns instanceof UmlPackage) {</span>
+<span class="nc" id="L752">                results.addAll(modelImpl.getFacade().getImportedElements(ns));</span>
+            }
+<span class="nc" id="L754">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L755">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L756">        }</span>
+<span class="nc" id="L757">    }</span>
+
+
+    public Collection&lt;ModelElement&gt; getAllContents(Object pack) {
+        // TODO: Is there anyway we can determine this size at runtime?
+<span class="nc" id="L762">        Set&lt;ModelElement&gt; results = new HashSet&lt;ModelElement&gt;(2000);</span>
+<span class="nc" id="L763">        Set&lt;ModelElement&gt; dupCheck = new HashSet&lt;ModelElement&gt;(2000);</span>
+<span class="nc" id="L764">        getAllContents(results, (ModelElement) pack, dupCheck);</span>
+<span class="nc" id="L765">        return results;</span>
+    }
+
+    /**
+     * &lt;p&gt;A helper method to make {@link #getAllContents(Object)} as efficient
+     * as possible. This is called recursively.&lt;/p&gt;
+     * &lt;p&gt;
+     * @param results a collection that will be populated with model elements
+     * @param pack the namespace to get the contents from
+     * @param dupCheck a collection of model elements that have already been
+     * checked on a previous recursive call. Checking this saves duplicating
+     * effort on already processed elements.
+     */
+    void getAllContents(
+            final Collection&lt;ModelElement&gt; results,
+            final ModelElement pack,
+            final Collection&lt;ModelElement&gt; dupCheck) {
+<span class="nc bnc" id="L782" title="All 4 branches missed.">        if (pack == null || dupCheck.contains(pack)) {</span>
+<span class="nc" id="L783">            return;</span>
+        }
+
+<span class="nc" id="L786">        dupCheck.add(pack);</span>
+
+        try {
+            /*
+             * For a Namespace:
+             * &lt;pre&gt;
+             * [2] The operation allContents results in a Set containing
+             * all ModelElements contained by the Namespace.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents
+             * where
+             *   contents = self.ownedElement -&gt; union(self.namespace, contents)
+             * &lt;/pre&gt;&lt;p&gt;
+             */
+<span class="nc bnc" id="L800" title="All 2 branches missed.">            if (pack instanceof Namespace) {</span>
+<span class="nc" id="L801">                getContents(results, pack);</span>
+            }
+
+            /*
+             * For a Classifier:
+             * &lt;pre&gt;
+             * [10] The operation allContents returns a Set containing
+             * all ModelElements contained in the Classifier together
+             * with the contents inherited from its parents.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents-&gt;union(
+             *       self.parent.allContents-&gt;select(e |
+             *            e.elementOwnership.visibility = #public or
+             *            e.elementOwnership.visibility = #protected))
+             * where parent is defined for GeneralizableElement as:
+             * [1] The operation parent returns a Set containing all direct
+             * parents
+             *   parent : Set(GeneralizableElement);
+             *   parent = self.generalization.parent
+             * &lt;/pre&gt;&lt;p&gt;
+             */
+
+            /*
+             * For a Package:
+             * &lt;pre&gt;
+             * [3]  The operation allContents results in a Set containing
+             * the ModelElements owned by or imported
+             * by the Package or one of its ancestors.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents-&gt;union(
+             *     self.parent.allContents-&gt;select(e |
+             *          e.elementOwnership.visibility = #public or
+             *          e.elementOwnership.visibility = #protected))
+             *
+             * where the required operations are defined as :
+             *
+             * [1] The operation contents results in a Set containing the
+             * ModelElements owned by or imported by the Package.
+             *   contents : Set(ModelElement)
+             *   contents = self.ownedElement-&gt;union(self.importedElement)
+             * [2] The operation allImportedElements results in a Set containing
+             * the ModelElements imported by the Package or one of its parents.
+             *   allImportedElements : Set(ModelElement)
+             *   allImportedElements = self.importedElement-&gt;union(
+             *     self.parent.oclAsType(Package).allImportedElements-&gt;select(
+             *                   re | re.elementImport.visibility = #public or
+             *                        re.elementImport.visibility = #protected))
+             * &lt;/pre&gt;
+             */
+
+<span class="nc bnc" id="L851" title="All 4 branches missed.">            if (pack instanceof Classifier || pack instanceof UmlPackage) {</span>
+<span class="nc" id="L852">                Collection&lt;GeneralizableElement&gt; parents =</span>
+<span class="nc" id="L853">                    CoreHelperMDRImpl.getParents((GeneralizableElement) pack);</span>
+                // TODO: Try reusing the same set on every recursion
+<span class="nc" id="L855">                Set&lt;ModelElement&gt; allContents = new HashSet&lt;ModelElement&gt;(2000);</span>
+<span class="nc bnc" id="L856" title="All 2 branches missed.">                for (GeneralizableElement parent : parents) {</span>
+<span class="nc" id="L857">                    getAllContents(allContents, parent, dupCheck);</span>
+<span class="nc" id="L858">                }</span>
+
+<span class="nc bnc" id="L860" title="All 2 branches missed.">                if (pack instanceof UmlPackage) {</span>
+<span class="nc" id="L861">                    getAllImportedElements(allContents, pack);</span>
+<span class="nc bnc" id="L862" title="All 2 branches missed.">                    for (GeneralizableElement parent : parents) {</span>
+<span class="nc" id="L863">                        getAllImportedElements(allContents, parent);</span>
+<span class="nc" id="L864">                    }</span>
+                }
+
+<span class="nc bnc" id="L867" title="All 2 branches missed.">                for (ModelElement element : allContents) {</span>
+<span class="nc bnc" id="L868" title="All 2 branches missed.">                    if (VisibilityKindEnum.VK_PUBLIC.equals(element</span>
+<span class="nc" id="L869">                            .getVisibility())</span>
+<span class="nc bnc" id="L870" title="All 2 branches missed.">                            || VisibilityKindEnum.VK_PROTECTED.equals(element</span>
+<span class="nc" id="L871">                                    .getVisibility())) {</span>
+<span class="nc" id="L872">                        results.add(element);</span>
+                    }
+<span class="nc" id="L874">                }</span>
+
+            }
+
+
+
+            /*
+             * For a Collaboration:
+             * &lt;pre&gt;
+             * [1 ] The operation allContents results in the set of
+             * all ModelElements contained in the Collaboration
+             * together with those contained in the parents
+             * except those that have been specialized.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents-&gt;union (
+             *                       self.parent.allContents-&gt;reject ( e |
+             *                       self.contents.name-&gt;include (e.name) ))
+             *
+             *  parent here is the GeneralizableElement definition
+             * &lt;/pre&gt;
+             */
+<span class="nc bnc" id="L895" title="All 2 branches missed.">            if (pack instanceof Collaboration) {</span>
+                // TODO: Not implemented
+<span class="nc" id="L897">                LOG.log(Level.FINE,</span>
+                        &quot;Not implemented - getAllContents for: {0}&quot;, pack);
+            }
+<span class="nc" id="L900">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L901">            throw new InvalidElementException(e);</span>
+<span class="nc" id="L902">        }</span>
+<span class="nc" id="L903">    }</span>
+
+    public boolean isReadOnly(Object element) {
+        try {
+<span class="nc" id="L907">            RefPackage extent = ((RefObject) element).refOutermostPackage();</span>
+<span class="nc" id="L908">            return modelImpl.isReadOnly(extent);</span>
+<span class="nc" id="L909">        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L910">            throw new InvalidElementException(e);</span>
+        }
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

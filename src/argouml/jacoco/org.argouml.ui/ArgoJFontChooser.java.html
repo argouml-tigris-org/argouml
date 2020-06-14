@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoJFontChooser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.ui</a> &gt; <span class="el_source">ArgoJFontChooser.java</span></div><h1>ArgoJFontChooser.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.ui;
+
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import org.argouml.i18n.Translator;
+
+/**
+ * A font chooser dialog for selecting font family, size and style.
+ *
+ * @author Aleksandar
+ */
+public class ArgoJFontChooser extends JDialog {
+
+<span class="nc" id="L72">    private JPanel jContentPane = null;</span>
+
+<span class="nc" id="L74">    private JList jlstFamilies = null;</span>
+
+<span class="nc" id="L76">    private JList jlstSizes = null;</span>
+
+//    private JCheckBox jchbBold = null;
+
+//    private JCheckBox jchbItalic = null;
+
+<span class="nc" id="L82">    private JLabel jlblFamilies = null;</span>
+
+<span class="nc" id="L84">    private JLabel jlblSize = null;</span>
+
+<span class="nc" id="L86">    private JLabel jlblPreview = null;</span>
+
+<span class="nc" id="L88">    private JButton jbtnOk = null;</span>
+
+<span class="nc" id="L90">    private JButton jbtnCancel = null;</span>
+
+    private int resultSize;
+
+    private String resultName;
+
+<span class="nc" id="L96">    private boolean isOk = false;</span>
+
+    /**
+     * @param owner the &lt;code&gt;Frame&lt;/code&gt; from which the dialog is displayed
+     * @param parent determines the position of the chooser
+     * @param name the initial font name value
+     * @param size the initial font size value
+     */
+    public ArgoJFontChooser(Frame owner, JComponent parent, String name,
+            int size) {
+<span class="nc" id="L106">        super(owner, true);</span>
+<span class="nc" id="L107">        setLocationRelativeTo(parent);</span>
+
+<span class="nc" id="L109">        this.resultName = name;</span>
+<span class="nc" id="L110">        this.resultSize = size;</span>
+
+<span class="nc" id="L112">        initialize();</span>
+<span class="nc" id="L113">    }</span>
+
+    /**
+     * This method initializes this
+     */
+    private void initialize() {
+<span class="nc" id="L119">        this.setSize(299, 400);</span>
+<span class="nc" id="L120">        this.setTitle(Translator.localize(&quot;dialog.fontchooser&quot;));</span>
+<span class="nc" id="L121">        this.setContentPane(getJContentPane());</span>
+
+<span class="nc" id="L123">        updatePreview();</span>
+<span class="nc" id="L124">    }</span>
+
+    /**
+     * This method initializes jContentPane
+     *
+     * @return javax.swing.JPanel
+     */
+    private JPanel getJContentPane() {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (jContentPane == null) {</span>
+<span class="nc" id="L133">            GridBagConstraints gridBagConstraints8 = new GridBagConstraints();</span>
+<span class="nc" id="L134">            gridBagConstraints8.gridx = 4;</span>
+<span class="nc" id="L135">            gridBagConstraints8.anchor = GridBagConstraints.NORTHEAST;</span>
+<span class="nc" id="L136">            gridBagConstraints8.insets = new Insets(0, 0, 5, 5);</span>
+<span class="nc" id="L137">            gridBagConstraints8.weightx = 0.0;</span>
+<span class="nc" id="L138">            gridBagConstraints8.ipadx = 0;</span>
+<span class="nc" id="L139">            gridBagConstraints8.gridy = 5;</span>
+<span class="nc" id="L140">            GridBagConstraints gridBagConstraints7 = new GridBagConstraints();</span>
+<span class="nc" id="L141">            gridBagConstraints7.gridx = 3;</span>
+<span class="nc" id="L142">            gridBagConstraints7.fill = GridBagConstraints.NONE;</span>
+<span class="nc" id="L143">            gridBagConstraints7.weightx = 1.0;</span>
+<span class="nc" id="L144">            gridBagConstraints7.anchor = GridBagConstraints.NORTHEAST;</span>
+<span class="nc" id="L145">            gridBagConstraints7.insets = new Insets(0, 0, 5, 5);</span>
+<span class="nc" id="L146">            gridBagConstraints7.weighty = 0.0;</span>
+<span class="nc" id="L147">            gridBagConstraints7.gridwidth = 1;</span>
+<span class="nc" id="L148">            gridBagConstraints7.ipadx = 0;</span>
+<span class="nc" id="L149">            gridBagConstraints7.gridy = 5;</span>
+<span class="nc" id="L150">            GridBagConstraints gridBagConstraints6 = new GridBagConstraints();</span>
+<span class="nc" id="L151">            gridBagConstraints6.gridx = 0;</span>
+<span class="nc" id="L152">            gridBagConstraints6.gridwidth = 5;</span>
+<span class="nc" id="L153">            gridBagConstraints6.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L154">            gridBagConstraints6.weightx = 1.0;</span>
+<span class="nc" id="L155">            gridBagConstraints6.insets = new Insets(5, 5, 5, 5);</span>
+<span class="nc" id="L156">            gridBagConstraints6.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc" id="L157">            gridBagConstraints6.gridy = 4;</span>
+<span class="nc" id="L158">            jlblPreview = new JLabel();</span>
+<span class="nc" id="L159">            jlblPreview.setText(Translator</span>
+<span class="nc" id="L160">                    .localize(&quot;label.diagramappearance.preview&quot;));</span>
+<span class="nc" id="L161">            jlblPreview.setPreferredSize(new Dimension(52, 50));</span>
+<span class="nc" id="L162">            GridBagConstraints gridBagConstraints5 = new GridBagConstraints();</span>
+<span class="nc" id="L163">            gridBagConstraints5.gridx = 4;</span>
+<span class="nc" id="L164">            gridBagConstraints5.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc" id="L165">            gridBagConstraints5.insets = new Insets(5, 5, 0, 0);</span>
+<span class="nc" id="L166">            gridBagConstraints5.gridy = 0;</span>
+<span class="nc" id="L167">            jlblSize = new JLabel();</span>
+<span class="nc" id="L168">            jlblSize.setText(Translator</span>
+<span class="nc" id="L169">                    .localize(&quot;label.diagramappearance.fontsize&quot;));</span>
+<span class="nc" id="L170">            GridBagConstraints gridBagConstraints4 = new GridBagConstraints();</span>
+<span class="nc" id="L171">            gridBagConstraints4.gridx = 0;</span>
+<span class="nc" id="L172">            gridBagConstraints4.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc" id="L173">            gridBagConstraints4.insets = new Insets(5, 5, 0, 0);</span>
+<span class="nc" id="L174">            gridBagConstraints4.gridy = 0;</span>
+<span class="nc" id="L175">            jlblFamilies = new JLabel();</span>
+<span class="nc" id="L176">            jlblFamilies.setText(Translator</span>
+<span class="nc" id="L177">                    .localize(&quot;label.diagramappearance.fontlist&quot;));</span>
+//            GridBagConstraints gridBagConstraints3 = new GridBagConstraints();
+//            gridBagConstraints3.gridx = 2;
+//            gridBagConstraints3.anchor = GridBagConstraints.NORTHWEST;
+//            gridBagConstraints3.insets = new Insets(5, 5, 0, 0);
+//            gridBagConstraints3.gridy = 3;
+//            GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
+//            gridBagConstraints2.gridx = 0;
+//            gridBagConstraints2.anchor = GridBagConstraints.NORTHWEST;
+//            gridBagConstraints2.insets = new Insets(5, 5, 0, 0);
+//            gridBagConstraints2.gridy = 3;
+<span class="nc" id="L188">            GridBagConstraints gridBagConstraints1 = new GridBagConstraints();</span>
+<span class="nc" id="L189">            gridBagConstraints1.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L190">            gridBagConstraints1.gridy = 2;</span>
+<span class="nc" id="L191">            gridBagConstraints1.weightx = 0.0;</span>
+<span class="nc" id="L192">            gridBagConstraints1.weighty = 1.0;</span>
+<span class="nc" id="L193">            gridBagConstraints1.insets = new Insets(5, 0, 0, 5);</span>
+<span class="nc" id="L194">            gridBagConstraints1.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc" id="L195">            gridBagConstraints1.gridwidth = 2;</span>
+<span class="nc" id="L196">            gridBagConstraints1.gridx = 4;</span>
+<span class="nc" id="L197">            GridBagConstraints gridBagConstraints = new GridBagConstraints();</span>
+<span class="nc" id="L198">            gridBagConstraints.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L199">            gridBagConstraints.gridy = 2;</span>
+<span class="nc" id="L200">            gridBagConstraints.weightx = 1.0;</span>
+<span class="nc" id="L201">            gridBagConstraints.weighty = 1.0;</span>
+<span class="nc" id="L202">            gridBagConstraints.insets = new Insets(5, 5, 0, 5);</span>
+<span class="nc" id="L203">            gridBagConstraints.gridwidth = 4;</span>
+<span class="nc" id="L204">            gridBagConstraints.gridheight = 1;</span>
+<span class="nc" id="L205">            gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc" id="L206">            gridBagConstraints.gridx = 0;</span>
+<span class="nc" id="L207">            jContentPane = new JPanel();</span>
+<span class="nc" id="L208">            jContentPane.setLayout(new GridBagLayout());</span>
+
+            // Initialize font faces list
+<span class="nc" id="L211">            JScrollPane jscpFamilies = new JScrollPane();</span>
+<span class="nc" id="L212">            jscpFamilies.setViewportView(getJlstFamilies());</span>
+<span class="nc" id="L213">            getJlstFamilies().setSelectedValue(resultName, true);</span>
+
+            // Initialize font sizes list
+<span class="nc" id="L216">            JScrollPane jscpSizes = new JScrollPane();</span>
+<span class="nc" id="L217">            jscpSizes.setViewportView(getJlstSizes());</span>
+<span class="nc" id="L218">            getJlstSizes().setSelectedValue(resultSize, true);</span>
+
+<span class="nc" id="L220">            jContentPane.add(jscpFamilies, gridBagConstraints);</span>
+<span class="nc" id="L221">            jContentPane.add(jscpSizes, gridBagConstraints1);</span>
+//            jContentPane.add(getJchbBold(), gridBagConstraints2);
+//            jContentPane.add(getJchbItalic(), gridBagConstraints3);
+<span class="nc" id="L224">            jContentPane.add(jlblFamilies, gridBagConstraints4);</span>
+<span class="nc" id="L225">            jContentPane.add(jlblSize, gridBagConstraints5);</span>
+<span class="nc" id="L226">            jContentPane.add(jlblPreview, gridBagConstraints6);</span>
+<span class="nc" id="L227">            jContentPane.add(getJbtnOk(), gridBagConstraints7);</span>
+<span class="nc" id="L228">            jContentPane.add(getJbtnCancel(), gridBagConstraints8);</span>
+        }
+<span class="nc" id="L230">        return jContentPane;</span>
+    }
+
+    /**
+     * This method initializes jlstFamilies
+     *
+     * @return javax.swing.JList
+     */
+    private JList getJlstFamilies() {
+<span class="nc bnc" id="L239" title="All 2 branches missed.">        if (jlstFamilies == null) {</span>
+<span class="nc" id="L240">            jlstFamilies = new JList();</span>
+<span class="nc" id="L241">            jlstFamilies.setModel(new DefaultListModel());</span>
+
+            String[] fontNames = GraphicsEnvironment
+<span class="nc" id="L244">                    .getLocalGraphicsEnvironment()</span>
+<span class="nc" id="L245">                    .getAvailableFontFamilyNames();</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            for (String fontName : fontNames) {</span>
+<span class="nc" id="L247">                ((DefaultListModel) jlstFamilies.getModel())</span>
+<span class="nc" id="L248">                        .addElement(fontName);</span>
+            }
+
+<span class="nc" id="L251">            jlstFamilies.getSelectionModel().addListSelectionListener(</span>
+<span class="nc" id="L252">                    new ListSelectionListener() {</span>
+                        public void valueChanged(ListSelectionEvent e) {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">                            if (jlstFamilies.getSelectedValue() != null) {</span>
+<span class="nc" id="L255">                                resultName = (String) jlstFamilies</span>
+<span class="nc" id="L256">                                        .getSelectedValue();</span>
+<span class="nc" id="L257">                                updatePreview();</span>
+                            }
+<span class="nc" id="L259">                        }</span>
+                    });
+        }
+<span class="nc" id="L262">        return jlstFamilies;</span>
+    }
+
+    /**
+     * This method initializes jlstSizes
+     *
+     * @return javax.swing.JList
+     */
+    private JList getJlstSizes() {
+<span class="nc bnc" id="L271" title="All 2 branches missed.">        if (jlstSizes == null) {</span>
+<span class="nc" id="L272">            jlstSizes = new JList(new Integer[] {Integer.valueOf(8),</span>
+<span class="nc" id="L273">                Integer.valueOf(9), Integer.valueOf(10), Integer.valueOf(11),</span>
+<span class="nc" id="L274">                Integer.valueOf(12), Integer.valueOf(14), Integer.valueOf(16),</span>
+<span class="nc" id="L275">                Integer.valueOf(18), Integer.valueOf(20), Integer.valueOf(22),</span>
+<span class="nc" id="L276">                Integer.valueOf(24), Integer.valueOf(26), Integer.valueOf(28),</span>
+<span class="nc" id="L277">                Integer.valueOf(36), Integer.valueOf(48), Integer.valueOf(72)</span>
+            });
+
+<span class="nc" id="L280">            jlstSizes.getSelectionModel().addListSelectionListener(</span>
+<span class="nc" id="L281">                    new ListSelectionListener() {</span>
+                        public void valueChanged(ListSelectionEvent e) {
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                            if (jlstSizes.getSelectedValue() != null) {</span>
+<span class="nc" id="L284">                                resultSize = (Integer) jlstSizes</span>
+<span class="nc" id="L285">                                        .getSelectedValue();</span>
+<span class="nc" id="L286">                                updatePreview();</span>
+                            }
+<span class="nc" id="L288">                        }</span>
+                    });
+        }
+<span class="nc" id="L291">        return jlstSizes;</span>
+    }
+
+
+    /**
+     * Updates preview label.
+     */
+    private void updatePreview() {
+<span class="nc" id="L299">        int style = 0;</span>
+
+<span class="nc" id="L301">        Font previewFont = new Font(resultName, style, resultSize);</span>
+<span class="nc" id="L302">        jlblPreview.setFont(previewFont);</span>
+<span class="nc" id="L303">    }</span>
+
+    /**
+     * This method initializes jbtnOk
+     *
+     * @return javax.swing.JButton
+     */
+    private JButton getJbtnOk() {
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (jbtnOk == null) {</span>
+<span class="nc" id="L312">            jbtnOk = new JButton();</span>
+<span class="nc" id="L313">            jbtnOk.setText(Translator.localize(&quot;button.ok&quot;));</span>
+
+<span class="nc" id="L315">            jbtnOk.addActionListener(new ActionListener() {</span>
+                public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L317">                    isOk = true;</span>
+<span class="nc" id="L318">                    dispose();</span>
+<span class="nc" id="L319">                    setVisible(false);</span>
+<span class="nc" id="L320">                }</span>
+            });
+        }
+<span class="nc" id="L323">        return jbtnOk;</span>
+    }
+
+    /**
+     * This method initializes jbtnCancel
+     *
+     * @return javax.swing.JButton
+     */
+    private JButton getJbtnCancel() {
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        if (jbtnCancel == null) {</span>
+<span class="nc" id="L333">            jbtnCancel = new JButton();</span>
+<span class="nc" id="L334">            jbtnCancel.setText(Translator.localize(&quot;button.cancel&quot;));</span>
+
+<span class="nc" id="L336">            jbtnCancel.addActionListener(new ActionListener() {</span>
+                public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L338">                    isOk = false;</span>
+<span class="nc" id="L339">                    dispose();</span>
+<span class="nc" id="L340">                    setVisible(false);</span>
+<span class="nc" id="L341">                }</span>
+            });
+        }
+<span class="nc" id="L344">        return jbtnCancel;</span>
+    }
+
+    /**
+     * Returns true if dialog result is OK.
+     *
+     * @return dialog result
+     */
+    public boolean isOk() {
+<span class="nc" id="L353">        return isOk;</span>
+    }
+
+    /**
+     * Result.
+     *
+     * @return result
+     */
+    public String getResultName() {
+<span class="nc" id="L362">        return resultName;</span>
+    }
+
+    /**
+     * Result.
+     *
+     * @return result
+     */
+    public int getResultSize() {
+<span class="nc" id="L371">        return resultSize;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

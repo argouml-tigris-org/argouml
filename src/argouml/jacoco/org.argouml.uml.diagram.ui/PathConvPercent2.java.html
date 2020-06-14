@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathConvPercent2.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">PathConvPercent2.java</span></div><h1>PathConvPercent2.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Point;
+
+import org.tigris.gef.base.PathConv;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * Used to place labels as specific positions along a FigEdge. For example, a
+ * label can be placed in the middle of a FigEdge by using 50%. This version
+ * changes the behavior as it tries to avoid that the itemFig cuts through the
+ * pathFig.
+ *
+ * @author abonner@ics.uci.edu
+ */
+public class PathConvPercent2 extends PathConv {
+
+    /**
+     * The item Fig.
+     */
+    private Fig itemFig;
+
+    /**
+     * The percent.
+     */
+    private int percent;
+
+    /**
+     * The offset.
+     */
+    private int offset;
+
+    /**
+     * Constructor.
+     *
+     * @param theFig The Fig.
+     * @param theItemFig The item Fig.
+     * @param newPercent The percent.
+     * @param newOffset The offset.
+     */
+    public PathConvPercent2(Fig theFig, Fig theItemFig, int newPercent,
+            int newOffset) {
+<span class="nc" id="L81">        super(theFig);</span>
+<span class="nc" id="L82">        itemFig = theItemFig;</span>
+<span class="nc" id="L83">        setPercentOffset(newPercent, newOffset);</span>
+<span class="nc" id="L84">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.PathConv#stuffPoint(java.awt.Point)
+     */
+    public void stuffPoint(Point res) {
+<span class="nc" id="L90">        int figLength = _pathFigure.getPerimeterLength();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (figLength &lt; 10) {</span>
+<span class="nc" id="L92">            res.setLocation(_pathFigure.getCenter());</span>
+<span class="nc" id="L93">            return;</span>
+        }
+<span class="nc" id="L95">        int pointToGet = (figLength * percent) / 100;</span>
+
+<span class="nc" id="L97">        _pathFigure.stuffPointAlongPerimeter(pointToGet, res);</span>
+
+<span class="nc" id="L99">        applyOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),</span>
+<span class="nc" id="L100">                _pathFigure.pointAlongPerimeter(pointToGet - 5), offset, res);</span>
+<span class="nc" id="L101">    }</span>
+
+    /**
+     * Set the percent and offset again.
+     *
+     * @param newPercent The new percent.
+     * @param newOffset The new offset.
+     */
+    public void setPercentOffset(int newPercent, int newOffset) {
+<span class="nc" id="L110">        percent = newPercent;</span>
+<span class="nc" id="L111">        offset = newOffset;</span>
+<span class="nc" id="L112">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.PathConv#setClosestPoint(java.awt.Point)
+     */
+    public void setClosestPoint(Point newPoint) {
+<span class="nc" id="L118">    }</span>
+
+    /*
+     * @see org.tigris.gef.base.PathConv#applyOffsetAmount(java.awt.Point, java.awt.Point, int, java.awt.Point)
+     */
+    protected void applyOffsetAmount(
+            Point p1, Point p2,
+            int theOffset, Point res) {
+        // slope of the line we're finding the normal to
+        // is slope, and the normal is the negative reciprocal
+        // slope is (p1.y - p2.y) / (p1.x - p2.x)
+        // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
+<span class="nc" id="L130">        int recipnumerator = (p1.x - p2.x) * -1;</span>
+<span class="nc" id="L131">        int recipdenominator = (p1.y - p2.y);</span>
+
+<span class="nc bnc" id="L133" title="All 4 branches missed.">        if (recipdenominator == 0 &amp;&amp; recipnumerator == 0) {</span>
+<span class="nc" id="L134">            return;</span>
+        }
+
+
+        // find the point offset on the line that gives a
+        // correct offset
+
+<span class="nc" id="L141">        double len =</span>
+<span class="nc" id="L142">            Math.sqrt(recipnumerator * recipnumerator</span>
+                + recipdenominator * recipdenominator);
+<span class="nc" id="L144">        int dx = (int) ((recipdenominator * theOffset) / len);</span>
+<span class="nc" id="L145">        int dy = (int) ((recipnumerator * theOffset) / len);</span>
+
+<span class="nc" id="L147">        res.x += Math.abs(dx);</span>
+<span class="nc" id="L148">        res.y -= Math.abs(dy);</span>
+
+<span class="nc" id="L150">        int width = itemFig.getWidth() / 2;</span>
+
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (recipnumerator != 0) {</span>
+<span class="nc" id="L153">            double slope = (double) recipdenominator / (double) recipnumerator;</span>
+
+<span class="nc" id="L155">            double factor = tanh(slope);</span>
+<span class="nc" id="L156">            res.x += (Math.abs(factor) * width);</span>
+<span class="nc" id="L157">        } else {</span>
+<span class="nc" id="L158">            res.x += width;</span>
+        }
+<span class="nc" id="L160">    }</span>
+
+    /**
+     * Calculate the tangens hyperbolicus.
+     *
+     * @param x The argument.
+     * @return tangens hyberbolicus
+     */
+    private double tanh(double x) {
+<span class="nc" id="L169">        return ((Math.exp(x) - Math.exp(-x)) / 2)</span>
+<span class="nc" id="L170">            / ((Math.exp(x) + Math.exp(-x)) / 2);</span>
+    }
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8079350336685789199L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

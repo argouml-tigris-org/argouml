@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OSXAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.util.osdep</a> &gt; <span class="el_source">OSXAdapter.java</span></div><h1>OSXAdapter.java</h1><pre class="source lang-java linenums">/* CHECKSTYLE:OFF - imported code
+
+File: OSXAdapter.java
+
+Abstract: Hooks existing preferences/about/quit functionality from an
+    existing Java app into handlers for the Mac OS X application menu.
+    Uses a Proxy object to dynamically implement the
+    com.apple.eawt.ApplicationListener interface and register it with the
+    com.apple.eawt.Application object.  This allows the complete project
+    to be both built and run on any platform without any stubs or
+    placeholders. Useful for developers looking to implement Mac OS X
+    features while supporting multiple platforms with minimal impact.
+
+Version: 2.0
+
+Disclaimer: IMPORTANT:  This Apple software is supplied to you by
+Apple Inc. (&quot;Apple&quot;) in consideration of your agreement to the
+following terms, and your use, installation, modification or
+redistribution of this Apple software constitutes acceptance of these
+terms.  If you do not agree with these terms, please do not use,
+install, modify or redistribute this Apple software.
+
+In consideration of your agreement to abide by the following terms, and
+subject to these terms, Apple grants you a personal, non-exclusive
+license, under Apple's copyrights in this original Apple software (the
+&quot;Apple Software&quot;), to use, reproduce, modify and redistribute the Apple
+Software, with or without modifications, in source and/or binary forms;
+provided that if you redistribute the Apple Software in its entirety and
+without modifications, you must retain this notice and the following
+text and disclaimers in all such redistributions of the Apple Software.
+Neither the name, trademarks, service marks or logos of Apple Inc.
+may be used to endorse or promote products derived from the Apple
+Software without specific prior written permission from Apple.  Except
+as expressly stated in this notice, no other rights or licenses, express
+or implied, are granted by Apple herein, including but not limited to
+any patent rights that may be infringed by your derivative works or by
+other works in which the Apple Software may be incorporated.
+
+The Apple Software is provided by Apple on an &quot;AS IS&quot; basis.  APPLE
+MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
+THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
+FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
+OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+
+IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
+OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
+MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
+AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
+STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+Copyright © 2003-2007 Apple, Inc., All Rights Reserved
+
+*/
+
+package org.argouml.util.osdep;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Hooks existing preferences/about/quit functionality from an existing Java app
+ * into handlers for the Mac OS X application menu. Uses a Proxy object to
+ * dynamically implement the com.apple.eawt.ApplicationListener interface and
+ * register it with the com.apple.eawt.Application object. This allows the
+ * complete project to be both built and run on any platform without any stubs
+ * or placeholders. Useful for developers looking to implement Mac OS X features
+ * while supporting multiple platforms with minimal impact.&lt;p&gt;
+ *
+ * Modified by Tom Morris for ArgoUML as follows:
+ * - changed package
+ * - added Javadoc
+ * - disabled checkstyle warnings
+ * - switched error logging to use log4j instead of println
+ *
+ * @author Apple, Inc.
+ * @version 2.0
+ */
+public class OSXAdapter implements InvocationHandler {
+
+<span class="nc" id="L87">    private static final Logger LOG =</span>
+<span class="nc" id="L88">        Logger.getLogger(OSXAdapter.class.getName());</span>
+
+    protected Object targetObject;
+    protected Method targetMethod;
+    protected String proxySignature;
+
+    static Object macOSXApplication;
+
+    /**
+     * Pass this method an Object and Method equipped to perform application
+     * shutdown logic The method passed should return a boolean stating whether
+     * or not the quit should occur
+     *
+     * @param target object containing the method
+     * @param quitHandler method to handle quit
+     */
+    public static void setQuitHandler(Object target, Method quitHandler) {
+<span class="nc" id="L105">        setHandler(new OSXAdapter(&quot;handleQuit&quot;, target, quitHandler));</span>
+<span class="nc" id="L106">    }</span>
+
+    /**
+     * Set handler for About action. It will be called when the About menu item
+     * is selected from the application menu.
+     *
+     * @param target object containing the method
+     * @param aboutHandler method to invoke to handle About menu item
+     */
+    public static void setAboutHandler(Object target, Method aboutHandler) {
+<span class="nc bnc" id="L116" title="All 4 branches missed.">        boolean enableAboutMenu = (target != null &amp;&amp; aboutHandler != null);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (enableAboutMenu) {</span>
+<span class="nc" id="L118">            setHandler(new OSXAdapter(&quot;handleAbout&quot;, target, aboutHandler));</span>
+        }
+        // If we're setting a handler, enable the About menu item by calling
+        // com.apple.eawt.Application reflectively
+        try {
+<span class="nc" id="L123">            Method enableAboutMethod = macOSXApplication.getClass().getDeclaredMethod(&quot;setEnabledAboutMenu&quot;, new Class[] { boolean.class });</span>
+<span class="nc" id="L124">            enableAboutMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enableAboutMenu) });</span>
+<span class="nc" id="L125">        } catch (Exception ex) {</span>
+<span class="nc" id="L126">            LOG.log(Level.SEVERE,</span>
+                    &quot;OSXAdapter could not access the About Menu&quot;,
+                    ex);
+<span class="nc" id="L129">        }</span>
+<span class="nc" id="L130">    }</span>
+
+    /**
+     * Set handler for Mac preferences item. It will be called when the
+     * Preferences menu item is selected from the application menu.
+     *
+     * @param target object containing the method
+     * @param prefsHandler method to handle preferences action
+     */
+    public static void setPreferencesHandler(Object target, Method prefsHandler) {
+<span class="nc bnc" id="L140" title="All 4 branches missed.">        boolean enablePrefsMenu = (target != null &amp;&amp; prefsHandler != null);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (enablePrefsMenu) {</span>
+<span class="nc" id="L142">            setHandler(new OSXAdapter(&quot;handlePreferences&quot;, target, prefsHandler));</span>
+        }
+        // If we're setting a handler, enable the Preferences menu item by calling
+        // com.apple.eawt.Application reflectively
+        try {
+<span class="nc" id="L147">            Method enablePrefsMethod = macOSXApplication.getClass().getDeclaredMethod(&quot;setEnabledPreferencesMenu&quot;, new Class[] { boolean.class });</span>
+<span class="nc" id="L148">            enablePrefsMethod.invoke(macOSXApplication, new Object[] { Boolean.valueOf(enablePrefsMenu) });</span>
+<span class="nc" id="L149">        } catch (Exception ex) {</span>
+<span class="nc" id="L150">            LOG.log(Level.SEVERE, &quot;OSXAdapter could not access the About Menu&quot;);</span>
+<span class="nc" id="L151">            ex.printStackTrace();</span>
+<span class="nc" id="L152">        }</span>
+<span class="nc" id="L153">    }</span>
+
+
+    /**
+     * Pass this method an Object and a Method equipped to handle document
+     * events from the Finder Documents are registered with the Finder via the
+     * CFBundleDocumentTypes dictionary in the application bundle's Info.plist
+     *
+     * @param target object containing method
+     * @param fileHandler method to invoke to open a new file
+     */
+    public static void setFileHandler(Object target, Method fileHandler) {
+<span class="nc" id="L165">        setHandler(new OSXAdapter(&quot;handleOpenFile&quot;, target, fileHandler) {</span>
+            // Override OSXAdapter.callTarget to send information on the
+            // file to be opened
+            public boolean callTarget(Object appleEvent) {
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                if (appleEvent != null) {</span>
+                    try {
+<span class="nc" id="L171">                        Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod(&quot;getFilename&quot;, (Class[])null);</span>
+<span class="nc" id="L172">                        String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[])null);</span>
+<span class="nc" id="L173">                        this.targetMethod.invoke(this.targetObject, new Object[] { filename });</span>
+<span class="nc" id="L174">                    } catch (Exception ex) {</span>
+
+<span class="nc" id="L176">                    }</span>
+                }
+<span class="nc" id="L178">                return true;</span>
+            }
+        });
+<span class="nc" id="L181">    }</span>
+
+    /**
+     * Creates a Proxy object from the passed OSXAdapter and adds it as an
+     * ApplicationListener
+     *
+     * @param adapter an instance of this class
+     */
+    public static void setHandler(OSXAdapter adapter) {
+        try {
+<span class="nc" id="L191">            Class applicationClass = Class.forName(&quot;com.apple.eawt.Application&quot;);</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (macOSXApplication == null) {</span>
+<span class="nc" id="L193">                macOSXApplication = applicationClass.getConstructor((Class[])null).newInstance((Object[])null);</span>
+            }
+<span class="nc" id="L195">            Class applicationListenerClass = Class.forName(&quot;com.apple.eawt.ApplicationListener&quot;);</span>
+<span class="nc" id="L196">            Method addListenerMethod = applicationClass.getDeclaredMethod(&quot;addApplicationListener&quot;, new Class[] { applicationListenerClass });</span>
+            // Create a proxy object around this handler that can be reflectively added as an Apple ApplicationListener
+<span class="nc" id="L198">            Object osxAdapterProxy = Proxy.newProxyInstance(OSXAdapter.class.getClassLoader(), new Class[] { applicationListenerClass }, adapter);</span>
+<span class="nc" id="L199">            addListenerMethod.invoke(macOSXApplication, new Object[] { osxAdapterProxy });</span>
+<span class="nc" id="L200">        } catch (ClassNotFoundException cnfe) {</span>
+<span class="nc" id="L201">            LOG.log(Level.SEVERE,</span>
+                    &quot;This version of Mac OS X does not support the Apple EAWT. &quot;
+                    + &quot; ApplicationEvent handling has been disabled (&quot;
+                    + cnfe + &quot;)&quot;);
+<span class="nc" id="L205">        } catch (Exception ex) {  // Likely a NoSuchMethodException or an IllegalAccessException loading/invoking eawt.Application methods</span>
+<span class="nc" id="L206">            LOG.log(Level.SEVERE, &quot;Mac OS X Adapter could not talk to EAWT:&quot;);</span>
+<span class="nc" id="L207">            ex.printStackTrace();</span>
+<span class="nc" id="L208">        }</span>
+<span class="nc" id="L209">    }</span>
+
+    /**
+     * Each OSXAdapter has the name of the EAWT method it intends to listen for
+     * (handleAbout, for example), the Object that will ultimately perform the
+     * task, and the Method to be called on that Object
+     *
+     * @param proxySignature
+     * @param target
+     * @param handler
+     */
+<span class="nc" id="L220">    protected OSXAdapter(String proxySignature, Object target, Method handler) {</span>
+<span class="nc" id="L221">        this.proxySignature = proxySignature;</span>
+<span class="nc" id="L222">        this.targetObject = target;</span>
+<span class="nc" id="L223">        this.targetMethod = handler;</span>
+<span class="nc" id="L224">    }</span>
+
+
+    /**
+     * Override this method to perform any operations on the event that comes
+     * with the various callbacks. See setFileHandler above for an example
+     *
+     * @param appleEvent the AppleEvent
+     * @return boolean result of method invocation
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
+    public boolean callTarget(Object appleEvent)
+        throws InvocationTargetException, IllegalAccessException {
+<span class="nc" id="L238">        Object result = targetMethod.invoke(targetObject, (Object[])null);</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">        if (result == null) {</span>
+<span class="nc" id="L240">            return true;</span>
+        }
+<span class="nc" id="L242">        return Boolean.valueOf(result.toString()).booleanValue();</span>
+    }
+
+    /**
+     * InvocationHandler implementation This is the entry point for our proxy
+     * object; it is called every time an ApplicationListener method is invoked
+     *
+     * @param proxy
+     * @param method
+     * @param args
+     * @return null
+     * @throws Throwable
+     * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object,
+     *      java.lang.reflect.Method, java.lang.Object[])
+     */
+    public Object invoke (Object proxy, Method method, Object[] args) throws Throwable {
+<span class="nc bnc" id="L258" title="All 2 branches missed.">        if (isCorrectMethod(method, args)) {</span>
+<span class="nc" id="L259">            boolean handled = callTarget(args[0]);</span>
+<span class="nc" id="L260">            setApplicationEventHandled(args[0], handled);</span>
+        }
+        // All of the ApplicationListener methods are void; return null regardless of what happens
+<span class="nc" id="L263">        return null;</span>
+    }
+
+    /**
+     * Compare the method that was called to the intended method when the
+     * OSXAdapter instance was created (e.g. handleAbout, handleQuit,
+     * handleOpenFile, etc.)
+     *
+     * @param method method to be invoked
+     * @param args argumnets
+     * @return a boolean result of the method invocation
+     */
+    protected boolean isCorrectMethod(Method method, Object[] args) {
+<span class="nc bnc" id="L276" title="All 6 branches missed.">        return (targetMethod != null &amp;&amp; proxySignature.equals(method.getName()) &amp;&amp; args.length == 1);</span>
+    }
+
+    /**
+     * It is important to mark the ApplicationEvent as handled and cancel the
+     * default behavior This method checks for a boolean result from the proxy
+     * method and sets the event accordingly
+     *
+     * @param event
+     * @param handled
+     */
+    protected void setApplicationEventHandled(Object event, boolean handled) {
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (event != null) {</span>
+            try {
+<span class="nc" id="L290">                Method setHandledMethod = event.getClass().getDeclaredMethod(&quot;setHandled&quot;, new Class[] { boolean.class });</span>
+                // If the target method returns a boolean, use that as a hint
+<span class="nc" id="L292">                setHandledMethod.invoke(event, new Object[] { Boolean.valueOf(handled) });</span>
+<span class="nc" id="L293">            } catch (Exception ex) {</span>
+<span class="nc" id="L294">                LOG.log(Level.SEVERE,</span>
+                        &quot;OSXAdapter was unable to handle an ApplicationEvent: &quot;
+                        + event, ex);
+<span class="nc" id="L297">            }</span>
+        }
+<span class="nc" id="L299">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

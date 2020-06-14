@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLMutableGraphSupport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram</a> &gt; <span class="el_source">UMLMutableGraphSupport.java</span></div><h1>UMLMutableGraphSupport.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.kernel.Project;
+import org.argouml.model.DiDiagram;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.uml.CommentEdge;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
+import org.tigris.gef.graph.MutableGraphSupport;
+
+
+/**
+ * UMLMutableGraphSupport is a helper class which extends
+ * MutableGraphSupport to provide additional helper and common methods
+ * for UML Diagrams.
+ *
+ * @author mkl@tigris.org
+ * @since November 14, 2002, 10:20 PM
+ */
+public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L76">    private static final Logger LOG =</span>
+<span class="fc" id="L77">        Logger.getLogger(UMLMutableGraphSupport.class.getName());</span>
+
+    private DiDiagram diDiagram;
+
+    /**
+     * Contains all the nodes in the graphmodel/diagram.
+     */
+<span class="fc" id="L84">    private List nodes = new ArrayList();</span>
+
+    /**
+     * Contains all the edges in the graphmodel/diagram.
+     */
+<span class="fc" id="L89">    private List edges = new ArrayList();</span>
+
+    /**
+     * The owning namespace or &quot;home model&quot; of this diagram, not all
+     * ModelElements in this graph are in the home model, but if they are added
+     * and don't already have a model, they are placed in the &quot;home model&quot;.
+     * Also, elements from other models will have their FigNodes add a line to
+     * say what their model is.
+     */
+    private Object homeModel;
+
+    /**
+     * The project this graph model is in.
+     */
+    private Project project;
+
+    /**
+     * Constructor.
+     *
+     * @see org.tigris.gef.graph.MutableGraphSupport
+     */
+    public UMLMutableGraphSupport() {
+<span class="fc" id="L111">        super();</span>
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * Get all the nodes from the graphmodel/diagram.
+     *
+     * @see org.tigris.gef.graph.MutableGraphSupport#getNodes()
+     * @return List of nodes in the graphmodel/diagram
+     */
+    public List getNodes() {
+<span class="fc" id="L121">        return nodes;</span>
+    }
+
+    /**
+     * Get all the edges from the graphmodel/diagram.
+     *
+     * @return List of edges in the graphmodel/diagram
+     */
+    public List getEdges() {
+<span class="fc" id="L130">        return edges;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#containsNode(java.lang.Object)
+     */
+    public boolean containsNode(Object node) {
+<span class="fc" id="L137">	return nodes.contains(node);</span>
+    }
+
+    /**
+     * @param edge the candidate edge
+     * @return true if it is contained
+     */
+    public boolean constainsEdge(Object edge) {
+<span class="nc" id="L145">	return edges.contains(edge);</span>
+    }
+
+    /**
+     * Remove a node from the diagram and notify GEF.
+     *
+     * @param node node to remove
+     */
+    @Override
+    public void removeNode(Object node) {
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">	if (!containsNode(node)) {</span>
+<span class="nc" id="L156">	    return;</span>
+	}
+<span class="fc" id="L158">	nodes.remove(node);</span>
+//	fireNodeRemoved(node);
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Remove an edge from the graphmodel and notify GEF.
+     *
+     * @param edge edge to remove
+     */
+    @Override
+    public void removeEdge(Object edge) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">	if (!containsEdge(edge)) {</span>
+<span class="nc" id="L170">	    return;</span>
+	}
+<span class="fc" id="L172">	edges.remove(edge);</span>
+<span class="fc" id="L173">	fireEdgeRemoved(edge);</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Assume that anything can be connected to anything unless overridden
+     * in a subclass.
+     *
+     * {@inheritDoc}
+     */
+    public boolean canConnect(Object fromP, Object toP) {
+<span class="nc" id="L183">        return true;</span>
+    }
+
+
+    /**
+     * The connect method without specifying a connection
+     * type is unavailable in the ArgoUML implmentation.
+     *
+     * {@inheritDoc}
+     */
+    public Object connect(Object fromPort, Object toPort) {
+<span class="nc" id="L194">        throw new UnsupportedOperationException(</span>
+                &quot;The connect method is not supported&quot;);
+    }
+
+    /**
+     * Get the namespace, also known as homemodel, which owns the diagram.
+     *
+     * @return the homemodel
+     */
+    public Object getHomeModel() {
+<span class="nc" id="L204">        return homeModel;</span>
+    }
+
+    /**
+     * Set the namespace or homemodel of the diagram.  This will become the
+     * default namespace for any model elements which are created on
+     * the diagram.
+     *
+     * @param ns the namespace
+     */
+    public void setHomeModel(Object ns) {
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(ns)) {</span>
+<span class="nc" id="L216">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L218">        homeModel = ns;</span>
+<span class="fc" id="L219">    }</span>
+
+    /**
+     * The connect method specifying a connection
+     * type by class is unavailable in the ArgoUML implementation.
+     * TODO: This should be unsupported. Use the 3 Object version
+     *
+     * {@inheritDoc}
+     */
+    public Object connect(Object fromPort, Object toPort, Class edgeClass) {
+<span class="nc" id="L229">        return connect(fromPort, toPort, (Object) edgeClass);</span>
+    }
+
+    /**
+     * Construct and add a new edge of the given kind and connect
+     * the given ports.
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeType  The type of edge to create. This is one of the types
+     *                  returned by the methods of
+     *                  &lt;code&gt;org.argouml.model.MetaTypes&lt;/code&gt;
+     *
+     * @return           The type of edge created (the same as
+     *                   &lt;code&gt;edgeClass&lt;/code&gt; if we succeeded,
+     *                   &lt;code&gt;null&lt;/code&gt; otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, Object edgeType) {
+        // If this was an association then there will be relevant
+        // information to fetch out of the mode arguments.  If it
+        // not an association then these will be passed forward
+        // harmlessly as null.
+<span class="nc" id="L253">        Editor curEditor = Globals.curEditor();</span>
+<span class="nc" id="L254">        ModeManager modeManager = curEditor.getModeManager();</span>
+<span class="nc" id="L255">        Mode mode = modeManager.top();</span>
+<span class="nc" id="L256">        Dictionary args = mode.getArgs();</span>
+<span class="nc" id="L257">        Object style = args.get(&quot;aggregation&quot;);</span>
+<span class="nc" id="L258">        Boolean unidirectional = (Boolean) args.get(&quot;unidirectional&quot;);</span>
+<span class="nc" id="L259">        Object model = getProject().getModel();</span>
+
+        // Create the UML connection of the given type between the
+        // given model elements.
+        // default aggregation (none)
+<span class="nc" id="L264">        Object connection =</span>
+<span class="nc" id="L265">            buildConnection(</span>
+                edgeType, fromPort, style, toPort,
+                null, unidirectional,
+                model);
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (connection == null) {</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">            if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L272">                LOG.log(Level.FINE, &quot;Cannot make a &quot; + edgeType</span>
+<span class="nc" id="L273">                        + &quot; between a &quot; + fromPort.getClass().getName()</span>
+<span class="nc" id="L274">                        + &quot; and a &quot; + toPort.getClass().getName());</span>
+            }
+<span class="nc" id="L276">            return null;</span>
+        }
+
+<span class="nc" id="L279">        addEdge(connection);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L281">            LOG.log(Level.FINE, &quot;Connection type&quot; + edgeType</span>
+<span class="nc" id="L282">                      + &quot; made between a &quot; + fromPort.getClass().getName()</span>
+<span class="nc" id="L283">                      + &quot; and a &quot; + toPort.getClass().getName());</span>
+        }
+<span class="nc" id="L285">        return connection;</span>
+    }
+
+    /**
+     * Construct and add a new edge of the given kind and connect
+     * the given ports.
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeType   An indicator of the edge type to create.
+     *
+     * @param styleAttributes key/value pairs from which to style the edge.
+     *
+     * @return           The type of edge created (the same as
+     *                   &lt;code&gt;edgeClass&lt;/code&gt; if we succeeded,
+     *                   &lt;code&gt;null&lt;/code&gt; otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, Object edgeType,
+            Map styleAttributes) {
+<span class="nc" id="L306">        return null;</span>
+    }
+
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
+    public boolean canAddNode(Object node) {
+<span class="nc bnc" id="L314" title="All 2 branches missed.">        if (node == null) {</span>
+<span class="nc" id="L315">            return false;</span>
+        }
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        if (Model.getFacade().isAComment(node)) {</span>
+<span class="nc" id="L318">            return true;</span>
+        }
+<span class="nc" id="L320">        return false;</span>
+    }
+
+    /**
+     * Return the source end of an edge.
+     *
+     * @param edge  The edge for which we want the source port.
+     *
+     * @return      The source port for the edge, or &lt;code&gt;null&lt;/code&gt; if the
+     *              edge given is of the wrong type or has no source defined.
+     */
+    public Object getSourcePort(Object edge) {
+
+<span class="nc bnc" id="L333" title="All 2 branches missed.">        if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L334">            return ((CommentEdge) edge).getSource();</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        } else if (Model.getFacade().isARelationship(edge)</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">            || Model.getFacade().isATransition(edge)</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">            || Model.getFacade().isAAssociationEnd(edge))  {</span>
+<span class="nc" id="L338">            return Model.getUmlHelper().getSource(edge);</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        } else if (Model.getFacade().isALink(edge)) {</span>
+<span class="nc" id="L340">            return Model.getCommonBehaviorHelper().getSource(edge);</span>
+        }
+
+        // Don't know what to do otherwise
+
+<span class="nc" id="L345">        LOG.log(Level.SEVERE,this.getClass().toString() + &quot;: getSourcePort(&quot;</span>
+<span class="nc" id="L346">                + edge.toString() + &quot;) - can't handle&quot;);</span>
+
+<span class="nc" id="L348">        return null;</span>
+    }
+
+
+    /**
+     * Return the destination end of an edge.
+     *
+     * @param edge  The edge for which we want the destination port.
+     *
+     * @return      The destination port for the edge, or &lt;code&gt;null&lt;/code&gt; if
+     *              the edge given is otf the wrong type or has no destination
+     *              defined.
+     */
+    public Object getDestPort(Object edge) {
+<span class="nc bnc" id="L362" title="All 2 branches missed.">        if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L363">            return ((CommentEdge) edge).getDestination();</span>
+<span class="nc bnc" id="L364" title="All 2 branches missed.">        } else if (Model.getFacade().isAAssociation(edge)) {</span>
+<span class="nc" id="L365">            List conns = new ArrayList(Model.getFacade().getConnections(edge));</span>
+<span class="nc" id="L366">            return conns.get(1);</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        } else if (Model.getFacade().isARelationship(edge)</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">                || Model.getFacade().isATransition(edge)</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">                || Model.getFacade().isAAssociationEnd(edge)) {</span>
+<span class="nc" id="L370">            return Model.getUmlHelper().getDestination(edge);</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        } else if (Model.getFacade().isALink(edge)) {</span>
+<span class="nc" id="L372">            return Model.getCommonBehaviorHelper().getDestination(edge);</span>
+        }
+
+        // Don't know what to do otherwise
+
+<span class="nc" id="L377">        LOG.log(Level.SEVERE,this.getClass().toString() + &quot;: getDestPort(&quot;</span>
+<span class="nc" id="L378">                + edge.toString() + &quot;) - can't handle&quot;);</span>
+
+<span class="nc" id="L380">        return null;</span>
+    }
+
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
+    public boolean canAddEdge(Object edge) {
+<span class="nc bnc" id="L388" title="All 2 branches missed.">        if (edge instanceof CommentEdge) {</span>
+<span class="nc" id="L389">            CommentEdge ce = (CommentEdge) edge;</span>
+<span class="nc" id="L390">            return isConnectionValid(CommentEdge.class,</span>
+<span class="nc" id="L391">                    ce.getSource(),</span>
+<span class="nc" id="L392">                    ce.getDestination());</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">        } else if (edge != null</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">                &amp;&amp; Model.getUmlFactory().isConnectionType(edge)) {</span>
+<span class="nc" id="L395">            return isConnectionValid(edge.getClass(),</span>
+<span class="nc" id="L396">                Model.getUmlHelper().getSource(edge),</span>
+<span class="nc" id="L397">                Model.getUmlHelper().getDestination(edge));</span>
+        }
+<span class="nc" id="L399">        return false;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
+    public void addNodeRelatedEdges(Object node) {
+<span class="nc bnc" id="L406" title="All 2 branches missed.">        if (Model.getFacade().isANamedElement(node)) {</span>
+<span class="nc" id="L407">            List specs =</span>
+<span class="nc" id="L408">                new ArrayList(Model.getFacade().getClientDependencies(node));</span>
+<span class="nc" id="L409">            specs.addAll(Model.getFacade().getSupplierDependencies(node));</span>
+<span class="nc" id="L410">            Iterator iter = specs.iterator();</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
+<span class="nc" id="L412">                Object dependency = iter.next();</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">                if (canAddEdge(dependency)) {</span>
+<span class="nc" id="L414">                    addEdge(dependency);</span>
+                    // return;
+                }
+<span class="nc" id="L417">            }</span>
+        }
+
+        // Commentlinks for comments. Iterate over all the comment links
+        // to find the comment and annotated elements.
+
+<span class="nc" id="L423">        Collection cmnt = new ArrayList();</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        if (Model.getFacade().isAComment(node)) {</span>
+<span class="nc" id="L425">            cmnt.addAll(Model.getFacade().getAnnotatedElements(node));</span>
+        }
+        // TODO: Comments are on Element in UML 2.x
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(node)) {</span>
+<span class="nc" id="L429">            cmnt.addAll(Model.getFacade().getComments(node));</span>
+        }
+<span class="nc" id="L431">        Iterator iter = cmnt.iterator();</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L433">            Object ae = iter.next();</span>
+<span class="nc" id="L434">            CommentEdge ce = new CommentEdge(node, ae);</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">            if (canAddEdge(ce)) {</span>
+<span class="nc" id="L436">                addEdge(ce);</span>
+            }
+<span class="nc" id="L438">        }</span>
+<span class="nc" id="L439">    }</span>
+
+    /**
+     * Create an edge of the given type and connect it to the
+     * given nodes.
+     *
+     * @param edgeType       the UML object type of the connection
+     * @param fromElement    the UML object for the &quot;from&quot; element
+     * @param fromStyle      the aggregationkind for the connection
+     *                       in case of an association
+     * @param toElement      the UML object for the &quot;to&quot; element
+     * @param toStyle        the aggregationkind for the connection
+     *                       in case of an association
+     * @param unidirectional for association and associationrole
+     * @param namespace      the namespace to use if it can't be determined
+     * @return               the newly build connection (UML object)
+     */
+    protected Object buildConnection(
+            Object edgeType,
+            Object fromElement,
+            Object fromStyle,
+            Object toElement,
+            Object toStyle,
+            Object unidirectional,
+            Object namespace) {
+
+<span class="nc" id="L465">        Object connection = null;</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        if (edgeType == CommentEdge.class) {</span>
+<span class="nc" id="L467">            connection =</span>
+<span class="nc" id="L468">                buildCommentConnection(fromElement, toElement);</span>
+        } else {
+            try {
+                connection =
+<span class="nc" id="L472">                    Model.getUmlFactory().buildConnection(</span>
+                            edgeType,
+                            fromElement,
+                            fromStyle,
+                            toElement,
+                            toStyle,
+                            unidirectional,
+                            namespace);
+<span class="nc" id="L480">                LOG.log(Level.INFO,</span>
+                        &quot;Created &quot; + connection + &quot; between &quot;
+        	        + fromElement + &quot; and &quot; + toElement);
+
+<span class="nc" id="L484">            } catch (UmlException ex) {</span>
+                // fail silently as we expect users to accidentally drop
+                // on to wrong component
+<span class="nc" id="L487">            } catch (IllegalArgumentException iae) {</span>
+                // idem, e.g. for a generalization with leaf/root object
+                // TODO: but showing the message in the statusbar would help
+        	// TODO: IllegalArgumentException should not be used for
+        	// events we expect to happen. We need a different way of
+        	// catching well-formedness rules.
+<span class="nc" id="L493">                LOG.log(Level.WARNING, &quot;IllegalArgumentException caught&quot;, iae);</span>
+<span class="nc" id="L494">            }</span>
+        }
+<span class="nc" id="L496">        return connection;</span>
+    }
+
+    /**
+     * Builds the model behind a connection between a comment and
+     * the annotated modelelement.
+     *
+     * @param from The comment or annotated element.
+     * @param to The comment or annotated element.
+     * @return A commentEdge representing the model behind the connection
+     *         between a comment and an annotated modelelement.
+     */
+    public CommentEdge buildCommentConnection(Object from, Object to) {
+<span class="nc bnc" id="L509" title="All 4 branches missed.">        if (from == null || to == null) {</span>
+<span class="nc" id="L510">            throw new IllegalArgumentException(&quot;Either fromNode == null &quot;</span>
+                                       + &quot;or toNode == null&quot;);
+        }
+<span class="nc" id="L513">        Object comment = null;</span>
+<span class="nc" id="L514">        Object annotatedElement = null;</span>
+<span class="nc bnc" id="L515" title="All 2 branches missed.">        if (Model.getFacade().isAComment(from)) {</span>
+<span class="nc" id="L516">            comment = from;</span>
+<span class="nc" id="L517">            annotatedElement = to;</span>
+        } else {
+<span class="nc bnc" id="L519" title="All 2 branches missed.">            if (Model.getFacade().isAComment(to)) {</span>
+<span class="nc" id="L520">                comment = to;</span>
+<span class="nc" id="L521">                annotatedElement = from;</span>
+            } else {
+<span class="nc" id="L523">                return null;</span>
+            }
+        }
+
+<span class="nc" id="L527">        CommentEdge connection = new CommentEdge(from, to);</span>
+<span class="nc" id="L528">        Model.getCoreHelper().addAnnotatedElement(comment, annotatedElement);</span>
+<span class="nc" id="L529">        return connection;</span>
+
+    }
+
+    /**
+     * Checks if some type of edge is valid to connect two
+     * types of node.
+     *
+     * @param edgeType  the UML object type of the connection
+     * @param fromElement     the UML object type of the &quot;from&quot;
+     * @param toElement       the UML object type of the &quot;to&quot;
+     * @return true if valid
+     */
+    protected boolean isConnectionValid(
+            Object edgeType,
+            Object fromElement,
+            Object toElement) {
+
+<span class="nc bnc" id="L547" title="All 4 branches missed.">        if (!nodes.contains(fromElement) || !nodes.contains(toElement)) {</span>
+            // The connection is not valid unless both nodes are
+            // in this graph model.
+<span class="nc" id="L550">            return false;</span>
+        }
+
+<span class="nc bnc" id="L553" title="All 2 branches missed.">        if (edgeType.equals(CommentEdge.class)) {</span>
+<span class="nc bnc" id="L554" title="All 2 branches missed.">            return ((Model.getFacade().isAComment(fromElement)</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">                   &amp;&amp; Model.getFacade().isAModelElement(toElement))</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">                 || (Model.getFacade().isAComment(toElement)</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">                   &amp;&amp; Model.getFacade().isAModelElement(fromElement)));</span>
+        }
+<span class="nc" id="L559">        return Model.getUmlFactory().isConnectionValid(</span>
+                edgeType,
+                fromElement,
+                toElement,
+                true);
+    }
+
+    /**
+     * Package scope. Only the factory is supposed to set this.
+     * @param dd
+     */
+    void setDiDiagram(DiDiagram dd) {
+<span class="nc" id="L571">        diDiagram = dd;</span>
+<span class="nc" id="L572">    }</span>
+
+    /**
+     * Get the object that represents this diagram
+     * in the DiagramInterchangeModel.
+     *
+     * @return the Diagram Interchange Diagram.
+     */
+    public DiDiagram getDiDiagram() {
+<span class="fc" id="L581">        return diDiagram;</span>
+    }
+
+    /**
+     * Return true if the current targets may be removed from the diagram.
+     *
+     * @param figs a collection with the selected figs
+     * @return true if the targets may be removed
+     */
+    public boolean isRemoveFromDiagramAllowed(Collection figs) {
+<span class="nc bnc" id="L591" title="All 2 branches missed.">        return !figs.isEmpty();</span>
+    }
+
+    /**
+     * Set the project that the graph model is inside.
+     * @param p the project
+     */
+    public void setProject(Project p) {
+<span class="fc" id="L599">	project = p;</span>
+<span class="fc" id="L600">    }</span>
+
+    /**
+     * Get the project that the graph model is inside.
+     * @return the project
+     */
+    public Project getProject() {
+<span class="nc" id="L607">	return project;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

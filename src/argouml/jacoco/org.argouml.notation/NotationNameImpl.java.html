@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationNameImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation</a> &gt; <span class="el_source">NotationNameImpl.java</span></div><h1>NotationNameImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Icon;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+
+/**
+ * This class provides definition and manipulation of notation names.
+ * All notation names will be accessed using the
+ * {@link NotationName} wrapper.
+ *
+ * Not mutable!
+ *
+ * @author Thierry Lach
+ * @since 0.9.4
+ */
+class NotationNameImpl
+    implements NotationName {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L70">    private static final Logger LOG =</span>
+<span class="fc" id="L71">        Logger.getLogger(NotationNameImpl.class.getName());</span>
+
+    private String name;
+    private String version;
+    private Icon icon;
+
+    /** The one and only list of notations available
+     * in the running ArgoUML application. */
+<span class="fc" id="L79">    private static ArrayList&lt;NotationName&gt; notations =</span>
+        new ArrayList&lt;NotationName&gt;();
+
+    /**
+     * A notation without a version or icon.
+     *
+     * @param theName the name of the notation
+     */
+    protected NotationNameImpl(String theName) {
+<span class="nc" id="L88">        this(theName, null, null);</span>
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * A notation without a version and with an icon.
+     *
+     * @param theName the name of the notation
+     * @param theIcon the icon for of the notation
+     */
+    protected NotationNameImpl(String theName, Icon theIcon) {
+<span class="nc" id="L98">        this(theName, null, theIcon);</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * A notation with a version and no icon.
+     *
+     * @param theName the name of the notation
+     * @param theVersion the version of the notation
+     */
+    protected NotationNameImpl(String theName, String theVersion) {
+<span class="nc" id="L108">        this(theName, theVersion, null);</span>
+<span class="nc" id="L109">    }</span>
+
+    /**
+     * A notation with a version and an icon.
+     *
+     * @param myName    the name of the notation
+     * @param myVersion the version of the notation
+     * @param myIcon    the icon of the notation
+     */
+<span class="fc" id="L118">    protected NotationNameImpl(String myName, String myVersion, Icon myIcon) {</span>
+<span class="fc" id="L119">        name = myName;</span>
+<span class="fc" id="L120">        version = myVersion;</span>
+<span class="fc" id="L121">        icon = myIcon;</span>
+<span class="fc" id="L122">    }</span>
+
+    /**
+     * Accessor for the language name.
+     *
+     * @see org.argouml.notation.NotationName#getName()
+     */
+    public String getName() {
+<span class="fc" id="L130">        return name;</span>
+    }
+
+    /**
+     * Accessor for the language version.
+     *
+     * @see org.argouml.notation.NotationName#getVersion()
+     */
+    public String getVersion() {
+<span class="nc" id="L139">        return version;</span>
+    }
+
+    /**
+     * Gets a textual title for the notation suitable for use
+     * in a combo box or other such visual location.
+     *
+     * @see org.argouml.notation.NotationName#getTitle()
+     */
+    public String getTitle() {
+<span class="nc" id="L149">        String myName = name;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (myName.equalsIgnoreCase(&quot;uml&quot;)) {</span>
+<span class="nc" id="L151">            myName = myName.toUpperCase();</span>
+        }
+
+<span class="nc bnc" id="L154" title="All 4 branches missed.">        if (version == null || version.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L155">            return myName;</span>
+        }
+<span class="nc" id="L157">        return myName + &quot; &quot; + version;</span>
+    }
+
+    /**
+     * Returns an icon for the notation, or null if no icon is available.
+     *
+     * @see org.argouml.notation.NotationName#getIcon()
+     */
+    public Icon getIcon() {
+<span class="nc" id="L166">        return icon;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.NotationName#getConfigurationValue()
+     */
+    public String getConfigurationValue() {
+<span class="fc" id="L173">        return getNotationNameString(name, version);</span>
+    }
+
+    /*
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+<span class="nc" id="L180">        return getTitle();</span>
+    }
+
+    /**
+     * @param k1 first part of the given name
+     * @param k2 2nd part of the given name
+     * @return the notation name string
+     */
+    static String getNotationNameString(String k1, String k2) {
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (k2 == null) {</span>
+<span class="fc" id="L190">            return k1;</span>
+        }
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (k2.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L193">            return k1;</span>
+        }
+<span class="fc" id="L195">	return k1 + &quot; &quot; + k2;</span>
+    }
+
+    private static void fireEvent(int eventType, NotationName nn) {
+<span class="fc" id="L199">	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));</span>
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * Create a NotationName with or without a version.
+     * The NotationName is only created if there is no such notation before.
+     *
+     * @param k1 the 1st part of the notation name
+     * @param k2 the 2nd part of the notation name
+     * @param icon the icon for the notation
+     * @return the newly created or the old NotationName
+     */
+    static NotationName makeNotation(String k1, String k2, Icon icon) {
+<span class="fc" id="L212">	NotationName nn = null;</span>
+<span class="fc" id="L213">	nn = findNotation(getNotationNameString(k1, k2));</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">	if (nn == null) {</span>
+<span class="fc" id="L215">	    nn = new NotationNameImpl(k1, k2, icon);</span>
+<span class="fc" id="L216">	    notations.add(nn);</span>
+<span class="fc" id="L217">	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);</span>
+	}
+<span class="fc" id="L219">        return nn;</span>
+    }
+
+    static boolean removeNotation(NotationName theNotation)  {
+<span class="fc" id="L223">        return notations.remove(theNotation);</span>
+    }
+
+    /**
+     * Get all of the registered notations.
+     *
+     * @return a List with all notations
+     */
+    static List&lt;NotationName&gt; getAvailableNotations() {
+<span class="fc" id="L232">        return Collections.unmodifiableList(notations);</span>
+    }
+
+    /**
+     * Finds a NotationName matching the string matching
+     * the name of the notation. Returns null if no match.
+     *
+     * @param s the name string
+     * @return the notationName or null
+     */
+    static NotationName findNotation(String s) {
+<span class="fc" id="L243">        ListIterator iterator = notations.listIterator();</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        while (iterator.hasNext()) {</span>
+	    try {
+<span class="fc" id="L246">                NotationName nn = (NotationName) iterator.next();</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		if (s.equals(nn.getConfigurationValue())) {</span>
+<span class="fc" id="L248">		    return nn;</span>
+		}
+<span class="nc" id="L250">	    } catch (Exception e) {</span>
+	        // TODO: Document why we catch this.
+<span class="nc" id="L252">                LOG.log(Level.SEVERE, &quot;Unexpected exception&quot;, e);</span>
+<span class="pc" id="L253">	    }</span>
+	}
+<span class="fc" id="L255">	return null;</span>
+    }
+
+    /*
+     * @see org.argouml.notation.NotationName#sameNotationAs(org.argouml.notation.NotationName)
+     */
+    public boolean sameNotationAs(NotationName nn) {
+<span class="fc" id="L262">        return this.getConfigurationValue().equals(nn.getConfigurationValue());</span>
+    }
+
+    /**
+     * Finds a NotationName matching the language with no version.
+     * Returns null if no match.
+     *
+     * @param k1 the notation name string
+     * @return the notation name
+     */
+    static NotationName getNotation(String k1) {
+<span class="nc" id="L273">        return findNotation(getNotationNameString(k1, null));</span>
+    }
+
+    /**
+     * Finds a NotationName matching the language and version.
+     * Returns null if no match.
+     *
+     * @param k1 the 1st part of the notation name
+     * @param k2 the 2nd part of the notation name
+     * @return the notation name
+     */
+    static NotationName getNotation(String k1, String k2) {
+<span class="nc" id="L285">        return findNotation(getNotationNameString(k1, k2));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

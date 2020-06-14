@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DesignIssuesDialog.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive.ui</a> &gt; <span class="el_source">DesignIssuesDialog.java</span></div><h1>DesignIssuesDialog.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive.ui;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.util.Hashtable;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.DecisionModel;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Translator;
+import org.argouml.util.ArgoDialog;
+
+
+/** A dialog to set the priorities for decisions. These will be evaluated
+ *  against the critics, so that the user will only see todo items which match
+ *  the priorities for a certain decision.
+ */
+public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
+
+    ////////////////////////////////////////////////////////////////
+    // constants
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+<span class="nc" id="L73">    private JPanel  mainPanel = new JPanel();</span>
+<span class="nc" id="L74">    private Hashtable&lt;JSlider, Decision&gt; slidersToDecisions = </span>
+        new Hashtable&lt;JSlider, Decision&gt;();
+<span class="nc" id="L76">    private Hashtable&lt;JSlider, JLabel&gt; slidersToDigits = </span>
+        new Hashtable&lt;JSlider, JLabel&gt;();
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * The constructor.
+     */
+    public DesignIssuesDialog() {
+<span class="nc" id="L86">        super(Translator.localize(&quot;dialog.title.design-issues&quot;), false);</span>
+
+<span class="nc" id="L88">        final int width = 320;</span>
+<span class="nc" id="L89">        final int height = 400;</span>
+
+<span class="nc" id="L91">        initMainPanel();</span>
+
+<span class="nc" id="L93">        JScrollPane scroll = new JScrollPane(mainPanel);</span>
+<span class="nc" id="L94">        scroll.setPreferredSize(new Dimension(width, height));</span>
+
+<span class="nc" id="L96">        setContent(scroll);</span>
+<span class="nc" id="L97">    }</span>
+
+
+    private void initMainPanel() {
+<span class="nc" id="L101">        DecisionModel dm = Designer.theDesigner().getDecisionModel();</span>
+<span class="nc" id="L102">        List&lt;Decision&gt; decs = dm.getDecisionList();</span>
+
+<span class="nc" id="L104">        GridBagLayout gb = new GridBagLayout();</span>
+<span class="nc" id="L105">        mainPanel.setLayout(gb);</span>
+<span class="nc" id="L106">        mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));</span>
+
+<span class="nc" id="L108">        GridBagConstraints c = new GridBagConstraints();</span>
+<span class="nc" id="L109">        c.fill = GridBagConstraints.BOTH;</span>
+<span class="nc" id="L110">        c.weightx = 1.0;</span>
+<span class="nc" id="L111">        c.weighty = 0.0;</span>
+<span class="nc" id="L112">        c.ipadx = 3; c.ipady = 3;</span>
+
+
+<span class="nc" id="L115">        c.gridy = 0;</span>
+<span class="nc" id="L116">        c.gridx = 0;</span>
+<span class="nc" id="L117">        c.gridwidth = 1;</span>
+<span class="nc" id="L118">        JLabel decTitleLabel = new JLabel(</span>
+<span class="nc" id="L119">            Translator.localize(&quot;label.decision&quot;));</span>
+<span class="nc" id="L120">        gb.setConstraints(decTitleLabel, c);</span>
+<span class="nc" id="L121">        mainPanel.add(decTitleLabel);</span>
+
+<span class="nc" id="L123">        c.gridy = 0;</span>
+<span class="nc" id="L124">        c.gridx = 2;</span>
+<span class="nc" id="L125">        c.gridwidth = 8;</span>
+<span class="nc" id="L126">        JLabel priLabel = new JLabel(</span>
+<span class="nc" id="L127">            Translator.localize(&quot;label.decision-priority&quot;));</span>
+<span class="nc" id="L128">        gb.setConstraints(priLabel, c);</span>
+<span class="nc" id="L129">        mainPanel.add(priLabel);</span>
+
+<span class="nc" id="L131">        c.gridy = 1;</span>
+<span class="nc" id="L132">        c.gridx = 2;</span>
+<span class="nc" id="L133">        c.gridwidth = 2;</span>
+<span class="nc" id="L134">        JLabel offLabel = new JLabel(Translator.localize(&quot;label.off&quot;));</span>
+<span class="nc" id="L135">        gb.setConstraints(offLabel, c);</span>
+<span class="nc" id="L136">        mainPanel.add(offLabel);</span>
+
+<span class="nc" id="L138">        c.gridy = 1;</span>
+<span class="nc" id="L139">        c.gridx = 4;</span>
+<span class="nc" id="L140">        c.gridwidth = 2;</span>
+<span class="nc" id="L141">        JLabel lowLabel = new JLabel(Translator.localize(&quot;label.low&quot;));</span>
+<span class="nc" id="L142">        gb.setConstraints(lowLabel, c);</span>
+<span class="nc" id="L143">        mainPanel.add(lowLabel);</span>
+
+<span class="nc" id="L145">        c.gridy = 1;</span>
+<span class="nc" id="L146">        c.gridx = 6;</span>
+<span class="nc" id="L147">        c.gridwidth = 2;</span>
+<span class="nc" id="L148">        JLabel mediumLabel = new JLabel(Translator.localize(&quot;label.medium&quot;));</span>
+<span class="nc" id="L149">        gb.setConstraints(mediumLabel, c);</span>
+<span class="nc" id="L150">        mainPanel.add(mediumLabel);</span>
+
+<span class="nc" id="L152">        c.gridy = 1;</span>
+<span class="nc" id="L153">        c.gridx = 8;</span>
+<span class="nc" id="L154">        c.gridwidth = 2;</span>
+<span class="nc" id="L155">        JLabel highLabel = new JLabel(Translator.localize(&quot;label.high&quot;));</span>
+<span class="nc" id="L156">        gb.setConstraints(highLabel, c);</span>
+<span class="nc" id="L157">        mainPanel.add(highLabel);</span>
+
+
+<span class="nc" id="L160">        c.gridy = 2;</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        for (Decision d : decs) {</span>
+<span class="nc" id="L162">            JLabel decLabel = new JLabel(d.getName());</span>
+<span class="nc" id="L163">            JLabel valueLabel = new JLabel(getValueText(d.getPriority()));</span>
+<span class="nc" id="L164">            JSlider decSlide =</span>
+                new JSlider(SwingConstants.HORIZONTAL,
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                            1, 4, (d.getPriority() == 0 ? 4 : d.getPriority()));</span>
+
+<span class="nc" id="L168">            decSlide.setInverted(true);</span>
+<span class="nc" id="L169">            decSlide.setMajorTickSpacing(1);</span>
+<span class="nc" id="L170">            decSlide.setPaintTicks(true);</span>
+<span class="nc" id="L171">            decSlide.setSnapToTicks(true);</span>
+            // decSlide.setPaintLabels(true);
+<span class="nc" id="L173">            decSlide.addChangeListener(this);</span>
+<span class="nc" id="L174">            Dimension origSize = decSlide.getPreferredSize();</span>
+<span class="nc" id="L175">            Dimension smallSize =</span>
+                new Dimension(origSize.width / 2, origSize.height);
+<span class="nc" id="L177">            decSlide.setSize(smallSize);</span>
+<span class="nc" id="L178">            decSlide.setPreferredSize(smallSize);</span>
+
+<span class="nc" id="L180">            slidersToDecisions.put(decSlide, d);</span>
+<span class="nc" id="L181">            slidersToDigits.put(decSlide, valueLabel);</span>
+
+<span class="nc" id="L183">            c.gridx = 0;</span>
+<span class="nc" id="L184">            c.gridwidth = 1;</span>
+<span class="nc" id="L185">            c.weightx = 0.0;</span>
+<span class="nc" id="L186">            c.ipadx = 3;</span>
+<span class="nc" id="L187">            gb.setConstraints(decLabel, c);</span>
+<span class="nc" id="L188">            mainPanel.add(decLabel);</span>
+
+<span class="nc" id="L190">            c.gridx = 1;</span>
+<span class="nc" id="L191">            c.gridwidth = 1;</span>
+<span class="nc" id="L192">            c.weightx = 0.0;</span>
+<span class="nc" id="L193">            c.ipadx = 0;</span>
+<span class="nc" id="L194">            gb.setConstraints(valueLabel, c);</span>
+<span class="nc" id="L195">            mainPanel.add(valueLabel);</span>
+
+<span class="nc" id="L197">            c.gridx = 2;</span>
+<span class="nc" id="L198">            c.gridwidth = 8;</span>
+<span class="nc" id="L199">            c.weightx = 1.0;</span>
+<span class="nc" id="L200">            gb.setConstraints(decSlide, c);</span>
+<span class="nc" id="L201">            mainPanel.add(decSlide);</span>
+
+<span class="nc" id="L203">            c.gridy++;</span>
+<span class="nc" id="L204">        }</span>
+<span class="nc" id="L205">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+
+    /*
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+     */
+    public void stateChanged(ChangeEvent ce) {
+<span class="nc" id="L214">        JSlider srcSlider = (JSlider) ce.getSource();</span>
+<span class="nc" id="L215">        Decision d = slidersToDecisions.get(srcSlider);</span>
+<span class="nc" id="L216">        JLabel valLab = slidersToDigits.get(srcSlider);</span>
+<span class="nc" id="L217">        int pri = srcSlider.getValue();</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">        d.setPriority((pri == 4) ? 0 : pri);</span>
+<span class="nc" id="L219">        valLab.setText(getValueText(pri));</span>
+<span class="nc" id="L220">    }</span>
+
+    private String getValueText(int priority) {
+<span class="nc" id="L223">        String label = &quot;&quot;;</span>
+<span class="nc bnc" id="L224" title="All 5 branches missed.">        switch(priority) {</span>
+        case 1:
+<span class="nc" id="L226">	    label = &quot;    1&quot;;</span>
+<span class="nc" id="L227">	    break;</span>
+        case 2:
+<span class="nc" id="L229">	    label = &quot;    2&quot;;</span>
+<span class="nc" id="L230">	    break;</span>
+        case 3:
+<span class="nc" id="L232">	    label = &quot;    3&quot;;</span>
+<span class="nc" id="L233">	    break;</span>
+        case 0:
+        case 4:
+<span class="nc" id="L236">	    label = Translator.localize(&quot;label.off&quot;);</span>
+	    break;
+        }
+<span class="nc" id="L239">        return label;</span>
+    }
+
+}
+
+
+
+////////////////////////////////////////////////////////////////
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Import.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.reveng</a> &gt; <span class="el_source">Import.java</span></div><h1>Import.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    linus
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.reveng;
+
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileSystemView;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.uml.reveng.SettingsTypes.BooleanSelection2;
+import org.argouml.uml.reveng.SettingsTypes.PathListSelection;
+import org.argouml.uml.reveng.SettingsTypes.PathSelection;
+import org.argouml.uml.reveng.SettingsTypes.Setting;
+import org.argouml.uml.reveng.SettingsTypes.UniqueSelection2;
+import org.argouml.uml.reveng.SettingsTypes.UserString2;
+import org.argouml.uml.reveng.ui.ImportClasspathDialog;
+import org.argouml.uml.reveng.ui.ImportStatusScreen;
+import org.argouml.util.SuffixFilter;
+import org.argouml.util.UIUtils;
+import org.tigris.gef.base.Globals;
+import org.tigris.swidgets.GridLayout2;
+
+
+
+/**
+ * This is the main class for the Swing importer framework.  It extends 
+ * ImportCommon which contains all the GUI independent pieces of the import
+ * framework.  
+ * &lt;p&gt;
+ * The Service Providers Interface (SPI) to the individual language importers
+ * is defined in such a way that they can be completely GUI independent as
+ * well, receiving lists of source files and settings for the import and 
+ * reporting progress via progress monitor API.
+ * 
+ * It provides JPanels for tailoring the import run in the FileChooser.
+ * &lt;p&gt;
+ * 
+ * The Import run is started by calling doFile(Project, File)
+ * &lt;p&gt;
+ * 
+ * Supports recursive search in folder for source files with matching 
+ * extensions.
+ * &lt;p&gt;
+ * 
+ * There are three levels of detail for import:
+ * &lt;p&gt;
+ * 
+ * &lt;ol&gt;
+ * &lt;li&gt; 0 - classifiers only
+ * &lt;li&gt; 1 - classifiers plus feature specifications
+ * &lt;li&gt; 2 - full import, feature detail (ie. operations with methods)
+ * &lt;/ol&gt;
+ * 
+ * @author Andreas Rueckert a_rueckert@gmx.net
+ * @author Tom Morris &lt;tfmorris@gmail.com&gt;
+ */
+public class Import extends ImportCommon implements ImportSettings {
+
+    private JComponent configPanel;
+
+    private JCheckBox descend;
+
+    private JCheckBox changedOnly;
+
+    private JCheckBox createDiagrams;
+
+    private JCheckBox minimiseFigs;
+
+    private JCheckBox layoutDiagrams;
+
+    // level 0 import detail
+    private JRadioButton classOnly;
+
+    // level 1 import detail
+    private JRadioButton classAndFeatures;
+
+    // level 2 import detail
+    private JRadioButton fullImport;
+
+    private JComboBox sourceEncoding;
+    
+    private JDialog dialog;
+
+    private ImportStatusScreen iss;
+
+    private Frame myFrame;
+
+    /**
+     * Creates dialog window with chooser and configuration panel.
+     * 
+     * @param frame the ui frame to display dialogs on
+     */
+    public Import(Frame frame) {
+<span class="nc" id="L156">        super();</span>
+<span class="nc" id="L157">        myFrame = frame;</span>
+
+        // TODO: this needs to be improved
+        // even for nongui calling, the config panel needs to be initialized:
+<span class="nc" id="L161">        getConfigPanel();</span>
+        
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (frame != null) {</span>
+<span class="nc" id="L164">            JComponent chooser = getChooser();</span>
+<span class="nc" id="L165">            dialog =</span>
+                new JDialog(frame,
+<span class="nc" id="L167">                        Translator.localize(&quot;action.import-sources&quot;), true);</span>
+    
+<span class="nc" id="L169">            dialog.getContentPane().add(chooser, BorderLayout.CENTER);</span>
+<span class="nc" id="L170">            dialog.getContentPane().add(getConfigPanel(), BorderLayout.EAST);</span>
+<span class="nc" id="L171">            dialog.pack();</span>
+<span class="nc" id="L172">            int x = (frame.getSize().width - dialog.getSize().width) / 2;</span>
+<span class="nc" id="L173">            int y = (frame.getSize().height - dialog.getSize().height) / 2;</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">            dialog.setLocation(x &gt; 0 ? x : 0, y &gt; 0 ? y : 0);</span>
+    
+<span class="nc" id="L176">            UIUtils.loadCommonKeyMap(dialog);</span>
+    
+<span class="nc" id="L178">            dialog.setVisible(true);</span>
+        }
+<span class="nc" id="L180">    }</span>
+
+    /*
+     * @see org.argouml.uml.reveng.ImportSettings#getInputSourceEncoding()
+     */
+    public String getInputSourceEncoding() {
+<span class="nc" id="L186">        return (String) sourceEncoding.getSelectedItem();</span>
+    }
+
+    /**
+     * Close dialog window.
+     */
+    private void disposeDialog() {
+<span class="nc" id="L193">        StringBuffer flags = new StringBuffer(30);</span>
+<span class="nc" id="L194">        flags.append(isDescendSelected()).append(&quot;,&quot;);</span>
+<span class="nc" id="L195">        flags.append(isChangedOnlySelected()).append(&quot;,&quot;);</span>
+<span class="nc" id="L196">        flags.append(isCreateDiagramsSelected()).append(&quot;,&quot;);</span>
+<span class="nc" id="L197">        flags.append(isMinimizeFigsSelected()).append(&quot;,&quot;);</span>
+<span class="nc" id="L198">        flags.append(isDiagramLayoutSelected());</span>
+<span class="nc" id="L199">        Configuration.setString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS, flags</span>
+<span class="nc" id="L200">                .toString());</span>
+<span class="nc" id="L201">        Configuration.setString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL, String</span>
+<span class="nc" id="L202">                .valueOf(getImportLevel()));</span>
+<span class="nc" id="L203">        Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,</span>
+<span class="nc" id="L204">                getInputSourceEncoding());</span>
+<span class="nc" id="L205">        dialog.setVisible(false);</span>
+<span class="nc" id="L206">        dialog.dispose();</span>
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Get the panel that lets the user set reverse engineering parameters.
+     * 
+     * @param importInstance the instance of the import
+     * @return the panel This is an internal method. Use the accessors in
+     *         {@link ImportSettings} to determine the current settings.
+     */
+    private JComponent getConfigPanel() {
+
+<span class="nc" id="L218">        final JTabbedPane tab = new JTabbedPane();</span>
+
+        // build the configPanel:
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (configPanel == null) {</span>
+<span class="nc" id="L222">            JPanel general = new JPanel();</span>
+<span class="nc" id="L223">            general.setLayout(new GridLayout2(20, 1, 0, 0, GridLayout2.NONE));</span>
+
+<span class="nc" id="L225">            general.add(new JLabel(Translator</span>
+<span class="nc" id="L226">                    .localize(&quot;action.import-select-lang&quot;)));</span>
+
+<span class="nc" id="L228">            JComboBox selectedLanguage = new JComboBox(getModules().keySet()</span>
+<span class="nc" id="L229">                    .toArray());</span>
+<span class="nc" id="L230">            selectedLanguage</span>
+<span class="nc" id="L231">                    .addActionListener(new SelectedLanguageListener(tab));</span>
+<span class="nc" id="L232">            general.add(selectedLanguage);</span>
+
+<span class="nc" id="L234">            addConfigCheckboxes(general);</span>
+
+<span class="nc" id="L236">            addDetailLevelButtons(general);</span>
+
+<span class="nc" id="L238">            addSourceEncoding(general);</span>
+
+<span class="nc" id="L240">            tab.add(general, Translator.localize(&quot;action.import-general&quot;));</span>
+
+<span class="nc" id="L242">            ImportInterface current = getCurrentModule();</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">            if (current != null) {</span>
+<span class="nc" id="L244">                tab.add(getConfigPanelExtension(),</span>
+<span class="nc" id="L245">                        current.getName());            </span>
+            }
+<span class="nc" id="L247">            configPanel = tab;</span>
+        }
+<span class="nc" id="L249">        return configPanel;</span>
+
+    }
+
+
+    private void addConfigCheckboxes(JPanel panel) {
+<span class="nc" id="L255">        boolean desc = true;</span>
+<span class="nc" id="L256">        boolean chan = true;</span>
+<span class="nc" id="L257">        boolean crea = true;</span>
+<span class="nc" id="L258">        boolean mini = true;</span>
+<span class="nc" id="L259">        boolean layo = true;</span>
+<span class="nc" id="L260">        String flags = Configuration</span>
+<span class="nc" id="L261">                .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);</span>
+<span class="nc bnc" id="L262" title="All 4 branches missed.">        if (flags != null &amp;&amp; flags.length() &gt; 0) {</span>
+<span class="nc" id="L263">            StringTokenizer st = new StringTokenizer(flags, &quot;,&quot;);</span>
+<span class="nc bnc" id="L264" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L265">                desc = false;</span>
+            }
+<span class="nc bnc" id="L267" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L268">                chan = false;</span>
+            }
+<span class="nc bnc" id="L270" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L271">                crea = false;</span>
+            }
+<span class="nc bnc" id="L273" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L274">                mini = false;</span>
+            }
+<span class="nc bnc" id="L276" title="All 4 branches missed.">            if (st.hasMoreTokens() &amp;&amp; st.nextToken().equals(&quot;false&quot;)) {</span>
+<span class="nc" id="L277">                layo = false;</span>
+            }
+        }
+
+<span class="nc" id="L281">        descend = new JCheckBox(Translator</span>
+<span class="nc" id="L282">                .localize(&quot;action.import-option-descend-dir-recur&quot;), desc);</span>
+<span class="nc" id="L283">        panel.add(descend);</span>
+
+<span class="nc" id="L285">        changedOnly = new JCheckBox(Translator</span>
+<span class="nc" id="L286">                .localize(&quot;action.import-option-changed_new&quot;), chan);</span>
+<span class="nc" id="L287">        panel.add(changedOnly);</span>
+
+<span class="nc" id="L289">        createDiagrams = new JCheckBox(Translator</span>
+<span class="nc" id="L290">                .localize(&quot;action.import-option-create-diagram&quot;), crea);</span>
+<span class="nc" id="L291">        panel.add(createDiagrams);</span>
+
+<span class="nc" id="L293">        minimiseFigs = new JCheckBox(Translator</span>
+<span class="nc" id="L294">                .localize(&quot;action.import-option-min-class-icon&quot;), mini);</span>
+<span class="nc" id="L295">        panel.add(minimiseFigs);</span>
+
+<span class="nc" id="L297">        layoutDiagrams = new JCheckBox(Translator.localize(</span>
+                &quot;action.import-option-perform-auto-diagram-layout&quot;),
+                layo);
+<span class="nc" id="L300">        panel.add(layoutDiagrams);</span>
+
+        // de-selects the fig minimising &amp; layout
+        // if we are not creating diagrams
+<span class="nc" id="L304">        createDiagrams.addActionListener(new ActionListener() {</span>
+            public void actionPerformed(ActionEvent actionEvent) {
+<span class="nc bnc" id="L306" title="All 2 branches missed.">                if (!createDiagrams.isSelected()) {</span>
+<span class="nc" id="L307">                    minimiseFigs.setSelected(false);</span>
+<span class="nc" id="L308">                    layoutDiagrams.setSelected(false);</span>
+                }
+<span class="nc" id="L310">            }</span>
+        });
+<span class="nc" id="L312">    }</span>
+
+
+    private void addDetailLevelButtons(JPanel panel) {
+        // select the level of import
+        // 0 - classifiers only
+        // 1 - classifiers plus feature specifications
+        // 2 - full import, feature detail
+
+<span class="nc" id="L321">        JLabel importDetailLabel = new JLabel(Translator</span>
+<span class="nc" id="L322">                .localize(&quot;action.import-level-of-import-detail&quot;));</span>
+<span class="nc" id="L323">        ButtonGroup detailButtonGroup = new ButtonGroup();</span>
+
+<span class="nc" id="L325">        classOnly = new JRadioButton(Translator</span>
+<span class="nc" id="L326">                .localize(&quot;action.import-option-classifiers&quot;));</span>
+<span class="nc" id="L327">        detailButtonGroup.add(classOnly);</span>
+
+<span class="nc" id="L329">        classAndFeatures = new JRadioButton(Translator</span>
+<span class="nc" id="L330">                .localize(&quot;action.import-option-classifiers-plus-specs&quot;));</span>
+<span class="nc" id="L331">        detailButtonGroup.add(classAndFeatures);</span>
+
+<span class="nc" id="L333">        fullImport = new JRadioButton(Translator</span>
+<span class="nc" id="L334">                .localize(&quot;action.import-option-full-import&quot;));</span>
+<span class="nc" id="L335">        String detaillevel = Configuration</span>
+<span class="nc" id="L336">                .getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);</span>
+<span class="nc bnc" id="L337" title="All 2 branches missed.">        if (&quot;0&quot;.equals(detaillevel)) {</span>
+<span class="nc" id="L338">            classOnly.setSelected(true);</span>
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        } else if (&quot;1&quot;.equals(detaillevel)) {</span>
+<span class="nc" id="L340">            classAndFeatures.setSelected(true);</span>
+        } else {
+<span class="nc" id="L342">            fullImport.setSelected(true);</span>
+        }
+<span class="nc" id="L344">        detailButtonGroup.add(fullImport);</span>
+
+<span class="nc" id="L346">        panel.add(importDetailLabel);</span>
+<span class="nc" id="L347">        panel.add(classOnly);</span>
+<span class="nc" id="L348">        panel.add(classAndFeatures);</span>
+<span class="nc" id="L349">        panel.add(fullImport);</span>
+<span class="nc" id="L350">    }</span>
+    
+    
+    private void addSourceEncoding(JPanel panel) {
+<span class="nc" id="L354">        panel.add(new JLabel(</span>
+<span class="nc" id="L355">                Translator.localize(&quot;action.import-file-encoding&quot;)));</span>
+<span class="nc" id="L356">        String enc =</span>
+<span class="nc" id="L357">            Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);</span>
+<span class="nc bnc" id="L358" title="All 4 branches missed.">        if (enc == null || enc.trim().equals(&quot;&quot;)) {</span>
+<span class="nc" id="L359">            enc = System.getProperty(&quot;file.encoding&quot;);</span>
+        }
+        // cp1252 is often the default, but windows-1252 is the name listed
+        // by Charset.availableCharsets
+<span class="nc bnc" id="L363" title="All 2 branches missed.">        if (enc.startsWith(&quot;cp&quot;)) {</span>
+<span class="nc" id="L364">            enc = &quot;windows-&quot; + enc.substring(2);</span>
+        }
+
+<span class="nc" id="L367">        sourceEncoding = new JComboBox(Charset</span>
+<span class="nc" id="L368">                .availableCharsets().keySet().toArray());</span>
+<span class="nc" id="L369">        sourceEncoding.setSelectedItem(enc);</span>
+<span class="nc" id="L370">        panel.add(sourceEncoding);</span>
+<span class="nc" id="L371">    }</span>
+    
+    /*
+     * Get the extension panel for the configuration settings.
+     */
+    private JComponent getConfigPanelExtension() {
+<span class="nc" id="L377">        List&lt;Setting&gt; settings = null;</span>
+<span class="nc" id="L378">        ImportInterface current = getCurrentModule();</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        if (current != null) {</span>
+<span class="nc" id="L380">            settings = current.getImportSettings();</span>
+        }
+<span class="nc" id="L382">        return  new ConfigPanelExtension(settings);</span>
+    }
+
+    private class SelectedLanguageListener implements ActionListener {
+
+        /**
+         * The pane.
+         */
+        private JTabbedPane tab;
+
+        /**
+         * The constructor.
+         * 
+         * @param i The current import.
+         * @param t The pane.
+         */
+<span class="nc" id="L398">        SelectedLanguageListener(JTabbedPane t) {</span>
+<span class="nc" id="L399">            tab = t;</span>
+<span class="nc" id="L400">        }</span>
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L406">            JComboBox cb = (JComboBox) e.getSource();</span>
+<span class="nc" id="L407">            String selected = (String) cb.getSelectedItem();</span>
+<span class="nc" id="L408">            ImportInterface oldModule = getCurrentModule();</span>
+<span class="nc" id="L409">            setCurrentModule(getModules().get(selected));</span>
+<span class="nc" id="L410">            updateFilters((JFileChooser) dialog.getContentPane()</span>
+<span class="nc" id="L411">                    .getComponent(0), oldModule.getSuffixFilters(),</span>
+<span class="nc" id="L412">                    getCurrentModule().getSuffixFilters());</span>
+<span class="nc" id="L413">            updateTabbedPane();</span>
+<span class="nc" id="L414">        }</span>
+        
+        private void updateTabbedPane() {
+<span class="nc" id="L417">            String name = ((ModuleInterface) getCurrentModule()).getName();</span>
+<span class="nc bnc" id="L418" title="All 2 branches missed.">            if (tab.indexOfTab(name) &lt; 0) {</span>
+<span class="nc" id="L419">                tab.add(getConfigPanelExtension(), name);</span>
+            }
+<span class="nc" id="L421">        }</span>
+    }
+    
+
+
+    /**
+     * Parse all selected files in a separate thread. It calls the actual
+     * parser methods depending on the type of the file.
+     */
+    public void doFile() {
+<span class="nc" id="L431">        iss = new ImportStatusScreen(myFrame, &quot;Importing&quot;, &quot;Splash&quot;);</span>
+<span class="nc" id="L432">        Thread t = new Thread(new Runnable() {</span>
+            public void run() {
+<span class="nc" id="L434">                doImport(iss);</span>
+                // ExplorerEventAdaptor.getInstance().structureChanged();
+                // ProjectBrowser.getInstance().getStatusBar().showProgress(0);
+<span class="nc" id="L437">            }</span>
+        }, &quot;Import Thread&quot;);
+<span class="nc" id="L439">        t.start();</span>
+<span class="nc" id="L440">    }</span>
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#getImportLevel()
+     */
+    public int getImportLevel() {
+<span class="nc bnc" id="L446" title="All 4 branches missed.">        if (classOnly != null &amp;&amp; classOnly.isSelected()) {</span>
+<span class="nc" id="L447">            return ImportSettings.DETAIL_CLASSIFIER;</span>
+<span class="nc bnc" id="L448" title="All 4 branches missed.">        } else if (classAndFeatures != null &amp;&amp; classAndFeatures.isSelected()) {</span>
+<span class="nc" id="L449">            return ImportSettings.DETAIL_CLASSIFIER_FEATURE;</span>
+<span class="nc bnc" id="L450" title="All 4 branches missed.">        } else if (fullImport != null &amp;&amp; fullImport.isSelected()) {</span>
+<span class="nc" id="L451">            return ImportSettings.DETAIL_FULL;</span>
+        } else {
+<span class="nc" id="L453">            return ImportSettings.DETAIL_CLASSIFIER;</span>
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isCreateDiagramsChecked()
+     */
+    public boolean isCreateDiagramsSelected() {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (createDiagrams != null) {</span>
+<span class="nc" id="L462">            return createDiagrams.isSelected();</span>
+        }
+<span class="nc" id="L464">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isMinimiseFigsChecked()
+     */
+    public boolean isMinimizeFigsSelected() {
+<span class="nc bnc" id="L471" title="All 2 branches missed.">        if (minimiseFigs != null) {</span>
+<span class="nc" id="L472">            return minimiseFigs.isSelected();</span>
+        }
+<span class="nc" id="L474">        return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isDiagramLayoutSelected()
+     */
+    public boolean isDiagramLayoutSelected() {
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if (layoutDiagrams != null) {</span>
+<span class="nc" id="L482">            return layoutDiagrams.isSelected();</span>
+        }
+<span class="nc" id="L484">        return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isDescendSelected()
+     */
+    public boolean isDescendSelected() {
+<span class="nc bnc" id="L491" title="All 2 branches missed.">        if (descend != null) {</span>
+<span class="nc" id="L492">            return descend.isSelected();</span>
+        }
+<span class="nc" id="L494">        return true;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportCommon#isChangedOnlySelected()
+     */
+    public boolean isChangedOnlySelected() {
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        if (changedOnly != null) {</span>
+<span class="nc" id="L502">            return changedOnly.isSelected();</span>
+        }
+<span class="nc" id="L504">        return false;</span>
+    }
+
+    /*
+     * Create chooser for objects we are to import. Old style modules get to
+     * provide their own (although I don't believe any of them do), while new
+     * style modules get the a chooser provided by us (which matches what the
+     * abstract class FileImportSupport used to provide).
+     */
+    private JComponent getChooser() {
+<span class="nc" id="L514">        String directory = Globals.getLastDirectory();</span>
+
+<span class="nc" id="L516">        final JFileChooser chooser = new ImportFileChooser(this, directory);</span>
+
+<span class="nc" id="L518">        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);</span>
+<span class="nc" id="L519">        ImportInterface current = getCurrentModule();</span>
+
+<span class="nc bnc" id="L521" title="All 2 branches missed.">        if (current != null) {</span>
+<span class="nc" id="L522">            updateFilters(chooser, null, current.getSuffixFilters());</span>
+        }
+<span class="nc" id="L524">        return chooser;</span>
+    }
+
+    private static void updateFilters(JFileChooser chooser,
+            SuffixFilter[] oldFilters, SuffixFilter[] newFilters) {
+<span class="nc bnc" id="L529" title="All 2 branches missed.">        if (oldFilters != null) {</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">            for (int i = 0; i &lt; oldFilters.length; i++) {</span>
+<span class="nc" id="L531">                chooser.removeChoosableFileFilter(oldFilters[i]);</span>
+            }
+        }
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        if (newFilters != null) {</span>
+<span class="nc bnc" id="L535" title="All 2 branches missed.">            for (int i = 0; i &lt; newFilters.length; i++) {</span>
+<span class="nc" id="L536">                chooser.addChoosableFileFilter(newFilters[i]);</span>
+            }
+<span class="nc bnc" id="L538" title="All 2 branches missed.">            if (newFilters.length &gt; 0) {</span>
+<span class="nc" id="L539">                chooser.setFileFilter(newFilters[0]);</span>
+            }
+        }
+<span class="nc" id="L542">    }</span>
+
+    private static class ImportFileChooser extends JFileChooser {
+
+        private Import theImport;
+
+        /**
+         * Constructs a new ImportFileChooser opened to the given directory.
+         * 
+         * @param imp the import manager
+         * @param currentDirectoryPath the directory path
+         * @see javax.swing.JFileChooser#JFileChooser(String)
+         */
+        public ImportFileChooser(Import imp, String currentDirectoryPath) {
+<span class="nc" id="L556">            super(currentDirectoryPath);</span>
+<span class="nc" id="L557">            theImport = imp;</span>
+<span class="nc" id="L558">            initChooser();</span>
+<span class="nc" id="L559">        }</span>
+
+        /**
+         * Constructs a JFileChooser using the given current directory path and
+         * FileSystemView.
+         * 
+         * @param imp the import manager
+         * @param currentDirectoryPath the directory path
+         * @param fsv the file system view
+         * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
+         */
+        public ImportFileChooser(Import imp, String currentDirectoryPath,
+                FileSystemView fsv) {
+<span class="nc" id="L572">            super(currentDirectoryPath, fsv);</span>
+<span class="nc" id="L573">            theImport = imp;</span>
+<span class="nc" id="L574">            initChooser();</span>
+<span class="nc" id="L575">        }</span>
+
+        /**
+         * Constructs a new default ImportFileChooser.
+         * 
+         * @param imp the import manager
+         * @see javax.swing.JFileChooser#JFileChooser()
+         */
+        public ImportFileChooser(Import imp) {
+<span class="nc" id="L584">            super();</span>
+<span class="nc" id="L585">            theImport = imp;</span>
+<span class="nc" id="L586">            initChooser();</span>
+<span class="nc" id="L587">        }</span>
+
+        /**
+         * Constructs a JFileChooser using the given FileSystemView.
+         * 
+         * @param imp the import manager
+         * @param fsv the file system view
+         * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
+         */
+        public ImportFileChooser(Import imp, FileSystemView fsv) {
+<span class="nc" id="L597">            super(fsv);</span>
+<span class="nc" id="L598">            theImport = imp;</span>
+<span class="nc" id="L599">            initChooser();</span>
+<span class="nc" id="L600">        }</span>
+
+        private void initChooser() {
+<span class="nc" id="L603">            setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);</span>
+<span class="nc" id="L604">            setMultiSelectionEnabled(true);</span>
+<span class="nc" id="L605">            setSelectedFile(getCurrentDirectory());</span>
+<span class="nc" id="L606">        }</span>
+
+        /*
+         * @see javax.swing.JFileChooser#approveSelection()
+         */
+        @Override
+        public void approveSelection() {
+<span class="nc" id="L613">            File[] files = getSelectedFiles();</span>
+<span class="nc" id="L614">            File dir = getCurrentDirectory();</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">            if (files.length == 0) {</span>
+<span class="nc" id="L616">                files = new File[] {dir};</span>
+            }
+<span class="nc bnc" id="L618" title="All 2 branches missed.">            if (files.length == 1) {</span>
+<span class="nc" id="L619">                File file = files[0];</span>
+<span class="nc bnc" id="L620" title="All 4 branches missed.">                if (file != null &amp;&amp; file.isDirectory()) {</span>
+<span class="nc" id="L621">                    dir = file;</span>
+                } else {
+<span class="nc" id="L623">                    dir = file.getParentFile();</span>
+                }
+            }
+<span class="nc" id="L626">            theImport.setSelectedFiles(files);</span>
+            try {
+<span class="nc" id="L628">                theImport.setSelectedSuffixFilter(</span>
+<span class="nc" id="L629">                        (SuffixFilter) getFileFilter());</span>
+<span class="nc" id="L630">            } catch (Exception e) {</span>
+                // this is because of the (senseless?) &quot;All files&quot; FileFilter
+<span class="nc" id="L632">                theImport.setSelectedSuffixFilter(null);</span>
+<span class="nc" id="L633">            }</span>
+<span class="nc" id="L634">            Globals.setLastDirectory(dir.getPath());</span>
+<span class="nc" id="L635">            theImport.disposeDialog();</span>
+
+<span class="nc" id="L637">            theImport.doFile();</span>
+<span class="nc" id="L638">        }</span>
+
+        /*
+         * @see javax.swing.JFileChooser#cancelSelection()
+         */
+        @Override
+        public void cancelSelection() {
+<span class="nc" id="L645">            theImport.disposeDialog();</span>
+<span class="nc" id="L646">        }</span>
+
+    }
+
+    /**
+     * Extended configuration panel for file import.  Built based on settings
+     * requested by the specific language importer.
+     */
+    class ConfigPanelExtension extends JPanel {
+
+
+        /**
+         * Construct the configuration extension panel.
+         * @param settings A list of settings requested by the language importer
+         */
+<span class="nc" id="L661">        public ConfigPanelExtension(final List&lt;Setting&gt; settings) {</span>
+
+<span class="nc" id="L663">            setLayout(new GridBagLayout());</span>
+            
+<span class="nc bnc" id="L665" title="All 4 branches missed.">            if (settings == null || settings.size() == 0) {</span>
+<span class="nc" id="L666">                JLabel label = new JLabel(&quot;No settings for this importer&quot;);</span>
+<span class="nc" id="L667">                add(label, createGridBagConstraints(true, false, false));</span>
+<span class="nc" id="L668">                add(new JPanel(), createGridBagConstraintsFinal()); </span>
+<span class="nc" id="L669">                return;</span>
+            }
+
+<span class="nc bnc" id="L672" title="All 2 branches missed.">            for (Setting setting : settings) {</span>
+<span class="nc bnc" id="L673" title="All 2 branches missed.">                if (setting instanceof UniqueSelection2) {</span>
+<span class="nc" id="L674">                    JLabel label = new JLabel(setting.getLabel());</span>
+<span class="nc" id="L675">                    add(label, createGridBagConstraints(true, false, false));</span>
+
+<span class="nc" id="L677">                    final UniqueSelection2 us = (UniqueSelection2) setting;</span>
+<span class="nc" id="L678">                    ButtonGroup group = new ButtonGroup();</span>
+<span class="nc" id="L679">                    int count = 0;</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">                    for (String option : us.getOptions()) {</span>
+<span class="nc" id="L681">                        JRadioButton button = new JRadioButton(option);</span>
+<span class="nc" id="L682">                        final int index = count++;</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">                        if (us.getDefaultSelection() == index) {</span>
+<span class="nc" id="L684">                            button.setSelected(true);</span>
+                        }
+<span class="nc" id="L686">                        group.add(button);</span>
+<span class="nc" id="L687">                        button.addActionListener(new ActionListener() {</span>
+                            public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L689">                                us.setSelection(index);</span>
+<span class="nc" id="L690">                            }</span>
+                        });
+<span class="nc" id="L692">                        add(button, createGridBagConstraints(false, false,</span>
+                                false));
+<span class="nc" id="L694">                    }</span>
+<span class="nc bnc" id="L695" title="All 2 branches missed.">                } else if (setting instanceof UserString2) {</span>
+<span class="nc" id="L696">                    JLabel label = new JLabel(setting.getLabel());</span>
+<span class="nc" id="L697">                    add(label, createGridBagConstraints(true, false, false));</span>
+<span class="nc" id="L698">                    final UserString2 us = (UserString2) setting;</span>
+<span class="nc" id="L699">                    final JTextField text = </span>
+<span class="nc" id="L700">                        new JTextField(us.getDefaultString());</span>
+<span class="nc" id="L701">                    text.addFocusListener(new FocusListener() {</span>
+<span class="nc" id="L702">                        public void focusGained(FocusEvent e) { } </span>
+                        public void focusLost(FocusEvent e) {
+<span class="nc" id="L704">                            us.setUserString(text.getText());           </span>
+<span class="nc" id="L705">                        }</span>
+                        
+                    });
+<span class="nc" id="L708">                    add(text, createGridBagConstraints(true, false, false));</span>
+<span class="nc bnc" id="L709" title="All 2 branches missed.">                } else if (setting instanceof BooleanSelection2) {</span>
+<span class="nc" id="L710">                    final BooleanSelection2 bs = (BooleanSelection2) setting;</span>
+<span class="nc" id="L711">                    final JCheckBox button = new JCheckBox(setting.getLabel());</span>
+<span class="nc" id="L712">                    button.setEnabled(bs.isSelected());</span>
+<span class="nc" id="L713">                    button.addActionListener(new ActionListener() {</span>
+                        public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L715">                            bs.setSelected(button.isSelected());</span>
+<span class="nc" id="L716">                        }</span>
+                    });
+<span class="nc" id="L718">                    add(button, createGridBagConstraints(true, false, false));</span>
+<span class="nc bnc" id="L719" title="All 2 branches missed.">                } else if (setting instanceof PathSelection) {</span>
+<span class="nc" id="L720">                    JLabel label = new JLabel(setting.getLabel());</span>
+<span class="nc" id="L721">                    add(label, createGridBagConstraints(true, false, false));</span>
+<span class="nc" id="L722">                    PathSelection ps = (PathSelection) setting;</span>
+                    // TODO: Need to add FileChooser 
+<span class="nc" id="L724">                    JTextField text = new JTextField(ps.getDefaultPath());</span>
+<span class="nc" id="L725">                    add(text, createGridBagConstraints(true, false, false));</span>
+                    // TODO: Update setting
+<span class="nc bnc" id="L727" title="All 2 branches missed.">                } else if (setting instanceof PathListSelection) {</span>
+<span class="nc" id="L728">                    PathListSelection pls = (PathListSelection) setting;</span>
+<span class="nc" id="L729">                    add(new ImportClasspathDialog(pls),</span>
+<span class="nc" id="L730">                            createGridBagConstraints(true, false, false));</span>
+<span class="nc" id="L731">                } else {</span>
+<span class="nc" id="L732">                    throw new RuntimeException(&quot;Unknown setting type requested &quot;</span>
+                            + setting);
+                }
+<span class="nc" id="L735">            }</span>
+<span class="nc" id="L736">            add(new JPanel(), createGridBagConstraintsFinal()); </span>
+<span class="nc" id="L737">        }</span>
+
+
+        /**
+         * Create a GridBagConstraints object to use with the layout.
+         * 
+         * @param topInset true to use a top inset 
+         * @param bottomInset true to use a bottom inset
+         * @param fill true to fill (horizontally)
+         * @return the grid bag constraints
+         */
+        private GridBagConstraints createGridBagConstraints(boolean topInset,
+                boolean bottomInset, boolean fill) {
+<span class="nc" id="L750">            GridBagConstraints gbc = new GridBagConstraints();</span>
+<span class="nc" id="L751">            gbc.gridx = GridBagConstraints.RELATIVE;</span>
+<span class="nc" id="L752">            gbc.gridy = GridBagConstraints.RELATIVE;</span>
+<span class="nc" id="L753">            gbc.gridwidth = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L754">            gbc.gridheight = 1;</span>
+<span class="nc" id="L755">            gbc.weightx = 1.0;</span>
+<span class="nc" id="L756">            gbc.weighty = 0.0;</span>
+<span class="nc" id="L757">            gbc.anchor = GridBagConstraints.NORTHWEST;</span>
+<span class="nc bnc" id="L758" title="All 2 branches missed.">            gbc.fill = fill ? GridBagConstraints.HORIZONTAL</span>
+                    : GridBagConstraints.NONE;
+<span class="nc bnc" id="L760" title="All 4 branches missed.">            gbc.insets = </span>
+                new Insets(
+                        topInset ? 5 : 0, 
+                                5, 
+                                bottomInset ? 5 : 0, 
+                                        5);
+<span class="nc" id="L766">            gbc.ipadx = 0;</span>
+<span class="nc" id="L767">            gbc.ipady = 0;</span>
+<span class="nc" id="L768">            return gbc;</span>
+        }
+
+        /**
+         * A GridBagConstraints for the last item to take up the rest of the
+         * space.
+         * 
+         * @return the GridBagConstraints object
+         */
+        private GridBagConstraints createGridBagConstraintsFinal() {
+<span class="nc" id="L778">            GridBagConstraints gbc = createGridBagConstraints(false, true,</span>
+                    false);
+<span class="nc" id="L780">            gbc.gridheight = GridBagConstraints.REMAINDER;</span>
+<span class="nc" id="L781">            gbc.weighty = 1.0;</span>
+<span class="nc" id="L782">            return gbc;</span>
+        }
+
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

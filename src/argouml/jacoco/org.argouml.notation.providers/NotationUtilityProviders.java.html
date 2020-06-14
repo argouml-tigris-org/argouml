@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationUtilityProviders.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.providers</a> &gt; <span class="el_source">NotationUtilityProviders.java</span></div><h1>NotationUtilityProviders.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *******************************************************************************
+ */
+
+package org.argouml.notation.providers;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
+
+/**
+ * Utility code for the classes in this package.
+ *
+ * @author Michiel van der Wulp
+ */
+<span class="nc" id="L28">class NotationUtilityProviders {</span>
+
+
+    static void addListenersForTransition(NotationProvider np, 
+            Object transition) {
+<span class="fc" id="L33">        np.addElementListener(transition, </span>
+                new String[] {&quot;guard&quot;, &quot;trigger&quot;, &quot;effect&quot;});
+
+<span class="fc" id="L36">        Object guard = Model.getFacade().getGuard(transition);</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (guard != null) {</span>
+<span class="fc" id="L38">            np.addElementListener(guard, &quot;expression&quot;);</span>
+            /* We are not interested in the name. */
+        }
+
+<span class="fc" id="L42">        List triggers = Model.getFacade().getTriggers(transition);</span>
+        
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (Object trigger : triggers) {</span>
+<span class="fc" id="L45">            addListenersForEvent(np, trigger);</span>
+<span class="fc" id="L46">        }</span>
+
+<span class="fc" id="L48">        Object effect = Model.getFacade().getEffect(transition);</span>
+<span class="fc" id="L49">        addListenersForAction(np, effect);</span>
+<span class="fc" id="L50">    }    </span>
+    
+    private static void addListenersForEvent(NotationProvider np, 
+            Object event) {
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (event != null) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">            if (Model.getFacade().isAEvent(event)) {</span>
+<span class="fc" id="L56">                np.addElementListener(event,</span>
+                        new String[] {
+                            &quot;parameter&quot;, &quot;name&quot;});
+            }
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (Model.getFacade().isATimeEvent(event)) {</span>
+<span class="fc" id="L61">                np.addElementListener(event, new String[] {&quot;when&quot;});</span>
+            }
+<span class="fc bfc" id="L63" title="All 2 branches covered.">            if (Model.getFacade().isAChangeEvent(event)) {</span>
+<span class="fc" id="L64">                np.addElementListener(event,</span>
+                        new String[] {&quot;changeExpression&quot;});
+            }
+            /* And the parameter names and values: */
+<span class="fc" id="L68">            Collection prms = Model.getFacade().getParameters(event);</span>
+<span class="fc" id="L69">            Iterator i = prms.iterator();</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            while (i.hasNext()) {</span>
+<span class="nc" id="L71">                Object parameter = i.next();</span>
+<span class="nc" id="L72">                np.addElementListener(parameter, </span>
+                      new String[] {&quot;defaultValue&quot;, &quot;name&quot;, &quot;type&quot;, &quot;kind&quot;});
+<span class="nc" id="L74">            }</span>
+        }
+<span class="fc" id="L76">    }</span>
+    
+    static void addListenersForAction(NotationProvider np, 
+            Object action) {
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (action != null) {</span>
+<span class="fc" id="L81">            np.addElementListener(action,</span>
+                    new String[] {
+                        &quot;script&quot;, &quot;actualArgument&quot;, &quot;action&quot;
+                    });
+            /* And the arguments: */
+<span class="fc" id="L86">            Collection args = Model.getFacade().getActualArguments(action);</span>
+<span class="fc" id="L87">            Iterator i = args.iterator();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">            while (i.hasNext()) {</span>
+<span class="fc" id="L89">                Object argument = i.next();</span>
+<span class="fc" id="L90">                np.addElementListener(argument, &quot;value&quot;);</span>
+<span class="fc" id="L91">            }</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">            if (Model.getFacade().isAActionSequence(action)) {</span>
+<span class="fc" id="L93">                Collection subactions = Model.getFacade().getActions(action);</span>
+<span class="fc" id="L94">                i = subactions.iterator();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">                while (i.hasNext()) {</span>
+<span class="fc" id="L96">                    Object a = i.next();</span>
+<span class="fc" id="L97">                    addListenersForAction(np, a);</span>
+<span class="fc" id="L98">                }</span>
+            }
+        }
+<span class="fc" id="L101">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

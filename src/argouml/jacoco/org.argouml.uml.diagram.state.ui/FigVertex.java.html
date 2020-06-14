@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigVertex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigVertex.java</span></div><h1>FigVertex.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2011-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ */
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.di.DiagramElement;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * A Fig that can represent a UML2 vertex. The current implementation
+ * is limited to just handling States. Other vertices are currently handled
+ * by different Figs but they will most likely all be handled here in future.
+ */
+<span class="nc bnc" id="L56" title="All 2 branches missed.">public class FigVertex extends FigNodeModelElement {</span>
+
+<span class="nc" id="L58">    private static final Logger LOG =</span>
+<span class="nc" id="L59">        Logger.getLogger(FigVertex.class.getName());</span>
+
+    private static final int MARGIN = 2;
+
+    private NotationProvider notationProviderBody;
+
+    /**
+     * The body for entry/exit/do actions
+     */
+    private FigBody bodyText;
+
+    private FigGroup regionCompartment;
+
+    /**
+     * Create a new instance of FigVertex
+     * @param owner the vertex that own this dagram element
+     * @param bounds the bounds of the diagram element
+     * @param settings the display settings for this diagram element
+     */
+    public FigVertex(Object owner, Rectangle bounds, DiagramSettings settings) {
+<span class="nc" id="L79">        super(owner, bounds, settings);</span>
+<span class="nc" id="L80">        this.allowRemoveFromDiagram(false);</span>
+
+<span class="nc" id="L82">        initialize();</span>
+
+<span class="nc" id="L84">        NotationName notation = Notation.findNotation(getNotationSettings()</span>
+<span class="nc" id="L85">                .getNotationLanguage());</span>
+<span class="nc" id="L86">        notationProviderBody = NotationProviderFactory2.getInstance()</span>
+<span class="nc" id="L87">                .getNotationProvider(NotationProviderFactory2.TYPE_STATEBODY,</span>
+<span class="nc" id="L88">                        getOwner(), this, notation);</span>
+<span class="nc" id="L89">        updateNameText();</span>
+
+<span class="nc" id="L91">        LOG.log(Level.INFO, &quot;Registering as listener&quot;);</span>
+<span class="nc" id="L92">        Model.getPump().addModelEventListener(this, getOwner(), &quot;region&quot;);</span>
+<span class="nc" id="L93">    }</span>
+
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+<span class="nc" id="L97">        LayerPerspective lp = (LayerPerspective) getLayer();</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (lp == null) {</span>
+<span class="nc" id="L99">            return;</span>
+        }
+
+<span class="nc" id="L102">        super.setEnclosingFig(encloser);</span>
+
+<span class="nc" id="L104">        Object region = null;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (encloser != null) {</span>
+            // Get the region as the first Region in the State.
+            // If there is no region in the StateMachine then create one.
+<span class="nc" id="L108">            List regions = Model.getStateMachinesHelper().getRegions(</span>
+<span class="nc" id="L109">                    encloser.getOwner());</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (regions.isEmpty()) {</span>
+                // There are no regions so create one and
+                // place the vertex there.
+<span class="nc" id="L113">                region = Model.getUmlFactory().buildNode(</span>
+<span class="nc" id="L114">                        Model.getMetaTypes().getRegion(), encloser.getOwner());</span>
+            } else {
+                // There are one or more regions so find the one that the
+                //vertex was dropped in
+<span class="nc" id="L118">                FigVertex compositeState = (FigVertex) encloser;</span>
+                for (DiagramElement de :
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                        compositeState.regionCompartment.getDiagramElements()) {</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                    if (((Fig) de).getBounds().contains(getBounds())) {</span>
+<span class="nc" id="L122">                        region = de.getOwner();</span>
+<span class="nc" id="L123">                        break;</span>
+                    }
+<span class="nc" id="L125">                }</span>
+            }
+<span class="nc" id="L127">        } else {</span>
+            // The vertex was dropped onto the diagram.
+            // Get the region as the first Region in the StateMachine.
+            // If there is no region in the StateMachine then create one.
+<span class="nc" id="L131">            ArgoDiagram diagram = (ArgoDiagram) lp.getDiagram();</span>
+<span class="nc" id="L132">            Object stateMachine = diagram.getOwner();</span>
+            List regions =
+<span class="nc" id="L134">                Model.getStateMachinesHelper().getRegions(stateMachine);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if (regions.isEmpty()) {</span>
+<span class="nc" id="L136">                region = Model.getUmlFactory().buildNode(</span>
+<span class="nc" id="L137">                        Model.getMetaTypes().getRegion(), stateMachine);</span>
+            } else {
+<span class="nc" id="L139">                region = regions.get(0);</span>
+            }
+        }
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (region != null</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().getContainer(getOwner()) != region) {</span>
+<span class="nc" id="L144">            Model.getStateMachinesHelper().setContainer(getOwner(), region);</span>
+        }
+<span class="nc" id="L146">    }</span>
+
+    @Override
+    public Selection makeSelection() {
+<span class="nc" id="L150">        return new SelectionVertex(this);</span>
+    }
+
+    @Override
+    protected Fig createBigPortFig() {
+<span class="nc" id="L155">        return new FigRRect(0, 0, 0, 0, LINE_COLOR, FILL_COLOR);</span>
+    }
+
+    private void initialize() {
+<span class="nc" id="L159">        getNameFig().setLineWidth(0);</span>
+<span class="nc" id="L160">        getNameFig().setFilled(false);</span>
+
+<span class="nc" id="L162">        bodyText = new FigBody(0, 0, 0, 0);</span>
+<span class="nc" id="L163">        regionCompartment = new FigRegionCompartment(0, 0, 0, 0);</span>
+
+<span class="nc" id="L165">        addFig(getBigPort());</span>
+<span class="nc" id="L166">        addFig(getNameFig());</span>
+<span class="nc" id="L167">        addFig(getBodyText());</span>
+<span class="nc" id="L168">        addFig(regionCompartment);</span>
+
+<span class="nc" id="L170">        setBounds(getBounds());</span>
+<span class="nc" id="L171">    }</span>
+
+    /*
+     * @see
+     * org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders
+     * (java.lang.Object)
+     */
+    @Override
+    protected void initNotationProviders(Object own) {
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        if (notationProviderBody != null) {</span>
+<span class="nc" id="L181">            notationProviderBody.cleanListener();</span>
+        }
+<span class="nc" id="L183">        super.initNotationProviders(own);</span>
+<span class="nc" id="L184">        NotationName notation = Notation.findNotation(getNotationSettings()</span>
+<span class="nc" id="L185">                .getNotationLanguage());</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        if (Model.getFacade().isAState(own)) {</span>
+<span class="nc" id="L187">            notationProviderBody = NotationProviderFactory2.getInstance()</span>
+<span class="nc" id="L188">                    .getNotationProvider(</span>
+                            NotationProviderFactory2.TYPE_STATEBODY, own, this,
+                            notation);
+        }
+<span class="nc" id="L192">    }</span>
+
+    // Temporary start
+//    private static final Color[] COLOR_ARRAY = {
+//        Color.RED, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN};
+//    private int nextColor = 0;
+    // Temporary end
+
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+<span class="nc" id="L202">        super.modelChanged(mee);</span>
+
+<span class="nc bnc" id="L204" title="All 4 branches missed.">        assert (mee.getPropertyName().equals(&quot;region&quot;));</span>
+
+<span class="nc bnc" id="L206" title="All 2 branches missed.">        if (mee instanceof AddAssociationEvent) {</span>
+            // TODO: Before adding a new region make the last region
+            // its minimum size (smallest size that will still
+            // contain all enclosed)
+
+<span class="nc" id="L211">            Object newRegion = mee.getNewValue();</span>
+<span class="nc" id="L212">            FigRegion rg = new FigRegion(newRegion);</span>
+<span class="nc" id="L213">            rg.setBounds(</span>
+<span class="nc" id="L214">                    regionCompartment.getX(), regionCompartment.getY(),</span>
+<span class="nc" id="L215">                    rg.getMinimumSize().width, rg.getMinimumSize().height);</span>
+
+            // Temporary start - colour the regions so that we can
+            // see them for now
+//            rg.setFillColor(COLOR_ARRAY[nextColor++]);
+//            if (nextColor &gt;= COLOR_ARRAY.length) {
+//                nextColor = 0;
+//            }
+            // Temporary end
+
+<span class="nc" id="L225">            regionCompartment.addFig(rg);</span>
+<span class="nc" id="L226">            setSize(getMinimumSize());</span>
+        }
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (mee instanceof RemoveAssociationEvent) {</span>
+<span class="nc" id="L229">            Object oldRegion = mee.getNewValue();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">            for (DiagramElement de : regionCompartment.getDiagramElements()) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">                if (de.getOwner() == oldRegion) {</span>
+<span class="nc" id="L232">                    regionCompartment.removeFig((Fig) de);</span>
+                    // TODO: After removing a region reset the overall
+                    // size of the node.
+<span class="nc" id="L235">                    renderingChanged();</span>
+<span class="nc" id="L236">                    damage();</span>
+                }
+<span class="nc" id="L238">            }</span>
+<span class="nc" id="L239">            LOG.log(Level.FINE, &quot;Removing region {0}&quot;, oldRegion);</span>
+        }
+<span class="nc" id="L241">    }</span>
+
+    /*
+     * @see
+     * org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
+     */
+    @Override
+    public void removeFromDiagramImpl() {
+<span class="nc bnc" id="L249" title="All 2 branches missed.">        if (notationProviderBody != null) {</span>
+<span class="nc" id="L250">            notationProviderBody.cleanListener();</span>
+        }
+<span class="nc" id="L252">        super.removeFromDiagramImpl();</span>
+<span class="nc" id="L253">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    @Override
+    public void renderingChanged() {
+<span class="nc" id="L260">        super.renderingChanged();</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (notationProviderBody != null) {</span>
+<span class="nc" id="L262">            bodyText.setText(notationProviderBody.toString(getOwner(),</span>
+<span class="nc" id="L263">                    getNotationSettings()));</span>
+        }
+<span class="nc" id="L265">        calcBounds();</span>
+<span class="nc" id="L266">        setBounds(getBounds());</span>
+<span class="nc" id="L267">    }</span>
+
+    private FigText getBodyText() {
+<span class="nc" id="L270">        return bodyText;</span>
+    }
+
+    @Override
+    protected void textEditStarted(FigText ft) {
+<span class="nc" id="L275">        super.textEditStarted(ft);</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">        if (ft == bodyText) {</span>
+<span class="nc" id="L277">            showHelp(notationProviderBody.getParsingHelp());</span>
+        }
+<span class="nc" id="L279">    }</span>
+
+    @Override
+    public void textEdited(FigText ft) throws PropertyVetoException {
+<span class="nc" id="L283">        super.textEdited(ft);</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (ft == getBodyText()) {</span>
+<span class="nc" id="L285">            notationProviderBody.parse(getOwner(), ft.getText());</span>
+<span class="nc" id="L286">            ft.setText(notationProviderBody.toString(getOwner(),</span>
+<span class="nc" id="L287">                    getNotationSettings()));</span>
+        }
+<span class="nc" id="L289">    }</span>
+
+    public void notationRenderingChanged(
+            NotationProvider np,
+            String rendering) {
+<span class="nc" id="L294">        super.notationRenderingChanged(np, rendering);</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (notationProviderBody == np) {</span>
+<span class="nc" id="L296">            bodyText.setText(rendering);</span>
+<span class="nc" id="L297">            updateBounds();</span>
+<span class="nc" id="L298">            damage();</span>
+        }
+<span class="nc" id="L300">    }</span>
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+<span class="nc" id="L303">        return getNotationSettings();</span>
+    }
+
+    public Object getOwner(NotationProvider np) {
+<span class="nc" id="L307">        return getOwner();</span>
+    }
+
+    public Dimension getMinimumSize() {
+<span class="nc" id="L311">        final Dimension nameSize = getNameFig().getMinimumSize();</span>
+<span class="nc" id="L312">        final Dimension bodySize = getBodyText().getMinimumSize();</span>
+
+<span class="nc" id="L314">        int h = getTopMargin()</span>
+            + nameSize.height
+<span class="nc" id="L316">            + getBottomMargin();</span>
+
+<span class="nc" id="L318">        h += regionCompartment.getMinimumSize().height;</span>
+
+<span class="nc bnc" id="L320" title="All 2 branches missed.">        if (getBodyText().getText().length() &gt; 0) {</span>
+<span class="nc" id="L321">            h += bodySize.height;</span>
+        }
+
+<span class="nc" id="L324">        int w = getLeftMargin()</span>
+<span class="nc" id="L325">            + Math.max(nameSize.width, bodySize.width)</span>
+<span class="nc" id="L326">            + getRightMargin();</span>
+
+<span class="nc bnc" id="L328" title="All 2 branches missed.">        if (Model.getFacade().isACompositeState(getOwner())) {</span>
+<span class="nc" id="L329">            w = Math.max(180, w);</span>
+<span class="nc" id="L330">            h = Math.max(150, h);</span>
+        } else {
+<span class="nc" id="L332">            w = Math.max(80, w);</span>
+<span class="nc" id="L333">            h = Math.max(40, h);</span>
+        }
+
+<span class="nc" id="L336">        return new Dimension(w, h);</span>
+    }
+
+    public boolean getUseTrapRect() {
+<span class="nc" id="L340">        return true;</span>
+    }
+
+    public List&lt;Rectangle&gt; getTrapRects() {
+<span class="nc" id="L344">        List regions = Model.getStateMachinesHelper().getRegions(getOwner());</span>
+
+<span class="nc" id="L346">        ArrayList&lt;Rectangle&gt; rects = new ArrayList&lt;Rectangle&gt;(regions.size());</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">        if (regions.isEmpty()) {</span>
+<span class="nc" id="L348">            rects.add(regionCompartment.getBounds());</span>
+        } else {
+<span class="nc bnc" id="L350" title="All 2 branches missed.">            for (DiagramElement f : regionCompartment.getDiagramElements()) {</span>
+<span class="nc" id="L351">                rects.add(((Fig) f).getBounds());</span>
+<span class="nc" id="L352">            }</span>
+        }
+<span class="nc" id="L354">        return rects;</span>
+    }
+
+    protected void setStandardBounds(int x, int y, int w, int h) {
+<span class="nc" id="L358">        Dimension nameSize = getNameFig().getMinimumSize();</span>
+<span class="nc" id="L359">        Dimension bodySize = getBodyText().getMinimumSize();</span>
+
+<span class="nc" id="L361">        getNameFig().setBounds(</span>
+<span class="nc" id="L362">                x + getLeftMargin(), y + getTopMargin(),</span>
+<span class="nc" id="L363">                w - getLeftMargin() - getRightMargin(), nameSize.height);</span>
+
+
+
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (getBodyText().getText().length() &gt; 0) {</span>
+<span class="nc" id="L368">            getBodyText().setBounds(</span>
+<span class="nc" id="L369">                    x + getLeftMargin(), y + getTopMargin() + nameSize.height,</span>
+                    bodySize.width,
+                    bodySize.height);
+        } else {
+<span class="nc" id="L373">            getBodyText().setBounds(</span>
+<span class="nc" id="L374">                    x + getLeftMargin(), y + getTopMargin() + nameSize.height,</span>
+                    bodySize.width,
+                    1);
+        }
+
+<span class="nc" id="L379">        regionCompartment.setBounds(</span>
+<span class="nc" id="L380">                x + getLeftMargin(),</span>
+<span class="nc" id="L381">                getBodyText().getY() + getBodyText().getHeight(),</span>
+<span class="nc" id="L382">                w - getLeftMargin() - getRightMargin(),</span>
+<span class="nc" id="L383">                h - getTopMargin() - getBottomMargin()</span>
+<span class="nc" id="L384">                    - getNameFig().getHeight() - getBodyText().getHeight());</span>
+
+<span class="nc" id="L386">        getBigPort().setBounds(x, y, w, h);</span>
+
+<span class="nc" id="L388">        calcBounds(); // _x = x; _y = y; _w = w; _h = h;</span>
+<span class="nc" id="L389">    }</span>
+
+
+
+    int getRightMargin() {
+<span class="nc" id="L394">        return MARGIN;</span>
+    }
+
+    int getLeftMargin() {
+<span class="nc" id="L398">        return MARGIN;</span>
+    }
+
+    int getTopMargin() {
+<span class="nc" id="L402">        return MARGIN;</span>
+    }
+
+    int getBottomMargin() {
+<span class="nc" id="L406">        return MARGIN;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L413">        Vector popUpActions = super.getPopUpActions(me);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">        if (TargetManager.getInstance().getTargets().size() == 1) {</span>
+<span class="nc" id="L415">            popUpActions.add(</span>
+<span class="nc" id="L416">                    popUpActions.size() - getPopupAddOffset(),</span>
+                    new ActionCreateContainedModelElement(
+<span class="nc" id="L418">                            Model.getMetaTypes().getRegion(), getOwner()));</span>
+        }
+<span class="nc" id="L420">        return popUpActions;</span>
+    }
+
+    /**
+     * The text Fig that displays the body of the actions on the state
+     *
+     * @author Bob Tarling
+     */
+    private class FigBody extends FigText {
+<span class="nc" id="L429">        public FigBody(int x, int y, int width, int height) {</span>
+<span class="nc" id="L430">            super (x, y, width, height);</span>
+<span class="nc" id="L431">            setFont(getSettings().getFont(Font.PLAIN));</span>
+<span class="nc" id="L432">            setTextColor(TEXT_COLOR);</span>
+<span class="nc" id="L433">            setLineWidth(0);</span>
+<span class="nc" id="L434">            setFilled(false);</span>
+<span class="nc" id="L435">            setExpandOnly(true);</span>
+<span class="nc" id="L436">            setReturnAction(FigText.INSERT);</span>
+<span class="nc" id="L437">            setJustification(FigText.JUSTIFY_LEFT);</span>
+<span class="nc" id="L438">        }</span>
+    }
+
+    /**
+     * The text Fig that displays the body of the actions on the state
+     *
+     * @author Bob Tarling
+     */
+    private class FigRegionCompartment extends FigGroup {
+<span class="nc" id="L447">        public FigRegionCompartment(int x, int y, int width, int height) {</span>
+<span class="nc" id="L448">            super();</span>
+<span class="nc" id="L449">        }</span>
+
+        @Override
+        protected void setBoundsImpl(
+                final int x,
+                int y,
+                final int w,
+                int h) {
+
+<span class="nc" id="L458">            _x = x;</span>
+<span class="nc" id="L459">            _y = y;</span>
+<span class="nc" id="L460">            _w = w;</span>
+<span class="nc" id="L461">            _h = h;</span>
+
+<span class="nc bnc" id="L463" title="All 2 branches missed.">            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {</span>
+<span class="nc" id="L464">                Fig fig = (Fig) it.next();</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">                if (it.hasNext()) {</span>
+<span class="nc" id="L466">                    fig.setBounds(x, y, w, fig.getMinimumSize().height);</span>
+<span class="nc" id="L467">                    h -= fig.getMinimumSize().height;</span>
+                } else {
+<span class="nc" id="L469">                    fig.setBounds(x, y, w, h);</span>
+                }
+<span class="nc" id="L471">                y += fig.getHeight();</span>
+<span class="nc" id="L472">            }</span>
+<span class="nc" id="L473">        }</span>
+
+
+        @Override
+        public Dimension getMinimumSize() {
+<span class="nc" id="L478">            int minWidth = 0;</span>
+<span class="nc" id="L479">            int minHeight = 0;</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {</span>
+<span class="nc" id="L481">                Fig fig = (Fig) it.next();</span>
+<span class="nc" id="L482">                minWidth = Math.max(fig.getMinimumSize().width, minWidth);</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">                if (it.hasNext()) {</span>
+<span class="nc" id="L484">                    minHeight += fig.getHeight();</span>
+                } else {
+<span class="nc" id="L486">                    minHeight += fig.getMinimumSize().height;</span>
+                }
+<span class="nc" id="L488">            }</span>
+
+<span class="nc" id="L490">            return new Dimension(minWidth, minHeight);</span>
+        }
+
+        public void paint(Graphics g) {
+<span class="nc" id="L494">            super.paint(g);</span>
+
+<span class="nc bnc" id="L496" title="All 2 branches missed.">            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {</span>
+<span class="nc" id="L497">                Fig fig = (Fig) it.next();</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">                if (it.hasNext()) {</span>
+<span class="nc" id="L499">                    g.setColor(getLineColor());</span>
+
+<span class="nc" id="L501">                    drawDashedLine(</span>
+                            g, 1,
+<span class="nc" id="L503">                            fig.getX(),</span>
+<span class="nc" id="L504">                            fig.getY() + fig.getHeight(),</span>
+<span class="nc" id="L505">                            fig.getX() + fig.getWidth(),</span>
+<span class="nc" id="L506">                            fig.getY() + fig.getHeight(),</span>
+                            0, new float [] {
+                                5.0f, 5.0f },
+                            10);
+                }
+<span class="nc" id="L511">            }</span>
+
+<span class="nc" id="L513">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

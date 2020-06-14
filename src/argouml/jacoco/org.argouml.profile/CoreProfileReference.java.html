@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoreProfileReference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile</a> &gt; <span class="el_source">CoreProfileReference.java</span></div><h1>CoreProfileReference.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+/**
+ * This class provides the base referencing and URL for ArgoUML core profiles.
+ *
+ * @author Luis Sergio Oliveira (euluis)
+ */
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">public class CoreProfileReference extends ProfileReference {</span>
+    
+<span class="fc" id="L51">    static String PROFILES_RESOURCE_PATH = </span>
+        &quot;/org/argouml/profile/profiles/uml14/&quot;;
+    
+<span class="fc" id="L54">    static String PROFILES_BASE_URL = </span>
+        &quot;http://argouml.org/profiles/uml14/&quot;;
+
+    /**
+     * Constructor, which builds a ProfileReference for ArgoUML core profiles 
+     * by: 
+     * &lt;li&gt;prefixing the fileName with {@link #PROFILES_RESOURCE_PATH} and 
+     * using this as the path;&lt;/li&gt;
+     * &lt;li&gt;and prefixing the fileName with {@link #PROFILES_BASE_URL} and 
+     * using this as the publicReference.&lt;/li&gt;
+     * 
+     * @param fileName the profile file name.
+     * @throws MalformedURLException if the built URL is incorrect.
+     */
+    public CoreProfileReference(String fileName) throws MalformedURLException {
+<span class="fc" id="L69">        super(PROFILES_RESOURCE_PATH + fileName, </span>
+            new URL(PROFILES_BASE_URL + fileName));
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">        assert fileName != null </span>
+            : &quot;null isn't acceptable as the profile file name.&quot;;
+<span class="pc bpc" id="L73" title="1 of 4 branches missed.">        assert !&quot;&quot;.equals(fileName)</span>
+        : &quot;the empty string isn't acceptable as the profile file name.&quot;;
+<span class="fc" id="L75">    }</span>
+    
+    /**
+     * Sets the directory name where the profiles can be found. Initially,
+     * 'uml14' is used. TODO: Intermediate solution for UML 2.x support,
+     * please implement a better solution.
+     * 
+     * @param dir Name of the directory for the profiles
+     */
+    public static void setProfileDirectory(String dir) {
+<span class="nc" id="L85">        PROFILES_RESOURCE_PATH = &quot;/org/argouml/profile/profiles/&quot; + dir + '/';</span>
+<span class="nc" id="L86">        PROFILES_BASE_URL = &quot;http://argouml.org/profiles/&quot; + dir + '/';</span>
+<span class="nc" id="L87">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

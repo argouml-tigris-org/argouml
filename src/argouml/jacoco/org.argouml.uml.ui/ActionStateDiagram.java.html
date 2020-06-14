@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionStateDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">ActionStateDiagram.java</span></div><h1>ActionStateDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+
+/**
+ * Action to create a new statechart diagram.
+ */
+public class ActionStateDiagram extends ActionNewDiagram {
+
+    /**
+     * Constructor.
+     */
+    public ActionStateDiagram() {
+<span class="fc" id="L60">        super(&quot;action.state-diagram&quot;);</span>
+<span class="fc" id="L61">    }</span>
+
+    protected ArgoDiagram createDiagram(Object namespace, 
+            DiagramSettings settings) {
+<span class="fc" id="L65">        Object machine = buildMachine(namespace, getTarget(namespace));</span>
+        
+<span class="fc" id="L67">        return DiagramFactory.getInstance().create(</span>
+                DiagramFactory.DiagramType.State,
+                machine, settings);
+    }
+    
+
+    private Object getTarget(Object namespace) {
+<span class="fc" id="L74">        Object target = TargetManager.getInstance().getModelTarget();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (Model.getFacade().isAUMLElement(target) </span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                &amp;&amp; Model.getModelManagementHelper().isReadOnly(target)) {</span>
+<span class="nc" id="L77">            target = namespace;</span>
+        }
+<span class="fc" id="L79">        return target;</span>
+    }
+
+    private Object buildMachine(Object namespace, Object target) {
+<span class="fc" id="L83">        Object machine = null;</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (Model.getStateMachinesHelper().isAddingStatemachineAllowed(</span>
+              target)) {
+            /* The target is a valid context. */
+<span class="fc" id="L87">            machine = Model.getStateMachinesFactory().buildStateMachine(target);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        } else if (Model.getFacade().isAStateMachine(target)</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                &amp;&amp; hasNoDiagramYet(target)) {</span>
+            /* This target is a statemachine, 
+             * for which no diagram exists yet, 
+             * so, let's use it. */
+<span class="nc" id="L93">            machine = target;</span>
+        } else {
+            /* Let's just build a Statemachine, 
+             * and put it in a suitable namespace. */
+<span class="fc" id="L97">            machine = Model.getStateMachinesFactory().createStateMachine();</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (Model.getFacade().isANamespace(target)) {</span>
+<span class="nc" id="L99">                namespace = target;</span>
+                /* Follow well-formedness rule for a Class [2].
+                 * Determine the owning namespace for the statemachine: */
+<span class="nc bnc" id="L102" title="All 2 branches missed.">                while (Model.getFacade().isAClass(namespace)) {</span>
+<span class="nc" id="L103">                    Object parent = Model.getFacade().getNamespace(namespace);</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                    if (parent == null) {</span>
+<span class="nc" id="L105">                        break;</span>
+                    }
+<span class="nc" id="L107">                    namespace = parent;</span>
+<span class="nc" id="L108">                }</span>
+            }
+<span class="fc" id="L110">            Model.getCoreHelper().setNamespace(machine, namespace);</span>
+            
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {</span>
+<span class="fc" id="L113">                Model.getStateMachinesFactory()</span>
+<span class="fc" id="L114">                    .buildCompositeStateOnStateMachine(machine);</span>
+            }
+        }
+<span class="fc" id="L117">        return machine;</span>
+    }
+    
+    private boolean hasNoDiagramYet(Object machine) {
+<span class="nc" id="L121">        Project p = ProjectManager.getManager().getCurrentProject();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (ArgoDiagram d : p.getDiagramList()) {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if (d instanceof UMLStateDiagram) {</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                if (((UMLStateDiagram) d).getStateMachine() == machine) {</span>
+<span class="nc" id="L125">                    return false;</span>
+                }
+            }
+<span class="nc" id="L128">        }</span>
+<span class="nc" id="L129">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

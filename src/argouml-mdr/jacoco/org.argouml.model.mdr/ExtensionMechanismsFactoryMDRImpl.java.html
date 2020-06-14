@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExtensionMechanismsFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">ExtensionMechanismsFactoryMDRImpl.java</span></div><h1>ExtensionMechanismsFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.CoreHelper;
+import org.argouml.model.ExtensionMechanismsFactory;
+import org.argouml.model.ExtensionMechanismsHelper;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.TaggedValue;
+
+/**
+ * Factory to create UML classes for the UML ExtensionMechanisms
+ * package.&lt;p&gt;
+ * 
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * &lt;p&gt;
+ * derived from NSUML implementation by:
+ * @author Thierry Lach
+ */
+class ExtensionMechanismsFactoryMDRImpl extends
+        AbstractUmlModelFactoryMDR implements ExtensionMechanismsFactory {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * The extension mechanism helper.
+     */
+    private ExtensionMechanismsHelper extensionHelper;
+
+    /**
+     * Don't allow instantiation.
+     * 
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L84">    ExtensionMechanismsFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L85">        modelImpl = implementation;</span>
+<span class="fc" id="L86">        extensionHelper = implementation.getExtensionMechanismsHelper();</span>
+<span class="fc" id="L87">    }</span>
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsFactory#createTaggedValue()
+     */
+    public TaggedValue createTaggedValue() {
+<span class="nc" id="L93">        TaggedValue tv = modelImpl.getUmlPackage().getCore().getTaggedValue().</span>
+<span class="nc" id="L94">                createTaggedValue();</span>
+<span class="nc" id="L95">        super.initialize(tv);</span>
+<span class="nc" id="L96">        return tv;</span>
+    }
+
+    /**
+     * Get an instance of a UML TagDefinition.
+     * 
+     * @param tagName The name of the TagDefinition to create/retrieve
+     * @return an initialized UML TaggedValue instance.
+     */
+    TagDefinition getTagDefinition(String tagName) {
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (tagName == null) {</span>
+<span class="nc" id="L107">            throw new IllegalArgumentException(&quot;Argument may not be null&quot;);</span>
+        }
+        
+        // Look for a TagDefinition matching the given name
+<span class="nc" id="L111">        for (Iterator i = modelImpl.getUmlPackage().getCore().getTagDefinition()</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">                .refAllOfClass().iterator(); i.hasNext();) {</span>
+<span class="nc" id="L113">            TagDefinition td = (TagDefinition) i.next();</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">            if (tagName.equals(td.getName())) {</span>
+<span class="nc" id="L115">                return td;</span>
+            }
+<span class="nc" id="L117">        }</span>
+        
+        // Create a new TagDefinition if none found
+<span class="nc" id="L120">        Object rootModel = modelImpl.getModelManagementFactory().getRootModel();</span>
+<span class="nc" id="L121">        TagDefinition td = buildTagDefinition(tagName, null, rootModel);</span>
+
+<span class="nc" id="L123">        super.initialize(td);</span>
+<span class="nc" id="L124">        return td;</span>
+    }
+
+    /*
+     * TODO: MVW: This needs rethinking/rework! I have the following questions:
+     * Why does it not search for a stereotype in the namespace using properties
+     * and only create a new stereotype if it will actually be used? Ie, why is
+     * there not a getStereotype(String name, String baseClass)? (edited by
+     * d00mst)  &lt;these comments imported from NSUML implementation - tfm&gt;
+     * 
+     * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public Stereotype buildStereotype(
+            Object theModelElementObject,
+            Object theName,
+            Object theNamespaceObject) {
+        
+<span class="nc bnc" id="L141" title="All 6 branches missed.">        if (theModelElementObject == null || theName == null</span>
+                || theNamespaceObject == null) {
+<span class="nc" id="L143">            throw new IllegalArgumentException(</span>
+                    &quot;one of the arguments is null: modelElement=&quot;
+                    + theModelElementObject
+                    + &quot; name=&quot; + theName
+                    + &quot; namespace=&quot; + theNamespaceObject);
+        }
+        
+<span class="nc" id="L150">        ModelElement me = (ModelElement) theModelElementObject;</span>
+        
+<span class="nc" id="L152">        String text = (String) theName;</span>
+<span class="nc" id="L153">        Namespace ns = (Namespace) theNamespaceObject;</span>
+<span class="nc" id="L154">        Stereotype stereo = buildStereotype(text);</span>
+<span class="nc" id="L155">        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));</span>
+        // TODO: this doesn't look right - review - tfm
+<span class="nc" id="L157">        Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(ns,</span>
+                stereo);
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        if (stereo2 != null) {</span>
+<span class="nc" id="L160">            me.getStereotype().add(stereo2);</span>
+<span class="nc" id="L161">            modelImpl.getUmlFactory().delete(stereo);</span>
+<span class="nc" id="L162">            return stereo2;</span>
+        }
+<span class="nc" id="L164">        stereo.setNamespace(ns);</span>
+<span class="nc" id="L165">        me.getStereotype().add(stereo);</span>
+<span class="nc" id="L166">        return stereo;</span>
+    }
+
+
+    public Stereotype buildStereotype(
+            Object theModelElementObject,
+            String theName,
+            Object model,
+            Collection models) {
+        
+<span class="nc" id="L176">        ModelElement me = (ModelElement) theModelElementObject;</span>
+
+<span class="nc" id="L178">        Stereotype stereo = buildStereotype(theName);</span>
+<span class="nc" id="L179">        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));</span>
+<span class="nc" id="L180">        Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(models,</span>
+                stereo);
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (stereo2 != null) {</span>
+<span class="nc" id="L183">            me.getStereotype().add(stereo2);</span>
+<span class="nc" id="L184">            modelImpl.getUmlFactory().delete(stereo);</span>
+<span class="nc" id="L185">            return stereo2;</span>
+        }
+<span class="nc" id="L187">        stereo.setNamespace((org.omg.uml.modelmanagement.Model) model);</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        if (me != null) {</span>
+<span class="nc" id="L189">            me.getStereotype().add(stereo);</span>
+        }
+<span class="nc" id="L191">        return stereo;</span>
+    }
+
+    /*
+     * Builds an initialized stereotype with no namespace. A stereotype must
+     * have a namespace so this method is unsafe. Use buildStereotype(String,
+     * Object).
+     * 
+     * @param text
+     *            is the name of the stereotype
+     * @return an initialized stereotype.
+     */
+    private Stereotype buildStereotype(String text) {
+<span class="nc" id="L204">        Stereotype stereotype = modelImpl.getUmlPackage().getCore().</span>
+<span class="nc" id="L205">                getStereotype().createStereotype();</span>
+<span class="nc" id="L206">        super.initialize(stereotype);</span>
+<span class="nc" id="L207">        stereotype.setName(text);</span>
+<span class="nc" id="L208">        return stereotype;</span>
+    }
+
+
+    public Stereotype buildStereotype(String text, Object namespace) {
+<span class="nc bnc" id="L213" title="All 2 branches missed.">        if (!(namespace instanceof Namespace)) {</span>
+<span class="nc" id="L214">            throw new IllegalArgumentException(</span>
+                    &quot;Namespace is wrong type - text:&quot; + text + &quot;,ns:&quot;
+                            + namespace);
+        }
+<span class="nc" id="L218">        Namespace ns = (Namespace) namespace;</span>
+<span class="nc" id="L219">        org.omg.uml.UmlPackage umlPkg = ((org.omg.uml.UmlPackage) ns</span>
+<span class="nc" id="L220">                .refOutermostPackage());</span>
+<span class="nc" id="L221">        Stereotype stereotype = umlPkg.getCore().getStereotype()</span>
+<span class="nc" id="L222">                .createStereotype();</span>
+<span class="nc" id="L223">        super.initialize(stereotype);</span>
+<span class="nc" id="L224">        stereotype.setName(text);</span>
+<span class="nc" id="L225">        stereotype.setNamespace(ns);</span>
+<span class="nc" id="L226">        return stereotype;</span>
+    }
+
+
+    @Deprecated
+    public TaggedValue buildTaggedValue(String tag, String value) {
+<span class="nc" id="L232">        TaggedValue tv = buildTaggedValue(getTagDefinition(tag));</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (value != null) {</span>
+<span class="nc" id="L234">            tv.getDataValue().add(value);</span>
+        }
+<span class="nc" id="L236">        return tv;</span>
+    }
+
+    private TaggedValue buildTaggedValue(TagDefinition type) {
+<span class="nc" id="L240">        TaggedValue tv = createTaggedValue();</span>
+<span class="nc" id="L241">        tv.setType(type);</span>
+<span class="nc" id="L242">        return tv;</span>
+    }
+    
+    public TaggedValue buildTaggedValue(Object type, String[] values) {
+<span class="nc bnc" id="L246" title="All 2 branches missed.">        if (!(type instanceof TagDefinition)) {</span>
+<span class="nc" id="L247">            throw new IllegalArgumentException(</span>
+                    &quot;TagDefinition required, received - &quot; + type);
+        }
+<span class="nc" id="L250">        TaggedValue tv = buildTaggedValue((TagDefinition) type);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">        for (String value : values) {</span>
+<span class="nc" id="L252">            tv.getDataValue().add(value);</span>
+        }
+<span class="nc" id="L254">        return tv;</span>
+    }
+
+
+    public void copyTaggedValues(Object source, Object target) {    
+<span class="nc bnc" id="L259" title="All 4 branches missed.">        if (!(source instanceof ModelElement)</span>
+                || !(target instanceof ModelElement)) {
+<span class="nc" id="L261">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L264">        Iterator it = ((ModelElement) source).getTaggedValue().iterator();</span>
+<span class="nc" id="L265">        Collection taggedValues = ((ModelElement) target).getTaggedValue();</span>
+        // Clear target so that multiple copies have no effect 
+        // (other than inefficiency)
+<span class="nc" id="L268">        taggedValues.clear();</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L270">            taggedValues.add(copyTaggedValue((TaggedValue) it.next()));</span>
+        }
+<span class="nc" id="L272">    }</span>
+    
+    /**
+     * Copy a single TaggedValue and return the copy.
+     * 
+     * @param source the TaggedValue to copy
+     * @return the newly cloned copy
+     */
+    private Object copyTaggedValue(TaggedValue source) {
+<span class="nc" id="L281">        TaggedValue tv = createTaggedValue();</span>
+<span class="nc" id="L282">        tv.setType(source.getType());</span>
+<span class="nc" id="L283">        tv.getDataValue().addAll(source.getDataValue());</span>
+<span class="nc" id="L284">        tv.getReferenceValue().addAll(source.getReferenceValue());</span>
+<span class="nc" id="L285">        return tv;</span>
+    }
+
+    /**
+     * @param elem
+     *            the stereotype
+     */
+    void deleteStereotype(Object elem) {
+<span class="nc bnc" id="L293" title="All 2 branches missed.">        if (!(elem instanceof Stereotype)) {</span>
+<span class="nc" id="L294">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L296">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L297">                ((Stereotype) elem).getDefinedTag());</span>
+<span class="nc" id="L298">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L299">                ((Stereotype) elem).getStereotypeConstraint());</span>
+<span class="nc" id="L300">    }</span>
+
+    /**
+     * @param elem
+     *            the taggedvalue
+     */
+    void deleteTaggedValue(Object elem) {
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        if (!(elem instanceof TaggedValue)) {</span>
+<span class="nc" id="L308">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L310">    }</span>
+
+    /**
+     * Delete a TagDefinition.
+     * 
+     * @param elem the element to be deleted
+     */
+    void deleteTagDefinition(Object elem) {
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        if (!(elem instanceof TagDefinition)) {</span>
+<span class="nc" id="L319">            throw new IllegalArgumentException();</span>
+        }
+        // Delete all TaggedValues with this type
+<span class="nc" id="L322">        TagDefinition td = (TagDefinition) elem;</span>
+<span class="nc" id="L323">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L324">                ((org.omg.uml.UmlPackage) td.refOutermostPackage()).getCore()</span>
+<span class="nc" id="L325">                        .getATypeTypedValue().getTypedValue(td));</span>
+<span class="nc" id="L326">    }</span>
+
+
+    public Object copyStereotype(Object source, Object ns) {
+<span class="nc bnc" id="L330" title="All 2 branches missed.">        if (!(source instanceof Stereotype)) {</span>
+<span class="nc" id="L331">            throw new IllegalArgumentException(&quot;source&quot;);</span>
+        }
+<span class="nc bnc" id="L333" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L334">            throw new IllegalArgumentException(&quot;namespace&quot;);</span>
+        }
+
+<span class="nc" id="L337">        Stereotype st = buildStereotype(null, ns);</span>
+<span class="nc" id="L338">        doCopyStereotype((Stereotype) source, st);</span>
+<span class="nc" id="L339">        return st;</span>
+    }
+
+    /*
+     * Used by the copy functions. Do not call this function directly.
+     * 
+     * @param source
+     *            The stereotype to copy from.
+     * @param target
+     *            The object becoming a copy.
+     */
+    private void doCopyStereotype(Stereotype source, Stereotype target) {
+<span class="nc" id="L351">        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())</span>
+<span class="nc" id="L352">                .doCopyGeneralizableElement(source, target);</span>
+<span class="nc" id="L353">        target.getBaseClass().clear();</span>
+<span class="nc" id="L354">        target.getBaseClass().addAll(source.getBaseClass());</span>
+<span class="nc" id="L355">        target.setIcon(source.getIcon());</span>
+        // TODO: constraints
+        // TODO: required tags
+<span class="nc" id="L358">    }</span>
+
+    public TagDefinition buildTagDefinition(String name, Object owner, 
+            Object namespace) {
+<span class="nc" id="L362">        return buildTagDefinition(name, owner, namespace, null); // &quot;Element&quot;);</span>
+    }
+
+    public TagDefinition buildTagDefinition(String name, Object owner, 
+            Object ns, String tagType) {
+<span class="nc bnc" id="L367" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">            if (!(owner instanceof Stereotype)) {</span>
+<span class="nc" id="L369">                throw new IllegalArgumentException(&quot;owner: &quot; + owner);</span>
+            }
+<span class="nc bnc" id="L371" title="All 2 branches missed.">            if (ns != null) {</span>
+<span class="nc" id="L372">                throw new IllegalArgumentException(</span>
+                        &quot;only one of owner &amp; namespace may be specified&quot;);
+            }
+<span class="nc bnc" id="L375" title="All 2 branches missed.">        } else if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L376">            throw new IllegalArgumentException(&quot;namespace: &quot; + ns);</span>
+        }
+<span class="nc" id="L378">        TagDefinition td = (TagDefinition) createTagDefinition();</span>
+<span class="nc" id="L379">        CoreHelper coreHelper = org.argouml.model.Model.getCoreHelper();</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L381">            coreHelper.setOwner(td, owner);</span>
+        } else {
+<span class="nc" id="L383">            coreHelper.setNamespace(td, ns);</span>
+        }
+<span class="nc" id="L385">        coreHelper.setName(td, name);</span>
+<span class="nc" id="L386">        coreHelper.setMultiplicity(td, 0, 1);</span>
+<span class="nc" id="L387">        td.setTagType(tagType);</span>
+<span class="nc" id="L388">        return td;</span>
+    }
+
+
+    public Object createTagDefinition() {
+<span class="nc" id="L393">        TagDefinition td = modelImpl.getUmlPackage().getCore()</span>
+<span class="nc" id="L394">                .getTagDefinition().createTagDefinition();</span>
+<span class="nc" id="L395">        super.initialize(td);</span>
+<span class="nc" id="L396">        return td;</span>
+    }
+    
+
+    public Object createStereotype() {
+<span class="nc" id="L401">        Stereotype st = modelImpl.getUmlPackage().getCore().getStereotype()</span>
+<span class="nc" id="L402">            .createStereotype();</span>
+<span class="nc" id="L403">        super.initialize(st);</span>
+<span class="nc" id="L404">        return st;</span>
+    }
+
+
+    public Object copyTagDefinition(Object anElement, Object aNs) {
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        if (!(anElement instanceof TagDefinition)) {</span>
+<span class="nc" id="L410">            throw new IllegalArgumentException(&quot;source: &quot; + anElement);</span>
+        }
+<span class="nc bnc" id="L412" title="All 4 branches missed.">        if (!(aNs instanceof Namespace || aNs instanceof Stereotype)) {</span>
+<span class="nc" id="L413">            throw new IllegalArgumentException(&quot;namespace: &quot; + aNs);</span>
+        }
+<span class="nc" id="L415">        TagDefinition source = (TagDefinition) anElement;</span>
+<span class="nc" id="L416">        TagDefinition td = (TagDefinition) createTagDefinition();</span>
+<span class="nc bnc" id="L417" title="All 2 branches missed.">        if (aNs instanceof Namespace) {</span>
+<span class="nc" id="L418">            td.setNamespace((Namespace) aNs);</span>
+        } else {
+<span class="nc" id="L420">            td.setOwner((Stereotype) aNs);</span>
+        }
+<span class="nc" id="L422">        doCopyTagDefinition(source, td);</span>
+<span class="nc" id="L423">        return td;</span>
+    }
+    
+    /*
+     * Used by the copy functions. Do not call this function directly.
+     * 
+     * @param source
+     *            The stereotype to copy from.
+     * @param target
+     *            The object becoming a copy.
+     */
+    private void doCopyTagDefinition(TagDefinition source, 
+            TagDefinition target) {
+<span class="nc" id="L436">        ((CoreFactoryMDRImpl) modelImpl.getCoreFactory())</span>
+<span class="nc" id="L437">                .doCopyModelElement(source, target);</span>
+<span class="nc" id="L438">        target.setTagType(source.getTagType());</span>
+<span class="nc" id="L439">        String srcMult = org.argouml.model.Model.getFacade().toString(</span>
+<span class="nc" id="L440">                source.getMultiplicity());</span>
+<span class="nc" id="L441">        target.setMultiplicity(modelImpl.getDataTypesFactoryInternal()</span>
+<span class="nc" id="L442">                .createMultiplicityInternal(srcMult));</span>
+<span class="nc" id="L443">    }    </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

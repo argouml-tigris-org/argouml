@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDefinedProfileHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile</a> &gt; <span class="el_source">UserDefinedProfileHelper.java</span></div><h1>UserDefinedProfileHelper.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    thn
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
+
+/**
+ * Class with helper methods for user defined profiles.
+ * 
+ * @author Thomas Neustupny
+ */
+<span class="nc" id="L56">public class UserDefinedProfileHelper {</span>
+
+    /**
+     * Creates a JFileChooser which is appropriate for opening multiple files
+     * containing user defined profiles.
+     * 
+     * @return a JFileChooser
+     */
+    public static JFileChooser createUserDefinedProfileFileChooser() {
+<span class="nc" id="L65">        JFileChooser fileChooser = new JFileChooser();</span>
+<span class="nc" id="L66">        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);</span>
+<span class="nc" id="L67">        fileChooser.setMultiSelectionEnabled(true);</span>
+<span class="nc" id="L68">        fileChooser.setFileFilter(new FileFilter() {</span>
+
+            public boolean accept(File file) {
+<span class="nc" id="L71">                String s = file.getName().toLowerCase();</span>
+<span class="nc bnc" id="L72" title="All 4 branches missed.">                return file.isDirectory() || (file.isFile() &amp;&amp; (</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">                    s.endsWith(&quot;.xmi&quot;) || s.endsWith(&quot;.xml&quot;)</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">                    || s.endsWith(&quot;.uml&quot;) // for AndroMDA</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">                    || s.endsWith(&quot;.xmi.zip&quot;) || s.endsWith(&quot;.xml.zip&quot;)));</span>
+            }
+
+            public String getDescription() {
+<span class="nc" id="L79">                return &quot;*.xmi *.xml *.xmi.zip *.xml.zip&quot;;</span>
+            }
+
+        });
+<span class="nc" id="L83">        return fileChooser;</span>
+    }
+
+    /**
+     * Get a list of files from a file array, where the directory entries
+     * are recursively resolved by all profile files inside the directory.
+     * 
+     * @param fileArray array of files
+     * @return list of files
+     */
+    public static List&lt;File&gt; getFileList(File[] fileArray) {
+<span class="nc" id="L94">        List&lt;File&gt; files = new ArrayList&lt;File&gt;();</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        for (int i = 0; i &lt; fileArray.length; i++) {</span>
+<span class="nc" id="L96">            File file = fileArray[i];</span>
+<span class="nc" id="L97">            files.addAll(getList(file));</span>
+        }
+<span class="nc" id="L99">        return files;</span>
+    }
+
+    private static List&lt;File&gt; getList(File file) {
+<span class="nc" id="L103">        List&lt;File&gt; results = new ArrayList&lt;File&gt;();</span>
+<span class="nc" id="L104">        List&lt;File&gt; toDoDirectories = new LinkedList&lt;File&gt;();</span>
+<span class="nc" id="L105">        Set&lt;File&gt; seenDirectories = new HashSet&lt;File&gt;();</span>
+<span class="nc" id="L106">        toDoDirectories.add(file);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        while (!toDoDirectories.isEmpty()) {</span>
+<span class="nc" id="L108">            File curDir = toDoDirectories.remove(0);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (!curDir.isDirectory()) {</span>
+                // For some reason, this alleged directory is a single file
+                // This could be that there is some confusion or just
+                // the normal, that a single file was selected and is
+                // supposed to be imported.
+<span class="nc" id="L114">                results.add(curDir);</span>
+<span class="nc" id="L115">                continue;</span>
+            }
+            // Get the contents of the directory
+<span class="nc" id="L118">            File[] files = curDir.listFiles();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (files != null) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                for (File curFile : curDir.listFiles()) {</span>
+                    // The following test can cause trouble with
+                    // links, because links are accepted as
+                    // directories, even if they link files. Links
+                    // could also result in infinite loops. For this
+                    // reason we don't do this traversing recursively.
+<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if (curFile.isDirectory()) {</span>
+                        // If this file is a directory
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                        if (!seenDirectories.contains(curFile)) {</span>
+<span class="nc" id="L129">                            toDoDirectories.add(curFile);</span>
+<span class="nc" id="L130">                            seenDirectories.add(curFile);</span>
+                        }
+                    } else {
+<span class="nc" id="L133">                        String s = curFile.getName().toLowerCase();</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">                        if (s.endsWith(&quot;.xmi&quot;)</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                                || s.endsWith(&quot;.uml&quot;) // for AndroMDA profiles</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">                                || s.endsWith(&quot;.xmi.zip&quot;)</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">                                || s.endsWith(&quot;.xml.zip&quot;)) {</span>
+<span class="nc" id="L138">                            results.add(curFile);</span>
+                        }
+                    }
+                }
+            }
+<span class="nc" id="L143">        }</span>
+<span class="nc" id="L144">        return results;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

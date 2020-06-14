@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecisionModel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">DecisionModel.java</span></div><h1>DecisionModel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+/**
+ * The DecisionModel is part of the state of the Designer.  It
+ * describes what types of decisions, or design issues, the Designer
+ * is thinking about at the current time.  Critics that are relevant to
+ * those decisions are made active, Critics that are not relevant are
+ * made inactive.
+ *
+ * TODO: There is some notion that each decision has a
+ * certain importanance at a certain time, but I have not followed
+ * through on that because I don't have good examples of how to
+ * quantify the importance of a decision.
+ *
+ * TODO: Right now the individual decisions are just
+ * Strings, maybe they should have some non-atomic structure?
+ *
+ * @author Jason Robbins
+ */
+public class DecisionModel extends Observable implements Serializable {
+<span class="fc" id="L64">    private List&lt;Decision&gt; decisions = new ArrayList&lt;Decision&gt;();</span>
+
+    /**
+     * The constructor.
+     *
+     */
+<span class="fc" id="L70">    public DecisionModel() {</span>
+<span class="fc" id="L71">	decisions.add(Decision.UNSPEC);</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * @return the list of decisions
+     */
+    public List&lt;Decision&gt; getDecisionList() {
+<span class="nc" id="L78">        return decisions;</span>
+    }
+
+    /**
+     * This function sets the priority of an existing decision, or
+     * if the decision does not exist yet, it creates a new one.
+     *
+     * @param decision the given decision
+     * @param priority the new priority
+     */
+    public synchronized void setDecisionPriority(String decision,
+						 int priority)
+    {
+<span class="nc" id="L91">	Decision d = findDecision(decision);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">	if (null == d) {</span>
+<span class="nc" id="L93">	    d = new Decision(decision, priority);</span>
+<span class="nc" id="L94">	    decisions.add(d);</span>
+<span class="nc" id="L95">	    return;</span>
+	}
+<span class="nc" id="L97">	d.setPriority(priority);</span>
+<span class="nc" id="L98">	setChanged();</span>
+<span class="nc" id="L99">	notifyObservers(decision);</span>
+	//decision model listener
+<span class="nc" id="L101">    }</span>
+
+    /**
+     * If the given decision is already defined, do nothing. If it is
+     * not already defined, set it to the given initial priority.
+     *
+     * @param decision the existing decision
+     * @param priority the priority
+     */
+    public void defineDecision(String decision, int priority) {
+<span class="nc" id="L111">	Decision d = findDecision(decision);</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">	if (d == null) {</span>
+<span class="nc" id="L113">	    setDecisionPriority(decision, priority);</span>
+	}
+<span class="nc" id="L115">    }</span>
+
+
+    /**
+     * The Designer has indicated that he is now interested in the
+     * given decision.
+     *
+     * @param d the interesting decision
+     */
+    public void startConsidering(Decision d) {
+<span class="nc" id="L125">	decisions.remove(d);</span>
+<span class="nc" id="L126">	decisions.add(d);</span>
+<span class="nc" id="L127">    }</span>
+
+
+    /**
+     * The Designer has indicated that he is not interested in the
+     * given decision right now.
+     *
+     * @param d the uninteresting decision
+     */
+    public void stopConsidering(Decision d) {
+<span class="nc" id="L137">	decisions.remove(d);</span>
+<span class="nc" id="L138">    }</span>
+
+    /**
+     * Finds a decision with a specific name.
+     *
+     * @param decName the decision name
+     * @return a decision or null if not found.
+     */
+    protected Decision findDecision(String decName) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        for (Decision d : decisions) {</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">	    if (decName.equals(d.getName())) {</span>
+<span class="nc" id="L149">		return d;</span>
+	    }
+<span class="nc" id="L151">	}</span>
+<span class="nc" id="L152">	return null;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

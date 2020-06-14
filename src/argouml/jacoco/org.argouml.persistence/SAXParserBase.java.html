@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SAXParserBase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">SAXParserBase.java</span></div><h1>SAXParserBase.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.persistence;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+/**
+ * @author Jim Holt
+ */
+
+abstract class SAXParserBase extends DefaultHandler {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L66">    private static final Logger LOG =</span>
+<span class="fc" id="L67">        Logger.getLogger(SAXParserBase.class.getName());</span>
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L72">    public SAXParserBase() {</span>
+        // empty constructor
+<span class="fc" id="L74">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // static variables
+
+    /**
+     * Switching this to true gives some extra logging messages.
+     */
+    protected static final boolean DBG = false;
+
+    /**
+     * This acts as a stack of elements.&lt;p&gt;
+     *
+     * {@link #startElement(String, String, String, Attributes)} places
+     * an item on the stack end {@link #endElement(String, String, String)}
+     * removes it.
+     */
+<span class="fc" id="L91">    private   static  XMLElement[]  elements      = new XMLElement[100];</span>
+
+    /**
+     * The number of items actually in use on the elements stack.
+     */
+<span class="fc" id="L96">    private   static  int           nElements     = 0;</span>
+
+    /**
+     * This acts as a stack of elements.&lt;p&gt;
+     *
+     * {@link #startElement(String, String, String, Attributes)} places
+     * an item on the stack end {@link #endElement(String, String, String)}
+     * removes it.
+     */
+<span class="fc" id="L105">    private   static  XMLElement[]  freeElements  = new XMLElement[100];</span>
+<span class="fc" id="L106">    private   static  int           nFreeElements = 0;</span>
+
+<span class="fc" id="L108">    private   static  boolean       stats         = true;</span>
+<span class="fc" id="L109">    private   static  long          parseTime     = 0;</span>
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * @param s true if statistics have to be shown
+     */
+<span class="nc" id="L117">    public void    setStats(boolean s) { stats = s; }</span>
+
+    /**
+     * @return  true if statistics have to be shown
+     */
+<span class="nc" id="L122">    public boolean getStats()              { return stats; }</span>
+
+    /**
+     * @return the parsing time
+     */
+    public long getParseTime() {
+<span class="nc" id="L128">        return parseTime;</span>
+    }
+
+
+    /**
+     * @param reader the reader to read
+     * @throws SAXException when parsing xml
+     */
+    public void parse(Reader reader) throws SAXException {
+<span class="fc" id="L137">        parse(new InputSource(reader));</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * @param input the InputSource to read
+     * @throws SAXException when parsing xml
+     */
+    public void parse(InputSource input) throws SAXException {
+
+        long start, end;
+
+<span class="fc" id="L148">        SAXParserFactory factory = SAXParserFactory.newInstance();</span>
+<span class="fc" id="L149">        factory.setNamespaceAware(false);</span>
+<span class="fc" id="L150">        factory.setValidating(false);</span>
+
+        try {
+<span class="fc" id="L153">            SAXParser parser = factory.newSAXParser();</span>
+
+            // If we weren't given a system ID, attempt to use the URL for the
+            // JAR that we were loaded from.  (Why? - tfm)
+<span class="fc bfc" id="L157" title="All 2 branches covered.">            if (input.getSystemId() == null) {</span>
+<span class="fc" id="L158">                input.setSystemId(getJarResource(&quot;org.argouml.kernel.Project&quot;));</span>
+            }
+
+<span class="fc" id="L161">            start = System.currentTimeMillis();</span>
+<span class="fc" id="L162">            parser.parse(input, this);</span>
+<span class="fc" id="L163">            end = System.currentTimeMillis();</span>
+<span class="fc" id="L164">            parseTime = end - start;</span>
+<span class="nc" id="L165">        } catch (IOException e) {</span>
+<span class="nc" id="L166">            throw new SAXException(e);</span>
+<span class="nc" id="L167">        } catch (ParserConfigurationException e) {</span>
+<span class="nc" id="L168">            throw new SAXException(e);</span>
+<span class="fc" id="L169">        }</span>
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        if (stats) {</span>
+<span class="fc" id="L171">            LOG.log(Level.INFO, &quot;Elapsed time: {0} ms&quot;, (end - start));</span>
+        }
+<span class="fc" id="L173">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // abstract methods
+
+    /**
+     * Implement in the concrete class to handle reaching the start tag of
+     * an element of interest.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
+     */
+    protected abstract void handleStartElement(XMLElement e)
+        throws SAXException;
+    /**
+     * Implement in the concrete class to handle reaching the end tag of
+     * an element of interest.
+     * @param e the element.
+     * @throws SAXException on any error parsing the element.
+     */
+    protected abstract void handleEndElement(XMLElement e)
+        throws SAXException;
+
+    ////////////////////////////////////////////////////////////////
+    // non-abstract methods
+
+    /*
+     * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
+     *         java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
+    public void startElement(String uri,
+            String localname,
+            String name,
+            Attributes atts) throws SAXException {
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (isElementOfInterest(name)) {</span>
+
+<span class="fc" id="L208">            XMLElement element = createXmlElement(name, atts);</span>
+
+<span class="pc bpc" id="L210" title="1 of 2 branches missed.">            if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L211">                StringBuffer buf = new StringBuffer();</span>
+<span class="nc" id="L212">                buf.append(&quot;START: &quot;).append(name).append(' ').append(element);</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                for (int i = 0; i &lt; atts.getLength(); i++) {</span>
+<span class="nc" id="L214">            	    buf.append(&quot;   ATT: &quot;)</span>
+<span class="nc" id="L215">                        .append(atts.getLocalName(i))</span>
+<span class="nc" id="L216">                            .append(' ')</span>
+<span class="nc" id="L217">                                .append(atts.getValue(i));</span>
+                }
+<span class="nc" id="L219">                LOG.log(Level.FINE, &quot;{0}&quot;, buf);</span>
+            }
+
+<span class="fc" id="L222">            elements[nElements++] = element;</span>
+<span class="fc" id="L223">            handleStartElement(element);</span>
+        }
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Factory method to return an XMLElement.
+     * This will reuse previously created elements when possible.
+     * @param name The element name.
+     * @param atts The element attributes.
+     * @return the element.
+     */
+    private XMLElement createXmlElement(String name, Attributes atts) {
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">        if (nFreeElements == 0) {</span>
+<span class="fc" id="L236">            return new XMLElement(name, atts);</span>
+        }
+<span class="nc" id="L238">        XMLElement e = freeElements[--nFreeElements];</span>
+<span class="nc" id="L239">        e.setName(name);</span>
+<span class="nc" id="L240">        e.setAttributes(atts);</span>
+<span class="nc" id="L241">        e.resetText();</span>
+<span class="nc" id="L242">        return e;</span>
+    }
+
+    /*
+     * @see org.xml.sax.ContentHandler#endElement(java.lang.String,
+     *         java.lang.String, java.lang.String)
+     */
+    public void endElement(String uri, String localname, String name)
+        throws SAXException {
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (isElementOfInterest(name)) {</span>
+<span class="fc" id="L252">            XMLElement e = elements[--nElements];</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">            if (LOG.isLoggable(Level.FINE)) {</span>
+<span class="nc" id="L254">                StringBuffer buf = new StringBuffer();</span>
+<span class="nc" id="L255">                buf.append(&quot;END: &quot; + e.getName() + &quot; [&quot;</span>
+<span class="nc" id="L256">            	       + e.getText() + &quot;] &quot; + e + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                for (int i = 0; i &lt; e.getNumAttributes(); i++) {</span>
+<span class="nc" id="L258">                    buf.append(&quot;   ATT: &quot; + e.getAttributeName(i) + &quot; &quot;</span>
+<span class="nc" id="L259">                    	   + e.getAttributeValue(i) + &quot;\n&quot;);</span>
+                }
+<span class="nc" id="L261">                LOG.log(Level.FINE, &quot;{0}&quot;, buf);</span>
+            }
+<span class="fc" id="L263">            handleEndElement(e);</span>
+        }
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Determine if an element of the given name is of interest to
+     * the parser. The base implementation assumes always true.
+     *
+     * @param name the element name.
+     * @return true if the element name is of interest.
+     */
+    protected boolean isElementOfInterest(String name) {
+<span class="fc" id="L275">        return true;</span>
+    }
+
+    // TODO: remove when code below in characters() is removed
+//    private static final String    RETURNSTRING  = &quot;\n      &quot;;
+
+    /*
+     * @see org.xml.sax.ContentHandler#characters(char[], int, int)
+     */
+    public void characters(char[] ch, int start, int length)
+        throws SAXException {
+
+<span class="fc" id="L287">        elements[nElements - 1].addText(ch, start, length);</span>
+
+        // TODO: Remove this old implementation after 0.22 if it's
+        // demonstrated that it's not needed. - tfm
+
+        // Why does the text get added to ALL the elements on the stack? - tfm
+//        for (int i = 0; i &lt; nElements; i++) {
+//            XMLElement e = elements[i];
+//            if (e.length() &gt; 0) {
+//                // This seems wrong since this method can be called
+//                // multiple times at the parser's discretion - tfm
+//                e.addText(RETURNSTRING);
+//            }
+//            e.addText(ch, start, length);
+//        }
+<span class="fc" id="L302">    }</span>
+
+
+    /*
+     * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
+     *         java.lang.String)
+     */
+    public InputSource resolveEntity (String publicId, String systemId)
+        throws SAXException {
+        try {
+<span class="nc" id="L312">	    URL testIt = new URL(systemId);</span>
+<span class="nc" id="L313">            InputSource s = new InputSource(testIt.openStream());</span>
+<span class="nc" id="L314">            return s;</span>
+<span class="nc" id="L315">        } catch (Exception e) {</span>
+<span class="nc" id="L316">            LOG.log(Level.INFO,</span>
+                    &quot;NOTE: Could not open DTD &quot; + systemId
+                    + &quot; due to exception&quot;);
+
+<span class="nc" id="L320">            String dtdName = systemId.substring(systemId.lastIndexOf('/') + 1);</span>
+<span class="nc" id="L321">            String dtdPath = &quot;/org/argouml/persistence/&quot; + dtdName;</span>
+<span class="nc" id="L322">            InputStream is = SAXParserBase.class.getResourceAsStream(dtdPath);</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">            if (is == null) {</span>
+                try {
+<span class="nc" id="L325">                    is = new FileInputStream(dtdPath.substring(1));</span>
+<span class="nc" id="L326">                } catch (Exception ex) {</span>
+<span class="nc" id="L327">                    throw new SAXException(e);</span>
+<span class="nc" id="L328">                }</span>
+            }
+<span class="nc" id="L330">            return new InputSource(is);</span>
+        }
+    }
+
+    /**
+     * @param cls the class
+     * @return the jar
+     */
+    public String getJarResource(String cls) {
+  	//e.g:org.argouml.uml.generator.ui.ClassGenerationDialog -&gt; poseidon.jar
+<span class="fc" id="L340">        String jarFile = &quot;&quot;;</span>
+<span class="fc" id="L341">        String fileSep = System.getProperty(&quot;file.separator&quot;);</span>
+<span class="fc" id="L342">        String classFile = cls.replace('.', fileSep.charAt(0)) + &quot;.class&quot;;</span>
+<span class="fc" id="L343">        ClassLoader thisClassLoader = this.getClass().getClassLoader();</span>
+<span class="fc" id="L344">        URL url = thisClassLoader.getResource(classFile);</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">        if (url != null) {</span>
+<span class="fc" id="L346">            String urlString = url.getFile();</span>
+<span class="fc" id="L347">            int idBegin = urlString.indexOf(&quot;file:&quot;);</span>
+<span class="fc" id="L348">            int idEnd = urlString.indexOf(&quot;!&quot;);</span>
+<span class="pc bpc" id="L349" title="5 of 6 branches missed.">            if (idBegin &gt; -1 &amp;&amp; idEnd &gt; -1 &amp;&amp; idEnd &gt; idBegin) {</span>
+<span class="nc" id="L350">                jarFile = urlString.substring(idBegin + 5, idEnd);</span>
+            }
+        }
+
+<span class="fc" id="L354">        return jarFile;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // convenience methods
+
+    /**
+     * @param e the element
+     */
+    public void ignoreElement(XMLElement e) {
+<span class="nc" id="L364">        LOG.log(Level.FINE, &quot;NOTE: ignoring tag: {0}&quot;, e.getName());</span>
+<span class="nc" id="L365">    }</span>
+
+    /**
+     * @param e the element
+     */
+    public void notImplemented(XMLElement e) {
+<span class="nc" id="L371">        LOG.log(Level.FINE, &quot;NOTE: element not implemented: {0}&quot;, e.getName());</span>
+<span class="nc" id="L372">    }</span>
+} /* end class SAXParserBase */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

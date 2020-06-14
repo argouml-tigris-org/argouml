@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsTabDiagramAppearance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">SettingsTabDiagramAppearance.java</span></div><h1>SettingsTabDiagramAppearance.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.uml.diagram.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectSettings;
+import org.argouml.swingext.JLinkButton;
+import org.argouml.ui.ActionProjectSettings;
+import org.argouml.ui.ArgoJFontChooser;
+import org.argouml.ui.GUIProjectSettingsTabInterface;
+import org.argouml.ui.ShadowComboBox;
+import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.util.ArgoFrame;
+import org.tigris.gef.undo.Memento;
+
+/**
+ * Settings tab panel for handling diagram appearance settings.
+ * &lt;p&gt;
+ * It supports different scopes: application and project. The former is stored
+ * in the properties file in the user-directory, the latter in the project file
+ * (.zargo,...).
+ * &lt;p&gt;
+ * This class is written in a way that supports adding more scopes easily.
+ *
+ * @author Aleksandar
+ */
+<span class="nc bnc" id="L83" title="All 2 branches missed.">public class SettingsTabDiagramAppearance extends JPanel implements</span>
+        GUIProjectSettingsTabInterface {
+
+    private Project p;
+    
+    private JButton jbtnDiagramFont;
+    private JCheckBox showBoldNames;
+    private JCheckBox hideBidirectionalArrows;
+    private ShadowComboBox defaultShadowWidth;
+
+    private String selectedDiagramFontName;
+
+    private int selectedDiagramFontSize;
+
+    private int scope;
+
+<span class="nc" id="L99">    private JLabel jlblDiagramFont = null;</span>
+
+    /**
+     * The constructor. We currently support 2 scopes, but this class is written
+     * in a way to easily extend that.
+     *
+     * @param settingsScope the scope of the settings
+     */
+    public SettingsTabDiagramAppearance(int settingsScope) {
+<span class="nc" id="L108">        super();</span>
+<span class="nc" id="L109">        scope = settingsScope;</span>
+<span class="nc" id="L110">        initialize();</span>
+<span class="nc" id="L111">    }</span>
+
+    /**
+     * This method initializes this
+     */
+    private void initialize() {
+        
+<span class="nc" id="L118">        this.setLayout(new BorderLayout());</span>
+<span class="nc" id="L119">        JPanel top = new JPanel();</span>
+<span class="nc" id="L120">        top.setLayout(new BorderLayout());</span>
+        
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (scope == Argo.SCOPE_APPLICATION) {</span>
+<span class="nc" id="L123">            JPanel warning = new JPanel();</span>
+<span class="nc" id="L124">            warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));</span>
+<span class="nc" id="L125">            JLabel warningLabel = new JLabel(</span>
+<span class="nc" id="L126">                Translator.localize(&quot;label.warning&quot;));</span>
+<span class="nc" id="L127">            warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);</span>
+<span class="nc" id="L128">            warning.add(warningLabel);</span>
+
+<span class="nc" id="L130">            JLinkButton projectSettings = new JLinkButton();</span>
+<span class="nc" id="L131">            projectSettings.setAction(new ActionProjectSettings());</span>
+<span class="nc" id="L132">            projectSettings.setText(</span>
+<span class="nc" id="L133">                Translator.localize(&quot;button.project-settings&quot;));</span>
+<span class="nc" id="L134">            projectSettings.setIcon(null);</span>
+<span class="nc" id="L135">            projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);</span>
+<span class="nc" id="L136">            warning.add(projectSettings);</span>
+            
+<span class="nc" id="L138">            top.add(warning, BorderLayout.NORTH);</span>
+        }
+        
+<span class="nc" id="L141">        JPanel settings = new JPanel();</span>
+<span class="nc" id="L142">        settings.setLayout(new GridBagLayout());</span>
+
+<span class="nc" id="L144">        GridBagConstraints constraints = new GridBagConstraints();</span>
+<span class="nc" id="L145">        constraints.anchor = GridBagConstraints.WEST;</span>
+<span class="nc" id="L146">        constraints.fill = GridBagConstraints.HORIZONTAL;</span>
+<span class="nc" id="L147">        constraints.gridy = 0;</span>
+<span class="nc" id="L148">        constraints.gridx = 0;</span>
+<span class="nc" id="L149">        constraints.gridwidth = 1;</span>
+<span class="nc" id="L150">        constraints.gridheight = 1;</span>
+<span class="nc" id="L151">        constraints.weightx = 1.0;</span>
+<span class="nc" id="L152">        constraints.insets = new Insets(0, 30, 0, 4);</span>
+
+<span class="nc" id="L154">        constraints.gridy = GridBagConstraints.RELATIVE;</span>
+
+<span class="nc" id="L156">        showBoldNames = createCheckBox(&quot;label.show-bold-names&quot;);</span>
+<span class="nc" id="L157">        settings.add(showBoldNames, constraints);</span>
+
+<span class="nc" id="L159">        hideBidirectionalArrows = </span>
+<span class="nc" id="L160">            createCheckBox(&quot;label.hide-bidirectional-arrows&quot;);</span>
+<span class="nc" id="L161">        settings.add(hideBidirectionalArrows, constraints);        </span>
+
+<span class="nc" id="L163">        constraints.insets = new Insets(5, 30, 0, 4);</span>
+<span class="nc" id="L164">        JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(</span>
+            FlowLayout.LEFT, 5, 0));
+<span class="nc" id="L166">        JLabel defaultShadowWidthLabel = createLabel(</span>
+            &quot;label.default-shadow-width&quot;);
+<span class="nc" id="L168">        defaultShadowWidth = new ShadowComboBox();</span>
+<span class="nc" id="L169">        defaultShadowWidthLabel.setLabelFor(defaultShadowWidth);</span>
+<span class="nc" id="L170">        defaultShadowWidthPanel.add(defaultShadowWidthLabel);</span>
+<span class="nc" id="L171">        defaultShadowWidthPanel.add(defaultShadowWidth);</span>
+<span class="nc" id="L172">        settings.add(defaultShadowWidthPanel, constraints);</span>
+
+<span class="nc" id="L174">        jlblDiagramFont = new JLabel();</span>
+<span class="nc" id="L175">        jlblDiagramFont.setText(Translator</span>
+<span class="nc" id="L176">                .localize(&quot;label.diagramappearance.diagramfont&quot;));       </span>
+<span class="nc" id="L177">        JPanel fontButtonPanel = new JPanel(new FlowLayout(</span>
+                FlowLayout.LEFT, 5, 0));
+<span class="nc" id="L179">        JButton fontButton = getJbtnDiagramFont();</span>
+<span class="nc" id="L180">        jlblDiagramFont.setLabelFor(fontButton);</span>
+<span class="nc" id="L181">        fontButtonPanel.add(jlblDiagramFont);</span>
+<span class="nc" id="L182">        fontButtonPanel.add(fontButton);</span>
+<span class="nc" id="L183">        settings.add(fontButtonPanel, constraints);</span>
+
+<span class="nc" id="L185">        top.add(settings, BorderLayout.CENTER);</span>
+        
+<span class="nc" id="L187">        this.add(top, BorderLayout.NORTH);</span>
+<span class="nc" id="L188">        this.setSize(new Dimension(296, 169));</span>
+
+<span class="nc" id="L190">    }</span>
+
+    private JButton getJbtnDiagramFont() {
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (jbtnDiagramFont == null) {</span>
+<span class="nc" id="L194">            jbtnDiagramFont = new JButton(</span>
+<span class="nc" id="L195">                    Translator.localize(&quot;label.diagramappearance.changefont&quot;));</span>
+
+<span class="nc" id="L197">            jbtnDiagramFont.addActionListener(new ActionListener() {</span>
+                public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L199">                    ArgoJFontChooser jFontChooser = new ArgoJFontChooser(</span>
+<span class="nc" id="L200">                            ArgoFrame.getFrame(), jbtnDiagramFont,</span>
+<span class="nc" id="L201">                            selectedDiagramFontName, selectedDiagramFontSize);</span>
+<span class="nc" id="L202">                    jFontChooser.setVisible(true);</span>
+
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                    if (jFontChooser.isOk()) {</span>
+<span class="nc" id="L205">                        selectedDiagramFontName = jFontChooser.getResultName();</span>
+<span class="nc" id="L206">                        selectedDiagramFontSize = jFontChooser.getResultSize();</span>
+                    }
+<span class="nc" id="L208">                }</span>
+            });
+
+        }
+<span class="nc" id="L212">        return jbtnDiagramFont;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
+     */
+    public void handleSettingsTabRefresh() {
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (scope == Argo.SCOPE_APPLICATION) {</span>
+<span class="nc" id="L220">            showBoldNames.setSelected(getBoolean(</span>
+                    DiagramAppearance.KEY_SHOW_BOLD_NAMES));
+<span class="nc" id="L222">            selectedDiagramFontName = DiagramAppearance.getInstance()</span>
+<span class="nc" id="L223">                    .getConfiguredFontName();</span>
+<span class="nc" id="L224">            selectedDiagramFontSize = Configuration</span>
+<span class="nc" id="L225">                    .getInteger(DiagramAppearance.KEY_FONT_SIZE);</span>
+            /*
+             * The next one defaults to TRUE, despite that this is
+             * NOT compatible with older ArgoUML versions
+             * (before 0.28?) that did
+             * not have this setting - see issue 535
+             */
+<span class="nc" id="L232">            hideBidirectionalArrows.setSelected(Configuration.getBoolean(</span>
+                    DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
+<span class="nc" id="L234">            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(</span>
+                    DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 1));
+        }
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (scope == Argo.SCOPE_PROJECT) {</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">            assert p != null;</span>
+<span class="nc" id="L239">            ProjectSettings ps = p.getProjectSettings();</span>
+<span class="nc" id="L240">            DiagramSettings ds = ps.getDefaultDiagramSettings();</span>
+
+<span class="nc" id="L242">            showBoldNames.setSelected(ds.isShowBoldNames());</span>
+<span class="nc" id="L243">            selectedDiagramFontName = ds.getFontName();</span>
+<span class="nc" id="L244">            selectedDiagramFontSize = ds.getFontSize();</span>
+<span class="nc" id="L245">            hideBidirectionalArrows.setSelected(!</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">                    ds.isShowBidirectionalArrows());</span>
+<span class="nc" id="L247">            defaultShadowWidth.setSelectedIndex(</span>
+<span class="nc" id="L248">                    ds.getDefaultShadowWidth());</span>
+        }
+<span class="nc" id="L250">    }</span>
+
+    /**
+     * Get a boolean from the configuration.
+     *
+     * @param key a notation key.
+     * @return a boolean
+     */
+    protected static boolean getBoolean(ConfigurationKey key) {
+<span class="nc" id="L259">        return Configuration.getBoolean(key, false);</span>
+    }
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
+     */
+    public void handleSettingsTabSave() {
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (scope == Argo.SCOPE_APPLICATION) {</span>
+<span class="nc" id="L267">            Configuration.setBoolean(DiagramAppearance.KEY_SHOW_BOLD_NAMES,</span>
+<span class="nc" id="L268">                    showBoldNames.isSelected());</span>
+<span class="nc" id="L269">            Configuration.setString(DiagramAppearance.KEY_FONT_NAME,</span>
+                    selectedDiagramFontName);
+<span class="nc" id="L271">            Configuration.setInteger(DiagramAppearance.KEY_FONT_SIZE,</span>
+                    selectedDiagramFontSize);
+<span class="nc" id="L273">            Configuration.setBoolean(</span>
+                    DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS,
+<span class="nc" id="L275">                    hideBidirectionalArrows.isSelected());            </span>
+<span class="nc" id="L276">            Configuration.setInteger(DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH,</span>
+<span class="nc" id="L277">                    defaultShadowWidth.getSelectedIndex());</span>
+        }
+<span class="nc bnc" id="L279" title="All 2 branches missed.">        if (scope == Argo.SCOPE_PROJECT) {</span>
+<span class="nc bnc" id="L280" title="All 4 branches missed.">            assert p != null;</span>
+<span class="nc" id="L281">            ProjectSettings ps = p.getProjectSettings();</span>
+<span class="nc" id="L282">            final DiagramSettings ds = ps.getDefaultDiagramSettings();</span>
+
+<span class="nc" id="L284">            ds.setShowBoldNames(showBoldNames.isSelected());</span>
+<span class="nc" id="L285">            ds.setFontName(selectedDiagramFontName);</span>
+<span class="nc" id="L286">            ds.setFontSize(selectedDiagramFontSize);</span>
+<span class="nc" id="L287">            ds.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());</span>
+<span class="nc" id="L288">            ds.setShowBidirectionalArrows(</span>
+<span class="nc bnc" id="L289" title="All 2 branches missed.">                    !hideBidirectionalArrows.isSelected());</span>
+
+            /* Update the diagram, and other users of these settings: */
+<span class="nc" id="L292">            Memento memento = new Memento() {</span>
+                public void redo() {
+<span class="nc" id="L294">                    ds.notifyOfChangedSettings();</span>
+<span class="nc" id="L295">                }</span>
+
+                public void undo() {
+<span class="nc" id="L298">                    ds.notifyOfChangedSettings();</span>
+<span class="nc" id="L299">                }</span>
+            };
+            // TODO: Undo should be managed externally or we should be given 
+            // an Undo manager to use (the project's) rather than using a 
+            // global one
+//            if (DiagramUndoManager.getInstance().isGenerateMementos()) {
+//                DiagramUndoManager.getInstance().addMemento(memento);
+//            }
+<span class="nc" id="L307">            memento.redo();</span>
+        }
+<span class="nc" id="L309">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabCancel()
+     */
+    public void handleSettingsTabCancel() {
+<span class="nc" id="L315">        handleSettingsTabRefresh();</span>
+<span class="nc" id="L316">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#handleResetToDefault()
+     */
+    public void handleResetToDefault() {
+<span class="nc bnc" id="L322" title="All 2 branches missed.">        if (scope == Argo.SCOPE_PROJECT) {</span>
+<span class="nc" id="L323">            showBoldNames.setSelected(getBoolean(</span>
+                    DiagramAppearance.KEY_SHOW_BOLD_NAMES));
+<span class="nc" id="L325">            selectedDiagramFontName = DiagramAppearance.getInstance()</span>
+<span class="nc" id="L326">                    .getConfiguredFontName();</span>
+<span class="nc" id="L327">            selectedDiagramFontSize = Configuration</span>
+<span class="nc" id="L328">                    .getInteger(DiagramAppearance.KEY_FONT_SIZE);</span>
+<span class="nc" id="L329">            hideBidirectionalArrows.setSelected(Configuration.getBoolean(</span>
+                    DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
+<span class="nc" id="L331">            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(</span>
+                    DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 1)); 
+        }
+<span class="nc" id="L334">    }</span>
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
+     */
+    public String getTabKey() {
+<span class="nc" id="L340">        return &quot;tab.diagramappearance&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
+     */
+    public JPanel getTabPanel() {
+<span class="nc" id="L347">        return this;</span>
+    }
+
+    /**
+     * Create a localized JCheckBox.
+     *
+     * @param key the key for the string to be localized
+     * @return a new checkbox with localized text
+     */
+    protected JCheckBox createCheckBox(String key) {
+<span class="nc" id="L357">        JCheckBox j = new JCheckBox(Translator.localize(key));</span>
+<span class="nc" id="L358">        return j;</span>
+    }
+
+    /**
+     * Create a localized JLabel.
+     *
+     * @param key the key of the text for the label
+     * @return a new label with a localized text for the given key
+     */
+    protected JLabel createLabel(String key) {
+<span class="nc" id="L368">        return new JLabel(Translator.localize(key));</span>
+    }
+
+    /**
+     * Create a localized JButton.
+     *
+     * @param key the key for the string to be localized
+     * @return a new checkbox with localized text
+     */
+    protected JButton createButton(String key) {
+<span class="nc" id="L378">        return new JButton(Translator.localize(key));</span>
+    }
+
+    /*
+     * @see javax.swing.JComponent#setVisible(boolean)
+     */
+    public void setVisible(boolean arg0) {
+<span class="nc" id="L385">        super.setVisible(arg0);</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        if (arg0) {</span>
+<span class="nc" id="L387">            handleSettingsTabRefresh();</span>
+        }
+<span class="nc" id="L389">    }</span>
+
+    public void setProject(Project project) {
+<span class="nc bnc" id="L392" title="All 4 branches missed.">        assert project != null;</span>
+<span class="nc" id="L393">        p = project;</span>
+<span class="nc" id="L394">    }</span>
+} // @jve:decl-index=0:visual-constraint=&quot;10,10&quot;
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

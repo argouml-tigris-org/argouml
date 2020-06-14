@@ -1,0 +1,2374 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CoreFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CoreFactoryMDRImpl.java</span></div><h1>CoreFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    bobtarling
+ *    Thomas Neustupny
+ *    Tom Morris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
+
+import org.argouml.model.CoreFactory;
+import org.argouml.model.Model;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelManagementHelper;
+import org.argouml.model.NotImplementedException;
+import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.statemachines.Event;
+import org.omg.uml.foundation.core.Abstraction;
+import org.omg.uml.foundation.core.Artifact;
+import org.omg.uml.foundation.core.AssociationClass;
+import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Binding;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Comment;
+import org.omg.uml.foundation.core.Component;
+import org.omg.uml.foundation.core.Constraint;
+import org.omg.uml.foundation.core.CorePackage;
+import org.omg.uml.foundation.core.DataType;
+import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Element;
+import org.omg.uml.foundation.core.ElementResidence;
+import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Flow;
+import org.omg.uml.foundation.core.GeneralizableElement;
+import org.omg.uml.foundation.core.Generalization;
+import org.omg.uml.foundation.core.Interface;
+import org.omg.uml.foundation.core.Method;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Node;
+import org.omg.uml.foundation.core.Operation;
+import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.core.PresentationElement;
+import org.omg.uml.foundation.core.Primitive;
+import org.omg.uml.foundation.core.ProgrammingLanguageDataType;
+import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.StructuralFeature;
+import org.omg.uml.foundation.core.TemplateArgument;
+import org.omg.uml.foundation.core.TemplateParameter;
+import org.omg.uml.foundation.core.UmlAssociation;
+import org.omg.uml.foundation.core.UmlClass;
+import org.omg.uml.foundation.core.Usage;
+import org.omg.uml.foundation.datatypes.AggregationKind;
+import org.omg.uml.foundation.datatypes.AggregationKindEnum;
+import org.omg.uml.foundation.datatypes.BooleanExpression;
+import org.omg.uml.foundation.datatypes.CallConcurrencyKindEnum;
+import org.omg.uml.foundation.datatypes.ChangeableKind;
+import org.omg.uml.foundation.datatypes.ChangeableKindEnum;
+import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.foundation.datatypes.Multiplicity;
+import org.omg.uml.foundation.datatypes.MultiplicityRange;
+import org.omg.uml.foundation.datatypes.OrderingKind;
+import org.omg.uml.foundation.datatypes.OrderingKindEnum;
+import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
+import org.omg.uml.foundation.datatypes.ProcedureExpression;
+import org.omg.uml.foundation.datatypes.ScopeKind;
+import org.omg.uml.foundation.datatypes.ScopeKindEnum;
+import org.omg.uml.foundation.datatypes.VisibilityKind;
+import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
+import org.omg.uml.modelmanagement.UmlPackage;
+
+/**
+ * Factory to create UML classes for the UML Foundation::Core package.
+ * &lt;p&gt;
+ * Feature, StructuralFeature, and PresentationElement do not have a create
+ * method since they are called an &quot;abstract metaclass&quot; in the UML
+ * specifications.
+ * &lt;p&gt;
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * &lt;p&gt;
+ * Derived from NSUML implementation by:
+ * @author Thierry Lach
+ * @author Jaap Branderhorst
+ */
+class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
+        CoreFactory {
+
+<span class="fc" id="L140">    private static final Logger LOG =</span>
+<span class="fc" id="L141">        Logger.getLogger(CoreFactoryMDRImpl.class.getName());</span>
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Constructor.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L154">    CoreFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L155">        modelImpl = implementation;</span>
+<span class="fc" id="L156">    }</span>
+
+    private CorePackage getCorePackage() {
+<span class="nc" id="L159">        return modelImpl.getUmlPackage().getCore();</span>
+    }
+
+    public Abstraction createAbstraction() {
+<span class="nc" id="L163">        Abstraction myAbstraction = getCorePackage().getAbstraction()</span>
+<span class="nc" id="L164">                .createAbstraction();</span>
+<span class="nc" id="L165">        super.initialize(myAbstraction);</span>
+<span class="nc" id="L166">        return myAbstraction;</span>
+    }
+
+
+    public Abstraction buildAbstraction(String name, Object supplier,
+            Object client) {
+<span class="nc bnc" id="L172" title="All 4 branches missed.">        if (!(client instanceof Classifier)</span>
+                || !(supplier instanceof Classifier)) {
+<span class="nc" id="L174">            throw new IllegalArgumentException(</span>
+                    &quot;The supplier and client of an abstraction&quot;
+                            + &quot;should be classifiers&quot;);
+        }
+<span class="nc bnc" id="L178" title="All 2 branches missed.">        if (client.equals(supplier)) {</span>
+<span class="nc" id="L179">            throw new IllegalArgumentException(&quot;The supplier and the client &quot;</span>
+                    + &quot;must be different elements&quot;);
+        }
+<span class="nc" id="L182">        Abstraction abstraction = createAbstraction();</span>
+<span class="nc" id="L183">        abstraction.setName(name);</span>
+<span class="nc" id="L184">        abstraction.getClient().add((Classifier) client);</span>
+<span class="nc" id="L185">        abstraction.getSupplier().add((Classifier) supplier);</span>
+<span class="nc" id="L186">        return abstraction;</span>
+    }
+
+
+    public Artifact createArtifact() {
+<span class="nc" id="L191">        Artifact artifact = getCorePackage().getArtifact().createArtifact();</span>
+<span class="nc" id="L192">        super.initialize(artifact);</span>
+<span class="nc" id="L193">        return artifact;</span>
+    }
+
+
+    @Deprecated
+    public UmlAssociation createAssociation() {
+<span class="nc" id="L199">        return createAssociation(modelImpl.getUmlPackage());</span>
+    }
+
+
+    public UmlAssociation createAssociation(Object extent) {
+<span class="nc" id="L204">        UmlAssociation assoc = ((org.omg.uml.UmlPackage) extent).getCore()</span>
+<span class="nc" id="L205">                .getUmlAssociation().createUmlAssociation();</span>
+<span class="nc" id="L206">        super.initialize(assoc);</span>
+<span class="nc" id="L207">        return assoc;</span>
+    }
+
+    public AssociationClass createAssociationClass() {
+<span class="nc" id="L211">        AssociationClass assoc = getCorePackage().getAssociationClass()</span>
+<span class="nc" id="L212">                .createAssociationClass();</span>
+<span class="nc" id="L213">        super.initialize(assoc);</span>
+<span class="nc" id="L214">        return assoc;</span>
+    }
+
+
+    public AssociationEnd createAssociationEnd() {
+<span class="nc" id="L219">        AssociationEnd assocEnd = getCorePackage().getAssociationEnd()</span>
+<span class="nc" id="L220">                .createAssociationEnd();</span>
+<span class="nc" id="L221">        super.initialize(assocEnd);</span>
+<span class="nc" id="L222">        return assocEnd;</span>
+    }
+
+
+    public Attribute createAttribute() {
+<span class="nc" id="L227">        Attribute myAttribute = getCorePackage().getAttribute().createAttribute();</span>
+<span class="nc" id="L228">        super.initialize(myAttribute);</span>
+<span class="nc" id="L229">        return myAttribute;</span>
+    }
+
+
+    public Binding createBinding() {
+<span class="nc" id="L234">        Binding myBinding = getCorePackage().getBinding().createBinding();</span>
+<span class="nc" id="L235">        super.initialize(myBinding);</span>
+<span class="nc" id="L236">        return myBinding;</span>
+    }
+
+
+    public UmlClass createClass() {
+<span class="nc" id="L241">        return createClass(modelImpl.getUmlPackage());</span>
+    }
+
+    public UmlClass createClass(org.omg.uml.UmlPackage extent) {
+<span class="fc" id="L245">        UmlClass myClass = extent.getCore().getUmlClass().createUmlClass();</span>
+<span class="fc" id="L246">        super.initialize(myClass);</span>
+<span class="fc" id="L247">        return myClass;</span>
+    }
+
+    public Comment createComment() {
+<span class="nc" id="L251">        Comment myComment = getCorePackage().getComment().createComment();</span>
+<span class="nc" id="L252">        super.initialize(myComment);</span>
+<span class="nc" id="L253">        return myComment;</span>
+    }
+
+
+    public Component createComponent() {
+<span class="nc" id="L258">        Component myComponent = getCorePackage().getComponent().createComponent();</span>
+<span class="nc" id="L259">        super.initialize(myComponent);</span>
+<span class="nc" id="L260">        return myComponent;</span>
+    }
+
+
+    public Constraint createConstraint() {
+<span class="nc" id="L265">        Constraint myConstraint = getCorePackage().getConstraint()</span>
+<span class="nc" id="L266">                .createConstraint();</span>
+<span class="nc" id="L267">        super.initialize(myConstraint);</span>
+<span class="nc" id="L268">        return myConstraint;</span>
+    }
+
+
+    public DataType createDataType() {
+<span class="nc" id="L273">        DataType dataType = getCorePackage().getDataType().createDataType();</span>
+<span class="nc" id="L274">        super.initialize(dataType);</span>
+<span class="nc" id="L275">        return dataType;</span>
+    }
+
+
+    public Dependency createDependency() {
+<span class="nc" id="L280">        Dependency myDependency = getCorePackage().getDependency()</span>
+<span class="nc" id="L281">                .createDependency();</span>
+<span class="nc" id="L282">        super.initialize(myDependency);</span>
+<span class="nc" id="L283">        return myDependency;</span>
+    }
+
+
+    public ElementResidence createElementResidence() {
+<span class="nc" id="L288">        ElementResidence myElementResidence = getCorePackage().</span>
+<span class="nc" id="L289">                getElementResidence().createElementResidence();</span>
+<span class="nc" id="L290">        super.initialize(myElementResidence);</span>
+<span class="nc" id="L291">        return myElementResidence;</span>
+    }
+
+
+    public ElementResidence buildElementResidence(Object me, Object component) {
+<span class="nc" id="L296">        ElementResidence myElementResidence =</span>
+            ((org.omg.uml.UmlPackage) ((ModelElement) me)
+<span class="nc" id="L298">                .refOutermostPackage()).getCore().getElementResidence()</span>
+<span class="nc" id="L299">                .createElementResidence();</span>
+<span class="nc" id="L300">        super.initialize(myElementResidence);</span>
+<span class="nc" id="L301">        myElementResidence.setContainer((Component) component);</span>
+<span class="nc" id="L302">        myElementResidence.setResident((ModelElement) me);</span>
+<span class="nc" id="L303">        return myElementResidence;</span>
+    }
+
+
+    public Enumeration createEnumeration() {
+<span class="nc" id="L308">        Enumeration myEnumeration = getCorePackage().getEnumeration()</span>
+<span class="nc" id="L309">                .createEnumeration();</span>
+<span class="nc" id="L310">        super.initialize(myEnumeration);</span>
+<span class="nc" id="L311">        return myEnumeration;</span>
+    }
+
+
+    public EnumerationLiteral createEnumerationLiteral() {
+<span class="nc" id="L316">        EnumerationLiteral myEnumerationLiteral = getCorePackage()</span>
+<span class="nc" id="L317">                .getEnumerationLiteral().createEnumerationLiteral();</span>
+<span class="nc" id="L318">        super.initialize(myEnumerationLiteral);</span>
+<span class="nc" id="L319">        return myEnumerationLiteral;</span>
+    }
+
+
+    public EnumerationLiteral buildEnumerationLiteral(String name,
+            Object enumeration) {
+<span class="nc" id="L325">        EnumerationLiteral el = createEnumerationLiteral();</span>
+<span class="nc" id="L326">        el.setName(name);</span>
+<span class="nc" id="L327">        el.setEnumeration((Enumeration) enumeration);</span>
+<span class="nc" id="L328">        return el;</span>
+    }
+
+
+    public Flow createFlow() {
+<span class="nc" id="L333">        Flow myFlow = getCorePackage().getFlow().createFlow();</span>
+<span class="nc" id="L334">        super.initialize(myFlow);</span>
+<span class="nc" id="L335">        return myFlow;</span>
+    }
+
+    @Deprecated
+    public Generalization createGeneralization() {
+<span class="nc" id="L340">        return createGeneralization(modelImpl.getUmlPackage());</span>
+    }
+
+    public Generalization createGeneralization(Object extent) {
+<span class="nc" id="L344">        Generalization myGeneralization = ((org.omg.uml.UmlPackage) extent)</span>
+<span class="nc" id="L345">                .getCore().getGeneralization().createGeneralization();</span>
+<span class="nc" id="L346">        super.initialize(myGeneralization);</span>
+<span class="nc" id="L347">        return myGeneralization;</span>
+    }
+
+    public Interface createInterface() {
+<span class="nc" id="L351">        Interface myInterface = getCorePackage()</span>
+<span class="nc" id="L352">                .getInterface().createInterface();</span>
+<span class="nc" id="L353">        super.initialize(myInterface);</span>
+<span class="nc" id="L354">        return myInterface;</span>
+    }
+
+
+    public Method createMethod() {
+<span class="nc" id="L359">        Method myMethod = getCorePackage().getMethod()</span>
+<span class="nc" id="L360">                .createMethod();</span>
+<span class="nc" id="L361">        super.initialize(myMethod);</span>
+<span class="nc" id="L362">        return myMethod;</span>
+    }
+
+
+    public Node createNode() {
+<span class="nc" id="L367">        Node myNode = getCorePackage().getNode().createNode();</span>
+<span class="nc" id="L368">        super.initialize(myNode);</span>
+<span class="nc" id="L369">        return myNode;</span>
+    }
+
+
+    public Operation createOperation() {
+<span class="nc" id="L374">        Operation myOperation = getCorePackage()</span>
+<span class="nc" id="L375">                .getOperation().createOperation();</span>
+<span class="nc" id="L376">        super.initialize(myOperation);</span>
+<span class="nc" id="L377">        return myOperation;</span>
+    }
+
+
+    public Parameter createParameter() {
+<span class="nc" id="L382">        Parameter myParameter = getCorePackage()</span>
+<span class="nc" id="L383">                .getParameter().createParameter();</span>
+<span class="nc" id="L384">        super.initialize(myParameter);</span>
+<span class="nc" id="L385">        return myParameter;</span>
+    }
+
+
+    @Deprecated
+    public Permission createPermission() {
+<span class="nc" id="L391">        return createPackageImport();</span>
+    }
+
+    public Permission createPackageImport() {
+<span class="nc" id="L395">        Permission myPermission = getCorePackage()</span>
+<span class="nc" id="L396">                .getPermission().createPermission();</span>
+<span class="nc" id="L397">        super.initialize(myPermission);</span>
+<span class="nc" id="L398">        return myPermission;</span>
+    }
+
+    public Primitive createPrimitiveType() {
+<span class="nc" id="L402">        Primitive obj = getCorePackage().getPrimitive().createPrimitive();</span>
+<span class="nc" id="L403">        super.initialize(obj);</span>
+<span class="nc" id="L404">        return obj;</span>
+    }
+
+
+    public TemplateArgument createTemplateArgument() {
+<span class="nc" id="L409">        return createTemplateArgument(modelImpl.getUmlPackage());</span>
+    }
+
+      private  TemplateArgument createTemplateArgument(
+              org.omg.uml.UmlPackage extent) {
+<span class="nc" id="L414">        TemplateArgument obj = extent.getCore().getTemplateArgument()</span>
+<span class="nc" id="L415">                .createTemplateArgument();</span>
+<span class="nc" id="L416">        super.initialize(obj);</span>
+<span class="nc" id="L417">        return obj;</span>
+    }
+
+
+    public TemplateParameter createTemplateParameter() {
+<span class="nc" id="L422">        return createTemplateParameter(modelImpl.getUmlPackage());</span>
+    }
+
+    private TemplateParameter createTemplateParameter(
+            org.omg.uml.UmlPackage extent) {
+<span class="nc" id="L427">        TemplateParameter myTemplateParameter = extent.getCore()</span>
+<span class="nc" id="L428">                .getTemplateParameter().createTemplateParameter();</span>
+<span class="nc" id="L429">        super.initialize(myTemplateParameter);</span>
+<span class="nc" id="L430">        return myTemplateParameter;</span>
+    }
+
+
+    public Usage createUsage() {
+<span class="nc" id="L435">        Usage myUsage = getCorePackage().getUsage().createUsage();</span>
+<span class="nc" id="L436">        super.initialize(myUsage);</span>
+<span class="nc" id="L437">        return myUsage;</span>
+    }
+
+    /**
+     * Builds a default binary association with two default association ends.
+     *
+     * @param c1
+     *            The first classifier to connect to
+     * @param nav1
+     *            The navigability of the Associaton end
+     * @param agg1
+     *            The aggregation type of the second Associaton end
+     * @param c2
+     *            The second classifier to connect to
+     * @param nav2
+     *            The navigability of the second Associaton end
+     * @param agg2
+     *            The aggregation type of the second Associaton end
+     * @return a newly created Association
+     * @throws IllegalArgumentException
+     *             if either Classifier is null
+     */
+    private UmlAssociation buildAssociation(Classifier c1, boolean nav1,
+            AggregationKind agg1, Classifier c2, boolean nav2,
+            AggregationKind agg2) {
+<span class="nc bnc" id="L462" title="All 4 branches missed.">        if (c1 == null || c2 == null) {</span>
+<span class="nc" id="L463">            throw new IllegalArgumentException(&quot;one of &quot;</span>
+                    + &quot;the classifiers to be &quot; + &quot;connected is null&quot;);
+        }
+<span class="nc" id="L466">        Namespace ns1 = c1.getNamespace();</span>
+<span class="nc" id="L467">        Namespace ns2 = c2.getNamespace();</span>
+<span class="nc bnc" id="L468" title="All 4 branches missed.">        if (ns1 == null || ns2 == null) {</span>
+<span class="nc" id="L469">            throw new IllegalArgumentException(&quot;one of &quot;</span>
+                    + &quot;the classifiers does not &quot; + &quot;belong to a namespace&quot;);
+        }
+
+        // We'll put the association in the namespace of whichever end
+        // is not navigable and is writeable.  If they both are, we'll use the
+        // namepace of c1.
+<span class="nc" id="L476">        Namespace ns = null;</span>
+<span class="nc bnc" id="L477" title="All 4 branches missed.">        if (nav2 &amp;&amp; !modelImpl.getModelManagementHelper().isReadOnly(ns1)) {</span>
+<span class="nc" id="L478">            ns = ns1;</span>
+<span class="nc bnc" id="L479" title="All 2 branches missed.">        } else if (nav1</span>
+<span class="nc bnc" id="L480" title="All 2 branches missed.">                &amp;&amp; !modelImpl.getModelManagementHelper().isReadOnly(ns2)) {</span>
+<span class="nc" id="L481">            ns = ns2;</span>
+        } else {
+<span class="nc" id="L483">            throw new IllegalArgumentException(</span>
+                    &quot;At least one end must be navigable&quot;);
+        }
+<span class="nc" id="L486">        UmlAssociation assoc = createAssociation(ns.refOutermostPackage());</span>
+<span class="nc" id="L487">        assoc.setName(&quot;&quot;);</span>
+<span class="nc" id="L488">        assoc.setNamespace(ns);</span>
+<span class="nc" id="L489">        buildAssociationEnd(assoc, null, c1, null, null,</span>
+                nav1, null, agg1, null, null, null);
+<span class="nc" id="L491">        buildAssociationEnd(assoc, null, c2, null, null,</span>
+                nav2, null, agg2, null, null, null);
+<span class="nc" id="L493">        return assoc;</span>
+    }
+
+    @Deprecated
+    public UmlAssociation buildAssociation(Object fromClassifier,
+            Object aggregationKind1, Object toClassifier,
+            Object aggregationKind2, Boolean unidirectional) {
+
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        if (unidirectional == null) {</span>
+<span class="nc" id="L502">            return buildAssociation(fromClassifier, aggregationKind1,</span>
+                    toClassifier, aggregationKind2, false);
+        } else {
+<span class="nc" id="L505">            return buildAssociation(fromClassifier, aggregationKind1,</span>
+                    toClassifier, aggregationKind2, unidirectional
+<span class="nc" id="L507">                            .booleanValue());</span>
+        }
+    }
+
+    public UmlAssociation buildAssociation(Object fromClassifier,
+            Object aggregationKind1, Object toClassifier,
+            Object aggregationKind2, boolean unidirectional) {
+<span class="nc bnc" id="L514" title="All 4 branches missed.">        if (fromClassifier == null || toClassifier == null) {</span>
+<span class="nc" id="L515">            throw new IllegalArgumentException(&quot;one of &quot;</span>
+                    + &quot;the classifiers to be &quot; + &quot;connected is null&quot;);
+        }
+<span class="nc" id="L518">        Classifier from = (Classifier) fromClassifier;</span>
+<span class="nc" id="L519">        Classifier to = (Classifier) toClassifier;</span>
+<span class="nc" id="L520">        AggregationKind agg1 = (AggregationKind) aggregationKind1;</span>
+<span class="nc" id="L521">        AggregationKind agg2 = (AggregationKind) aggregationKind2;</span>
+
+<span class="nc" id="L523">        Namespace ns = from.getNamespace();</span>
+<span class="nc bnc" id="L524" title="All 4 branches missed.">        if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {</span>
+<span class="nc" id="L525">            ns = to.getNamespace();</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">            if (ns == null</span>
+<span class="nc bnc" id="L527" title="All 2 branches missed.">                    || modelImpl.getModelManagementHelper().isReadOnly(ns)) {</span>
+<span class="nc" id="L528">                throw new IllegalArgumentException(</span>
+                        &quot;At least one namespace must be non-null and writeable&quot;);
+            }
+        }
+
+<span class="nc" id="L533">        UmlAssociation assoc = createAssociation(ns.refOutermostPackage());</span>
+<span class="nc" id="L534">        assoc.setName(&quot;&quot;);</span>
+<span class="nc" id="L535">        assoc.setNamespace(ns);</span>
+
+<span class="nc bnc" id="L537" title="All 2 branches missed.">        final boolean nav1 = !unidirectional;</span>
+<span class="nc" id="L538">        final boolean nav2 = true;</span>
+
+<span class="nc" id="L540">        buildAssociationEnd(assoc, null, from, null, null, nav1, null, agg1,</span>
+                null, null, null);
+<span class="nc" id="L542">        buildAssociationEnd(assoc, null, to, null, null, nav2, null, agg2,</span>
+                null, null, null);
+<span class="nc" id="L544">        return assoc;</span>
+    }
+
+
+    public UmlAssociation buildAssociation(Object classifier1,
+            Object classifier2) {
+<span class="nc" id="L550">        Classifier c1 = (Classifier) classifier1;</span>
+<span class="nc" id="L551">        Classifier c2 = (Classifier) classifier2;</span>
+<span class="nc" id="L552">        return buildAssociation(c1, true, AggregationKindEnum.AK_NONE, c2,</span>
+                true, AggregationKindEnum.AK_NONE);
+    }
+
+
+    public UmlAssociation buildAssociation(Object c1, boolean nav1, Object c2,
+            boolean nav2, String name) {
+<span class="nc" id="L559">        UmlAssociation assoc = buildAssociation((Classifier) c1, nav1,</span>
+                AggregationKindEnum.AK_NONE, (Classifier) c2, nav2,
+                AggregationKindEnum.AK_NONE);
+<span class="nc bnc" id="L562" title="All 2 branches missed.">        if (assoc != null) {</span>
+<span class="nc" id="L563">            assoc.setName(name);</span>
+        }
+<span class="nc" id="L565">        return assoc;</span>
+    }
+
+
+    public AssociationClass buildAssociationClass(Object end1, Object end2) {
+<span class="nc bnc" id="L570" title="All 8 branches missed.">        if (end1 == null || end2 == null || !(end1 instanceof Classifier)</span>
+                || !(end2 instanceof Classifier)) {
+<span class="nc" id="L572">            throw new IllegalArgumentException(</span>
+                    &quot;either one of the arguments was null&quot;);
+        }
+<span class="nc" id="L575">        final Classifier classifier1 = (Classifier) end1;</span>
+<span class="nc" id="L576">        final Classifier classifier2 = (Classifier) end2;</span>
+<span class="nc" id="L577">        AssociationClass assocClass = createAssociationClass();</span>
+
+<span class="nc" id="L579">        assocClass.setNamespace(classifier1.getNamespace());</span>
+<span class="nc" id="L580">        assocClass.setName(&quot;&quot;);</span>
+<span class="nc" id="L581">        assocClass.setAbstract(false);</span>
+<span class="nc" id="L582">        assocClass.setActive(false);</span>
+<span class="nc" id="L583">        assocClass.setRoot(false);</span>
+<span class="nc" id="L584">        assocClass.setLeaf(false);</span>
+<span class="nc" id="L585">        assocClass.setSpecification(false);</span>
+<span class="nc" id="L586">        assocClass.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+
+<span class="nc" id="L588">        buildAssociationEnd(</span>
+                assocClass, null, classifier1, null, null, true, null, null,
+                null, null, null);
+<span class="nc" id="L591">        buildAssociationEnd(</span>
+                assocClass, null, classifier2, null, null, true, null, null,
+                null, null, null);
+<span class="nc" id="L594">        return assocClass;</span>
+    }
+
+
+    public AssociationEnd buildAssociationEnd(Object assoc, String name,
+            Object type, Integer[] multiplicity, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+<span class="nc bnc" id="L602" title="All 2 branches missed.">        if (aggregation != null</span>
+<span class="nc bnc" id="L603" title="All 4 branches missed.">                &amp;&amp; aggregation.equals(AggregationKindEnum.AK_COMPOSITE)</span>
+                &amp;&amp; multiplicity != null
+<span class="nc bnc" id="L605" title="All 4 branches missed.">                &amp;&amp; (multiplicity[1] &gt; 1 || multiplicity[1] == -1) ) {</span>
+<span class="nc" id="L606">            throw new IllegalArgumentException(&quot;aggregation is composite &quot;</span>
+                    + &quot;and multiplicity &gt; 1&quot;);
+        }
+<span class="nc" id="L609">        AssociationEnd ae = buildAssociationEndInternal(assoc, name, type,</span>
+                stereo, navigable, order, aggregation, scope, changeable,
+                visibility);
+<span class="nc bnc" id="L612" title="All 2 branches missed.">        if (multiplicity != null) {</span>
+<span class="nc" id="L613">            Multiplicity m = modelImpl.getDataTypesFactoryInternal()</span>
+<span class="nc" id="L614">                    .createMultiplicityInternal(multiplicity[0],</span>
+<span class="nc" id="L615">                            multiplicity[1]);</span>
+<span class="nc" id="L616">            ae.setMultiplicity(m);</span>
+        }
+<span class="nc" id="L618">        return ae;</span>
+    }
+
+    @Deprecated
+    public AssociationEnd buildAssociationEnd(Object assoc, String name,
+            Object type, Object multi, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+<span class="nc bnc" id="L626" title="All 4 branches missed.">        if (multi != null &amp;&amp; !(multi instanceof Multiplicity)) {</span>
+<span class="nc" id="L627">            throw new IllegalArgumentException(&quot;Multiplicity&quot;);</span>
+        }
+<span class="nc bnc" id="L629" title="All 2 branches missed.">        if (aggregation != null</span>
+<span class="nc bnc" id="L630" title="All 4 branches missed.">                &amp;&amp; aggregation.equals(AggregationKindEnum.AK_COMPOSITE)</span>
+                &amp;&amp; multi != null
+<span class="nc bnc" id="L632" title="All 2 branches missed.">                &amp;&amp; compareMultiplicity(getMaxUpper((Multiplicity) multi), 1)</span>
+                    &gt; 0) {
+<span class="nc" id="L634">            throw new IllegalArgumentException(&quot;aggregation is composite &quot;</span>
+                    + &quot;and multiplicity &gt; 1&quot;);
+        }
+<span class="nc" id="L637">        AssociationEnd ae = buildAssociationEndInternal(assoc, name, type,</span>
+                stereo, navigable, order, aggregation, scope, changeable,
+                visibility);
+<span class="nc bnc" id="L640" title="All 2 branches missed.">        if (multi == null) {</span>
+<span class="nc" id="L641">            ae.setMultiplicity(getMultiplicity11());</span>
+<span class="nc bnc" id="L642" title="All 2 branches missed.">        } else if (multi instanceof Multiplicity) {</span>
+<span class="nc" id="L643">            ae.setMultiplicity((Multiplicity) multi);</span>
+<span class="nc bnc" id="L644" title="All 2 branches missed.">        } else if (multi instanceof String) {</span>
+<span class="nc" id="L645">            Multiplicity m = modelImpl.getDataTypesFactoryInternal()</span>
+<span class="nc" id="L646">                    .createMultiplicityInternal((String) multi);</span>
+<span class="nc" id="L647">            ae.setMultiplicity(m);</span>
+        }
+<span class="nc" id="L649">        return ae;</span>
+    }
+
+    private AssociationEnd buildAssociationEndInternal (Object assoc, String name,
+            Object type, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+        // wellformednessrules and preconditions
+<span class="nc bnc" id="L657" title="All 8 branches missed.">        if (assoc == null || !(assoc instanceof UmlAssociation) || type == null</span>
+                || !(type instanceof Classifier)) {
+<span class="nc" id="L659">            throw new IllegalArgumentException(&quot;either type or association &quot;</span>
+                    + &quot;are null&quot;);
+        }
+<span class="nc bnc" id="L662" title="All 4 branches missed.">        if (stereo != null &amp;&amp; !(stereo instanceof Stereotype)) {</span>
+<span class="nc" id="L663">            throw new IllegalArgumentException(&quot;Stereotype&quot;);</span>
+        }
+<span class="nc bnc" id="L665" title="All 4 branches missed.">        if (order != null &amp;&amp; !(order instanceof OrderingKind)) {</span>
+<span class="nc" id="L666">            throw new IllegalArgumentException(&quot;OrderingKind&quot;);</span>
+        }
+<span class="nc bnc" id="L668" title="All 4 branches missed.">        if (aggregation != null &amp;&amp; !(aggregation instanceof AggregationKind)) {</span>
+<span class="nc" id="L669">            throw new IllegalArgumentException(&quot;AggregationKind&quot;);</span>
+        }
+<span class="nc bnc" id="L671" title="All 4 branches missed.">        if (scope != null &amp;&amp; !(scope instanceof ScopeKind)) {</span>
+<span class="nc" id="L672">            throw new IllegalArgumentException(&quot;ScopeKind&quot;);</span>
+        }
+<span class="nc bnc" id="L674" title="All 4 branches missed.">        if (changeable != null &amp;&amp; !(changeable instanceof ChangeableKind)) {</span>
+<span class="nc" id="L675">            throw new IllegalArgumentException(&quot;ChangeableKind&quot;);</span>
+        }
+<span class="nc bnc" id="L677" title="All 4 branches missed.">        if (visibility != null &amp;&amp; !(visibility instanceof VisibilityKind)) {</span>
+<span class="nc" id="L678">            throw new IllegalArgumentException(&quot;VisibilityKind&quot;);</span>
+        }
+
+<span class="nc" id="L681">        AssociationEnd end = createAssociationEnd();</span>
+<span class="nc" id="L682">        end.setAssociation((UmlAssociation) assoc);</span>
+<span class="nc" id="L683">        end.setParticipant((Classifier) type);</span>
+<span class="nc" id="L684">        end.setName(name);</span>
+        // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
+<span class="nc" id="L686">        List&lt;AssociationEnd&gt; ends = ((UmlAssociation) assoc).getConnection();</span>
+<span class="nc bnc" id="L687" title="All 2 branches missed.">        if (ends.size() &gt;= 3) {</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">            for (AssociationEnd e : ends) {</span>
+<span class="nc" id="L689">                e.setAggregation(AggregationKindEnum.AK_NONE);</span>
+<span class="nc" id="L690">            }</span>
+        }
+<span class="nc bnc" id="L692" title="All 2 branches missed.">        if (stereo != null) {</span>
+<span class="nc" id="L693">            end.getStereotype().clear();</span>
+<span class="nc" id="L694">            end.getStereotype().add((Stereotype) stereo);</span>
+        }
+<span class="nc" id="L696">        end.setNavigable(navigable);</span>
+<span class="nc bnc" id="L697" title="All 2 branches missed.">        if (order != null) {</span>
+<span class="nc" id="L698">            end.setOrdering((OrderingKind) order);</span>
+        } else {
+<span class="nc" id="L700">            end.setOrdering(OrderingKindEnum.OK_UNORDERED);</span>
+        }
+<span class="nc bnc" id="L702" title="All 2 branches missed.">        if (aggregation != null) {</span>
+<span class="nc" id="L703">            end.setAggregation((AggregationKind) aggregation);</span>
+        } else {
+<span class="nc" id="L705">            end.setAggregation(AggregationKindEnum.AK_NONE);</span>
+        }
+<span class="nc bnc" id="L707" title="All 2 branches missed.">        if (scope != null) {</span>
+<span class="nc" id="L708">            end.setTargetScope((ScopeKind) scope);</span>
+        } else {
+<span class="nc" id="L710">            end.setTargetScope(ScopeKindEnum.SK_INSTANCE);</span>
+        }
+<span class="nc bnc" id="L712" title="All 2 branches missed.">        if (changeable != null) {</span>
+<span class="nc" id="L713">            end.setChangeability((ChangeableKind) changeable);</span>
+        } else {
+<span class="nc" id="L715">            end.setChangeability(ChangeableKindEnum.CK_CHANGEABLE);</span>
+        }
+<span class="nc bnc" id="L717" title="All 2 branches missed.">        if (visibility != null) {</span>
+<span class="nc" id="L718">            end.setVisibility((VisibilityKind) visibility);</span>
+        } else {
+<span class="nc" id="L720">            end.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+        }
+<span class="nc" id="L722">        return end;</span>
+    }
+
+    private static final int MULT_UNLIMITED = -1;
+
+    /**
+     * Get the maximum value of a multiplicity
+     *
+     * @param m
+     *            the Multiplicity
+     * @return upper range
+     */
+    private int getMaxUpper(Multiplicity m) {
+<span class="nc" id="L735">        int max = 0;</span>
+<span class="nc bnc" id="L736" title="All 2 branches missed.">        for (MultiplicityRange mr : m.getRange()) {</span>
+<span class="nc" id="L737">            int value = mr.getUpper();</span>
+<span class="nc bnc" id="L738" title="All 2 branches missed.">            if (value == MULT_UNLIMITED) {</span>
+<span class="nc" id="L739">                max = value;</span>
+<span class="nc bnc" id="L740" title="All 4 branches missed.">            } else if (max != MULT_UNLIMITED &amp;&amp; value &gt; max) {</span>
+<span class="nc" id="L741">                max = value;</span>
+            }
+<span class="nc" id="L743">        }</span>
+<span class="nc" id="L744">        return max;</span>
+    }
+
+    /**
+     * Compare two multiplicities taking care of the value 'unlimited' (-1).
+     *
+     * @param mult1 first multiplicity
+     * @param mult2 second multiplicity
+     * @return 0 if equal, a positive integer (not necessarily 1) if mult1 is
+     *         greater than mult2 and a negative integer if mult2 is greater..
+     */
+    private static int compareMultiplicity(int mult1, int mult2) {
+<span class="nc bnc" id="L756" title="All 2 branches missed.">        if (mult1 == MULT_UNLIMITED) {</span>
+<span class="nc bnc" id="L757" title="All 2 branches missed.">            if (mult2 == MULT_UNLIMITED) {</span>
+<span class="nc" id="L758">                return 0; // equal</span>
+            }
+<span class="nc" id="L760">            return 1; // greater</span>
+<span class="nc bnc" id="L761" title="All 2 branches missed.">        } else if (mult2 == MULT_UNLIMITED) {</span>
+<span class="nc" id="L762">            return -1; // less than</span>
+        }
+<span class="nc" id="L764">        return mult1 - mult2;</span>
+    }
+
+    /**
+     * Get a 1..1 multiplicity
+     */
+    private Multiplicity getMultiplicity11() {
+<span class="nc" id="L771">        return modelImpl.getDataTypesFactoryInternal()</span>
+<span class="nc" id="L772">                .createMultiplicityInternal(1, 1);</span>
+    }
+
+
+    public AssociationEnd buildAssociationEnd(Object type, Object assoc) {
+<span class="nc bnc" id="L777" title="All 8 branches missed.">        if (type == null || !(type instanceof Classifier) || assoc == null</span>
+                || !(assoc instanceof UmlAssociation)) {
+<span class="nc" id="L779">            throw new IllegalArgumentException(&quot;one of the arguments is null&quot;);</span>
+        }
+<span class="nc" id="L781">        return buildAssociationEnd(assoc, &quot;&quot;, type, null, null, true, null,</span>
+                null, null, null, VisibilityKindEnum.VK_PUBLIC);
+    }
+
+    public Attribute buildAttribute(Object model, Object theType) {
+<span class="nc" id="L786">        return buildAttribute2(theType);</span>
+    }
+
+    public Attribute buildAttribute2(Object theType) {
+<span class="nc" id="L790">        Attribute attr = buildAttribute();</span>
+<span class="nc" id="L791">        attr.setType((Classifier) theType);</span>
+<span class="nc" id="L792">        return attr;</span>
+    }
+
+    /**
+     * Build a new attribute with no type
+     * @return the new attribute
+     */
+    Attribute buildAttribute() {
+<span class="nc" id="L800">        Attribute attr = createAttribute();</span>
+<span class="nc" id="L801">        attr.setMultiplicity(getMultiplicity11());</span>
+<span class="nc" id="L802">        attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+<span class="nc" id="L803">        attr.setOwnerScope(ScopeKindEnum.SK_INSTANCE);</span>
+<span class="nc" id="L804">        attr.setChangeability(ChangeableKindEnum.CK_CHANGEABLE);</span>
+<span class="nc" id="L805">        attr.setTargetScope(ScopeKindEnum.SK_INSTANCE);</span>
+<span class="nc" id="L806">        return attr;</span>
+    }
+
+
+    public Attribute buildAttribute2(Object handle, Object type) {
+<span class="nc" id="L811">        Attribute attr = buildAttribute2(type);</span>
+<span class="nc bnc" id="L812" title="All 2 branches missed.">        if (handle instanceof Classifier) {</span>
+<span class="nc" id="L813">            Classifier cls = (Classifier) handle;</span>
+<span class="nc" id="L814">            cls.getFeature().add(attr);</span>
+<span class="nc bnc" id="L815" title="All 2 branches missed.">        } else if (handle instanceof AssociationEnd) {</span>
+<span class="nc" id="L816">            AssociationEnd assend = (AssociationEnd) handle;</span>
+<span class="nc" id="L817">            assend.getQualifier().add(attr);</span>
+<span class="nc" id="L818">        } else {</span>
+<span class="nc" id="L819">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L821">        return attr;</span>
+    }
+
+
+    public UmlClass buildClass() {
+<span class="nc" id="L826">        return buildClass((Object) null);</span>
+    }
+
+
+    private static void initClass(UmlClass cl) {
+<span class="fc" id="L831">        cl.setName(&quot;&quot;);</span>
+<span class="fc" id="L832">        cl.setAbstract(false);</span>
+<span class="fc" id="L833">        cl.setActive(false);</span>
+<span class="fc" id="L834">        cl.setRoot(false);</span>
+<span class="fc" id="L835">        cl.setLeaf(false);</span>
+<span class="fc" id="L836">        cl.setSpecification(false);</span>
+<span class="fc" id="L837">        cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+<span class="fc" id="L838">    }</span>
+
+    public UmlClass buildClass(final Object owner) {
+<span class="fc" id="L841">        ModelCommand command = new ModelCommand() {</span>
+            private UmlClass cl;
+            public UmlClass execute() {
+<span class="pc bpc" id="L844" title="1 of 2 branches missed.">                if (owner == null) {</span>
+<span class="nc" id="L845">                    cl = createClass();</span>
+                } else {
+<span class="fc" id="L847">                    cl = createClass(getExtent(owner));</span>
+                }
+<span class="fc" id="L849">                initClass(cl);</span>
+<span class="fc" id="L850">                return cl;</span>
+            }
+
+            public void undo() {
+                try {
+<span class="nc" id="L855">                    cl.refDelete();</span>
+<span class="nc" id="L856">                } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L857">                    LOG.log(Level.WARNING, &quot;Object already deleted &quot; + cl);</span>
+<span class="nc" id="L858">                }</span>
+<span class="nc" id="L859">            }</span>
+
+            public boolean isUndoable() {
+<span class="nc" id="L862">                return true;</span>
+            }
+
+            public boolean isRedoable() {
+<span class="nc" id="L866">                return false;</span>
+            }
+        };
+<span class="fc" id="L869">        UmlClass clazz = (UmlClass) org.argouml.model.Model.execute(command);</span>
+<span class="pc bpc" id="L870" title="1 of 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="fc" id="L871">            modelImpl.getCoreHelper().setNamespace(clazz, owner);</span>
+        }
+<span class="fc" id="L873">        return clazz;</span>
+    }
+
+
+    private org.omg.uml.UmlPackage getExtent(Object element) {
+<span class="fc" id="L878">        return (org.omg.uml.UmlPackage) ((RefObject) element)</span>
+<span class="fc" id="L879">                .refOutermostPackage();</span>
+    }
+
+    public UmlClass buildClass(String name) {
+<span class="nc" id="L883">        UmlClass clazz = buildClass();</span>
+<span class="nc" id="L884">        clazz.setName(name);</span>
+<span class="nc" id="L885">        return clazz;</span>
+    }
+
+
+    public UmlClass buildClass(String name, Object owner) {
+<span class="nc" id="L890">        UmlClass clazz = buildClass();</span>
+<span class="nc" id="L891">        clazz.setName(name);</span>
+<span class="nc bnc" id="L892" title="All 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="nc" id="L893">            modelImpl.getCoreHelper().setNamespace(clazz, owner);</span>
+        }
+<span class="nc" id="L895">        return clazz;</span>
+    }
+
+
+    public Interface buildInterface() {
+<span class="nc" id="L900">        Interface cl = createInterface();</span>
+<span class="nc" id="L901">        cl.setName(&quot;&quot;);</span>
+<span class="nc" id="L902">        cl.setAbstract(false);</span>
+<span class="nc" id="L903">        cl.setRoot(false);</span>
+<span class="nc" id="L904">        cl.setLeaf(false);</span>
+<span class="nc" id="L905">        cl.setSpecification(false);</span>
+<span class="nc" id="L906">        cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+<span class="nc" id="L907">        return cl;</span>
+    }
+
+
+    public Interface buildInterface(Object owner) {
+<span class="nc" id="L912">        Interface cl = buildInterface();</span>
+<span class="nc bnc" id="L913" title="All 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="nc" id="L914">            cl.setNamespace((Namespace) owner);</span>
+        }
+<span class="nc" id="L916">        return cl;</span>
+    }
+
+
+    public Interface buildInterface(String name) {
+<span class="nc" id="L921">        Interface cl = buildInterface();</span>
+<span class="nc" id="L922">        cl.setName(name);</span>
+<span class="nc" id="L923">        return cl;</span>
+    }
+
+
+    public Interface buildInterface(String name, Object owner) {
+<span class="nc" id="L928">        Interface cl = buildInterface();</span>
+<span class="nc" id="L929">        cl.setName(name);</span>
+<span class="nc bnc" id="L930" title="All 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="nc" id="L931">            cl.setNamespace((Namespace) owner);</span>
+        }
+<span class="nc" id="L933">        return cl;</span>
+    }
+
+
+    public DataType buildDataType(String name, Object owner) {
+<span class="nc" id="L938">        DataType dt = createDataType();</span>
+<span class="nc" id="L939">        dt.setName(name);</span>
+<span class="nc bnc" id="L940" title="All 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="nc" id="L941">            dt.setNamespace((Namespace) owner);</span>
+        }
+<span class="nc" id="L943">        return dt;</span>
+    }
+
+
+    public Enumeration buildEnumeration(String name, Object owner) {
+<span class="nc" id="L948">        Enumeration e = createEnumeration();</span>
+<span class="nc" id="L949">        e.setName(name);</span>
+<span class="nc bnc" id="L950" title="All 2 branches missed.">        if (owner instanceof Namespace) {</span>
+<span class="nc" id="L951">            e.setNamespace((Namespace) owner);</span>
+        }
+<span class="nc" id="L953">        return e;</span>
+    }
+
+
+    public Dependency buildDependency(Object clientObj, Object supplierObj) {
+
+<span class="nc" id="L959">        ModelElement client = (ModelElement) clientObj;</span>
+<span class="nc" id="L960">        ModelElement supplier = (ModelElement) supplierObj;</span>
+<span class="nc bnc" id="L961" title="All 4 branches missed.">        if (client == null || supplier == null) {</span>
+<span class="nc" id="L962">            throw new IllegalArgumentException(&quot;client or supplier is null &quot;</span>
+                    + &quot;client = &quot; + client + &quot; supplier = &quot; + supplier);
+        }
+<span class="nc" id="L965">        Dependency dep = createDependency();</span>
+<span class="nc" id="L966">        dep.getSupplier().add(supplier);</span>
+<span class="nc" id="L967">        dep.getClient().add(client);</span>
+<span class="nc bnc" id="L968" title="All 2 branches missed.">        if (client instanceof Namespace) {</span>
+<span class="nc" id="L969">            dep.setNamespace((Namespace) client);</span>
+<span class="nc bnc" id="L970" title="All 2 branches missed.">        } else if (client.getNamespace() != null) {</span>
+<span class="nc" id="L971">            dep.setNamespace(client.getNamespace());</span>
+        }
+<span class="nc" id="L973">        return dep;</span>
+    }
+
+
+    public Permission buildPackageImport(Object client, Object supplier) {
+<span class="nc bnc" id="L978" title="All 4 branches missed.">        if (!(client instanceof Namespace)</span>
+                || !(supplier instanceof UmlPackage)) {
+<span class="nc" id="L980">            throw new IllegalArgumentException(&quot;client is not a Namespace&quot;</span>
+                    + &quot; or supplier is not a Package&quot;);
+        }
+<span class="nc" id="L983">        Permission per = buildPermissionInternal((ModelElement) client,</span>
+                (UmlPackage) supplier);
+
+        // TODO: This should fetch the stereotype from our profile
+<span class="nc" id="L987">        modelImpl.getExtensionMechanismsFactory().buildStereotype(per,</span>
+                ModelManagementHelper.IMPORT_STEREOTYPE,
+<span class="nc" id="L989">                per.getNamespace());</span>
+<span class="nc" id="L990">        return per;</span>
+    }
+
+
+    private Permission buildPermissionInternal(ModelElement client,
+            ModelElement supplier) {
+<span class="nc" id="L996">        Permission permission = createPackageImport();</span>
+<span class="nc" id="L997">        permission.getSupplier().add(supplier);</span>
+<span class="nc" id="L998">        permission.getClient().add(client);</span>
+<span class="nc bnc" id="L999" title="All 2 branches missed.">        if (client instanceof Namespace) {</span>
+<span class="nc" id="L1000">            permission.setNamespace((Namespace) client);</span>
+<span class="nc bnc" id="L1001" title="All 2 branches missed.">        } else if (client.getNamespace() != null) {</span>
+<span class="nc" id="L1002">            permission.setNamespace(client.getNamespace());</span>
+        }
+<span class="nc" id="L1004">        return permission;</span>
+    }
+
+
+    public Permission buildPackageAccess(Object client, Object supplier) {
+<span class="nc bnc" id="L1009" title="All 4 branches missed.">        if (!(client instanceof Namespace)</span>
+                || !(supplier instanceof UmlPackage)) {
+<span class="nc" id="L1011">            throw new IllegalArgumentException(&quot;client or &quot;</span>
+                    + &quot;supplier is not a Namespace&quot;);
+        }
+<span class="nc" id="L1014">        Permission per = buildPermissionInternal((ModelElement) client,</span>
+                (UmlPackage) supplier);
+
+        // TODO: This should fetch the stereotype from our profile
+<span class="nc" id="L1018">        modelImpl.getExtensionMechanismsFactory().buildStereotype(per,</span>
+                ModelManagementHelper.ACCESS_STEREOTYPE,
+<span class="nc" id="L1020">                per.getNamespace());</span>
+<span class="nc" id="L1021">        return per;</span>
+    }
+
+
+    public Generalization buildGeneralization(Object child1, Object parent1) {
+        // TODO: This is a part implementation of well-formedness rule
+        // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
+        // not self.allParents-&gt;includes(self)
+<span class="nc bnc" id="L1029" title="All 6 branches missed.">        if (!(child1 instanceof GeneralizableElement</span>
+                &amp;&amp; parent1 instanceof GeneralizableElement
+                &amp;&amp; child1 != parent1)) {
+<span class="nc" id="L1032">            throw new IllegalArgumentException(</span>
+                    &quot;Both items must be different generalizable elements&quot;);
+        }
+
+<span class="nc" id="L1036">        GeneralizableElement child = (GeneralizableElement) child1;</span>
+<span class="nc" id="L1037">        GeneralizableElement parent = (GeneralizableElement) parent1;</span>
+
+        // Check that the two elements aren't already linked the opposite way
+        // TODO: This is a part implementation of well-formedness rule
+        // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
+        // not self.allParents-&gt;includes(self)
+<span class="nc bnc" id="L1043" title="All 2 branches missed.">        for (Generalization gen : parent.getGeneralization()) {</span>
+<span class="nc bnc" id="L1044" title="All 2 branches missed.">            if (gen.getParent().equals(child)) {</span>
+<span class="nc" id="L1045">                throw new IllegalArgumentException(&quot;Generalization exists&quot;</span>
+                        + &quot; in opposite direction&quot;);
+            }
+<span class="nc" id="L1048">        }</span>
+
+        // TODO: This is well-formedness rule from UML1.4.2
+        // 4.5.3.20 [2] No GeneralizableElement can have a parent
+        // Generalization to an element that is a leaf.
+        // self.parent-&gt;forAll(s | not s.isLeaf)
+<span class="nc bnc" id="L1054" title="All 2 branches missed.">        if (parent.isLeaf()) {</span>
+<span class="nc" id="L1055">            throw new IllegalArgumentException(&quot;parent is leaf&quot;);</span>
+        }
+
+        // TODO: This is well-formedness rule from UML1.4.2
+        // 4.5.3.20 [1] A root cannot have any Generalizations.
+        // self.isRoot implies self.generalization-&gt;isEmpty
+<span class="nc bnc" id="L1061" title="All 2 branches missed.">        if (child.isRoot()) {</span>
+<span class="nc" id="L1062">            throw new IllegalArgumentException(&quot;child is root&quot;);</span>
+        }
+
+<span class="nc" id="L1065">        Namespace ns = child.getNamespace();</span>
+<span class="nc bnc" id="L1066" title="All 6 branches missed.">        if ((ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns))</span>
+                &amp;&amp; child instanceof Namespace) {
+<span class="nc" id="L1068">            ns = (Namespace) child;</span>
+        }
+<span class="nc bnc" id="L1070" title="All 4 branches missed.">        if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {</span>
+<span class="nc" id="L1071">            throw new IllegalArgumentException(&quot;No valid writeable namespace&quot;);</span>
+        }
+<span class="nc" id="L1073">        Generalization gen = createGeneralization(ns.refOutermostPackage());</span>
+<span class="nc" id="L1074">        gen.setParent(parent);</span>
+<span class="nc" id="L1075">        gen.setChild(child);</span>
+<span class="nc" id="L1076">        gen.setNamespace(ns);</span>
+<span class="nc" id="L1077">        return gen;</span>
+    }
+
+    public Object buildManifestation(Object utilizedElement) {
+<span class="nc" id="L1081">        throw new NotImplementedException( &quot;UML 1.4 has no manifestations&quot;);</span>
+    }
+
+    public Method buildMethod(String name) {
+<span class="nc" id="L1085">        Method method = createMethod();</span>
+<span class="nc bnc" id="L1086" title="All 2 branches missed.">        if (method != null) {</span>
+<span class="nc" id="L1087">            method.setName(name);</span>
+        }
+<span class="nc" id="L1089">        return method;</span>
+    }
+
+
+    public Operation buildOperation(Object classifier, Object returnType) {
+<span class="nc bnc" id="L1094" title="All 2 branches missed.">        if (!(classifier instanceof Classifier)) {</span>
+<span class="nc" id="L1095">            throw new IllegalArgumentException(&quot;Handle is not a classifier&quot;);</span>
+        }
+<span class="nc" id="L1097">        Classifier cls = (Classifier) classifier;</span>
+<span class="nc" id="L1098">        Operation oper = createOperation();</span>
+<span class="nc" id="L1099">        oper.setOwner(cls);</span>
+<span class="nc" id="L1100">        oper.setVisibility(VisibilityKindEnum.VK_PUBLIC);</span>
+<span class="nc" id="L1101">        oper.setAbstract(false);</span>
+<span class="nc" id="L1102">        oper.setLeaf(false);</span>
+<span class="nc" id="L1103">        oper.setRoot(false);</span>
+<span class="nc" id="L1104">        oper.setQuery(false);</span>
+<span class="nc" id="L1105">        oper.setOwnerScope(ScopeKindEnum.SK_INSTANCE);</span>
+<span class="nc" id="L1106">        oper.setConcurrency(CallConcurrencyKindEnum.CCK_SEQUENTIAL);</span>
+
+<span class="nc" id="L1108">        Parameter returnParameter = buildParameter(oper, returnType);</span>
+<span class="nc" id="L1109">        returnParameter.setKind(ParameterDirectionKindEnum.PDK_RETURN);</span>
+<span class="nc" id="L1110">        returnParameter.setName(&quot;return&quot;);</span>
+<span class="nc" id="L1111">        return oper;</span>
+    }
+
+
+    public Operation buildOperation2(Object cls, Object returnType,
+            String name) {
+<span class="nc" id="L1117">        Operation oper = buildOperation(cls, returnType);</span>
+<span class="nc bnc" id="L1118" title="All 2 branches missed.">        if (oper != null) {</span>
+<span class="nc" id="L1119">            oper.setName(name);</span>
+        }
+<span class="nc" id="L1121">        return oper;</span>
+    }
+
+    /**
+     * Constructs a default parameter.
+     *
+     * @return The newly created parameter.
+     */
+    private Parameter buildParameter(Classifier type,
+            javax.jmi.reflect.RefObject ref) {
+<span class="nc" id="L1131">        Parameter param = ((org.omg.uml.UmlPackage) ref.refOutermostPackage())</span>
+<span class="nc" id="L1132">                .getCore().getParameter().createParameter();</span>
+<span class="nc" id="L1133">        param.setType(type);</span>
+<span class="nc" id="L1134">        return param;</span>
+    }
+
+
+    public Parameter buildParameter(Object o, Object type) {
+<span class="nc bnc" id="L1139" title="All 2 branches missed.">        if (o instanceof Event) {</span>
+<span class="nc" id="L1140">            Event event = (Event) o;</span>
+<span class="nc" id="L1141">            Parameter res = buildParameter((Classifier) type, event);</span>
+<span class="nc" id="L1142">            res.setKind(ParameterDirectionKindEnum.PDK_IN);</span>
+<span class="nc" id="L1143">            event.getParameter().add(res);</span>
+<span class="nc" id="L1144">            res.setName(&quot;arg&quot; + event.getParameter().size());</span>
+<span class="nc" id="L1145">            return res;</span>
+<span class="nc bnc" id="L1146" title="All 2 branches missed.">        } else if (o instanceof ObjectFlowState) {</span>
+<span class="nc" id="L1147">            ObjectFlowState ofs = (ObjectFlowState) o;</span>
+<span class="nc" id="L1148">            Parameter res = buildParameter((Classifier) type, ofs);</span>
+<span class="nc" id="L1149">            res.setKind(ParameterDirectionKindEnum.PDK_IN);</span>
+<span class="nc" id="L1150">            ofs.getParameter().add(res);</span>
+<span class="nc" id="L1151">            res.setName(&quot;arg&quot; + ofs.getParameter().size());</span>
+<span class="nc" id="L1152">            return res;</span>
+<span class="nc bnc" id="L1153" title="All 2 branches missed.">        } else if (o instanceof BehavioralFeature) {</span>
+<span class="nc" id="L1154">            BehavioralFeature oper = (BehavioralFeature) o;</span>
+<span class="nc" id="L1155">            Parameter res = buildParameter((Classifier) type, oper);</span>
+<span class="nc" id="L1156">            res.setKind(ParameterDirectionKindEnum.PDK_IN);</span>
+<span class="nc" id="L1157">            oper.getParameter().add(res);</span>
+<span class="nc" id="L1158">            res.setName(&quot;arg&quot; + oper.getParameter().size());</span>
+<span class="nc" id="L1159">            return res;</span>
+<span class="nc bnc" id="L1160" title="All 2 branches missed.">        } else if (o == null) {</span>
+<span class="nc" id="L1161">            throw new IllegalArgumentException(</span>
+                    &quot;A containing element must be supplied for the parameter&quot;);
+        } else {
+<span class="nc" id="L1164">            throw new IllegalArgumentException(</span>
+                    &quot;Unsupported contining element for parameter &quot;
+<span class="nc" id="L1166">                    + o.getClass().getName());</span>
+        }
+    }
+
+
+    public Abstraction buildRealization(Object clnt, Object spplr,
+            Object model) {
+<span class="nc" id="L1173">        ModelElement client = (ModelElement) clnt;</span>
+<span class="nc" id="L1174">        ModelElement supplier = (ModelElement) spplr;</span>
+<span class="nc bnc" id="L1175" title="All 6 branches missed.">        if (client == null || supplier == null || client.getNamespace() == null</span>
+<span class="nc bnc" id="L1176" title="All 4 branches missed.">                || supplier.getNamespace() == null || client.equals(supplier)) {</span>
+<span class="nc" id="L1177">            throw new IllegalArgumentException(&quot;faulty arguments.&quot;);</span>
+        }
+<span class="nc" id="L1179">        Abstraction realization = createAbstraction();</span>
+<span class="nc" id="L1180">        Namespace nsc = client.getNamespace();</span>
+<span class="nc" id="L1181">        Namespace nss = supplier.getNamespace();</span>
+<span class="nc" id="L1182">        Namespace ns = null;</span>
+<span class="nc bnc" id="L1183" title="All 2 branches missed.">        if (nsc.equals(nss)) {</span>
+<span class="nc" id="L1184">            ns = nsc;</span>
+        } else {
+<span class="nc" id="L1186">            ns = (Namespace) model;</span>
+        }
+<span class="nc" id="L1188">        realization.setNamespace(nsc);</span>
+<span class="nc" id="L1189">        modelImpl.getExtensionMechanismsFactory().buildStereotype(realization,</span>
+                CoreFactory.REALIZE_STEREOTYPE, ns);
+<span class="nc" id="L1191">        realization.getClient().add(client);</span>
+<span class="nc" id="L1192">        realization.getSupplier().add(supplier);</span>
+<span class="nc" id="L1193">        return realization;</span>
+    }
+
+
+    public TemplateArgument buildTemplateArgument(Object element) {
+<span class="nc" id="L1198">        TemplateArgument ta = createTemplateArgument();</span>
+<span class="nc" id="L1199">        ta.setModelElement((ModelElement) element);</span>
+<span class="nc" id="L1200">        return ta;</span>
+    }
+
+    public TemplateArgument buildTemplateArgument(Object binding,
+            Object element) {
+<span class="nc bnc" id="L1205" title="All 4 branches missed.">        if (!(binding instanceof Binding &amp;&amp; element instanceof ModelElement)) {</span>
+<span class="nc" id="L1206">            throw new IllegalArgumentException();</span>
+        }
+<span class="nc" id="L1208">        TemplateArgument ta = createTemplateArgument(getExtent(binding));</span>
+<span class="nc" id="L1209">        ta.setModelElement((ModelElement) element);</span>
+<span class="nc" id="L1210">        ta.setBinding((Binding) binding);</span>
+<span class="nc" id="L1211">        return ta;</span>
+    }
+
+    public Object buildTemplateParameter(Object template, Object parameter,
+            Object defaultElement) {
+<span class="nc bnc" id="L1216" title="All 2 branches missed.">        if (!(template instanceof ModelElement)) {</span>
+<span class="nc" id="L1217">            throw new IllegalArgumentException(</span>
+                    &quot;Template must be a model element&quot;);
+        }
+<span class="nc bnc" id="L1220" title="All 2 branches missed.">        if (!(parameter instanceof ModelElement)) {</span>
+<span class="nc bnc" id="L1221" title="All 2 branches missed.">            if (parameter == null) {</span>
+<span class="nc" id="L1222">                parameter = createClass(getExtent(template));</span>
+            } else {
+<span class="nc" id="L1224">            throw new IllegalArgumentException(</span>
+                    &quot;Parameter must be a model element&quot;);
+            }
+        }
+<span class="nc bnc" id="L1228" title="All 4 branches missed.">        if (defaultElement != null</span>
+                &amp;&amp; !(defaultElement instanceof ModelElement)) {
+<span class="nc" id="L1230">            throw new IllegalArgumentException(</span>
+                    &quot;Default element must be a model element&quot;);
+        }
+
+<span class="nc" id="L1234">        TemplateParameter templateParam =</span>
+<span class="nc" id="L1235">            createTemplateParameter(getExtent(template));</span>
+<span class="nc" id="L1236">        templateParam.setParameter((ModelElement) parameter);</span>
+<span class="nc bnc" id="L1237" title="All 2 branches missed.">        if (defaultElement != null) {</span>
+<span class="nc" id="L1238">            templateParam.setDefaultElement((ModelElement) defaultElement);</span>
+        }
+<span class="nc" id="L1240">        templateParam.setTemplate((ModelElement) template);</span>
+<span class="nc" id="L1241">        return templateParam;</span>
+    }
+
+
+    public Usage buildUsage(Object client, Object supplier) {
+<span class="nc bnc" id="L1246" title="All 4 branches missed.">        if (client == null || supplier == null) {</span>
+<span class="nc" id="L1247">            throw new IllegalArgumentException(&quot;In buildUsage null arguments.&quot;);</span>
+        }
+<span class="nc bnc" id="L1249" title="All 2 branches missed.">        if (!(client instanceof ModelElement)) {</span>
+<span class="nc" id="L1250">            throw new IllegalArgumentException(&quot;client ModelElement&quot;);</span>
+        }
+<span class="nc bnc" id="L1252" title="All 2 branches missed.">        if (!(supplier instanceof ModelElement)) {</span>
+<span class="nc" id="L1253">            throw new IllegalArgumentException(&quot;supplier ModelElement&quot;);</span>
+        }
+        // TODO: UML 1.4 spec requires both client and supplier to be
+        // in the same model - tfm
+<span class="nc" id="L1257">        Usage usage = createUsage();</span>
+<span class="nc" id="L1258">        usage.getSupplier().add((ModelElement) supplier);</span>
+<span class="nc" id="L1259">        usage.getClient().add((ModelElement) client);</span>
+<span class="nc bnc" id="L1260" title="All 2 branches missed.">        if (((ModelElement) supplier).getNamespace() != null) {</span>
+<span class="nc" id="L1261">            usage.setNamespace(((ModelElement) supplier).getNamespace());</span>
+<span class="nc bnc" id="L1262" title="All 2 branches missed.">        } else if (((ModelElement) client).getNamespace() != null) {</span>
+<span class="nc" id="L1263">            usage.setNamespace(((ModelElement) client).getNamespace());</span>
+        }
+        // TODO: Add standard stereotype?  Set is open ended, but
+        // predefined names include: call, create, instantiate, send
+<span class="nc" id="L1267">        return usage;</span>
+    }
+
+
+    public Comment buildComment(Object element, Object model) {
+<span class="nc bnc" id="L1272" title="All 2 branches missed.">        if (model == null) {</span>
+<span class="nc" id="L1273">            throw new IllegalArgumentException(&quot;A namespace must be supplied.&quot;);</span>
+        }
+<span class="nc" id="L1275">        ModelElement elementToAnnotate = (ModelElement) element;</span>
+<span class="nc" id="L1276">        Comment comment = createComment();</span>
+
+<span class="nc" id="L1278">        Namespace commentsModel = null;</span>
+<span class="nc bnc" id="L1279" title="All 2 branches missed.">        if (elementToAnnotate != null) {</span>
+<span class="nc" id="L1280">            comment.getAnnotatedElement().add(elementToAnnotate);</span>
+<span class="nc" id="L1281">            commentsModel = elementToAnnotate.getNamespace();</span>
+        } else {
+<span class="nc" id="L1283">            commentsModel = (Namespace) model;</span>
+        }
+
+<span class="nc" id="L1286">        comment.setNamespace(commentsModel);</span>
+<span class="nc" id="L1287">        return comment;</span>
+    }
+
+
+    public Constraint buildConstraint(Object constrElement) {
+<span class="nc" id="L1292">        ModelElement constrainedElement = (ModelElement) constrElement;</span>
+<span class="nc bnc" id="L1293" title="All 2 branches missed.">        if (constrainedElement == null) {</span>
+<span class="nc" id="L1294">            throw new IllegalArgumentException(&quot;the constrained element is &quot;</span>
+                    + &quot;mandatory and may not be &quot; + &quot;null.&quot;);
+        }
+<span class="nc" id="L1297">        Constraint con = createConstraint();</span>
+<span class="nc" id="L1298">        con.getConstrainedElement().add(constrainedElement);</span>
+<span class="nc" id="L1299">        con.setNamespace(constrainedElement.getNamespace());</span>
+<span class="nc" id="L1300">        return con;</span>
+    }
+
+
+    public Constraint buildConstraint(String name, Object bexpr) {
+<span class="nc bnc" id="L1305" title="All 4 branches missed.">        if (bexpr == null || !(bexpr instanceof BooleanExpression)) {</span>
+<span class="nc" id="L1306">            throw new IllegalArgumentException(&quot;invalid boolean expression.&quot;);</span>
+        }
+<span class="nc" id="L1308">        Constraint con = createConstraint();</span>
+<span class="nc bnc" id="L1309" title="All 2 branches missed.">        if (name != null) {</span>
+<span class="nc" id="L1310">            con.setName(name);</span>
+        }
+<span class="nc" id="L1312">        con.setBody((BooleanExpression) bexpr);</span>
+<span class="nc" id="L1313">        return con;</span>
+    }
+
+
+    public Binding buildBinding(Object client, Object supplier,
+            List arguments) {
+<span class="nc" id="L1319">        Collection&lt;Dependency&gt; clientDeps = ((ModelElement) client)</span>
+<span class="nc" id="L1320">                .getClientDependency();</span>
+<span class="nc bnc" id="L1321" title="All 2 branches missed.">        for (Dependency dep : clientDeps) {</span>
+<span class="nc bnc" id="L1322" title="All 2 branches missed.">            if (dep instanceof Binding) {</span>
+<span class="nc" id="L1323">                throw new IllegalArgumentException(</span>
+                        &quot;client is already client of another Binding&quot;);
+            }
+<span class="nc" id="L1326">        }</span>
+
+        // Check arguments against parameters for type and number
+        // TODO: Perhaps move this to a critic instead? - tfm - 20070326
+<span class="nc bnc" id="L1330" title="All 2 branches missed.">        if (arguments != null) {</span>
+<span class="nc" id="L1331">            List&lt;TemplateParameter&gt; params =</span>
+<span class="nc" id="L1332">                ((ModelElement) supplier).getTemplateParameter();</span>
+<span class="nc bnc" id="L1333" title="All 2 branches missed.">            if (params.size() != arguments.size()) {</span>
+<span class="nc" id="L1334">                throw new IllegalArgumentException(</span>
+                        &quot;number of arguments doesn't match number of params&quot;);
+            }
+<span class="nc" id="L1337">            Iterator&lt;TemplateArgument&gt; ita = arguments.iterator();</span>
+<span class="nc bnc" id="L1338" title="All 2 branches missed.">            for (TemplateParameter param : params) {</span>
+<span class="nc" id="L1339">                TemplateArgument ta = ita.next();</span>
+                // TODO: Before allowing this, we should really check that
+                // TemplateParameter.defaultElement is defined
+<span class="nc bnc" id="L1342" title="All 4 branches missed.">                if (ta == null || ta.getModelElement() == null) {</span>
+<span class="nc" id="L1343">                    continue;</span>
+                }
+<span class="nc bnc" id="L1345" title="All 2 branches missed.">                if (!(param.getParameter().getClass().equals(</span>
+<span class="nc" id="L1346">                        ta.getModelElement().getClass()))) {</span>
+<span class="nc" id="L1347">                    throw new IllegalArgumentException(</span>
+                            &quot;type of argument doesn't match type of parameter&quot;);
+                }
+<span class="nc" id="L1350">            }</span>
+        }
+
+<span class="nc" id="L1353">        Binding binding = createBinding();</span>
+<span class="nc" id="L1354">        binding.getClient().add((ModelElement) client);</span>
+<span class="nc" id="L1355">        binding.getSupplier().add((ModelElement) supplier);</span>
+<span class="nc bnc" id="L1356" title="All 2 branches missed.">        if (arguments != null) {</span>
+<span class="nc" id="L1357">            binding.getArgument().addAll(arguments);</span>
+        }
+
+<span class="nc" id="L1360">        return binding;</span>
+    }
+
+
+    /**
+     * @param elem
+     *            the abstraction to be deleted
+     */
+    void deleteAbstraction(Object elem) {
+<span class="nc bnc" id="L1369" title="All 2 branches missed.">        if (!(elem instanceof Abstraction)) {</span>
+<span class="nc" id="L1370">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1372">    }</span>
+
+    /**
+     * @param elem
+     *            the artifact to be deleted
+     */
+    void deleteArtifact(Object elem) {
+<span class="nc bnc" id="L1379" title="All 2 branches missed.">        if (!(elem instanceof Artifact)) {</span>
+<span class="nc" id="L1380">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1382">    }</span>
+
+    /**
+     * @param elem
+     *            the association to be deleted
+     */
+    void deleteAssociation(Object elem) {
+<span class="nc bnc" id="L1389" title="All 2 branches missed.">        if (!(elem instanceof UmlAssociation)) {</span>
+<span class="nc" id="L1390">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1392">    }</span>
+
+    /**
+     * @param elem
+     *            the a. to be deleted
+     */
+    void deleteAssociationClass(Object elem) {
+<span class="nc bnc" id="L1399" title="All 2 branches missed.">        if (!(elem instanceof AssociationClass)) {</span>
+<span class="nc" id="L1400">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1402">    }</span>
+
+    /**
+     * Does a 'cascading delete' to all modelelements that are associated with
+     * this element that would be in an illegal state after deletion of the
+     * element. This method should not be called directly.
+     * &lt;p&gt;
+     *
+     * In the case of an AssociationEnd these are the following elements:
+     * &lt;ul&gt;
+     * &lt;li&gt;Binary Associations that lose one of the AssociationEnds by this
+     * deletion.
+     * &lt;li&gt;LinkEnds associated with this AssociationEnd.
+     * &lt;/ul&gt;
+     *
+     *
+     * @param elem
+     * @see UmlFactoryMDRImpl#delete(Object)
+     */
+    void deleteAssociationEnd(Object elem) {
+<span class="nc bnc" id="L1422" title="All 2 branches missed.">        if (!(elem instanceof AssociationEnd)) {</span>
+<span class="nc" id="L1423">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1425">        AssociationEnd ae = (AssociationEnd) elem;</span>
+<span class="nc" id="L1426">        UmlAssociation assoc = ae.getAssociation();</span>
+<span class="nc bnc" id="L1427" title="All 4 branches missed.">        if (assoc != null &amp;&amp; assoc.getConnection() != null</span>
+<span class="nc bnc" id="L1428" title="All 2 branches missed.">                &amp;&amp; assoc.getConnection().size() == 2) { // binary association</span>
+<span class="nc" id="L1429">            modelImpl.getUmlFactory().delete(assoc);</span>
+        }
+        // delete LinkEnds which have this as their associationEnd
+<span class="nc" id="L1432">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1433">                ((org.omg.uml.UmlPackage) ae.refOutermostPackage())</span>
+<span class="nc" id="L1434">                        .getCommonBehavior().getAAssociationEndLinkEnd()</span>
+<span class="nc" id="L1435">                        .getLinkEnd(ae));</span>
+<span class="nc" id="L1436">    }</span>
+
+    /**
+     * @param elem
+     *            the attribute to be deleted
+     */
+    void deleteAttribute(Object elem) {
+<span class="nc bnc" id="L1443" title="All 2 branches missed.">        if (!(elem instanceof Attribute)) {</span>
+<span class="nc" id="L1444">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+        // delete AttributeLinks where this is the Attribute
+<span class="nc" id="L1447">        Attribute attr = (Attribute) elem;</span>
+<span class="nc" id="L1448">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1449">                ((org.omg.uml.UmlPackage) attr.refOutermostPackage())</span>
+<span class="nc" id="L1450">                        .getCommonBehavior().getAAttributeLinkAttribute()</span>
+<span class="nc" id="L1451">                        .getAttributeLink(attr));</span>
+<span class="nc" id="L1452">    }</span>
+
+    /**
+     * @param elem the element to be deleted
+     */
+    void deleteBehavioralFeature(Object elem) {
+<span class="nc bnc" id="L1458" title="All 2 branches missed.">        if (!(elem instanceof BehavioralFeature)) {</span>
+<span class="nc" id="L1459">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1462">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteBinding(Object elem) {
+<span class="nc bnc" id="L1469" title="All 2 branches missed.">        if (!(elem instanceof Binding)) {</span>
+<span class="nc" id="L1470">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1472">        Binding binding = (Binding) elem;</span>
+<span class="nc" id="L1473">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1474">                ((org.omg.uml.UmlPackage) binding.refOutermostPackage())</span>
+<span class="nc" id="L1475">                        .getCore().getABindingArgument().getArgument(binding));</span>
+<span class="nc" id="L1476">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteClass(Object elem) {
+<span class="nc bnc" id="L1483" title="All 2 branches missed.">        if (!(elem instanceof UmlClass)) {</span>
+<span class="nc" id="L1484">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1486">    }</span>
+
+    /**
+     * Does a 'cascading delete' to all modelelements that are associated with
+     * this element that would be in an illegal state after deletion of the
+     * element. Does not do an cascading delete for elements that are deleted by
+     * the MDR method remove. This method should not be called directly.
+     * &lt;p&gt;
+     *
+     * In the case of a classifier these are the following elements:
+     * &lt;ul&gt;
+     * &lt;li&gt;AssociationEnds that have this classifier as type
+     * &lt;/ul&gt;
+     *
+     * @param elem
+     * @see UmlFactoryMDRImpl#delete(Object)
+     */
+    void deleteClassifier(Object elem) {
+<span class="nc bnc" id="L1504" title="All 2 branches missed.">        if (!(elem instanceof Classifier)) {</span>
+<span class="nc" id="L1505">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1507">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1508">                modelImpl.getFacade().getAssociationEnds(elem));</span>
+<span class="nc" id="L1509">        Classifier cls = (Classifier) elem;</span>
+        // delete CreateActions which have this as their instantiation
+<span class="nc" id="L1511">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1512">                ((org.omg.uml.UmlPackage) cls.refOutermostPackage())</span>
+<span class="nc" id="L1513">                        .getCommonBehavior().getACreateActionInstantiation()</span>
+<span class="nc" id="L1514">                        .getCreateAction(cls));</span>
+        // TODO: ?delete Instances which have this as their classifier?
+        // or should we leave them since they contain so much state that the
+        // user would have to recreate??
+//        nsmodel.getUmlHelper().deleteCollection(
+//                nsmodel.getUmlPackage().getCommonBehavior()
+//                        .getAInstanceClassifier().getInstance(cls));
+        // TODO: ?delete ObjectFlowStates which have this as their type?
+//        nsmodel.getUmlHelper().deleteCollection(
+//                nsmodel.getUmlPackage().getActivityGraphs()
+//                        .getATypeObjectFlowState().getObjectFlowState(cls));
+        // TODO: ?delete ClassifierInStates which have this as their type?
+<span class="nc" id="L1526">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1527">                ((org.omg.uml.UmlPackage) cls.refOutermostPackage())</span>
+<span class="nc" id="L1528">                        .getActivityGraphs().getATypeClassifierInState()</span>
+<span class="nc" id="L1529">                        .getClassifierInState(cls));</span>
+<span class="nc" id="L1530">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteComment(Object elem) {
+<span class="nc bnc" id="L1537" title="All 2 branches missed.">        if (!(elem instanceof Comment)) {</span>
+<span class="nc" id="L1538">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1540">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteComponent(Object elem) {
+<span class="nc bnc" id="L1547" title="All 2 branches missed.">        if (!(elem instanceof Component)) {</span>
+<span class="nc" id="L1548">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1551">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteConstraint(Object elem) {
+<span class="nc bnc" id="L1558" title="All 2 branches missed.">        if (!(elem instanceof Constraint)) {</span>
+<span class="nc" id="L1559">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1561">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteDataType(Object elem) {
+<span class="nc bnc" id="L1568" title="All 2 branches missed.">        if (!(elem instanceof DataType)) {</span>
+<span class="nc" id="L1569">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1571">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteDependency(Object elem) {
+<span class="nc bnc" id="L1578" title="All 2 branches missed.">        if (!(elem instanceof Dependency)) {</span>
+<span class="nc" id="L1579">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1581">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteElement(Object elem) {
+<span class="nc bnc" id="L1588" title="All 2 branches missed.">        if (!(elem instanceof Element)) {</span>
+<span class="nc" id="L1589">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1592">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteElementResidence(Object elem) {
+<span class="nc bnc" id="L1599" title="All 2 branches missed.">        if (!(elem instanceof ElementResidence)) {</span>
+<span class="nc" id="L1600">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1602">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteFeature(Object elem) {
+<span class="nc bnc" id="L1609" title="All 2 branches missed.">        if (!(elem instanceof Feature)) {</span>
+<span class="nc" id="L1610">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1612">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteFlow(Object elem) {
+<span class="nc bnc" id="L1619" title="All 2 branches missed.">        if (!(elem instanceof Flow)) {</span>
+<span class="nc" id="L1620">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1623">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteGeneralizableElement(Object elem) {
+<span class="nc bnc" id="L1630" title="All 2 branches missed.">        if (!(elem instanceof GeneralizableElement)) {</span>
+<span class="nc" id="L1631">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1634">        GeneralizableElement ge = (GeneralizableElement) elem;</span>
+<span class="nc" id="L1635">        modelImpl.getUmlHelper().deleteCollection(ge.getGeneralization());</span>
+<span class="nc" id="L1636">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1637">                ((org.omg.uml.UmlPackage) ge.refOutermostPackage()).getCore()</span>
+<span class="nc" id="L1638">                        .getAParentSpecialization().getSpecialization(ge));</span>
+
+<span class="nc" id="L1640">    }</span>
+
+    /**
+     * @param elem the element to be deleted
+     */
+    void deleteGeneralization(Object elem) {
+<span class="nc bnc" id="L1646" title="All 2 branches missed.">        if (!(elem instanceof Generalization)) {</span>
+<span class="nc" id="L1647">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1649">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteInterface(Object elem) {
+<span class="nc bnc" id="L1656" title="All 2 branches missed.">        if (!(elem instanceof Interface)) {</span>
+<span class="nc" id="L1657">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1659">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteMethod(Object elem) {
+<span class="nc bnc" id="L1666" title="All 2 branches missed.">        if (!(elem instanceof Method)) {</span>
+<span class="nc" id="L1667">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1669">    }</span>
+
+    /**
+     * Does a 'cascading delete' to all modelelements that are associated with
+     * this element that would be in an illegal state after deletion of the
+     * element. Does not do an cascading delete for elements that are deleted by
+     * MDR automatically. This method should not be called directly.
+     * &lt;p&gt;
+     *
+     * In the case of a modelelement these are the following elements:
+     * &lt;ul&gt;
+     * &lt;li&gt;Dependencies that have the modelelement as supplier or as a client
+     * and are binary. (that is, they only have one supplier and one client)
+     * &lt;li&gt;Behaviors, TemplateArguments, and ElementImports which require
+     * this ModelElement
+     * &lt;/ul&gt;
+     *
+     * @param elem
+     * @see UmlFactoryMDRImpl#delete(Object)
+     */
+    void deleteModelElement(Object elem) {
+<span class="nc bnc" id="L1690" title="All 2 branches missed.">        if (!(elem instanceof ModelElement)) {</span>
+<span class="nc" id="L1691">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+        // Delete dependencies where this is the only client
+<span class="nc" id="L1695">        Collection&lt;Dependency&gt; deps = org.argouml.model.Model.getFacade()</span>
+<span class="nc" id="L1696">                .getClientDependencies(elem);</span>
+<span class="nc bnc" id="L1697" title="All 2 branches missed.">        for (Dependency dep : deps) {</span>
+<span class="nc bnc" id="L1698" title="All 2 branches missed.">            if (dep.getClient().size() &lt; 2</span>
+<span class="nc bnc" id="L1699" title="All 2 branches missed.">                    &amp;&amp; dep.getClient().contains(elem)) {</span>
+<span class="nc" id="L1700">                modelImpl.getUmlFactory().delete(dep);</span>
+            }
+<span class="nc" id="L1702">        }</span>
+
+        // Delete dependencies where this is the only supplier
+<span class="nc" id="L1705">        deps = org.argouml.model.Model.getFacade()</span>
+<span class="nc" id="L1706">                .getSupplierDependencies(elem);</span>
+<span class="nc bnc" id="L1707" title="All 2 branches missed.">        for (Dependency dep : deps) {</span>
+<span class="nc bnc" id="L1708" title="All 2 branches missed.">            if (dep.getSupplier().size() &lt; 2</span>
+<span class="nc bnc" id="L1709" title="All 2 branches missed.">                    &amp;&amp; dep.getSupplier().contains(elem)) {</span>
+<span class="nc" id="L1710">                modelImpl.getUmlFactory().delete(dep);</span>
+            }
+<span class="nc" id="L1712">        }</span>
+
+        /* Do not delete behaviors here!
+         * The behavior-context relation in the UML model
+         * is an aggregate, not composition. See issue 4281. */
+
+<span class="nc" id="L1718">        ModelElement me = (ModelElement) elem;</span>
+<span class="nc" id="L1719">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1720">                ((org.omg.uml.UmlPackage) me.refOutermostPackage()).getCore()</span>
+<span class="nc" id="L1721">                        .getAModelElementTemplateArgument()</span>
+<span class="nc" id="L1722">                        .getTemplateArgument(me));</span>
+<span class="nc" id="L1723">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1724">                ((org.omg.uml.UmlPackage) me.refOutermostPackage())</span>
+<span class="nc" id="L1725">                        .getModelManagement()</span>
+<span class="nc" id="L1726">                        .getAImportedElementElementImport()</span>
+<span class="nc" id="L1727">                        .getElementImport(me));</span>
+
+
+<span class="nc" id="L1730">    }</span>
+
+    /**
+     * A namespace deletes its owned elements.
+     *
+     * @param elem
+     *            is the namespace.
+     */
+    void deleteNamespace(Object elem) {
+<span class="nc" id="L1739">        LOG.log(Level.FINE, &quot;Deleting namespace {0}&quot;, elem);</span>
+
+<span class="nc bnc" id="L1741" title="All 2 branches missed.">        if (!(elem instanceof Namespace)) {</span>
+<span class="nc" id="L1742">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1745">        List&lt;ModelElement&gt; ownedElements = new ArrayList&lt;ModelElement&gt;();</span>
+        // TODO: This is a composite association, so these will get deleted
+        // automatically.  The only thing we need to do is check for any
+        // additional elements that need to be deleted as a result.
+<span class="nc" id="L1749">        ownedElements.addAll(((Namespace) elem).getOwnedElement());</span>
+<span class="nc bnc" id="L1750" title="All 2 branches missed.">        for (ModelElement element : ownedElements) {</span>
+
+<span class="nc" id="L1752">            LOG.log(Level.FINE, &quot;Deleting ownedElement {0}&quot;, element);</span>
+
+<span class="nc" id="L1754">            modelImpl.getUmlFactory().delete(element);</span>
+<span class="nc" id="L1755">        }</span>
+<span class="nc" id="L1756">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteNode(Object elem) {
+<span class="nc bnc" id="L1763" title="All 2 branches missed.">        if (!(elem instanceof Node)) {</span>
+<span class="nc" id="L1764">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1767">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteOperation(Object elem) {
+<span class="nc bnc" id="L1774" title="All 2 branches missed.">        if (!(elem instanceof Operation)) {</span>
+<span class="nc" id="L1775">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1777">        Operation oper = (Operation) elem;</span>
+        // delete CallActions which have this as their operation
+<span class="nc" id="L1779">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1780">                ((org.omg.uml.UmlPackage) oper.refOutermostPackage())</span>
+<span class="nc" id="L1781">                        .getCommonBehavior().getACallActionOperation()</span>
+<span class="nc" id="L1782">                        .getCallAction(oper));</span>
+        // delete CallEvents which have this as their operation
+<span class="nc" id="L1784">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L1785">                ((org.omg.uml.UmlPackage) oper.refOutermostPackage())</span>
+<span class="nc" id="L1786">                        .getStateMachines().getAOccurrenceOperation()</span>
+<span class="nc" id="L1787">                        .getOccurrence(oper));</span>
+<span class="nc" id="L1788">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteParameter(Object elem) {
+<span class="nc bnc" id="L1795" title="All 2 branches missed.">        if (!(elem instanceof Parameter)) {</span>
+<span class="nc" id="L1796">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1798">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deletePermission(Object elem) {
+<span class="nc bnc" id="L1805" title="All 2 branches missed.">        if (!(elem instanceof Permission)) {</span>
+<span class="nc" id="L1806">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1808">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deletePresentationElement(Object elem) {
+<span class="nc bnc" id="L1815" title="All 2 branches missed.">        if (!(elem instanceof PresentationElement)) {</span>
+<span class="nc" id="L1816">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L1819">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteRelationship(Object elem) {
+<span class="nc bnc" id="L1826" title="All 2 branches missed.">        if (!(elem instanceof Relationship)) {</span>
+<span class="nc" id="L1827">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1829">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteStructuralFeature(Object elem) {
+<span class="nc bnc" id="L1836" title="All 2 branches missed.">        if (!(elem instanceof StructuralFeature)) {</span>
+<span class="nc" id="L1837">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1839">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteTemplateArgument(Object elem) {
+<span class="nc bnc" id="L1846" title="All 2 branches missed.">        if (!(elem instanceof TemplateArgument)) {</span>
+<span class="nc" id="L1847">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1849">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteTemplateParameter(Object elem) {
+<span class="nc bnc" id="L1856" title="All 2 branches missed.">        if (!(elem instanceof TemplateParameter)) {</span>
+<span class="nc" id="L1857">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1859">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteUsage(Object elem) {
+<span class="nc bnc" id="L1866" title="All 2 branches missed.">        if (!(elem instanceof Usage)) {</span>
+<span class="nc" id="L1867">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1869">    }</span>
+
+    /**
+     * Delete an Enumeration.
+     * @param elem
+     *            the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteEnumeration(Object elem) {
+<span class="nc bnc" id="L1878" title="All 2 branches missed.">        if (!(elem instanceof Enumeration)) {</span>
+<span class="nc" id="L1879">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+        // EnumerationLiterals should get deleted implicitly
+        // since they are associated by composition
+<span class="nc" id="L1883">    }</span>
+
+    /**
+     * Delete EnumerationLiteral.
+     * @param elem
+     *            the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteEnumerationLiteral(Object elem) {
+<span class="nc bnc" id="L1892" title="All 2 branches missed.">        if (!(elem instanceof EnumerationLiteral)) {</span>
+<span class="nc" id="L1893">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1895">    }</span>
+
+    /**
+     * Delete the given UML Primitive.
+     *
+     * @param elem the element to be deleted
+     * @since UML 1.4
+     */
+    void deletePrimitive(Object elem) {
+<span class="nc bnc" id="L1904" title="All 2 branches missed.">        if (!(elem instanceof Primitive)) {</span>
+<span class="nc" id="L1905">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1907">    }</span>
+
+    /**
+     * Delete the given ProgrammingLanguageDataType.
+     *
+     * @param elem the element to be deleted
+     * @since UML 1.4
+     */
+    void deleteProgrammingLanguageDataType(Object elem) {
+<span class="nc bnc" id="L1916" title="All 2 branches missed.">        if (!(elem instanceof ProgrammingLanguageDataType)) {</span>
+<span class="nc" id="L1917">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L1919">    }</span>
+
+
+
+    /**
+     * Copies a class, and it's features. This may also require other
+     * classifiers to be copied.
+     *
+     * @param source
+     *            is the class to copy.
+     * @param ns
+     *            is the namespace to put the copy in.
+     * @return a newly created class.
+     */
+    public UmlClass copyClass(Object source, Object ns) {
+<span class="nc bnc" id="L1934" title="All 4 branches missed.">        if (!(source instanceof UmlClass &amp;&amp; ns instanceof Namespace)) {</span>
+<span class="nc" id="L1935">            throw new IllegalArgumentException(&quot;source: &quot; + source + &quot;,ns: &quot;</span>
+                    + ns);
+        }
+
+<span class="nc" id="L1939">        UmlClass c = createClass();</span>
+<span class="nc" id="L1940">        ((Namespace) ns).getOwnedElement().add(c);</span>
+<span class="nc" id="L1941">        doCopyClass(source, c);</span>
+<span class="nc" id="L1942">        return c;</span>
+    }
+
+    /**
+     * Copies a feature from one classifier to another.
+     *
+     * @param source is the feature to copy.
+     * @param classifier is the classifier to put the copy in.
+     * @return a newly created feature.
+     */
+    public Feature copyFeature(Object source, Object classifier) {
+<span class="nc bnc" id="L1953" title="All 4 branches missed.">        if (!(source instanceof Feature &amp;&amp; classifier instanceof Classifier)) {</span>
+<span class="nc" id="L1954">            throw new IllegalArgumentException(&quot;source: &quot; + source</span>
+                    + &quot;,classifier: &quot; + classifier);
+        }
+
+<span class="nc" id="L1958">        Feature f = null;</span>
+<span class="nc bnc" id="L1959" title="All 2 branches missed.">        if (source instanceof Attribute) {</span>
+<span class="nc" id="L1960">            Attribute attr = createAttribute();</span>
+<span class="nc" id="L1961">            doCopyAttribute((Attribute) source, attr);</span>
+<span class="nc" id="L1962">            f = attr;</span>
+<span class="nc bnc" id="L1963" title="All 2 branches missed.">        } else if (source instanceof Operation) {</span>
+<span class="nc" id="L1964">            Operation oper = createOperation();</span>
+<span class="nc" id="L1965">            doCopyOperation((Operation) source, oper);</span>
+            // TODO: build a return parameter
+<span class="nc" id="L1967">            f = oper;</span>
+<span class="nc bnc" id="L1968" title="All 2 branches missed.">        } else if (source instanceof Method) {</span>
+<span class="nc" id="L1969">            Method method = createMethod();</span>
+<span class="nc" id="L1970">            doCopyMethod((Method) source, method);</span>
+<span class="nc" id="L1971">            f = method;</span>
+<span class="nc bnc" id="L1972" title="All 2 branches missed.">        } else if (source instanceof Reception) {</span>
+<span class="nc" id="L1973">            Reception reception = (Reception)</span>
+<span class="nc" id="L1974">                modelImpl.getCommonBehaviorFactory().createReception();</span>
+<span class="nc" id="L1975">            doCopyReception((Reception) source, reception);</span>
+<span class="nc" id="L1976">            f = reception;</span>
+<span class="nc" id="L1977">        } else {</span>
+<span class="nc" id="L1978">            throw new IllegalArgumentException(&quot;source: &quot; + source);</span>
+        }
+
+<span class="nc" id="L1981">        f.setOwner((Classifier) classifier);</span>
+<span class="nc" id="L1982">        ((Classifier) classifier).getFeature().add(f);</span>
+<span class="nc" id="L1983">        return f;</span>
+    }
+
+    /**
+     * Copies a datatype, and it's features. This may also require other
+     * classifiers to be copied.
+     *
+     * @param source
+     *            is the datatype to copy.
+     * @param ns
+     *            is the namespace to put the copy in.
+     * @return a newly created data type.
+     */
+    public DataType copyDataType(Object source, Object ns) {
+<span class="nc bnc" id="L1997" title="All 2 branches missed.">        if (!(source instanceof DataType)) {</span>
+<span class="nc" id="L1998">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2001" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L2002">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2005">        DataType i = createDataType();</span>
+<span class="nc" id="L2006">        ((Namespace) ns).getOwnedElement().add(i);</span>
+<span class="nc" id="L2007">        doCopyDataType(source, i);</span>
+<span class="nc" id="L2008">        return i;</span>
+    }
+
+    /**
+     * Copies an interface, and it's features. This may also require other
+     * classifiers to be copied.
+     *
+     * @param source
+     *            is the interface to copy.
+     * @param ns
+     *            is the namespace to put the copy in.
+     * @return a newly created interface.
+     */
+    public Interface copyInterface(Object source, Object ns) {
+<span class="nc bnc" id="L2022" title="All 2 branches missed.">        if (!(source instanceof Interface)) {</span>
+<span class="nc" id="L2023">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2026" title="All 2 branches missed.">        if (!(ns instanceof Namespace)) {</span>
+<span class="nc" id="L2027">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2030">        Interface i = createInterface();</span>
+<span class="nc" id="L2031">        ((Namespace) ns).getOwnedElement().add(i);</span>
+<span class="nc" id="L2032">        doCopyInterface(source, i);</span>
+<span class="nc" id="L2033">        return i;</span>
+    }
+
+    /**
+     *
+     * @param from
+     *            The object which own the enumeration to copy
+     * @param to
+     *            The object to which copy the enumeration
+     */
+    public void copyEnumeration(Object from, Object to) {
+<span class="nc" id="L2044">        doCopyModelElement(from, to);</span>
+<span class="nc" id="L2045">        List listFrom = ((Enumeration) from).getLiteral();</span>
+<span class="nc" id="L2046">        List listTo = ((Enumeration) to).getLiteral();</span>
+        Object literalFrom;
+        Object literalTo;
+<span class="nc bnc" id="L2049" title="All 2 branches missed.">        for (int i = 0; i &lt; listFrom.size(); i++) {</span>
+<span class="nc" id="L2050">            literalFrom = listFrom.get(i);</span>
+<span class="nc bnc" id="L2051" title="All 2 branches missed.">            if (listTo.size() &gt; i) {</span>
+<span class="nc" id="L2052">                literalTo = listTo.get(i);</span>
+            } else {
+<span class="nc" id="L2054">                literalTo = createEnumerationLiteral();</span>
+<span class="nc" id="L2055">                listTo.add(literalTo);</span>
+            }
+<span class="nc" id="L2057">            doCopyModelElement(literalFrom, literalTo);</span>
+<span class="nc" id="L2058">            ((EnumerationLiteral) literalTo).setEnumeration((Enumeration) to);</span>
+        }
+<span class="nc" id="L2060">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     */
+    private void doCopyElement(Object source, Object target) {
+        // Nothing more to do.
+<span class="nc" id="L2067">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source
+     *            the source class
+     * @param target
+     *            the target class
+     */
+    public void doCopyClass(Object source, Object target) {
+<span class="nc bnc" id="L2078" title="All 2 branches missed.">        if (!(source instanceof UmlClass)) {</span>
+<span class="nc" id="L2079">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2082" title="All 2 branches missed.">        if (!(target instanceof UmlClass)) {</span>
+<span class="nc" id="L2083">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2086">        doCopyClassifier(source, target);</span>
+
+<span class="nc" id="L2088">        ((UmlClass) target).setActive(((UmlClass) source).isActive());</span>
+<span class="nc" id="L2089">    }</span>
+
+    /*
+     * TODO: All the ToDos in the doCopyFoo methods below are inherited from the
+     * NSUML implementation and do not reflect new issues. One additional thing
+     * which does need to be dealt with is the copying of any attributes which
+     * have been added since this code was implemented for UML 1.3.
+     */
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     * TODO: actions? instances? collaborations etc?
+     *
+     * @param source
+     *            the source classifier
+     * @param target
+     *            the target classifier
+     */
+    public void doCopyClassifier(Object source, Object target) {
+<span class="nc bnc" id="L2107" title="All 2 branches missed.">        if (!(source instanceof Classifier)) {</span>
+<span class="nc" id="L2108">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2111" title="All 2 branches missed.">        if (!(target instanceof Classifier)) {</span>
+<span class="nc" id="L2112">            throw new IllegalArgumentException();</span>
+        }
+
+        // TODO: how to merge multiple inheritance? Necessary?
+        // This currently copies the common ancestors multiple times
+<span class="nc" id="L2117">        doCopyNamespace(source, target);</span>
+<span class="nc" id="L2118">        doCopyGeneralizableElement(source, target);</span>
+
+        // Copy all the Features
+<span class="nc bnc" id="L2121" title="All 2 branches missed.">        for (Feature f : ((Classifier) source).getFeature()) {</span>
+<span class="nc" id="L2122">            copyFeature(f, target);</span>
+<span class="nc" id="L2123">        }</span>
+<span class="nc" id="L2124">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source
+     *            the source datatype
+     * @param target
+     *            the target datatype
+     */
+    public void doCopyDataType(Object source, Object target) {
+<span class="nc bnc" id="L2135" title="All 2 branches missed.">        if (!(source instanceof DataType)) {</span>
+<span class="nc" id="L2136">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2139" title="All 2 branches missed.">        if (!(target instanceof DataType)) {</span>
+<span class="nc" id="L2140">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2143">        doCopyClassifier(source, target);</span>
+<span class="nc" id="L2144">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     * TODO: generalizations, specializations?
+     *
+     * @param source
+     *            the source generalizable element
+     * @param target
+     *            the target generalizable element
+     */
+    public void doCopyGeneralizableElement(Object source, Object target) {
+<span class="nc bnc" id="L2156" title="All 4 branches missed.">        if (!(source instanceof GeneralizableElement</span>
+                &amp;&amp; target instanceof GeneralizableElement)) {
+<span class="nc" id="L2158">            throw new IllegalArgumentException(&quot;source: &quot; + source</span>
+                    + &quot;,target: &quot; + target);
+        }
+
+<span class="nc" id="L2162">        doCopyModelElement(source, target);</span>
+
+<span class="nc" id="L2164">        GeneralizableElement targetGE = ((GeneralizableElement) target);</span>
+<span class="nc" id="L2165">        GeneralizableElement sourceGE = ((GeneralizableElement) source);</span>
+<span class="nc" id="L2166">        targetGE.setAbstract(sourceGE.isAbstract());</span>
+<span class="nc" id="L2167">        targetGE.setLeaf(sourceGE.isLeaf());</span>
+<span class="nc" id="L2168">        targetGE.setRoot(sourceGE.isRoot());</span>
+<span class="nc" id="L2169">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source
+     *            the source interface
+     * @param target
+     *            the target interface
+     */
+    public void doCopyInterface(Object source, Object target) {
+<span class="nc bnc" id="L2180" title="All 2 branches missed.">        if (!(source instanceof Interface)) {</span>
+<span class="nc" id="L2181">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2184" title="All 2 branches missed.">        if (!(target instanceof Interface)) {</span>
+<span class="nc" id="L2185">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2188">        doCopyClassifier(source, target);</span>
+<span class="nc" id="L2189">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     * TODO: template parameters, default type
+     * TODO: constraining elements
+     * TODO: flows, dependencies, comments, bindings, contexts ???
+     * TODO: contents, residences ???
+     *
+     * @param source
+     *            the source me
+     * @param target
+     *            the target me
+     */
+    public void doCopyModelElement(Object source, Object target) {
+<span class="nc bnc" id="L2204" title="All 2 branches missed.">        if (!(source instanceof ModelElement)) {</span>
+<span class="nc" id="L2205">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2208" title="All 2 branches missed.">        if (!(target instanceof ModelElement)) {</span>
+<span class="nc" id="L2209">            throw new IllegalArgumentException();</span>
+        }
+
+        // Set the name so that superclasses can find the newly
+        // created element in the model, if necessary.
+<span class="nc" id="L2214">        ModelElement targetME = ((ModelElement) target);</span>
+<span class="nc" id="L2215">        ModelElement sourceME = ((ModelElement) source);</span>
+<span class="nc" id="L2216">        targetME.setName(sourceME.getName());</span>
+<span class="nc" id="L2217">        doCopyElement(source, target);</span>
+
+<span class="nc" id="L2219">        targetME.setSpecification(sourceME.isSpecification());</span>
+<span class="nc" id="L2220">        targetME.setVisibility(sourceME.getVisibility());</span>
+<span class="nc" id="L2221">        modelImpl.getExtensionMechanismsFactory()</span>
+<span class="nc" id="L2222">                .copyTaggedValues(source, target);</span>
+
+<span class="nc bnc" id="L2224" title="All 2 branches missed.">        if (!sourceME.getStereotype().isEmpty()) {</span>
+            // Note that if we're copying this element then we
+            // must also be allowed to copy other necessary
+            // objects.
+<span class="nc bnc" id="L2228" title="All 2 branches missed.">            for (Stereotype s : sourceME.getStereotype()) {</span>
+<span class="nc" id="L2229">                targetME.getStereotype().add(s);</span>
+<span class="nc" id="L2230">            }</span>
+        }
+<span class="nc" id="L2232">    }</span>
+
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source
+     *            the source namespace
+     * @param target
+     *            the target namespace
+     */
+    public void doCopyNamespace(Object source, Object target) {
+<span class="nc bnc" id="L2243" title="All 2 branches missed.">        if (!(source instanceof Namespace)) {</span>
+<span class="nc" id="L2244">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc bnc" id="L2247" title="All 2 branches missed.">        if (!(target instanceof Namespace)) {</span>
+<span class="nc" id="L2248">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="nc" id="L2251">        doCopyModelElement(source, target);</span>
+        // Nothing more to do, don't copy owned elements.
+<span class="nc" id="L2253">    }</span>
+
+    /**
+     * Copy the meta-attributes of an Attribute to another.
+     *
+     * @param source the source attribute
+     * @param target the new attribute to be adapted
+     */
+    void doCopyAttribute(Attribute source, Attribute target) {
+        // TODO: Delete old multiplicity? Why is &quot;copy&quot; using hard coded value? - tfm
+<span class="nc" id="L2263">        target.setMultiplicity(getMultiplicity11());</span>
+<span class="nc" id="L2264">        target.setChangeability(source.getChangeability());</span>
+<span class="nc" id="L2265">        target.setTargetScope(source.getTargetScope());</span>
+<span class="nc" id="L2266">        target.setType(source.getType());</span>
+
+<span class="nc" id="L2268">        doCopyFeature(source, target);</span>
+<span class="nc" id="L2269">    }</span>
+
+    /**
+     * Copy the attributes of an Operation to another.
+     *
+     * @param source the source operation
+     * @param target the new operation to be modified
+     */
+    void doCopyOperation(Operation source, Operation target) {
+<span class="nc" id="L2278">        target.setAbstract(source.isAbstract());</span>
+<span class="nc" id="L2279">        target.setLeaf(source.isLeaf());</span>
+<span class="nc" id="L2280">        target.setRoot(source.isRoot());</span>
+<span class="nc" id="L2281">        target.setConcurrency(source.getConcurrency());</span>
+<span class="nc" id="L2282">        target.setSpecification(source.getSpecification());</span>
+
+<span class="nc" id="L2284">        doCopyBehavioralFeature(source, target);</span>
+<span class="nc" id="L2285">    }</span>
+
+    /**
+     * Copy the attributes of one Method to another.
+     *
+     * @param source the method to copy attributes from
+     * @param target the method to be adapted
+     */
+    void doCopyMethod(Method source, Method target) {
+<span class="nc" id="L2294">        ProcedureExpression pe = source.getBody();</span>
+<span class="nc" id="L2295">        ProcedureExpression oldPe = target.getBody();</span>
+<span class="nc bnc" id="L2296" title="All 2 branches missed.">        if (!equal(oldPe,pe)) {</span>
+<span class="nc" id="L2297">            target.setBody((ProcedureExpression)</span>
+<span class="nc" id="L2298">                    modelImpl.getDataTypesFactory().createProcedureExpression(</span>
+<span class="nc" id="L2299">                            pe.getLanguage(), pe.getBody()));</span>
+<span class="nc bnc" id="L2300" title="All 2 branches missed.">            if (oldPe != null) {</span>
+<span class="nc" id="L2301">                Model.getUmlFactory().delete(oldPe);</span>
+            }
+        }
+
+<span class="nc" id="L2305">        doCopyBehavioralFeature(source, target);</span>
+<span class="nc" id="L2306">    }</span>
+
+
+    private boolean equal(Expression expr1, Expression expr2) {
+<span class="nc bnc" id="L2310" title="All 2 branches missed.">        if (expr1 == null) {</span>
+<span class="nc bnc" id="L2311" title="All 2 branches missed.">            if (expr2 == null) {</span>
+<span class="nc" id="L2312">                return true;</span>
+            } else {
+<span class="nc" id="L2314">                return false;</span>
+            }
+        } else {
+<span class="nc" id="L2317">            return expr1.equals(expr2);</span>
+        }
+    }
+
+    /**
+     * Copy the attributes of one Reception to another.
+     *
+     * @param source the reception to copy attributes from
+     * @param target the reception to be adapted
+     */
+    void doCopyReception(Reception source, Reception target) {
+<span class="nc" id="L2328">        target.setAbstract(source.isAbstract());</span>
+<span class="nc" id="L2329">        target.setLeaf(source.isLeaf());</span>
+<span class="nc" id="L2330">        target.setRoot(source.isRoot());</span>
+<span class="nc" id="L2331">        target.setSpecification(source.getSpecification());</span>
+<span class="nc" id="L2332">        target.setSignal(source.getSignal());</span>
+
+<span class="nc" id="L2334">        doCopyBehavioralFeature(source, target);</span>
+<span class="nc" id="L2335">    }</span>
+
+
+    /**
+     * Copy the attributes of one BehavioralFeature to another.
+     *
+     * @param source the BehavioralFeature to copy from
+     * @param target the BehavioralFeature to b adapted
+     */
+    void doCopyBehavioralFeature(BehavioralFeature source,
+            BehavioralFeature target) {
+<span class="nc" id="L2346">        target.setQuery(source.isQuery());</span>
+        // copy raised signals:
+<span class="nc" id="L2348">        Collection&lt;Signal&gt; raisedSignals = ((org.omg.uml.UmlPackage) source</span>
+<span class="nc" id="L2349">                .refOutermostPackage()).getCommonBehavior()</span>
+<span class="nc" id="L2350">                .getAContextRaisedSignal().getRaisedSignal(source);</span>
+<span class="nc bnc" id="L2351" title="All 2 branches missed.">        for (Signal signal : raisedSignals) {</span>
+<span class="nc" id="L2352">            ((org.omg.uml.UmlPackage) source.refOutermostPackage())</span>
+<span class="nc" id="L2353">                    .getCommonBehavior().getAContextRaisedSignal().add(target,</span>
+                            signal);
+<span class="nc" id="L2355">        }</span>
+
+<span class="nc" id="L2357">        doCopyFeature(source, target);</span>
+<span class="nc" id="L2358">    }</span>
+
+    /**
+     * Copy the attributes of one Feature to another.
+     *
+     * @param source the Feature to copy from
+     * @param target the Feature to copy to
+     */
+    void doCopyFeature(Feature source, Feature target) {
+<span class="nc" id="L2367">        target.setVisibility(source.getVisibility());</span>
+<span class="nc" id="L2368">        target.setOwnerScope(source.getOwnerScope());</span>
+
+<span class="nc" id="L2370">        doCopyModelElement(source, target);</span>
+<span class="nc" id="L2371">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

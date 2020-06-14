@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OclInterpreter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.profile.internal.ocl</a> &gt; <span class="el_source">OclInterpreter.java</span></div><h1>OclInterpreter.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.profile.internal.ocl;
+
+import java.io.PushbackReader;
+import java.io.StringReader;
+import java.util.List;
+import java.util.Set;
+
+import tudresden.ocl.parser.OclParser;
+import tudresden.ocl.parser.lexer.Lexer;
+import tudresden.ocl.parser.node.Start;
+
+/**
+ * Encapsulates actual interpretation of the OCL expressions for OCL critics
+ * provided by a Profile
+ * 
+ * @author maurelio1234
+ */
+public class OclInterpreter {
+
+    /**
+     * Parser OCL tree
+     */
+<span class="fc" id="L61">    private Start tree = null;</span>
+
+    /**
+     * The model interpreter
+     */
+    private ModelInterpreter modelInterpreter;
+
+    /**
+     * Creates a new OCL interpreter for a given OCL expression
+     * 
+     * @param ocl expression
+     * @param interpreter the interpreter
+     * @throws InvalidOclException if the expression is not valid
+     */
+    public OclInterpreter(String ocl, ModelInterpreter interpreter)
+<span class="fc" id="L76">        throws InvalidOclException {</span>
+<span class="fc" id="L77">        this.modelInterpreter = interpreter;</span>
+
+<span class="fc" id="L79">        Lexer lexer = new Lexer(new PushbackReader(new StringReader(ocl), 2));</span>
+
+<span class="fc" id="L81">        OclParser parser = new OclParser(lexer);</span>
+
+        try {
+<span class="fc" id="L84">            tree = parser.parse();</span>
+<span class="nc" id="L85">        } catch (Exception e) {</span>
+<span class="nc" id="L86">            e.printStackTrace();</span>
+<span class="nc" id="L87">            throw new InvalidOclException(ocl);</span>
+<span class="fc" id="L88">        }</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Checks whether this OCL expression is applicable to a given model element
+     * 
+     * @param modelElement the ModelElement
+     * @return if is applicable
+     */
+    public boolean applicable(Object modelElement) {
+<span class="fc" id="L98">        ContextApplicable ca = new ContextApplicable(modelElement);</span>
+<span class="fc" id="L99">        tree.apply(ca);</span>
+<span class="fc" id="L100">        return ca.isApplicable();</span>
+    }
+
+    /**
+     * Checks if this expression (invariant) is satisfied for the given model
+     * element
+     * 
+     * @param modelElement the ModelElement
+     * @return if is satisfied
+     */
+    public boolean check(Object modelElement) {
+<span class="fc" id="L111">        EvaluateInvariant ei = new EvaluateInvariant(modelElement,</span>
+                modelInterpreter);
+<span class="fc" id="L113">        tree.apply(ei);</span>
+<span class="fc" id="L114">        return ei.isOK();</span>
+    }
+
+    /**
+     * Computes and returns the set of triggers for this constraint.
+     * 
+     * @see org.argouml.cognitive.Critic#addTrigger(String)
+     * @return the set of triggers
+     */
+    public List&lt;String&gt; getTriggers() {
+<span class="fc" id="L124">        ComputeTriggers ct = new ComputeTriggers();</span>
+<span class="fc" id="L125">        tree.apply(ct);</span>
+<span class="fc" id="L126">        return ct.getTriggers();</span>
+    }
+
+    /**
+     * @return the design materials to be criticized by this ocl, no metatype
+     * is assumed by default.
+     */
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L134">        ComputeDesignMaterials cdm = new ComputeDesignMaterials();</span>
+<span class="fc" id="L135">        tree.apply(cdm);        </span>
+<span class="fc" id="L136">        return cdm.getCriticizedDesignMaterials();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

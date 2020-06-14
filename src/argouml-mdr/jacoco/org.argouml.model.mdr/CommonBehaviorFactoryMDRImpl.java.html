@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommonBehaviorFactoryMDRImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-core-model-mdr</a> &gt; <a href="index.source.html" class="el_package">org.argouml.model.mdr</a> &gt; <span class="el_source">CommonBehaviorFactoryMDRImpl.java</span></div><h1>CommonBehaviorFactoryMDRImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model.mdr;
+
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.CommonBehaviorFactory;
+import org.argouml.model.Model;
+import org.omg.uml.UmlPackage;
+import org.omg.uml.behavioralelements.activitygraphs.ActionState;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
+import org.omg.uml.behavioralelements.commonbehavior.CallAction;
+import org.omg.uml.behavioralelements.commonbehavior.CommonBehaviorPackage;
+import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
+import org.omg.uml.behavioralelements.commonbehavior.CreateAction;
+import org.omg.uml.behavioralelements.commonbehavior.DataValue;
+import org.omg.uml.behavioralelements.commonbehavior.DestroyAction;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.commonbehavior.LinkObject;
+import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
+import org.omg.uml.behavioralelements.commonbehavior.Reception;
+import org.omg.uml.behavioralelements.commonbehavior.ReturnAction;
+import org.omg.uml.behavioralelements.commonbehavior.SendAction;
+import org.omg.uml.behavioralelements.commonbehavior.Signal;
+import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
+import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
+import org.omg.uml.behavioralelements.commonbehavior.UmlException;
+import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
+import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Operation;
+
+/**
+ * Factory to create UML classes for the UML BehaviorialElements::CommonBehavior
+ * package.&lt;p&gt;
+ * 
+ * @since ARGO0.19.5
+ * @author Ludovic Ma&amp;icirc;tre
+ * @author Tom Morris
+ * Derived from NSUML implementation by: 
+ * @author Thierry Lach
+ */
+class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
+	implements CommonBehaviorFactory {
+
+    /**
+     * The model implementation.
+     */
+    private MDRModelImplementation modelImpl;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation
+     *            To get other helpers and factories.
+     */
+<span class="fc" id="L106">    CommonBehaviorFactoryMDRImpl(MDRModelImplementation implementation) {</span>
+<span class="fc" id="L107">        modelImpl = implementation;</span>
+<span class="fc" id="L108">    }</span>
+
+
+    public ActionSequence createActionSequence() {
+<span class="nc" id="L112">        ActionSequence myActionSequence = getCbPackage().getActionSequence()</span>
+<span class="nc" id="L113">                .createActionSequence();</span>
+<span class="nc" id="L114">        super.initialize(myActionSequence);</span>
+<span class="nc" id="L115">        return myActionSequence;</span>
+    }
+
+
+    public Argument createArgument() {
+<span class="nc" id="L120">        Argument myArgument = getCbPackage()</span>
+<span class="nc" id="L121">                .getArgument().createArgument();</span>
+<span class="nc" id="L122">        super.initialize(myArgument);</span>
+<span class="nc" id="L123">        return myArgument;</span>
+    }
+
+
+    public AttributeLink createAttributeLink() {
+<span class="nc" id="L128">        AttributeLink myAttributeLink = getCbPackage().getAttributeLink()</span>
+<span class="nc" id="L129">                .createAttributeLink();</span>
+<span class="nc" id="L130">        super.initialize(myAttributeLink);</span>
+<span class="nc" id="L131">        return myAttributeLink;</span>
+    }
+
+    private CommonBehaviorPackage getCbPackage() {
+<span class="nc" id="L135">        return modelImpl.getUmlPackage().getCommonBehavior();</span>
+    }
+
+    public CallAction createCallAction() {
+<span class="nc" id="L139">        CallAction myCallAction = getCbPackage().getCallAction().createCallAction();</span>
+<span class="nc" id="L140">        super.initialize(myCallAction);</span>
+<span class="nc" id="L141">        return myCallAction;</span>
+    }
+
+
+    public ComponentInstance createComponentInstance() {
+<span class="nc" id="L146">        ComponentInstance myComponentInstance = getCbPackage()</span>
+<span class="nc" id="L147">                .getComponentInstance().createComponentInstance();</span>
+<span class="nc" id="L148">        super.initialize(myComponentInstance);</span>
+<span class="nc" id="L149">        return myComponentInstance;</span>
+    }
+
+
+    public CreateAction createCreateAction() {
+<span class="nc" id="L154">        CreateAction myCreateAction = getCbPackage().getCreateAction()</span>
+<span class="nc" id="L155">                .createCreateAction();</span>
+<span class="nc" id="L156">        super.initialize(myCreateAction);</span>
+<span class="nc" id="L157">        return myCreateAction;</span>
+    }
+
+
+    public DataValue createDataValue() {
+<span class="nc" id="L162">        DataValue myDataValue = getCbPackage().getDataValue().createDataValue();</span>
+<span class="nc" id="L163">        super.initialize(myDataValue);</span>
+<span class="nc" id="L164">        return myDataValue;</span>
+    }
+
+
+    public DestroyAction createDestroyAction() {
+<span class="nc" id="L169">        DestroyAction myDestroyAction = getCbPackage().getDestroyAction()</span>
+<span class="nc" id="L170">                .createDestroyAction();</span>
+<span class="nc" id="L171">        super.initialize(myDestroyAction);</span>
+<span class="nc" id="L172">        return myDestroyAction;</span>
+    }
+
+
+    public UmlException createException() {
+<span class="nc" id="L177">        UmlException myUmlException = getCbPackage().getUmlException()</span>
+<span class="nc" id="L178">                .createUmlException();</span>
+<span class="nc" id="L179">        super.initialize(myUmlException);</span>
+<span class="nc" id="L180">        return myUmlException;</span>
+    }
+
+
+    public Link createLink() {
+<span class="nc" id="L185">        Link myLink = getCbPackage().getLink().createLink();</span>
+<span class="nc" id="L186">        super.initialize(myLink);</span>
+<span class="nc" id="L187">        return myLink;</span>
+    }
+
+
+    public LinkEnd createLinkEnd() {
+<span class="nc" id="L192">        LinkEnd myLinkEnd = getCbPackage().getLinkEnd().createLinkEnd();</span>
+<span class="nc" id="L193">        super.initialize(myLinkEnd);</span>
+<span class="nc" id="L194">        return myLinkEnd;</span>
+    }
+
+
+    public LinkObject createLinkObject() {
+<span class="nc" id="L199">        LinkObject myLinkObject = getCbPackage().getLinkObject().createLinkObject();</span>
+<span class="nc" id="L200">        super.initialize(myLinkObject);</span>
+<span class="nc" id="L201">        return myLinkObject;</span>
+    }
+
+
+    public NodeInstance createNodeInstance() {
+<span class="nc" id="L206">        NodeInstance myNodeInstance = getCbPackage().getNodeInstance()</span>
+<span class="nc" id="L207">                .createNodeInstance();</span>
+<span class="nc" id="L208">        super.initialize(myNodeInstance);</span>
+<span class="nc" id="L209">        return myNodeInstance;</span>
+    }
+
+
+    public org.omg.uml.behavioralelements.commonbehavior.Object createObject() {
+<span class="nc" id="L214">        org.omg.uml.behavioralelements.commonbehavior.Object myObject = </span>
+<span class="nc" id="L215">                getCbPackage().getObject().createObject();</span>
+<span class="nc" id="L216">        super.initialize(myObject);</span>
+<span class="nc" id="L217">        return myObject;</span>
+    }
+
+
+    public Reception createReception() {
+<span class="nc" id="L222">        Reception myReception = getCbPackage().getReception().createReception();</span>
+<span class="nc" id="L223">        super.initialize(myReception);</span>
+<span class="nc" id="L224">        return myReception;</span>
+    }
+
+
+    public ReturnAction createReturnAction() {
+<span class="nc" id="L229">        ReturnAction myReturnAction = getCbPackage().getReturnAction()</span>
+<span class="nc" id="L230">                .createReturnAction();</span>
+<span class="nc" id="L231">        super.initialize(myReturnAction);</span>
+<span class="nc" id="L232">        return myReturnAction;</span>
+    }
+
+
+    public SendAction createSendAction() {
+<span class="nc" id="L237">        SendAction mySendAction = getCbPackage().getSendAction().createSendAction();</span>
+<span class="nc" id="L238">        super.initialize(mySendAction);</span>
+<span class="nc" id="L239">        return mySendAction;</span>
+    }
+
+
+    public Signal createSignal() {
+<span class="nc" id="L244">        Signal mySignal = getCbPackage().getSignal().createSignal();</span>
+<span class="nc" id="L245">        super.initialize(mySignal);</span>
+<span class="nc" id="L246">        return mySignal;</span>
+    }
+
+
+    public Stimulus createStimulus() {
+<span class="nc" id="L251">        Stimulus myStimulus = getCbPackage().getStimulus().createStimulus();</span>
+<span class="nc" id="L252">        super.initialize(myStimulus);</span>
+<span class="nc" id="L253">        return myStimulus;</span>
+    }
+
+
+    public SubsystemInstance createSubsystemInstance() {
+<span class="nc" id="L258">        SubsystemInstance obj = getCbPackage().getSubsystemInstance()</span>
+<span class="nc" id="L259">                .createSubsystemInstance();</span>
+<span class="nc" id="L260">        super.initialize(obj);</span>
+<span class="nc" id="L261">        return obj;</span>
+    }
+    
+
+    public TerminateAction createTerminateAction() {
+<span class="nc" id="L266">        TerminateAction myTerminateAction = getCbPackage().getTerminateAction()</span>
+<span class="nc" id="L267">                .createTerminateAction();</span>
+<span class="nc" id="L268">        super.initialize(myTerminateAction);</span>
+<span class="nc" id="L269">        return myTerminateAction;</span>
+    }
+
+
+    public UninterpretedAction createUninterpretedAction() {
+<span class="nc" id="L274">        UninterpretedAction myUninterpretedAction = getCbPackage()</span>
+<span class="nc" id="L275">                .getUninterpretedAction().createUninterpretedAction();</span>
+<span class="nc" id="L276">        super.initialize(myUninterpretedAction);</span>
+<span class="nc" id="L277">        return myUninterpretedAction;</span>
+    }
+
+
+    public CallAction buildCallAction(Object oper, String name) {
+<span class="nc bnc" id="L282" title="All 2 branches missed.">        if (!(oper instanceof Operation)) {</span>
+<span class="nc" id="L283">            throw new IllegalArgumentException(&quot;There should be an operation&quot;</span>
+                    + &quot; with a callaction.&quot;);
+        }
+<span class="nc" id="L286">        CallAction action = createCallAction();</span>
+<span class="nc" id="L287">        action.setName(name);</span>
+<span class="nc" id="L288">        action.setOperation((Operation) oper);</span>
+<span class="nc" id="L289">        return action;</span>
+    }
+
+
+    public UninterpretedAction buildUninterpretedAction(Object actionState) {
+<span class="nc" id="L294">        UninterpretedAction action = createUninterpretedAction();</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">        if (actionState instanceof ActionState) {</span>
+<span class="nc" id="L296">            ((ActionState) actionState).setEntry(action);</span>
+        }
+<span class="nc" id="L298">        return action;</span>
+    }
+
+
+    public Link buildLink(Object fromInstance, Object toInstance) {
+<span class="nc" id="L303">        Link link = createLink();</span>
+<span class="nc" id="L304">        LinkEnd le0 =  createLinkEnd();</span>
+<span class="nc" id="L305">        le0.setInstance((Instance) fromInstance);</span>
+<span class="nc" id="L306">        LinkEnd le1 = createLinkEnd();</span>
+<span class="nc" id="L307">        le1.setInstance((Instance) toInstance);</span>
+<span class="nc" id="L308">        link.getConnection().add(le0);</span>
+<span class="nc" id="L309">        link.getConnection().add(le1);</span>
+<span class="nc" id="L310">        return link;</span>
+    }
+
+
+    public Action buildAction(Object message) {
+<span class="nc" id="L315">        Action action = createCallAction();</span>
+<span class="nc" id="L316">        action.setName(&quot;action&quot;);</span>
+<span class="nc" id="L317">        ((Message) message).setAction(action);</span>
+<span class="nc" id="L318">        Object interaction = modelImpl.getFacade().getInteraction(message);</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">        if (interaction != null</span>
+<span class="nc bnc" id="L320" title="All 2 branches missed.">            &amp;&amp; modelImpl.getFacade().getContext(interaction) != null) {</span>
+<span class="nc" id="L321">            modelImpl.getCoreHelper().setNamespace(action,</span>
+<span class="nc" id="L322">                modelImpl.getFacade().getContext(interaction));</span>
+        } else {
+<span class="nc" id="L324">            throw new IllegalStateException(&quot;In buildaction: message does not &quot;</span>
+                    + &quot;have an interaction or the &quot;
+                    + &quot;interaction does not have &quot; + &quot;a context&quot;);
+        }
+<span class="nc" id="L328">        return action;</span>
+    }
+
+
+    public Signal buildSignal(Object element) {
+        Signal signal;
+        
+<span class="nc bnc" id="L335" title="All 2 branches missed.">        if ((element instanceof BehavioralFeature)) {</span>
+<span class="nc" id="L336">            signal = buildSignalInt(element);</span>
+<span class="nc" id="L337">            BehavioralFeature bf = (BehavioralFeature) element;</span>
+<span class="nc" id="L338">            ((UmlPackage) bf.refOutermostPackage()).getCommonBehavior()</span>
+<span class="nc" id="L339">                    .getAContextRaisedSignal().add((BehavioralFeature) element,</span>
+                            signal);
+<span class="nc bnc" id="L341" title="All 2 branches missed.">        } else if (element instanceof Reception) {</span>
+<span class="nc" id="L342">            signal = buildSignalInt(element);</span>
+<span class="nc" id="L343">            ((Reception) element).setSignal(signal);</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">        } else if (element instanceof SendAction) {</span>
+<span class="nc" id="L345">            signal = buildSignalInt(element);</span>
+<span class="nc" id="L346">            ((SendAction) element).setSignal(signal);</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">        } else if (element instanceof SignalEvent) {</span>
+<span class="nc" id="L348">            signal = buildSignalInt(element);</span>
+<span class="nc" id="L349">            ((SignalEvent) element).setSignal(signal);</span>
+        } else {
+<span class="nc" id="L351">            throw new IllegalArgumentException(&quot;Can't build a signal for a &quot; + element);</span>
+        }
+        
+<span class="nc" id="L354">        Object namespace = element;</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">        while (!Model.getFacade().isAPackage(namespace)) {</span>
+<span class="nc" id="L356">            namespace = Model.getFacade().getModelElementContainer(namespace);</span>
+        }
+        
+<span class="nc" id="L359">        Model.getCoreHelper().setNamespace(signal, namespace);</span>
+<span class="nc" id="L360">        return signal;</span>
+    }
+
+    /**
+     * Create a new Signal in the same namespace as the target.
+     * @param element target element
+     * @return newly created Signal
+     */
+    private Signal buildSignalInt(Object element) {
+<span class="nc" id="L369">        Signal signal = createSignal();</span>
+<span class="nc" id="L370">        Namespace ns = ((ModelElement) element).getNamespace();</span>
+<span class="nc" id="L371">        signal.setNamespace(ns);</span>
+<span class="nc" id="L372">        return signal;</span>
+    }
+    
+
+    public Stimulus buildStimulus(Object link) {
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (link instanceof Link</span>
+<span class="nc bnc" id="L378" title="All 2 branches missed.">            &amp;&amp; modelImpl.getCoreHelper().getSource(link) != null</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">            &amp;&amp; modelImpl.getCoreHelper().getDestination(link) != null) {</span>
+
+<span class="nc" id="L381">            Stimulus stimulus = createStimulus();</span>
+<span class="nc" id="L382">            Object sender = modelImpl.getCoreHelper().getSource(link);</span>
+<span class="nc" id="L383">            Object receiver = modelImpl.getCoreHelper().getDestination(link);</span>
+<span class="nc" id="L384">            modelImpl.getCommonBehaviorHelper().setReceiver(stimulus, receiver);</span>
+<span class="nc" id="L385">            modelImpl.getCollaborationsHelper().setSender(stimulus, sender);</span>
+<span class="nc" id="L386">            modelImpl.getCommonBehaviorHelper().setCommunicationLink(stimulus,</span>
+                    link);
+<span class="nc" id="L388">            return stimulus;</span>
+        }
+<span class="nc" id="L390">        throw new IllegalArgumentException(&quot;Argument is not a link or &quot;</span>
+                + &quot;does not have &quot; + &quot;a source or &quot; + &quot;destination instance&quot;);
+
+    }
+
+
+    public Reception buildReception(Object aClassifier) {
+<span class="nc" id="L397">        Reception reception = createReception();</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">        if (aClassifier instanceof Classifier) {</span>
+<span class="nc" id="L399">            modelImpl.getCoreHelper().setOwner(reception, aClassifier);</span>
+        }
+<span class="nc" id="L401">        return reception;</span>
+    }
+
+    /**
+     * @param elem
+     *            the Action to be deleted
+     */
+    void deleteAction(Object elem) {
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        if (!(elem instanceof Action)) {</span>
+<span class="nc" id="L410">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+        // Delete Stimulii which have this as their dispatchAction
+<span class="nc" id="L413">        Action action = (Action) elem;</span>
+<span class="nc" id="L414">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L415">                ((org.omg.uml.UmlPackage) action.refOutermostPackage())</span>
+<span class="nc" id="L416">                        .getCommonBehavior().getADispatchActionStimulus()</span>
+<span class="nc" id="L417">                        .getStimulus((Action) elem));</span>
+        // Delete Messages which have this as their action
+<span class="nc" id="L419">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L420">                ((org.omg.uml.UmlPackage) action.refOutermostPackage())</span>
+<span class="nc" id="L421">                        .getCollaborations().getAActionMessage().getMessage(</span>
+                                (Action) elem));
+<span class="nc" id="L423">    }</span>
+
+    /**
+     * @param elem
+     *            the ActionSequence to be deleted
+     */
+    void deleteActionSequence(Object elem) {
+<span class="nc bnc" id="L430" title="All 2 branches missed.">        if (!(elem instanceof ActionSequence)) {</span>
+<span class="nc" id="L431">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L434">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteArgument(Object elem) {
+<span class="nc bnc" id="L441" title="All 2 branches missed.">        if (!(elem instanceof Argument)) {</span>
+<span class="nc" id="L442">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L444">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteAttributeLink(Object elem) {
+<span class="nc bnc" id="L451" title="All 2 branches missed.">        if (!(elem instanceof AttributeLink)) {</span>
+<span class="nc" id="L452">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L454">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteCallAction(Object elem) {
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (!(elem instanceof CallAction)) {</span>
+<span class="nc" id="L462">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L464">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteComponentInstance(Object elem) {
+<span class="nc bnc" id="L471" title="All 2 branches missed.">        if (!(elem instanceof ComponentInstance)) {</span>
+<span class="nc" id="L472">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L474">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteCreateAction(Object elem) {
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if (!(elem instanceof CreateAction)) {</span>
+<span class="nc" id="L482">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L484">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteDataValue(Object elem) {
+<span class="nc bnc" id="L491" title="All 2 branches missed.">        if (!(elem instanceof DataValue)) {</span>
+<span class="nc" id="L492">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L494">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteDestroyAction(Object elem) {
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        if (!(elem instanceof DestroyAction)) {</span>
+<span class="nc" id="L502">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L504">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteException(Object elem) {
+<span class="nc bnc" id="L511" title="All 2 branches missed.">        if (!(elem instanceof UmlException)) {</span>
+<span class="nc" id="L512">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L514">    }</span>
+
+    /**
+     * When an instance is deleted, delete any LinkEnd, AttributLink
+     * that depends on it, as well as CollaborationInstanceSets where
+     * this is the last participatingInstance
+     *
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteInstance(Object elem) {
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        if (!(elem instanceof Instance)) {</span>
+<span class="nc" id="L526">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L528">        Instance instance = (Instance) elem;</span>
+
+        // Delete LinkEnds
+<span class="nc" id="L531">        modelImpl.getUmlHelper().deleteCollection(instance.getLinkEnd());</span>
+
+        // Delete AttributeLinks where this is the value
+<span class="nc" id="L534">        modelImpl.getUmlHelper().deleteCollection(</span>
+                ((org.omg.uml.UmlPackage) instance
+<span class="nc" id="L536">                        .refOutermostPackage()).getCommonBehavior()</span>
+<span class="nc" id="L537">                        .getAAttributeLinkValue().getAttributeLink(</span>
+                                instance));
+
+        // Delete CollaborationInstanceSets where
+        // this is the last participatingInstance
+<span class="nc" id="L542">        for (Iterator it = ((org.omg.uml.UmlPackage) instance</span>
+<span class="nc" id="L543">                .refOutermostPackage()).getCollaborations()</span>
+<span class="nc" id="L544">                .getACollaborationInstanceSetParticipatingInstance()</span>
+<span class="nc" id="L545">                .getCollaborationInstanceSet(instance).iterator(); it</span>
+<span class="nc bnc" id="L546" title="All 2 branches missed.">                .hasNext();) {</span>
+<span class="nc" id="L547">            CollaborationInstanceSet cis = (CollaborationInstanceSet) it.next();</span>
+<span class="nc" id="L548">            Collection instances = cis.getParticipatingInstance();</span>
+<span class="nc bnc" id="L549" title="All 4 branches missed.">            if (instances.size() == 1 &amp;&amp; instances.contains(elem)) {</span>
+<span class="nc" id="L550">                modelImpl.getUmlFactory().delete(it.next());</span>
+            }
+<span class="nc" id="L552">        }</span>
+
+        // Delete Stimuli which have this as a Sender or Receiver
+<span class="nc" id="L555">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L556">                ((UmlPackage) ((Instance) elem).refOutermostPackage())</span>
+<span class="nc" id="L557">                        .getCommonBehavior().getAStimulusSender().getStimulus(</span>
+                                (Instance) elem));
+<span class="nc" id="L559">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L560">                ((UmlPackage) ((Instance) elem).refOutermostPackage())</span>
+<span class="nc" id="L561">                        .getCommonBehavior().getAReceiverStimulus()</span>
+<span class="nc" id="L562">                        .getStimulus((Instance) elem));</span>
+
+<span class="nc" id="L564">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteLink(Object elem) {
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        if (!(elem instanceof Link)) {</span>
+<span class="nc" id="L572">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L574">    }</span>
+
+    /**
+     * when a linkend is deleted, delete its Links.
+     *
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteLinkEnd(Object elem) {
+<span class="nc bnc" id="L583" title="All 2 branches missed.">        if (!(elem instanceof LinkEnd)) {</span>
+<span class="nc" id="L584">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L587">        Link link = ((LinkEnd) elem).getLink();</span>
+<span class="nc bnc" id="L588" title="All 4 branches missed.">        if (link != null &amp;&amp; link.getConnection() != null</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">            &amp;&amp; link.getConnection().size() == 2) { // binary link</span>
+<span class="nc" id="L590">            modelImpl.getUmlFactory().delete(link);</span>
+        }
+<span class="nc" id="L592">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteLinkObject(Object elem) {
+<span class="nc bnc" id="L599" title="All 2 branches missed.">        if (!(elem instanceof LinkObject)) {</span>
+<span class="nc" id="L600">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L602">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteNodeInstance(Object elem) {
+<span class="nc bnc" id="L609" title="All 2 branches missed.">        if (!(elem instanceof NodeInstance)) {</span>
+<span class="nc" id="L610">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L612">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteObject(Object elem) {
+<span class="nc bnc" id="L619" title="All 2 branches missed.">        if (!(Model.getFacade().isAObject(elem))) {</span>
+<span class="nc" id="L620">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+
+<span class="nc" id="L623">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteReception(Object elem) {
+<span class="nc bnc" id="L630" title="All 2 branches missed.">        if (!(elem instanceof Reception)) {</span>
+<span class="nc" id="L631">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L633">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteReturnAction(Object elem) {
+<span class="nc bnc" id="L640" title="All 2 branches missed.">        if (!(elem instanceof ReturnAction)) {</span>
+<span class="nc" id="L641">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L643">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteSendAction(Object elem) {
+<span class="nc bnc" id="L650" title="All 2 branches missed.">        if (!(elem instanceof SendAction)) {</span>
+<span class="nc" id="L651">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L653">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteSignal(Object elem) {
+<span class="nc bnc" id="L660" title="All 2 branches missed.">        if (!(elem instanceof Signal)) {</span>
+<span class="nc" id="L661">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L663">        Signal signal = (Signal) elem;</span>
+        // Delete all SendActions which have this as signal
+<span class="nc" id="L665">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L666">                ((org.omg.uml.UmlPackage) signal.refOutermostPackage())</span>
+<span class="nc" id="L667">                        .getCommonBehavior().getASignalSendAction()</span>
+<span class="nc" id="L668">                        .getSendAction(signal));</span>
+        // Delete all SignalEvents which have this as the signal
+<span class="nc" id="L670">        modelImpl.getUmlHelper().deleteCollection(</span>
+<span class="nc" id="L671">                ((org.omg.uml.UmlPackage) signal.refOutermostPackage())</span>
+<span class="nc" id="L672">                        .getStateMachines().getASignalOccurrence()</span>
+<span class="nc" id="L673">                        .getOccurrence((Signal) elem));</span>
+<span class="nc" id="L674">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteStimulus(Object elem) {
+<span class="nc bnc" id="L681" title="All 2 branches missed.">        if (!(elem instanceof Stimulus)) {</span>
+<span class="nc" id="L682">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L684">        Stimulus stimulus = (Stimulus) elem;</span>
+        
+        // Delete InteractionInstanceSets where
+        // this is the last participatingStimulus
+<span class="nc" id="L688">        for (Iterator it = ((org.omg.uml.UmlPackage) stimulus</span>
+<span class="nc" id="L689">                .refOutermostPackage()).getCollaborations()</span>
+<span class="nc" id="L690">                .getAInteractionInstanceSetParticipatingStimulus()</span>
+<span class="nc bnc" id="L691" title="All 2 branches missed.">                .getInteractionInstanceSet(stimulus).iterator(); it.hasNext();) {</span>
+<span class="nc" id="L692">            InteractionInstanceSet iis = (InteractionInstanceSet) it.next();</span>
+<span class="nc" id="L693">            Collection instances = iis.getParticipatingStimulus();</span>
+<span class="nc bnc" id="L694" title="All 4 branches missed.">            if (instances.size() == 1 &amp;&amp; instances.contains(elem)) {</span>
+<span class="nc" id="L695">                modelImpl.getUmlFactory().delete(it.next());</span>
+            }
+<span class="nc" id="L697">        }</span>
+<span class="nc" id="L698">    }</span>
+    
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteSubsystemInstance(Object elem) {
+<span class="nc bnc" id="L705" title="All 2 branches missed.">        if (!(elem instanceof SubsystemInstance)) {</span>
+<span class="nc" id="L706">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L708">    }</span>
+
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteTerminateAction(Object elem) {
+<span class="nc bnc" id="L716" title="All 2 branches missed.">        if (!(elem instanceof TerminateAction)) {</span>
+<span class="nc" id="L717">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L719">    }</span>
+
+    /**
+     * @param elem
+     *            the element to be deleted
+     */
+    void deleteUninterpretedAction(Object elem) {
+<span class="nc bnc" id="L726" title="All 2 branches missed.">        if (!(elem instanceof UninterpretedAction)) {</span>
+<span class="nc" id="L727">            throw new IllegalArgumentException(&quot;elem: &quot; + elem);</span>
+        }
+<span class="nc" id="L729">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

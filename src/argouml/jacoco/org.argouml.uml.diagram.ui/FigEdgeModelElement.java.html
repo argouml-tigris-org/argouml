@@ -1,0 +1,1813 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigEdgeModelElement.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">FigEdgeModelElement.java</span></div><h1>FigEdgeModelElement.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Thomas Neustupny
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
+
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Highlightable;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ui.ActionGoToCritique;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Owned;
+import org.argouml.kernel.Project;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.DiElement;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationRenderer;
+import org.argouml.notation.NotationSettings;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.Clarifier;
+import org.argouml.ui.ContextActionFactoryManager;
+import org.argouml.ui.ProjectActions;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.StereotypeUtility;
+import org.argouml.uml.diagram.DiagramElement;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
+import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.persistence.pgml.PgmlUtility;
+import org.tigris.gef.presentation.ArrowHead;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigText;
+
+/**
+ * Abstract class to display diagram lines (edges) for UML ModelElements that
+ * look like lines.
+ * This Fig is prepared to show a (possibly editable) name,
+ * and/or multiple stereotypes.
+ * &lt;p&gt;
+ * NOTE: This will drop the ArgoNotationEventListener and
+ * ArgoDiagramAppearanceEventListener
+ * interfaces in the next release.  The corresponding methods have been marked
+ * as deprecated.
+ */
+public abstract class FigEdgeModelElement
+    extends FigEdgePoly
+    implements
+        VetoableChangeListener,
+        DelayedVChangeListener,
+        MouseListener,
+        KeyListener,
+        PropertyChangeListener,
+        ArgoNotationEventListener,
+        NotationRenderer,
+        ArgoDiagramAppearanceEventListener,
+        Highlightable,
+        IItemUID,
+        ArgoFig,
+        Clarifiable,
+        DiagramElement,
+        Owned {
+
+<span class="fc" id="L158">    private static final Logger LOG =</span>
+<span class="fc" id="L159">        Logger.getLogger(FigEdgeModelElement.class.getName());</span>
+
+<span class="fc" id="L161">    private DiElement diElement = null;</span>
+
+    /**
+     * Set the removeFromDiagram to false if this edge may not
+     * be removed from the diagram.
+     */
+<span class="fc" id="L167">    private boolean removeFromDiagram = true;</span>
+
+    /**
+     * Offset from the end of the set of popup actions at which new items
+     * should be inserted by concrete figures.
+    **/
+    private static int popupAddOffset;
+
+    private NotationProvider notationProviderName;
+
+    /**
+     * The Fig that displays the name of this model element.
+     * Use getNameFig(), no setter should be required.
+     */
+    private FigText nameFig;
+
+    /**
+     * Use getStereotypeFig(), no setter should be required.
+     */
+    private FigStereotypesGroup stereotypeFig;
+
+    private FigEdgePort edgePort;
+
+    private ItemUID itemUid;
+
+    /*
+     * List of model element listeners we've registered.
+     */
+<span class="fc" id="L195">    private Set&lt;Object[]&gt; listeners = new HashSet&lt;Object[]&gt;();</span>
+
+    private DiagramSettings settings;
+
+    /**
+     * Construct a new FigEdge. This method creates the name element that holds
+     * the name of the model element and adds itself as a listener. Also a
+     * stereotype is constructed.
+     * &lt;p&gt;
+     * This constructor is only intended for use by concrete subclasses.
+     *
+     * @param element owning uml element
+     * @param renderSettings rendering settings
+     */
+    protected FigEdgeModelElement(Object element,
+            DiagramSettings renderSettings) {
+<span class="fc" id="L211">        super();</span>
+        // TODO: We don't have any settings that can change per-fig currently
+        // so we can just use the default settings;
+//        settings = new DiagramSettings(renderSettings);
+<span class="fc" id="L215">        settings = renderSettings;</span>
+
+        // TODO: It doesn't matter what these get set to because GEF can't
+        // draw anything except 1 pixel wide lines
+<span class="fc" id="L219">        super.setLineColor(LINE_COLOR);</span>
+<span class="fc" id="L220">        super.setLineWidth(LINE_WIDTH);</span>
+<span class="fc" id="L221">        getFig().setLineColor(LINE_COLOR);</span>
+<span class="fc" id="L222">        getFig().setLineWidth(LINE_WIDTH);</span>
+
+<span class="fc" id="L224">        nameFig = new FigNameWithAbstract(element,</span>
+                new Rectangle(X0, Y0 + 20, 90, 20),
+                renderSettings, false);
+<span class="fc" id="L227">        stereotypeFig = new FigStereotypesGroup(element,</span>
+                new Rectangle(X0, Y0, 90, 15),
+                settings);
+
+<span class="fc" id="L231">        initFigs();</span>
+<span class="fc" id="L232">        initOwner(element);</span>
+<span class="fc" id="L233">    }</span>
+
+
+
+    private void initFigs() {
+<span class="fc" id="L238">        nameFig.setTextFilled(false);</span>
+<span class="fc" id="L239">        setBetweenNearestPoints(true);</span>
+<span class="fc" id="L240">    }</span>
+
+
+    private void initOwner(Object element) {
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">        if (element != null) {</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">            if (!Model.getFacade().isAUMLElement(element)) {</span>
+<span class="nc" id="L246">                throw new IllegalArgumentException(</span>
+                        &quot;The owner must be a model element - got a &quot;
+<span class="nc" id="L248">                        + element.getClass().getName());</span>
+            }
+<span class="fc" id="L250">            super.setOwner(element);</span>
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">            if (edgePort != null) {</span>
+<span class="nc" id="L252">                edgePort.setOwner(getOwner());</span>
+            }
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">            if (Model.getFacade().isANamedElement(element)) {</span>
+<span class="fc" id="L255">                NotationName nn = Notation.findNotation(</span>
+<span class="fc" id="L256">                        settings.getNotationSettings().getNotationLanguage());</span>
+<span class="fc" id="L257">                notationProviderName =</span>
+<span class="fc" id="L258">                    NotationProviderFactory2.getInstance().getNotationProvider(</span>
+<span class="fc" id="L259">                            getNotationProviderType(), element, this, nn);</span>
+            }
+
+<span class="fc" id="L262">            addElementListener(element, &quot;remove&quot;);</span>
+        }
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Create a FigCommentPort if needed
+     */
+    public void makeEdgePort() {
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (edgePort == null) {</span>
+<span class="fc" id="L271">            edgePort = new FigEdgePort(getOwner(), new Rectangle(),</span>
+<span class="fc" id="L272">                    getSettings());</span>
+<span class="fc" id="L273">            edgePort.setVisible(false);</span>
+<span class="fc" id="L274">            addPathItem(edgePort,</span>
+                    new PathItemPlacement(this, edgePort, 50, 0));
+        }
+<span class="fc" id="L277">    }</span>
+
+    /**
+     * @return the FigCommentPort
+     */
+    public FigEdgePort getEdgePort() {
+<span class="fc" id="L283">        return edgePort;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    /**
+     * Setter for the UID
+     * @param newId the new UID
+     */
+    public void setItemUID(ItemUID newId) {
+<span class="fc" id="L294">        itemUid = newId;</span>
+<span class="fc" id="L295">    }</span>
+
+    /**
+     * Getter for the UID
+     * @return the UID
+     */
+    public ItemUID getItemUID() {
+<span class="fc" id="L302">        return itemUid;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
+     */
+    @Override
+    public String getTipString(MouseEvent me) {
+<span class="nc" id="L310">        ToDoItem item = hitClarifier(me.getX(), me.getY());</span>
+<span class="nc" id="L311">        String tip = &quot;&quot;;</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">        if (item != null</span>
+<span class="nc bnc" id="L313" title="All 2 branches missed.">            &amp;&amp; Globals.curEditor().getSelectionManager().containsFig(this)) {</span>
+<span class="nc" id="L314">            tip = item.getHeadline();</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">        } else if (getOwner() != null) {</span>
+            try {
+<span class="nc" id="L317">                tip = Model.getFacade().getTipString(getOwner());</span>
+<span class="nc" id="L318">            } catch (InvalidElementException e) {</span>
+                // We moused over an object just as it was deleted
+                // transient condition - doesn't require I18N
+<span class="nc" id="L321">                LOG.log(Level.WARNING, &quot;A deleted element still exists on the diagram&quot;);</span>
+<span class="nc" id="L322">                return Translator.localize(&quot;misc.name.deleted&quot;);</span>
+<span class="nc" id="L323">            }</span>
+        } else {
+<span class="nc" id="L325">            tip = toString();</span>
+        }
+
+<span class="nc bnc" id="L328" title="All 6 branches missed.">        if (tip != null &amp;&amp; tip.length() &gt; 0 &amp;&amp; !tip.endsWith(&quot; &quot;)) {</span>
+<span class="nc" id="L329">            tip += &quot; &quot;;</span>
+        }
+<span class="nc" id="L331">        return tip;</span>
+    }
+
+    /**
+     * @param me the MouseEvent that triggered the popup menu request
+     * @return a Vector containing a combination of these 4 types: Action,
+     *         JMenu, JMenuItem, JSeparator.
+     */
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L341">        ActionList popUpActions =</span>
+<span class="nc" id="L342">            new ActionList(super.getPopUpActions(me), isReadOnly());</span>
+
+        // Added this part to load the extra menu content
+        final List&lt;Action&gt; modulesActions =
+<span class="nc" id="L346">            ContextActionFactoryManager.getContextPopupActions();</span>
+
+<span class="nc bnc" id="L348" title="All 2 branches missed.">        for (Action a : modulesActions) {</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">            if (a instanceof List) {</span>
+<span class="nc" id="L350">                JMenu m = new JMenu((Action) a);</span>
+<span class="nc" id="L351">                popUpActions.add(m);</span>
+<span class="nc bnc" id="L352" title="All 2 branches missed.">                for (Action subAction : (List&lt;Action&gt;) a) {</span>
+<span class="nc" id="L353">                    m.add(subAction);</span>
+<span class="nc" id="L354">                }</span>
+<span class="nc" id="L355">            } else {</span>
+<span class="nc" id="L356">                popUpActions.add(a);</span>
+            }
+<span class="nc" id="L358">        }</span>
+
+        // popupAddOffset should be equal to the number of items added here:
+<span class="nc" id="L361">        popUpActions.add(new JSeparator());</span>
+<span class="nc" id="L362">        popupAddOffset = 1;</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">        if (removeFromDiagram) {</span>
+<span class="nc" id="L364">            popUpActions.add(</span>
+<span class="nc" id="L365">                    ProjectActions.getInstance().getRemoveFromDiagramAction());</span>
+<span class="nc" id="L366">            popupAddOffset++;</span>
+        }
+<span class="nc" id="L368">        popUpActions.add(new ActionDeleteModelElements());</span>
+<span class="nc" id="L369">        popupAddOffset++;</span>
+
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        if (TargetManager.getInstance().getTargets().size() == 1) {</span>
+<span class="nc" id="L372">            ToDoList list = Designer.theDesigner().getToDoList();</span>
+<span class="nc" id="L373">            List&lt;ToDoItem&gt; items = list.elementListForOffender(getOwner());</span>
+<span class="nc bnc" id="L374" title="All 4 branches missed.">            if (items != null &amp;&amp; items.size() &gt; 0) {</span>
+                // TODO: This creates a dependency on the Critics subsystem.
+                // We need a generic way for modules (including our internal
+                // subsystems) to request addition of actions to the popup
+                // menu. - tfm 20080430
+<span class="nc" id="L379">                ArgoJMenu critiques = new ArgoJMenu(&quot;menu.popup.critiques&quot;);</span>
+<span class="nc" id="L380">                ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());</span>
+<span class="nc bnc" id="L381" title="All 2 branches missed.">                if (itemUnderMouse != null) {</span>
+<span class="nc" id="L382">                    critiques.add(new ActionGoToCritique(itemUnderMouse));</span>
+<span class="nc" id="L383">                    critiques.addSeparator();</span>
+                }
+<span class="nc bnc" id="L385" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">                    if (item == itemUnderMouse) {</span>
+<span class="nc" id="L387">                        continue;</span>
+                    }
+<span class="nc" id="L389">                    critiques.add(new ActionGoToCritique(item));</span>
+<span class="nc" id="L390">                }</span>
+<span class="nc" id="L391">                popUpActions.add(0, new JSeparator());</span>
+<span class="nc" id="L392">                popUpActions.add(0, critiques);</span>
+            }
+        }
+
+        // Add stereotypes submenu
+<span class="nc" id="L397">        Action[] stereoActions = getApplyStereotypeActions();</span>
+<span class="nc bnc" id="L398" title="All 4 branches missed.">        if (stereoActions != null &amp;&amp; stereoActions.length &gt; 0) {</span>
+<span class="nc" id="L399">            popUpActions.add(0, new JSeparator());</span>
+<span class="nc" id="L400">            ArgoJMenu stereotypes = new ArgoJMenu(</span>
+                    &quot;menu.popup.apply-stereotypes&quot;);
+<span class="nc bnc" id="L402" title="All 2 branches missed.">            for (int i = 0; i &lt; stereoActions.length; ++i) {</span>
+<span class="nc" id="L403">                stereotypes.addCheckItem(stereoActions[i]);</span>
+            }
+<span class="nc" id="L405">            popUpActions.add(0, stereotypes);</span>
+        }
+
+<span class="nc" id="L408">        return popUpActions;</span>
+    }
+
+    /**
+     * Get the set of Actions which valid for adding/removing
+     * Stereotypes on the ModelElement of this Fig's owner.
+     *
+     * @return array of Actions
+     */
+    protected Action[] getApplyStereotypeActions() {
+<span class="nc" id="L418">        Collection&lt;Object&gt; elements = new ArrayList&lt;Object&gt;();</span>
+<span class="nc" id="L419">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L420" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L421">            elements.add(owner);</span>
+        }
+<span class="nc bnc" id="L423" title="All 2 branches missed.">        for (Object o : TargetManager.getInstance().getTargets()) {</span>
+<span class="nc" id="L424">            Object element = null;</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">            if (Model.getFacade().isAUMLElement(o)) {</span>
+<span class="nc" id="L426">                element = o;</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">            } else if (o instanceof Fig) {</span>
+<span class="nc" id="L428">                element = ((Fig) o).getOwner();</span>
+            }
+<span class="nc bnc" id="L430" title="All 4 branches missed.">            if (element != null &amp;&amp; element != owner) {</span>
+<span class="nc" id="L431">                elements.add(element);</span>
+            }
+<span class="nc" id="L433">        }</span>
+<span class="nc" id="L434">        return StereotypeUtility.getApplyStereotypeActions(elements);</span>
+    }
+
+    /**
+     * distance formula: (x-h)^2 + (y-k)^2 = distance^2
+     *
+     * @param p1 point
+     * @param p2 point
+     * @return the square of the distance
+     */
+    protected int getSquaredDistance(Point p1, Point p2) {
+<span class="nc" id="L445">        int xSquared = p2.x - p1.x;</span>
+<span class="nc" id="L446">        xSquared *= xSquared;</span>
+<span class="nc" id="L447">        int ySquared = p2.y - p1.y;</span>
+<span class="nc" id="L448">        ySquared *= ySquared;</span>
+<span class="nc" id="L449">        return xSquared + ySquared;</span>
+    }
+
+    /**
+     * @param g the &lt;code&gt;Graphics&lt;/code&gt; object
+     */
+    public void paintClarifiers(Graphics g) {
+<span class="nc" id="L456">        int iconPos = 25, gap = 1, xOff = -4, yOff = -4;</span>
+<span class="nc" id="L457">        Point p = new Point();</span>
+<span class="nc" id="L458">        ToDoList tdList = Designer.theDesigner().getToDoList();</span>
+        /* Owner related todo items: */
+<span class="nc" id="L460">        List&lt;ToDoItem&gt; items = tdList.elementListForOffender(getOwner());</span>
+<span class="nc bnc" id="L461" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L462">            Icon icon = item.getClarifier();</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">            if (icon instanceof Clarifier) {</span>
+<span class="nc" id="L464">                ((Clarifier) icon).setFig(this);</span>
+<span class="nc" id="L465">                ((Clarifier) icon).setToDoItem(item);</span>
+            }
+<span class="nc bnc" id="L467" title="All 2 branches missed.">            if (icon != null) {</span>
+<span class="nc" id="L468">                stuffPointAlongPerimeter(iconPos, p);</span>
+<span class="nc" id="L469">                icon.paintIcon(null, g, p.x + xOff, p.y + yOff);</span>
+<span class="nc" id="L470">                iconPos += icon.getIconWidth() + gap;</span>
+            }
+<span class="nc" id="L472">        }</span>
+        /* Fig related todo items: */
+<span class="nc" id="L474">        items = tdList.elementListForOffender(this);</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L476">            Icon icon = item.getClarifier();</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">            if (icon instanceof Clarifier) {</span>
+<span class="nc" id="L478">                ((Clarifier) icon).setFig(this);</span>
+<span class="nc" id="L479">                ((Clarifier) icon).setToDoItem(item);</span>
+            }
+<span class="nc bnc" id="L481" title="All 2 branches missed.">            if (icon != null) {</span>
+<span class="nc" id="L482">                stuffPointAlongPerimeter(iconPos, p);</span>
+<span class="nc" id="L483">                icon.paintIcon(null, g, p.x + xOff, p.y + yOff);</span>
+<span class="nc" id="L484">                iconPos += icon.getIconWidth() + gap;</span>
+            }
+<span class="nc" id="L486">        }</span>
+<span class="nc" id="L487">    }</span>
+
+    /**
+     * The user clicked on the clarifier.
+     *
+     * @param x the x of the point clicked
+     * @param y the y of the point clicked
+     * @return the todo item clicked
+     */
+    public ToDoItem hitClarifier(int x, int y) {
+<span class="nc" id="L497">        int iconPos = 25, xOff = -4, yOff = -4;</span>
+<span class="nc" id="L498">        Point p = new Point();</span>
+<span class="nc" id="L499">        ToDoList tdList = Designer.theDesigner().getToDoList();</span>
+<span class="nc" id="L500">        List&lt;ToDoItem&gt; items = tdList.elementListForOffender(getOwner());</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L502">            Icon icon = item.getClarifier();</span>
+<span class="nc" id="L503">            stuffPointAlongPerimeter(iconPos, p);</span>
+<span class="nc" id="L504">            int width = icon.getIconWidth();</span>
+<span class="nc" id="L505">            int height = icon.getIconHeight();</span>
+<span class="nc bnc" id="L506" title="All 8 branches missed.">            if (y &gt;= p.y + yOff</span>
+                &amp;&amp; y &lt;= p.y + height + yOff
+                &amp;&amp; x &gt;= p.x + xOff
+                &amp;&amp; x &lt;= p.x + width + xOff) {
+<span class="nc" id="L510">                return item;</span>
+            }
+<span class="nc" id="L512">            iconPos += width;</span>
+<span class="nc" id="L513">        }</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L515">            Icon icon = item.getClarifier();</span>
+<span class="nc bnc" id="L516" title="All 2 branches missed.">            if (icon instanceof Clarifier) {</span>
+<span class="nc" id="L517">                ((Clarifier) icon).setFig(this);</span>
+<span class="nc" id="L518">                ((Clarifier) icon).setToDoItem(item);</span>
+<span class="nc bnc" id="L519" title="All 2 branches missed.">                if (((Clarifier) icon).hit(x, y)) {</span>
+<span class="nc" id="L520">                    return item;</span>
+                }
+            }
+<span class="nc" id="L523">        }</span>
+<span class="nc" id="L524">        items = tdList.elementListForOffender(this);</span>
+<span class="nc bnc" id="L525" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L526">            Icon icon = item.getClarifier();</span>
+<span class="nc" id="L527">            stuffPointAlongPerimeter(iconPos, p);</span>
+<span class="nc" id="L528">            int width = icon.getIconWidth();</span>
+<span class="nc" id="L529">            int height = icon.getIconHeight();</span>
+<span class="nc bnc" id="L530" title="All 8 branches missed.">            if (y &gt;= p.y + yOff</span>
+                &amp;&amp; y &lt;= p.y + height + yOff
+                &amp;&amp; x &gt;= p.x + xOff
+                &amp;&amp; x &lt;= p.x + width + xOff) {
+<span class="nc" id="L534">                return item;</span>
+            }
+<span class="nc" id="L536">            iconPos += width;</span>
+<span class="nc" id="L537">        }</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        for (ToDoItem item : items) {</span>
+<span class="nc" id="L539">            Icon icon = item.getClarifier();</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">            if (icon instanceof Clarifier) {</span>
+<span class="nc" id="L541">                ((Clarifier) icon).setFig(this);</span>
+<span class="nc" id="L542">                ((Clarifier) icon).setToDoItem(item);</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">                if (((Clarifier) icon).hit(x, y)) {</span>
+<span class="nc" id="L544">                    return item;</span>
+                }
+            }
+<span class="nc" id="L547">        }</span>
+<span class="nc" id="L548">        return null;</span>
+    }
+
+    /**
+     * @return a {@link SelectionRerouteEdge} object that manages selection and
+     *         rerouting of the edge.
+     *
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
+    @Override
+    public Selection makeSelection() {
+        // TODO: There is a cyclic dependency between SelectionRerouteEdge
+        // and FigEdgeModelElement
+<span class="nc" id="L561">        return new SelectionRerouteEdge(this);</span>
+    }
+
+    /**
+     * Getter for name, the name Fig
+     * @return the nameFig
+     */
+    protected FigText getNameFig() {
+<span class="fc" id="L569">        return nameFig;</span>
+    }
+
+    /**
+     * Get the Rectangle in which the model elements name is displayed
+     *
+     * @return the bounds of the namefig
+     */
+    public Rectangle getNameBounds() {
+<span class="nc" id="L578">        return nameFig.getBounds();</span>
+    }
+
+    /**
+     * @return the text of the namefig
+     */
+    public String getName() {
+<span class="nc" id="L585">        return nameFig.getText();</span>
+    }
+
+    /**
+     * Getter for stereo, the stereotype Fig
+     * @return the stereo Fig
+     */
+    protected FigStereotypesGroup getStereotypeFig() {
+<span class="fc" id="L593">        return stereotypeFig;</span>
+    }
+
+    /*
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent pce) {
+<span class="nc" id="L600">        Object src = pce.getSource();</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">        if (src == getOwner()) {</span>
+<span class="nc" id="L602">            DelayedChangeNotify delayedNotify =</span>
+                new DelayedChangeNotify(this, pce);
+<span class="nc" id="L604">            SwingUtilities.invokeLater(delayedNotify);</span>
+        }
+<span class="nc" id="L606">    }</span>
+
+    /*
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+        // update any text, colors, fonts, etc.
+<span class="nc" id="L613">        renderingChanged();</span>
+        // update the relative sizes and positions of internel Figs
+<span class="nc" id="L615">        Rectangle bbox = getBounds();</span>
+<span class="nc" id="L616">        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);</span>
+<span class="nc" id="L617">        endTrans();</span>
+<span class="nc" id="L618">    }</span>
+
+    /**
+     * This method gets called when a bound property gets changed. This may
+     * represent a UML element value from the Model subsystem, a GEF property,
+     * or something which ArgoUML itself implements.
+     *
+     * @param pve the event containing the property change information
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(final PropertyChangeEvent pve) {
+<span class="fc" id="L630">        Object src = pve.getSource();</span>
+<span class="fc" id="L631">        String pName = pve.getPropertyName();</span>
+<span class="pc bpc" id="L632" title="1 of 4 branches missed.">        if (pve instanceof DeleteInstanceEvent &amp;&amp; src == getOwner()) {</span>
+<span class="fc" id="L633">            Runnable doWorkRunnable = new Runnable() {</span>
+                public void run() {
+                    try {
+<span class="fc" id="L636">                        removeFromDiagram();</span>
+<span class="nc" id="L637">                    } catch (InvalidElementException e) {</span>
+<span class="nc" id="L638">                        LOG.log(Level.SEVERE, &quot;updateLayout method accessed &quot;</span>
+                                    + &quot;deleted element&quot;, e);
+<span class="fc" id="L640">                    }</span>
+<span class="fc" id="L641">                }</span>
+            };
+<span class="fc" id="L643">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+<span class="fc" id="L644">            return;</span>
+        }
+        // We handle and consume editing events
+<span class="pc bpc" id="L647" title="1 of 2 branches missed.">        if (pName.equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">                &amp;&amp; Boolean.FALSE.equals(pve.getNewValue())) {</span>
+<span class="nc" id="L649">            LOG.log(Level.FINE, &quot;finished editing&quot;);</span>
+            // parse the text that was edited
+<span class="nc" id="L651">            textEdited((FigText) src);</span>
+<span class="nc" id="L652">            calcBounds();</span>
+<span class="nc" id="L653">            endTrans();</span>
+<span class="pc bpc" id="L654" title="1 of 2 branches missed.">        } else if (pName.equals(&quot;editing&quot;)</span>
+<span class="nc bnc" id="L655" title="All 2 branches missed.">                &amp;&amp; Boolean.TRUE.equals(pve.getNewValue())) {</span>
+<span class="nc" id="L656">            textEditStarted((FigText) src);</span>
+        } else {
+            // Pass everything except editing events to superclass
+<span class="fc" id="L659">            super.propertyChange(pve);</span>
+        }
+
+<span class="pc bpc" id="L662" title="1 of 2 branches missed.">        if (Model.getFacade().isAUMLElement(src)</span>
+<span class="nc bnc" id="L663" title="All 2 branches missed.">                &amp;&amp; getOwner() != null</span>
+<span class="nc bnc" id="L664" title="All 2 branches missed.">                &amp;&amp; !Model.getUmlFactory().isRemoved(getOwner())) {</span>
+            /* If the source of the event is an UML object,
+             * then the UML model has been changed.*/
+<span class="nc" id="L667">            modelChanged(pve);</span>
+
+<span class="nc" id="L669">            final UmlChangeEvent event = (UmlChangeEvent) pve;</span>
+
+<span class="nc" id="L671">            Runnable doWorkRunnable = new Runnable() {</span>
+                public void run() {
+                    try {
+<span class="nc" id="L674">                        updateLayout(event);</span>
+<span class="nc" id="L675">                    } catch (InvalidElementException e) {</span>
+<span class="nc" id="L676">                        LOG.log(Level.FINE, &quot;updateLayout method accessed deleted element &quot;, e);</span>
+<span class="nc" id="L677">                    }</span>
+<span class="nc" id="L678">                }</span>
+            };
+<span class="nc" id="L680">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+
+        }
+        /* The following is a possible future improvement
+         * of the modelChanged() function.
+         * Michiel: Propose not to do this to keep architecture stable. */
+//        if (pve instanceof AttributeChangeEvent) {
+//            modelAttributeChanged((AttributeChangeEvent) pve);
+//        } else if (pve instanceof AddAssociationEvent) {
+//            modelAssociationAdded((AddAssociationEvent) pve);
+//        } else if (pve instanceof RemoveAssociationEvent) {
+//            modelAssociationRemoved((RemoveAssociationEvent) pve);
+//        }
+<span class="fc" id="L693">    }</span>
+
+    /**
+     * Called whenever we receive an AttributeChangeEvent.
+     *
+     * @param ace the event
+     */
+    protected void modelAttributeChanged(AttributeChangeEvent ace) {
+        // Default implementation is to do nothing
+<span class="nc" id="L702">    }</span>
+
+    /**
+     * Called whenever we receive an AddAssociationEvent.
+     *
+     * @param aae the event
+     */
+    protected void modelAssociationAdded(AddAssociationEvent aae) {
+        // Default implementation is to do nothing
+<span class="nc" id="L711">    }</span>
+
+    /**
+     * Called whenever we receive an RemoveAssociationEvent.
+     *
+     * @param rae the event
+     */
+    protected void modelAssociationRemoved(RemoveAssociationEvent rae) {
+        // Default implementation is to do nothing
+<span class="nc" id="L720">    }</span>
+
+    /**
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * &lt;p&gt;Override this in any subclasses in order to restructure the FigNode
+     * due to change of any model element that this FigNode is listening to.&lt;/p&gt;
+     * &lt;p&gt;This method is guaranteed by the framework to be running on the
+     * Swing/AWT thread.&lt;/p&gt;
+     *
+     * @param event the UmlChangeEvent that caused the change
+     */
+    protected void updateLayout(UmlChangeEvent event) {
+<span class="nc" id="L734">    }</span>
+
+    /**
+     * This method is called when the user doubleclicked on the text field,
+     * and starts editing. Subclasses should override this method to e.g.
+     * supply help to the user about the used format. &lt;p&gt;
+     *
+     * It is also possible to alter the text to be edited
+     * already here, e.g. by adding the stereotype in front of the name,
+     * but that seems not user-friendly.
+     *
+     * @param ft the FigText that will be edited and contains the start-text
+     */
+    protected void textEditStarted(FigText ft) {
+<span class="nc bnc" id="L748" title="All 2 branches missed.">        if (ft == getNameFig()) {</span>
+<span class="nc" id="L749">            showHelp(notationProviderName.getParsingHelp());</span>
+<span class="nc" id="L750">            ft.setText(notationProviderName.toString(getOwner(),</span>
+<span class="nc" id="L751">                    getNotationSettings()));</span>
+        }
+<span class="nc" id="L753">    }</span>
+
+
+    /**
+     * Utility function to localize the given string with help text,
+     * and show it in the status bar of the ArgoUML window.
+     * This function is used in favour of the inline call
+     * to enable later improvements; e.g. it would be possible to
+     * show a help-balloon. TODO: Work this out.
+     * One matter to possibly improve: show multiple lines.
+     *
+     * @param s the given string to be localized and shown
+     */
+    protected void showHelp(String s) {
+<span class="nc" id="L767">        ArgoEventPump.fireEvent(new ArgoHelpEvent(</span>
+                ArgoEventTypes.HELP_CHANGED, this,
+<span class="nc" id="L769">                Translator.localize(s)));</span>
+<span class="nc" id="L770">    }</span>
+
+    /**
+     * This method is called after the user finishes editing a text
+     * field that is in the FigEdgeModelElement.  Determine which field
+     * and update the model.  This class handles the name, subclasses
+     * should override to handle other text elements.
+     *
+     * @param ft the text Fig that has been edited
+     */
+    protected void textEdited(FigText ft) {
+<span class="nc bnc" id="L781" title="All 2 branches missed.">        if (ft == nameFig) {</span>
+<span class="nc bnc" id="L782" title="All 2 branches missed.">            if (getOwner() == null) {</span>
+<span class="nc" id="L783">                return;</span>
+            }
+<span class="nc" id="L785">            notationProviderName.parse(getOwner(), ft.getText());</span>
+<span class="nc" id="L786">            ft.setText(notationProviderName.toString(getOwner(),</span>
+<span class="nc" id="L787">                    getNotationSettings()));</span>
+        }
+<span class="nc" id="L789">    }</span>
+
+    /**
+     * @param f the Fig
+     * @return true if editable
+     */
+    protected boolean canEdit(Fig f) {
+<span class="nc" id="L796">        return true;</span>
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handlers - MouseListener implementation
+
+    /*
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
+    public void mousePressed(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
+<span class="nc" id="L807">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
+    public void mouseReleased(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
+<span class="nc" id="L814">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
+<span class="nc" id="L821">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
+    public void mouseExited(MouseEvent me) {
+        // Required for MouseListener interface, but we only care about clicks
+<span class="nc" id="L828">    }</span>
+
+    /*
+     * If the user double clicks on any part of this FigNode, pass it
+     * down to one of the internal Figs.  This allows the user to
+     * initiate direct text editing.
+     *
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent me) {
+<span class="nc bnc" id="L838" title="All 6 branches missed.">        if (!me.isConsumed() &amp;&amp; !isReadOnly() &amp;&amp; me.getClickCount() &gt;= 2) {</span>
+<span class="nc" id="L839">            Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));</span>
+<span class="nc bnc" id="L840" title="All 4 branches missed.">            if (f instanceof MouseListener &amp;&amp; canEdit(f)) {</span>
+<span class="nc" id="L841">		((MouseListener) f).mouseClicked(me);</span>
+            }
+        }
+<span class="nc" id="L844">        me.consume();</span>
+<span class="nc" id="L845">    }</span>
+
+    /**
+     * Return true if the model element that this Fig represents is read only
+     * @return The model element is read only.
+     */
+    private boolean isReadOnly() {
+<span class="nc" id="L852">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L853" title="All 2 branches missed.">        if (Model.getFacade().isAUMLElement(owner)) {</span>
+<span class="nc" id="L854">            return Model.getModelManagementHelper().isReadOnly(owner);</span>
+        }
+<span class="nc" id="L856">        return false;</span>
+    }
+
+
+
+    /*
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent ke) {
+        // Required for KeyListener interface, but not used
+<span class="nc" id="L866">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent ke) {
+        // Required for KeyListener interface, but not used
+<span class="nc" id="L873">    }</span>
+
+    /*
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent ke) {
+<span class="nc bnc" id="L879" title="All 2 branches missed.">        if (!ke.isConsumed()</span>
+<span class="nc bnc" id="L880" title="All 4 branches missed.">                &amp;&amp; !isReadOnly()</span>
+                &amp;&amp; nameFig != null
+<span class="nc bnc" id="L882" title="All 2 branches missed.">                &amp;&amp; canEdit(nameFig)) {</span>
+<span class="nc" id="L883">            nameFig.keyTyped(ke);</span>
+        }
+<span class="nc" id="L885">    }</span>
+
+
+    /**
+     * Rerenders the attached elements of the fig. &lt;p&gt;
+     *
+     * Warning: The purpose of this function is NOT
+     * to redraw the whole Fig every time
+     * something changes. That would be inefficient.&lt;p&gt;
+     *
+     * Instead, this function should only be called
+     * for major changes that require a complete redraw,
+     * such as change of owner,
+     * and change of notation language. &lt;p&gt;
+     *
+     * Overrule this function for subclasses that add extra
+     * or remove graphical parts.
+     */
+    public void renderingChanged() {
+        // TODO: This needs to use a different method than that used by the
+        // constructor if it wants to allow the method to be overridden
+<span class="nc" id="L906">        initNotationProviders(getOwner());</span>
+<span class="nc" id="L907">        updateNameText();</span>
+<span class="nc" id="L908">        updateStereotypeText();</span>
+<span class="nc" id="L909">        damage();</span>
+<span class="nc" id="L910">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // internal methods
+
+    /**
+     * This is called after any part of the UML ModelElement has
+     * changed. This method automatically updates the name FigText.
+     * Subclasses should override and update other parts.
+     *
+     * @param e the event
+     */
+    protected void modelChanged(PropertyChangeEvent e) {
+<span class="nc bnc" id="L923" title="All 2 branches missed.">        if (e instanceof DeleteInstanceEvent) {</span>
+            // No need to update if model element went away
+<span class="nc" id="L925">            return;</span>
+        }
+
+<span class="nc bnc" id="L928" title="All 4 branches missed.">        if (e instanceof AssociationChangeEvent</span>
+                || e instanceof AttributeChangeEvent) {
+<span class="nc" id="L930">            updateListeners(getOwner(), getOwner());</span>
+        }
+
+        // Update attached node figures
+        // TODO: Presumably this should only happen on a add or remove event
+<span class="nc" id="L935">        determineFigNodes();</span>
+<span class="nc" id="L936">    }</span>
+
+    /**
+     * generate the notation for the modelelement and stuff it into the text Fig
+     */
+    protected void updateNameText() {
+<span class="nc bnc" id="L942" title="All 2 branches missed.">        if (notationProviderName != null</span>
+<span class="nc bnc" id="L943" title="All 2 branches missed.">                &amp;&amp; getOwner() != null</span>
+<span class="nc bnc" id="L944" title="All 2 branches missed.">                &amp;&amp; Model.getFacade().isANamedElement(getOwner())) {</span>
+<span class="nc" id="L945">            String nameStr = notationProviderName.toString(</span>
+<span class="nc" id="L946">                    getOwner(), getNotationSettings());</span>
+<span class="nc" id="L947">            nameFig.setText(nameStr);</span>
+<span class="nc" id="L948">            updateFont();</span>
+<span class="nc" id="L949">            calcBounds();</span>
+<span class="nc" id="L950">            setBounds(getBounds());</span>
+        }
+<span class="nc" id="L952">    }</span>
+
+    /**
+     * generate the notation for the stereotype and stuff it into the text Fig
+     */
+    protected void updateStereotypeText() {
+<span class="nc bnc" id="L958" title="All 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L959">            return;</span>
+        }
+<span class="nc" id="L961">        Object modelElement = getOwner();</span>
+<span class="nc" id="L962">        stereotypeFig.populate();</span>
+<span class="nc" id="L963">    }</span>
+
+    /**
+     * Replace the NotationProvider(s). &lt;p&gt;
+     *
+     * This method shall not be used for the initial creation of
+     * notation providers, but only for replacing them when required.
+     * Initialization must be done in the
+     * constructor using methods which
+     * can't be overridden. &lt;p&gt;
+     * NotationProviders can not be updated - they
+     * are lightweight throw-away objects.
+     * Hence this method creates a (new) NotationProvider whenever
+     * needed. E.g. when the notation language is
+     * changed by the user, then the NPs are to be re-created.
+     * So, this method shall not be
+     * called from a Fig constructor.&lt;p&gt;
+     *
+     * After the removal of the deprecated method setOwner(),
+     * this method shall contain the following statement:
+     *     assert notationProviderName != null
+     *
+     * @param own the current owner
+     */
+    protected void initNotationProviders(Object own) {
+<span class="pc bpc" id="L988" title="1 of 2 branches missed.">        if (notationProviderName != null) {</span>
+<span class="fc" id="L989">            notationProviderName.cleanListener();</span>
+        }
+        /* This should NOT be looking for a NamedElement,
+         * since this is not always about the name of this
+         * modelelement alone.*/
+<span class="pc bpc" id="L994" title="1 of 2 branches missed.">        if (Model.getFacade().isANamedElement(own)) {</span>
+<span class="fc" id="L995">            final NotationName notation = Notation.findNotation(</span>
+<span class="fc" id="L996">                    getNotationSettings().getNotationLanguage());</span>
+<span class="fc" id="L997">            notationProviderName =</span>
+<span class="fc" id="L998">                NotationProviderFactory2.getInstance().getNotationProvider(</span>
+<span class="fc" id="L999">                        getNotationProviderType(), own, this,</span>
+                        notation);
+        }
+<span class="fc" id="L1002">    }</span>
+
+
+    /**
+     * Overrule this for subclasses
+     * that need a different NotationProvider.
+     *
+     * @return the type of the notation provider
+     */
+    protected int getNotationProviderType() {
+<span class="fc" id="L1012">        return NotationProviderFactory2.TYPE_NAME;</span>
+    }
+
+    /**
+     * Implementations of this method should register/unregister the fig for all
+     * (model)events that may cause a repaint to be necessary.
+     * In the simplest case, the fig should register itself
+     * as listening to (all) events fired by (only) the owner. &lt;p&gt;
+     *
+     * But for, for example, for a
+     * FigLink the fig must also register for events fired by the
+     * association of the owner - because the name of
+     * the association is shown, not the name of the Link.&lt;p&gt;
+     *
+     * In other cases, there is no need to register for any event,
+     * e.g. when a notationProvider is used. &lt;p&gt;
+     *
+     * This function is called in 2 places: at creation (load) time of this Fig,
+     * i.e. when the owner changes,
+     * and in some cases by the modelChanged() function,
+     * i.e. when the model changes. &lt;p&gt;
+     *
+     * This function shall always register for the &quot;remove&quot; event of the owner!
+     * Otherwise the Fig will not be deleted when the owner gets deleted.&lt;p&gt;
+     *
+     *  IF this method is called with both the oldOwner and the
+     *  newOwner equal and not null,
+     *  AND we listen only to the owner itself,
+     *  THEN we can safely ignore the call, but
+     *  ELSE we need to update the listeners of the related elements,
+     *  since the related elements may have been replaced.
+     *
+     * @param newOwner the new owner for the listeners,
+     *          or null if all listeners have to be removed
+     * @param oldOwner the previous owner,
+     *          or null if there was none, and all listeners have to be set
+     */
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+<span class="nc" id="L1050">        Set&lt;Object[]&gt; l = new HashSet&lt;Object[]&gt;();</span>
+<span class="nc bnc" id="L1051" title="All 2 branches missed.">        if (newOwner != null) {</span>
+<span class="nc" id="L1052">            l.add(new Object[] {newOwner, &quot;remove&quot;});</span>
+        }
+<span class="nc" id="L1054">        updateElementListeners(l);</span>
+<span class="nc" id="L1055">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
+     */
+    @Override
+    public void setLayer(Layer lay) {
+<span class="fc" id="L1062">        super.setLayer(lay);</span>
+<span class="fc" id="L1063">        getFig().setLayer(lay);</span>
+
+        // TODO: Workaround for GEF redraw problem
+        // Force all child figs into the same layer
+<span class="fc bfc" id="L1067" title="All 2 branches covered.">        for (Fig f : (List&lt;Fig&gt;) getPathItemFigs()) {</span>
+<span class="fc" id="L1068">            f.setLayer(lay);</span>
+<span class="fc" id="L1069">        }</span>
+<span class="fc" id="L1070">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#deleteFromModel()
+     */
+    @Override
+    public void deleteFromModel() {
+<span class="nc" id="L1077">        Object own = getOwner();</span>
+<span class="nc bnc" id="L1078" title="All 2 branches missed.">        if (own != null) {</span>
+<span class="nc" id="L1079">            getProject().moveToTrash(own);</span>
+        }
+
+        /* TODO: MVW: Why is this not done in GEF? */
+<span class="nc" id="L1083">        Iterator it = getPathItemFigs().iterator();</span>
+<span class="nc bnc" id="L1084" title="All 2 branches missed.">        while (it.hasNext()) {</span>
+<span class="nc" id="L1085">            ((Fig) it.next()).deleteFromModel();</span>
+        }
+<span class="nc" id="L1087">        super.deleteFromModel();</span>
+<span class="nc" id="L1088">    }</span>
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris. Changes to notation provider are
+     *             now handled by the owning diagram.
+     */
+    @Deprecated
+    public void notationChanged(ArgoNotationEvent event) {
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">        if (getOwner() == null) {</span>
+<span class="nc" id="L1098">            return;</span>
+        }
+<span class="nc" id="L1100">        renderingChanged();</span>
+<span class="nc" id="L1101">    }</span>
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
+     */
+    @Deprecated
+    public void notationAdded(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
+<span class="nc" id="L1110">    }</span>
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
+     */
+    @Deprecated
+    public void notationRemoved(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
+<span class="nc" id="L1119">    }</span>
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
+     */
+    @Deprecated
+    public void notationProviderAdded(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
+<span class="nc" id="L1128">    }</span>
+
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
+     */
+    @Deprecated
+    public void notationProviderRemoved(ArgoNotationEvent event) {
+        // Default implementation is to do nothing
+<span class="nc" id="L1137">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
+     */
+    @Override
+    public boolean hit(Rectangle r) {
+	// Check if labels etc have been hit
+	// Apparently GEF does require PathItems to be &quot;annotations&quot;
+	// which ours aren't, so until that is resolved...
+<span class="nc" id="L1147">	Iterator it = getPathItemFigs().iterator();</span>
+<span class="nc bnc" id="L1148" title="All 2 branches missed.">	while (it.hasNext()) {</span>
+<span class="nc" id="L1149">	    Fig f = (Fig) it.next();</span>
+<span class="nc bnc" id="L1150" title="All 2 branches missed.">	    if (f.hit(r)) {</span>
+<span class="nc" id="L1151">		return true;</span>
+	    }
+<span class="nc" id="L1153">	}</span>
+<span class="nc" id="L1154">	return super.hit(r);</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
+     */
+    @Override
+    public final void removeFromDiagram() {
+<span class="fc" id="L1162">        Fig delegate = getRemoveDelegate();</span>
+        // TODO: Dependency cycle between FigNodeModelElement and FigEdgeME
+        // Is this needed?  If so, introduce a Removable interface to decouple
+<span class="pc bpc" id="L1165" title="1 of 2 branches missed.">        if (delegate instanceof FigNodeModelElement) {</span>
+<span class="nc" id="L1166">            ((FigNodeModelElement) delegate).removeFromDiagramImpl();</span>
+<span class="pc bpc" id="L1167" title="1 of 2 branches missed.">        } else if (delegate instanceof FigEdgeModelElement) {</span>
+<span class="fc" id="L1168">            ((FigEdgeModelElement) delegate).removeFromDiagramImpl();</span>
+<span class="nc bnc" id="L1169" title="All 2 branches missed.">        } else if (delegate != null) {</span>
+<span class="nc" id="L1170">            removeFromDiagramImpl();</span>
+        }
+<span class="fc" id="L1172">    }</span>
+
+    /**
+     * Subclasses should override this to redirect a remove request from
+     * one Fig to another.
+     * e.g. FigEdgeAssociationClass uses this to delegate the remove to
+     * its attached FigAssociationClass.
+     * @return the fig handling the remove
+     */
+    protected Fig getRemoveDelegate() {
+<span class="fc" id="L1182">        return this;</span>
+    }
+
+    protected void removeFromDiagramImpl() {
+<span class="fc" id="L1186">        Object o = getOwner();</span>
+<span class="pc bpc" id="L1187" title="1 of 2 branches missed.">        if (o != null) {</span>
+<span class="fc" id="L1188">            removeElementListener(o);</span>
+        }
+<span class="pc bpc" id="L1190" title="1 of 2 branches missed.">        if (notationProviderName != null) {</span>
+<span class="fc" id="L1191">            notationProviderName.cleanListener();</span>
+        }
+
+        /* TODO: MVW: Why is this not done in GEF? */
+<span class="fc" id="L1195">        Iterator it = getPathItemFigs().iterator();</span>
+<span class="fc bfc" id="L1196" title="All 2 branches covered.">        while (it.hasNext()) {</span>
+<span class="fc" id="L1197">            Fig fig = (Fig) it.next();</span>
+<span class="fc" id="L1198">            fig.removeFromDiagram();</span>
+<span class="fc" id="L1199">        }</span>
+
+<span class="fc" id="L1201">        super.removeFromDiagram();</span>
+<span class="fc" id="L1202">        damage();</span>
+<span class="fc" id="L1203">    }</span>
+
+    protected void superRemoveFromDiagram() {
+<span class="nc" id="L1206">        super.removeFromDiagram();</span>
+<span class="nc" id="L1207">    }</span>
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#damage()
+     */
+    @Override
+    public void damage() {
+<span class="fc" id="L1214">        super.damage();</span>
+<span class="fc" id="L1215">        getFig().damage();</span>
+<span class="fc" id="L1216">    }</span>
+
+    /**
+     * &lt;p&gt;Determines if the FigEdge is currently connected to the correct
+     * FigNodes, if not the edges is the correct FigNodes set and the edge
+     * rerouted.
+     * &lt;p&gt;Typically this is used when a user has amended from the property
+     * panel a relationship from one model element to another and the graph
+     * needs to react to that change.
+     * &lt;p&gt;e.g. if the participant of an association end is changed.
+     * &lt;p&gt;Calls a helper method (layoutThisToSelf) to avoid this edge
+     * disappearing if the new source and dest are the same node.
+     *
+     * TODO: This method is called far too frequently. It should only be called
+     * when a specific event is received. It seems to be currently called whenever
+     * any event is received from the owner.
+     *
+     * @return boolean whether or not the update was sucessful
+     */
+    protected boolean determineFigNodes() {
+<span class="nc" id="L1236">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L1237" title="All 2 branches missed.">        if (owner == null) {</span>
+<span class="nc" id="L1238">            LOG.log(Level.SEVERE, &quot;The FigEdge has no owner&quot;);</span>
+<span class="nc" id="L1239">            return false;</span>
+        }
+<span class="nc bnc" id="L1241" title="All 2 branches missed.">        if (getLayer() == null) {</span>
+<span class="nc" id="L1242">            LOG.log(Level.SEVERE, &quot;The FigEdge has no layer&quot;);</span>
+<span class="nc" id="L1243">            return false;</span>
+        }
+
+<span class="nc" id="L1246">        Object newSource = getSource();</span>
+<span class="nc" id="L1247">        Object newDest = getDestination();</span>
+
+<span class="nc" id="L1249">        Fig currentSourceFig = getSourceFigNode();</span>
+<span class="nc" id="L1250">        Fig currentDestFig = getDestFigNode();</span>
+<span class="nc" id="L1251">        Object currentSource = null;</span>
+<span class="nc" id="L1252">        Object currentDestination = null;</span>
+<span class="nc bnc" id="L1253" title="All 4 branches missed.">        if (currentSourceFig != null &amp;&amp; currentDestFig != null) {</span>
+<span class="nc" id="L1254">            currentSource = currentSourceFig.getOwner();</span>
+<span class="nc" id="L1255">            currentDestination = currentDestFig.getOwner();</span>
+        }
+<span class="nc bnc" id="L1257" title="All 4 branches missed.">        if (newSource != currentSource || newDest != currentDestination) {</span>
+<span class="nc" id="L1258">            Fig newSourceFig = getNoEdgePresentationFor(newSource);</span>
+<span class="nc" id="L1259">            Fig newDestFig = getNoEdgePresentationFor(newDest);</span>
+<span class="nc bnc" id="L1260" title="All 2 branches missed.">            if (newSourceFig != currentSourceFig) {</span>
+<span class="nc" id="L1261">                setSourceFigNode((FigNode) newSourceFig);</span>
+<span class="nc" id="L1262">                setSourcePortFig(newSourceFig);</span>
+
+            }
+<span class="nc bnc" id="L1265" title="All 2 branches missed.">            if (newDestFig != currentDestFig) {</span>
+<span class="nc" id="L1266">                setDestFigNode((FigNode) newDestFig);</span>
+<span class="nc" id="L1267">                setDestPortFig(newDestFig);</span>
+            }
+<span class="nc" id="L1269">            ((FigNode) newSourceFig).updateEdges();</span>
+<span class="nc" id="L1270">            ((FigNode) newDestFig).updateEdges();</span>
+<span class="nc" id="L1271">            calcBounds();</span>
+
+            // adapted from SelectionWButtons from line 280
+            // calls a helper method to avoid this edge disappearing
+            // if the new source and dest are the same node.
+<span class="nc bnc" id="L1276" title="All 2 branches missed.">            if (newSourceFig == newDestFig) {</span>
+
+<span class="nc" id="L1278">                layoutThisToSelf();</span>
+            }
+
+        }
+
+<span class="nc" id="L1283">        return true;</span>
+    }
+
+    /**
+     * A version of GEF's presentationFor() method which
+     * @param element ModelElement to return presentation for
+     * @return the Fig representing the presentation
+     */
+    private Fig getNoEdgePresentationFor(Object element) {
+<span class="nc bnc" id="L1292" title="All 2 branches missed.">        if (element == null) {</span>
+<span class="nc" id="L1293">            throw new IllegalArgumentException(&quot;Can't search for a null owner&quot;);</span>
+        }
+
+<span class="nc" id="L1296">        List contents = PgmlUtility.getContentsNoEdges(getLayer());</span>
+<span class="nc" id="L1297">        int figCount = contents.size();</span>
+<span class="nc bnc" id="L1298" title="All 2 branches missed.">        for (int figIndex = 0; figIndex &lt; figCount; ++figIndex) {</span>
+<span class="nc" id="L1299">            Fig fig = (Fig) contents.get(figIndex);</span>
+<span class="nc bnc" id="L1300" title="All 2 branches missed.">            if (fig.getOwner() == element) {</span>
+<span class="nc" id="L1301">                return fig;</span>
+            }
+        }
+<span class="nc" id="L1304">        throw new IllegalStateException(&quot;Can't find a FigNode representing &quot;</span>
+<span class="nc" id="L1305">                + Model.getFacade().getName(element));</span>
+    }
+
+
+    /**
+     * helper method for updateClassifiers() in order to automatically
+     * layout an edge that is now from and to the same node type.
+     * &lt;p&gt;adapted from SelectionWButtons from line 280
+     */
+    private void layoutThisToSelf() {
+
+<span class="nc" id="L1316">        FigPoly edgeShape = new FigPoly();</span>
+        //newFC = _content;
+<span class="nc" id="L1318">        Point fcCenter =</span>
+<span class="nc" id="L1319">            new Point(getSourceFigNode().getX() / 2,</span>
+<span class="nc" id="L1320">                    getSourceFigNode().getY() / 2);</span>
+<span class="nc" id="L1321">        Point centerRight =</span>
+            new Point(
+		      (int) (fcCenter.x
+<span class="nc" id="L1324">			     + getSourceFigNode().getSize().getWidth() / 2),</span>
+		      fcCenter.y);
+
+<span class="nc" id="L1327">        int yoffset = (int) ((getSourceFigNode().getSize().getHeight() / 2));</span>
+<span class="nc" id="L1328">        edgeShape.addPoint(fcCenter.x, fcCenter.y);</span>
+<span class="nc" id="L1329">        edgeShape.addPoint(centerRight.x, centerRight.y);</span>
+<span class="nc" id="L1330">        edgeShape.addPoint(centerRight.x + 30, centerRight.y);</span>
+<span class="nc" id="L1331">        edgeShape.addPoint(centerRight.x + 30, centerRight.y + yoffset);</span>
+<span class="nc" id="L1332">        edgeShape.addPoint(centerRight.x, centerRight.y + yoffset);</span>
+
+        // place the edge on the layer and update the diagram
+<span class="nc" id="L1335">        this.setBetweenNearestPoints(true);</span>
+<span class="nc" id="L1336">        edgeShape.setLineColor(LINE_COLOR);</span>
+<span class="nc" id="L1337">        edgeShape.setFilled(false);</span>
+<span class="nc" id="L1338">        edgeShape.setComplete(true);</span>
+<span class="nc" id="L1339">        this.setFig(edgeShape);</span>
+<span class="nc" id="L1340">    }</span>
+
+    /**
+     * Returns the source of the edge. The source is the owner of the
+     * node the edge travels from in a binary relationship. For
+     * instance: for a classifierrole, this is the sender.
+     * @return a model element
+     */
+    protected Object getSource() {
+<span class="nc" id="L1349">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L1350" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L1351">            return Model.getCoreHelper().getSource(owner);</span>
+        }
+<span class="nc" id="L1353">        return null;</span>
+    }
+
+    /**
+     * Get the model element at the source end of the edge. This is not the
+     * same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getSourceConnector() {
+<span class="nc" id="L1368">        return null;</span>
+    }
+
+    /**
+     * Get the model element at the destination end of the edge. This is not
+     * the same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getDestinationConnector() {
+<span class="nc" id="L1383">        return null;</span>
+    }
+
+    /**
+     * Returns the destination of the edge. The destination is the
+     * owner of the node the edge travels to in a binary
+     * relationship. For instance: for a classifierrole, this is the
+     * receiver.
+     * @return a model element
+     */
+    protected Object getDestination() {
+<span class="nc" id="L1394">        Object owner = getOwner();</span>
+<span class="nc bnc" id="L1395" title="All 2 branches missed.">        if (owner != null) {</span>
+<span class="nc" id="L1396">            return Model.getCoreHelper().getDestination(owner);</span>
+        }
+<span class="nc" id="L1398">        return null;</span>
+    }
+
+
+    /**
+     * @param allowed true if the function RemoveFromDiagram is allowed
+     */
+    protected void allowRemoveFromDiagram(boolean allowed) {
+<span class="fc" id="L1406">        this.removeFromDiagram = allowed;</span>
+<span class="fc" id="L1407">    }</span>
+
+    /**
+     * Set the associated Diagram Interchange element.
+     *
+     * @param element the element to be associated with this Fig
+     */
+    public void setDiElement(DiElement element) {
+<span class="nc" id="L1415">        this.diElement = element;</span>
+<span class="nc" id="L1416">    }</span>
+
+    /**
+     * @return the Diagram Interchange element associated with this Fig
+     */
+    public DiElement getDiElement() {
+<span class="nc" id="L1422">        return diElement;</span>
+    }
+
+    /**
+     * @return Returns the popupAddOffset.
+     */
+    protected static int getPopupAddOffset() {
+<span class="nc" id="L1429">        return popupAddOffset;</span>
+    }
+
+
+    /**
+     * Add an element listener and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element) {
+<span class="nc" id="L1441">        listeners.add(new Object[] {element, null});</span>
+<span class="nc" id="L1442">        Model.getPump().addModelEventListener(this, element);</span>
+<span class="nc" id="L1443">    }</span>
+
+    /**
+     * Add a listener and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            name of property to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element, String property) {
+<span class="fc" id="L1455">        listeners.add(new Object[] {element, property});</span>
+<span class="fc" id="L1456">        Model.getPump().addModelEventListener(this, element, property);</span>
+<span class="fc" id="L1457">    }</span>
+
+    /**
+     * Add a listener and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @param property
+     *            array of property names (Strings) to listen for changes of
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void addElementListener(Object element, String[] property) {
+<span class="fc" id="L1469">        listeners.add(new Object[] {element, property});</span>
+<span class="fc" id="L1470">        Model.getPump().addModelEventListener(this, element, property);</span>
+<span class="fc" id="L1471">    }</span>
+
+    /**
+     * Add an element listener and remember the registration.
+     *
+     * @param element
+     *            element to listen for changes on
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(PropertyChangeListener, Object, String)
+     */
+    protected void removeElementListener(Object element) {
+<span class="fc" id="L1481">        listeners.remove(new Object[] {element, null});</span>
+<span class="fc" id="L1482">        Model.getPump().removeModelEventListener(this, element);</span>
+<span class="fc" id="L1483">    }</span>
+
+
+    /**
+     * Unregister all listeners registered through addElementListener
+     * @see #addElementListener(Object, String)
+     */
+    protected void removeAllElementListeners() {
+<span class="nc" id="L1491">        removeElementListeners(listeners);</span>
+<span class="nc" id="L1492">    }</span>
+
+    private void removeElementListeners(Set&lt;Object[]&gt; listenerSet) {
+<span class="nc bnc" id="L1495" title="All 2 branches missed.">        for (Object[] listener : listenerSet) {</span>
+<span class="nc" id="L1496">            Object property = listener[1];</span>
+<span class="nc bnc" id="L1497" title="All 2 branches missed.">            if (property == null) {</span>
+<span class="nc" id="L1498">                Model.getPump().removeModelEventListener(this, listener[0]);</span>
+<span class="nc bnc" id="L1499" title="All 2 branches missed.">            } else if (property instanceof String[]) {</span>
+<span class="nc" id="L1500">                Model.getPump().removeModelEventListener(this, listener[0],</span>
+                        (String[]) property);
+<span class="nc bnc" id="L1502" title="All 2 branches missed.">            } else if (property instanceof String) {</span>
+<span class="nc" id="L1503">                Model.getPump().removeModelEventListener(this, listener[0],</span>
+                        (String) property);
+            } else {
+<span class="nc" id="L1506">                throw new RuntimeException(</span>
+                        &quot;Internal error in removeAllElementListeners&quot;);
+            }
+<span class="nc" id="L1509">        }</span>
+<span class="nc" id="L1510">        listeners.removeAll(listenerSet);</span>
+<span class="nc" id="L1511">    }</span>
+
+    private void addElementListeners(Set&lt;Object[]&gt; listenerSet) {
+<span class="nc bnc" id="L1514" title="All 2 branches missed.">        for (Object[] listener : listenerSet) {</span>
+<span class="nc" id="L1515">            Object property = listener[1];</span>
+<span class="nc bnc" id="L1516" title="All 2 branches missed.">            if (property == null) {</span>
+<span class="nc" id="L1517">                addElementListener(listener[0]);</span>
+<span class="nc bnc" id="L1518" title="All 2 branches missed.">            } else if (property instanceof String[]) {</span>
+<span class="nc" id="L1519">                addElementListener(listener[0], (String[]) property);</span>
+<span class="nc bnc" id="L1520" title="All 2 branches missed.">            } else if (property instanceof String) {</span>
+<span class="nc" id="L1521">                addElementListener(listener[0], (String) property);</span>
+            } else {
+<span class="nc" id="L1523">                throw new RuntimeException(</span>
+                        &quot;Internal error in addElementListeners&quot;);
+            }
+<span class="nc" id="L1526">        }</span>
+<span class="nc" id="L1527">    }</span>
+
+    /**
+     * Update the set of registered listeners to match the given set using
+     * a minimal update strategy to remove unneeded listeners and add new
+     * listeners.
+     *
+     * @param listenerSet a set of arrays containing a tuple of a UML element
+     * to be listened to and a set of property to be listened for.
+     */
+    protected void updateElementListeners(Set&lt;Object[]&gt; listenerSet) {
+<span class="nc" id="L1538">        Set&lt;Object[]&gt; removes = new HashSet&lt;Object[]&gt;(listeners);</span>
+<span class="nc" id="L1539">        removes.removeAll(listenerSet);</span>
+<span class="nc" id="L1540">        removeElementListeners(removes);</span>
+
+<span class="nc" id="L1542">        Set&lt;Object[]&gt; adds = new HashSet&lt;Object[]&gt;(listenerSet);</span>
+<span class="nc" id="L1543">        adds.removeAll(listeners);</span>
+<span class="nc" id="L1544">        addElementListeners(adds);</span>
+<span class="nc" id="L1545">    }</span>
+
+    /**
+     * This optional method is not implemented.  It will throw an
+     * {@link UnsupportedOperationException} if used. Figs are
+     * added to a GraphModel which is, in turn, owned by a project.
+     * @param project the project
+     * @deprecated
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setProject(Project project) {
+<span class="nc" id="L1557">        throw new UnsupportedOperationException();</span>
+    }
+
+    /**
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
+     *
+     * @return the owning project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     */
+    @Deprecated
+    public Project getProject() {
+<span class="nc" id="L1569">        return ArgoFigUtil.getProject(this);</span>
+    }
+
+    /**
+     * Handles diagram font changing.
+     *
+     * @param e the event
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     * @deprecated for 0.27.2 by tfmorris. Global rendering changes are now
+     *             managed at the diagram level.
+     */
+    @Deprecated
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+<span class="nc" id="L1582">        updateFont();</span>
+<span class="nc" id="L1583">        calcBounds(); //TODO: Does this help?</span>
+<span class="nc" id="L1584">        redraw();</span>
+<span class="nc" id="L1585">    }</span>
+
+    /**
+     * This function should, for all FigTexts,
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont().
+     */
+    protected void updateFont() {
+<span class="nc" id="L1593">        int style = getNameFigFontStyle();</span>
+<span class="nc" id="L1594">        Font f = getSettings().getFont(style);</span>
+<span class="nc" id="L1595">        nameFig.setFont(f);</span>
+<span class="nc" id="L1596">        deepUpdateFont(this);</span>
+<span class="nc" id="L1597">    }</span>
+
+    /**
+     * Determines the font style based on the UML model.
+     * Overrule this in Figs that have to show bold or italic based on the
+     * UML model they represent.
+     * E.g. abstract classes show their name in italic.
+     *
+     * @return the font style for the nameFig.
+     */
+    protected int getNameFigFontStyle() {
+<span class="nc" id="L1608">        return Font.PLAIN;</span>
+    }
+
+    private void deepUpdateFont(FigEdge fe) {
+<span class="nc" id="L1612">        Font f = getSettings().getFont(Font.PLAIN);</span>
+<span class="nc bnc" id="L1613" title="All 2 branches missed.">        for (Object pathFig : fe.getPathItemFigs()) {</span>
+<span class="nc" id="L1614">            deepUpdateFontRecursive(f, pathFig);</span>
+<span class="nc" id="L1615">        }</span>
+<span class="nc" id="L1616">        fe.calcBounds();</span>
+<span class="nc" id="L1617">    }</span>
+
+    /**
+     * Changes the font for all Figs contained in the given FigGroup. &lt;p&gt;
+     *
+     *  TODO: In fact, there is a design error in this method:
+     *  E.g. for a class, if the name is Italic since the class is abstract,
+     *  then the classes features should be in Plain font.
+     *  This problem can be fixed by implementing
+     *  the updateFont() method in all subclasses.
+     *
+     * @param fg the FigGroup to change the font of.
+     */
+    private void deepUpdateFontRecursive(Font f, Object pathFig) {
+<span class="nc bnc" id="L1631" title="All 2 branches missed.">        if (pathFig instanceof ArgoFigText) {</span>
+<span class="nc" id="L1632">            ((ArgoFigText) pathFig).updateFont();</span>
+<span class="nc bnc" id="L1633" title="All 2 branches missed.">        } else if (pathFig instanceof FigText) {</span>
+<span class="nc" id="L1634">            ((FigText) pathFig).setFont(f);</span>
+<span class="nc bnc" id="L1635" title="All 2 branches missed.">        } else if (pathFig instanceof FigGroup) {</span>
+<span class="nc bnc" id="L1636" title="All 2 branches missed.">            for (Object fge : ((FigGroup) pathFig).getFigs()) {</span>
+<span class="nc" id="L1637">                deepUpdateFontRecursive(f, fge);</span>
+<span class="nc" id="L1638">            }</span>
+        }
+<span class="nc" id="L1640">    }</span>
+
+
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+<span class="pc bpc" id="L1646" title="1 of 2 branches missed.">        if (settings == null) {</span>
+<span class="nc" id="L1647">            LOG.log(Level.FINE, &quot;Falling back to project-wide settings&quot;);</span>
+<span class="nc" id="L1648">            Project p = getProject();</span>
+<span class="nc bnc" id="L1649" title="All 2 branches missed.">            if (p != null) {</span>
+<span class="nc" id="L1650">                return p.getProjectSettings().getDefaultDiagramSettings();</span>
+            }
+        }
+<span class="fc" id="L1653">        return settings;</span>
+    }
+
+    public void setSettings(DiagramSettings renderSettings) {
+<span class="nc" id="L1657">        settings = renderSettings;</span>
+<span class="nc" id="L1658">        renderingChanged();</span>
+<span class="nc" id="L1659">    }</span>
+
+    /**
+     * @return the current notation settings
+     */
+    protected NotationSettings getNotationSettings() {
+<span class="fc" id="L1665">        return getSettings().getNotationSettings();</span>
+    }
+
+//    public void setLineWidth(int w) {
+//        super.setLineWidth(w);
+//    }
+
+    public void setLineColor(Color c) {
+<span class="fc" id="L1673">        super.setLineColor(c);</span>
+<span class="fc" id="L1674">        ArrowHead arrow = getDestArrowHead();</span>
+<span class="pc bpc" id="L1675" title="1 of 2 branches missed.">        if (arrow != null) {</span>
+<span class="fc" id="L1676">            arrow.setLineColor(getLineColor());</span>
+        }
+<span class="fc" id="L1678">    }</span>
+
+    public void setFig(Fig f) {
+<span class="fc" id="L1681">        super.setFig(f);</span>
+        // GEF sets a different Fig than the one that we had at construction
+        // time, so we need to set its color and width
+<span class="fc" id="L1684">        f.setLineColor(getLineColor());</span>
+<span class="fc" id="L1685">        f.setLineWidth(getLineWidth());</span>
+<span class="fc" id="L1686">    }</span>
+
+
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     *
+     * @param owner owning UML element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @throws UnsupportedOperationException
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Deprecated
+    public void setOwner(Object owner) {
+<span class="nc bnc" id="L1703" title="All 2 branches missed.">        if (owner != getOwner()) {</span>
+<span class="nc" id="L1704">            throw new UnsupportedOperationException(</span>
+                    &quot;Owner must be set in constructor and left unchanged&quot;);
+        }
+<span class="nc" id="L1707">    }</span>
+
+    /**
+     * We override GEF completely here (no call to super method).
+     * Code is unfortunately copied from GEF to avoid multiple calls
+     * to calcBounds()
+     *
+     * @see org.tigris.gef.presentation.FigEdgePoly#computeRouteImpl()
+     */
+    public void computeRouteImpl() {
+
+<span class="fc" id="L1718">        Fig sourcePortFig = getSourcePortFig();</span>
+<span class="fc" id="L1719">        Fig destPortFig = getDestPortFig();</span>
+
+<span class="fc bfc" id="L1721" title="All 2 branches covered.">        if (sourcePortFig instanceof FigNodeModelElement) {</span>
+<span class="fc" id="L1722">            sourcePortFig = ((FigNodeModelElement) sourcePortFig).getBigPort();</span>
+        }
+
+<span class="fc bfc" id="L1725" title="All 2 branches covered.">        if (destPortFig instanceof FigNodeModelElement) {</span>
+<span class="fc" id="L1726">            destPortFig = ((FigNodeModelElement) destPortFig).getBigPort();</span>
+        }
+
+<span class="fc bfc" id="L1729" title="All 4 branches covered.">        if (!(sourcePortFig instanceof FigCircle)</span>
+                || !(destPortFig instanceof FigCircle)) {
+            // If this is not a circle to circle edge we default to let GEF
+            // calculate edge route.
+<span class="fc" id="L1733">            super.computeRouteImpl();</span>
+        } else {
+            // If the edge is from a circle to a circle (e.g. between use
+            // cases) we have our own implementation overriding GEF. Which
+            // attempts to keep the edges perpendicular if the edge is already
+            // close to perpendicular.
+
+<span class="pc bpc" id="L1740" title="1 of 2 branches missed.">            if (!_initiallyLaidOut) {</span>
+<span class="nc" id="L1741">                layoutEdge();</span>
+<span class="nc" id="L1742">                _initiallyLaidOut = true;</span>
+            }
+<span class="fc" id="L1744">            FigPoly p = ((FigPoly) getFig());</span>
+
+
+
+<span class="fc" id="L1748">            Point srcPt = sourcePortFig.getCenter();</span>
+<span class="fc" id="L1749">            Point dstPt = destPortFig.getCenter();</span>
+
+<span class="pc bpc" id="L1751" title="1 of 2 branches missed.">            if (_useNearest) {</span>
+<span class="pc bpc" id="L1752" title="1 of 2 branches missed.">                if (p.getNumPoints() == 2) {</span>
+                    // ? two iterations of refinement, maybe should be a for-loop
+<span class="fc" id="L1754">                    srcPt = sourcePortFig.connectionPoint(p.getPoint(1));</span>
+<span class="fc" id="L1755">                    dstPt = destPortFig.connectionPoint(p</span>
+<span class="fc" id="L1756">                            .getPoint(p.getNumPoints() - 2));</span>
+<span class="fc" id="L1757">                    srcPt = sourcePortFig.connectionPoint(dstPt);</span>
+<span class="fc" id="L1758">                    dstPt = destPortFig.connectionPoint(srcPt);</span>
+
+                    // If the line angle is less than 3 degrees then snap the line
+                    // straight
+<span class="fc" id="L1762">                    final int delta = 3;</span>
+<span class="fc" id="L1763">                    double angle = Geometry.segmentAngle(srcPt, dstPt);</span>
+<span class="fc" id="L1764">                    double mod = angle % 90;</span>
+<span class="pc bpc" id="L1765" title="3 of 6 branches missed.">                    final boolean snapStraight = (mod != 0 &amp;&amp; (mod &lt; delta || mod &gt; 90 - delta));</span>
+
+<span class="pc bpc" id="L1767" title="1 of 2 branches missed.">                    if (snapStraight) {</span>
+<span class="nc" id="L1768">                        int newX = (srcPt.x + dstPt.x) / 2;</span>
+<span class="nc" id="L1769">                        int newY = (srcPt.y + dstPt.y) / 2;</span>
+<span class="nc bnc" id="L1770" title="All 2 branches missed.">                        if (newX &lt; getSourcePortFig().getX() + getSourcePortFig().getWidth()</span>
+<span class="nc bnc" id="L1771" title="All 2 branches missed.">                                &amp;&amp; newX &gt;= getSourcePortFig().getX()) {</span>
+<span class="nc" id="L1772">                            srcPt.x = newX;</span>
+<span class="nc" id="L1773">                            dstPt.x = newX;</span>
+<span class="nc bnc" id="L1774" title="All 2 branches missed.">                        } else if (newY &gt;= getSourcePortFig().getY()</span>
+<span class="nc bnc" id="L1775" title="All 2 branches missed.">                                &amp;&amp; newY &lt; getSourcePortFig().getY() + getSourcePortFig().getHeight()) {</span>
+<span class="nc" id="L1776">                            srcPt.y = newY;</span>
+<span class="nc" id="L1777">                            dstPt.y = newY;</span>
+                        }
+                    }
+<span class="fc" id="L1780">                } else {</span>
+<span class="nc" id="L1781">                    srcPt = sourcePortFig.connectionPoint(p.getPoint(1));</span>
+<span class="nc" id="L1782">                    dstPt = destPortFig.connectionPoint(p</span>
+<span class="nc" id="L1783">                            .getPoint(p.getNumPoints() - 2));</span>
+                }
+            }
+
+<span class="fc" id="L1787">            setEndPoints(srcPt, dstPt);</span>
+<span class="fc" id="L1788">            calcBounds();</span>
+        }
+<span class="fc" id="L1790">    } /* end computeRoute */</span>
+
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+<span class="nc bnc" id="L1793" title="All 2 branches missed.">        if (notationProviderName == np) {</span>
+<span class="nc" id="L1794">            nameFig.setText(rendering);</span>
+<span class="nc" id="L1795">            damage();</span>
+        }
+<span class="nc" id="L1797">    }</span>
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+<span class="nc bnc" id="L1800" title="All 2 branches missed.">        if (notationProviderName == np) {</span>
+<span class="nc" id="L1801">            return getNotationSettings();</span>
+        }
+<span class="nc" id="L1803">        return null;</span>
+    }
+
+    public Object getOwner(NotationProvider np) {
+<span class="nc bnc" id="L1807" title="All 2 branches missed.">        if (notationProviderName == np) {</span>
+<span class="nc" id="L1808">            return getOwner();</span>
+        }
+<span class="nc" id="L1810">        return null;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

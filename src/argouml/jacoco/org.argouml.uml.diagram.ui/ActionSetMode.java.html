@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ActionSetMode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">ActionSetMode.java</span></div><h1>ActionSetMode.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.base.SetModeAction;
+
+/**
+ * Extends GEF ActionSetMode to add additional metadata such as tooltips.
+ *
+ * @author Jeremy Jones
+ */
+public class ActionSetMode extends SetModeAction {
+
+<span class="fc" id="L60">    private static final Logger LOG =</span>
+<span class="fc" id="L61">        Logger.getLogger(ActionSetMode.class.getName());</span>
+
+    /**
+     * The constructor.
+     *
+     * @param args arguments
+     */
+    public ActionSetMode(Properties args) {
+<span class="nc" id="L69">        super(args);</span>
+<span class="nc" id="L70">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     */
+    public ActionSetMode(Class modeClass) {
+<span class="nc" id="L78">        super(modeClass);</span>
+<span class="nc" id="L79">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param name the name of the icon
+     */
+    public ActionSetMode(Class modeClass, String name) {
+<span class="fc" id="L88">        super(modeClass);</span>
+<span class="fc" id="L89">        putToolTip(name);</span>
+<span class="fc" id="L90">        putIcon(name);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param name the icon name
+     * @param tooltipkey The key for the tooltip text.
+     */
+    public ActionSetMode(Class modeClass, String name, String tooltipkey) {
+<span class="fc" id="L101">        super(modeClass, name);</span>
+<span class="fc" id="L102">        putToolTip(tooltipkey);</span>
+<span class="fc" id="L103">        putIcon(name);</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param sticky the global sticky mode boolean allows the user
+     *               to place several nodes rapidly (in succession)
+     */
+    public ActionSetMode(Class modeClass, boolean sticky) {
+<span class="nc" id="L114">        super(modeClass, sticky);</span>
+<span class="nc" id="L115">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param modeArgs arguments for the new mode
+     */
+    public ActionSetMode(Class modeClass, Hashtable modeArgs) {
+<span class="nc" id="L124">        super(modeClass, modeArgs);</span>
+<span class="nc" id="L125">    }</span>
+
+    /**
+     * The constructor.
+     * TODO: The &quot;name&quot; parameter is used for the icon and for the tooltip.
+     * This makes i18n of the tooltip impossible.
+     *
+     * @param modeClass the next global editor mode
+     * @param modeArgs arguments for the new mode
+     * @param name the name of the command that is the tooltip text.
+     */
+    public ActionSetMode(Class modeClass, Hashtable modeArgs, String name) {
+<span class="nc" id="L137">    	super(modeClass);</span>
+<span class="nc" id="L138">        this.modeArgs = modeArgs;</span>
+<span class="nc" id="L139">        putToolTip(name);</span>
+<span class="nc" id="L140">        putIcon(name);</span>
+<span class="nc" id="L141">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param arg the name of a new argument for the new mode
+     * @param value the value of a new argument for the new mode
+     */
+    public ActionSetMode(Class modeClass, String arg, Object value) {
+<span class="nc" id="L151">        super(modeClass, arg, value);</span>
+<span class="nc" id="L152">    }</span>
+
+    /**
+     * The constructor.
+     * TODO: The &quot;name&quot; parameter is used for the icon and for the tooltip.
+     * This makes i18n of the tooltip impossible.
+     *
+     * @param modeClass the next global editor mode
+     * @param arg the name of a new argument for the new mode
+     * @param value the value of a new argument for the new mode
+     * @param name the name of the command that is the tooltip text.
+     */
+    public ActionSetMode(Class modeClass, String arg, Object value,
+            String name) {
+<span class="fc" id="L166">        super(modeClass, arg, value);</span>
+<span class="fc" id="L167">        putToolTip(name);</span>
+<span class="fc" id="L168">        putIcon(name);</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * The constructor.
+     *
+     * @param modeClass the next global editor mode
+     * @param arg the name of a new argument for the new mode
+     * @param value the value of a new argument for the new mode
+     * @param name the name of the command that is the tooltip text.
+     * @param icon the SMALL_ICON for the action
+     */
+    public ActionSetMode(
+        Class modeClass,
+        String arg,
+        Object value,
+        String name,
+        ImageIcon icon) {
+<span class="nc" id="L186">        super(modeClass, arg, value, name, icon);</span>
+<span class="nc" id="L187">        putToolTip(name);</span>
+<span class="nc" id="L188">    }</span>
+
+    /**
+     * Adds tooltip text to the Action.
+     *
+     * @param key The key to be localized to become the tooltip.
+     */
+    private void putToolTip(String key) {
+<span class="fc" id="L196">        putValue(Action.SHORT_DESCRIPTION, Translator.localize(key));</span>
+<span class="fc" id="L197">    }</span>
+
+    private void putIcon(String key) {
+<span class="fc" id="L200">        ImageIcon icon = ResourceLoaderWrapper.lookupIcon(key);</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (icon != null) {</span>
+<span class="fc" id="L202">            putValue(Action.SMALL_ICON, icon);</span>
+        } else {
+<span class="nc" id="L204">            LOG.log(Level.FINE, &quot;Failed to find icon for key {0}&quot;, key);</span>
+        }
+<span class="fc" id="L206">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

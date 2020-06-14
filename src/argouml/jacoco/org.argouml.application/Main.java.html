@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.application</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    andreas
+ *    mvw
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.application;
+
+import java.awt.Cursor;
+import java.awt.EventQueue;
+import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.security.ArgoAwtExceptionHandler;
+import org.argouml.cognitive.AbstractCognitiveTranslator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.checklist.ui.InitCheckListUI;
+import org.argouml.cognitive.ui.InitCognitiveUI;
+import org.argouml.cognitive.ui.ToDoPane;
+import org.argouml.configuration.Configuration;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.moduleloader.InitModuleLoader;
+import org.argouml.moduleloader.ModuleLoader2;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.notation.ui.InitNotationUI;
+import org.argouml.persistence.PersistenceManager;
+import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.SplashScreen;
+import org.argouml.ui.cmd.ActionExit;
+import org.argouml.ui.cmd.InitUiCmdSubsystem;
+import org.argouml.ui.cmd.PrintManager;
+import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
+import org.argouml.uml.diagram.state.ui.InitStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
+import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
+import org.argouml.uml.ui.InitUmlUI;
+import org.argouml.util.ArgoFrame;
+import org.argouml.util.JavaRuntimeUtility;
+import org.argouml.util.logging.AwtExceptionHandler;
+import org.argouml.util.logging.SimpleTimer;
+
+/**
+ * This is the main class for two of the types 
+ * of ArgoUML application invocation: 
+ * non-GUI command line and Swing GUI.&lt;p&gt;
+ * 
+ * NOTE: Functionality which should be common to all types of application
+ * invocation (e.g. extension modules to be loaded) should added to some
+ * common class and &lt;b&gt;not&lt;/b&gt; here.  Adding things here will cause behavior
+ * to diverge for other application invocation types (e.g. ArgoEclipse).
+ *
+ */
+<span class="nc" id="L113">public class Main {</span>
+
+    // initialized in static initializer block below
+    private static final Logger LOG;
+
+    /**
+     * The location of the default logging configuration (.lcf) file.
+     */
+    public static final String DEFAULT_LOGGING_CONFIGURATION =
+        &quot;org/argouml/resource/default.lcf&quot;;
+
+    /**
+     * The default implementation to start.
+     */
+    private static final String DEFAULT_MODEL_IMPLEMENTATION =
+        &quot;org.argouml.model.mdr.MDRModelImplementation&quot;;
+
+<span class="nc" id="L130">    private static List&lt;Runnable&gt; postLoadActions = new ArrayList&lt;Runnable&gt;();</span>
+
+<span class="nc" id="L132">    private static boolean doSplash = true;</span>
+
+<span class="nc" id="L134">    private static boolean reloadRecent = false;</span>
+
+<span class="nc" id="L136">    private static boolean batch = false;</span>
+
+    private static List&lt;String&gt; commands;
+
+<span class="nc" id="L140">    private static String projectName = null;</span>
+
+    private static String theTheme;
+
+    // Andreas: this is just temporary for the uml2 pre-alpha versions.
+<span class="nc" id="L145">    private static boolean showUml2warning = true;</span>
+
+    /**
+     * The main entry point of ArgoUML.
+     * @param args command line parameters
+     */
+    public static void main(String[] args) {
+        try {
+<span class="nc" id="L153">            LOG.log(Level.INFO, &quot;ArgoUML Started.&quot;);</span>
+
+<span class="nc" id="L155">            SimpleTimer st = new SimpleTimer();</span>
+<span class="nc" id="L156">            st.mark(&quot;begin&quot;);</span>
+
+<span class="nc" id="L158">            initPreinitialize();</span>
+
+<span class="nc" id="L160">            st.mark(&quot;arguments&quot;);</span>
+<span class="nc" id="L161">            parseCommandLine(args);</span>
+
+            // Register our last chance exception handler
+<span class="nc" id="L164">            AwtExceptionHandler.registerExceptionHandler();</span>
+
+            // Get the splash screen up as early as possible
+<span class="nc" id="L167">            st.mark(&quot;create splash&quot;);</span>
+<span class="nc" id="L168">            SplashScreen splash = null;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            if (!batch) {</span>
+                // We have to do this to set the LAF for the splash screen
+<span class="nc" id="L171">                st.mark(&quot;initialize laf&quot;);</span>
+<span class="nc" id="L172">                LookAndFeelMgr.getInstance().initializeLookAndFeel();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                if (theTheme != null) {</span>
+<span class="nc" id="L174">                    LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);</span>
+                }
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (doSplash) {</span>
+<span class="nc" id="L177">                    splash = initializeSplash();</span>
+                }
+            }
+
+            // main initialization happens here
+<span class="nc" id="L182">            ProjectBrowser pb = initializeSubsystems(st, splash);</span>
+
+            // Needs to happen after initialization is done &amp; modules loaded
+<span class="nc" id="L185">            st.mark(&quot;perform commands&quot;);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            if (batch) {</span>
+                // TODO: Add an &quot;open most recent project&quot; command so that 
+                // command state can be decoupled from user settings?
+<span class="nc" id="L189">                performCommandsInternal(commands);</span>
+<span class="nc" id="L190">                commands = null;</span>
+
+<span class="nc" id="L192">                System.out.println(&quot;Exiting because we are running in batch.&quot;);</span>
+<span class="nc" id="L193">                new ActionExit().doCommand(null);</span>
+<span class="nc" id="L194">                return;</span>
+            }
+
+<span class="nc bnc" id="L197" title="All 4 branches missed.">            if (reloadRecent &amp;&amp; projectName == null) {</span>
+<span class="nc" id="L198">                projectName = getMostRecentProject();</span>
+            }
+
+<span class="nc" id="L201">            File fileToOpen = null;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">            if (projectName != null) {</span>
+                projectName =
+<span class="nc" id="L204">                    PersistenceManager.getInstance().fixExtension(projectName);</span>
+<span class="nc" id="L205">                fileToOpen = new File(projectName);</span>
+            }
+
+<span class="nc" id="L208">            openProject(st, splash, pb, fileToOpen);</span>
+
+<span class="nc" id="L210">            st.mark(&quot;perspectives&quot;);</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">            if (splash != null) {</span>
+<span class="nc" id="L212">                splash.updateProgress(75);</span>
+            }
+
+<span class="nc" id="L215">            st.mark(&quot;open window&quot;);</span>
+<span class="nc" id="L216">            updateProgress(splash, 95, &quot;statusmsg.bar.open-project-browser&quot;);</span>
+<span class="nc" id="L217">            ArgoFrame.getFrame().setVisible(true);</span>
+
+<span class="nc" id="L219">            st.mark(&quot;close splash&quot;);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">            if (splash != null) {</span>
+<span class="nc" id="L221">                splash.setVisible(false);</span>
+<span class="nc" id="L222">                splash.dispose();</span>
+<span class="nc" id="L223">                splash = null;</span>
+            }
+
+<span class="nc" id="L226">            performCommands(commands);</span>
+<span class="nc" id="L227">            commands = null;</span>
+
+<span class="nc" id="L229">            st.mark(&quot;start critics&quot;);</span>
+<span class="nc" id="L230">            Runnable startCritics = new StartCritics();</span>
+<span class="nc" id="L231">            Main.addPostLoadAction(startCritics);</span>
+
+<span class="nc" id="L233">            st.mark(&quot;start loading modules&quot;);</span>
+<span class="nc" id="L234">            Runnable moduleLoader = new LoadModules();</span>
+<span class="nc" id="L235">            Main.addPostLoadAction(moduleLoader);</span>
+
+<span class="nc" id="L237">            PostLoad pl = new PostLoad(postLoadActions);</span>
+<span class="nc" id="L238">            Thread postLoadThead = new Thread(pl);</span>
+<span class="nc" id="L239">            postLoadThead.start();</span>
+
+<span class="nc" id="L241">            LOG.log(Level.INFO, &quot;\nprofile of load time ############&quot;);</span>
+<span class="nc bnc" id="L242" title="All 2 branches missed.">            for (Enumeration i = st.result(); i.hasMoreElements();) {</span>
+<span class="nc" id="L243">                LOG.log(Level.INFO, &quot;{0}&quot;, i.nextElement());</span>
+            }
+<span class="nc" id="L245">            LOG.log(Level.INFO, &quot;#################################\n&quot;);</span>
+
+<span class="nc" id="L247">            st = null;</span>
+<span class="nc" id="L248">            ArgoFrame.getFrame().setCursor(</span>
+<span class="nc" id="L249">                    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+
+            // Andreas: just temporary: a warning dialog for uml2...
+<span class="nc bnc" id="L252" title="All 2 branches missed.">            if (showUml2warning</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">                    &amp;&amp; Model.getFacade().getUmlVersion().startsWith(&quot;2&quot;)) {</span>
+<span class="nc" id="L254">                JOptionPane.showMessageDialog( ArgoFrame.getFrame()</span>
+                        , &quot;You are running an experimental version &quot;
+                        + &quot;not meant for productive work!&quot;
+                        , &quot;UML2 pre-alpha warning&quot;
+                        , JOptionPane.WARNING_MESSAGE);
+            }
+
+
+            //ToolTipManager.sharedInstance().setInitialDelay(500);
+<span class="nc" id="L263">            ToolTipManager.sharedInstance().setDismissDelay(50000000);</span>
+<span class="nc" id="L264">        } catch (Throwable t) {</span>
+            try {
+<span class="nc" id="L266">                LOG.log(Level.SEVERE, &quot;Fatal error on startup.  ArgoUML failed to start&quot;, t);</span>
+            } finally {
+<span class="nc" id="L268">                System.exit(1);</span>
+            }
+<span class="nc" id="L270">        }</span>
+<span class="nc" id="L271">    }</span>
+
+
+    private static void initPreinitialize() {
+<span class="nc" id="L275">        checkJVMVersion();</span>
+<span class="nc" id="L276">        checkHostsFile();</span>
+
+        // Force the configuration to load
+<span class="nc" id="L279">        Configuration.load();</span>
+
+        // Synchronize the startup directory
+<span class="nc" id="L282">        String directory = Argo.getDirectory();</span>
+<span class="nc" id="L283">        org.tigris.gef.base.Globals.setLastDirectory(directory);</span>
+
+<span class="nc" id="L285">        initVersion();</span>
+<span class="nc" id="L286">        initTranslator();</span>
+
+        // then, print out some version info for debuggers...
+<span class="nc" id="L289">        org.argouml.util.Tools.logVersionInfo();</span>
+<span class="nc" id="L290">        setSystemProperties();</span>
+<span class="nc" id="L291">    }</span>
+
+
+    private static void initTranslator() {
+        // Set the i18n locale
+<span class="nc" id="L296">        Translator.init(Configuration.getString(Argo.KEY_LOCALE));</span>
+
+        // create an anonymous class as a kind of adaptor for the cognitive
+        // System to provide proper translation/i18n.
+<span class="nc" id="L300">        org.argouml.cognitive.Translator.setTranslator(</span>
+<span class="nc" id="L301">                new AbstractCognitiveTranslator() {</span>
+                    public String i18nlocalize(String key) {
+<span class="nc" id="L303">                        return Translator.localize(key);</span>
+                    }
+
+                    public String i18nmessageFormat(String key,
+                            Object[] iArgs) {
+<span class="nc" id="L308">                        return Translator.messageFormat(key, iArgs);</span>
+                    }
+                });
+<span class="nc" id="L311">    }</span>
+
+
+    private static void setSystemProperties() {
+        /* set properties for application behaviour */
+<span class="nc" id="L316">        System.setProperty(&quot;gef.imageLocation&quot;, &quot;/org/argouml/Images&quot;);</span>
+
+<span class="nc" id="L318">        System.setProperty(&quot;apple.laf.useScreenMenuBar&quot;, &quot;true&quot;);</span>
+
+        /* FIX: set the application name for Mac OS X */
+<span class="nc" id="L321">        System.setProperty(&quot;com.apple.mrj.application.apple.menu.about.name&quot;,</span>
+                &quot;ArgoUML&quot;);
+<span class="nc" id="L323">    }</span>
+
+
+    /**
+     * Parse command line args. The assumption is that all options precede the
+     * name of a project file to load. Sets static fields that can be referenced
+     * later.
+     *
+     * @param args command line args
+     */
+    private static void parseCommandLine(String[] args) {
+<span class="nc" id="L334">        doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);</span>
+<span class="nc" id="L335">        reloadRecent = Configuration.getBoolean(</span>
+                Argo.KEY_RELOAD_RECENT_PROJECT, false);
+<span class="nc" id="L337">        commands = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L338">        theTheme = null;</span>
+
+<span class="nc bnc" id="L340" title="All 2 branches missed.">        for (int i = 0; i &lt; args.length; i++) {</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">            if (args[i].startsWith(&quot;-&quot;)) {</span>
+<span class="nc" id="L342">                String themeName = LookAndFeelMgr.getInstance()</span>
+<span class="nc" id="L343">                        .getThemeClassNameFromArg(args[i]);</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">                if (themeName != null) {</span>
+<span class="nc" id="L345">                    theTheme = themeName;</span>
+<span class="nc" id="L346">                } else if (</span>
+<span class="nc bnc" id="L347" title="All 2 branches missed.">                        args[i].equalsIgnoreCase(&quot;-help&quot;)</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">                        || args[i].equalsIgnoreCase(&quot;-h&quot;)</span>
+<span class="nc bnc" id="L349" title="All 2 branches missed.">                        || args[i].equalsIgnoreCase(&quot;--help&quot;)</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">                        || args[i].equalsIgnoreCase(&quot;/?&quot;)) {</span>
+<span class="nc" id="L351">                    printUsage();</span>
+<span class="nc" id="L352">                    System.exit(0);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-nosplash&quot;)) {</span>
+<span class="nc" id="L354">                    doSplash = false;</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-norecentfile&quot;)) {</span>
+<span class="nc" id="L356">                    reloadRecent = false;</span>
+<span class="nc bnc" id="L357" title="All 4 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-command&quot;)</span>
+                        &amp;&amp; i + 1 &lt; args.length) {
+<span class="nc" id="L359">                    commands.add(args[i + 1]);</span>
+<span class="nc" id="L360">                    i++;</span>
+<span class="nc bnc" id="L361" title="All 4 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-locale&quot;)</span>
+                        &amp;&amp; i + 1 &lt; args.length) {
+<span class="nc" id="L363">                    Translator.setLocale(args[i + 1]);</span>
+<span class="nc" id="L364">                    i++;</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-batch&quot;)) {</span>
+<span class="nc" id="L366">                    batch = true;</span>
+<span class="nc bnc" id="L367" title="All 4 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-open&quot;)</span>
+                        &amp;&amp; i + 1 &lt; args.length) {
+<span class="nc" id="L369">                    projectName = args[++i];</span>
+<span class="nc bnc" id="L370" title="All 4 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-print&quot;)</span>
+                        &amp;&amp; i + 1 &lt; args.length) {
+                    // TODO: Huge side effect.  Hoist out of parse - tfm
+                    // let's load the project
+                    String projectToBePrinted =
+<span class="nc" id="L375">                        PersistenceManager.getInstance().fixExtension(</span>
+                                args[++i]);
+<span class="nc" id="L377">                    ProjectBrowser.getInstance().loadProject(</span>
+                            new File(projectToBePrinted), true, null);
+                    // now, let's print it
+<span class="nc" id="L380">                    PrintManager.getInstance().print();</span>
+                    // nothing else to do (?)
+<span class="nc" id="L382">                    System.exit(0);</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                } else if (args[i].equalsIgnoreCase(&quot;-nouml2warning&quot;)) {</span>
+                    // Andreas: just temporary for the uml2 pre-alpha versions!
+<span class="nc" id="L385">                    showUml2warning = false;</span>
+                } else {
+<span class="nc" id="L387">                    System.err.println(&quot;Ignoring unknown/incomplete option '&quot;</span>
+                            + args[i] + &quot;'&quot;);
+                }
+<span class="nc" id="L390">            } else {</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">                if (projectName == null) {</span>
+<span class="nc" id="L392">                    System.out.println(</span>
+                            &quot;Setting projectName to '&quot; + args[i] + &quot;'&quot;);
+<span class="nc" id="L394">                    projectName = args[i];</span>
+                }
+            }
+        }
+<span class="nc" id="L398">    }</span>
+
+
+    private static ProjectBrowser initializeSubsystems(SimpleTimer st,
+            SplashScreen splash) {
+<span class="nc" id="L403">        ProjectBrowser pb = null;</span>
+
+<span class="nc" id="L405">        st.mark(&quot;initialize model subsystem&quot;);</span>
+<span class="nc" id="L406">        initModel();</span>
+<span class="nc" id="L407">        updateProgress(splash, 5, &quot;statusmsg.bar.model-subsystem&quot;);</span>
+
+<span class="nc" id="L409">        st.mark(&quot;initialize the profile subsystem&quot;);</span>
+<span class="nc" id="L410">        new InitProfileSubsystem().init();</span>
+
+        // The reason the gui is initialized before the commands are run
+        // is that some of the commands will use the projectbrowser.
+<span class="nc" id="L414">        st.mark(&quot;initialize gui&quot;);</span>
+<span class="nc" id="L415">        pb = initializeGUI(splash);</span>
+
+<span class="nc" id="L417">        st.mark(&quot;initialize subsystems&quot;);</span>
+<span class="nc" id="L418">        SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());</span>
+<span class="nc" id="L419">        SubsystemUtility.initSubsystem(new InitNotationUI());</span>
+<span class="nc" id="L420">        SubsystemUtility.initSubsystem(new InitNotation());</span>
+<span class="nc" id="L421">        SubsystemUtility.initSubsystem(new InitNotationUml());</span>
+<span class="nc" id="L422">        SubsystemUtility.initSubsystem(new InitNotationJava());</span>
+<span class="nc" id="L423">        SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());</span>
+<span class="nc" id="L424">        SubsystemUtility.initSubsystem(new InitActivityDiagram());</span>
+<span class="nc" id="L425">        SubsystemUtility.initSubsystem(new InitCollaborationDiagram());</span>
+<span class="nc" id="L426">        SubsystemUtility.initSubsystem(new InitDeploymentDiagram());</span>
+<span class="nc" id="L427">        SubsystemUtility.initSubsystem(new InitStateDiagram());</span>
+<span class="nc" id="L428">        SubsystemUtility.initSubsystem(new InitClassDiagram());</span>
+<span class="nc" id="L429">        SubsystemUtility.initSubsystem(new InitUseCaseDiagram());</span>
+<span class="nc" id="L430">        SubsystemUtility.initSubsystem(new InitUmlUI());</span>
+<span class="nc" id="L431">        SubsystemUtility.initSubsystem(new InitCheckListUI());</span>
+<span class="nc" id="L432">        SubsystemUtility.initSubsystem(new InitCognitiveUI());</span>
+
+        /*
+         * Initialize the module loader. At least the plug-ins that provide
+         * profiles need to be initialized before the project is loaded,
+         * because some of these profile may have been set as default
+         * profiles and need to be applied to the project as soon as it has
+         * been created or loaded. The first instance of a Project is needed
+         * during the GUI initialization.
+         */
+<span class="nc" id="L442">        st.mark(&quot;initialize modules&quot;);</span>
+<span class="nc" id="L443">        SubsystemUtility.initSubsystem(new InitModuleLoader());</span>
+
+<span class="nc" id="L445">        return pb;</span>
+    }
+
+
+    /**
+     * Initialize the UML model repository.
+     */
+    private static void initModel() {
+<span class="nc" id="L453">        String className = System.getProperty(</span>
+                &quot;argouml.model.implementation&quot;,
+                DEFAULT_MODEL_IMPLEMENTATION);
+<span class="nc" id="L456">        Throwable ret = Model.initialise(className);</span>
+<span class="nc bnc" id="L457" title="All 2 branches missed.">        if (ret != null) {</span>
+<span class="nc" id="L458">            LOG.log(Level.SEVERE, &quot;Model component not correctly initialized.&quot;, ret);</span>
+<span class="nc" id="L459">            System.err.println(className</span>
+                    + &quot; is not a working Model implementation.&quot;);
+<span class="nc" id="L461">            System.exit(1);</span>
+        }
+<span class="nc" id="L463">    }</span>
+
+
+    private static void openProject(SimpleTimer st, SplashScreen splash,
+            ProjectBrowser pb, File fileToOpen) {
+<span class="nc bnc" id="L468" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L469">            splash.updateProgress(40);</span>
+        }
+
+<span class="nc" id="L472">        st.mark(&quot;open project&quot;);</span>
+<span class="nc" id="L473">        Designer.disableCritiquing();</span>
+<span class="nc" id="L474">        Designer.clearCritiquing();</span>
+
+<span class="nc" id="L476">        Project project = null;</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        if (fileToOpen != null) {</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">            if (splash != null) {</span>
+<span class="nc" id="L479">                Object[] msgArgs = {projectName};</span>
+<span class="nc" id="L480">                splash.showStatus(</span>
+<span class="nc" id="L481">                        Translator.messageFormat(</span>
+                                &quot;statusmsg.bar.readingproject&quot;,
+                                msgArgs));
+            }
+<span class="nc" id="L485">            System.err.println(&quot;The file is &quot; + fileToOpen);</span>
+<span class="nc" id="L486">            System.err.println(&quot;File.exists = &quot; + fileToOpen.exists());</span>
+<span class="nc" id="L487">            project =  pb.loadProject2(fileToOpen, true, null);</span>
+        } else {
+<span class="nc bnc" id="L489" title="All 2 branches missed.">            if (splash != null) {</span>
+<span class="nc" id="L490">                splash.showStatus(</span>
+<span class="nc" id="L491">                        Translator.localize(&quot;statusmsg.bar.defaultproject&quot;));</span>
+            }
+        }
+
+        // We MUST have a project open before continuing. Create if necessary
+<span class="nc bnc" id="L496" title="All 2 branches missed.">        if (project == null) {</span>
+<span class="nc" id="L497">            project = ProjectManager.getManager().makeEmptyProject(true);</span>
+        }
+<span class="nc" id="L499">        ProjectManager.getManager().setCurrentProject(project);</span>
+<span class="nc" id="L500">        project.setDirty(false);</span>
+
+<span class="nc" id="L502">        st.mark(&quot;set project&quot;);</span>
+<span class="nc" id="L503">        Designer.enableCritiquing();</span>
+<span class="nc" id="L504">    }</span>
+
+
+    private static String getMostRecentProject() {
+        // If no project was entered on the command line,
+        // try to reload the most recent project if that option is true
+<span class="nc" id="L510">        String s = Configuration.getString(</span>
+                Argo.KEY_MOST_RECENT_PROJECT_FILE, &quot;&quot;);
+<span class="nc bnc" id="L512" title="All 2 branches missed.">        if (!(&quot;&quot;.equals(s))) {</span>
+<span class="nc" id="L513">            File file = new File(s);</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">            if (file.exists()) {</span>
+<span class="nc" id="L515">                LOG.log(Level.INFO, &quot;Re-opening project {0}&quot;, s);</span>
+<span class="nc" id="L516">                return s;</span>
+            } else {
+<span class="nc" id="L518">                LOG.log(Level.WARNING, &quot;Cannot re-open {0} because it does not exist&quot;, s);</span>
+            }
+        }
+<span class="nc" id="L521">        return null;</span>
+    }
+
+
+    /**
+     * Helper to update progress if we have a splash screen displayed.
+     *
+     * @param splash &lt;code&gt;true&lt;/code&gt; if the splash is to be shown
+     * @param percent the new percentage for progress bar
+     * @param message the message to be shown in the splash
+     */
+    private static void updateProgress(SplashScreen splash, int percent,
+            String message) {
+<span class="nc bnc" id="L534" title="All 2 branches missed.">        if (splash != null) {</span>
+<span class="nc" id="L535">            splash.showStatus(Translator.localize(message));</span>
+<span class="nc" id="L536">            splash.updateProgress(percent);</span>
+        }
+<span class="nc" id="L538">    }</span>
+
+
+    /**
+     * Prints the usage message.
+     */
+    private static void printUsage() {
+<span class="nc" id="L545">        System.err.println(&quot;Usage: [options] [project-file]&quot;);</span>
+<span class="nc" id="L546">        System.err.println(&quot;Options include: &quot;);</span>
+<span class="nc" id="L547">        System.err.println(&quot;  -help           display this information&quot;);</span>
+<span class="nc" id="L548">        LookAndFeelMgr.getInstance().printThemeArgs();</span>
+<span class="nc" id="L549">        System.err.println(&quot;  -nosplash       don't display logo at startup&quot;);</span>
+<span class="nc" id="L550">        System.err.println(&quot;  -norecentfile   don't reload last saved file&quot;);</span>
+<span class="nc" id="L551">        System.err.println(&quot;  -command &lt;arg&gt;  command to perform on startup&quot;);</span>
+<span class="nc" id="L552">        System.err.println(&quot;  -batch          don't start GUI&quot;);</span>
+<span class="nc" id="L553">        System.err.println(&quot;  -locale &lt;arg&gt;   set the locale (e.g. 'en_GB')&quot;);</span>
+        /* TODO: The Quickguide also mentions:
+         *   -open &lt;arg&gt;     open given file on startup
+         *   -print &lt;arg&gt;    print given file on startup (and exit)
+         * Why are these gone? */
+<span class="nc" id="L558">        System.err.println(&quot;&quot;);</span>
+<span class="nc" id="L559">        System.err.println(&quot;You can also set java settings which influence &quot;</span>
+                + &quot;the behaviour of ArgoUML:&quot;);
+<span class="nc" id="L561">        System.err.println(&quot;  -Xms250M -Xmx500M  [makes ArgoUML reserve &quot;</span>
+                + &quot;more memory for large projects]&quot;);
+<span class="nc" id="L563">        System.err.println(&quot;\n\n&quot;);</span>
+<span class="nc" id="L564">    }</span>
+
+    /**
+     * Check tha JVM Version.
+     * &lt;p&gt;
+     * If it is a unsupported JVM version we exit immediately.
+     * &lt;p&gt;
+     * NOTE: In most cases the JVM classloader will complain about an
+     * UnsupportedClassVersionError long before we get anywhere near this point
+     * in the initialization.
+     */
+    private static void checkJVMVersion() {
+        // check if we are using a supported java version
+<span class="nc bnc" id="L577" title="All 2 branches missed.">        if (!JavaRuntimeUtility.isJreSupported()) {</span>
+
+<span class="nc" id="L579">            System.err.println(&quot;You are using Java &quot;</span>
+<span class="nc" id="L580">                    + JavaRuntimeUtility.getJreVersion()</span>
+                    + &quot;, Please use Java 6 (aka 1.6) or later&quot;
+                    + &quot; with ArgoUML&quot;);
+<span class="nc" id="L583">            System.exit(0);</span>
+        }
+<span class="nc" id="L585">    }</span>
+
+    /**
+     * Check that we can get the InetAddress for localhost.
+     * This can fail on Unix if /etc/hosts is not correctly set up.
+     */
+    private static void checkHostsFile() {
+        try {
+<span class="nc" id="L593">            InetAddress.getLocalHost();</span>
+<span class="nc" id="L594">        } catch (UnknownHostException e) {</span>
+<span class="nc" id="L595">            System.err.println(&quot;ERROR: unable to get localhost information.&quot;);</span>
+<span class="nc" id="L596">            e.printStackTrace(System.err);</span>
+<span class="nc" id="L597">            System.err.println(&quot;On Unix systems this usually indicates that&quot;</span>
+                    + &quot;your /etc/hosts file is incorrectly setup.&quot;);
+<span class="nc" id="L599">            System.err.println(&quot;Stopping execution of ArgoUML.&quot;);</span>
+<span class="nc" id="L600">            System.exit(0);</span>
+<span class="nc" id="L601">        }</span>
+<span class="nc" id="L602">    }</span>
+
+
+    /**
+     * Add an element to the PostLoadActions list,
+     * which contains actions that are run after ArgoUML has started.
+     *
+     * @param r a &quot;Runnable&quot; action
+     */
+    public static void addPostLoadAction(Runnable r) {
+<span class="nc" id="L612">        postLoadActions.add(r);</span>
+<span class="nc" id="L613">    }</span>
+
+    /**
+     * Perform a list of commands that were given on the command line.
+     *
+     * This first implementation just has a list of commands that
+     * is possible to give.
+     *
+     * @param list The commands, a list of strings.
+     */
+    public static void performCommands(List&lt;String&gt; list) {
+//        initPreinitialize();
+//        initializeSubsystems(new SimpleTimer(), null);
+//        ArgoFrame.getInstance().setVisible(true);
+<span class="nc" id="L627">        performCommandsInternal(list);</span>
+<span class="nc" id="L628">    }</span>
+
+    /**
+     * Perform a list of commands that were given on the command line.
+     *
+     * This first implementation just has a list of commands that
+     * is possible to give.
+     *
+     * @param list The commands, a list of strings.
+     */
+    private static void performCommandsInternal(List&lt;String&gt; list) {
+<span class="nc bnc" id="L639" title="All 2 branches missed.">        for (String commandString : list) {</span>
+<span class="nc" id="L640">            int pos = commandString.indexOf('=');</span>
+
+            String commandName;
+            String commandArgument;
+
+<span class="nc bnc" id="L645" title="All 2 branches missed.">            if (pos == -1) {</span>
+<span class="nc" id="L646">                commandName = commandString;</span>
+<span class="nc" id="L647">                commandArgument = null;</span>
+            } else {
+<span class="nc" id="L649">                commandName = commandString.substring(0, pos);</span>
+<span class="nc" id="L650">                commandArgument = commandString.substring(pos + 1);</span>
+            }
+
+            // Perform one command.
+            Class c;
+            try {
+<span class="nc" id="L656">                c = Class.forName(commandName);</span>
+<span class="nc" id="L657">            } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L658">                System.out.println(&quot;Cannot find the command: &quot; + commandName);</span>
+<span class="nc" id="L659">                continue;</span>
+<span class="nc" id="L660">            }</span>
+
+            // Now create a new object.
+<span class="nc" id="L663">            Object o = null;</span>
+            try {
+<span class="nc" id="L665">                o = c.newInstance();</span>
+<span class="nc" id="L666">            } catch (InstantiationException e) {</span>
+<span class="nc" id="L667">                System.out.println(commandName</span>
+                        + &quot; could not be instantiated - skipping&quot;
+                        + &quot; (InstantiationException)&quot;);
+<span class="nc" id="L670">                continue;</span>
+<span class="nc" id="L671">            } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L672">                System.out.println(commandName</span>
+                        + &quot; could not be instantiated - skipping&quot;
+                        + &quot; (IllegalAccessException)&quot;);
+<span class="nc" id="L675">                continue;</span>
+<span class="nc" id="L676">            }</span>
+
+
+<span class="nc bnc" id="L679" title="All 4 branches missed.">            if (o == null || !(o instanceof CommandLineInterface)) {</span>
+<span class="nc" id="L680">                System.out.println(commandName</span>
+                        + &quot; is not a command - skipping.&quot;);
+<span class="nc" id="L682">                continue;</span>
+            }
+
+<span class="nc" id="L685">            CommandLineInterface clio = (CommandLineInterface) o;</span>
+
+<span class="nc bnc" id="L687" title="All 2 branches missed.">            System.out.println(&quot;Performing command &quot;</span>
+                    + commandName + &quot;( &quot;
+                    + (commandArgument == null
+                            ? &quot;&quot; : commandArgument) + &quot; )&quot;);
+<span class="nc" id="L691">            boolean result = clio.doCommand(commandArgument);</span>
+<span class="nc bnc" id="L692" title="All 2 branches missed.">            if (!result) {</span>
+<span class="nc bnc" id="L693" title="All 2 branches missed.">                System.out.println(&quot;There was an error executing &quot;</span>
+                        + &quot;the command &quot;
+                        + commandName + &quot;( &quot;
+                        + (commandArgument == null
+                                ? &quot;&quot; : commandArgument) + &quot; )&quot;);
+<span class="nc" id="L698">                System.out.println(&quot;Aborting the rest of the commands.&quot;);</span>
+<span class="nc" id="L699">                return;</span>
+            }
+<span class="nc" id="L701">        }</span>
+<span class="nc" id="L702">    }</span>
+
+    /**
+     * Create the .argouml directory if it doesn't exist.
+     * This is done here because it must be done before
+     * setting the log configuration.
+     */
+    static {
+<span class="nc" id="L710">        File argoDir = new File(System.getProperty(&quot;user.home&quot;)</span>
+                + File.separator + &quot;.argouml&quot;);
+<span class="nc bnc" id="L712" title="All 2 branches missed.">        if (!argoDir.exists()) {</span>
+<span class="nc" id="L713">            argoDir.mkdir();</span>
+        }
+    }
+
+    /**
+     * Install our security handlers,
+     * and do basic initialization of log4j.
+     *
+     * Log4j initialization must be done as
+     * part of the main class initializer, so that
+     * the log4j initialization is complete
+     * before any other static initializers.
+     *
+     * Also installs a trap to &quot;eat&quot; certain SecurityExceptions.
+     * Refer to {@link java.awt.EventDispatchThread} for details.
+     */
+    static {
+
+        /*
+         * Install the trap to &quot;eat&quot; SecurityExceptions.
+         *
+         * NOTE: This is temporary and will go away in a &quot;future&quot; release
+         * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4714232
+         */
+<span class="nc" id="L737">        System.setProperty(</span>
+                &quot;sun.awt.exception.handler&quot;,
+<span class="nc" id="L739">                ArgoAwtExceptionHandler.class.getName());</span>
+
+        /*
+         *  The string &lt;code&gt;log4j.configuration&lt;/code&gt; is the
+         *  same string found in
+         *  {@link org.apache.log4j.Configuration.DEFAULT_CONFIGURATION_FILE}
+         *  but if we use the reference, then log4j configures itself
+         *  and clears the system property and we never know if it was
+         *  set.
+         *
+         *  If it is set, then we let the static initializer in
+         * {@link Argo} perform the initialization.
+         */
+
+        // JavaWebStart properties for logs are :
+        // deployment.user.logdir &amp; deployment.user.tmp
+//        if (System.getProperty(&quot;log4j.configuration&quot;) == null) {
+//            Properties props = new Properties();
+//            InputStream stream = null;
+//            try {
+//                stream = Thread.currentThread().getContextClassLoader()
+//                        .getResourceAsStream(DEFAULT_LOGGING_CONFIGURATION);
+//
+//                if (stream != null) {
+//                    props.load(stream);
+//                }
+//            } catch (IOException io) {
+//                io.printStackTrace();
+//                System.exit(-1);
+//            }
+//
+//            PropertyConfigurator.configure(props);
+//
+//            if (stream == null) {
+//                BasicConfigurator.configure();
+//                Logger.getRootLogger().getLoggerRepository().setThreshold(
+//                        Level.ERROR); // default level is DEBUG
+//                Logger.getRootLogger().error(
+//                        &quot;Failed to find valid log4j properties&quot;
+//                        + &quot;in log4j.configuration&quot;
+//                        + &quot;using default logging configuration&quot;);
+//            }
+//        }
+
+        // initLogging();
+<span class="nc" id="L784">        LOG = Logger.getLogger(Main.class.getName());</span>
+<span class="nc" id="L785">    }</span>
+
+
+    /**
+     * Create and display a splash screen.
+     * @return the splash screen
+     */
+    private static SplashScreen initializeSplash() {
+<span class="nc" id="L793">        SplashScreen splash = new SplashScreen();</span>
+<span class="nc" id="L794">        splash.setVisible(true);</span>
+        // On uniprocessors wait until we're sure the splash screen
+        // has been painted so that we aren't competing for resources
+<span class="nc bnc" id="L797" title="All 2 branches missed.">        if (!EventQueue.isDispatchThread()</span>
+<span class="nc bnc" id="L798" title="All 2 branches missed.">                &amp;&amp; Runtime.getRuntime().availableProcessors() == 1) {</span>
+<span class="nc" id="L799">            synchronized (splash) {</span>
+<span class="nc bnc" id="L800" title="All 2 branches missed.">                while (!splash.isPaintCalled()) {</span>
+                    try {
+<span class="nc" id="L802">                        splash.wait();</span>
+<span class="nc" id="L803">                    } catch (InterruptedException e) {</span>
+<span class="nc" id="L804">                    }</span>
+                }
+<span class="nc" id="L806">            }</span>
+        }
+<span class="nc" id="L808">        return splash;</span>
+    }
+
+    /**
+     * Do a part of the initialization that is very much GUI-stuff.
+     *
+     * @param splash the splash screeen
+     */
+    private static ProjectBrowser initializeGUI(SplashScreen splash) {
+        // make the projectbrowser
+<span class="nc" id="L818">        JPanel todoPane = new ToDoPane();</span>
+<span class="nc" id="L819">        ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);</span>
+
+<span class="nc" id="L821">        JOptionPane.setRootFrame(pb);</span>
+
+<span class="nc" id="L823">        pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</span>
+        // Set the screen layout to what the user left it before, or
+        // to reasonable defaults.
+        Rectangle scrSize =
+<span class="nc" id="L827">            GraphicsEnvironment.getLocalGraphicsEnvironment()</span>
+<span class="nc" id="L828">                .getMaximumWindowBounds();</span>
+
+<span class="nc" id="L830">        int configFrameWidth =</span>
+<span class="nc" id="L831">            Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, scrSize.width);</span>
+<span class="nc" id="L832">        int w = Math.min(configFrameWidth, scrSize.width);</span>
+<span class="nc bnc" id="L833" title="All 2 branches missed.">        if (w == 0) {</span>
+<span class="nc" id="L834">            w = 600;</span>
+        }
+
+<span class="nc" id="L837">        int configFrameHeight =</span>
+<span class="nc" id="L838">            Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, scrSize.height);</span>
+<span class="nc" id="L839">        int h = Math.min(configFrameHeight, scrSize.height);</span>
+<span class="nc bnc" id="L840" title="All 2 branches missed.">        if (h == 0) {</span>
+<span class="nc" id="L841">            h = 400;</span>
+        }
+
+<span class="nc" id="L844">        int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);</span>
+<span class="nc" id="L845">        int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);</span>
+<span class="nc" id="L846">        pb.setLocation(x, y);</span>
+<span class="nc" id="L847">        pb.setSize(w, h);</span>
+<span class="nc bnc" id="L848" title="All 2 branches missed.">        pb.setExtendedState(Configuration.getBoolean(</span>
+                Argo.KEY_SCREEN_MAXIMIZED, false)
+                ? Frame.MAXIMIZED_BOTH : Frame.NORMAL);
+
+<span class="nc" id="L852">        UIManager.put(&quot;Button.focusInputMap&quot;, new UIDefaults.LazyInputMap(</span>
+                new Object[] {
+                    &quot;ENTER&quot;, &quot;pressed&quot;,
+                    &quot;released ENTER&quot;, &quot;released&quot;,
+                    &quot;SPACE&quot;, &quot;pressed&quot;,
+                    &quot;released SPACE&quot;, &quot;released&quot;
+                })
+        );
+<span class="nc" id="L860">        return pb;</span>
+    }
+
+    /**
+     * Publish the version of the ArgoUML application. &lt;p&gt;
+     *
+     * This function is intentionally public,
+     * since applications built on ArgoUML,
+     * that do not make use of Main.main(),
+     * can call this function and then access ArgoUML's version
+     * from the ApplicationVersion class.
+     */
+    public static void initVersion() {
+<span class="nc" id="L873">        ArgoVersion.init();</span>
+<span class="nc" id="L874">    }</span>
+
+
+} /* end Class Main */
+
+/**
+ * Class to hold a list of actions to be perform and to perform them
+ * after the initializations is done.
+ */
+class PostLoad implements Runnable {
+    /**
+     * Logger.
+     */
+<span class="nc" id="L887">    private static final Logger LOG = Logger.getLogger(PostLoad.class.getName());</span>
+
+    /**
+     * The list of actions to perform.
+     */
+    private List&lt;Runnable&gt; postLoadActions;
+
+
+    /**
+     * Constructor.
+     *
+     * @param actions The actions to perform.
+     */
+<span class="nc" id="L900">    public PostLoad(List&lt;Runnable&gt; actions) {</span>
+<span class="nc" id="L901">        postLoadActions = actions;</span>
+<span class="nc" id="L902">    }</span>
+
+    /*
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+        try {
+<span class="nc" id="L909">            Thread.sleep(1000);</span>
+<span class="nc" id="L910">        } catch (Exception ex) {</span>
+<span class="nc" id="L911">            LOG.log(Level.SEVERE, &quot;post load no sleep&quot;, ex);</span>
+<span class="nc" id="L912">        }</span>
+<span class="nc bnc" id="L913" title="All 2 branches missed.">        for (Runnable r : postLoadActions) {</span>
+<span class="nc" id="L914">            r.run();</span>
+            try {
+<span class="nc" id="L916">                Thread.sleep(100);</span>
+<span class="nc" id="L917">            } catch (Exception ex) {</span>
+<span class="nc" id="L918">                LOG.log(Level.SEVERE, &quot;post load no sleep2&quot;, ex);</span>
+<span class="nc" id="L919">            }</span>
+<span class="nc" id="L920">        }</span>
+<span class="nc" id="L921">    }</span>
+} /* end class PostLoad */
+
+/**
+ * Class to load modules.
+ */
+<span class="nc" id="L927">class LoadModules implements Runnable {</span>
+    /**
+     * Logger.
+     */
+<span class="nc" id="L931">    private static final Logger LOG = Logger.getLogger(LoadModules.class.getName());</span>
+
+
+<span class="nc" id="L934">    private static final String[] OPTIONAL_INTERNAL_MODULES = {</span>
+        &quot;org.argouml.dev.DeveloperModule&quot;,
+    };
+
+    /**
+     * Load internal modules which should be found on the standard
+     * classpath.
+     */
+    private void huntForInternalModules() {
+<span class="nc bnc" id="L943" title="All 2 branches missed.">        for (String module : OPTIONAL_INTERNAL_MODULES) {</span>
+            try {
+<span class="nc" id="L945">                ModuleLoader2.addClass(module);</span>
+<span class="nc" id="L946">            } catch (ClassNotFoundException e) {</span>
+                /* We don't care if optional modules aren't found. */
+<span class="nc" id="L948">                LOG.log(Level.FINE, &quot;Module {0} not found&quot;, module);</span>
+<span class="nc" id="L949">            }</span>
+        }
+<span class="nc" id="L951">    }</span>
+
+    /*
+     * @see java.lang.Runnable#run()
+     */
+    public void run() {
+<span class="nc" id="L957">        huntForInternalModules();</span>
+<span class="nc" id="L958">        LOG.log(Level.INFO, &quot;Module loading done&quot;);</span>
+<span class="nc" id="L959">    }</span>
+
+} /* end class LoadModules */
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

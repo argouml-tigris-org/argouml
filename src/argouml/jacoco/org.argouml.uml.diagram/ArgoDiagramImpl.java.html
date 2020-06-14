@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ArgoDiagramImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram</a> &gt; <span class="el_source">ArgoDiagramImpl.java</span></div><h1>ArgoDiagramImpl.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.CoreHelper;
+import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
+import org.argouml.uml.diagram.activity.ui.FigPool;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.util.EnumerationIterator;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.UndoManager;
+
+/**
+ * This class represents all Diagrams within ArgoUML.
+ * It is based upon the GEF Diagram.&lt;p&gt;
+ *
+ * It adds a namespace, and the capability
+ * to delete itself when its namespace is deleted. &lt;p&gt;
+ *
+ * TODO: MVW: I am not sure of the following:&lt;p&gt;
+ * The &quot;namespace&quot; of the diagram is e.g. used when creating new elements
+ * that are shown on the diagram; they will have their namespace set
+ * according this. It is NOT necessarily equal to the &quot;owner&quot;. &lt;p&gt;
+ *
+ * MVW: I doubt all following:
+ * The &quot;namespace&quot; of the diagram is e.g. used to register a listener
+ * to the UML model, to be notified if this element is removed;
+ * which will imply that this diagram has to be deleted, too. &lt;p&gt;
+ *
+ * Hence the namespace of e.g. a collaboration diagram should be the
+ * represented classifier or, in case of a represented operation, the
+ * classifier that owns this operation.
+ * And the namespace of the statechart diagram should be
+ * the namespace of its statemachine.
+ */
+public abstract class ArgoDiagramImpl extends Diagram
+    implements PropertyChangeListener, VetoableChangeListener, ArgoDiagram,
+    IItemUID {
+
+    private ItemUID id;
+
+    /**
+     * The project this diagram is contained in.
+     */
+    private Project project;
+
+    protected Object namespace;
+
+    private DiagramSettings settings;
+
+<span class="fc" id="L119">    private static final Logger LOG =</span>
+<span class="fc" id="L120">        Logger.getLogger(ArgoDiagramImpl.class.getName());</span>
+
+    /**
+     * Default constructor.  Used by PGML parser when diagram is first created.
+     * @deprecated for 0.27.2 by tfmorris.  The 0-arg constructor of our sub
+     * classes will get called by the PGML parser, but this should not get
+     * propagated up the hierarchy.  The GEF Diagram constructor implementation
+     * is going to provide defaults for all missing args anyway, so we should
+     * always use the fully specified 3-arg constructor.
+     */
+    @Deprecated
+    public ArgoDiagramImpl() {
+<span class="fc" id="L132">        super();</span>
+
+        // TODO: What is this trying to do? It's never going to get called - tfm
+        // really dirty hack to remove unwanted listeners
+<span class="fc" id="L136">        getLayer().getGraphModel().removeGraphEventListener(getLayer());</span>
+
+<span class="fc" id="L138">        constructorInit();</span>
+<span class="fc" id="L139">    }</span>
+
+
+    /**
+     * The constructor.
+     *
+     * @param diagramName the name of the diagram
+     * @deprecated for 0.27.2 by tfmorris. Use
+     * {@link #ArgoDiagramImpl(String, GraphModel, LayerPerspective)}.
+     */
+    @Deprecated
+    public ArgoDiagramImpl(String diagramName) {
+        // next line patch to issue 596 (hopefully)
+<span class="nc" id="L152">        super(diagramName);</span>
+        try {
+<span class="nc" id="L154">            setName(diagramName);</span>
+<span class="nc" id="L155">        } catch (PropertyVetoException pve) { }</span>
+<span class="nc" id="L156">        constructorInit();</span>
+<span class="nc" id="L157">    }</span>
+
+    /**
+     * Construct a new ArgoUML diagram.  This is the preferred form of the
+     * constructor.  If you don't know the name yet, make one up (because that's
+     * what the super classes constructors are going to do anyway).
+     *
+     * @param name the name of the new diagram
+     * @param graphModel graph model to associate with diagram
+     * @param layer layer to associate with diagram
+     * (use new LayerPerspective(name, graphModel)) if you need a default
+     */
+    public ArgoDiagramImpl(String name, GraphModel graphModel,
+            LayerPerspective layer) {
+<span class="fc" id="L171">        super(name, graphModel, layer);</span>
+        // TODO: Do we really need to do this? Carried over from old behavior
+        try {
+<span class="fc" id="L174">            setName(name);</span>
+<span class="nc" id="L175">        } catch (PropertyVetoException pve) {</span>
+<span class="fc" id="L176">        }</span>
+<span class="fc" id="L177">        constructorInit();</span>
+<span class="fc" id="L178">    }</span>
+
+    /**
+     * Finish initialization which is common to multiple constructors which
+     * don't invoke each other.
+     */
+    private void constructorInit() {
+        // TODO: These should get replaced immediately by the creating
+        // initialization code, but make sure we've got a default just in case.
+<span class="fc" id="L187">        Project project = ProjectManager.getManager().getCurrentProject();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        if (project != null) {</span>
+<span class="fc" id="L189">            settings = project.getProjectSettings().getDefaultDiagramSettings();</span>
+        }
+        // TODO: we should be given an Undo manager to use rather than looking
+        // for a global one
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {</span>
+<span class="fc" id="L194">            UndoManager.setInstance(new DiagramUndoManager());</span>
+<span class="fc" id="L195">            LOG.log(Level.INFO, &quot;Setting Diagram undo manager&quot;);</span>
+        } else {
+<span class="fc" id="L197">            LOG.log(Level.INFO, &quot;Diagram undo manager already set&quot;);</span>
+        }
+
+        // Register for notification of any global changes that would affect
+        // our rendering
+<span class="fc" id="L202">        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);</span>
+<span class="fc" id="L203">        ArgoEventPump.addListener(</span>
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
+
+        // Listen for name changes so we can veto them if we don't like them
+<span class="fc" id="L207">        addVetoableChangeListener(this);</span>
+<span class="fc" id="L208">    }</span>
+
+
+    public void setName(String n) throws PropertyVetoException {
+<span class="fc" id="L212">        super.setName(n);</span>
+<span class="fc" id="L213">        MutableGraphSupport.enableSaveAction();</span>
+<span class="fc" id="L214">    }</span>
+
+
+    public void setItemUID(ItemUID i) {
+<span class="fc" id="L218">        id = i;</span>
+<span class="fc" id="L219">    }</span>
+
+
+    public ItemUID getItemUID() {
+<span class="fc" id="L223">        return id;</span>
+    }
+
+
+    /**
+     * The UID.
+     */
+    static final long serialVersionUID = -401219134410459387L;
+
+
+    public String getVetoMessage(String propertyName) {
+<span class="nc bnc" id="L234" title="All 2 branches missed.">    	if (propertyName.equals(&quot;name&quot;)) {</span>
+<span class="nc" id="L235">	    return &quot;Name of diagram may not exist already&quot;;</span>
+    	}
+<span class="nc" id="L237">        return null;</span>
+    }
+
+
+    public Fig getContainingFig(Object obj) {
+<span class="fc" id="L242">        Fig fig = super.presentationFor(obj);</span>
+<span class="pc bpc" id="L243" title="1 of 4 branches missed.">        if (fig == null &amp;&amp; Model.getFacade().isAUMLElement(obj)) {</span>
+	    // maybe we have a modelelement that is part of some other
+            // fig
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            if (Model.getFacade().isAOperation(obj)</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">                    || Model.getFacade().isAReception(obj)</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">                    || Model.getFacade().isAAttribute(obj)) {</span>
+
+                // get all the classes from the diagram
+<span class="nc" id="L251">                return presentationFor(Model.getFacade().getOwner(obj));</span>
+            }
+        }
+<span class="fc" id="L254">        return fig;</span>
+    }
+
+
+    public void damage() {
+<span class="pc bpc" id="L259" title="2 of 4 branches missed.">        if (getLayer() != null &amp;&amp; getLayer().getEditors() != null) {</span>
+<span class="fc" id="L260">            Iterator it = getLayer().getEditors().iterator();</span>
+<span class="pc bpc" id="L261" title="1 of 2 branches missed.">            while (it.hasNext()) {</span>
+<span class="nc" id="L262">                ((Editor) it.next()).damageAll();</span>
+            }
+        }
+<span class="fc" id="L265">    }</span>
+
+
+    public List getEdges() {
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">        if (getGraphModel() != null) {</span>
+<span class="fc" id="L270">            return getGraphModel().getEdges();</span>
+        }
+<span class="nc" id="L272">        return super.getEdges();</span>
+    }
+
+
+    public List getNodes() {
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">        if (getGraphModel() != null) {</span>
+<span class="fc" id="L278">            return getGraphModel().getNodes();</span>
+        }
+<span class="nc" id="L280">        return super.getNodes();</span>
+    }
+
+
+    public String toString() {
+<span class="nc" id="L285">        return &quot;Diagram: &quot; + getName();</span>
+    }
+
+
+    public String repair() {
+<span class="nc" id="L290">        StringBuffer report = new StringBuffer(500);</span>
+
+        boolean faultFixed;
+        do {
+<span class="nc" id="L294">            faultFixed = false;</span>
+<span class="nc" id="L295">            List&lt;Fig&gt; figs = new ArrayList&lt;Fig&gt;(getLayer().getContentsNoEdges());</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            for (Fig f : figs) {</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">                if (repairFig(f, report)) {</span>
+<span class="nc" id="L298">                    faultFixed = true;</span>
+                }
+<span class="nc" id="L300">            }</span>
+<span class="nc" id="L301">            figs = new ArrayList&lt;Fig&gt;(getLayer().getContentsEdgesOnly());</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            for (Fig f : figs) {</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">                if (repairFig(f, report)) {</span>
+<span class="nc" id="L304">                    faultFixed = true;</span>
+                }
+<span class="nc" id="L306">            }</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">        } while (faultFixed); // Repeat until no faults are fixed</span>
+
+<span class="nc" id="L309">        return report.toString();</span>
+    }
+
+    private boolean repairFig(Fig f, StringBuffer report) {
+<span class="nc bnc" id="L313" title="All 2 branches missed.">        if (LOG.isLoggable(Level.INFO)) {</span>
+<span class="nc" id="L314">            LOG.log(Level.INFO, &quot;Checking &quot; + figDescription(f) + f.getOwner());</span>
+        }
+<span class="nc" id="L316">        boolean faultFixed = false;</span>
+<span class="nc" id="L317">        String figDescription = null;</span>
+
+        // 1. Make sure all Figs in the Diagrams layer refer back to
+        // that layer.
+<span class="nc bnc" id="L321" title="All 2 branches missed.">        if (!getLayer().equals(f.getLayer())) {</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            if (figDescription == null) {</span>
+<span class="nc" id="L323">                figDescription = figDescription(f);</span>
+<span class="nc" id="L324">                report.append(figDescription);</span>
+            }
+
+            // The report
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            if (f.getLayer() == null) {</span>
+<span class="nc" id="L329">                report.append(&quot;-- Fixed: layer was null\n&quot;);</span>
+            } else {
+<span class="nc" id="L331">                report.append(&quot;-- Fixed: refered to wrong layer\n&quot;);</span>
+            }
+<span class="nc" id="L333">            faultFixed = true;</span>
+            // The fix
+<span class="nc" id="L335">            f.setLayer(getLayer());</span>
+        }
+
+        // 2. Make sure that all Figs are visible
+<span class="nc bnc" id="L339" title="All 2 branches missed.">        if (!f.isVisible()) {</span>
+<span class="nc bnc" id="L340" title="All 2 branches missed.">            if (figDescription == null) {</span>
+<span class="nc" id="L341">                figDescription = figDescription(f);</span>
+<span class="nc" id="L342">                report.append(figDescription);</span>
+            }
+            // The report
+<span class="nc" id="L345">            report.append(&quot;-- Fixed: a Fig must be visible\n&quot;);</span>
+<span class="nc" id="L346">            faultFixed = true;</span>
+            // The fix
+<span class="nc" id="L348">            f.setVisible(true);</span>
+        }
+
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (f instanceof FigEdge) {</span>
+            // 3. Make sure all FigEdges are attached to a valid FigNode
+            // The report
+<span class="nc" id="L354">            FigEdge fe = (FigEdge) f;</span>
+<span class="nc" id="L355">            FigNode destFig = fe.getDestFigNode();</span>
+<span class="nc" id="L356">            FigNode sourceFig = fe.getSourceFigNode();</span>
+
+<span class="nc bnc" id="L358" title="All 2 branches missed.">            if (destFig == null) {</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L360">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L361">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L363">                faultFixed = true;</span>
+<span class="nc" id="L364">                report.append(&quot;-- Removed: as it has no dest Fig\n&quot;);</span>
+<span class="nc" id="L365">                f.removeFromDiagram();</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">            } else if (sourceFig == null) {</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L368">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L369">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L371">                faultFixed = true;</span>
+<span class="nc" id="L372">                report.append(&quot;-- Removed: as it has no source Fig\n&quot;);</span>
+<span class="nc" id="L373">                f.removeFromDiagram();</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">            } else if (sourceFig.getOwner() == null) {</span>
+<span class="nc bnc" id="L375" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L376">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L377">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L379">                faultFixed = true;</span>
+<span class="nc" id="L380">                report.append(&quot;-- Removed: as its source Fig has no owner\n&quot;);</span>
+<span class="nc" id="L381">                f.removeFromDiagram();</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">            } else if (destFig.getOwner() == null) {</span>
+<span class="nc bnc" id="L383" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L384">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L385">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L387">                faultFixed = true;</span>
+<span class="nc" id="L388">                report.append(</span>
+                        &quot;-- Removed: as its destination Fig has no owner\n&quot;);
+<span class="nc" id="L390">                f.removeFromDiagram();</span>
+<span class="nc bnc" id="L391" title="All 2 branches missed.">            } else if (Model.getUmlFactory().isRemoved(</span>
+<span class="nc" id="L392">                    sourceFig.getOwner())) {</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L394">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L395">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L397">                faultFixed = true;</span>
+<span class="nc" id="L398">                report.append(&quot;-- Removed: as its source Figs owner is no &quot;</span>
+                    + &quot;longer in the repository\n&quot;);
+<span class="nc" id="L400">                f.removeFromDiagram();</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">            } else if (Model.getUmlFactory().isRemoved(</span>
+<span class="nc" id="L402">                    destFig.getOwner())) {</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">                if (figDescription == null) {</span>
+<span class="nc" id="L404">                    figDescription = figDescription(f);</span>
+<span class="nc" id="L405">                    report.append(figDescription);</span>
+                }
+<span class="nc" id="L407">                faultFixed = true;</span>
+<span class="nc" id="L408">                report.append(&quot;-- Removed: as its destination Figs owner &quot;</span>
+                    + &quot;is no longer in the repository\n&quot;);
+<span class="nc" id="L410">                f.removeFromDiagram();</span>
+            }
+<span class="nc bnc" id="L412" title="All 4 branches missed.">        } else if ((f instanceof FigNode || f instanceof FigEdge)</span>
+<span class="nc bnc" id="L413" title="All 4 branches missed.">                &amp;&amp; f.getOwner() == null &amp;&amp; !(f instanceof FigPool)) {</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (figDescription == null) {</span>
+<span class="nc" id="L415">                figDescription = figDescription(f);</span>
+<span class="nc" id="L416">                report.append(figDescription);</span>
+            }
+            // 4. Make sure all FigNodes and FigEdges have an owner
+            // The report
+<span class="nc" id="L420">            faultFixed = true;</span>
+<span class="nc" id="L421">            report.append(&quot;-- Removed: owner was null\n&quot;);</span>
+            // The fix
+<span class="nc" id="L423">            f.removeFromDiagram();</span>
+<span class="nc bnc" id="L424" title="All 4 branches missed.">        } else if ((f instanceof FigNode || f instanceof FigEdge)</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">                &amp;&amp;  Model.getFacade().isAUMLElement(f.getOwner())</span>
+<span class="nc bnc" id="L426" title="All 2 branches missed.">                &amp;&amp;  Model.getUmlFactory().isRemoved(f.getOwner())) {</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">            if (figDescription == null) {</span>
+<span class="nc" id="L428">                figDescription = figDescription(f);</span>
+<span class="nc" id="L429">                report.append(figDescription);</span>
+            }
+            // 5. Make sure all FigNodes and FigEdges have a valid owner
+            // The report
+<span class="nc" id="L433">            faultFixed = true;</span>
+<span class="nc" id="L434">            report.append(</span>
+                    &quot;-- Removed: model element no longer in the repository\n&quot;);
+            // The fix
+<span class="nc" id="L437">            f.removeFromDiagram();</span>
+<span class="nc bnc" id="L438" title="All 4 branches missed.">        } else if (f instanceof FigGroup &amp;&amp; !(f instanceof FigNode)) {</span>
+<span class="nc bnc" id="L439" title="All 2 branches missed.">            if (figDescription == null) {</span>
+<span class="nc" id="L440">                figDescription = figDescription(f);</span>
+<span class="nc" id="L441">                report.append(figDescription);</span>
+            }
+            // 4. Make sure the only FigGroups on a diagram are also
+            //    FigNodes
+            // The report
+<span class="nc" id="L446">            faultFixed = true;</span>
+<span class="nc" id="L447">            report.append(</span>
+                    &quot;-- Removed: a FigGroup should not be on the diagram\n&quot;);
+            // The fix
+<span class="nc" id="L450">            f.removeFromDiagram();</span>
+        }
+
+<span class="nc" id="L453">        return faultFixed;</span>
+    }
+
+    /**
+     * Generate a description of a Fig that would be most meaningful to a
+     * developer and the user.
+     * This is used by the repair routines to describe the Fig that was repaired
+     * &lt;ul&gt;
+     * &lt;li&gt;FigComment - the text within body compartment of the Fig
+     * &lt;li&gt;FigNodeModelElement -
+     *        the text within the name compartment of the FigNode
+     * &lt;li&gt;FigEdgeModelElement -
+     *        the text within name compartment of the FigEdge and the
+     *        descriptions of the adjoining FigNodes
+     * &lt;/ul&gt;
+     * @param f the Fig to describe
+     * @return The description as a String.
+     */
+    private String figDescription(Fig f) {
+<span class="nc" id="L472">        String description = &quot;\n&quot; + f.getClass().getName();</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">        if (f instanceof FigComment) {</span>
+<span class="nc" id="L474">            description += &quot; \&quot;&quot; + ((FigComment) f).getBody() + &quot;\&quot;&quot;;</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">        } else if (f instanceof FigNodeModelElement) {</span>
+<span class="nc" id="L476">            description += &quot; \&quot;&quot; + ((FigNodeModelElement) f).getName() + &quot;\&quot;&quot;;</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        } else if (f instanceof FigEdgeModelElement) {</span>
+<span class="nc" id="L478">            FigEdgeModelElement fe = (FigEdgeModelElement) f;</span>
+<span class="nc" id="L479">            description += &quot; \&quot;&quot; + fe.getName() + &quot;\&quot;&quot;;</span>
+            String source;
+<span class="nc bnc" id="L481" title="All 2 branches missed.">            if (fe.getSourceFigNode() == null) {</span>
+<span class="nc" id="L482">                source = &quot;(null)&quot;;</span>
+            } else {
+<span class="nc" id="L484">                source =</span>
+<span class="nc" id="L485">                    ((FigNodeModelElement) fe.getSourceFigNode()).getName();</span>
+            }
+            String dest;
+<span class="nc bnc" id="L488" title="All 2 branches missed.">            if (fe.getDestFigNode() == null) {</span>
+<span class="nc" id="L489">                dest = &quot;(null)&quot;;</span>
+            } else {
+<span class="nc" id="L491">                dest = ((FigNodeModelElement) fe.getDestFigNode()).getName();</span>
+            }
+<span class="nc" id="L493">            description += &quot; [&quot; + source + &quot;=&gt;&quot; + dest + &quot;]&quot;;</span>
+        }
+<span class="nc" id="L495">        return description + &quot;\n&quot;;</span>
+    }
+
+
+    public List presentationsFor(Object obj) {
+<span class="nc" id="L500">        List&lt;Fig&gt; presentations = new ArrayList&lt;Fig&gt;();</span>
+<span class="nc" id="L501">        int figCount = getLayer().getContents().size();</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">        for (int figIndex = 0; figIndex &lt; figCount; ++figIndex) {</span>
+<span class="nc" id="L503">            Fig fig = (Fig) getLayer().getContents().get(figIndex);</span>
+<span class="nc bnc" id="L504" title="All 2 branches missed.">            if (fig.getOwner() == obj) {</span>
+<span class="nc" id="L505">                presentations.add(fig);</span>
+            }
+        }
+
+<span class="nc" id="L509">        return presentations;</span>
+    }
+
+    // TODO: Move to GEF
+    public void remove() {
+<span class="fc" id="L514">        List&lt;Fig&gt; contents = new ArrayList&lt;Fig&gt;(getLayer().getContents());</span>
+<span class="fc" id="L515">        int size = contents.size();</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        for (int i = 0; i &lt; size; ++i) {</span>
+<span class="fc" id="L517">            Fig f = contents.get(i);</span>
+<span class="fc" id="L518">            f.removeFromDiagram();</span>
+        }
+<span class="fc" id="L520">        firePropertyChange(&quot;remove&quot;, null, null);</span>
+<span class="fc" id="L521">        super.remove();</span>
+<span class="fc" id="L522">    }</span>
+
+
+    public void setProject(Project p) {
+<span class="fc" id="L526">        project = p;</span>
+<span class="fc" id="L527">    }</span>
+
+    public Project getProject() {
+<span class="fc" id="L530">        return project;</span>
+    }
+
+    public abstract void encloserChanged(
+            FigNode enclosed, FigNode oldEncloser, FigNode newEncloser);
+	// Do nothing, override in subclass.
+
+
+    public Object getDependentElement() {
+<span class="fc" id="L539">        return null;</span>
+    }
+
+
+    public Object getNamespace() {
+<span class="fc" id="L544">        return namespace;</span>
+    }
+
+
+    public void setNamespace(Object ns) {
+<span class="pc bpc" id="L549" title="1 of 2 branches missed.">        if (!Model.getFacade().isANamespace(ns)) {</span>
+<span class="nc" id="L550">            LOG.log(Level.SEVERE, &quot;Not a namespace {0}&quot;, ns);</span>
+<span class="nc" id="L551">            throw new IllegalArgumentException(&quot;Given object not a namespace&quot;);</span>
+        }
+<span class="pc bpc" id="L553" title="3 of 4 branches missed.">        if ((namespace != null) &amp;&amp; (namespace != ns)) {</span>
+<span class="nc" id="L554">            Model.getPump().removeModelEventListener(this, namespace);</span>
+        }
+<span class="fc" id="L556">        Object oldNs = namespace;</span>
+<span class="fc" id="L557">        namespace = ns;</span>
+<span class="fc" id="L558">        firePropertyChange(NAMESPACE_KEY, oldNs, ns);</span>
+
+        // Add the diagram as a listener to the namespace so
+        // that when the namespace is removed the diagram is deleted also.
+        /* Listening only to &quot;remove&quot; events does not work...
+         * TODO: Check if this works now with new event pump - tfm
+         */
+<span class="fc" id="L565">        Model.getPump().addModelEventListener(this, namespace, &quot;remove&quot;);</span>
+<span class="fc" id="L566">    }</span>
+
+
+    public void setModelElementNamespace(Object modelElement, Object ns) {
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">        if (modelElement == null) {</span>
+<span class="nc" id="L571">            return;</span>
+        }
+
+        // If we're not provided a namespace then get it from the diagram or
+        // the root
+<span class="pc bpc" id="L576" title="1 of 2 branches missed.">        if (ns == null) {</span>
+<span class="nc bnc" id="L577" title="All 2 branches missed.">            if (getNamespace() != null) {</span>
+<span class="nc" id="L578">        	ns = getNamespace();</span>
+            } else {
+<span class="nc" id="L580">        	ns = getProject().getRoot();</span>
+            }
+        }
+
+        // If we haven't succeeded in getting a namespace then abort
+<span class="pc bpc" id="L585" title="1 of 2 branches missed.">        if (ns == null) {</span>
+<span class="nc" id="L586">            return;</span>
+        }
+
+        // If we're trying to set the namespace to the existing value
+        // then don't do any more work.
+<span class="pc bpc" id="L591" title="1 of 2 branches missed.">        if (Model.getFacade().getNamespace(modelElement) == ns) {</span>
+<span class="fc" id="L592">            return;</span>
+        }
+
+<span class="nc" id="L595">        CoreHelper coreHelper = Model.getCoreHelper();</span>
+<span class="nc" id="L596">        ModelManagementHelper modelHelper = Model.getModelManagementHelper();</span>
+
+<span class="nc bnc" id="L598" title="All 2 branches missed.">        if (!modelHelper.isCyclicOwnership(ns, modelElement)</span>
+<span class="nc bnc" id="L599" title="All 2 branches missed.">                &amp;&amp; coreHelper.isValidNamespace(modelElement, ns)) {</span>
+
+<span class="nc" id="L601">            coreHelper.setModelElementContainer(modelElement, ns);</span>
+            /* TODO: move the associations to the correct owner (namespace)
+             * i.e. issue 2151
+             */
+        }
+<span class="nc" id="L606">    }</span>
+
+
+    public void propertyChange(PropertyChangeEvent evt) {
+<span class="pc bpc" id="L610" title="2 of 4 branches missed.">        if ((evt.getSource() == namespace)</span>
+                &amp;&amp; (evt instanceof DeleteInstanceEvent)
+<span class="pc bpc" id="L612" title="1 of 2 branches missed.">                &amp;&amp; &quot;remove&quot;.equals(evt.getPropertyName())) {</span>
+
+<span class="fc" id="L614">            Model.getPump().removeModelEventListener(this, namespace, &quot;remove&quot;);</span>
+
+<span class="fc bfc" id="L616" title="All 2 branches covered.">            if (getProject() != null) {</span>
+<span class="fc" id="L617">                getProject().moveToTrash(this);</span>
+            }
+        }
+<span class="fc" id="L620">    }</span>
+
+
+    public Object getOwner() {
+<span class="fc" id="L624">        return getNamespace();</span>
+    }
+
+    public Iterator&lt;Fig&gt; getFigIterator() {
+<span class="nc" id="L628">        return new EnumerationIterator(elements());</span>
+    }
+
+    public void setDiagramSettings(DiagramSettings newSettings) {
+<span class="fc" id="L632">        settings = newSettings;</span>
+<span class="fc" id="L633">    }</span>
+
+    public DiagramSettings getDiagramSettings() {
+<span class="fc" id="L636">        return settings;</span>
+    }
+
+    /**
+     * Handles a global change to the diagram font.
+     * @param e the event
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+<span class="fc" id="L645">        renderingChanged();</span>
+<span class="fc" id="L646">    }</span>
+
+    /**
+     * Rerender the entire diagram based on new global rendering settings.
+     * &lt;p&gt;
+     * NOTE: Figs which define their own presentation listeners will get
+     * re-rendered twice
+     */
+    public void renderingChanged() {
+<span class="pc bpc" id="L655" title="1 of 2 branches missed.">        for (Object fig : getLayer().getContents()) {</span>
+            try {
+                // This should always be true, but just in case...
+<span class="nc bnc" id="L658" title="All 2 branches missed.">                if (fig instanceof ArgoFig) {</span>
+<span class="nc" id="L659">                    ((ArgoFig) fig).renderingChanged();</span>
+                } else {
+<span class="nc" id="L661">                    LOG.log(Level.WARNING, &quot;Diagram &quot; + getName() + &quot; contains non-ArgoFig &quot;</span>
+                            + fig);
+                }
+<span class="nc" id="L664">            } catch (InvalidElementException e) {</span>
+<span class="nc" id="L665">                LOG.log(Level.SEVERE, &quot;Tried to refresh deleted element &quot;, e);</span>
+<span class="nc" id="L666">            }</span>
+<span class="nc" id="L667">        }</span>
+<span class="fc" id="L668">        damage();</span>
+<span class="fc" id="L669">    }</span>
+
+    public void notationChanged(ArgoNotationEvent e) {
+<span class="fc" id="L672">        renderingChanged();</span>
+<span class="fc" id="L673">    }</span>
+
+    public void notationAdded(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L677">    }</span>
+
+    public void notationProviderAdded(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L681">    }</span>
+
+    public void notationProviderRemoved(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L685">    }</span>
+
+
+    public void notationRemoved(ArgoNotationEvent e) {
+        // Do nothing
+<span class="nc" id="L690">    }</span>
+
+
+    /**
+     * Receive vetoable change event. GEF will call this method with the 'name'
+     * property when it attempts to set the name. If this will be a duplicate
+     * for the project, we can veto the requested change.
+     *
+     * @param evt the change event
+     * @throws PropertyVetoException if the name is illegal. Usuallly this means
+     *             a duplicate in the project.
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent evt)
+        throws PropertyVetoException {
+
+<span class="fc bfc" id="L706" title="All 2 branches covered.">        if (&quot;name&quot;.equals(evt.getPropertyName())) {</span>
+<span class="pc bpc" id="L707" title="1 of 2 branches missed.">            if (project != null) {</span>
+<span class="nc bnc" id="L708" title="All 2 branches missed.">                if (!project.isValidDiagramName((String) evt.getNewValue())) {</span>
+<span class="nc" id="L709">                    throw new PropertyVetoException(&quot;Invalid name&quot;, evt);</span>
+                }
+            }
+        }
+<span class="fc" id="L713">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

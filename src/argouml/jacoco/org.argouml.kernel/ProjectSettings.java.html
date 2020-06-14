@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">ProjectSettings.java</span></div><h1>ProjectSettings.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
+// $Id$
+// Copyright (c) 2006-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationSettings;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.undo.Memento;
+import org.tigris.gef.undo.UndoManager;
+
+/**
+ * A datastructure for settings for a Project. &lt;p&gt;
+ *
+ * Most getters return a string, since they are used by &quot;argo.tee&quot;.
+ * This is also the reason all these attributes
+ * are not part of a Map or something. &lt;p&gt;
+ *
+ * TODO: The header comment is currently not used - this function
+ * is not completely implemented yet. How do we store this in the project?
+ * Where should the user enter his header comment? See issue 4813.
+ *
+ * @author michiel
+ */
+public class ProjectSettings {
+
+    // Default diagram settings
+    private DiagramSettings diaDefault;
+
+    // Default notation settings
+    private NotationSettings npSettings;
+    
+    /** Setting to control whether stereotypes are shown in explorer view */
+    private boolean showExplorerStereotypes;
+    
+    /* Generation preferences: */
+<span class="fc" id="L83">    private String headerComment =</span>
+        &quot;Your copyright and other header comments&quot;;
+    
+    private Project project;
+
+    /**
+     * Create a new set of project settings for the given project,
+     * based on the application defaults. &lt;p&gt;
+     *
+     * The constructor is not public, since this
+     * class is only created from the Project..
+     * @param project the project owning these settings
+     */
+    ProjectSettings(Project project) {
+<span class="fc" id="L97">        this();</span>
+<span class="fc" id="L98">        this.project = project;</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Create a new set of project settings,
+     * based on the application defaults. &lt;p&gt;
+     *
+     * The constructor is not public, since this
+     * class is only created from the Project..
+     */
+    ProjectSettings() {
+<span class="fc" id="L109">        super();</span>
+
+<span class="fc" id="L111">        diaDefault = new DiagramSettings();</span>
+<span class="fc" id="L112">        diaDefault.initFromConfiguration();</span>
+
+<span class="fc" id="L114">        npSettings = diaDefault.getNotationSettings();</span>
+        
+        String notationLanguage =
+<span class="fc" id="L117">            Notation.getConfiguredNotation().getConfigurationValue();</span>
+<span class="fc" id="L118">        npSettings.setNotationLanguage(notationLanguage);</span>
+        
+<span class="fc" id="L120">        npSettings.setUseGuillemets(Configuration.getBoolean(</span>
+                Notation.KEY_USE_GUILLEMOTS, false));
+        /*
+         * The next one defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting:
+         */
+<span class="fc" id="L126">        npSettings.setShowAssociationNames(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_ASSOCIATION_NAMES, true));
+<span class="fc" id="L128">        npSettings.setShowVisibilities(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_VISIBILITY));
+<span class="fc" id="L130">        npSettings.setShowMultiplicities(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_MULTIPLICITY));
+<span class="fc" id="L132">        npSettings.setShowInitialValues(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_INITIAL_VALUE));
+<span class="fc" id="L134">        npSettings.setShowProperties(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_PROPERTIES));
+        /*
+         * The next ones defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting:
+         */
+<span class="fc" id="L140">        npSettings.setShowTypes(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_TYPES, true));
+        
+<span class="fc" id="L143">        showExplorerStereotypes = Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_STEREOTYPES);
+        /*
+         * The next one defaults to TRUE, despite that this is
+         * NOT compatible with older ArgoUML versions
+         * (before 0.24) that did
+         * not have this setting - see issue 1395 for the rationale:
+         */
+<span class="fc" id="L151">        npSettings.setShowSingularMultiplicities(Configuration.getBoolean(</span>
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Send all events required for post-load of project.&lt;p&gt;
+     * @deprecated for 0.27.2 by tfmorris.  No replacement.  Diagrams/Figs are
+     * now created with the correct initial settings.
+     */
+    @Deprecated
+    public void init() {
+        /*
+         * Since this is (hopefully) a temporary solution, and nobody ever looks
+         * at the type of notation event, we can simplify from sending every
+         * existing event to one event only. But since there is no catch-all
+         * event defined, we just make one up. Rationale: reduce the number of
+         * total refreshes of the drawing.
+         */
+<span class="nc" id="L169">        init(true, Configuration.makeKey(&quot;notation&quot;, &quot;all&quot;));</span>
+
+<span class="nc" id="L171">        diaDefault.notifyOfChangedSettings();</span>
+<span class="nc" id="L172">    }</span>
+
+    private void init(boolean value, ConfigurationKey key) {
+<span class="nc" id="L175">        fireNotationEvent(key, value, value);</span>
+<span class="nc" id="L176">    }</span>
+    
+    /**
+     * @return the default diagram settings
+     */
+    public DiagramSettings getDefaultDiagramSettings() {
+<span class="fc" id="L182">        return diaDefault;</span>
+    }
+
+    /**
+     * @return the default project wide notation settings
+     */
+    public NotationSettings getNotationSettings() {
+<span class="fc" id="L189">        return npSettings;</span>
+    }
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns the notation language.
+     */
+    public String getNotationLanguage() {
+<span class="fc" id="L198">        return npSettings.getNotationLanguage();</span>
+    }
+
+    /**
+     * @return Return the notation name.
+     */
+    public NotationName getNotationName() {
+<span class="fc" id="L205">        return Notation.findNotation(getNotationLanguage());</span>
+    }
+
+    /**
+     * @param newLanguage the notation language.
+     * @return true if the notation is set - false if it does not exist
+     */
+    public boolean setNotationLanguage(final String newLanguage) {
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (getNotationLanguage().equals(newLanguage)) {</span>
+<span class="fc" id="L214">            return true;</span>
+        }
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">        if (Notation.findNotation(newLanguage) == null) {</span>
+            /* This Notation is not available! */
+<span class="nc" id="L218">            return false;</span>
+        }
+
+<span class="fc" id="L221">        final String oldLanguage = getNotationLanguage();</span>
+
+<span class="fc" id="L223">        Memento memento = new Memento() {</span>
+<span class="fc" id="L224">            private final ConfigurationKey key = Notation.KEY_DEFAULT_NOTATION;</span>
+
+            public void redo() {
+<span class="fc" id="L227">                npSettings.setNotationLanguage(newLanguage);</span>
+<span class="fc" id="L228">                fireNotationEvent(key, oldLanguage, newLanguage);</span>
+<span class="fc" id="L229">            }</span>
+
+            public void undo() {
+<span class="nc" id="L232">                npSettings.setNotationLanguage(oldLanguage);</span>
+<span class="nc" id="L233">                fireNotationEvent(key, newLanguage, oldLanguage);</span>
+<span class="nc" id="L234">            }</span>
+        };
+<span class="fc" id="L236">        doUndoable(memento);</span>
+<span class="fc" id="L237">        return true;</span>
+    }
+
+    private void doUndoable(Memento memento) {
+        // TODO: This needs to be managing undo on a per-project basis
+        // instead of using GEF's global undo manager
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        if (UndoManager.getInstance().isGenerateMementos()) {</span>
+<span class="fc" id="L244">            UndoManager.getInstance().addMemento(memento);</span>
+        }
+<span class="fc" id="L246">        memento.redo();</span>
+<span class="fc" id="L247">        project.setDirty(true);</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * @param nn the new notation language
+     */
+    public void setNotationLanguage(NotationName nn) {
+<span class="fc" id="L254">        setNotationLanguage(nn.getConfigurationValue());</span>
+<span class="fc" id="L255">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show bold names.
+     */
+    public String getShowBoldNames() {
+<span class="fc" id="L263">        return Boolean.toString(diaDefault.isShowBoldNames());</span>
+    }
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @see #getUseGuillemotsValue()
+     * @return Returns &quot;true&quot; if we show guillemets.
+     */
+    public String getUseGuillemots() {
+<span class="fc" id="L273">        return Boolean.toString(getUseGuillemotsValue());</span>
+    }
+
+    /**
+     * Get setting controlling whether guillemets (the double angle brackets
+     * quotation mark characters from Unicode) are to be used for formatting
+     * instead of two individual characters for each quote mark (e.g. &gt;&gt;). NOTE:
+     * This affects not only the Diagrams, but also display in the explorer view
+     * and other places.
+     * 
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show guillemets.
+     */
+    public boolean getUseGuillemotsValue() {
+<span class="fc" id="L286">        return npSettings.isUseGuillemets();</span>
+    }
+    
+
+    /**
+     * @see #getUseGuillemotsValue()
+     * @param showem &lt;code&gt;true&lt;/code&gt; if guillemets are to be used.
+     */
+    public void setUseGuillemots(String showem) {
+<span class="fc" id="L295">        setUseGuillemots(Boolean.valueOf(showem).booleanValue());</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * @see #getUseGuillemotsValue()
+     * @param showem &lt;code&gt;true&lt;/code&gt; if guillemets are to be shown.
+     */
+    public void setUseGuillemots(final boolean showem) {
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (getUseGuillemotsValue() == showem) {</span>
+<span class="fc" id="L304">            return;</span>
+        }
+
+<span class="fc" id="L307">        Memento memento = new Memento() {</span>
+<span class="fc" id="L308">            private final ConfigurationKey key = Notation.KEY_USE_GUILLEMOTS;</span>
+
+            public void redo() {
+<span class="fc" id="L311">                npSettings.setUseGuillemets(showem);</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L313">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L316" title="All 2 branches missed.">                npSettings.setUseGuillemets(!showem);</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L318">            }</span>
+        };
+<span class="fc" id="L320">        doUndoable(memento);</span>
+<span class="fc" id="L321">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show association names.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowAssociationNames() {
+<span class="fc" id="L331">        return Boolean.toString(getShowAssociationNamesValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show association names.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowAssociationNamesValue() {
+<span class="fc" id="L340">        return npSettings.isShowAssociationNames();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if association names are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowAssociationNames(String showem) {
+<span class="fc" id="L349">        setShowAssociationNames(Boolean.valueOf(showem).booleanValue());</span>
+<span class="fc" id="L350">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if association names are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowAssociationNames(final boolean showem) {
+<span class="pc bpc" id="L358" title="1 of 2 branches missed.">        if (npSettings.isShowAssociationNames() == showem) {</span>
+<span class="nc" id="L359">            return;</span>
+        }
+
+<span class="fc" id="L362">        Memento memento = new Memento() {</span>
+<span class="fc" id="L363">            private final ConfigurationKey key = </span>
+                Notation.KEY_SHOW_ASSOCIATION_NAMES;
+
+            public void redo() {
+<span class="fc" id="L367">                npSettings.setShowAssociationNames(showem);</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L369">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L372" title="All 2 branches missed.">                npSettings.setShowAssociationNames(!showem);</span>
+<span class="nc bnc" id="L373" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L374">            }</span>
+        };
+<span class="fc" id="L376">        doUndoable(memento);</span>
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show visibilities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowVisibility() {
+<span class="fc" id="L387">        return Boolean.toString(getShowVisibilityValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show visibilities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowVisibilityValue() {
+<span class="fc" id="L396">        return npSettings.isShowVisibilities();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if visibilities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowVisibility(String showem) {
+<span class="fc" id="L405">        setShowVisibility(Boolean.valueOf(showem).booleanValue());</span>
+<span class="fc" id="L406">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if visibilities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowVisibility(final boolean showem) {
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">        if (npSettings.isShowVisibilities() == showem) {</span>
+<span class="nc" id="L415">            return;</span>
+        }
+
+<span class="fc" id="L418">        Memento memento = new Memento() {</span>
+<span class="fc" id="L419">            private final ConfigurationKey key = Notation.KEY_SHOW_VISIBILITY;</span>
+
+            public void redo() {
+<span class="fc" id="L422">                npSettings.setShowVisibilities(showem);</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L424">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L427" title="All 2 branches missed.">                npSettings.setShowVisibilities(!showem);</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L429">            }</span>
+        };
+<span class="fc" id="L431">        doUndoable(memento);</span>
+<span class="fc" id="L432">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowMultiplicity() {
+<span class="fc" id="L442">        return Boolean.toString(getShowMultiplicityValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowMultiplicityValue() {
+<span class="fc" id="L451">        return npSettings.isShowMultiplicities();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if multiplicity is to be shown.
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowMultiplicity(String showem) {
+<span class="fc" id="L460">        setShowMultiplicity(Boolean.valueOf(showem).booleanValue());</span>
+<span class="fc" id="L461">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if the multiplicity is to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowMultiplicity(final boolean showem) {
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">        if (npSettings.isShowMultiplicities() == showem) {</span>
+<span class="nc" id="L470">            return;</span>
+        }
+
+<span class="fc" id="L473">        Memento memento = new Memento() {</span>
+<span class="fc" id="L474">            private final ConfigurationKey key = Notation.KEY_SHOW_MULTIPLICITY;</span>
+
+            public void redo() {
+<span class="fc" id="L477">                npSettings.setShowMultiplicities(showem);</span>
+<span class="fc bfc" id="L478" title="All 2 branches covered.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L479">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L482" title="All 2 branches missed.">                npSettings.setShowMultiplicities(!showem);</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L484">            }</span>
+        };
+<span class="fc" id="L486">        doUndoable(memento);</span>
+<span class="fc" id="L487">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show initial values.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowInitialValue() {
+<span class="fc" id="L497">        return Boolean.toString(getShowInitialValueValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show initial values.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowInitialValueValue() {
+<span class="fc" id="L506">        return npSettings.isShowInitialValues();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if initial values are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowInitialValue(String showem) {
+<span class="nc" id="L515">        setShowInitialValue(Boolean.valueOf(showem).booleanValue());</span>
+<span class="nc" id="L516">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if initial values are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowInitialValue(final boolean showem) {
+<span class="pc bpc" id="L524" title="1 of 2 branches missed.">        if (npSettings.isShowInitialValues() == showem) {</span>
+<span class="nc" id="L525">            return;</span>
+        }
+
+<span class="fc" id="L528">        Memento memento = new Memento() {</span>
+<span class="fc" id="L529">            private final ConfigurationKey key =</span>
+                Notation.KEY_SHOW_INITIAL_VALUE;
+
+            public void redo() {
+<span class="fc" id="L533">                npSettings.setShowInitialValues(showem);</span>
+<span class="pc bpc" id="L534" title="1 of 2 branches missed.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L535">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L538" title="All 2 branches missed.">                npSettings.setShowInitialValues(!showem);</span>
+<span class="nc bnc" id="L539" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L540">            }</span>
+        };
+<span class="fc" id="L542">        doUndoable(memento);</span>
+<span class="fc" id="L543">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show properties.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowProperties() {
+<span class="fc" id="L553">        return Boolean.toString(getShowPropertiesValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show properties.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowPropertiesValue() {
+<span class="fc" id="L562">        return npSettings.isShowProperties();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if properties are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowProperties(String showem) {
+<span class="nc" id="L571">        setShowProperties(Boolean.valueOf(showem).booleanValue());</span>
+<span class="nc" id="L572">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if properties are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowProperties(final boolean showem) {
+<span class="pc bpc" id="L580" title="1 of 2 branches missed.">        if (npSettings.isShowProperties() == showem) {</span>
+<span class="nc" id="L581">            return;</span>
+        }
+
+<span class="fc" id="L584">        Memento memento = new Memento() {</span>
+<span class="fc" id="L585">            private final ConfigurationKey key =</span>
+                Notation.KEY_SHOW_PROPERTIES;
+
+            public void redo() {
+<span class="fc" id="L589">                npSettings.setShowProperties(showem);</span>
+<span class="pc bpc" id="L590" title="1 of 2 branches missed.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L591">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L594" title="All 2 branches missed.">                npSettings.setShowProperties(!showem);</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L596">            }</span>
+        };
+<span class="fc" id="L598">        doUndoable(memento);</span>
+<span class="fc" id="L599">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show types.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowTypes() {
+<span class="fc" id="L609">        return Boolean.toString(getShowTypesValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show types.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowTypesValue() {
+<span class="fc" id="L618">        return npSettings.isShowTypes();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if types are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowTypes(String showem) {
+<span class="nc" id="L627">        setShowTypes(Boolean.valueOf(showem).booleanValue());</span>
+<span class="nc" id="L628">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if types are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowTypes(final boolean showem) {
+<span class="pc bpc" id="L636" title="1 of 2 branches missed.">        if (npSettings.isShowTypes() == showem) {</span>
+<span class="nc" id="L637">            return;</span>
+        }
+
+<span class="fc" id="L640">        Memento memento = new Memento() {</span>
+<span class="fc" id="L641">            private final ConfigurationKey key = Notation.KEY_SHOW_TYPES;</span>
+
+            public void redo() {
+<span class="fc" id="L644">                npSettings.setShowTypes(showem);</span>
+<span class="pc bpc" id="L645" title="1 of 2 branches missed.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L646">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L649" title="All 2 branches missed.">                npSettings.setShowTypes(!showem);</span>
+<span class="nc bnc" id="L650" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L651">            }</span>
+        };
+<span class="fc" id="L653">        doUndoable(memento);</span>
+<span class="fc" id="L654">    }</span>
+
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show stereotypes in the explorer.
+     */
+    public String getShowStereotypes() {
+<span class="fc" id="L663">        return Boolean.toString(getShowStereotypesValue());</span>
+    }
+
+    /**
+     * TODO: Is this used in places other than on Diagrams?  If so, it needs to
+     * stay in ProjectSettings (as well as being a DiagramSetting).
+     * 
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show stereotypes in the explorer
+     */
+    public boolean getShowStereotypesValue() {
+<span class="fc" id="L673">        return showExplorerStereotypes;</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if stereotypes are to be shown in the
+     * explorer.
+     */
+    public void setShowStereotypes(String showem) {
+<span class="nc" id="L681">        setShowStereotypes(Boolean.valueOf(showem).booleanValue());</span>
+<span class="nc" id="L682">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if stereotypes are to be shown in the
+     * explorer view.
+     */
+    public void setShowStereotypes(final boolean showem) {
+<span class="fc bfc" id="L689" title="All 2 branches covered.">        if (showExplorerStereotypes == showem) {</span>
+<span class="fc" id="L690">            return;</span>
+        }
+
+<span class="fc" id="L693">        Memento memento = new Memento() {</span>
+<span class="fc" id="L694">            private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;</span>
+
+            public void redo() {
+<span class="fc" id="L697">                showExplorerStereotypes = showem;</span>
+<span class="pc bpc" id="L698" title="1 of 2 branches missed.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="fc" id="L699">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L702" title="All 2 branches missed.">                showExplorerStereotypes = !showem;</span>
+<span class="nc bnc" id="L703" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L704">            }</span>
+        };
+<span class="fc" id="L706">        doUndoable(memento);</span>
+<span class="fc" id="L707">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show &quot;1&quot; Multiplicities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public String getShowSingularMultiplicities() {
+<span class="fc" id="L717">        return Boolean.toString(getShowSingularMultiplicitiesValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show  &quot;1&quot; Multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public boolean getShowSingularMultiplicitiesValue() {
+<span class="fc" id="L726">        return npSettings.isShowSingularMultiplicities();</span>
+    }
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if &quot;1&quot; Multiplicities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowSingularMultiplicities(String showem) {
+<span class="nc" id="L735">        setShowSingularMultiplicities(Boolean.valueOf(showem).booleanValue());</span>
+<span class="nc" id="L736">    }</span>
+
+    /**
+     * @param showem &lt;code&gt;true&lt;/code&gt; if &quot;1&quot; Multiplicities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     */
+    @Deprecated
+    public void setShowSingularMultiplicities(final boolean showem) {
+<span class="nc bnc" id="L744" title="All 2 branches missed.">        if (npSettings.isShowSingularMultiplicities() == showem) {</span>
+<span class="nc" id="L745">            return;</span>
+        }
+
+<span class="nc" id="L748">        Memento memento = new Memento() {</span>
+<span class="nc" id="L749">            private final ConfigurationKey key =</span>
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES;
+
+            public void redo() {
+<span class="nc" id="L753">                npSettings.setShowSingularMultiplicities(showem);</span>
+<span class="nc bnc" id="L754" title="All 2 branches missed.">                fireNotationEvent(key, !showem, showem);</span>
+<span class="nc" id="L755">            }</span>
+
+            public void undo() {
+<span class="nc bnc" id="L758" title="All 2 branches missed.">                npSettings.setShowSingularMultiplicities(!showem);</span>
+<span class="nc bnc" id="L759" title="All 2 branches missed.">                fireNotationEvent(key, showem, !showem);</span>
+<span class="nc" id="L760">            }</span>
+        };
+<span class="nc" id="L762">        doUndoable(memento);</span>
+<span class="nc" id="L763">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns &quot;true&quot; if we show the arrows when
+     * both association ends of an association are navigable.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public String getHideBidirectionalArrows() {
+<span class="fc" id="L774">        return Boolean.toString(getHideBidirectionalArrowsValue());</span>
+    }
+
+    /**
+     * @return Returns &lt;code&gt;true&lt;/code&gt; if we show the arrows when
+     * both association ends of an association are navigable.
+
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public boolean getHideBidirectionalArrowsValue() {
+<span class="pc bpc" id="L785" title="1 of 2 branches missed.">        return !diaDefault.isShowBidirectionalArrows();</span>
+    }
+
+    /**
+     * @param hideem &lt;code&gt;true&lt;/code&gt; if both arrows are to be shown when
+     * both association ends of an association are navigable.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setHideBidirectionalArrows(String hideem) {
+<span class="nc" id="L795">        setHideBidirectionalArrows(Boolean.valueOf(hideem).booleanValue());</span>
+<span class="nc" id="L796">    }</span>
+
+    /**
+     * @param hideem &lt;code&gt;true&lt;/code&gt; if both arrows are to be shown when
+     * both association ends of an association are navigable.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setHideBidirectionalArrows(final boolean hideem) {
+<span class="nc bnc" id="L805" title="All 4 branches missed.">        if (diaDefault.isShowBidirectionalArrows() == !hideem) {</span>
+<span class="nc" id="L806">            return;</span>
+        }
+
+<span class="nc" id="L809">        Memento memento = new Memento() {</span>
+
+            public void redo() {
+<span class="nc bnc" id="L812" title="All 2 branches missed.">                diaDefault.setShowBidirectionalArrows(!hideem);</span>
+<span class="nc" id="L813">            }</span>
+
+            public void undo() {
+<span class="nc" id="L816">                diaDefault.setShowBidirectionalArrows(hideem);</span>
+<span class="nc" id="L817">            }</span>
+        };
+<span class="nc" id="L819">        doUndoable(memento);</span>
+<span class="nc" id="L820">    }</span>
+    
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns the shadow width.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public String getDefaultShadowWidth() {
+<span class="fc" id="L830">        return Integer.valueOf(getDefaultShadowWidthValue()).toString();</span>
+    }
+
+    /**
+     * @return Returns the shadow width.
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public int getDefaultShadowWidthValue() {
+<span class="fc" id="L839">        return diaDefault.getDefaultShadowWidth();</span>
+    }
+
+    /**
+     * @param newWidth The Shadow Width.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setDefaultShadowWidth(final int newWidth) {
+<span class="fc" id="L848">        final int oldValue = diaDefault.getDefaultShadowWidth();</span>
+<span class="pc bpc" id="L849" title="1 of 2 branches missed.">        if (oldValue == newWidth) {</span>
+<span class="nc" id="L850">            return;</span>
+        }
+
+<span class="fc" id="L853">        Memento memento = new Memento() {</span>
+
+            public void redo() {
+<span class="fc" id="L856">                diaDefault.setDefaultShadowWidth(newWidth);</span>
+<span class="fc" id="L857">            }</span>
+
+            public void undo() {
+<span class="nc" id="L860">                diaDefault.setDefaultShadowWidth(oldValue);</span>
+<span class="nc" id="L861">            }</span>
+        };
+<span class="fc" id="L863">        doUndoable(memento);</span>
+<span class="fc" id="L864">    }</span>
+
+    /**
+     * @param width The shadow width to set.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setDefaultShadowWidth(String width) {
+<span class="nc" id="L872">        setDefaultShadowWidth(Integer.parseInt(width));</span>
+<span class="nc" id="L873">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return Returns the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public String getDefaultStereotypeView() {
+<span class="fc" id="L883">        return Integer.valueOf(getDefaultStereotypeViewValue()).toString();</span>
+    }
+
+    /**
+     * @return Returns the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public int getDefaultStereotypeViewValue() {
+<span class="fc" id="L892">        return diaDefault.getDefaultStereotypeViewInt();</span>
+    }
+
+
+    /**
+     * No longer used by &quot;argo.tee&quot;. All uses deprecated.
+     * 
+     * @return the output directory name
+     * @deprecated for 0.27.2 by tfmorris. This is a user setting, not a project
+     *             setting.
+     */
+    @Deprecated
+    public String getGenerationOutputDir() {
+<span class="nc" id="L905">        return &quot;&quot;;</span>
+    }
+
+    /**
+     * @param od the output directory name
+     * @deprecated for 0.27.2 by tfmorris. This is a user setting, not a project
+     *             setting. Any uses will be ignored.
+     */
+    @Deprecated
+    public void setGenerationOutputDir(@SuppressWarnings(&quot;unused&quot;) String od) {
+        // ignored
+<span class="nc" id="L916">    }</span>
+
+    /**
+     * @return the header comment string
+     */
+    public String getHeaderComment() {
+<span class="nc" id="L922">        return headerComment;</span>
+    }
+
+    /**
+     * @param newView the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setDefaultStereotypeView(final int newView) {
+<span class="nc" id="L931">        final int oldValue = diaDefault.getDefaultStereotypeViewInt();</span>
+<span class="nc bnc" id="L932" title="All 2 branches missed.">        if (oldValue == newView) {</span>
+<span class="nc" id="L933">            return;</span>
+        }
+
+<span class="nc" id="L936">        Memento memento = new Memento() {</span>
+<span class="nc" id="L937">            private final ConfigurationKey key =</span>
+                ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW;
+
+            public void redo() {
+<span class="nc" id="L941">                diaDefault.setDefaultStereotypeView(newView);</span>
+<span class="nc" id="L942">                fireNotationEvent(key, oldValue, newView);</span>
+<span class="nc" id="L943">            }</span>
+
+            public void undo() {
+<span class="nc" id="L946">                diaDefault.setDefaultStereotypeView(oldValue);</span>
+<span class="nc" id="L947">                fireNotationEvent(key, newView, oldValue);</span>
+<span class="nc" id="L948">            }</span>
+        };
+<span class="nc" id="L950">        doUndoable(memento);</span>
+<span class="nc" id="L951">    }</span>
+
+    /**
+     * @param c the header comment string
+     */
+<span class="nc" id="L956">    public void setHeaderComment(String c) { headerComment = c; }</span>
+
+
+    /**
+     * Convenience methods to fire notation configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireNotationEvent(
+            ConfigurationKey key, int oldValue, int newValue) {
+<span class="nc" id="L968">        fireNotationEvent(key, Integer.toString(oldValue),</span>
+<span class="nc" id="L969">                Integer.toString(newValue));</span>
+<span class="nc" id="L970">    }</span>
+
+    /**
+     * Convenience methods to fire notation configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireNotationEvent(ConfigurationKey key, boolean oldValue,
+            boolean newValue) {
+<span class="fc" id="L981">        fireNotationEvent(key, Boolean.toString(oldValue),</span>
+<span class="fc" id="L982">                Boolean.toString(newValue));</span>
+<span class="fc" id="L983">    }</span>
+
+    /**
+     * Convenience methods to fire notation configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireNotationEvent(ConfigurationKey key, String oldValue,
+            String newValue) {
+<span class="fc" id="L994">        ArgoEventPump.fireEvent(new ArgoNotationEvent(</span>
+                ArgoEventTypes.NOTATION_CHANGED, new PropertyChangeEvent(this,
+<span class="fc" id="L996">                        key.getKey(), oldValue, newValue)));</span>
+<span class="fc" id="L997">    }</span>
+
+    /**
+     * Diagram font name. &lt;p&gt;
+     *
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return diagram font name.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public String getFontName() {
+<span class="fc" id="L1009">        return diaDefault.getFontName();</span>
+    }
+
+    /**
+     * Diagram font name.
+     * @param newFontName diagram font name.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setFontName(String newFontName) {
+<span class="nc" id="L1019">        diaDefault.setFontName(newFontName);</span>
+<span class="nc" id="L1020">    }</span>
+
+    /**
+     * Diagram font size. &lt;p&gt;
+     *
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return diagram font size.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public int getFontSize() {
+<span class="fc" id="L1032">        return diaDefault.getFontSize();</span>
+    }
+
+    /**
+     * Diagram font size.
+     * @param newFontSize diagram font size.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public void setFontSize(int newFontSize) {
+<span class="nc" id="L1042">        diaDefault.setFontSize(newFontSize);</span>
+<span class="nc" id="L1043">    }</span>
+
+
+    /**
+     * Returns the Plain diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return plain diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public Font getFontPlain() {
+<span class="nc" id="L1055">        return diaDefault.getFontPlain();</span>
+    }
+
+    /**
+     * Returns the Italic diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return italic diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public Font getFontItalic() {
+<span class="nc" id="L1067">        return diaDefault.getFontItalic();</span>
+    }
+
+    /**
+     * Returns the Bold diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return bold diagram font
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public Font getFontBold() {
+<span class="nc" id="L1079">        return diaDefault.getFontBold();</span>
+    }
+
+    /**
+     * Returns the Bold-Italic diagram font which corresponds
+     * to selected parameters.
+     *
+     * @return bold-italic diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public Font getFontBoldItalic() {
+<span class="nc" id="L1091">        return diaDefault.getFontBoldItalic();</span>
+    }
+
+    /**
+     * Utility function to convert a font style integer into a Font.
+     *
+     * @param fontStyle the style; see the predefined constants in Font
+     * @return the Font that corresponds to the style
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     */
+    @Deprecated
+    public Font getFont(int fontStyle) {
+<span class="nc" id="L1103">        return diaDefault.getFont(fontStyle);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

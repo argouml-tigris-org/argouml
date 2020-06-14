@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CrOperNameConflict.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.cognitive.critics</a> &gt; <span class="el_source">CrOperNameConflict.java</span></div><h1>CrOperNameConflict.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    maurelio1234
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.cognitive.critics;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.swing.Icon;
+
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
+
+/**
+ * A critic to detect when a class has operations with two matching
+ * signatures.&lt;p&gt;
+ *
+ * Takes each operation in turn and compares its signature with all
+ * earlier operations. This version corrects and earlier bug, which
+ * checked for matching names as well as types in the parameter
+ * list.&lt;p&gt;
+ *
+ * &lt;em&gt;Warning&lt;/em&gt;. The algorithm in is quadratic in the number of
+ * operations. It could be computationally demanding on a design where
+ * classes have a lot of operations. See the {@link #predicate2}
+ * method for possible solutions.&lt;p&gt;
+ *
+ * See the ArgoUML User Manual: Change Names or Signatures in &amp;lt;artifact&amp;gt;
+ *
+ * @author jrobbins@ics.uci.edu
+ */
+
+public class CrOperNameConflict extends CrUML {
+
+    /**
+     * Constructor for the critic.&lt;p&gt;
+     *
+     * Sets up the resource name, which will allow headline and
+     * description to found for the current locale. Provides design
+     * issue categories (METHODS, NAMING), sets a knowledge type
+     * (SYNTAX) and adds triggers for metaclasses &quot;behaviouralFeature&quot;
+     * and feature_name&quot;.&lt;p&gt;
+     */
+<span class="fc" id="L84">    public CrOperNameConflict() {</span>
+<span class="fc" id="L85">        setupHeadAndDesc();</span>
+<span class="fc" id="L86">        addSupportedDecision(UMLDecision.METHODS);</span>
+<span class="fc" id="L87">        addSupportedDecision(UMLDecision.NAMING);</span>
+
+<span class="fc" id="L89">        setKnowledgeTypes(Critic.KT_SYNTAX);</span>
+
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+<span class="fc" id="L94">        addTrigger(&quot;behavioralFeature&quot;);</span>
+<span class="fc" id="L95">        addTrigger(&quot;feature_name&quot;);</span>
+<span class="fc" id="L96">    }</span>
+
+
+    /**
+     * The trigger for the critic.&lt;p&gt;
+     *
+     * Finds all the operations for the given classifier. Takes each
+     * operation in turn and compares its signature with all earlier
+     * operations. This version corrects an earlier bug, which checked
+     * for matching names as well as types in the parameter list.&lt;p&gt;
+     *
+     * &lt;em&gt;Note&lt;/em&gt;. The signature ignores any return parameters in
+     * looking for a match. This is in line with Java/C++.&lt;p&gt;
+     *
+     * We do not need to worry about signature clashes that are
+     * inherited (overloading). This is something encouraged in many
+     * OO environments to facilitate polymorphism.&lt;p&gt;
+     *
+     * This algorithm is quadratic in the number of operations. If
+     * this became a problem, we would have to consider sorting the
+     * operations list and comparing only adjacent pairs
+     * (potentially O(n log n) performance).&lt;p&gt;
+     *
+     * @param  dm    the {@link Object} to be checked against the critic.
+     *
+     * @param  dsgr  the {@link Designer} creating the model. Not used,
+     *               this is for future development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
+    @Override
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only do this for classifiers
+
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (!(Model.getFacade().isAClassifier(dm))) {</span>
+<span class="nc" id="L133">            return NO_PROBLEM;</span>
+        }
+
+        // Get all the features (giving up if there are none). Then loop
+        // through finding all operations. Each time we find one, we compare
+        // its signature with all previous (held in collection operSeen), 
+        // and then if it doesn't match add it to the collection.
+
+<span class="nc" id="L141">        Collection operSeen = new ArrayList();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        for (Object op : Model.getFacade().getOperations(dm)) {</span>
+
+            // Compare against all earlier operations. If there's a match we've
+            // found the problem
+<span class="nc bnc" id="L146" title="All 2 branches missed.">            for (Object o : operSeen) {</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">                if (signaturesMatch(op, o)) {</span>
+<span class="nc" id="L148">                    return PROBLEM_FOUND;</span>
+                }
+<span class="nc" id="L150">            }</span>
+
+            // Add to the collection and round to look at the next one
+
+<span class="nc" id="L154">            operSeen.add(op);</span>
+<span class="nc" id="L155">        }</span>
+
+        // If we drop out here, there was no match and we have no problem
+
+<span class="nc" id="L159">        return NO_PROBLEM;</span>
+    }
+
+
+    /**
+     * Return the icon to be used for the clarifier for this critic.&lt;p&gt;
+     *
+     * A clarifier is the graphical highlight used to show the
+     * presence of a critique. For example wavy colored underlines
+     * beneath operations.&lt;p&gt;
+     *
+     * In this case it will be a wavy line under the second of the
+     * clashing operations.&lt;p&gt;
+     *
+     * @return       The {@link javax.swing.Icon Icon} to use.
+     */
+    @Override
+    public Icon getClarifier() {
+<span class="nc" id="L177">        return ClOperationCompartment.getTheInstance();</span>
+    }
+
+
+    /**
+     * Sees if the signatures of two Operations are the same.&lt;p&gt;
+     *
+     * Checks for matching operation name, and list of parameter
+     * types. The order of the parameters is significant.
+     *
+     * This version also checks for the parameter kind, since
+     * otherwise, &quot;op(int a)&quot; and &quot;op():int&quot; appear to have the same
+     * signature. Purists would probably suggest that the kind should
+     * match exactly. However we only differentiate the return
+     * parameter(s). It is unlikely that any practical OO language
+     * would be able to distinguish instantiation of in from out from
+     * inout parameters.&lt;p&gt;
+     *
+     * We ignore return parameters completely. This is in line with
+     * Java/C++ which regard &lt;code&gt;int x(int, int)&lt;/code&gt; and
+     * &lt;code&gt;double x(int, int)&lt;/code&gt; as having the same
+     * signature.&lt;p&gt;
+     *
+     * If you need to modify this method, take care, since there are
+     * numerous &quot;telegraph pole&quot; problems involved in working through
+     * pairs of mixed lists.&lt;p&gt;
+     *
+     * @param op1 the first operation whose signature is being compared.
+     * @param op2 the second operation whose signature is being compared.
+     *
+     * @return    &lt;code&gt;true&lt;/code&gt; if the signatures match, &lt;code&gt;false&lt;/code&gt;
+     *            otherwise.
+     */
+    private boolean signaturesMatch(Object op1, Object op2) {
+
+	// Check that the names match.
+
+<span class="nc" id="L214">	String name1 = Model.getFacade().getName(op1);</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">	if (name1 == null) {</span>
+<span class="nc" id="L216">	    return false;</span>
+	}
+
+<span class="nc" id="L219">	String name2 = Model.getFacade().getName(op2);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">	if (name2 == null) {</span>
+<span class="nc" id="L221">	    return false;</span>
+	}
+
+<span class="nc bnc" id="L224" title="All 2 branches missed.">	if (!name1.equals(name2)) {</span>
+<span class="nc" id="L225">	    return false;</span>
+	}
+
+	// Check that the parameter lists match.
+
+<span class="nc" id="L230">	Iterator params1 = Model.getFacade().getParameters(op1).iterator();</span>
+<span class="nc" id="L231">	Iterator params2 = Model.getFacade().getParameters(op2).iterator();</span>
+
+<span class="nc bnc" id="L233" title="All 2 branches missed.">	while (params1.hasNext()</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">	       &amp;&amp; params2.hasNext()) {</span>
+
+	    // Get the next non-return parameter. Null if non left.
+<span class="nc" id="L237">	    Object p1 = null;</span>
+<span class="nc bnc" id="L238" title="All 4 branches missed.">	    while (p1 == null &amp;&amp; params1.hasNext()) {</span>
+<span class="nc" id="L239">		p1 = params1.next();</span>
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		if (Model.getFacade().isReturn(p1)) {</span>
+<span class="nc" id="L241">		    p1 = null;</span>
+		}
+	    }
+
+<span class="nc" id="L245">	    Object p2 = null;</span>
+<span class="nc bnc" id="L246" title="All 4 branches missed.">	    while (p2 == null &amp;&amp; params1.hasNext()) {</span>
+<span class="nc" id="L247">		p2 = params1.next();</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">		if (Model.getFacade().isReturn(p2)) {</span>
+<span class="nc" id="L249">		    p2 = null;</span>
+		}
+	    }
+
+<span class="nc bnc" id="L253" title="All 4 branches missed.">	    if (p1 == null &amp;&amp; p2 == null) {</span>
+<span class="nc" id="L254">	        return true;	// Both lists have the same length</span>
+	    }
+
+	    // Different lengths:
+<span class="nc bnc" id="L258" title="All 4 branches missed.">	    if (p1 == null || p2 == null) {</span>
+<span class="nc" id="L259">                return false;</span>
+            }
+
+	    // Compare the type of the parameters. If any of the types is
+	    // null, then we have a match.
+<span class="nc" id="L264">	    Object p1type = Model.getFacade().getType(p1);</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">	    if (p1type == null) {</span>
+<span class="nc" id="L266">		continue;</span>
+	    }
+
+<span class="nc" id="L269">	    Object p2type = Model.getFacade().getType(p2);</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">	    if (p2type == null) {</span>
+<span class="nc" id="L271">		continue;</span>
+	    }
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">	    if (!p1type.equals(p2type)) {</span>
+<span class="nc" id="L275">		return false;</span>
+	    }
+
+	    // This pair of params where the same. Lets check the next pair.
+<span class="nc" id="L279">	}</span>
+
+<span class="nc bnc" id="L281" title="All 4 branches missed.">	if (!params1.hasNext() &amp;&amp; !params2.hasNext()) {</span>
+            // Both lists have the same length.
+<span class="nc" id="L283">            return true;</span>
+        }
+
+<span class="nc" id="L286">	return false;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    @Override
+    public Set&lt;Object&gt; getCriticizedDesignMaterials() {
+<span class="fc" id="L294">        Set&lt;Object&gt; ret = new HashSet&lt;Object&gt;();</span>
+<span class="fc" id="L295">        ret.add(Model.getMetaTypes().getClassifier());</span>
+<span class="fc" id="L296">        return ret;</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

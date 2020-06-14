@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UmlFilePersister.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.persistence</a> &gt; <span class="el_source">UmlFilePersister.java</span></div><h1>UmlFilePersister.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Thomas Neustupny
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.persistence;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
+import java.nio.charset.CodingErrorAction;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.model.UmlException;
+import org.argouml.util.ThreadUtils;
+import org.tigris.gef.ocl.ExpansionException;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+/**
+ * To persist to and from argo (xml file) storage.
+ *
+ * @author Bob Tarling
+ */
+public class UmlFilePersister extends AbstractFilePersister {
+
+    /**
+     * The PERSISTENCE_VERSION is increased every time the persistence format
+     * changes. This controls conversion of old persistence version files to be
+     * converted to the current one, keeping ArgoUML backwards compatible.
+     */
+    public static final int PERSISTENCE_VERSION = 6;
+
+    /**
+     * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
+     * process.
+     */
+    protected static final int UML_PHASES_LOAD = 2;
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L117">    private static final Logger LOG =</span>
+<span class="fc" id="L118">        Logger.getLogger(UmlFilePersister.class.getName());</span>
+
+    private static final String ARGO_TEE = &quot;/org/argouml/persistence/argo.tee&quot;;
+
+    /**
+     * The constructor.
+     */
+<span class="fc" id="L125">    public UmlFilePersister() {</span>
+<span class="fc" id="L126">    }</span>
+
+    /*
+     * @see org.argouml.persistence.AbstractFilePersister#getExtension()
+     */
+    public String getExtension() {
+<span class="fc" id="L132">        return &quot;uml&quot;;</span>
+    }
+
+    /*
+     * @see org.argouml.persistence.AbstractFilePersister#getDesc()
+     */
+    protected String getDesc() {
+<span class="fc" id="L139">        return Translator.localize(&quot;combobox.filefilter.uml&quot;);</span>
+    }
+
+    /**
+     * Save the project in &quot;.uml&quot; format.
+     *
+     * @param file The file to write.
+     * @param project the project to save
+     * @throws SaveException when anything goes wrong
+     * @throws InterruptedException if the thread is interrupted
+     *
+     * @see org.argouml.persistence.ProjectFilePersister#save(org.argouml.kernel.Project,
+     *      java.io.File)
+     */
+    public void doSave(Project project, File file) throws SaveException,
+        InterruptedException {
+
+        /* Retain the previous project file even when the save operation
+         * crashes in the middle. Also create a backup file after saving. */
+<span class="nc" id="L158">        boolean doSafeSaves = useSafeSaves();</span>
+
+<span class="nc" id="L160">        ProgressMgr progressMgr = new ProgressMgr();</span>
+<span class="nc" id="L161">        progressMgr.setNumberOfPhases(4);</span>
+<span class="nc" id="L162">        progressMgr.nextPhase();</span>
+
+<span class="nc" id="L164">        File lastArchiveFile = new File(file.getAbsolutePath() + &quot;~&quot;);</span>
+<span class="nc" id="L165">        File tempFile = null;</span>
+
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        if (doSafeSaves) {</span>
+            try {
+<span class="nc" id="L169">                tempFile = createTempFile(file);</span>
+<span class="nc" id="L170">            } catch (FileNotFoundException e) {</span>
+<span class="nc" id="L171">                throw new SaveException(Translator.localize(</span>
+                        &quot;optionpane.save-project-exception-cause1&quot;), e);
+<span class="nc" id="L173">            } catch (IOException e) {</span>
+<span class="nc" id="L174">                throw new SaveException(Translator.localize(</span>
+                        &quot;optionpane.save-project-exception-cause2&quot;), e);
+<span class="nc" id="L176">            }</span>
+        }
+
+        try {
+<span class="nc" id="L180">            project.setFile(file);</span>
+<span class="nc" id="L181">            project.setVersion(ApplicationVersion.getVersion());</span>
+<span class="nc" id="L182">            project.setPersistenceVersion(PERSISTENCE_VERSION);</span>
+
+<span class="nc" id="L184">            OutputStream stream = new FileOutputStream(file);</span>
+
+<span class="nc" id="L186">            writeProject(project, stream, progressMgr);</span>
+
+<span class="nc" id="L188">            stream.close();</span>
+
+<span class="nc" id="L190">            progressMgr.nextPhase();</span>
+
+<span class="nc" id="L192">            String path = file.getParent();</span>
+
+<span class="nc" id="L194">            LOG.log(Level.INFO, &quot;Dir == {0}&quot;, path);</span>
+
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (doSafeSaves) {</span>
+                // if save did not raise an exception
+                // and name+&quot;#&quot; exists move name+&quot;#&quot; to name+&quot;~&quot;
+                // this is the correct backup file
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                if (lastArchiveFile.exists()) {</span>
+<span class="nc" id="L201">                    lastArchiveFile.delete();</span>
+                }
+<span class="nc bnc" id="L203" title="All 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
+<span class="nc" id="L204">                    tempFile.renameTo(lastArchiveFile);</span>
+                }
+<span class="nc bnc" id="L206" title="All 2 branches missed.">                if (tempFile.exists()) {</span>
+<span class="nc" id="L207">                    tempFile.delete();</span>
+                }
+            }
+
+<span class="nc" id="L211">            progressMgr.nextPhase();</span>
+
+<span class="nc" id="L213">        } catch (Exception e) {</span>
+<span class="nc" id="L214">            LOG.log(Level.SEVERE, &quot;Exception occured during save attempt&quot;, e);</span>
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">            if (doSafeSaves) {</span>
+                // frank: in case of exception
+                // delete name and mv name+&quot;#&quot; back to name if name+&quot;#&quot; exists
+                // this is the &quot;rollback&quot; to old file
+<span class="nc" id="L220">                file.delete();</span>
+<span class="nc" id="L221">                tempFile.renameTo(file);</span>
+            }
+<span class="nc bnc" id="L223" title="All 2 branches missed.">            if (e instanceof InterruptedException) {</span>
+<span class="nc" id="L224">                throw (InterruptedException) e;</span>
+            } else {
+                // we have to give a message to user and set the system
+                // to unsaved!
+<span class="nc" id="L228">                throw new SaveException(e);</span>
+            }
+<span class="nc" id="L230">        }</span>
+<span class="nc" id="L231">    }</span>
+
+    /**
+     * The .uml save format is no longer available to save.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isSaveEnabled() {
+<span class="fc" id="L240">        return true;</span>
+    }
+
+    /**
+     * Write the output for a project on the given stream.
+     *
+     * @param project The project to output.
+     * @param stream The stream to write to.
+     * @throws SaveException If something goes wrong.
+     * @throws InterruptedException if the thread is interrupted
+     */
+    void writeProject(Project project, OutputStream oStream,
+            ProgressMgr progressMgr) throws SaveException, InterruptedException {
+        OutputStreamWriter outputStreamWriter;
+        try {
+<span class="nc" id="L255">            outputStreamWriter = new OutputStreamWriter(oStream, Argo</span>
+<span class="nc" id="L256">                    .getEncoding());</span>
+<span class="nc" id="L257">        } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L258">            throw new SaveException(e);</span>
+<span class="nc" id="L259">        }</span>
+<span class="nc" id="L260">        PrintWriter writer = new PrintWriter(new BufferedWriter(</span>
+                outputStreamWriter));
+
+<span class="nc" id="L263">        XmlFilterOutputStream filteredStream = new XmlFilterOutputStream(</span>
+<span class="nc" id="L264">                oStream, Argo.getEncoding());</span>
+        try {
+<span class="nc" id="L266">            writer.println(&quot;&lt;?xml version = \&quot;1.0\&quot; &quot; + &quot;encoding = \&quot;&quot;</span>
+<span class="nc" id="L267">                    + Argo.getEncoding() + &quot;\&quot; ?&gt;&quot;);</span>
+<span class="nc" id="L268">            writer.println(&quot;&lt;uml version=\&quot;&quot; + PERSISTENCE_VERSION + &quot;\&quot;&gt;&quot;);</span>
+            // Write out header section
+            try {
+<span class="nc" id="L271">                Hashtable templates = TemplateReader.getInstance().read(</span>
+                        ARGO_TEE);
+<span class="nc" id="L273">                OCLExpander expander = new OCLExpander(templates);</span>
+<span class="nc" id="L274">                expander.expand(writer, project, &quot;  &quot;);</span>
+<span class="nc" id="L275">            } catch (ExpansionException e) {</span>
+<span class="nc" id="L276">                throw new SaveException(e);</span>
+<span class="nc" id="L277">            }</span>
+<span class="nc" id="L278">            writer.flush();</span>
+
+<span class="nc bnc" id="L280" title="All 2 branches missed.">            if (progressMgr != null) {</span>
+<span class="nc" id="L281">                progressMgr.nextPhase();</span>
+            }
+
+            // Note we assume members are ordered correctly already
+<span class="nc bnc" id="L285" title="All 2 branches missed.">            for (ProjectMember projectMember : project.getMembers()) {</span>
+
+<span class="nc" id="L287">                LOG.log(Level.INFO, &quot;Saving member: {0}&quot;, projectMember);</span>
+
+<span class="nc" id="L289">                MemberFilePersister persister = getMemberFilePersister(projectMember);</span>
+<span class="nc" id="L290">                filteredStream.startEntry();</span>
+<span class="nc" id="L291">                persister.save(projectMember, filteredStream);</span>
+                try {
+<span class="nc" id="L293">                    filteredStream.flush();</span>
+<span class="nc" id="L294">                } catch (IOException e) {</span>
+<span class="nc" id="L295">                    throw new SaveException(e);</span>
+<span class="nc" id="L296">                }</span>
+<span class="nc" id="L297">            }</span>
+
+<span class="nc" id="L299">            writer.println(&quot;&lt;/uml&gt;&quot;);</span>
+
+<span class="nc" id="L301">            writer.flush();</span>
+        } finally {
+<span class="nc" id="L303">            writer.close();</span>
+            try {
+<span class="nc" id="L305">                filteredStream.reallyClose();</span>
+<span class="nc" id="L306">            } catch (IOException e) {</span>
+<span class="nc" id="L307">                throw new SaveException(e);</span>
+<span class="nc" id="L308">            }</span>
+        }
+<span class="nc" id="L310">    }</span>
+
+    /*
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
+     */
+    public Project doLoad(File file) throws OpenException, InterruptedException {
+        // let's initialize the progressMgr
+<span class="nc" id="L317">        ProgressMgr progressMgr = new ProgressMgr();</span>
+<span class="nc" id="L318">        progressMgr.setNumberOfPhases(UML_PHASES_LOAD);</span>
+
+<span class="nc" id="L320">        ThreadUtils.checkIfInterrupted();</span>
+<span class="nc" id="L321">        return doLoad(file, file, progressMgr);</span>
+    }
+
+    protected Project doLoad(File originalFile, File file,
+            ProgressMgr progressMgr) throws OpenException, InterruptedException {
+
+<span class="fc" id="L327">        XmlInputStream inputStream = null;</span>
+        try {
+<span class="fc" id="L329">            Project p = ProjectFactory.getInstance()</span>
+<span class="fc" id="L330">                    .createProject(file.toURI());</span>
+
+            // Run through any stylesheet upgrades
+<span class="fc" id="L333">            int fileVersion = getPersistenceVersionFromFile(file);</span>
+
+<span class="fc" id="L335">            LOG.log(Level.INFO, &quot;Loading uml file of version {0}&quot;, fileVersion);</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">            if (!checkVersion(fileVersion, getReleaseVersionFromFile(file))) {</span>
+                // If we're about to upgrade the file lets take an archive
+                // of it first.
+<span class="fc" id="L339">                String release = getReleaseVersionFromFile(file);</span>
+<span class="fc" id="L340">                copyFile(originalFile, new File(originalFile.getAbsolutePath()</span>
+                        + '~' + release));
+
+<span class="fc" id="L343">                progressMgr.setNumberOfPhases(progressMgr.getNumberOfPhases()</span>
+                        + (PERSISTENCE_VERSION - fileVersion));
+
+<span class="fc bfc" id="L346" title="All 2 branches covered.">                while (fileVersion &lt; PERSISTENCE_VERSION) {</span>
+<span class="fc" id="L347">                    ++fileVersion;</span>
+
+<span class="fc" id="L349">                    LOG.log(Level.INFO, &quot;Upgrading to version {0}&quot;, fileVersion);</span>
+
+<span class="fc" id="L351">                    long startTime = System.currentTimeMillis();</span>
+<span class="fc" id="L352">                    file = transform(file, fileVersion);</span>
+
+<span class="fc" id="L354">                    long endTime = System.currentTimeMillis();</span>
+<span class="fc" id="L355">                    LOG.log(Level.INFO, &quot;Upgrading took &quot; + ((endTime - startTime) / 1000)</span>
+                            + &quot; seconds&quot;);
+<span class="fc" id="L357">                    progressMgr.nextPhase();</span>
+<span class="fc" id="L358">                }</span>
+            }
+
+<span class="fc" id="L361">            progressMgr.nextPhase();</span>
+
+<span class="fc" id="L363">            inputStream = new XmlInputStream(file.toURI().toURL().openStream(),</span>
+<span class="fc" id="L364">                    &quot;argo&quot;, file.length(), 100000);</span>
+
+<span class="fc" id="L366">            ArgoParser parser = new ArgoParser();</span>
+<span class="fc" id="L367">            Reader reader = new InputStreamReader(inputStream, Argo</span>
+<span class="fc" id="L368">                    .getEncoding());</span>
+<span class="fc" id="L369">            parser.readProject(p, reader);</span>
+
+<span class="fc" id="L371">            List memberList = parser.getMemberList();</span>
+
+<span class="fc" id="L373">            LOG.log(Level.INFO,memberList.size() + &quot; members&quot;);</span>
+
+<span class="fc bfc" id="L375" title="All 2 branches covered.">            for (int i = 0; i &lt; memberList.size(); ++i) {</span>
+<span class="fc" id="L376">                MemberFilePersister persister = getMemberFilePersister((String) memberList</span>
+<span class="fc" id="L377">                        .get(i));</span>
+<span class="fc" id="L378">                LOG.log(Level.INFO, &quot;Loading member with &quot;+ persister.getClass().getName());</span>
+
+<span class="fc" id="L380">                inputStream.reopen(persister.getMainTag());</span>
+                // TODO: Do we need to set the input encoding here? It was
+                // done for ToDo parsing, but none of the other member types
+                // InputSource inputSource = new InputSource(
+                // new InputStreamReader(inputStream, Argo
+                // .getEncoding()));
+<span class="fc" id="L386">                InputSource inputSource = new InputSource(inputStream);</span>
+                // Don't use systemId here or it will get opened in preference
+                // to inputStream.
+<span class="fc" id="L389">                inputSource.setPublicId(originalFile.toURI().toURL()</span>
+<span class="fc" id="L390">                        .toExternalForm());</span>
+                try {
+<span class="fc" id="L392">                    persister.load(p, inputSource);</span>
+<span class="fc" id="L393">                } catch (OpenException e) {</span>
+                    // UML 2.x files could also contain a profile model.
+                    // Try again with uml:Profile as main tag.
+<span class="pc bpc" id="L396" title="1 of 2 branches missed.">                    if (&quot;uml:Model&quot;.equals(persister.getMainTag())</span>
+<span class="nc bnc" id="L397" title="All 2 branches missed.">                            &amp;&amp; e.getCause() instanceof UmlException</span>
+<span class="nc bnc" id="L398" title="All 2 branches missed.">                            &amp;&amp; e.getCause().getCause() instanceof IOException) {</span>
+<span class="nc" id="L399">                        inputStream.reopen(&quot;uml:Profile&quot;);</span>
+<span class="nc" id="L400">                        persister.load(p, inputSource);</span>
+<span class="nc" id="L401">                        p.setProjectType(Project.PROFILE_PROJECT);</span>
+                    } else {
+<span class="fc" id="L403">                        throw e;</span>
+                    }
+<span class="fc" id="L405">                }</span>
+            }
+
+            // let's update the progress
+<span class="fc" id="L409">            progressMgr.nextPhase();</span>
+<span class="fc" id="L410">            ThreadUtils.checkIfInterrupted();</span>
+<span class="fc" id="L411">            inputStream.realClose();</span>
+<span class="fc" id="L412">            p.postLoad();</span>
+<span class="fc" id="L413">            return p;</span>
+<span class="nc" id="L414">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L415">            throw e;</span>
+<span class="fc" id="L416">        } catch (OpenException e) {</span>
+<span class="fc" id="L417">            throw e;</span>
+<span class="nc" id="L418">        } catch (IOException e) {</span>
+<span class="nc" id="L419">            throw new OpenException(e);</span>
+<span class="nc" id="L420">        } catch (SAXException e) {</span>
+<span class="nc" id="L421">            throw new OpenException(e);</span>
+        }
+    }
+
+    protected boolean checkVersion(int fileVersion, String releaseVersion)
+        throws OpenException, VersionException {
+        // If we're trying to load a file from a future version
+        // complain and refuse.
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">        if (fileVersion &gt; PERSISTENCE_VERSION) {</span>
+<span class="nc" id="L430">            throw new VersionException(</span>
+                    &quot;The file selected is from a more up to date version of &quot;
+                            + &quot;ArgoUML. It has been saved with ArgoUML version &quot;
+                            + releaseVersion
+                            + &quot;. Please load with that or a more up to date&quot;
+                            + &quot;release of ArgoUML&quot;);
+        }
+<span class="fc bfc" id="L437" title="All 2 branches covered.">        return fileVersion &gt;= PERSISTENCE_VERSION;</span>
+    }
+
+    /**
+     * Transform a string of XML data according to the service required.
+     *
+     * @param file The XML file to be transformed
+     * @param version the version of the persistence format the XML is to be
+     *            transformed to.
+     * @return the transformed XML file
+     * @throws OpenException on XSLT transformation error or file read
+     */
+    public final File transform(File file, int version) throws OpenException {
+
+        try {
+<span class="fc" id="L452">            String upgradeFilesPath = &quot;/org/argouml/persistence/upgrades/&quot;;</span>
+<span class="fc" id="L453">            String upgradeFile = &quot;upgrade&quot; + version + &quot;.xsl&quot;;</span>
+
+<span class="fc" id="L455">            String xsltFileName = upgradeFilesPath + upgradeFile;</span>
+<span class="fc" id="L456">            URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);</span>
+
+<span class="fc" id="L458">            LOG.log(Level.INFO, &quot;Resource is {0}&quot;, xsltUrl);</span>
+
+            // Read xsltStream into a temporary file
+            // Get url for temp file.
+            // openStream from url and wrap in StreamSource
+<span class="fc" id="L463">            StreamSource xsltStreamSource = new StreamSource(xsltUrl</span>
+<span class="fc" id="L464">                    .openStream());</span>
+<span class="fc" id="L465">            xsltStreamSource.setSystemId(xsltUrl.toExternalForm());</span>
+
+<span class="fc" id="L467">            TransformerFactory factory = TransformerFactory.newInstance();</span>
+<span class="fc" id="L468">            Transformer transformer = factory.newTransformer(xsltStreamSource);</span>
+
+<span class="fc" id="L470">            File transformedFile = File.createTempFile(&quot;upgrade_&quot; + version</span>
+                    + &quot;_&quot;, &quot;.uml&quot;);
+<span class="fc" id="L472">            transformedFile.deleteOnExit();</span>
+
+<span class="fc" id="L474">            FileOutputStream stream = new FileOutputStream(transformedFile);</span>
+<span class="fc" id="L475">            Writer writer = new BufferedWriter(new OutputStreamWriter(stream,</span>
+<span class="fc" id="L476">                    Argo.getEncoding()));</span>
+<span class="fc" id="L477">            Result result = new StreamResult(writer);</span>
+
+<span class="fc" id="L479">            StreamSource inputStreamSource = new StreamSource(file);</span>
+<span class="fc" id="L480">            inputStreamSource.setSystemId(file);</span>
+<span class="fc" id="L481">            transformer.transform(inputStreamSource, result);</span>
+
+<span class="fc" id="L483">            writer.close();</span>
+<span class="fc" id="L484">            return transformedFile;</span>
+<span class="nc" id="L485">        } catch (IOException e) {</span>
+<span class="nc" id="L486">            throw new OpenException(e);</span>
+<span class="nc" id="L487">        } catch (TransformerException e) {</span>
+<span class="nc" id="L488">            throw new OpenException(e);</span>
+        }
+    }
+
+    /**
+     * Read stream in .argo format and extracts the persistence version number
+     * from the root tag.
+     *
+     * @param file the XML file
+     * @return The version number
+     * @throws OpenException on any error
+     */
+    private int getPersistenceVersionFromFile(File file) throws OpenException {
+<span class="fc" id="L501">        InputStream stream = null;</span>
+        try {
+<span class="fc" id="L503">            stream = new BufferedInputStream(file.toURI().toURL().openStream());</span>
+<span class="fc" id="L504">            int version = getPersistenceVersion(stream);</span>
+<span class="fc" id="L505">            stream.close();</span>
+<span class="fc" id="L506">            return version;</span>
+<span class="nc" id="L507">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L508">            throw new OpenException(e);</span>
+<span class="nc" id="L509">        } catch (IOException e) {</span>
+<span class="nc" id="L510">            throw new OpenException(e);</span>
+        } finally {
+<span class="pc bpc" id="L512" title="1 of 2 branches missed.">            if (stream != null) {</span>
+                try {
+<span class="fc" id="L514">                    stream.close();</span>
+<span class="nc" id="L515">                } catch (IOException e) {</span>
+                    // ignore
+<span class="fc" id="L517">                }</span>
+            }
+        }
+    }
+
+    /**
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     *
+     * @param inputStream stream pointing to file to read.
+     * @return The version number
+     * @throws OpenException on any error
+     */
+    protected int getPersistenceVersion(InputStream inputStream)
+        throws OpenException {
+
+<span class="fc" id="L533">        BufferedReader reader = null;</span>
+        try {
+<span class="fc" id="L535">            reader = new BufferedReader(new InputStreamReader(inputStream, Argo</span>
+<span class="fc" id="L536">                    .getEncoding()));</span>
+<span class="fc" id="L537">            String rootLine = reader.readLine();</span>
+<span class="fc bfc" id="L538" title="All 4 branches covered.">            while (rootLine != null &amp;&amp; !rootLine.trim().startsWith(&quot;&lt;argo &quot;)) {</span>
+<span class="fc" id="L539">                rootLine = reader.readLine();</span>
+            }
+<span class="fc bfc" id="L541" title="All 2 branches covered.">            if (rootLine == null) {</span>
+<span class="fc" id="L542">                return 1;</span>
+            }
+<span class="fc" id="L544">            return Integer.parseInt(getVersion(rootLine));</span>
+<span class="nc" id="L545">        } catch (IOException e) {</span>
+<span class="nc" id="L546">            throw new OpenException(e);</span>
+<span class="nc" id="L547">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L548">            throw new OpenException(e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L551" title="1 of 2 branches missed.">                if (reader != null) {</span>
+<span class="fc" id="L552">                    reader.close();</span>
+                }
+<span class="nc" id="L554">            } catch (IOException e) {</span>
+                // No more we can do here on failure
+<span class="fc" id="L556">            }</span>
+        }
+    }
+
+    /**
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     *
+     * @param file the XML file
+     * @return The ArgoUML release number
+     * @throws OpenException on any error
+     */
+    private String getReleaseVersionFromFile(File file) throws OpenException {
+<span class="fc" id="L569">        InputStream stream = null;</span>
+        try {
+<span class="fc" id="L571">            stream = new BufferedInputStream(file.toURI().toURL().openStream());</span>
+<span class="fc" id="L572">            String version = getReleaseVersion(stream);</span>
+<span class="fc" id="L573">            stream.close();</span>
+<span class="fc" id="L574">            return version;</span>
+<span class="nc" id="L575">        } catch (MalformedURLException e) {</span>
+<span class="nc" id="L576">            throw new OpenException(e);</span>
+<span class="nc" id="L577">        } catch (IOException e) {</span>
+<span class="nc" id="L578">            throw new OpenException(e);</span>
+        } finally {
+<span class="pc bpc" id="L580" title="1 of 2 branches missed.">            if (stream != null) {</span>
+                try {
+<span class="fc" id="L582">                    stream.close();</span>
+<span class="nc" id="L583">                } catch (IOException e) {</span>
+                    // ignore
+<span class="fc" id="L585">                }</span>
+            }
+        }
+    }
+
+    /**
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     *
+     * @param inputStream the stream point to the XML file
+     * @return The ArgoUML release number
+     * @throws OpenException on any error
+     */
+    protected String getReleaseVersion(InputStream inputStream)
+        throws OpenException {
+
+<span class="fc" id="L601">        BufferedReader reader = null;</span>
+        try {
+<span class="fc" id="L603">            reader = new BufferedReader(new InputStreamReader(inputStream, Argo</span>
+<span class="fc" id="L604">                    .getEncoding()));</span>
+<span class="fc" id="L605">            String versionLine = reader.readLine();</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">            while (!versionLine.trim().startsWith(&quot;&lt;version&gt;&quot;)) {</span>
+<span class="fc" id="L607">                versionLine = reader.readLine();</span>
+<span class="pc bpc" id="L608" title="1 of 2 branches missed.">                if (versionLine == null) {</span>
+<span class="nc" id="L609">                    throw new OpenException(</span>
+                            &quot;Failed to find the release &lt;version&gt; tag&quot;);
+                }
+            }
+<span class="fc" id="L613">            versionLine = versionLine.trim();</span>
+<span class="fc" id="L614">            int end = versionLine.lastIndexOf(&quot;&lt;/version&gt;&quot;);</span>
+<span class="fc" id="L615">            return versionLine.trim().substring(9, end);</span>
+<span class="nc" id="L616">        } catch (IOException e) {</span>
+<span class="nc" id="L617">            throw new OpenException(e);</span>
+<span class="nc" id="L618">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L619">            throw new OpenException(e);</span>
+        } finally {
+            try {
+<span class="pc bpc" id="L622" title="1 of 2 branches missed.">                if (inputStream != null) {</span>
+<span class="fc" id="L623">                    inputStream.close();</span>
+                }
+<span class="pc bpc" id="L625" title="1 of 2 branches missed.">                if (reader != null) {</span>
+<span class="fc" id="L626">                    reader.close();</span>
+                }
+<span class="nc" id="L628">            } catch (IOException e) {</span>
+                // No more we can do here on failure
+<span class="fc" id="L630">            }</span>
+        }
+    }
+
+    /**
+     * Get the version attribute value from a string of XML.
+     *
+     * @param rootLine the line
+     * @return the version
+     */
+    protected String getVersion(String rootLine) {
+        String version;
+<span class="fc" id="L642">        int versionPos = rootLine.indexOf(&quot;version=\&quot;&quot;);</span>
+<span class="fc bfc" id="L643" title="All 2 branches covered.">        if (versionPos &gt; 0) {</span>
+<span class="fc" id="L644">            int startPos = versionPos + 9;</span>
+<span class="fc" id="L645">            int endPos = rootLine.indexOf(&quot;\&quot;&quot;, startPos);</span>
+<span class="fc" id="L646">            version = rootLine.substring(startPos, endPos);</span>
+<span class="fc" id="L647">        } else {</span>
+<span class="fc" id="L648">            version = &quot;1&quot;;</span>
+        }
+<span class="fc" id="L650">        return version;</span>
+    }
+
+    /**
+     * Returns true. All Argo specific files have an icon.
+     *
+     * {@inheritDoc}
+     */
+    public boolean hasAnIcon() {
+<span class="nc" id="L659">        return true;</span>
+    }
+
+    /**
+     * Class to filter XML declaration and DOCTYPE declaration from an output
+     * stream to allow use as nested XML files.
+     *
+     * @author Tom Morris
+     */
+    class XmlFilterOutputStream extends FilterOutputStream {
+
+        private CharsetDecoder decoder;
+
+<span class="nc" id="L672">        private boolean headerProcessed = false;</span>
+
+        private static final int BUFFER_SIZE = 120;
+
+        /**
+         * The following three fields make up a doubly mapped buffer with two
+         * sets of pointers (the ByteBuffer objects), one for input and one for
+         * output. Bytes are written into the buffer using outBB which advances
+         * the current position. The following ASCII art shows what the buffer
+         * looks like.&lt;code&gt;
+         *           vp       vl
+         * xxxxxx++++..........
+         *       ^p  ^l
+         * &lt;/code&gt; vp &amp; vl are the output (buffer writing) position and limit,
+         * respectively and show the free space that can receive bytes. The ^p
+         * and ^l pointers show the input (buffer reading) position and limit.
+         * They point to valid bytes which have not yet been converted to
+         * characters. The xxx bytes have been both written in and read back
+         * out. The +++ bytes have been written into the buffer, but not read
+         * out yet.
+         */
+<span class="nc" id="L693">        private byte[] bytes = new byte[BUFFER_SIZE * 2];</span>
+
+<span class="nc" id="L695">        private ByteBuffer outBB = ByteBuffer.wrap(bytes);</span>
+
+<span class="nc" id="L697">        private ByteBuffer inBB = ByteBuffer.wrap(bytes);</span>
+
+        // Buffer containing characters which have been decoded from the bytes
+        // in inBB.
+<span class="nc" id="L701">        private CharBuffer outCB = CharBuffer.allocate(BUFFER_SIZE);</span>
+
+        // RegEx pattern for XML declaration and, optionally, DOCTYPE
+        // Backslashes are doubled up - one for Java, one for Regex
+<span class="nc" id="L705">        private final Pattern xmlDeclarationPattern = Pattern</span>
+<span class="nc" id="L706">                .compile(&quot;\\s*&lt;\\?xml.*\\?&gt;\\s*(&lt;!DOCTYPE.*&gt;\\s*)?&quot;);</span>
+
+        /**
+         * Construct a filtered output stream using the given character set
+         * name.
+         *
+         * @param outputStream source output stream to filter
+         * @param charsetName name of character set to use for encoding
+         */
+        public XmlFilterOutputStream(OutputStream outputStream,
+                String charsetName) {
+<span class="nc" id="L717">            this(outputStream, Charset.forName(charsetName));</span>
+<span class="nc" id="L718">        }</span>
+
+        /**
+         * Construct a filtered output stream using the given character set.
+         *
+         * @param outputStream source output stream to filter
+         * @param charset character set to use for encoding
+         */
+<span class="nc" id="L726">        public XmlFilterOutputStream(OutputStream outputStream, Charset charset) {</span>
+<span class="nc" id="L727">            super(outputStream);</span>
+<span class="nc" id="L728">            decoder = charset.newDecoder();</span>
+<span class="nc" id="L729">            decoder.onMalformedInput(CodingErrorAction.REPORT);</span>
+<span class="nc" id="L730">            decoder.onUnmappableCharacter(CodingErrorAction.REPORT);</span>
+<span class="nc" id="L731">            startEntry();</span>
+<span class="nc" id="L732">        }</span>
+
+        /**
+         * Reset processing for the beginning of an entry.
+         */
+        public void startEntry() {
+<span class="nc" id="L738">            headerProcessed = false;</span>
+<span class="nc" id="L739">            resetBuffers();</span>
+<span class="nc" id="L740">        }</span>
+
+        private void resetBuffers() {
+<span class="nc" id="L743">            inBB.limit(0);</span>
+<span class="nc" id="L744">            outBB.position(0);</span>
+<span class="nc" id="L745">            outCB.position(0);</span>
+<span class="nc" id="L746">        }</span>
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+<span class="nc bnc" id="L750" title="All 2 branches missed.">            if ((off | len | (b.length - (len + off)) | (off + len)) &lt; 0) {</span>
+<span class="nc" id="L751">                throw new IndexOutOfBoundsException();</span>
+            }
+
+<span class="nc bnc" id="L754" title="All 2 branches missed.">            if (headerProcessed) {</span>
+<span class="nc" id="L755">                out.write(b, off, len);</span>
+            } else {
+                // TODO: Make this more efficient for large I/Os
+<span class="nc bnc" id="L758" title="All 2 branches missed.">                for (int i = 0; i &lt; len; i++) {</span>
+<span class="nc" id="L759">                    write(b[off + i]);</span>
+                }
+            }
+
+<span class="nc" id="L763">        }</span>
+
+        @Override
+        public void write(int b) throws IOException {
+
+<span class="nc bnc" id="L768" title="All 2 branches missed.">            if (headerProcessed) {</span>
+<span class="nc" id="L769">                out.write(b);</span>
+            } else {
+<span class="nc" id="L771">                outBB.put((byte) b);</span>
+<span class="nc" id="L772">                inBB.limit(outBB.position());</span>
+                // Convert from bytes back to characters
+<span class="nc" id="L774">                CoderResult result = decoder.decode(inBB, outCB, false);</span>
+<span class="nc bnc" id="L775" title="All 2 branches missed.">                if (result.isError()) {</span>
+<span class="nc" id="L776">                    throw new RuntimeException(</span>
+                            &quot;Unknown character decoding error&quot;);
+                }
+
+                // This will have problems if the smallest possible
+                // data segment is smaller than the size of the buffer
+                // needed for regex matching
+<span class="nc bnc" id="L783" title="All 2 branches missed.">                if (outCB.position() == outCB.limit()) {</span>
+<span class="nc" id="L784">                    processHeader();</span>
+                }
+
+            }
+<span class="nc" id="L788">        }</span>
+
+        private void processHeader() throws IOException {
+<span class="nc" id="L791">            headerProcessed = true;</span>
+<span class="nc" id="L792">            outCB.position(0); // rewind our character buffer</span>
+
+<span class="nc" id="L794">            Matcher matcher = xmlDeclarationPattern.matcher(outCB);</span>
+            // Remove anything that matches our pattern
+<span class="nc" id="L796">            String headerRemainder = matcher.replaceAll(&quot;&quot;);</span>
+<span class="nc" id="L797">            int index = headerRemainder.length() - 1;</span>
+<span class="nc bnc" id="L798" title="All 2 branches missed.">            if (headerRemainder.charAt(index) == '\0') {</span>
+                // Remove null characters at the end
+                do {
+<span class="nc" id="L801">                    index--;</span>
+<span class="nc bnc" id="L802" title="All 4 branches missed.">                } while (index &gt;= 0 &amp;&amp; headerRemainder.charAt(index) == '\0');</span>
+<span class="nc" id="L803">                headerRemainder = headerRemainder.substring(0, index + 1);</span>
+            }
+
+            // Reencode the remaining characters as bytes again
+<span class="nc" id="L807">            ByteBuffer bb = decoder.charset().encode(headerRemainder);</span>
+
+            // and write them to our output stream
+<span class="nc" id="L810">            byte[] outBytes = new byte[bb.limit()];</span>
+<span class="nc" id="L811">            bb.get(outBytes);</span>
+<span class="nc" id="L812">            out.write(outBytes, 0, outBytes.length);</span>
+
+            // Write any left over bytes in the input buffer
+            // (perhaps from a partially decoded character)
+<span class="nc bnc" id="L816" title="All 2 branches missed.">            if (inBB.remaining() &gt; 0) {</span>
+<span class="nc" id="L817">                out.write(inBB.array(), inBB.position(), inBB.remaining());</span>
+<span class="nc" id="L818">                inBB.position(0);</span>
+<span class="nc" id="L819">                inBB.limit(0);</span>
+            }
+<span class="nc" id="L821">        }</span>
+
+        /**
+         * This method has no effect to keep sub-writers from closing it
+         * accidently. The master can use the method {@link #reallyClose()} to
+         * actually close the underlying stream.
+         */
+        @Override
+        public void close() throws IOException {
+<span class="nc" id="L830">            flush();</span>
+<span class="nc" id="L831">        }</span>
+
+        /**
+         * Close the stream.
+         *
+         * @throws IOException
+         */
+        public void reallyClose() throws IOException {
+<span class="nc" id="L839">            out.close();</span>
+<span class="nc" id="L840">        }</span>
+
+        /**
+         * Flush the stream. If the stream is flushed before the header is
+         * completely processed, whatever has been written so far will get
+         * processed before the flush.
+         */
+        @Override
+        public void flush() throws IOException {
+<span class="nc bnc" id="L849" title="All 2 branches missed.">            if (!headerProcessed) {</span>
+<span class="nc" id="L850">                processHeader();</span>
+            }
+<span class="nc" id="L852">            out.flush();</span>
+<span class="nc" id="L853">        }</span>
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

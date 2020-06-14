@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FigTransition.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.state.ui</a> &gt; <span class="el_source">FigTransition.java</span></div><h1>FigTransition.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    mvw
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2009 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.state.ui;
+
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.util.Vector;
+
+import javax.swing.Action;
+
+import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewDestroyAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReturnAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewSendAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewTerminateAction;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
+import org.argouml.uml.ui.behavior.state_machines.ButtonActionNewGuard;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+
+/**
+ * This class represents the graphical representation of a transition
+ * on a Statechart diagram and an Activity diagram.
+ */
+public class FigTransition extends FigEdgeModelElement {
+
+<span class="fc" id="L74">    private ArrowHeadGreater endArrow = new ArrowHeadGreater();</span>
+
+    /**
+     * If &lt;code&gt;dashed&lt;/code&gt; is true, then the transition represents
+     * &quot;object flow&quot;.
+     * If the line is solid, then it represents &quot;control flow&quot;.
+     */
+    private boolean dashed;
+    
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    public FigTransition(Object owner, DiagramSettings settings) {
+<span class="fc" id="L90">        super(owner, settings);</span>
+        
+<span class="fc" id="L92">        initializeTransition();</span>
+<span class="fc" id="L93">    }</span>
+
+    private void initializeTransition() {
+<span class="fc" id="L96">        addPathItem(getNameFig(),</span>
+<span class="fc" id="L97">                new PathItemPlacement(this, getNameFig(), 50, 10));</span>
+<span class="fc" id="L98">        getFig().setLineColor(LINE_COLOR);</span>
+<span class="fc" id="L99">        setDestArrowHead(endArrow);</span>
+<span class="fc" id="L100">        allowRemoveFromDiagram(false);</span>
+        
+<span class="fc" id="L102">        updateDashed();</span>
+<span class="fc" id="L103">    }</span>
+
+    @Override
+    public void setLayer(Layer lay) {
+<span class="fc" id="L107">        super.setLayer(lay);</span>
+
+        /* This presumes that the layer is set after the owner: */
+<span class="pc bpc" id="L110" title="1 of 4 branches missed.">        if (getLayer() != null &amp;&amp; getOwner() != null) {</span>
+<span class="fc" id="L111">            initPorts(lay, getOwner());</span>
+        }
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Set the owners of the associated FigNodes to be the StateVertexes which
+     * are at either end of the Transition.
+     * &lt;p&gt;
+     * TODO: This needs documentation! Is this really needed? Why?
+     * 
+     * @param lay diagram layer containing this fig
+     * @param owner owning UML element
+     * @deprecated in 0.28 by Bob Tarling - The above TODO is from Michiel.
+     * I also don't understand the purpose of this method. The GEF framework
+     * should be setting source/dest or persistence should manage.
+     */
+    @Deprecated
+    private void initPorts(Layer lay, Object owner) {
+<span class="fc" id="L129">        final Object sourceSV = Model.getFacade().getSource(owner);</span>
+<span class="fc" id="L130">        final FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">        if (sourceFN != null) {</span>
+            // The purpose of this method is not explained and it give give
+            // NPE depending on z order of figs as they are read. For now
+            // ignore if null but for future lets delete this.
+<span class="fc" id="L135">            setSourcePortFig(sourceFN);</span>
+<span class="fc" id="L136">            setSourceFigNode(sourceFN);</span>
+        }
+        
+<span class="fc" id="L139">        final Object destSV = Model.getFacade().getTarget(owner);</span>
+<span class="fc" id="L140">        final FigNode destFN = (FigNode) lay.presentationFor(destSV);</span>
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (destFN != null) {</span>
+            // The purpose of this method is not explained and it give give
+            // NPE depending on z order of figs as they are read. For now
+            // ignore if null but for future lets delete this.
+<span class="fc" id="L145">            setDestPortFig(destFN);</span>
+<span class="fc" id="L146">            setDestFigNode(destFN);</span>
+        }
+<span class="fc" id="L148">    }</span>
+
+    /*
+     * The Transition has a name text box. It contains:
+     * &lt;ul&gt;
+     * &lt;li&gt;The event-signature
+     * &lt;li&gt;The guard condition between []
+     * &lt;li&gt;The action expression
+     * &lt;/ul&gt;&lt;p&gt;
+     *
+     * The content of the text box is generated by its own notationProvider.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
+     */
+    @Override
+    protected int getNotationProviderType() {
+<span class="fc" id="L164">        return NotationProviderFactory2.TYPE_TRANSITION;</span>
+    }
+
+    @Override
+    public void renderingChanged() {
+<span class="nc" id="L169">        super.renderingChanged();</span>
+<span class="nc" id="L170">        updateDashed();</span>
+<span class="nc" id="L171">    }</span>
+    
+    /**
+     * The transition is dashed if connected to an 
+     * ObjectFlowState (only for an Activity diagram).
+     * This method updates the rendering of the transition on the diagram.
+     */
+    private void updateDashed() {
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (Model.getFacade().isATransition(getOwner())) {</span>
+<span class="fc" id="L180">            dashed =</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                Model.getFacade().isAObjectFlowState(</span>
+<span class="fc" id="L182">                        Model.getFacade().getSource(getOwner()))</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">                    || Model.getFacade().isAObjectFlowState(</span>
+<span class="fc" id="L184">                            Model.getFacade().getTarget(getOwner()));</span>
+<span class="fc" id="L185">            getFig().setDashed(dashed);</span>
+        }
+<span class="fc" id="L187">    }</span>
+
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+<span class="nc" id="L191">        Vector popUpActions = super.getPopUpActions(me);</span>
+        /* Check if multiple items are selected: */
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        boolean ms = TargetManager.getInstance().getTargets().size() &gt; 1;</span>
+        /* None of the menu-items below apply
+         * when multiple modelelements are selected:*/
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (ms) {</span>
+<span class="nc" id="L197">            return popUpActions;</span>
+        }
+
+        Action a;
+
+<span class="nc" id="L202">        ArgoJMenu triggerMenu =</span>
+            new ArgoJMenu(&quot;menu.popup.trigger&quot;);
+<span class="nc" id="L204">        a = new ButtonActionNewCallEvent();</span>
+<span class="nc" id="L205">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L206">        triggerMenu.add(a);</span>
+<span class="nc" id="L207">        a = new ButtonActionNewChangeEvent();</span>
+<span class="nc" id="L208">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L209">        triggerMenu.add(a);</span>
+<span class="nc" id="L210">        a = new ButtonActionNewSignalEvent();</span>
+<span class="nc" id="L211">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L212">        triggerMenu.add(a);</span>
+<span class="nc" id="L213">        a = new ButtonActionNewTimeEvent();</span>
+<span class="nc" id="L214">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L215">        triggerMenu.add(a);</span>
+<span class="nc" id="L216">        popUpActions.add(</span>
+<span class="nc" id="L217">                popUpActions.size() - getPopupAddOffset(),</span>
+                triggerMenu);
+
+<span class="nc" id="L220">        a = new ButtonActionNewGuard();</span>
+<span class="nc" id="L221">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L222">        popUpActions.add(popUpActions.size() - getPopupAddOffset(), a);</span>
+
+<span class="nc" id="L224">        ArgoJMenu effectMenu =</span>
+            new ArgoJMenu(&quot;menu.popup.effect&quot;);
+<span class="nc" id="L226">        a = ActionNewCallAction.getButtonInstance();</span>
+<span class="nc" id="L227">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L228">        effectMenu.add(a);</span>
+<span class="nc" id="L229">        a = ActionNewCreateAction.getButtonInstance();</span>
+<span class="nc" id="L230">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L231">        effectMenu.add(a);</span>
+<span class="nc" id="L232">        a = ActionNewDestroyAction.getButtonInstance();</span>
+<span class="nc" id="L233">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L234">        effectMenu.add(a);</span>
+<span class="nc" id="L235">        a = ActionNewReturnAction.getButtonInstance();</span>
+<span class="nc" id="L236">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L237">        effectMenu.add(a);</span>
+<span class="nc" id="L238">        a = ActionNewSendAction.getButtonInstance();</span>
+<span class="nc" id="L239">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L240">        effectMenu.add(a);</span>
+<span class="nc" id="L241">        a = ActionNewTerminateAction.getButtonInstance();</span>
+<span class="nc" id="L242">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L243">        effectMenu.add(a);</span>
+<span class="nc" id="L244">        a = ActionNewUninterpretedAction.getButtonInstance();</span>
+<span class="nc" id="L245">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L246">        effectMenu.add(a);</span>
+<span class="nc" id="L247">        a = ActionNewActionSequence.getButtonInstance();</span>
+<span class="nc" id="L248">        a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));</span>
+<span class="nc" id="L249">        effectMenu.add(a);</span>
+<span class="nc" id="L250">        popUpActions.add(popUpActions.size() - getPopupAddOffset(), </span>
+                effectMenu);
+
+<span class="nc" id="L253">        return popUpActions;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
+    @Override
+    public void setFig(Fig f) {
+<span class="fc" id="L261">        super.setFig(f);</span>
+<span class="fc" id="L262">        getFig().setDashed(dashed);</span>
+<span class="fc" id="L263">    }</span>
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
+     */
+    @Override
+    protected Object getDestination() {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="nc" id="L271">            return Model.getStateMachinesHelper().getDestination(getOwner());</span>
+        }
+<span class="nc" id="L273">        return null;</span>
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
+     */
+    @Override
+    protected Object getSource() {
+<span class="nc bnc" id="L281" title="All 2 branches missed.">        if (getOwner() != null) {</span>
+<span class="nc" id="L282">            return Model.getStateMachinesHelper().getSource(getOwner());</span>
+        }
+<span class="nc" id="L284">        return null;</span>
+    }
+
+    /*
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
+    @Override
+    public void paint(Graphics g) {
+<span class="nc" id="L292">        endArrow.setLineColor(getLineColor());</span>
+<span class="nc" id="L293">        super.paint(g);</span>
+<span class="nc" id="L294">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

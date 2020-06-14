@@ -1,0 +1,772 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ToDoList.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.cognitive</a> &gt; <span class="el_source">ToDoList.java</span></div><h1>ToDoList.java</h1><pre class="source lang-java linenums">/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
+// $Id$
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.cognitive;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Observable;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.event.EventListenerList;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
+
+/**
+ * Implements a list of ToDoItem's.
+ * &lt;p&gt;
+ *
+ * It spawns a &quot;sweeper&quot; thread that periodically goes through the list and
+ * eliminates ToDoItem's that are no longer valid.
+ * &lt;p&gt;
+ *
+ * One difficulty designers face is keeping track of all the myriad details of
+ * their task. It is all too easy to skip a step in the design process, leave
+ * part of the design unspecified, or make a mistake that requires revision.
+ * ArgoUML provides the designer with a &quot;to do&quot; list user interface that
+ * presents action items in an organized form. These items can be suggestions
+ * from critics, reminders to finish steps in the process model, or personal
+ * notes entered by the designer. The choice control at the top of the &quot;to do&quot;
+ * list pane allow the designer to organize items in different ways: by
+ * priority, by decision supported, by offending design element, etc.
+ * &lt;p&gt;
+ *
+ * Items are shown under all applicable headings.
+ * &lt;p&gt;
+ *
+ * This class is dependent on Designer.
+ * &lt;p&gt;
+ *
+ * @see Designer#inform
+ * @author Jason Robbins
+ */
+public class ToDoList extends Observable implements Runnable {
+    /**
+     * Logger.
+     */
+<span class="fc" id="L90">    private static final Logger LOG =</span>
+<span class="fc" id="L91">        Logger.getLogger(ToDoList.class.getName());</span>
+
+    /**
+     * Number of seconds thread should sleep between passes
+     */
+    private static final int SLEEP_SECONDS = 3;
+
+    /**
+     * Pending ToDoItems for the designer to consider.
+     */
+    private List&lt;ToDoItem&gt; items;
+
+    private Set&lt;ToDoItem&gt; itemSet;
+
+    /**
+     * These are computed when needed.
+     */
+    // TODO: Offenders need to be more strongly typed. - tfm 20070630
+    private volatile ListSet allOffenders;
+
+    /**
+     * These are computed when needed.
+     */
+    private volatile ListSet&lt;Poster&gt; allPosters;
+
+    /**
+     * ToDoItems that the designer has explicitly indicated that (s)he considers
+     * resolved.
+     * &lt;p&gt;
+     * TODO: generalize into a design rationale logging facility.
+     */
+    private Set&lt;ResolvedCritic&gt; resolvedItems;
+
+    /**
+     * A Thread that keeps checking if the items on the list are still valid.
+     */
+    private Thread validityChecker;
+
+    /**
+     * The designer, used in determining if a ToDoItem is still valid.
+     */
+    private Designer designer;
+
+    private EventListenerList listenerList;
+
+    private static int longestToDoList;
+
+    private static int numNotValid;
+
+    /**
+     * state variable for whether the validity checking thread is paused
+     * (waiting).
+     */
+    private boolean isPaused;
+
+<span class="fc" id="L146">    private Object pausedMutex = new Object();</span>
+
+    /**
+     * Creates a new todolist. The only ToDoList is owned by the Designer.
+     */
+<span class="fc" id="L151">    ToDoList() {</span>
+
+<span class="fc" id="L153">        items = Collections.synchronizedList(new ArrayList&lt;ToDoItem&gt;(100));</span>
+<span class="fc" id="L154">        itemSet = Collections.synchronizedSet(new HashSet&lt;ToDoItem&gt;(100));</span>
+<span class="fc" id="L155">        resolvedItems =</span>
+<span class="fc" id="L156">            Collections.synchronizedSet(new LinkedHashSet&lt;ResolvedCritic&gt;(100));</span>
+<span class="fc" id="L157">        listenerList = new EventListenerList();</span>
+<span class="fc" id="L158">        longestToDoList = 0;</span>
+<span class="fc" id="L159">        numNotValid = 0;</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Start a Thread to delete old items from the ToDoList.
+     *
+     * @param d the designer
+     */
+    public synchronized void spawnValidityChecker(Designer d) {
+<span class="fc" id="L168">        designer = d;</span>
+<span class="fc" id="L169">        validityChecker = new Thread(this, &quot;Argo-ToDoValidityCheckingThread&quot;);</span>
+<span class="fc" id="L170">        validityChecker.setDaemon(true);</span>
+<span class="fc" id="L171">        validityChecker.setPriority(Thread.MIN_PRIORITY);</span>
+<span class="fc" id="L172">        setPaused(false);</span>
+<span class="fc" id="L173">        validityChecker.start();</span>
+<span class="fc" id="L174">    }</span>
+
+    /**
+     * Entry point for validity checker thread. Periodically check to see if
+     * items on the list are still valid.
+     */
+    public void run() {
+<span class="fc" id="L181">        final List&lt;ToDoItem&gt; removes = new ArrayList&lt;ToDoItem&gt;();</span>
+
+        while (true) {
+
+            // the validity checking thread should wait if disabled.
+<span class="fc" id="L186">            synchronized (pausedMutex) {</span>
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">                while (isPaused) {</span>
+                    try {
+<span class="nc" id="L189">                        pausedMutex.wait();</span>
+<span class="nc" id="L190">                    } catch (InterruptedException ignore) {</span>
+<span class="nc" id="L191">                        LOG.log(Level.SEVERE, &quot;InterruptedException!!!&quot;, ignore);</span>
+<span class="nc" id="L192">                    }</span>
+                }
+<span class="fc" id="L194">            }</span>
+
+<span class="fc" id="L196">            forceValidityCheck(removes);</span>
+<span class="fc" id="L197">            removes.clear();</span>
+            try {
+<span class="fc" id="L199">                Thread.sleep(SLEEP_SECONDS * 1000);</span>
+<span class="nc" id="L200">            } catch (InterruptedException ignore) {</span>
+<span class="nc" id="L201">                LOG.log(Level.SEVERE, &quot;InterruptedException!!!&quot;, ignore);</span>
+<span class="pc" id="L202">            }</span>
+        }
+    }
+
+    /**
+     * Check each ToDoItem on the list to see if it is still valid. If not, then
+     * remove that item. This is called automatically by the
+     * ValidityCheckingThread, and it can be called by the user pressing a
+     * button via forceValidityCheck().
+     */
+    public void forceValidityCheck() {
+<span class="nc" id="L213">        final List&lt;ToDoItem&gt; removes = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="nc" id="L214">        forceValidityCheck(removes);</span>
+<span class="nc" id="L215">    }</span>
+
+    /**
+     * Check each ToDoItem on the list to see if it is still valid. If not, then
+     * remove that item. This is called automatically by the
+     * ValidityCheckingThread, and it can be called by the user pressing a
+     * button via forceValidityCheck().
+     * &lt;p&gt;
+     *
+     * &lt;em&gt;Warning: Fragile code!&lt;/em&gt; No method that this method calls can
+     * synchronized the Designer, otherwise there will be deadlock.
+     *
+     * @param removes a list containing the items to be removed
+     */
+    private synchronized void forceValidityCheck(
+            final List&lt;ToDoItem&gt; removes) {
+<span class="fc" id="L231">        synchronized (items) {</span>
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">            for (ToDoItem item : items) {</span>
+                boolean valid;
+                try {
+<span class="nc" id="L235">                    valid = item.stillValid(designer);</span>
+<span class="nc" id="L236">                } catch (InvalidElementException ex) {</span>
+                    // If element has been deleted, it's no longer valid
+<span class="nc" id="L238">                    valid = false;</span>
+<span class="nc" id="L239">                } catch (Exception ex) {</span>
+<span class="nc" id="L240">                    valid = false;</span>
+<span class="nc" id="L241">                    StringBuffer buf = new StringBuffer(</span>
+                            &quot;Exception raised in ToDo list cleaning&quot;);
+<span class="nc" id="L243">                    buf.append(&quot;\n&quot;);</span>
+<span class="nc" id="L244">                    buf.append(item.toString());</span>
+<span class="nc" id="L245">                    LOG.log(Level.SEVERE,buf.toString(), ex);</span>
+<span class="nc" id="L246">                }</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">                if (!valid) {</span>
+<span class="nc" id="L248">                    numNotValid++;</span>
+<span class="nc" id="L249">                    removes.add(item);</span>
+                }
+<span class="nc" id="L251">            }</span>
+<span class="fc" id="L252">        }</span>
+
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        for (ToDoItem item : removes) {</span>
+<span class="nc" id="L255">            removeE(item);</span>
+            // History.TheHistory.addItemResolution(item,
+            // &quot;no longer valid&quot;);
+            // ((ToDoItem)item).resolve(&quot;no longer valid&quot;);
+            // notifyObservers(&quot;removeElement&quot;, item);
+<span class="nc" id="L260">        }</span>
+<span class="fc" id="L261">        recomputeAllOffenders();</span>
+<span class="fc" id="L262">        recomputeAllPosters();</span>
+<span class="fc" id="L263">        fireToDoItemsRemoved(removes);</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Pause the validity checking thread.
+     */
+    public void pause() {
+<span class="nc" id="L270">        synchronized (pausedMutex) {</span>
+<span class="nc" id="L271">            isPaused = true;</span>
+<span class="nc" id="L272">        }</span>
+<span class="nc" id="L273">    }</span>
+
+    /**
+     * Resume the validity checking thread.
+     */
+    public void resume() {
+<span class="fc" id="L279">        synchronized (pausedMutex) {</span>
+<span class="fc" id="L280">            isPaused = false;</span>
+<span class="fc" id="L281">            pausedMutex.notifyAll();</span>
+<span class="fc" id="L282">        }</span>
+<span class="fc" id="L283">    }</span>
+
+    /**
+     * @return true is paused
+     */
+    public boolean isPaused() {
+<span class="nc" id="L289">        synchronized (pausedMutex) {</span>
+<span class="nc" id="L290">            return isPaused;</span>
+        }
+    }
+
+    /**
+     * sets the pause state.
+     *
+     * @param paused if set to false, calls resume() also to start working
+     */
+    public void setPaused(boolean paused) {
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (paused) {</span>
+<span class="nc" id="L301">            pause();</span>
+        } else {
+<span class="fc" id="L303">            resume();</span>
+        }
+<span class="fc" id="L305">    }</span>
+
+    // //////////////////////////////////////////////////////////////
+    // Notifications and Updates
+
+    /**
+     * @param action the action
+     * @param arg the argument
+     */
+    public void notifyObservers(String action, Object arg) {
+<span class="fc" id="L315">        setChanged();</span>
+<span class="fc" id="L316">        List&lt;Object&gt; l = new ArrayList&lt;Object&gt;(2);</span>
+<span class="fc" id="L317">        l.add(action);</span>
+<span class="fc" id="L318">        l.add(arg);</span>
+<span class="fc" id="L319">        super.notifyObservers(l);</span>
+<span class="fc" id="L320">    }</span>
+
+    /*
+     * @see java.util.Observable#notifyObservers(java.lang.Object)
+     */
+    public void notifyObservers(Object o) {
+<span class="nc" id="L326">        setChanged();</span>
+<span class="nc" id="L327">        super.notifyObservers(o);</span>
+<span class="nc" id="L328">    }</span>
+
+    /*
+     * @see Observable#notifyObservers()
+     */
+    public void notifyObservers() {
+<span class="nc" id="L334">        setChanged();</span>
+<span class="nc" id="L335">        super.notifyObservers();</span>
+<span class="nc" id="L336">    }</span>
+
+
+    /**
+     * Returns the List of the ToDoItems.  It is &lt;em&gt;mandatory&lt;/em&gt; that
+     * code iterating over this list synchronize access to the list as described
+     * in {@link Collections#synchronizedList(List)}.
+     * &lt;pre&gt;
+     *  List&lt;ToDoItem&gt; list = toDoList.getToDoItemList();
+     *      ...
+     *  synchronized(list) {
+     *      for (ToDoItem item : list ) { // Must be in synchronized block
+     *      ....
+     *  }
+     * &lt;/pre&gt;
+     * @see Collections#synchronizedList(List)
+     * @return the List of ToDo items.
+     */
+    public List&lt;ToDoItem&gt; getToDoItemList() {
+<span class="fc" id="L355">        return items;</span>
+    }
+
+    /**
+     * Returns the set of ResolvedCritics.  It is &lt;em&gt;mandatory&lt;/em&gt; that
+     * code iterating over this set synchronize access to the set as described
+     * in {@link Collections#synchronizedSet(Set)}.
+     * &lt;pre&gt;
+     *  Set&lt;ResolvedCritic&gt; set = toDoList.getResolvedItems();
+     *      ...
+     *  synchronized(set) {
+     *      for (ResolvedCritic item : set ) { // Must be in synchronized block
+     *      ....
+     *  }
+     * &lt;/pre&gt;
+     * @see Collections#synchronizedSet(Set)
+     * @return the resolved items
+     */
+    public Set&lt;ResolvedCritic&gt; getResolvedItems() {
+<span class="fc" id="L374">        return resolvedItems;</span>
+    }
+
+    /**
+     * @return the set of offenders
+     *
+     * TODO: The return value needs to be more strongly typed. - tfm - 20070630
+     */
+    public ListSet getOffenders() {
+        // Extra care to be taken since allOffenders can be reset while
+        // this method is running.
+<span class="nc" id="L385">        ListSet all = allOffenders;</span>
+<span class="nc bnc" id="L386" title="All 2 branches missed.">        if (all == null) {</span>
+<span class="nc" id="L387">            int size = items.size();</span>
+<span class="nc" id="L388">            all = new ListSet(size * 2);</span>
+<span class="nc" id="L389">            synchronized (items) {</span>
+<span class="nc bnc" id="L390" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L391">                    all.addAll(item.getOffenders());</span>
+<span class="nc" id="L392">                }</span>
+<span class="nc" id="L393">            }</span>
+<span class="nc" id="L394">            allOffenders = all;</span>
+        }
+<span class="nc" id="L396">        return all;</span>
+    }
+
+    private void addOffenders(ListSet newoffs) {
+<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (allOffenders != null) {</span>
+<span class="nc" id="L401">            allOffenders.addAll(newoffs);</span>
+        }
+<span class="fc" id="L403">    }</span>
+
+    /**
+     * @return the set of all the posters
+     */
+    public ListSet&lt;Poster&gt; getPosters() {
+        // Extra care to be taken since allPosters can be reset while
+        // this method is running.
+<span class="nc" id="L411">        ListSet&lt;Poster&gt; all = allPosters;</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">        if (all == null) {</span>
+<span class="nc" id="L413">            all = new ListSet&lt;Poster&gt;();</span>
+<span class="nc" id="L414">            synchronized (items) {</span>
+<span class="nc bnc" id="L415" title="All 2 branches missed.">                for (ToDoItem item : items) {</span>
+<span class="nc" id="L416">                    all.add(item.getPoster());</span>
+<span class="nc" id="L417">                }</span>
+<span class="nc" id="L418">            }</span>
+<span class="nc" id="L419">            allPosters = all;</span>
+        }
+<span class="nc" id="L421">        return all;</span>
+    }
+
+    private void addPosters(Poster newp) {
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">        if (allPosters != null) {</span>
+<span class="nc" id="L426">            allPosters.add(newp);</span>
+        }
+<span class="fc" id="L428">    }</span>
+
+
+    /**
+     * @return the list of Decisions (empty by default).
+     */
+    public static List&lt;Decision&gt; getDecisionList() {
+<span class="nc" id="L435">        return new ArrayList&lt;Decision&gt;();</span>
+    }
+
+
+    /**
+     * @return The list of Goals (empty by default).
+     */
+    public static List&lt;Goal&gt; getGoalList() {
+<span class="nc" id="L443">        return new ArrayList&lt;Goal&gt;();</span>
+    }
+
+    /*
+     * TODO: needs documenting, why synchronized?
+     */
+    private void addE(ToDoItem item) {
+        /* skip any identical items already on the list */
+<span class="fc bfc" id="L451" title="All 2 branches covered.">        if (itemSet.contains(item)) {</span>
+<span class="fc" id="L452">            return;</span>
+        }
+
+<span class="pc bpc" id="L455" title="1 of 2 branches missed.">        if (item.getPoster() instanceof Critic) {</span>
+            ResolvedCritic rc;
+            try {
+<span class="fc" id="L458">                rc = new ResolvedCritic((Critic) item.getPoster(), item</span>
+<span class="fc" id="L459">                        .getOffenders(), false);</span>
+<span class="fc" id="L460">                Iterator&lt;ResolvedCritic&gt; elems = resolvedItems.iterator();</span>
+                // cat.debug(&quot;Checking for inhibitors &quot; + rc);
+<span class="pc bpc" id="L462" title="1 of 2 branches missed.">                while (elems.hasNext()) {</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">                    if (elems.next().equals(rc)) {</span>
+<span class="nc" id="L464">                        LOG.log(Level.FINE, &quot;ToDoItem not added because it was resolved&quot;);</span>
+<span class="nc" id="L465">                        return;</span>
+                    }
+                }
+<span class="nc" id="L468">            } catch (UnresolvableException ure) {</span>
+<span class="fc" id="L469">            }</span>
+        }
+
+<span class="fc" id="L472">        items.add(item);</span>
+<span class="fc" id="L473">        itemSet.add(item);</span>
+<span class="fc" id="L474">        longestToDoList = Math.max(longestToDoList, items.size());</span>
+<span class="fc" id="L475">        addOffenders(item.getOffenders());</span>
+<span class="fc" id="L476">        addPosters(item.getPoster());</span>
+        // if (item.getPoster() instanceof Designer)
+        // History.TheHistory.addItem(item, &quot;note: &quot;);
+        // else
+        // History.TheHistory.addItemCritique(item);
+<span class="fc" id="L481">        notifyObservers(&quot;addElement&quot;, item);</span>
+<span class="fc" id="L482">        fireToDoItemAdded(item);</span>
+<span class="fc" id="L483">    }</span>
+
+    /**
+     * @param item the todo item to be added
+     */
+    public void addElement(ToDoItem item) {
+<span class="fc" id="L489">        addE(item);</span>
+<span class="fc" id="L490">    }</span>
+
+    /**
+     * @param list the todo items to be removed
+     */
+    public void removeAll(ToDoList list) {
+<span class="nc" id="L496">        List&lt;ToDoItem&gt; itemList = list.getToDoItemList();</span>
+<span class="nc" id="L497">        synchronized (itemList) {</span>
+<span class="nc bnc" id="L498" title="All 2 branches missed.">            for (ToDoItem item : itemList) {</span>
+<span class="nc" id="L499">                removeE(item);</span>
+<span class="nc" id="L500">            }</span>
+<span class="nc" id="L501">            recomputeAllOffenders();</span>
+<span class="nc" id="L502">            recomputeAllPosters();</span>
+<span class="nc" id="L503">            fireToDoItemsRemoved(itemList);</span>
+<span class="nc" id="L504">        }</span>
+<span class="nc" id="L505">    }</span>
+
+    /**
+     * @param item the todo item to be removed
+     * @return &lt;code&gt;true&lt;/code&gt; if the argument was a component of this list;
+     *         &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    private boolean removeE(ToDoItem item) {
+<span class="fc" id="L513">        itemSet.remove(item);</span>
+<span class="fc" id="L514">        return items.remove(item);</span>
+    }
+
+    /**
+     * @param item the todo item to be removed
+     * @return &lt;code&gt;true&lt;/code&gt; if the argument was a component of this list;
+     *         &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public boolean removeElement(ToDoItem item) {
+<span class="fc" id="L523">        boolean res = removeE(item);</span>
+<span class="fc" id="L524">        recomputeAllOffenders();</span>
+<span class="fc" id="L525">        recomputeAllPosters();</span>
+<span class="fc" id="L526">        fireToDoItemRemoved(item);</span>
+<span class="fc" id="L527">        notifyObservers(&quot;removeElement&quot;, item);</span>
+<span class="fc" id="L528">        return res;</span>
+    }
+
+    /**
+     * @param item the todo item to be resolved
+     * @return &lt;code&gt;true&lt;/code&gt; if the argument was a component of this list;
+     *         &lt;code&gt;false&lt;/code&gt; otherwise
+     */
+    public boolean resolve(ToDoItem item) {
+<span class="nc" id="L537">        boolean res = removeE(item);</span>
+<span class="nc" id="L538">        fireToDoItemRemoved(item);</span>
+<span class="nc" id="L539">        return res;</span>
+    }
+
+    /**
+     * @param item the todo item
+     * @param reason the reason TODO: Use it!
+     * @return &lt;code&gt;true&lt;/code&gt; if the argument was a component of this list;
+     *         &lt;code&gt;false&lt;/code&gt; otherwise
+     * @throws UnresolvableException unable to resolve
+     */
+    public boolean explicitlyResolve(ToDoItem item, String reason)
+        throws UnresolvableException {
+
+<span class="nc bnc" id="L552" title="All 2 branches missed.">        if (item.getPoster() instanceof Designer) {</span>
+<span class="nc" id="L553">            boolean res = resolve(item);</span>
+            // History.TheHistory.addItemResolution(item, reason);
+<span class="nc" id="L555">            return res;</span>
+        }
+
+<span class="nc bnc" id="L558" title="All 2 branches missed.">        if (!(item.getPoster() instanceof Critic)) {</span>
+<span class="nc" id="L559">            throw new UnresolvableException(Translator.localize(</span>
+<span class="nc" id="L560">                    &quot;misc.todo-unresolvable&quot;, new Object[] {item.getPoster()</span>
+<span class="nc" id="L561">                            .getClass()}));</span>
+        }
+
+<span class="nc" id="L564">        ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(), item</span>
+<span class="nc" id="L565">                .getOffenders());</span>
+<span class="nc" id="L566">        boolean res = resolve(item);</span>
+<span class="nc bnc" id="L567" title="All 2 branches missed.">        if (res) {</span>
+<span class="nc" id="L568">            res = addResolvedCritic(rc);</span>
+        }
+<span class="nc" id="L570">        return res;</span>
+    }
+
+    /**
+     * Add the given resolved critic to the list of resolved critics.
+     *
+     * @param rc the resolved critic
+     * @return &lt;code&gt;true&lt;/code&gt; if successfully added; &lt;code&gt;false&lt;/code&gt;
+     *         otherwise
+     */
+    public boolean addResolvedCritic(ResolvedCritic rc) {
+<span class="nc" id="L581">        return resolvedItems.add(rc);</span>
+    }
+
+    /**
+     * Remove all todo items.
+     */
+    public void removeAllElements() {
+<span class="nc" id="L588">        LOG.log(Level.FINE, &quot;removing all todo items&quot;);</span>
+<span class="nc" id="L589">        List&lt;ToDoItem&gt; oldItems = new ArrayList&lt;ToDoItem&gt;(items);</span>
+<span class="nc" id="L590">        items.clear();</span>
+<span class="nc" id="L591">        itemSet.clear();</span>
+
+<span class="nc" id="L593">        recomputeAllOffenders();</span>
+<span class="nc" id="L594">        recomputeAllPosters();</span>
+<span class="nc" id="L595">        notifyObservers(&quot;removeAllElements&quot;);</span>
+<span class="nc" id="L596">        fireToDoItemsRemoved(oldItems);</span>
+<span class="nc" id="L597">    }</span>
+
+
+    /**
+     * @param offender the offender
+     * @return A List of todo items for this offender.
+     *         &lt;p&gt;
+     *         Note: the previous implementation returned an internal static
+     *         (global) list which could be modified at any point, requiring the
+     *         caller to copy the list before using it (negating the value of
+     *         caching the static copy). The current implementation returns a
+     *         private copy which will not change, so callers don't need to copy
+     *         it.
+     */
+    public List&lt;ToDoItem&gt; elementListForOffender(Object offender) {
+<span class="nc" id="L612">        List&lt;ToDoItem&gt; offenderItems = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="nc" id="L613">        synchronized (items) {</span>
+<span class="nc bnc" id="L614" title="All 2 branches missed.">            for (ToDoItem item : items) {</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">                if (item.getOffenders().contains(offender)) {</span>
+<span class="nc" id="L616">                    offenderItems.add(item);</span>
+                }
+<span class="nc" id="L618">            }</span>
+<span class="nc" id="L619">        }</span>
+<span class="nc" id="L620">        return offenderItems;</span>
+    }
+
+    /**
+     * @return the number of todo items
+     */
+    public int size() {
+<span class="fc" id="L627">        return items.size();</span>
+    }
+
+    /**
+     * @param index 0-based index to retrieve ToDoItem from
+     * @return the ToDoItem at the given index
+     */
+    public ToDoItem get(int index) {
+<span class="fc" id="L635">        return items.get(index);</span>
+    }
+
+    /**
+     * Re-compute all offenders.
+     */
+    private void recomputeAllOffenders() {
+<span class="fc" id="L642">        allOffenders = null;</span>
+<span class="fc" id="L643">    }</span>
+
+    /**
+     * Reset all posters.
+     */
+    private void recomputeAllPosters() {
+<span class="fc" id="L649">        allPosters = null;</span>
+<span class="fc" id="L650">    }</span>
+
+    // //////////////////////////////////////////////////////////////
+    // event related stuff
+
+    /**
+     * @param l the listener to be added
+     */
+    public void addToDoListListener(ToDoListListener l) {
+        // EventListenerList.add() is synchronized, so we don't need to
+        // synchronize ourselves
+<span class="nc" id="L661">        listenerList.add(ToDoListListener.class, l);</span>
+<span class="nc" id="L662">    }</span>
+
+    /**
+     * @param l the listener to be removed
+     */
+    public void removeToDoListListener(ToDoListListener l) {
+        // EventListenerList.remove() is synchronized, so we don't need to
+        // synchronize ourselves
+<span class="nc" id="L670">        listenerList.remove(ToDoListListener.class, l);</span>
+<span class="nc" id="L671">    }</span>
+
+
+    /**
+     * @param item the todo item
+     */
+    void fireToDoItemChanged(ToDoItem item) {
+<span class="nc" id="L678">        Object[] listeners = listenerList.getListenerList();</span>
+<span class="nc" id="L679">        ToDoListEvent e = null;</span>
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+<span class="nc bnc" id="L682" title="All 2 branches missed.">        for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L683" title="All 2 branches missed.">            if (listeners[i] == ToDoListListener.class) {</span>
+                // Lazily create the event:
+<span class="nc bnc" id="L685" title="All 2 branches missed.">                if (e == null) {</span>
+<span class="nc" id="L686">                    List&lt;ToDoItem&gt; its = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="nc" id="L687">                    its.add(item);</span>
+<span class="nc" id="L688">                    e = new ToDoListEvent(its);</span>
+                }
+<span class="nc" id="L690">                ((ToDoListListener) listeners[i + 1]).toDoItemsChanged(e);</span>
+            }
+        }
+<span class="nc" id="L693">    }</span>
+
+    /**
+     * @param item the todo item
+     */
+    private void fireToDoItemAdded(ToDoItem item) {
+<span class="fc" id="L699">        List&lt;ToDoItem&gt; l = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="fc" id="L700">        l.add(item);</span>
+<span class="fc" id="L701">        fireToDoItemsAdded(l);</span>
+<span class="fc" id="L702">    }</span>
+
+    /**
+     * @param theItems the todo items
+     */
+    private void fireToDoItemsAdded(List&lt;ToDoItem&gt; theItems) {
+<span class="pc bpc" id="L708" title="1 of 2 branches missed.">        if (theItems.size() &gt; 0) {</span>
+            // Guaranteed to return a non-null array
+<span class="fc" id="L710">            final Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc" id="L711">            ToDoListEvent e = null;</span>
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="pc bpc" id="L714" title="1 of 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L715" title="All 2 branches missed.">                if (listeners[i] == ToDoListListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L717" title="All 2 branches missed.">                    if (e == null) {</span>
+<span class="nc" id="L718">                        e = new ToDoListEvent(theItems);</span>
+                    }
+<span class="nc" id="L720">                    ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);</span>
+                }
+            }
+        }
+<span class="fc" id="L724">    }</span>
+
+    /**
+     * @param item the todo item
+     */
+    private void fireToDoItemRemoved(ToDoItem item) {
+<span class="fc" id="L730">        List&lt;ToDoItem&gt; l = new ArrayList&lt;ToDoItem&gt;();</span>
+<span class="fc" id="L731">        l.add(item);</span>
+<span class="fc" id="L732">        fireToDoItemsRemoved(l);</span>
+<span class="fc" id="L733">    }</span>
+
+    /**
+     * @param theItems the todo items
+     */
+    private void fireToDoItemsRemoved(final List&lt;ToDoItem&gt; theItems) {
+<span class="fc bfc" id="L739" title="All 2 branches covered.">        if (theItems.size() &gt; 0) {</span>
+            // Guaranteed to return a non-null array
+<span class="fc" id="L741">            final Object[] listeners = listenerList.getListenerList();</span>
+<span class="fc" id="L742">            ToDoListEvent e = null;</span>
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+<span class="pc bpc" id="L745" title="1 of 2 branches missed.">            for (int i = listeners.length - 2; i &gt;= 0; i -= 2) {</span>
+<span class="nc bnc" id="L746" title="All 2 branches missed.">                if (listeners[i] == ToDoListListener.class) {</span>
+                    // Lazily create the event:
+<span class="nc bnc" id="L748" title="All 2 branches missed.">                    if (e == null) {</span>
+<span class="nc" id="L749">                        e = new ToDoListEvent(theItems);</span>
+                    }
+<span class="nc" id="L751">                    ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);</span>
+                }
+            }
+        }
+<span class="fc" id="L755">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L759">        StringBuffer res = new StringBuffer(100);</span>
+<span class="nc" id="L760">        res.append(getClass().getName()).append(&quot; {\n&quot;);</span>
+<span class="nc" id="L761">        List&lt;ToDoItem&gt; itemList = getToDoItemList();</span>
+<span class="nc" id="L762">        synchronized (itemList) {</span>
+<span class="nc bnc" id="L763" title="All 2 branches missed.">            for (ToDoItem item : itemList) {</span>
+<span class="nc" id="L764">                res.append(&quot;    &quot;).append(item.toString()).append(&quot;\n&quot;);</span>
+<span class="nc" id="L765">            }</span>
+<span class="nc" id="L766">        }</span>
+<span class="nc" id="L767">        res.append(&quot;  }&quot;);</span>
+<span class="nc" id="L768">        return res.toString();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

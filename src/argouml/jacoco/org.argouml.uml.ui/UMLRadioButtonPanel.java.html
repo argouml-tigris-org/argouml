@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UMLRadioButtonPanel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.ui</a> &gt; <span class="el_source">UMLRadioButtonPanel.java</span></div><h1>UMLRadioButtonPanel.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.border.TitledBorder;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
+
+/**
+ * A panel that shows a group of radiobuttons. An action can be added
+ * to the panel which will be executed when one of the radiobuttons is
+ * pressed. Via the name of the button (settext), the action can find
+ * out which button is pressed.
+ *
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 4, 2003
+ */
+public abstract class UMLRadioButtonPanel
+    extends JPanel
+    implements TargetListener, PropertyChangeListener {
+
+<span class="nc" id="L77">    private static Font stdFont = </span>
+<span class="nc" id="L78">        LookAndFeelMgr.getInstance().getStandardFont();</span>
+
+    /**
+     * The target object of which some attribute is shown via this panel.
+     */
+    private Object panelTarget;
+
+    /**
+     * The name of the event that is fired when the target object has changed
+     * the attribute that is shown here.
+     */
+    private String propertySetName;
+
+    /**
+     * The group of buttons
+     */
+<span class="nc" id="L94">    private ButtonGroup buttonGroup = new ButtonGroup();</span>
+    
+    /**
+     * Constructs a new UMLRadioButtonPanel.
+     * 
+     * @param isDoubleBuffered see {@link JPanel}.
+     * @param title
+     *            The title of the titledborder around the buttons. If the title
+     *            is null, there is no border shown.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that it
+     *            shows changes value.
+     * @param setAction
+     *            the action that should be registered with the buttons and
+     *            that's executed when one of the buttons is pressed.
+     * @param horizontal
+     *            when true the buttons should be laid out horizontally.
+     */
+    public UMLRadioButtonPanel(
+                               boolean isDoubleBuffered,
+                               String title,
+                               List&lt;String[]&gt; labeltextsActioncommands,
+                               String thePropertySetName,
+                               Action setAction,
+                               boolean horizontal) {
+<span class="nc" id="L123">        super(isDoubleBuffered);</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));</span>
+<span class="nc" id="L125">        setDoubleBuffered(true);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if (Translator.localize(title) != null) {</span>
+<span class="nc" id="L127">            TitledBorder border = new TitledBorder(Translator.localize(title));</span>
+<span class="nc" id="L128">            border.setTitleFont(stdFont);</span>
+<span class="nc" id="L129">            setBorder(border);</span>
+        }
+<span class="nc" id="L131">        setButtons(labeltextsActioncommands, setAction);</span>
+<span class="nc" id="L132">        setPropertySetName(thePropertySetName);</span>
+<span class="nc" id="L133">    }</span>
+    
+    /**
+     * Constructs a new UMLRadioButtonPanel.
+     * 
+     * @param title
+     *            The title of the titledborder around the buttons.
+     * @param labeltextsActioncommands
+     *            A map of keys containing the texts for the buttons and values
+     *            containing the actioncommand that permits the setAction to
+     *            logically recognize the button.
+     * @param thePropertySetName
+     *            the name of the MEvent that is fired when the property that is
+     *            shown changes value.
+     * @param setAction
+     *            the action that should be registered with the buttons and
+     *            that's executed when one of the buttons is pressed
+     * @param horizontal
+     *            when true the buttons should be laid out horizontally.
+     */
+    public UMLRadioButtonPanel(String title,
+                               List&lt;String[]&gt; labeltextsActioncommands,
+                               String thePropertySetName,
+                               Action setAction,
+                               boolean horizontal) {
+<span class="nc" id="L158">        this(true, title, labeltextsActioncommands,</span>
+             thePropertySetName, setAction, horizontal);
+<span class="nc" id="L160">    }</span>
+    
+
+
+    private static List&lt;String[]&gt; toList(Map&lt;String, String&gt; map) {
+<span class="nc" id="L165">        List&lt;String[]&gt; list = new ArrayList&lt;String[]&gt;();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        for (Map.Entry&lt;String, String&gt; entry : map.entrySet()) {</span>
+<span class="nc" id="L167">            list.add(new String[] {entry.getKey(), entry.getValue()});</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">        return list;</span>
+    }
+
+
+    /**
+     * Construct the buttons and place them in the panel as well as the button
+     * group.
+     * 
+     * @param labeltextsActioncommands
+     *            A list of string arrays containing a pair of strings with the
+     *            texts for the buttons (already localized) and string value for
+     *            the actioncommand that permits the setAction to logically
+     *            recognize the button.
+     * @param setAction
+     *            the action that should be registered with the buttons and
+     *            that's executed when one of the buttons is pressed
+     */
+    private void setButtons(List&lt;String[]&gt; labeltextsActioncommands,
+            Action setAction) {
+<span class="nc" id="L188">        Enumeration en = buttonGroup.getElements();</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">        while (en.hasMoreElements()) {</span>
+<span class="nc" id="L190">            AbstractButton button = (AbstractButton) en.nextElement();</span>
+<span class="nc" id="L191">            buttonGroup.remove(button);</span>
+<span class="nc" id="L192">        }</span>
+<span class="nc" id="L193">        removeAll();</span>
+
+        // Add an invisible button to be used when everything is off
+<span class="nc" id="L196">        buttonGroup.add(new JRadioButton());</span>
+        
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        for (String[] keyAndLabelX :  labeltextsActioncommands) {</span>
+<span class="nc" id="L199">            JRadioButton button = new JRadioButton(keyAndLabelX[0]);</span>
+<span class="nc" id="L200">            button.addActionListener(setAction);</span>
+<span class="nc" id="L201">	    String actionCommand = keyAndLabelX[1];</span>
+<span class="nc" id="L202">            button.setActionCommand(actionCommand);</span>
+<span class="nc" id="L203">            button.setFont(LookAndFeelMgr.getInstance().getStandardFont());</span>
+<span class="nc" id="L204">            buttonGroup.add(button);</span>
+<span class="nc" id="L205">            add(button);</span>
+<span class="nc" id="L206">        }</span>
+<span class="nc" id="L207">    }</span>
+
+
+    /*
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent e) {
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (e.getPropertyName().equals(propertySetName)) {</span>
+<span class="nc" id="L215">            buildModel();</span>
+        }
+<span class="nc" id="L217">    }</span>
+
+    /**
+     * Returns the target.
+     * @return Object
+     */
+    public Object getTarget() {
+<span class="nc" id="L224">        return panelTarget;</span>
+    }
+
+    /**
+     * Sets the target and removes/adds this as a listener to the target.
+     * @param target The target to set
+     */
+    public void setTarget(Object target) {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        target = target instanceof Fig ? ((Fig) target).getOwner() : target;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(panelTarget)) {</span>
+<span class="nc" id="L234">            Model.getPump().removeModelEventListener(this, panelTarget,</span>
+                    propertySetName);
+        }
+<span class="nc" id="L237">        panelTarget = target;</span>
+<span class="nc bnc" id="L238" title="All 2 branches missed.">        if (Model.getFacade().isAModelElement(panelTarget)) {</span>
+<span class="nc" id="L239">            Model.getPump().addModelEventListener(this, panelTarget,</span>
+                    propertySetName);
+        }
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (panelTarget != null) {</span>
+<span class="nc" id="L243">            buildModel();</span>
+        }
+<span class="nc" id="L245">    }</span>
+
+    /**
+     * Returns the propertySetName.
+     * @return String
+     */
+    public String getPropertySetName() {
+<span class="nc" id="L252">        return propertySetName;</span>
+    }
+
+    /**
+     * Sets the propertySetName.
+     * @param name The propertySetName to set
+     */
+    public void setPropertySetName(String name) {
+<span class="nc" id="L260">        propertySetName = name;</span>
+<span class="nc" id="L261">    }</span>
+
+    /**
+     * Builds the model. That is: it selects the radiobutton showing the value
+     * of the attribute shown. The name of this method is chosen to be
+     * compliant with for example UMLModelElementListModel2
+     */
+    public abstract void buildModel();
+
+    /**
+     * Selects the radiobutton with the given actionCommand. If a null parameter
+     * is passed, all buttons in the group will be deselected.
+     * 
+     * @param actionCommand
+     *            The actionCommand of the button that should be selected or
+     *            null to deselect all buttons.
+     */
+    public void setSelected(String actionCommand) {
+<span class="nc" id="L279">        Enumeration&lt;AbstractButton&gt; en = buttonGroup.getElements();</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (actionCommand == null) {</span>
+            // Our first button is invisible.  
+            // Selecting it deselects all visible buttons.
+<span class="nc" id="L283">            en.nextElement().setSelected(true);</span>
+<span class="nc" id="L284">            return;</span>
+        }
+<span class="nc bnc" id="L286" title="All 2 branches missed.">        while (en.hasMoreElements()) {</span>
+<span class="nc" id="L287">            AbstractButton b = en.nextElement();</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">            if (actionCommand.equals(b.getModel().getActionCommand())) {</span>
+<span class="nc" id="L289">                b.setSelected(true);</span>
+<span class="nc" id="L290">                break;</span>
+            }
+<span class="nc" id="L292">        }</span>
+<span class="nc" id="L293">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+<span class="nc" id="L299">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L300">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+<span class="nc" id="L306">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L307">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+<span class="nc" id="L313">        setTarget(e.getNewTarget());</span>
+<span class="nc" id="L314">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

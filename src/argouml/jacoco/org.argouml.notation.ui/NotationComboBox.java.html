@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NotationComboBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.notation.ui</a> &gt; <span class="el_source">NotationComboBox.java</span></div><h1>NotationComboBox.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2012 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.notation.ui;
+import java.awt.Dimension;
+import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JComboBox;
+
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+
+/**
+ *   This class provides a self-updating notation combo box.
+ *
+ *   @author Thierry Lach
+ *   @since 0.9.4
+ */
+public class NotationComboBox
+    extends JComboBox
+    implements ArgoNotationEventListener {
+
+    /**
+     * Logger.
+     */
+<span class="nc" id="L67">    private static final Logger LOG =</span>
+<span class="nc" id="L68">        Logger.getLogger(NotationComboBox.class.getName());</span>
+
+    /**
+     * The instance.
+     */
+    private static NotationComboBox singleton;
+
+    /**
+     * @return the singleton
+     */
+    public static NotationComboBox getInstance() {
+        // Only instantiate when we need it.
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (singleton == null) {</span>
+<span class="nc" id="L81">            singleton = new NotationComboBox();</span>
+        }
+<span class="nc" id="L83">        return singleton;</span>
+    }
+
+    /**
+     * The constructor.
+     */
+    public NotationComboBox() {
+<span class="nc" id="L90">        super();</span>
+<span class="nc" id="L91">        setEditable(false);</span>
+<span class="nc" id="L92">        setMaximumRowCount(6);</span>
+
+<span class="nc" id="L94">        Dimension d = getPreferredSize();</span>
+<span class="nc" id="L95">        d.width = 200;</span>
+<span class="nc" id="L96">        setMaximumSize(d);</span>
+
+<span class="nc" id="L98">        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);</span>
+<span class="nc" id="L99">        refresh();</span>
+<span class="nc" id="L100">    }</span>
+
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     */
+    public void notationChanged(ArgoNotationEvent event) {
+<span class="nc" id="L106">    }</span>
+
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
+    public void notationAdded(ArgoNotationEvent event) {
+<span class="nc" id="L112">        refresh();</span>
+<span class="nc" id="L113">    }</span>
+
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
+    public void notationRemoved(ArgoNotationEvent event) {
+<span class="nc" id="L119">    }</span>
+
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
+    public void notationProviderAdded(ArgoNotationEvent event) {
+<span class="nc" id="L125">    }</span>
+
+    /*
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
+    public void notationProviderRemoved(ArgoNotationEvent event) {
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Refresh the combobox contents.
+     */
+    public void refresh() {
+<span class="nc" id="L137">        removeAllItems();</span>
+        ListIterator iterator =
+<span class="nc" id="L139">            Notation.getAvailableNotations().listIterator();</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        while (iterator.hasNext()) {</span>
+            try {
+<span class="nc" id="L142">                NotationName nn = (NotationName) iterator.next();</span>
+<span class="nc" id="L143">                addItem(nn);</span>
+<span class="nc" id="L144">            } catch (Exception e) {</span>
+<span class="nc" id="L145">                LOG.log(Level.SEVERE, &quot;Unexpected exception&quot;, e);</span>
+<span class="nc" id="L146">            }</span>
+        }
+<span class="nc" id="L148">        setVisible(true);</span>
+<span class="nc" id="L149">        invalidate();</span>
+<span class="nc" id="L150">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4059899784583789412L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

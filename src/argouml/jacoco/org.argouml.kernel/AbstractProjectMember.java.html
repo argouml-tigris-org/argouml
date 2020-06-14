@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractProjectMember.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.kernel</a> &gt; <span class="el_source">AbstractProjectMember.java</span></div><h1>AbstractProjectMember.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import org.argouml.persistence.PersistenceManager;
+
+/**
+ * A member of the project.
+ *
+ */
+public abstract class AbstractProjectMember implements ProjectMember {
+
+    private String uniqueName;
+<span class="fc" id="L50">    private Project project = null;</span>
+
+    /**
+     * The constructor.
+     *
+     * @param theUniqueName the name of the member, this must
+     *                      be different for all members. Note
+     *                      that for diagram members this is
+     *                      not the name of the diagram.
+     * @param theProject the owning project
+     */
+<span class="fc" id="L61">    public AbstractProjectMember(String theUniqueName, Project theProject) {</span>
+<span class="fc" id="L62">        project = theProject;</span>
+<span class="fc" id="L63">        makeUniqueName(theUniqueName);</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * In contrast to {@link #getZipName()} returns the member's
+     * name without the prepended name of the project
+     * (but with the extension). &lt;p&gt;
+     * 
+     * TODO: This is not used anywhere - shall we remove it?
+     *
+     * @author Steffen Zschaler
+     *
+     * @return the member's name without any prefix or suffix
+     */
+    public String getUniqueDiagramName() {
+<span class="nc" id="L78">        String s = uniqueName;</span>
+
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (s != null) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (!s.endsWith (getZipFileExtension())) {</span>
+<span class="nc" id="L82">                s += getZipFileExtension();</span>
+            }
+        }
+
+<span class="nc" id="L86">        return s;</span>
+    }
+
+    /**
+     * Returns a unique member's name for storage in a zipfile.
+     * The project's base name is prepended followed by an
+     * underscore '_'. The extension is appended.&lt;p&gt;
+     * 
+     * Used by &quot;argo.tee&quot;.
+     *
+     * @return the name for zip file storage
+     */
+    public String getZipName() {
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (uniqueName == null) {</span>
+<span class="nc" id="L100">	    return null;</span>
+	}
+
+<span class="fc" id="L103">        String s = PersistenceManager.getInstance().getProjectBaseName(project);</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (uniqueName.length() &gt; 0) {</span>
+<span class="fc" id="L106">            s += &quot;_&quot; + uniqueName;</span>
+	}
+
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (!s.endsWith(getZipFileExtension())) {</span>
+<span class="fc" id="L110">            s += getZipFileExtension();</span>
+        }
+
+<span class="fc" id="L113">        return s;</span>
+    }
+
+    /**
+     * Makes a unique name for this member.
+     * Note this is not the diagram name and this appears
+     * to be flawed.
+     * @param s a string which will make up part of this
+     *          unique name.
+     */
+    protected void makeUniqueName(String s) {
+<span class="fc" id="L124">        uniqueName = s;</span>
+
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (uniqueName == null) {</span>
+<span class="nc" id="L127">            return;</span>
+        }
+
+        String pbn = 
+<span class="fc" id="L131">            PersistenceManager.getInstance().getProjectBaseName(project); </span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (uniqueName.startsWith (pbn)) {</span>
+<span class="fc" id="L133">            uniqueName = uniqueName.substring (pbn.length());</span>
+            /* Skip leading underscores: */
+<span class="fc" id="L135">            int i = 0;</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            for (; i &lt; uniqueName.length(); i++) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">            	if (uniqueName.charAt(i) != '_') {</span>
+<span class="fc" id="L138">            	    break;</span>
+                }
+            }
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">            if (i &gt; 0) {</span>
+<span class="nc" id="L142">                uniqueName = uniqueName.substring(i);</span>
+            }
+        }
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (uniqueName.endsWith(getZipFileExtension())) {</span>
+<span class="fc" id="L147">            uniqueName =</span>
+<span class="fc" id="L148">                uniqueName.substring(0,</span>
+<span class="fc" id="L149">                        uniqueName.length() - getZipFileExtension().length());</span>
+        }
+<span class="fc" id="L151">    }</span>
+
+    /**
+     * Used by &quot;argo.tee&quot;.
+     * 
+     * @return a short string defining the member type.
+     * Usually equals the file extension.
+     */
+    public abstract String getType();
+
+    /**
+     * @return the file extension string
+     */
+    public String getZipFileExtension() {
+<span class="fc" id="L165">        return &quot;.&quot; + getType();</span>
+    }
+
+    /**
+     * Remove this member from its project.
+     */
+    protected void remove() {
+<span class="fc" id="L172">        uniqueName = null;</span>
+<span class="fc" id="L173">        project = null;</span>
+<span class="fc" id="L174">    }</span>
+    
+    public String toString() {
+<span class="fc" id="L177">        return getZipName();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

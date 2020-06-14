@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TabDiagram.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">argouml-app</a> &gt; <a href="index.source.html" class="el_package">org.argouml.uml.diagram.ui</a> &gt; <span class="el_source">TabDiagram.java</span></div><h1>TabDiagram.java</h1><pre class="source lang-java linenums">/* $Id$
+ *****************************************************************************
+ * Copyright (c) 2009-2014 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    tfmorris
+ *    Michiel van der Wulp
+ *****************************************************************************
+ *
+ * Some portions of this file were previously released using the BSD License:
+ */
+
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied &quot;AS
+// IS&quot;, without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.diagram.ui;
+
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EtchedBorder;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.model.Model;
+import org.argouml.ui.TabModelTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.ui.ActionCopy;
+import org.argouml.uml.ui.ActionCut;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.FigModifyingMode;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerManager;
+import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.event.GraphSelectionEvent;
+import org.tigris.gef.event.GraphSelectionListener;
+import org.tigris.gef.event.ModeChangeEvent;
+import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBarFactory;
+
+
+/**
+ * The TabDiagram is the tab in the multieditorpane that holds a diagram. The
+ * TabDiagram consists of a JGraph (with the figs) and a toolbar.
+ * It used to be possible (in past versions of ArgoUML)
+ * to spawn objects of this class into a dialog via the spawn method of its
+ * parent.
+ * &lt;p&gt;
+ * NOTE: This tab is unlike the others in that it acts as a bridge to forward
+ * received Diagram events to the TargetManager.  (Not sure if this
+ * functionality is duplicated elsewhere - tfm 20070924)
+ */
+public class TabDiagram
+    extends AbstractArgoJPanel
+    implements TabModelTarget, GraphSelectionListener, ModeChangeListener,
+    PropertyChangeListener {
+
+    /**
+     * Logger.
+     */
+<span class="fc" id="L107">    private static final Logger LOG =</span>
+<span class="fc" id="L108">        Logger.getLogger(TabDiagram.class.getName());</span>
+
+    /**
+     * The diagram object.
+     */
+    private UMLDiagram target;
+
+    /**
+     * The GEF JGraph in where the figs are painted.
+     */
+    private JGraph graph;
+
+    /**
+     * Prevents target event cycles between this and the TargetManager.
+     */
+    private boolean updatingSelection;
+
+    /**
+     * The toolbar that is positioned just above
+     * the diagram containing the drawing tools.
+     */
+    private JToolBar toolBar;
+
+    /**
+     * Default constructor.
+     */
+    public TabDiagram() {
+<span class="nc" id="L135">        this(&quot;Diagram&quot;);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param tag The type of diagram that we are creating.
+     */
+    public TabDiagram(String tag) {
+<span class="fc" id="L144">        super(tag);</span>
+<span class="fc" id="L145">        setLayout(new BorderLayout());</span>
+<span class="nc" id="L146">        graph = new DnDJGraph();</span>
+<span class="nc" id="L147">        graph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);</span>
+        // TODO: should update to size of diagram contents
+
+<span class="nc" id="L150">        Globals.setStatusBar(new StatusBarAdapter());</span>
+
+<span class="nc" id="L152">        JPanel p = new JPanel();</span>
+<span class="nc" id="L153">        p.setLayout(new BorderLayout());</span>
+<span class="nc" id="L154">        p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));</span>
+<span class="nc" id="L155">        p.add(graph, BorderLayout.CENTER);</span>
+<span class="nc" id="L156">        add(p, BorderLayout.CENTER);</span>
+<span class="nc" id="L157">        graph.addGraphSelectionListener(this);</span>
+<span class="nc" id="L158">        graph.addModeChangeListener(this);</span>
+<span class="nc" id="L159">    }</span>
+
+    /*
+     * The clone method that should clone the JGraph with it's contents and
+     * the toolbar with it's contents. Since both JGraph as the toolbar are
+     * coming from the GEF framework, cloning them will be hard work and should
+     * actually not be placed here but in a clone method of the JGraph and the
+     * Toolbar.
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public Object clone() {
+        // next statement gives us a clone JGraph but not a cloned Toolbar
+<span class="nc" id="L172">        TabDiagram newPanel = new TabDiagram();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L174">            newPanel.setTarget(target);</span>
+        }
+<span class="nc" id="L176">        ToolBarFactory factory = new ToolBarFactory(target.getActions());</span>
+<span class="nc" id="L177">        factory.setRollover(true);</span>
+<span class="nc" id="L178">        factory.setFloatable(false);</span>
+
+<span class="nc" id="L180">        newPanel.setToolBar(factory.createToolBar());</span>
+<span class="nc" id="L181">        setToolBar(factory.createToolBar());</span>
+<span class="nc" id="L182">        return newPanel;</span>
+    }
+
+    /**
+     * Sets the target of the tab. The target should always be an instance of
+     * UMLDiagram.
+     *
+     * @param t the target
+     */
+    public void setTarget(Object t) {
+
+<span class="nc bnc" id="L193" title="All 2 branches missed.">        if (!(t instanceof UMLDiagram)) {</span>
+            // This is perfectly normal and happens among other things
+            // within the call to setDiagram (below).
+<span class="nc" id="L196">            LOG.log(Level.FINE, &quot;target is null in set target or not an instance of UMLDiagram&quot;);</span>
+<span class="nc" id="L197">            return;</span>
+        }
+<span class="nc" id="L199">        UMLDiagram newTarget = (UMLDiagram) t;</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L202">            target.removePropertyChangeListener(&quot;remove&quot;, this);</span>
+        }
+<span class="nc" id="L204">        newTarget.addPropertyChangeListener(&quot;remove&quot;, this);</span>
+
+<span class="nc" id="L206">        setToolBar(newTarget.getJToolBar());</span>
+
+        // NOTE: This listener needs to always be active
+        // even if this tab isn't visible
+<span class="nc" id="L210">        graph.removeGraphSelectionListener(this);</span>
+<span class="nc" id="L211">        graph.setDiagram(newTarget);</span>
+<span class="nc" id="L212">        graph.addGraphSelectionListener(this);</span>
+<span class="nc" id="L213">        target = newTarget;</span>
+<span class="nc" id="L214">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() {
+<span class="nc" id="L220">        return target;</span>
+    }
+
+    /**
+     * Getter for the Toolbar.
+     *
+     * @return The ToolBar.
+     */
+    public JToolBar getToolBar() {
+<span class="nc" id="L229">        return toolBar;</span>
+    }
+
+    /*
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() {
+<span class="nc" id="L236">        setTarget(target);</span>
+<span class="nc" id="L237">    }</span>
+
+    /*
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object newTarget) {
+<span class="nc" id="L243">        return newTarget instanceof ArgoDiagram;</span>
+    }
+
+
+    /**
+     * Getter for the {@link JGraph}.
+     *
+     * @return The JGraph.
+     */
+    public JGraph getJGraph() {
+<span class="nc" id="L253">        return graph;</span>
+    }
+
+    /*
+     * @see java.awt.Component#setVisible(boolean)
+     */
+    public void setVisible(boolean b) {
+<span class="nc" id="L260">        super.setVisible(b);</span>
+<span class="nc" id="L261">        getJGraph().setVisible(b);</span>
+<span class="nc" id="L262">    }</span>
+
+    ////////////////////////////////////////////////////////////////
+    // events
+
+    /**
+     * In the selectionChanged method not only the selection of this
+     * diagram is set but also the selection in the projectbrowser.
+     *
+     * @param gse The event.
+     */
+    public void selectionChanged(GraphSelectionEvent gse) {
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (!updatingSelection) {</span>
+<span class="nc" id="L275">            updatingSelection = true;</span>
+<span class="nc" id="L276">            List&lt;Fig&gt; selections = gse.getSelections();</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">            ActionCut.getInstance().setEnabled(</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">                    selections != null &amp;&amp; !selections.isEmpty());</span>
+
+            // TODO: If ActionCopy is no longer a singleton, how shall
+            //       this work?
+<span class="nc bnc" id="L282" title="All 2 branches missed.">            ActionCopy.getInstance()</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                    .setEnabled(selections != null &amp;&amp; !selections.isEmpty());</span>
+            /*
+             * ActionPaste.getInstance().setEnabled( Globals.clipBoard
+             * != null &amp;&amp; !Globals.clipBoard.isEmpty());
+             */
+            // the old selection
+            List currentSelection =
+<span class="nc" id="L290">                TargetManager.getInstance().getTargets();</span>
+
+<span class="nc" id="L292">            List removedTargets = new ArrayList(currentSelection);</span>
+<span class="nc" id="L293">            List addedTargets = new ArrayList();</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            for (Object selection : selections) {</span>
+<span class="nc" id="L295">                Object owner = TargetManager.getInstance().getOwner(selection);</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">                if (currentSelection.contains(owner)) {</span>
+<span class="nc" id="L297">                    removedTargets.remove(owner); // remains selected</span>
+                } else {
+                    // add to selection
+<span class="nc" id="L300">                    addedTargets.add(owner);</span>
+                }
+<span class="nc" id="L302">            }</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">            if (addedTargets.size() == 1</span>
+<span class="nc bnc" id="L304" title="All 2 branches missed.">                    &amp;&amp; removedTargets.size() == currentSelection.size()</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">                    &amp;&amp; removedTargets.size() != 0) {</span>
+                // Optimize for the normal case to minimize target changes
+<span class="nc" id="L307">                TargetManager.getInstance().setTarget(addedTargets.get(0));</span>
+            } else {
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                for (Object o : removedTargets) {</span>
+<span class="nc" id="L310">                    TargetManager.getInstance().removeTarget(o);</span>
+<span class="nc" id="L311">                }</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                for (Object o : addedTargets) {</span>
+<span class="nc" id="L313">                    TargetManager.getInstance().addTarget(o);</span>
+<span class="nc" id="L314">                }</span>
+            }
+<span class="nc" id="L316">            updatingSelection = false;</span>
+        }
+
+<span class="nc" id="L319">    }</span>
+
+    /**
+     * @param listener the listener to be removed
+     */
+    public void removeGraphSelectionListener(GraphSelectionListener listener) {
+<span class="nc" id="L325">        graph.removeGraphSelectionListener(listener);</span>
+<span class="nc" id="L326">    }</span>
+
+    /*
+     * @see org.tigris.gef.event.ModeChangeListener#modeChange(org.tigris.gef.event.ModeChangeEvent)
+     */
+    public void modeChange(ModeChangeEvent mce) {
+<span class="nc" id="L332">        LOG.log(Level.FINE, &quot;TabDiagram got mode change event&quot;);</span>
+<span class="nc bnc" id="L333" title="All 2 branches missed.">        if (target != null    // Target might not have been initialised yet.</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">                &amp;&amp; !Globals.getSticky()</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                &amp;&amp; Globals.mode() instanceof ModeSelect) {</span>
+//            if (_target instanceof UMLDiagram) {
+<span class="nc" id="L337">	    target.deselectAllTools();</span>
+//            }
+        }
+<span class="nc" id="L340">    }</span>
+
+
+    /**
+     * @param listener the listener to be removed
+     */
+    public void removeModeChangeListener(ModeChangeListener listener) {
+<span class="nc" id="L347">        graph.removeModeChangeListener(listener);</span>
+<span class="nc" id="L348">    }</span>
+
+    /**
+     * Sets the toolbar.  Adds the toolbar to the north borderlayout
+     * position of the diagram.&lt;p&gt;
+     *
+     * @param toolbar is the toolbar to be set.
+     */
+    public void setToolBar(JToolBar toolbar) {
+        // TODO: This must happen on the AWT thread
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (!Arrays.asList(getComponents()).contains(toolbar)) {</span>
+<span class="nc bnc" id="L359" title="All 2 branches missed.">            if (target != null) {</span>
+<span class="nc" id="L360">                remove(((UMLDiagram) getTarget()).getJToolBar());</span>
+            }
+<span class="nc" id="L362">            add(toolbar, BorderLayout.NORTH);</span>
+<span class="nc" id="L363">            toolBar = toolbar;</span>
+<span class="nc" id="L364">            invalidate();</span>
+<span class="nc" id="L365">            validate();</span>
+<span class="nc" id="L366">            repaint();</span>
+        }
+<span class="nc" id="L368">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *          TargetEvent)
+     */
+    public void targetAdded(final TargetEvent e) {
+<span class="nc" id="L375">        setNewTargets(e);</span>
+<span class="nc" id="L376">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *          TargetEvent)
+     */
+    public void targetRemoved(final TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the TabDiagram should only show an empty pane in that case
+<span class="nc" id="L385">        setNewTargets(e);</span>
+<span class="nc" id="L386">    }</span>
+
+    /*
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *          org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(final TargetEvent e) {
+<span class="nc" id="L393">        setNewTargets(e);</span>
+<span class="nc" id="L394">    }</span>
+
+    /**
+     * We have no guarantee which thread our events will be delivered on,
+     * so make sure the work gets done on our AWT event thread.
+     *
+     * @param e the target change event
+     */
+    private void setNewTargets(final TargetEvent e) {
+<span class="nc bnc" id="L403" title="All 2 branches missed.">        if (SwingUtilities.isEventDispatchThread()) {</span>
+<span class="nc" id="L404">            setTarget(e.getNewTarget());</span>
+<span class="nc" id="L405">            select(e.getNewTargets());</span>
+        } else {
+<span class="nc" id="L407">            SwingUtilities.invokeLater(new Runnable() {</span>
+                public void run() {
+<span class="nc" id="L409">                    setTarget(e.getNewTarget());</span>
+<span class="nc" id="L410">                    select(e.getNewTargets());</span>
+<span class="nc" id="L411">                }</span>
+            });
+        }
+<span class="nc" id="L414">    }</span>
+
+    /**
+     * If the model element targets have changed then make sure the selection
+     * on the diagram changes to match.
+     * @param targets
+     */
+    private void select(Object[] targets) {
+<span class="nc" id="L422">        LayerManager manager = graph.getEditor().getLayerManager();</span>
+<span class="nc" id="L423">        List&lt;Fig&gt; figList = new ArrayList&lt;Fig&gt;();</span>
+<span class="nc bnc" id="L424" title="All 2 branches missed.">        for (int i = 0; i &lt; targets.length; i++) {</span>
+<span class="nc bnc" id="L425" title="All 2 branches missed.">            if (targets[i] != null) {</span>
+<span class="nc" id="L426">                Fig theTarget = null;</span>
+<span class="nc bnc" id="L427" title="All 2 branches missed.">                if (targets[i] instanceof Fig</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">		        &amp;&amp; manager.getActiveLayer().getContents().contains(</span>
+		                targets[i])) {
+<span class="nc" id="L430">		    theTarget = (Fig) targets[i];</span>
+<span class="nc bnc" id="L431" title="All 2 branches missed.">                } else if (Model.getFacade().isAAttribute(targets[i])</span>
+<span class="nc bnc" id="L432" title="All 2 branches missed.">                        || Model.getFacade().isAEnumerationLiteral(targets[i])</span>
+<span class="nc bnc" id="L433" title="All 2 branches missed.">                        || Model.getFacade().isAOperation(targets[i])) {</span>
+                    // Assuming the target is some model element.
+<span class="nc" id="L435">                    Object container = Model.getFacade().getModelElementContainer(targets[i]);</span>
+<span class="nc" id="L436">                    Fig tc = manager.presentationFor(container);</span>
+<span class="nc bnc" id="L437" title="All 2 branches missed.">                    if (tc instanceof FigAssociationClass) {</span>
+<span class="nc" id="L438">                        tc = ((FigAssociationClass) tc).getAssociationClass();</span>
+                    }
+<span class="nc" id="L440">                    FigCompartmentBox theContainer = (FigCompartmentBox) tc;</span>
+<span class="nc bnc" id="L441" title="All 2 branches missed.">                    if (theContainer != null) {</span>
+<span class="nc bnc" id="L442" title="All 2 branches missed.">                        for (FigCompartment fc : theContainer.getCompartments()) {</span>
+<span class="nc bnc" id="L443" title="All 2 branches missed.">                            for (Object o : fc.getFigs()) {</span>
+<span class="nc bnc" id="L444" title="All 2 branches missed.">                                if (((Fig) o).getOwner() == targets[i]) {</span>
+<span class="nc" id="L445">                                    theTarget = (Fig) o;</span>
+<span class="nc" id="L446">                                    break;</span>
+                                }
+<span class="nc" id="L448">                            }</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">                            if (theTarget != null) {</span>
+<span class="nc" id="L450">                                break;</span>
+                            }
+<span class="nc" id="L452">                        }</span>
+                    }
+<span class="nc" id="L454">                } else {</span>
+                    // Assuming the target is some model element.
+<span class="nc" id="L456">		    theTarget = manager.presentationFor(targets[i]);</span>
+                }
+
+<span class="nc bnc" id="L459" title="All 4 branches missed.">                if (theTarget != null &amp;&amp; !figList.contains(theTarget)) {</span>
+<span class="nc" id="L460">                    figList.add(theTarget);</span>
+                }
+            }
+        }
+
+        // This checks the order in addition to the contents
+        // Is that really what we want here? - tfm 20070603
+<span class="nc bnc" id="L467" title="All 2 branches missed.">	if (!figList.equals(graph.selectedFigs())) {</span>
+<span class="nc" id="L468">            graph.deselectAll();</span>
+<span class="nc" id="L469">            graph.select(new Vector&lt;Fig&gt;(figList));</span>
+	}
+<span class="nc" id="L471">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3305029387374936153L;
+
+    public void propertyChange(PropertyChangeEvent arg0) {
+        // Any Swing work done here needs to be queued to the AWT thread
+        // since we don't know what thread our event will arrive on
+
+<span class="nc bnc" id="L482" title="All 2 branches missed.">        if (&quot;remove&quot;.equals(arg0.getPropertyName())) {</span>
+<span class="nc" id="L483">            LOG.log(Level.FINE, &quot;Got remove event for diagram = {0} old value = {1}&quot;,</span>
+<span class="nc" id="L484">                    new Object[]{arg0.getSource(), arg0.getOldValue()});</span>
+
+            // Although we register for notification of diagrams being
+            // deleted, we currently depend on the TargetManager to assign
+            // a new target when this happens
+            // When we implement MDI and have our own list of open diagrams
+            // we can ressurect the use of this
+        }
+<span class="nc" id="L492">    }</span>
+}
+
+
+/**
+ * The ArgoUML editor.
+ */
+class ArgoEditor extends Editor {
+    private RenderingHints  argoRenderingHints;
+
+    /**
+     * Constructor for the Editor.
+     *
+     * @param d The Diagram that this editor works in.
+     */
+    public ArgoEditor(Diagram d) {
+<span class="nc" id="L508">	super(d);</span>
+<span class="nc" id="L509">        setupRenderingHints();</span>
+<span class="nc" id="L510">    }</span>
+
+    /**
+     * Constructor for the Editor.
+     *
+     * @param gm The Graphmodel.
+     * @param c The component.
+     */
+    public ArgoEditor(GraphModel gm, JComponent c) {
+<span class="nc" id="L519">	super(gm, c);</span>
+<span class="nc" id="L520">        setupRenderingHints();</span>
+<span class="nc" id="L521">    }</span>
+
+    /*
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseEntered(MouseEvent me) {
+<span class="nc bnc" id="L528" title="All 2 branches missed.">	if (getActiveTextEditor() != null) {</span>
+<span class="nc" id="L529">            getActiveTextEditor().requestFocus();</span>
+        }
+<span class="nc" id="L531">	translateMouseEvent(me);</span>
+<span class="nc" id="L532">	Globals.curEditor(this);</span>
+<span class="nc" id="L533">	pushMode((FigModifyingMode) Globals.mode());</span>
+<span class="nc" id="L534">	setUnderMouse(me);</span>
+<span class="nc" id="L535">	_modeManager.mouseEntered(me);</span>
+<span class="nc" id="L536">    }</span>
+
+    /*
+     * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+     */
+    @Override
+    public void mouseMoved(MouseEvent me) {
+	//- RedrawManager.lock();
+<span class="nc" id="L544">	translateMouseEvent(me);</span>
+<span class="nc" id="L545">	Globals.curEditor(this);</span>
+<span class="nc" id="L546">	setUnderMouse(me);</span>
+<span class="nc" id="L547">        Fig currentFig = getCurrentFig();</span>
+<span class="nc bnc" id="L548" title="All 4 branches missed.">	if (currentFig != null &amp;&amp; Globals.getShowFigTips()) {</span>
+<span class="nc" id="L549">	    String tip = currentFig.getTipString(me);</span>
+<span class="nc bnc" id="L550" title="All 4 branches missed.">	    if (tip != null &amp;&amp; (getJComponent() != null)) {</span>
+<span class="nc" id="L551">	        JComponent c = getJComponent();</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">	        if (c.getToolTipText() == null</span>
+<span class="nc bnc" id="L553" title="All 2 branches missed.">		    || !(c.getToolTipText().equals(tip))) {</span>
+<span class="nc" id="L554">	            c.setToolTipText(tip);</span>
+	        }
+            }
+<span class="nc bnc" id="L557" title="All 2 branches missed.">	} else if (getJComponent() != null</span>
+<span class="nc bnc" id="L558" title="All 2 branches missed.">		   &amp;&amp; getJComponent().getToolTipText() != null) {</span>
+<span class="nc" id="L559">            getJComponent().setToolTipText(null); //was &quot;&quot;</span>
+	}
+
+<span class="nc" id="L562">	_selectionManager.mouseMoved(me);</span>
+<span class="nc" id="L563">	_modeManager.mouseMoved(me);</span>
+	//- RedrawManager.unlock();
+	//- _redrawer.repairDamage();
+<span class="nc" id="L566">    }</span>
+
+    /*
+     * Overridden to set Argo-specific RenderingHints to determine whether
+     * or not antialiasing should be turned on.
+     *
+     * @see org.tigris.gef.base.Editor#paint(java.awt.Graphics)
+     */
+    @Override
+    public synchronized void paint(Graphics g) {
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (!shouldPaint()) {</span>
+<span class="nc" id="L577">            return;</span>
+        }
+
+<span class="nc bnc" id="L580" title="All 2 branches missed.">        if (g instanceof Graphics2D) {</span>
+<span class="nc" id="L581">            Graphics2D g2 = (Graphics2D) g;</span>
+<span class="nc" id="L582">            g2.setRenderingHints(argoRenderingHints);</span>
+<span class="nc" id="L583">	    double scale = getScale();</span>
+<span class="nc" id="L584">            g2.scale(scale, scale);</span>
+        }
+<span class="nc" id="L586">        getLayerManager().paint(g);</span>
+        //getLayerManager().getActiveLayer().paint(g);
+<span class="nc bnc" id="L588" title="All 2 branches missed.">        if (_canSelectElements) {</span>
+<span class="nc" id="L589">            _selectionManager.paint(g);</span>
+<span class="nc" id="L590">            _modeManager.paint(g);</span>
+        }
+<span class="nc" id="L592">    }</span>
+
+    /**
+     * Construct a new set of RenderingHints to reflect current user
+     * settings.
+     */
+    private void setupRenderingHints() {
+<span class="nc" id="L599">        argoRenderingHints = new RenderingHints(null);</span>
+
+<span class="nc" id="L601">        argoRenderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS,</span>
+            RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
+<span class="nc bnc" id="L604" title="All 2 branches missed.">        if (Configuration.getBoolean(Argo.KEY_SMOOTH_EDGES, false)) {</span>
+<span class="nc" id="L605">            argoRenderingHints.put(RenderingHints.KEY_RENDERING,</span>
+                RenderingHints.VALUE_RENDER_QUALITY);
+<span class="nc" id="L607">            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING,</span>
+                RenderingHints.VALUE_ANTIALIAS_ON);
+<span class="nc" id="L609">            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING,</span>
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        } else {
+<span class="nc" id="L612">            argoRenderingHints.put(RenderingHints.KEY_RENDERING,</span>
+                RenderingHints.VALUE_RENDER_SPEED);
+<span class="nc" id="L614">            argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING,</span>
+                RenderingHints.VALUE_ANTIALIAS_OFF);
+<span class="nc" id="L616">            argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING,</span>
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        }
+<span class="nc" id="L619">    }</span>
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -799007144549997407L;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
