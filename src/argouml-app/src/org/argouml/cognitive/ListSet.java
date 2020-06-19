@@ -48,32 +48,34 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 /**
  * An Ordered, non-duplicated collection of objects (not exactly a
  * mathematical set because it is ordered).
- * 
+ *
  * @param <T> The type of objects this ListSet is to contain.
  */
-public class ListSet<T extends Object> 
+public class ListSet<T>
     implements Serializable, Set<T>, List<T> {
 
     private static final int TC_LIMIT = 50;
 
     private List<T> list;
-    
+
     /**
      * A hash set containing the same items as the list so that we can
-     * use it for fast lookups.  
+     * use it for fast lookups.
      */
     private Set<T> set;
-    
+
     /**
      * The mutex/lock which is used for operations that need to check/modify
      * both the set and list.  Get operations which only access the list can
      * rely on the fact that it is a synchronized list.
      */
-    private final Object mutex = new Object(); 
+    private final Object mutex = new Object();
 
     /**
      * The constructor.
@@ -104,6 +106,10 @@ public class ListSet<T extends Object>
         add(o1);
     }
 
+    @Override
+    public Spliterator<T> spliterator() {
+        return Spliterators.spliterator(this, Spliterator.ORDERED);
+    }
 
     /**
      * @param iter an enumeration of objects to be added
@@ -128,7 +134,7 @@ public class ListSet<T extends Object>
      * @param iter an iterator of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(Iterator<T> iter, 
+    public void addAllElementsSuchThat(Iterator<T> iter,
     		org.argouml.util.Predicate p) {
         if (p instanceof org.argouml.util.PredicateTrue) {
             addAllElements(iter);
@@ -147,13 +153,13 @@ public class ListSet<T extends Object>
      * @param s a listset of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(ListSet<T> s, 
+    public void addAllElementsSuchThat(ListSet<T> s,
     		org.argouml.util.Predicate p) {
         synchronized (s.mutex()) {
             addAllElementsSuchThat(s.iterator(), p);
         }
     }
-    
+
     /*
      * @see java.util.Collection#remove(java.lang.Object)
      */
@@ -203,9 +209,9 @@ public class ListSet<T extends Object>
      */
     public boolean containsSuchThat(org.argouml.util.Predicate p) {
         return findSuchThat(p) != null;
-    }    
+    }
 
-    
+
     /**
      * Return the first object that causes the given predicate to return
      * true.
@@ -267,7 +273,7 @@ public class ListSet<T extends Object>
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Set{");  
+        StringBuilder sb = new StringBuilder("Set{");
         synchronized (list) {
             for (Iterator it = iterator(); it.hasNext();) {
                 sb.append(it.next());
@@ -287,12 +293,12 @@ public class ListSet<T extends Object>
      * the elements of the original Set. In order to avoid very deep searches
      * which are often programming mistakes, only paths of length TC_LIMIT or
      * less are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @return the resulting listset
      */
     public ListSet<T> transitiveClosure(org.argouml.util.ChildGenerator cg) {
-        return transitiveClosure(cg, TC_LIMIT, 
+        return transitiveClosure(cg, TC_LIMIT,
         		org.argouml.util.PredicateTrue.getInstance());
     }
 
@@ -302,12 +308,12 @@ public class ListSet<T extends Object>
      * include the elements of the original Set. In order to avoid very deep
      * searches which are often programming mistakes, only paths of length
      * TC_LIMIT or less are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @return the resulting listset
      */
     public ListSet<T> reachable(org.argouml.util.ChildGenerator cg) {
-        return reachable(cg, TC_LIMIT, 
+        return reachable(cg, TC_LIMIT,
         		org.argouml.util.PredicateTrue.getInstance());
     }
 
@@ -319,13 +325,13 @@ public class ListSet<T extends Object>
      * searches which are often programming mistakes, only paths of given max
      * length or less are considered. Only paths consisting of elements which
      * all cause predicate.evaluate() to return true are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @param max the maximum depth
      * @param predicate the predicate the objects have to fulfill
      * @return the resulting listset
      */
-    public ListSet<T> reachable(org.argouml.util.ChildGenerator cg, int max, 
+    public ListSet<T> reachable(org.argouml.util.ChildGenerator cg, int max,
     		org.argouml.util.Predicate predicate) {
         ListSet<T> kids = new ListSet<T>();
         synchronized (list) {
@@ -345,7 +351,7 @@ public class ListSet<T extends Object>
      * which are often programming mistakes, only paths of given max length or
      * less are considered. Only paths consisting of elements which all cause
      * predicate.evaluate() to return true are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @param max the maximum depth
      * @param predicate the predicate the objects have to fulfill
@@ -367,7 +373,7 @@ public class ListSet<T extends Object>
             synchronized (recent) {
                 for (T recentElement : recent) {
                     Iterator frontierChildren = cg.childIterator(recentElement);
-                    frontier.addAllElementsSuchThat(frontierChildren, 
+                    frontier.addAllElementsSuchThat(frontierChildren,
                             predicate);
                 }
             }
@@ -376,7 +382,7 @@ public class ListSet<T extends Object>
         }
         return touched;
     }
-    
+
     /*
      * @see java.util.Collection#isEmpty()
      */
@@ -390,7 +396,7 @@ public class ListSet<T extends Object>
     public Iterator<T> iterator() {
         return list.iterator();
     }
-    
+
     /**
      * @return mutex object to synchronize on for iteration
      */
