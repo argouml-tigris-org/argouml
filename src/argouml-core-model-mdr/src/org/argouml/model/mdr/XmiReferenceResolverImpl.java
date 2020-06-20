@@ -326,7 +326,11 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return map of xmi.id to RefObject correspondences
      */
     Map<String, Object> getIdToObjectMap() {
-        return getIdToObjectMaps().get(topSystemId);
+        if (idToObject != null) {
+            return idToObject.get(topSystemId);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -340,7 +344,10 @@ class XmiReferenceResolverImpl extends XmiContext {
      * Reinitialize the object id maps to the empty state.
      */
     void clearIdMaps() {
-        getIdToObjectMap().clear();
+        Map<String, Object> map = getIdToObjectMap();
+        if (map != null) {
+            map.clear();
+        }
         mofidToXmiref.clear();
         topSystemId = null;
     }
@@ -629,7 +636,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         // We've got a profile read pending - handle it ourselves now
         URL url = pendingProfiles.remove(arg0);
         if (url != null) {
-            InputSource is = new InputSource(url.toExternalForm());
+            InputSource is = modelImpl.getInputSource(url);
             is.setPublicId(arg0);
             XmiReaderImpl reader = new XmiReaderImpl(modelImpl);
             try {
