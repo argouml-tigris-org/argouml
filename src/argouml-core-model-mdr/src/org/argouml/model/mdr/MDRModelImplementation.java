@@ -39,6 +39,7 @@
 package org.argouml.model.mdr;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.omg.uml.UmlPackage;
+import org.xml.sax.InputSource;
 
 /**
  * The handle to find all helper and factories.
@@ -502,6 +504,36 @@ public class MDRModelImplementation implements ModelImplementation {
                 break;
             }
         }
+    }
+
+    static String PROFILES_RESOURCE_PATH =
+        "/org/argouml/profile/profiles/uml14/";
+
+    static String PROFILES_BASE_URL =
+        "http://argouml.org/profiles/uml14/";
+
+    /**
+     * Open the URL to read the model file.  We try to avoid connecting
+     * to the remote peer by looking at the model file locally.
+     * In most cases, the model file is located at PROFILES_BASE_URL
+     * (http://argouml.org) which might be defunct at some point in the future.
+     *
+     * @param url the URL to open.
+     * @return the input stream.
+     */
+    InputSource getInputSource(URL url) {
+        String uri = url.toExternalForm();
+        if (uri.startsWith(PROFILES_BASE_URL)) {
+            String name = uri.substring(PROFILES_BASE_URL.length());
+            InputStream inputStream = getClass().getResourceAsStream(PROFILES_RESOURCE_PATH + name);
+            return new InputSource(inputStream);
+        }
+
+        // Note: we could have more rules here such as to look at
+        // some specific local places.  If the uri is a file localtion,
+        // everthing is ok.  There is still the issue with user profiles
+        // that will be downloaded from http://argouml.org...
+        return new InputSource(uri);
     }
 
     /**
