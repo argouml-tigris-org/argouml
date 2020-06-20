@@ -258,6 +258,7 @@ public final class NotationProviderFactory2 {
                 LOG.log(Level.SEVERE, "Exception caught", e);
             }
         }
+        LOG.log(Level.SEVERE, "No notation provider for " + name + " type " + type);
         return null;
     }
 
@@ -279,8 +280,10 @@ public final class NotationProviderFactory2 {
             NotationName name) {
 
         NotationProvider p = getNotationProvider(type, object, name);
-        p.setRenderer(nr);
-        p.initialiseListener(object);
+        if (p != null) {
+            p.setRenderer(nr);
+            p.initialiseListener(object);
+        }
         return p;
     }
 
