@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-06-20T14:27:49.186">
+<pmd version="4.3" timestamp="2020-06-25T17:39:47.346">
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-diagrams-activity2/src/org/argouml/activity2/diagram/ActivityDiagramGraphModel.java">
 <violation beginline="29" endline="29" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.activity2.diagram" class="ActivityDiagramGraphModel" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
