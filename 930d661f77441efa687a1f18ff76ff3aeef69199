@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d7195a9_2d193fea",
+        "filename": "src/argouml-app/src/org/argouml/moduleloader/ModuleLoader2.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2020-06-27T06:23:42Z",
+      "side": 1,
+      "message": "This means that if we don\u0027t find the class we ignore the contents of the argo.ext.dir system property. Could you please explain how they are connected?",
+      "revId": "930d661f77441efa687a1f18ff76ff3aeef69199",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
