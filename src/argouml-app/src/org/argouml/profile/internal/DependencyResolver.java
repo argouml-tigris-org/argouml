@@ -13,6 +13,7 @@
 
 package org.argouml.profile.internal;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -74,10 +75,10 @@ class DependencyResolver<T> {
         if (unresolvedItems.isEmpty() && items.isEmpty()) {
             return;
         }
-        Collection<T> allUnresolvedItems = new HashSet<T>();
+        Collection<T> allUnresolvedItems = new ArrayList<T>();
         allUnresolvedItems.addAll(items);
         allUnresolvedItems.addAll(unresolvedItems);
-        
+
         if (LOG.isLoggable(Level.FINE)) {
             LOG.log(Level.FINE,
                     items2Msg("Attempt to resolve the following items:",

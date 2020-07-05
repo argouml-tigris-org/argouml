@@ -38,27 +38,40 @@
 
 package org.argouml.profile;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**
  * Class with helper methods for user defined profiles.
- * 
+ *
  * @author Thomas Neustupny
  */
 public class UserDefinedProfileHelper {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(UserDefinedProfileHelper.class.getName());
+
+    /**
      * Creates a JFileChooser which is appropriate for opening multiple files
      * containing user defined profiles.
-     * 
+     *
      * @return a JFileChooser
      */
     public static JFileChooser createUserDefinedProfileFileChooser() {
@@ -86,7 +99,7 @@ public class UserDefinedProfileHelper {
     /**
      * Get a list of files from a file array, where the directory entries
      * are recursively resolved by all profile files inside the directory.
-     * 
+     *
      * @param fileArray array of files
      * @return list of files
      */
@@ -114,6 +127,49 @@ public class UserDefinedProfileHelper {
                 results.add(curDir);
                 continue;
             }
+
+            // If the file exists, load it as it contains a list of files
+            // to take into account with the correct order to load them.
+            File loadFile = new File(curDir, "argouml-profiles.conf");
+            if (loadFile.exists()) {
+                FileInputStream is = null;
+                try {
+                    is = new FileInputStream(loadFile);
+                } catch (FileNotFoundException e) {
+                    // This is the standard case when the file doesn't exist.
+                    // since we test for this it shouldn't happen.
+                }
+                if (is != null) {
+                    BufferedReader br = new BufferedReader(
+                            new InputStreamReader(is));
+                    try {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            File modelFile = new File(curDir, line);
+                            if (modelFile.exists()) {
+                                results.add(modelFile);
+                            }
+                        }
+                    } catch (IOException e) {
+                        LOG.log(Level.WARNING, "Cannot read the file",
+                                new Object[] { loadFile, e });
+                    } finally {
+                        try {
+                            br.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    try {
+                        is.close();
+                    } catch (IOException ex) {
+                        // Since we could open it, it should be possible
+                        // to close. If not, we don't care.
+                    }
+                }
+                continue;
+            }
+
             // Get the contents of the directory
             File[] files = curDir.listFiles();
             if (files != null) {
