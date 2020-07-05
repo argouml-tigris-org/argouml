@@ -38,7 +38,13 @@
 
 package org.argouml.profile;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -50,7 +56,7 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * Class with helper methods for user defined profiles.
- * 
+ *
  * @author Thomas Neustupny
  */
 public class UserDefinedProfileHelper {
@@ -58,7 +64,7 @@ public class UserDefinedProfileHelper {
     /**
      * Creates a JFileChooser which is appropriate for opening multiple files
      * containing user defined profiles.
-     * 
+     *
      * @return a JFileChooser
      */
     public static JFileChooser createUserDefinedProfileFileChooser() {
@@ -86,7 +92,7 @@ public class UserDefinedProfileHelper {
     /**
      * Get a list of files from a file array, where the directory entries
      * are recursively resolved by all profile files inside the directory.
-     * 
+     *
      * @param fileArray array of files
      * @return list of files
      */
@@ -114,6 +120,36 @@ public class UserDefinedProfileHelper {
                 results.add(curDir);
                 continue;
             }
+
+            // If the argouml-profiles.properties file exist, load it as it contains a list
+            // of files to take into account with the correct order to load them.
+            File loadFile = new File(curDir, "argouml-profiles.conf");
+            if (loadFile.exists()) {
+                FileInputStream is = null;
+                try {
+                    is = new FileInputStream(loadFile);
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        File modelFile = new File(curDir, line);
+                        if (modelFile.exists()) {
+                            results.add(modelFile);
+                        }
+                    }
+                } catch (Exception ex) {
+
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                        } catch (IOException ex) {
+
+                        }
+                    }
+                }
+                continue;
+            }
+
             // Get the contents of the directory
             File[] files = curDir.listFiles();
             if (files != null) {
