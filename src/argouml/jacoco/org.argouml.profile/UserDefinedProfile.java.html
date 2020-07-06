@@ -350,10 +350,10 @@ public class UserDefinedProfile extends Profile {
 
                     // load profile name
 <span class="fc" id="L352">                    String name = Model.getFacade().getName(obj);</span>
-<span class="fc bfc" id="L353" title="All 2 branches covered.">                    if (name != null) {</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">                    if (name != null) {</span>
 <span class="fc" id="L354">                        displayName = name;</span>
                     } else {
-<span class="pc bpc" id="L356" title="1 of 2 branches missed.">                        if (displayName == null) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">                        if (displayName == null) {</span>
 <span class="nc" id="L357">                            displayName = Translator</span>
 <span class="nc" id="L358">                                    .localize(&quot;misc.profile.unnamed&quot;);</span>
                         }
