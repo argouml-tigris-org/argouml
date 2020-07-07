@@ -1103,7 +1103,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 <span class="fc" id="L1103">        }</span>
 
 <span class="fc" id="L1105">        members.clear();</span>
-<span class="fc bfc" id="L1106" title="All 2 branches covered.">        if (!roots.isEmpty()) {</span>
+<span class="pc bpc" id="L1106" title="1 of 2 branches missed.">        if (!roots.isEmpty()) {</span>
             try {
 <span class="fc" id="L1108">                Model.getUmlFactory().deleteExtent(roots.iterator().next());</span>
 <span class="fc" id="L1109">            } catch (InvalidElementException e) {</span>
@@ -1119,7 +1119,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 <span class="fc" id="L1119">            uuidRefs.clear();</span>
         }
 
-<span class="fc bfc" id="L1122" title="All 2 branches covered.">        if (defaultModelTypeCache != null) {</span>
+<span class="pc bpc" id="L1122" title="1 of 2 branches missed.">        if (defaultModelTypeCache != null) {</span>
 <span class="fc" id="L1123">            defaultModelTypeCache.clear();</span>
         }
 

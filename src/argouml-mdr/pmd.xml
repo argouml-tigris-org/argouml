@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-07-06T13:02:45.987">
+<pmd version="4.3" timestamp="2020-07-07T08:25:35.862">
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ActivityGraphsHelperMDRImpl.java">
 <violation beginline="134" endline="136" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ActivityGraphsHelperMDRImpl" method="findStateByName" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
@@ -139,10 +139,10 @@ Avoid unused private methods such as 'chainedTransform(String,InputSource)'.
 </violation>
 </file>
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/XmiReferenceResolverImpl.java">
-<violation beginline="432" endline="434" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="toURL" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="435" endline="437" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="toURL" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="557" endline="574" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="findModelUrlOnClasspath" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<violation beginline="560" endline="577" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="XmiReferenceResolverImpl" method="findModelUrlOnClasspath" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>

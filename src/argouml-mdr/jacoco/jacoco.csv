@@ -7,7 +7,7 @@ argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCor
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,Registry,43,192,9,31,7,45,8,18,0,6
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new ModelCommand() {...},32,0,0,0,7,0,5,0,5,0
-argouml-core-model-mdr,org.argouml.model.mdr,XmiReferenceResolverImpl,369,623,46,48,71,138,36,27,4,12
+argouml-core-model-mdr,org.argouml.model.mdr,XmiReferenceResolverImpl,418,632,52,50,83,141,40,27,4,12
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.BooleanSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0
 argouml-core-model-mdr,org.argouml.model.mdr,UndoCoreHelperDecorator.new UndoCoreHelperDecorator.ObjectSetter() {...},17,0,0,0,3,0,2,0,2,0

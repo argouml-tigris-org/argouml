@@ -328,12 +328,12 @@ public class UserDefinedProfile extends Profile {
 <span class="fc" id="L328">                        profilePackages = new URLModelLoader()</span>
 <span class="fc" id="L329">                                .loadModel(reference);</span>
                     }
-<span class="fc" id="L331">                } catch (ProfileException e1) {</span>
-<span class="fc" id="L332">                    LOG.log(Level.SEVERE,</span>
-<span class="fc" id="L333">                            &quot;Exception loading profile &quot;+ reference.getPath(),</span>
+<span class="nc" id="L331">                } catch (ProfileException e1) {</span>
+<span class="nc" id="L332">                    LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L333">                            &quot;Exception loading profile &quot;+ reference.getPath(),</span>
                             e1);
-<span class="fc" id="L335">                    profilePackages = Collections.emptySet();</span>
-<span class="fc" id="L336">                    return;</span>
+<span class="nc" id="L335">                    profilePackages = Collections.emptySet();</span>
+<span class="nc" id="L336">                    return;</span>
 <span class="fc" id="L337">                }</span>
             }
 
@@ -350,10 +350,10 @@ public class UserDefinedProfile extends Profile {
 
                     // load profile name
 <span class="fc" id="L352">                    String name = Model.getFacade().getName(obj);</span>
-<span class="pc bpc" id="L353" title="1 of 2 branches missed.">                    if (name != null) {</span>
+<span class="fc bfc" id="L353" title="All 2 branches covered.">                    if (name != null) {</span>
 <span class="fc" id="L354">                        displayName = name;</span>
                     } else {
-<span class="nc bnc" id="L356" title="All 2 branches missed.">                        if (displayName == null) {</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">                        if (displayName == null) {</span>
 <span class="nc" id="L357">                            displayName = Translator</span>
 <span class="nc" id="L358">                                    .localize(&quot;misc.profile.unnamed&quot;);</span>
                         }

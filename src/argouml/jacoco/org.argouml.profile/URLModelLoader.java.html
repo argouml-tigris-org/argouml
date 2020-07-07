@@ -80,7 +80,7 @@ import org.xml.sax.InputSource;
         
         Collection elements = 
 <span class="fc" id="L82">            Model.getUmlFactory().getExtentElements(publicId.toExternalForm());</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (elements == null) {</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        if (elements == null) {</span>
 <span class="fc" id="L84">            ZipInputStream zis = null;</span>
             try {
 <span class="fc" id="L86">                XmiReader xmiReader = Model.getXmiReader();</span>
@@ -97,8 +97,8 @@ import org.xml.sax.InputSource;
 <span class="fc" id="L97">                InputSource inputSource = new InputSource(url.toExternalForm());</span>
 <span class="fc" id="L98">                inputSource.setPublicId(publicId.toString());</span>
 <span class="fc" id="L99">                elements = xmiReader.parse(inputSource, true);</span>
-<span class="fc" id="L100">            } catch (UmlException e) {</span>
-<span class="fc" id="L101">                throw new ProfileException(&quot;Error loading profile XMI file &quot;, e);</span>
+<span class="nc" id="L100">            } catch (UmlException e) {</span>
+<span class="nc" id="L101">                throw new ProfileException(&quot;Error loading profile XMI file &quot;, e);</span>
 <span class="nc" id="L102">            } catch (IOException e) {</span>
 <span class="nc" id="L103">                throw new ProfileException(&quot;I/O error loading profile XMI &quot;, e);</span>
 <span class="fc" id="L104">            }</span>

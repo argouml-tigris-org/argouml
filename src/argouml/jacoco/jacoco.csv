@@ -5,7 +5,7 @@ argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionAddEventAsTrigger,
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,17,0,2,0,6,0,3,0,2,0
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,18,14,16,17,13,6,0,3
-argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
+argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,670,473,116,54,149,106,67,23,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1109,290,291,69,269,72,176,9,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
 argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
@@ -608,7 +608,7 @@ argouml-app,org.argouml.persistence,PersistenceManager,214,234,21,19,59,63,27,17
 argouml-app,org.argouml.persistence,ProjectFileView,22,0,4,0,7,0,5,0,3,0
 argouml-app,org.argouml.persistence,InterruptedIOException,9,0,0,0,4,0,2,0,2,0
 argouml-app,org.argouml.persistence,DiagramMemberFilePersister,83,73,3,1,26,25,5,5,3,5
-argouml-app,org.argouml.persistence,XmiFilePersister,191,307,21,19,52,83,20,11,3,8
+argouml-app,org.argouml.persistence,XmiFilePersister,188,310,21,19,51,84,20,11,3,8
 argouml-app,org.argouml.persistence,SaveException,13,0,0,0,6,0,3,0,3,0
 argouml-app,org.argouml.persistence,ProfileConfigurationParser,77,209,10,22,13,67,9,24,0,13
 argouml-app,org.argouml.persistence,OffenderXMLHelper,16,0,2,0,6,0,3,0,2,0
@@ -678,7 +678,7 @@ argouml-app,org.argouml.uml.diagram.state.ui,FigRegion,19,0,0,0,5,0,2,0,2,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigTransition,246,129,12,10,61,38,13,10,5,7
 argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
 argouml-app,org.argouml.uml.diagram.state.ui,ActionCreatePseudostate,35,0,2,0,10,0,3,0,2,0
-argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1246,241,169,27,296,64,129,21,39,13
+argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1250,237,171,25,297,63,130,20,39,13
 argouml-app,org.argouml.uml.diagram.state.ui,FigState,156,169,30,2,49,41,24,8,8,8
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewChangeEvent,11,0,0,0,4,0,4,0,4,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,18,164,1,1,7,41,7,10,6,10
@@ -1046,7 +1046,7 @@ argouml-app,org.argouml.kernel,ProjectManager.new NonUndoableCommand() {...},57,
 argouml-app,org.argouml.kernel,ProfileConfiguration,86,468,14,54,20,114,18,39,5,18
 argouml-app,org.argouml.kernel,DefaultUndoManager,129,97,14,2,35,24,15,6,7,6
 argouml-app,org.argouml.kernel,MemberList,182,260,29,39,46,78,37,25,17,11
-argouml-app,org.argouml.kernel,ProjectImpl,549,1183,94,102,142,336,77,107,14,72
+argouml-app,org.argouml.kernel,ProjectImpl,549,1183,96,100,142,336,79,105,14,72
 argouml-app,org.argouml.kernel,NonUndoableCommand,5,3,0,0,3,1,3,1,3,1
 argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
 argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
@@ -1391,13 +1391,13 @@ argouml-app,org.argouml.profile,ZipModelLoader,138,0,10,0,33,0,9,0,4,0
 argouml-app,org.argouml.profile,UserDefinedProfile.NullProfileManager,26,0,0,0,14,0,14,0,14,0
 argouml-app,org.argouml.profile,UserDefinedProfileHelper.new FileFilter() {...},39,0,14,0,7,0,10,0,3,0
 argouml-app,org.argouml.profile,ProfileReference,2,45,2,4,0,10,2,5,0,4
-argouml-app,org.argouml.profile,UserDefinedProfile,714,390,121,31,183,103,78,26,11,17
+argouml-app,org.argouml.profile,UserDefinedProfile,732,372,119,33,187,99,77,27,11,17
 argouml-app,org.argouml.profile,FileModelLoader,7,30,0,0,2,8,0,3,0,3
 argouml-app,org.argouml.profile,Profile,15,75,2,4,5,24,5,12,3,11
 argouml-app,org.argouml.profile,ProfileFacade,6,82,1,7,2,25,2,13,1,10
 argouml-app,org.argouml.profile,UserDefinedProfile.FigNodeDescriptor,19,0,6,0,2,0,5,0,2,0
-argouml-app,org.argouml.profile,URLModelLoader,49,54,5,3,10,16,5,3,1,3
-argouml-app,org.argouml.profile,ProfileException,8,5,0,0,4,2,2,1,2,1
+argouml-app,org.argouml.profile,URLModelLoader,56,47,4,4,12,14,4,4,1,3
+argouml-app,org.argouml.profile,ProfileException,13,0,0,0,6,0,3,0,3,0
 argouml-app,org.argouml.profile,ResourceModelLoader,6,28,0,0,3,7,1,3,1,3
 argouml-app,org.argouml.profile,CoreProfileReference,25,52,3,7,3,7,4,4,1,2
 argouml-app,org.argouml.profile,ReaderModelLoader,16,38,1,1,4,13,1,3,0,3
