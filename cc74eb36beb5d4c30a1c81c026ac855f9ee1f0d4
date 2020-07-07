@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "006c06b1_b37ba9a6",
+        "filename": "src/argouml-core-model-mdr/src/org/argouml/model/mdr/MDRModelImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2020-07-07T08:32:49Z",
+      "side": 1,
+      "message": "On second thought, this doesn\u0027t feel right. Isn\u0027t there a way to specify references to the locally tool-provided profiles? If that is used when we mean that then we can still keep the option of having things provided at http://argouml.org.",
+      "revId": "cc74eb36beb5d4c30a1c81c026ac855f9ee1f0d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
