@@ -6,7 +6,7 @@ argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,1
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,18,14,16,17,13,6,0,3
 argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
-argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1159,240,306,54,282,59,179,6,1,4
+argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1109,290,291,69,269,72,176,9,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
 argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclEnumLiteral,33,0,4,0,9,0,5,0,3,0
@@ -822,7 +822,7 @@ argouml-app,org.argouml.profile.internal,ProfileUML,85,602,4,10,40,138,4,13,0,10
 argouml-app,org.argouml.profile.internal,FormatingStrategyUML,194,170,34,20,52,41,26,13,5,7
 argouml-app,org.argouml.profile.internal,ProfileUML.new DefaultTypeStrategy() {...},5,29,1,1,2,7,2,4,1,4
 argouml-app,org.argouml.profile.internal,ProfileManagerImpl.new DependencyChecker() {...},18,43,2,2,3,11,2,2,0,2
-argouml-app,org.argouml.profile.internal,ProfileManagerImpl,152,638,29,77,35,168,29,48,1,23
+argouml-app,org.argouml.profile.internal,ProfileManagerImpl,165,643,34,78,36,170,32,48,1,23
 argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionNodeInstance,94,0,6,0,16,0,11,0,8,0
 argouml-app,org.argouml.uml.diagram.deployment.ui,DeploymentDiagramRenderer,334,13,21,1,81,3,13,2,2,2
 argouml-app,org.argouml.uml.diagram.deployment.ui,AbstractFigComponent,116,268,9,1,30,47,11,5,6,5

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-07-07T13:52:30.877">
+<pmd version="4.3" timestamp="2020-07-07T14:45:32.033">
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-app/src/org/argouml/application/api/Argo.java">
 <violation beginline="410" endline="413" begincolumn="64" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.argouml.application.api" class="Argo" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
@@ -366,10 +366,10 @@ Avoid empty if statements
 </violation>
 </file>
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-app/src/org/argouml/profile/internal/ProfileManagerImpl.java">
-<violation beginline="294" endline="304" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.profile.internal" class="ProfileManagerImpl" method="registerProfileInternal" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<violation beginline="300" endline="310" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.profile.internal" class="ProfileManagerImpl" method="registerProfileInternal" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
-<violation beginline="326" endline="328" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.profile.internal" class="ProfileManagerImpl" method="removeProfile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+<violation beginline="332" endline="334" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.profile.internal" class="ProfileManagerImpl" method="removeProfile" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>

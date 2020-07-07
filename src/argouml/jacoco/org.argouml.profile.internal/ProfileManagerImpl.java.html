@@ -254,32 +254,38 @@ import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
 <span class="fc bfc" id="L254" title="All 2 branches covered.">        while (tokenizer.hasMoreTokens()) {</span>
 <span class="fc" id="L255">            searchDirectories.add(tokenizer.nextToken());</span>
         }
-<span class="fc" id="L257">        disableConfigurationUpdate = false;</span>
-<span class="fc" id="L258">    }</span>
+
+        // Add an optional default configured from system options.
+<span class="fc" id="L259">        String def = System.getProperty(&quot;argouml.profiles.directory&quot;);</span>
+<span class="pc bpc" id="L260" title="5 of 6 branches missed.">        if (def != null &amp;&amp; def.length() &gt; 0 &amp;&amp; !searchDirectories.contains(def)) {</span>
+<span class="nc" id="L261">            searchDirectories.add(def);</span>
+        }
+<span class="fc" id="L263">        disableConfigurationUpdate = false;</span>
+<span class="fc" id="L264">    }</span>
 
     private void updateSearchDirectoriesConfiguration() {
-<span class="pc bpc" id="L261" title="1 of 2 branches missed.">        if (!disableConfigurationUpdate) {</span>
-<span class="fc" id="L262">            StringBuffer buf = new StringBuffer();</span>
-<span class="fc bfc" id="L263" title="All 2 branches covered.">            for (String s : searchDirectories) {</span>
-<span class="fc" id="L264">                buf.append(s).append(DIRECTORY_SEPARATOR);</span>
-<span class="fc" id="L265">            }</span>
-<span class="fc" id="L266">            Configuration.setString(KEY_DEFAULT_DIRECTORIES, buf.toString());</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">        if (!disableConfigurationUpdate) {</span>
+<span class="fc" id="L268">            StringBuffer buf = new StringBuffer();</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">            for (String s : searchDirectories) {</span>
+<span class="fc" id="L270">                buf.append(s).append(DIRECTORY_SEPARATOR);</span>
+<span class="fc" id="L271">            }</span>
+<span class="fc" id="L272">            Configuration.setString(KEY_DEFAULT_DIRECTORIES, buf.toString());</span>
         }
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L274">    }</span>
 
     public List&lt;Profile&gt; getRegisteredProfiles() {
-<span class="fc" id="L271">        return profiles;</span>
+<span class="fc" id="L277">        return profiles;</span>
     }
 
     public void registerProfile(Profile p) {
-<span class="pc bpc" id="L275" title="1 of 2 branches missed.">        if (registerProfileInternal(p)) {</span>
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">        if (registerProfileInternal(p)) {</span>
             // this profile could have not been loaded when
             // the default profile configuration
             // was loaded at first, so we need to do it again
-<span class="fc" id="L279">            loadDefaultProfilesfromConfiguration();</span>
+<span class="fc" id="L285">            loadDefaultProfilesfromConfiguration();</span>
         }
-<span class="fc" id="L281">        resolver.resolve();</span>
-<span class="fc" id="L282">    }</span>
+<span class="fc" id="L287">        resolver.resolve();</span>
+<span class="fc" id="L288">    }</span>
 
     /**
      * @param p the profile to register.
@@ -289,44 +295,44 @@ import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
     private boolean registerProfileInternal(Profile p) {
 
         try {
-<span class="fc" id="L292">            boolean loadDefaultProfilesFromConfiguration = false;</span>
-<span class="pc bpc" id="L293" title="2 of 4 branches missed.">            if (p != null &amp;&amp; !profiles.contains(p)) {</span>
-<span class="fc bfc" id="L294" title="All 2 branches covered.">                if (p instanceof UserDefinedProfile</span>
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">                        || getProfileForClass(p.getClass().getName()) == null) {</span>
-<span class="fc" id="L296">                    loadDefaultProfilesFromConfiguration = true;</span>
-<span class="fc" id="L297">                    profiles.add(p);</span>
-<span class="fc bfc" id="L298" title="All 2 branches covered.">                    for (Critic critic : p.getCritics()) {</span>
-<span class="fc bfc" id="L299" title="All 2 branches covered.">                        for (Object meta : critic.getCriticizedDesignMaterials()) {</span>
-<span class="fc" id="L300">                            Agency.register(critic, meta);</span>
-<span class="fc" id="L301">                        }</span>
-<span class="fc" id="L302">                        critic.setEnabled(false);</span>
-<span class="fc" id="L303">                    }</span>
+<span class="fc" id="L298">            boolean loadDefaultProfilesFromConfiguration = false;</span>
+<span class="pc bpc" id="L299" title="2 of 4 branches missed.">            if (p != null &amp;&amp; !profiles.contains(p)) {</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">                if (p instanceof UserDefinedProfile</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">                        || getProfileForClass(p.getClass().getName()) == null) {</span>
+<span class="fc" id="L302">                    loadDefaultProfilesFromConfiguration = true;</span>
+<span class="fc" id="L303">                    profiles.add(p);</span>
+<span class="fc bfc" id="L304" title="All 2 branches covered.">                    for (Critic critic : p.getCritics()) {</span>
+<span class="fc bfc" id="L305" title="All 2 branches covered.">                        for (Object meta : critic.getCriticizedDesignMaterials()) {</span>
+<span class="fc" id="L306">                            Agency.register(critic, meta);</span>
+<span class="fc" id="L307">                        }</span>
+<span class="fc" id="L308">                        critic.setEnabled(false);</span>
+<span class="fc" id="L309">                    }</span>
                 }
             }
-<span class="fc" id="L306">            return loadDefaultProfilesFromConfiguration;</span>
-<span class="nc" id="L307">        } catch (RuntimeException e) {</span>
+<span class="fc" id="L312">            return loadDefaultProfilesFromConfiguration;</span>
+<span class="nc" id="L313">        } catch (RuntimeException e) {</span>
             // TODO: Better if we wrap in a ProfileException and throw that
-<span class="nc" id="L309">            LOG.log(Level.SEVERE,</span>
-<span class="nc" id="L310">                    &quot;Error registering profile &quot; + p.getDisplayName());</span>
-<span class="nc" id="L311">            throw e;</span>
+<span class="nc" id="L315">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L316">                    &quot;Error registering profile &quot; + p.getDisplayName());</span>
+<span class="nc" id="L317">            throw e;</span>
         }
     }
 
     public void removeProfile(Profile p) {
-<span class="pc bpc" id="L316" title="1 of 4 branches missed.">        if (p != null &amp;&amp; p != profileUML) {</span>
-<span class="fc" id="L317">            profiles.remove(p);</span>
-<span class="fc" id="L318">            defaultProfiles.remove(p);</span>
+<span class="pc bpc" id="L322" title="1 of 4 branches missed.">        if (p != null &amp;&amp; p != profileUML) {</span>
+<span class="fc" id="L323">            profiles.remove(p);</span>
+<span class="fc" id="L324">            defaultProfiles.remove(p);</span>
         }
         try {
-<span class="fc" id="L321">            Collection packages = p.getLoadedPackages();</span>
-<span class="pc bpc" id="L322" title="1 of 4 branches missed.">            if (packages != null &amp;&amp; !packages.isEmpty()) {</span>
+<span class="fc" id="L327">            Collection packages = p.getLoadedPackages();</span>
+<span class="pc bpc" id="L328" title="1 of 4 branches missed.">            if (packages != null &amp;&amp; !packages.isEmpty()) {</span>
                 // We assume profile is contained in a single extent
-<span class="fc" id="L324">                Model.getUmlFactory().deleteExtent(packages.iterator().next());</span>
+<span class="fc" id="L330">                Model.getUmlFactory().deleteExtent(packages.iterator().next());</span>
             }
-<span class="nc" id="L326">        } catch (ProfileException e) {</span>
+<span class="nc" id="L332">        } catch (ProfileException e) {</span>
             // Nothing to delete if we couldn't get the packages
-<span class="fc" id="L328">        }</span>
-<span class="fc" id="L329">    }</span>
+<span class="fc" id="L334">        }</span>
+<span class="fc" id="L335">    }</span>
 
     private static final String OLD_PROFILE_PACKAGE = &quot;org.argouml.uml.profile&quot;;
 
@@ -334,125 +340,125 @@ import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
         &quot;org.argouml.profile.internal&quot;;
 
     public Profile getProfileForClass(String profileClass) {
-<span class="fc" id="L337">        Profile found = null;</span>
+<span class="fc" id="L343">        Profile found = null;</span>
 
         // If we found an old-style name, update it to the new package name
-<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (profileClass != null</span>
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">                &amp;&amp; profileClass.startsWith(OLD_PROFILE_PACKAGE)) {</span>
-<span class="nc" id="L342">            profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">        if (profileClass != null</span>
+<span class="pc bpc" id="L347" title="1 of 2 branches missed.">                &amp;&amp; profileClass.startsWith(OLD_PROFILE_PACKAGE)) {</span>
+<span class="nc" id="L348">            profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,</span>
                     NEW_PROFILE_PACKAGE);
         }
 
         // Make sure the names didn't change again
-<span class="pc bpc" id="L347" title="2 of 4 branches missed.">        assert profileUML.getClass().getName().startsWith(NEW_PROFILE_PACKAGE);</span>
+<span class="pc bpc" id="L353" title="2 of 4 branches missed.">        assert profileUML.getClass().getName().startsWith(NEW_PROFILE_PACKAGE);</span>
 
-<span class="fc bfc" id="L349" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
-<span class="fc bfc" id="L350" title="All 2 branches covered.">            if (p.getClass().getName().equals(profileClass)) {</span>
-<span class="fc" id="L351">                found = p;</span>
-<span class="fc" id="L352">                break;</span>
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
+<span class="fc bfc" id="L356" title="All 2 branches covered.">            if (p.getClass().getName().equals(profileClass)) {</span>
+<span class="fc" id="L357">                found = p;</span>
+<span class="fc" id="L358">                break;</span>
             }
-<span class="fc" id="L354">        }</span>
-<span class="fc" id="L355">        return found;</span>
+<span class="fc" id="L360">        }</span>
+<span class="fc" id="L361">        return found;</span>
     }
 
     public void addToDefaultProfiles(Profile p) {
-<span class="pc bpc" id="L359" title="2 of 4 branches missed.">        if (p != null &amp;&amp; profiles.contains(p)</span>
-<span class="fc bfc" id="L360" title="All 2 branches covered.">                &amp;&amp; !defaultProfiles.contains(p)) {</span>
-<span class="fc" id="L361">            defaultProfiles.add(p);</span>
-<span class="fc" id="L362">            updateDefaultProfilesConfiguration();</span>
+<span class="pc bpc" id="L365" title="2 of 4 branches missed.">        if (p != null &amp;&amp; profiles.contains(p)</span>
+<span class="fc bfc" id="L366" title="All 2 branches covered.">                &amp;&amp; !defaultProfiles.contains(p)) {</span>
+<span class="fc" id="L367">            defaultProfiles.add(p);</span>
+<span class="fc" id="L368">            updateDefaultProfilesConfiguration();</span>
         }
-<span class="fc" id="L364">    }</span>
+<span class="fc" id="L370">    }</span>
 
     public List&lt;Profile&gt; getDefaultProfiles() {
-<span class="fc" id="L367">        return Collections.unmodifiableList(defaultProfiles);</span>
+<span class="fc" id="L373">        return Collections.unmodifiableList(defaultProfiles);</span>
     }
 
     public void removeFromDefaultProfiles(Profile p) {
-<span class="pc bpc" id="L371" title="3 of 6 branches missed.">        if (p != null &amp;&amp; p != profileUML &amp;&amp; profiles.contains(p)) {</span>
-<span class="fc" id="L372">            defaultProfiles.remove(p);</span>
-<span class="fc" id="L373">            updateDefaultProfilesConfiguration();</span>
+<span class="pc bpc" id="L377" title="3 of 6 branches missed.">        if (p != null &amp;&amp; p != profileUML &amp;&amp; profiles.contains(p)) {</span>
+<span class="fc" id="L378">            defaultProfiles.remove(p);</span>
+<span class="fc" id="L379">            updateDefaultProfilesConfiguration();</span>
         }
-<span class="fc" id="L375">    }</span>
+<span class="fc" id="L381">    }</span>
 
     public void addSearchPathDirectory(String path) {
-<span class="pc bpc" id="L378" title="2 of 4 branches missed.">        if (path != null &amp;&amp; !searchDirectories.contains(path)) {</span>
-<span class="fc" id="L379">            searchDirectories.add(path);</span>
-<span class="fc" id="L380">            updateSearchDirectoriesConfiguration();</span>
+<span class="pc bpc" id="L384" title="2 of 4 branches missed.">        if (path != null &amp;&amp; !searchDirectories.contains(path)) {</span>
+<span class="fc" id="L385">            searchDirectories.add(path);</span>
+<span class="fc" id="L386">            updateSearchDirectoriesConfiguration();</span>
             try {
-<span class="fc" id="L382">                Model.getXmiReader().addSearchPath(path);</span>
-<span class="nc" id="L383">            } catch (UmlException e) {</span>
-<span class="nc" id="L384">                LOG.log(Level.SEVERE,</span>
+<span class="fc" id="L388">                Model.getXmiReader().addSearchPath(path);</span>
+<span class="nc" id="L389">            } catch (UmlException e) {</span>
+<span class="nc" id="L390">                LOG.log(Level.SEVERE,</span>
                         &quot;Couldn't retrive XMI Reader from Model.&quot;, e);
-<span class="fc" id="L386">            }</span>
+<span class="fc" id="L392">            }</span>
         }
-<span class="fc" id="L388">    }</span>
+<span class="fc" id="L394">    }</span>
 
     public List&lt;String&gt; getSearchPathDirectories() {
-<span class="nc" id="L391">        return Collections.unmodifiableList(searchDirectories);</span>
+<span class="nc" id="L397">        return Collections.unmodifiableList(searchDirectories);</span>
     }
 
     public void removeSearchPathDirectory(String path) {
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">        if (path != null) {</span>
-<span class="fc" id="L396">            searchDirectories.remove(path);</span>
-<span class="fc" id="L397">            updateSearchDirectoriesConfiguration();</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">        if (path != null) {</span>
+<span class="fc" id="L402">            searchDirectories.remove(path);</span>
+<span class="fc" id="L403">            updateSearchDirectoriesConfiguration();</span>
             try {
-<span class="fc" id="L399">                Model.getXmiReader().removeSearchPath(path);</span>
-<span class="nc" id="L400">            } catch (UmlException e) {</span>
-<span class="nc" id="L401">                LOG.log(Level.SEVERE,</span>
+<span class="fc" id="L405">                Model.getXmiReader().removeSearchPath(path);</span>
+<span class="nc" id="L406">            } catch (UmlException e) {</span>
+<span class="nc" id="L407">                LOG.log(Level.SEVERE,</span>
                         &quot;Couldn't retrive XMI Reader from Model.&quot;, e);
-<span class="fc" id="L403">            }</span>
+<span class="fc" id="L409">            }</span>
         }
-<span class="fc" id="L405">    }</span>
+<span class="fc" id="L411">    }</span>
 
     public void refreshRegisteredProfiles() {
-<span class="fc" id="L408">        ArrayList&lt;File&gt; dirs = new ArrayList&lt;File&gt;();</span>
-<span class="fc bfc" id="L409" title="All 2 branches covered.">        for (String dirName : searchDirectories) {</span>
-<span class="fc" id="L410">            File dir = new File(dirName);</span>
-<span class="pc bpc" id="L411" title="1 of 2 branches missed.">            if (dir.exists()) {</span>
-<span class="nc" id="L412">                dirs.add(dir);</span>
+<span class="fc" id="L414">        ArrayList&lt;File&gt; dirs = new ArrayList&lt;File&gt;();</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        for (String dirName : searchDirectories) {</span>
+<span class="fc" id="L416">            File dir = new File(dirName);</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">            if (dir.exists()) {</span>
+<span class="nc" id="L418">                dirs.add(dir);</span>
             }
-<span class="fc" id="L414">        }</span>
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">        if (!dirs.isEmpty()) {</span>
+<span class="fc" id="L420">        }</span>
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">        if (!dirs.isEmpty()) {</span>
             // TODO: Allow .zargo as profile as well?
-<span class="nc" id="L417">            List&lt;File&gt; profileFiles = UserDefinedProfileHelper.getFileList(</span>
-<span class="nc" id="L418">                dirs.toArray(new File[0]));</span>
-<span class="nc" id="L419">            loadProfiles(profileFiles);</span>
+<span class="nc" id="L423">            List&lt;File&gt; profileFiles = UserDefinedProfileHelper.getFileList(</span>
+<span class="nc" id="L424">                dirs.toArray(new File[0]));</span>
+<span class="nc" id="L425">            loadProfiles(profileFiles);</span>
         }
-<span class="fc" id="L421">    }</span>
+<span class="fc" id="L427">    }</span>
 
     void loadProfiles(List&lt;File&gt; profileFiles) {
-<span class="fc" id="L424">        resolver.resolve(profileFiles);</span>
-<span class="fc" id="L425">    }</span>
+<span class="fc" id="L430">        resolver.resolve(profileFiles);</span>
+<span class="fc" id="L431">    }</span>
 
     private Profile findUserDefinedProfile(File file) {
-<span class="fc bfc" id="L428" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
-<span class="fc bfc" id="L429" title="All 2 branches covered.">            if (p instanceof UserDefinedProfile) {</span>
-<span class="fc" id="L430">                UserDefinedProfile udp = (UserDefinedProfile) p;</span>
-<span class="pc bpc" id="L431" title="1 of 2 branches missed.">                if (file.equals(udp.getModelFile())) {</span>
-<span class="nc" id="L432">                    return udp;</span>
+<span class="fc bfc" id="L434" title="All 2 branches covered.">        for (Profile p : profiles) {</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">            if (p instanceof UserDefinedProfile) {</span>
+<span class="fc" id="L436">                UserDefinedProfile udp = (UserDefinedProfile) p;</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">                if (file.equals(udp.getModelFile())) {</span>
+<span class="nc" id="L438">                    return udp;</span>
                 }
             }
-<span class="fc" id="L435">        }</span>
-<span class="fc" id="L436">        return null;</span>
+<span class="fc" id="L441">        }</span>
+<span class="fc" id="L442">        return null;</span>
     }
 
     public Profile getUMLProfile() {
-<span class="fc" id="L440">        return profileUML;</span>
+<span class="fc" id="L446">        return profileUML;</span>
     }
 
     /*
      * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
      */
     public Profile lookForRegisteredProfile(String value) {
-<span class="pc bpc" id="L447" title="1 of 2 branches missed.">        if (value != null) {</span>
-<span class="fc" id="L448">            List&lt;Profile&gt; registeredProfiles = getRegisteredProfiles();</span>
-<span class="fc bfc" id="L449" title="All 2 branches covered.">            for (Profile profile : registeredProfiles) {</span>
-<span class="fc bfc" id="L450" title="All 2 branches covered.">                if (value.equalsIgnoreCase(profile.getProfileIdentifier())) {</span>
-<span class="fc" id="L451">                    return profile;</span>
+<span class="pc bpc" id="L453" title="1 of 2 branches missed.">        if (value != null) {</span>
+<span class="fc" id="L454">            List&lt;Profile&gt; registeredProfiles = getRegisteredProfiles();</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">            for (Profile profile : registeredProfiles) {</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">                if (value.equalsIgnoreCase(profile.getProfileIdentifier())) {</span>
+<span class="fc" id="L457">                    return profile;</span>
                 }
-<span class="fc" id="L453">            }</span>
+<span class="fc" id="L459">            }</span>
         }
-<span class="fc" id="L455">        return null;</span>
+<span class="fc" id="L461">        return null;</span>
     }
 
     /*
@@ -460,18 +466,18 @@ import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
      * @see org.argouml.profile.ProfileManager#applyConfiguration(org.argouml.kernel.ProfileConfiguration)
      */
     public void applyConfiguration(ProfileConfiguration pc) {
-<span class="fc bfc" id="L463" title="All 2 branches covered.">        for (Profile p : this.profiles) {</span>
-<span class="fc bfc" id="L464" title="All 2 branches covered.">            for (Critic c : p.getCritics()) {</span>
-<span class="fc" id="L465">                c.setEnabled(false);</span>
-<span class="fc" id="L466">                Configuration.setBoolean(c.getCriticKey(), false);</span>
-<span class="fc" id="L467">            }</span>
-<span class="fc" id="L468">        }</span>
-<span class="fc bfc" id="L469" title="All 2 branches covered.">        for (Profile p : pc.getProfiles()) {</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        for (Profile p : this.profiles) {</span>
 <span class="fc bfc" id="L470" title="All 2 branches covered.">            for (Critic c : p.getCritics()) {</span>
-<span class="fc" id="L471">                c.setEnabled(true);</span>
-<span class="fc" id="L472">                Configuration.setBoolean(c.getCriticKey(), true);</span>
+<span class="fc" id="L471">                c.setEnabled(false);</span>
+<span class="fc" id="L472">                Configuration.setBoolean(c.getCriticKey(), false);</span>
 <span class="fc" id="L473">            }</span>
 <span class="fc" id="L474">        }</span>
-<span class="fc" id="L475">    }</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        for (Profile p : pc.getProfiles()) {</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">            for (Critic c : p.getCritics()) {</span>
+<span class="fc" id="L477">                c.setEnabled(true);</span>
+<span class="fc" id="L478">                Configuration.setBoolean(c.getCriticKey(), true);</span>
+<span class="fc" id="L479">            }</span>
+<span class="fc" id="L480">        }</span>
+<span class="fc" id="L481">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
