@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16d3c9ce_43b5b8ed",
+        "filename": "src/argouml-app/src/org/argouml/profile/UserDefinedProfileHelper.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2020-07-07T09:48:46Z",
+      "side": 1,
+      "message": "This exception is a little too general. It could hide strange problems.\n\nThere should be something happening on the exception.",
+      "revId": "2f125e6daebaa826b6852c32dd91389596e07038",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
