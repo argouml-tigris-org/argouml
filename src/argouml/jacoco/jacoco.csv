@@ -4,9 +4,9 @@ argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionSetSynch,44,0,4,0,
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionAddEventAsTrigger,68,0,6,0,21,0,9,0,6,0
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,17,0,2,0,6,0,3,0,2,0
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
-argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,19,13,16,17,14,5,0,3
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,18,14,16,17,13,6,0,3
 argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
-argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1109,290,291,69,269,72,176,9,1,4
+argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1159,240,306,54,282,59,179,6,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
 argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclEnumLiteral,33,0,4,0,9,0,5,0,3,0
@@ -310,7 +310,7 @@ argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,
 argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
 argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
 argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
-argouml-app,org.argouml.notation,NotationProviderFactory2,90,131,16,8,24,33,11,10,1,8
+argouml-app,org.argouml.notation,NotationProviderFactory2,105,133,17,9,25,34,12,10,1,8
 argouml-app,org.argouml.notation,NotationSettings,35,453,13,69,13,140,13,56,0,28
 argouml-app,org.argouml.notation,NotationNameImpl,78,114,7,9,20,33,13,15,9,11
 argouml-app,org.argouml.notation.ui,InitNotationUI,32,0,0,0,9,0,5,0,5,0
@@ -681,7 +681,7 @@ argouml-app,org.argouml.uml.diagram.state.ui,ActionCreatePseudostate,35,0,2,0,10
 argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1250,237,171,25,297,63,130,20,39,13
 argouml-app,org.argouml.uml.diagram.state.ui,FigState,156,169,30,2,49,41,24,8,8,8
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewChangeEvent,11,0,0,0,4,0,4,0,4,0
-argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,16,166,1,1,6,42,6,11,5,11
+argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,18,164,1,1,7,41,7,10,6,10
 argouml-app,org.argouml.uml.diagram.state.ui,FigVertex,681,0,56,0,169,0,53,0,25,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigVertex.FigRegionCompartment,160,0,12,0,38,0,10,0,4,0
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewSignalEvent,11,0,0,0,4,0,4,0,4,0
@@ -701,7 +701,7 @@ argouml-app,org.argouml.uml.diagram.state.ui,FigStateVertex,97,126,24,10,27,30,1
 argouml-app,org.argouml.uml.diagram.state.ui,FigSimpleState,53,267,1,1,10,55,6,12,5,12
 argouml-app,org.argouml.uml.diagram.state.ui,FigJoinState,17,114,1,1,6,31,6,9,5,9
 argouml-app,org.argouml.uml.diagram.state.ui,SelectionState,129,0,8,0,28,0,14,0,10,0
-argouml-app,org.argouml.uml.diagram.state.ui,FigInitialState,77,116,7,1,25,32,10,11,6,11
+argouml-app,org.argouml.uml.diagram.state.ui,FigInitialState,79,114,7,1,26,31,11,10,7,10
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewCallEvent,11,0,0,0,4,0,4,0,4,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigStubState,507,180,80,0,130,47,55,9,15,9
 argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramRenderer,109,13,21,1,22,3,13,2,2,2
@@ -855,7 +855,7 @@ argouml-app,org.argouml.uml.diagram.ui,ActionAddStereotype,78,0,6,0,22,0,7,0,4,0
 argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityPackage,32,0,2,0,10,0,4,0,3,0
 argouml-app,org.argouml.uml.diagram.ui,ActionVisibilityProtected,32,0,2,0,10,0,4,0,3,0
 argouml-app,org.argouml.uml.diagram.ui,UMLDiagramHomeModelComboBoxModel,61,35,8,2,17,12,6,5,2,4
-argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement.new Runnable() {...},21,16,2,0,4,4,1,2,0,2
+argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement.new Runnable() {...},37,0,2,0,8,0,3,0,2,0
 argouml-app,org.argouml.uml.diagram.ui,FigStereotypesGroup,123,560,23,61,32,152,20,42,2,18
 argouml-app,org.argouml.uml.diagram.ui,ActionAddNote,239,17,32,0,63,7,18,1,2,1
 argouml-app,org.argouml.uml.diagram.ui,SelectionClassifierBox.Button,18,0,0,0,6,0,1,0,1,0
@@ -936,7 +936,7 @@ argouml-app,org.argouml.uml.diagram.ui,ActionAddExtensionPoint.new TargetListene
 argouml-app,org.argouml.uml.diagram.ui,ActionAggregation,359,0,32,0,82,0,30,0,14,0
 argouml-app,org.argouml.uml.diagram.ui,ActionAddConcurrentRegion,260,0,18,0,73,0,13,0,4,0
 argouml-app,org.argouml.uml.diagram.ui,SPFigEdgeModelElement,0,53,0,0,0,13,0,1,0,1
-argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement,2293,1069,383,121,551,322,288,87,62,61
+argouml-app,org.argouml.uml.diagram.ui,FigNodeModelElement,2389,973,403,101,581,292,293,82,66,57
 argouml-app,org.argouml.uml.diagram.ui,FigEdgeModelElement.new Runnable() {...},6,11,0,0,2,4,0,2,0,2
 argouml-app,org.argouml.uml.diagram.ui,FigEdgeModelElement.new Runnable() {...},22,0,0,0,6,0,2,0,2,0
 argouml-app,org.argouml.uml.diagram.ui,FigCompartmentBox.new Runnable() {...},26,0,0,0,7,0,2,0,2,0

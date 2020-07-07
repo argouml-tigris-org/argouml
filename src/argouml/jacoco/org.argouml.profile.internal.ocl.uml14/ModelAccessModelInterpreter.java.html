@@ -198,7 +198,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.10 Classifier */
 
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (Model.getFacade().isAClassifier(subject)) {</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">        if (Model.getFacade().isAClassifier(subject)) {</span>
 <span class="pc bpc" id="L202" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="pc bpc" id="L203" title="1 of 2 branches missed.">                if (feature.equals(&quot;feature&quot;)) {</span>
 <span class="nc" id="L204">                    return new ArrayList&lt;Object&gt;(Model.getFacade()</span>
@@ -427,7 +427,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.23 Generalizable Element */
 
-<span class="fc bfc" id="L430" title="All 2 branches covered.">        if (Model.getFacade().isAGeneralizableElement(subject)) {</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">        if (Model.getFacade().isAGeneralizableElement(subject)) {</span>
 <span class="pc bpc" id="L431" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="pc bpc" id="L432" title="1 of 2 branches missed.">                if (feature.equals(&quot;isAbstract&quot;)) {</span>
 <span class="nc" id="L433">                    return Model.getFacade().isAbstract(subject);</span>
@@ -499,7 +499,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.27 ModelElement */
 
-<span class="fc bfc" id="L502" title="All 2 branches covered.">        if (Model.getFacade().isAModelElement(subject)) {</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">        if (Model.getFacade().isAModelElement(subject)) {</span>
 <span class="pc bpc" id="L503" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="pc bpc" id="L504" title="1 of 2 branches missed.">                if (feature.equals(&quot;name&quot;)) {</span>
 <span class="fc" id="L505">                    String name = Model.getFacade().getName(subject);</span>
@@ -591,7 +591,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.28 Namespace */
 
-<span class="pc bpc" id="L594" title="1 of 2 branches missed.">        if (Model.getFacade().isANamespace(subject)) {</span>
+<span class="nc bnc" id="L594" title="All 2 branches missed.">        if (Model.getFacade().isANamespace(subject)) {</span>
 <span class="nc bnc" id="L595" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L596" title="All 2 branches missed.">                if (feature.equals(&quot;ownedElement&quot;)) {</span>
 <span class="nc" id="L597">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
@@ -627,7 +627,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.29 Node */
 
-<span class="pc bpc" id="L630" title="1 of 2 branches missed.">        if (Model.getFacade().isANode(subject)) {</span>
+<span class="nc bnc" id="L630" title="All 2 branches missed.">        if (Model.getFacade().isANode(subject)) {</span>
 <span class="nc bnc" id="L631" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L632" title="All 2 branches missed.">                if (feature.equals(&quot;deployedComponent&quot;)) {</span>
 <span class="nc" id="L633">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
@@ -638,7 +638,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.30 Operation */
 
-<span class="pc bpc" id="L641" title="1 of 2 branches missed.">        if (Model.getFacade().isAOperation(subject)) {</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">        if (Model.getFacade().isAOperation(subject)) {</span>
 <span class="nc bnc" id="L642" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L643" title="All 2 branches missed.">                if (feature.equals(&quot;concurrency&quot;)) {</span>
 <span class="nc" id="L644">                    return Model.getFacade().getConcurrency(subject);</span>
@@ -657,7 +657,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.31 Parameter */
 
-<span class="pc bpc" id="L660" title="1 of 2 branches missed.">        if (Model.getFacade().isAParameter(subject)) {</span>
+<span class="nc bnc" id="L660" title="All 2 branches missed.">        if (Model.getFacade().isAParameter(subject)) {</span>
 <span class="nc bnc" id="L661" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L662" title="All 2 branches missed.">                if (feature.equals(&quot;defaultValue&quot;)) {</span>
 <span class="nc" id="L663">                    return Model.getFacade().getDefaultValue(subject);</span>
@@ -681,7 +681,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.37 StructuralFeature */
 
-<span class="pc bpc" id="L684" title="1 of 2 branches missed.">        if (Model.getFacade().isAStructuralFeature(subject)) {</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">        if (Model.getFacade().isAStructuralFeature(subject)) {</span>
 <span class="nc bnc" id="L685" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L686" title="All 2 branches missed.">                if (feature.equals(&quot;changeability&quot;)) {</span>
 <span class="nc" id="L687">                    return Model.getFacade().getChangeability(subject);</span>
@@ -704,7 +704,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.38 TemplateArgument */
 
-<span class="pc bpc" id="L707" title="1 of 2 branches missed.">        if (Model.getFacade().isATemplateArgument(subject)) {</span>
+<span class="nc bnc" id="L707" title="All 2 branches missed.">        if (Model.getFacade().isATemplateArgument(subject)) {</span>
 <span class="nc bnc" id="L708" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L709" title="All 2 branches missed.">                if (feature.equals(&quot;binding&quot;)) {</span>
 <span class="nc" id="L710">                    return Model.getFacade().getBinding(subject);</span>
@@ -717,7 +717,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.39 TemplateParameter */
 
-<span class="pc bpc" id="L720" title="1 of 2 branches missed.">        if (Model.getFacade().isATemplateParameter(subject)) {</span>
+<span class="nc bnc" id="L720" title="All 2 branches missed.">        if (Model.getFacade().isATemplateParameter(subject)) {</span>
 <span class="nc bnc" id="L721" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L722" title="All 2 branches missed.">                if (feature.equals(&quot;defaultElement&quot;)) {</span>
 <span class="nc" id="L723">                    return Model.getFacade().getDefaultElement(subject);</span>
@@ -726,7 +726,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
         }
 
         /* 4.11.3.5 UseCase */
-<span class="pc bpc" id="L729" title="1 of 2 branches missed.">        if (Model.getFacade().isAUseCase(subject)) {</span>
+<span class="nc bnc" id="L729" title="All 2 branches missed.">        if (Model.getFacade().isAUseCase(subject)) {</span>
 <span class="nc bnc" id="L730" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L731" title="All 2 branches missed.">                if (feature.equals(&quot;specificationPath&quot;)) {</span>
                     /*  The operation specificationPath results in a set containing
@@ -751,7 +751,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.3.2 AssociationClass */
 
-<span class="pc bpc" id="L754" title="1 of 2 branches missed.">        if (Model.getFacade().isAAssociationClass(subject)) {</span>
+<span class="nc bnc" id="L754" title="All 2 branches missed.">        if (Model.getFacade().isAAssociationClass(subject)) {</span>
 <span class="nc bnc" id="L755" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L756" title="All 2 branches missed.">                if (feature.equals(&quot;allConnections&quot;)) {</span>
                     /* The operation allConnections results in the set of all
@@ -770,7 +770,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.6.2.3 Stereotype */
 
-<span class="pc bpc" id="L773" title="1 of 2 branches missed.">        if (Model.getFacade().isAStereotype(subject)) {</span>
+<span class="nc bnc" id="L773" title="All 2 branches missed.">        if (Model.getFacade().isAStereotype(subject)) {</span>
 <span class="nc bnc" id="L774" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L775" title="All 2 branches missed.">                if (feature.equals(&quot;baseClass&quot;)) {</span>
 <span class="nc" id="L776">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
@@ -790,7 +790,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.6.2.4 TagDefinition */
 
-<span class="pc bpc" id="L793" title="1 of 2 branches missed.">        if (Model.getFacade().isATagDefinition(subject)) {</span>
+<span class="nc bnc" id="L793" title="All 2 branches missed.">        if (Model.getFacade().isATagDefinition(subject)) {</span>
 <span class="nc bnc" id="L794" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L795" title="All 2 branches missed.">                if (feature.equals(&quot;multiplicity&quot;)) {</span>
 <span class="nc" id="L796">                    return Model.getFacade().getMultiplicity(subject);</span>
@@ -810,7 +810,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.6.2.5 TaggedValue */
 
-<span class="pc bpc" id="L813" title="1 of 2 branches missed.">        if (Model.getFacade().isATaggedValue(subject)) {</span>
+<span class="nc bnc" id="L813" title="All 2 branches missed.">        if (Model.getFacade().isATaggedValue(subject)) {</span>
 <span class="nc bnc" id="L814" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
 <span class="nc bnc" id="L815" title="All 2 branches missed.">                if (feature.equals(&quot;dataValue&quot;)) {</span>
 <span class="nc" id="L816">                    return Model.getFacade().getDataValue(subject);</span>
@@ -824,7 +824,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
                 }
             }
         }
-<span class="fc" id="L827">        return null;</span>
+<span class="nc" id="L827">        return null;</span>
     }
 
     private Object internalOcl(Object subject, Map&lt;String, Object&gt; vt,

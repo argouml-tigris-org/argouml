@@ -258,7 +258,8 @@ public final class NotationProviderFactory2 {
 <span class="nc" id="L258">                LOG.log(Level.SEVERE, &quot;Exception caught&quot;, e);</span>
 <span class="nc" id="L259">            }</span>
         }
-<span class="nc" id="L261">        return null;</span>
+<span class="nc" id="L261">        LOG.log(Level.SEVERE, &quot;No notation provider for &quot; + name + &quot; type &quot; + type);</span>
+<span class="nc" id="L262">        return null;</span>
     }
 
     /**
@@ -278,10 +279,12 @@ public final class NotationProviderFactory2 {
             Object object, NotationRenderer nr,
             NotationName name) {
 
-<span class="fc" id="L281">        NotationProvider p = getNotationProvider(type, object, name);</span>
-<span class="fc" id="L282">        p.setRenderer(nr);</span>
-<span class="fc" id="L283">        p.initialiseListener(object);</span>
-<span class="fc" id="L284">        return p;</span>
+<span class="fc" id="L282">        NotationProvider p = getNotationProvider(type, object, name);</span>
+<span class="pc bpc" id="L283" title="1 of 2 branches missed.">        if (p != null) {</span>
+<span class="fc" id="L284">            p.setRenderer(nr);</span>
+<span class="fc" id="L285">            p.initialiseListener(object);</span>
+        }
+<span class="fc" id="L287">        return p;</span>
     }
 
     /**
@@ -297,17 +300,17 @@ public final class NotationProviderFactory2 {
      * @return the provider
      */
     private Class getNotationProviderClass(int type, NotationName name) {
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">        if (allLanguages.containsKey(name)) {</span>
-<span class="fc" id="L301">            Map&lt;Integer, Class&gt; t = allLanguages.get(name);</span>
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">            if (t.containsKey(Integer.valueOf(type))) {</span>
-<span class="fc" id="L303">                return t.get(Integer.valueOf(type));</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">        if (allLanguages.containsKey(name)) {</span>
+<span class="fc" id="L304">            Map&lt;Integer, Class&gt; t = allLanguages.get(name);</span>
+<span class="pc bpc" id="L305" title="1 of 2 branches missed.">            if (t.containsKey(Integer.valueOf(type))) {</span>
+<span class="fc" id="L306">                return t.get(Integer.valueOf(type));</span>
             }
         }
-<span class="nc" id="L306">        Map&lt;Integer, Class&gt; t = allLanguages.get(defaultLanguage);</span>
-<span class="nc bnc" id="L307" title="All 4 branches missed.">        if (t != null &amp;&amp; t.containsKey(Integer.valueOf(type))) {</span>
-<span class="nc" id="L308">            return t.get(Integer.valueOf(type));</span>
+<span class="nc" id="L309">        Map&lt;Integer, Class&gt; t = allLanguages.get(defaultLanguage);</span>
+<span class="nc bnc" id="L310" title="All 4 branches missed.">        if (t != null &amp;&amp; t.containsKey(Integer.valueOf(type))) {</span>
+<span class="nc" id="L311">            return t.get(Integer.valueOf(type));</span>
         }
-<span class="nc" id="L310">        return null;</span>
+<span class="nc" id="L313">        return null;</span>
     }
 
     /**
@@ -317,25 +320,25 @@ public final class NotationProviderFactory2 {
      */
     public void addNotationProvider(int type,
             NotationName notationName, Class provider) {
-<span class="fc bfc" id="L320" title="All 2 branches covered.">        if (allLanguages.containsKey(notationName)) {</span>
-<span class="fc" id="L321">            Map&lt;Integer, Class&gt; t = allLanguages.get(notationName);</span>
-<span class="fc" id="L322">            t.put(Integer.valueOf(type), provider);</span>
-<span class="fc" id="L323">        } else {</span>
-<span class="fc" id="L324">            Map&lt;Integer, Class&gt; t = new HashMap&lt;Integer, Class&gt;();</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        if (allLanguages.containsKey(notationName)) {</span>
+<span class="fc" id="L324">            Map&lt;Integer, Class&gt; t = allLanguages.get(notationName);</span>
 <span class="fc" id="L325">            t.put(Integer.valueOf(type), provider);</span>
-<span class="fc" id="L326">            allLanguages.put(notationName, t);</span>
+<span class="fc" id="L326">        } else {</span>
+<span class="fc" id="L327">            Map&lt;Integer, Class&gt; t = new HashMap&lt;Integer, Class&gt;();</span>
+<span class="fc" id="L328">            t.put(Integer.valueOf(type), provider);</span>
+<span class="fc" id="L329">            allLanguages.put(notationName, t);</span>
         }
-<span class="fc" id="L328">    }</span>
+<span class="fc" id="L331">    }</span>
 
     /**
      * @param notationName the UML notation that is to be used as default
      *                     if no other is found
      */
     public void setDefaultNotation(NotationName notationName) {
-<span class="pc bpc" id="L335" title="1 of 2 branches missed.">        if (allLanguages.containsKey(notationName)) {</span>
-<span class="fc" id="L336">            defaultLanguage = notationName;</span>
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">        if (allLanguages.containsKey(notationName)) {</span>
+<span class="fc" id="L339">            defaultLanguage = notationName;</span>
         }
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L341">    }</span>
 
     /**
      * We need this to remove modules.
@@ -344,14 +347,14 @@ public final class NotationProviderFactory2 {
      * @return true if the notation was removed
      */
     public boolean removeNotation(NotationName notationName) {
-<span class="nc bnc" id="L347" title="All 2 branches missed.">        if (defaultLanguage == notationName) {</span>
-<span class="nc" id="L348">            return false;</span>
+<span class="nc bnc" id="L350" title="All 2 branches missed.">        if (defaultLanguage == notationName) {</span>
+<span class="nc" id="L351">            return false;</span>
         }
-<span class="nc bnc" id="L350" title="All 2 branches missed.">        if (allLanguages.containsKey(notationName)) {</span>
-<span class="nc bnc" id="L351" title="All 2 branches missed.">            return allLanguages.remove(notationName) != null</span>
-<span class="nc bnc" id="L352" title="All 2 branches missed.">                    &amp;&amp; Notation.removeNotation(notationName);</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if (allLanguages.containsKey(notationName)) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            return allLanguages.remove(notationName) != null</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">                    &amp;&amp; Notation.removeNotation(notationName);</span>
         }
-<span class="nc" id="L354">        return false;</span>
+<span class="nc" id="L357">        return false;</span>
     }
 
 }

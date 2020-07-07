@@ -10,7 +10,7 @@
     <item>
       <title>File: 1237,
              Errors: 0,
-             Warnings: 793,
+             Warnings: 794,
              Infos: 0
       </title>
             <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml/checkstyle.html</link>
@@ -6167,7 +6167,7 @@
                   0
                 </td>
                 <td>
-                  0
+                  1
                 </td>
                 <td>
                   0
