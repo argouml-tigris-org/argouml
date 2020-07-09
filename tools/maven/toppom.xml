@@ -16,7 +16,6 @@
   <modules>
     <module>..</module>
     <module>../..</module>
-    <module>../test-with-model</module>
     <module>../../../argouml-actionscript3</module>
     <module>../../../argouml-java</module>
     <module>../../../argouml-cpp</module>
