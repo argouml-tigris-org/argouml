@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-07-10T15:42:07.996">
+<pmd version="4.3" timestamp="2020-07-11T18:02:20.126">
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-diagrams-sequence2/src/org/argouml/sequence2/diagram/FigMessage.java">
 <violation beginline="459" endline="466" begincolumn="13" endcolumn="13" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.sequence2.diagram" class="FigMessage" method="getReceiverOperations" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined

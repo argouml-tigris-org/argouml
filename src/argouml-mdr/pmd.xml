@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-07-10T15:25:38.269">
+<pmd version="4.3" timestamp="2020-07-11T17:46:07.190">
 <file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-model-mdr/src/org/argouml/model/mdr/ActivityGraphsHelperMDRImpl.java">
 <violation beginline="134" endline="136" begincolumn="21" endcolumn="21" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.argouml.model.mdr" class="ActivityGraphsHelperMDRImpl" method="findStateByName" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
