@@ -4,9 +4,9 @@ argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionSetSynch,44,0,4,0,
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionAddEventAsTrigger,68,0,6,0,21,0,9,0,6,0
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,17,0,2,0,6,0,3,0,2,0
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
-argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,98,60,21,11,20,13,14,5,1,2
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,18,14,16,17,13,6,0,3
 argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
-argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1029,370,269,91,249,92,174,11,1,4
+argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1109,290,291,69,269,72,176,9,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
 argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclEnumLiteral,33,0,4,0,9,0,5,0,3,0
@@ -155,7 +155,7 @@ argouml-app,org.argouml.uml.diagram,DiagramFactory.DiagramType,0,74,0,0,0,2,0,1,
 argouml-app,org.argouml.uml.diagram,DiagramEdgeSettings,0,16,0,0,0,6,0,3,0,3
 argouml-app,org.argouml.uml.diagram,DiagramFactory,72,203,12,22,20,53,10,17,1,9
 argouml-app,org.argouml.uml.diagram,DiagramUtils,18,21,6,2,6,9,4,3,0,3
-argouml-app,org.argouml.uml.diagram,ArgoDiagramImpl,685,274,122,32,173,87,83,32,12,26
+argouml-app,org.argouml.uml.diagram,ArgoDiagramImpl,676,283,120,34,172,88,82,33,12,26
 argouml-app,org.argouml.uml.diagram,ProjectMemberDiagram,4,21,0,0,1,8,1,5,1,5
 argouml-app,org.argouml.uml.diagram,DiagramSettings,43,408,11,65,11,119,12,53,2,25
 argouml-app,org.argouml.uml.diagram,UMLMutableGraphSupport,523,67,81,3,131,22,60,10,18,10
@@ -182,7 +182,7 @@ argouml-app,org.argouml.uml.diagram.activity.ui,ActivityDiagramRenderer,38,3,6,0
 argouml-app,org.argouml.uml.diagram.activity.ui,FigPartition.SelectionPartition,760,0,74,0,138,0,47,0,6,0
 argouml-app,org.argouml.uml.diagram.activity.ui,SelectionCallState,10,0,0,0,4,0,3,0,3,0
 argouml-app,org.argouml.uml.diagram.activity.ui,FigPartition,627,0,38,0,153,0,43,0,24,0
-argouml-app,org.argouml.uml.diagram.activity.ui,UMLActivityDiagram,941,270,140,28,239,72,115,17,37,11
+argouml-app,org.argouml.uml.diagram.activity.ui,UMLActivityDiagram,930,281,137,31,236,75,113,19,37,11
 argouml-app,org.argouml.uml.diagram.activity.ui,FigCallState,11,8,0,0,3,3,2,2,2,2
 argouml-app,org.argouml.uml.diagram.activity.ui,FigSubactivityState,458,0,18,0,93,0,27,0,18,0
 argouml-app,org.argouml.uml.diagram.activity.ui,SelectionActionState,169,0,12,0,44,0,20,0,14,0
@@ -678,7 +678,7 @@ argouml-app,org.argouml.uml.diagram.state.ui,FigRegion,19,0,0,0,5,0,2,0,2,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigTransition,246,129,12,10,61,38,13,10,5,7
 argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
 argouml-app,org.argouml.uml.diagram.state.ui,ActionCreatePseudostate,35,0,2,0,10,0,3,0,2,0
-argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1250,237,171,25,297,63,130,20,39,13
+argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1238,249,168,28,293,67,128,22,39,13
 argouml-app,org.argouml.uml.diagram.state.ui,FigState,156,169,30,2,49,41,24,8,8,8
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewChangeEvent,11,0,0,0,4,0,4,0,4,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,18,164,1,1,7,41,7,10,6,10
