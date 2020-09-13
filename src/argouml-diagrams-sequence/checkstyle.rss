@@ -113,20 +113,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.FigClassifierRole.java">org/argouml/sequence2/diagram/FigClassifierRole.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.FigActivation.java">org/argouml/sequence2/diagram/FigActivation.java</a>
                 </td>
                 <td>
@@ -134,6 +120,20 @@
                 </td>
                 <td>
                   2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.FigClassifierRole.java">org/argouml/sequence2/diagram/FigClassifierRole.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0
@@ -267,20 +267,6 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.ActionSetOperation.java">org/argouml/sequence2/diagram/ActionSetOperation.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-              </tr>
-                          <tr>
-                <td>
                   <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.ModePlaceClassifierRole.java">org/argouml/sequence2/diagram/ModePlaceClassifierRole.java</a>
                 </td>
                 <td>
@@ -302,6 +288,20 @@
                 </td>
                 <td>
                   9
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-sequence/checkstyle.html#org.argouml.sequence2.diagram.ActionSetOperation.java">org/argouml/sequence2/diagram/ActionSetOperation.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                   0

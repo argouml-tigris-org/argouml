@@ -3,15 +3,15 @@ argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ModePlaceClassifie
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,SelectionClassifierRole,284,0,50,0,74,0,33,0,7,0
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ModeBroomMessages,409,0,48,0,95,0,32,0,7,0
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigClassifierRole.FigClassifierRolePort,21,74,2,6,3,14,2,4,0,2
-argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigMessage,398,297,51,15,112,68,47,20,17,17
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ModeCreateMessage,381,0,56,0,104,0,36,0,8,0
+argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigMessage,398,297,51,15,112,68,47,20,17,17
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ActionSetOperation,26,0,2,0,8,0,3,0,2,0
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ActionAddClassifierRole,38,0,2,0,13,0,4,0,3,0
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigClassifierRole,57,474,25,25,14,112,23,23,3,18
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigActivation,29,116,10,10,6,29,9,8,1,6
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigDestroy,0,50,0,0,0,7,0,2,0,2
-argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,UMLSequenceDiagram,413,185,43,13,99,57,36,11,12,7
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,SelectionMessage,119,0,16,0,37,0,14,0,6,0
+argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,UMLSequenceDiagram,413,185,43,13,99,57,36,11,12,7
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,SequenceDiagramRenderer,119,13,15,1,25,3,11,2,3,2
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,FigMessageComparator,0,22,1,3,0,7,1,3,0,2
 argouml-core-diagrams-sequence2,org.argouml.sequence2.diagram,ActionSetAddMessageMode,14,0,0,0,4,0,1,0,1,0

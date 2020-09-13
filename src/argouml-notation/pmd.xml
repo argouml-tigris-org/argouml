@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-08-25T17:39:26.636">
-<file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-notation/src/org/argouml/notation2/NameUmlNotation.java">
+<pmd version="4.3" timestamp="2020-09-13T18:38:59.072">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-notation/src/org/argouml/notation2/NameUmlNotation.java">
 <violation beginline="59" endline="60" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.notation2" class="NameUmlNotation" method="propertyChange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/ub-organization_argouml_master_2/src/argouml-core-notation/src/org/argouml/notation2/StereotypeUmlNotation.java">
+<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-notation/src/org/argouml/notation2/StereotypeUmlNotation.java">
 <violation beginline="58" endline="59" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.notation2" class="StereotypeUmlNotation" method="propertyChange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
