@@ -16,6 +16,24 @@
       "revId": "5d9877dc2478971f74abf1e0a90a19c26f9b9485",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa903464_a310497c",
+        "filename": "src/argouml-build/pom.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2020-09-27T20:08:03Z",
+      "side": 1,
+      "message": "I have fixed the indentation.",
+      "parentUuid": "2c05d5df_24bb3206",
+      "revId": "5d9877dc2478971f74abf1e0a90a19c26f9b9485",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
