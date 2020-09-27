@@ -608,7 +608,7 @@ argouml-app,org.argouml.persistence,PersistenceManager,214,234,21,19,59,63,27,17
 argouml-app,org.argouml.persistence,ProjectFileView,22,0,4,0,7,0,5,0,3,0
 argouml-app,org.argouml.persistence,InterruptedIOException,9,0,0,0,4,0,2,0,2,0
 argouml-app,org.argouml.persistence,DiagramMemberFilePersister,83,73,3,1,26,25,5,5,3,5
-argouml-app,org.argouml.persistence,XmiFilePersister,191,307,21,19,52,83,20,11,3,8
+argouml-app,org.argouml.persistence,XmiFilePersister,188,310,21,19,51,84,20,11,3,8
 argouml-app,org.argouml.persistence,SaveException,13,0,0,0,6,0,3,0,3,0
 argouml-app,org.argouml.persistence,ProfileConfigurationParser,77,209,10,22,13,67,9,24,0,13
 argouml-app,org.argouml.persistence,OffenderXMLHelper,16,0,2,0,6,0,3,0,2,0
