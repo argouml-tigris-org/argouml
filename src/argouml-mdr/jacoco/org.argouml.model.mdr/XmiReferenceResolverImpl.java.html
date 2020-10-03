@@ -329,24 +329,31 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return map of xmi.id to RefObject correspondences
      */
     Map&lt;String, Object&gt; getIdToObjectMap() {
-<span class="nc" id="L332">        return getIdToObjectMaps().get(topSystemId);</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">        if (idToObject != null) {</span>
+<span class="nc" id="L333">            return idToObject.get(topSystemId);</span>
+        } else {
+<span class="nc" id="L335">            return null;</span>
+        }
     }
 
     /**
      * @return map of maps from xmi ID to object
      */
     Map&lt;String, Map&lt;String, Object&gt;&gt; getIdToObjectMaps() {
-<span class="nc" id="L339">        return idToObject;</span>
+<span class="nc" id="L343">        return idToObject;</span>
     }
 
     /**
      * Reinitialize the object id maps to the empty state.
      */
     void clearIdMaps() {
-<span class="nc" id="L346">        getIdToObjectMap().clear();</span>
-<span class="nc" id="L347">        mofidToXmiref.clear();</span>
-<span class="nc" id="L348">        topSystemId = null;</span>
-<span class="nc" id="L349">    }</span>
+<span class="nc" id="L350">        Map&lt;String, Object&gt; map = getIdToObjectMap();</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (map != null) {</span>
+<span class="nc" id="L352">            map.clear();</span>
+        }
+<span class="nc" id="L354">        mofidToXmiref.clear();</span>
+<span class="nc" id="L355">        topSystemId = null;</span>
+<span class="nc" id="L356">    }</span>
 
 
     /////////////////////////////////////////////////////
@@ -363,80 +370,80 @@ class XmiReferenceResolverImpl extends XmiContext {
      */
     @Override
     public URL toURL(String systemId) {
-<span class="fc" id="L366">        LOG.log(Level.FINE,</span>
+<span class="fc" id="L373">        LOG.log(Level.FINE,</span>
                 &quot;attempting to resolve Xmi Href --&gt; {0}&quot;, systemId);
 
         // TODO: Using just the last piece of the ID leaves the potential for
         // name collisions if two linked files have the same name in different
         // directories
-<span class="fc" id="L372">        final String suffix = getSuffix(systemId);</span>
+<span class="fc" id="L379">        final String suffix = getSuffix(systemId);</span>
 
         // if the model URL has a suffix of '.zip' or '.jar', get
         // the suffix without it and store it in the urlMap
-<span class="fc" id="L376">        String exts = &quot;\\.jar|\\.zip&quot;;</span>
-<span class="fc" id="L377">        String suffixWithExt = suffix.replaceAll(exts, &quot;&quot;);</span>
-<span class="fc" id="L378">        URL modelUrl = urlMap.get(suffixWithExt);</span>
+<span class="fc" id="L383">        String exts = &quot;\\.jar|\\.zip&quot;;</span>
+<span class="fc" id="L384">        String suffixWithExt = suffix.replaceAll(exts, &quot;&quot;);</span>
+<span class="fc" id="L385">        URL modelUrl = urlMap.get(suffixWithExt);</span>
 
         // Several tries to construct a URL that really exists.
-<span class="fc bfc" id="L381" title="All 2 branches covered.">        if (modelUrl == null) {</span>
-<span class="pc bpc" id="L382" title="1 of 2 branches missed.">            if (public2SystemIds.containsKey(systemId)) {</span>
+<span class="fc bfc" id="L388" title="All 2 branches covered.">        if (modelUrl == null) {</span>
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">            if (public2SystemIds.containsKey(systemId)) {</span>
                 // If systemId is publicId previously mapped from a systemId,
                 // try to use the systemId.
-<span class="nc" id="L385">                modelUrl = getValidURL(public2SystemIds.get(systemId));</span>
+<span class="nc" id="L392">                modelUrl = getValidURL(public2SystemIds.get(systemId));</span>
             }
-<span class="pc bpc" id="L387" title="1 of 2 branches missed.">            if (modelUrl == null) {</span>
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">            if (modelUrl == null) {</span>
                 // If systemId is a valid URL, simply use it.
                 // TODO: This causes a network connection attempt for profiles
-<span class="fc" id="L390">                modelUrl = getValidURL(fixupURL(systemId));</span>
+<span class="fc" id="L397">                modelUrl = getValidURL(fixupURL(systemId));</span>
             }
-<span class="fc bfc" id="L392" title="All 2 branches covered.">            if (modelUrl == null) {</span>
+<span class="fc bfc" id="L399" title="All 2 branches covered.">            if (modelUrl == null) {</span>
                 // Try to find suffix in module list.
-<span class="fc" id="L394">                String modelUrlAsString = findModuleURL(suffix);</span>
-<span class="pc bpc" id="L395" title="1 of 2 branches missed.">                if (!(modelUrlAsString == null</span>
-<span class="pc bpc" id="L396" title="1 of 2 branches missed.">                        || &quot;&quot;.equals(modelUrlAsString))) {</span>
-<span class="fc" id="L397">                    modelUrl = getValidURL(modelUrlAsString);</span>
+<span class="fc" id="L401">                String modelUrlAsString = findModuleURL(suffix);</span>
+<span class="pc bpc" id="L402" title="1 of 2 branches missed.">                if (!(modelUrlAsString == null</span>
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">                        || &quot;&quot;.equals(modelUrlAsString))) {</span>
+<span class="fc" id="L404">                    modelUrl = getValidURL(modelUrlAsString);</span>
                 }
-<span class="pc bpc" id="L399" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
+<span class="pc bpc" id="L406" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
                     // search the classpath
-<span class="nc" id="L401">                    modelUrl = findModelUrlOnClasspath(systemId);</span>
+<span class="nc" id="L408">                    modelUrl = findModelUrlOnClasspath(systemId);</span>
                 }
-<span class="pc bpc" id="L403" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">                if (modelUrl == null) {</span>
                     // Give up and let superclass deal with it.
-<span class="nc" id="L405">                    modelUrl = super.toURL(systemId);</span>
+<span class="nc" id="L412">                    modelUrl = super.toURL(systemId);</span>
                 }
             }
             // if we've found the module model, log it
             // and place it in the map so we don't have to
             // find it if we need it again.
-<span class="pc bpc" id="L411" title="1 of 2 branches missed.">            if (modelUrl != null) {</span>
-<span class="fc" id="L412">                LOG.log(Level.INFO, &quot;Referenced model --&gt; {0}&quot;, modelUrl);</span>
+<span class="pc bpc" id="L418" title="1 of 2 branches missed.">            if (modelUrl != null) {</span>
+<span class="fc" id="L419">                LOG.log(Level.INFO, &quot;Referenced model --&gt; {0}&quot;, modelUrl);</span>
 
-<span class="fc" id="L414">                urlMap.put(suffixWithExt, modelUrl);</span>
-<span class="fc" id="L415">                pendingProfiles.put(systemId, modelUrl);</span>
-<span class="fc" id="L416">                String relativeUri = systemId;</span>
+<span class="fc" id="L421">                urlMap.put(suffixWithExt, modelUrl);</span>
+<span class="fc" id="L422">                pendingProfiles.put(systemId, modelUrl);</span>
+<span class="fc" id="L423">                String relativeUri = systemId;</span>
                 try {
-<span class="pc bpc" id="L418" title="1 of 2 branches missed.">                    if (baseUri != null) {</span>
-<span class="fc" id="L419">                        relativeUri = baseUri.relativize(modelUrl.toURI())</span>
-<span class="fc" id="L420">                                .toString();</span>
-<span class="fc" id="L421">                        LOG.log(Level.FINE, &quot;  system ID {0} modelUrl {1}\n  relativized as {2}&quot;,</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">                    if (baseUri != null) {</span>
+<span class="fc" id="L426">                        relativeUri = baseUri.relativize(modelUrl.toURI())</span>
+<span class="fc" id="L427">                                .toString();</span>
+<span class="fc" id="L428">                        LOG.log(Level.FINE, &quot;  system ID {0} modelUrl {1}\n  relativized as {2}&quot;,</span>
                                 new Object[]{systemId, modelUrl, relativeUri});
                     } else {
-<span class="nc" id="L424">                        relativeUri = systemId;</span>
+<span class="nc" id="L431">                        relativeUri = systemId;</span>
                     }
-<span class="nc" id="L426">                } catch (URISyntaxException e) {</span>
-<span class="nc" id="L427">                    LOG.log(Level.SEVERE, &quot;Error relativizing system ID &quot; + systemId, e);</span>
-<span class="nc" id="L428">                    relativeUri = systemId;</span>
-<span class="fc" id="L429">                }</span>
+<span class="nc" id="L433">                } catch (URISyntaxException e) {</span>
+<span class="nc" id="L434">                    LOG.log(Level.SEVERE, &quot;Error relativizing system ID &quot; + systemId, e);</span>
+<span class="nc" id="L435">                    relativeUri = systemId;</span>
+<span class="fc" id="L436">                }</span>
                 // TODO: Check whether this is really needed.  I think it's
                 // left over from an incomplete understanding of the MagicDraw
                 // composition error problem - tfm
-<span class="fc" id="L433">                reverseUrlMap.put(modelUrl.toString(), relativeUri);</span>
-<span class="fc" id="L434">                reverseUrlMap.put(systemId, relativeUri);</span>
+<span class="fc" id="L440">                reverseUrlMap.put(modelUrl.toString(), relativeUri);</span>
+<span class="fc" id="L441">                reverseUrlMap.put(systemId, relativeUri);</span>
             } else {
                 // TODO: We failed to resolve URL - signal error
             }
         }
-<span class="fc" id="L439">        return modelUrl;</span>
+<span class="fc" id="L446">        return modelUrl;</span>
     }
 
     /**
@@ -451,38 +458,38 @@ class XmiReferenceResolverImpl extends XmiContext {
      *         found)
      */
     private String findModuleURL(String moduleName) {
-<span class="pc bpc" id="L454" title="1 of 2 branches missed.">        if (modulesPath == null) {</span>
-<span class="nc" id="L455">            return null;</span>
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">        if (modulesPath == null) {</span>
+<span class="nc" id="L462">            return null;</span>
         }
 
-<span class="fc" id="L458">        LOG.log(Level.FINE, &quot;findModuleURL: modulesPath.size() = {0}&quot;, modulesPath.size());</span>
+<span class="fc" id="L465">        LOG.log(Level.FINE, &quot;findModuleURL: modulesPath.size() = {0}&quot;, modulesPath.size());</span>
 
-<span class="pc bpc" id="L460" title="1 of 2 branches missed.">        for (String moduleDirectory : modulesPath) {</span>
-<span class="fc" id="L461">            File candidate = new File(moduleDirectory, moduleName);</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">        for (String moduleDirectory : modulesPath) {</span>
+<span class="fc" id="L468">            File candidate = new File(moduleDirectory, moduleName);</span>
 
-<span class="fc" id="L463">            LOG.log(Level.FINE,</span>
+<span class="fc" id="L470">            LOG.log(Level.FINE,</span>
                     &quot;candidate {0} exists={1}&quot;,
-<span class="fc" id="L465">                    new Object[]{candidate, candidate.exists()});</span>
+<span class="fc" id="L472">                    new Object[]{candidate, candidate.exists()});</span>
 
-<span class="fc bfc" id="L467" title="All 2 branches covered.">            if (candidate.exists()) {</span>
+<span class="fc bfc" id="L474" title="All 2 branches covered.">            if (candidate.exists()) {</span>
                 String urlString;
                 try {
-<span class="fc" id="L470">                    urlString = candidate.toURI().toURL().toExternalForm();</span>
-<span class="nc" id="L471">                } catch (MalformedURLException e) {</span>
-<span class="nc" id="L472">                    return null;</span>
-<span class="fc" id="L473">                }</span>
+<span class="fc" id="L477">                    urlString = candidate.toURI().toURL().toExternalForm();</span>
+<span class="nc" id="L478">                } catch (MalformedURLException e) {</span>
+<span class="nc" id="L479">                    return null;</span>
+<span class="fc" id="L480">                }</span>
 
-<span class="fc" id="L475">                return fixupURL(urlString);</span>
+<span class="fc" id="L482">                return fixupURL(urlString);</span>
             }
-<span class="fc" id="L477">        }</span>
-<span class="nc bnc" id="L478" title="All 2 branches missed.">        if (public2SystemIds.containsKey(moduleName)) {</span>
-<span class="nc" id="L479">            LOG.log(Level.FINE,</span>
+<span class="fc" id="L484">        }</span>
+<span class="nc bnc" id="L485" title="All 2 branches missed.">        if (public2SystemIds.containsKey(moduleName)) {</span>
+<span class="nc" id="L486">            LOG.log(Level.FINE,</span>
                     &quot;Couldn't find user model ({0}) in modulesPath, attempt to use a model stored within the zargo file.&quot;,
                     moduleName);
 
-<span class="nc" id="L483">            return moduleName;</span>
+<span class="nc" id="L490">            return moduleName;</span>
         }
-<span class="nc" id="L485">        return null;</span>
+<span class="nc" id="L492">        return null;</span>
     }
 
 
@@ -496,12 +503,12 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return the suffix as a String.
      */
     private String getSuffix(String systemId) {
-<span class="fc" id="L499">        int lastSlash = systemId.lastIndexOf(&quot;/&quot;);</span>
-<span class="pc bpc" id="L500" title="1 of 2 branches missed.">        if (lastSlash &gt; 0) {</span>
-<span class="fc" id="L501">            String suffix = systemId.substring(lastSlash + 1);</span>
-<span class="fc" id="L502">            return suffix;</span>
+<span class="fc" id="L506">        int lastSlash = systemId.lastIndexOf(&quot;/&quot;);</span>
+<span class="pc bpc" id="L507" title="1 of 2 branches missed.">        if (lastSlash &gt; 0) {</span>
+<span class="fc" id="L508">            String suffix = systemId.substring(lastSlash + 1);</span>
+<span class="fc" id="L509">            return suffix;</span>
         }
-<span class="nc" id="L504">        return systemId;</span>
+<span class="nc" id="L511">        return systemId;</span>
     }
 
     /**
@@ -511,7 +518,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * Copied from AndroMDA 3.1 by Ludo (rastaman).
      * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-<span class="fc" id="L514">    protected static final String[] CLASSPATH_MODEL_SUFFIXES =</span>
+<span class="fc" id="L521">    protected static final String[] CLASSPATH_MODEL_SUFFIXES =</span>
         new String[] {&quot;xml&quot;, &quot;xmi&quot;, };
 
     /**
@@ -526,57 +533,57 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return the suffix as a String.
      */
     private URL findModelUrlOnClasspath(String systemId) {
-<span class="nc" id="L529">        final String dot = &quot;.&quot;;</span>
-<span class="nc" id="L530">        String modelName = systemId;</span>
-<span class="nc bnc" id="L531" title="All 2 branches missed.">        if (public2SystemIds.containsKey(systemId)) {</span>
-<span class="nc" id="L532">            modelName = public2SystemIds.get(systemId);</span>
+<span class="nc" id="L536">        final String dot = &quot;.&quot;;</span>
+<span class="nc" id="L537">        String modelName = systemId;</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">        if (public2SystemIds.containsKey(systemId)) {</span>
+<span class="nc" id="L539">            modelName = public2SystemIds.get(systemId);</span>
         } else {
-<span class="nc" id="L534">            int filenameIndex = systemId.lastIndexOf(&quot;/&quot;);</span>
-<span class="nc bnc" id="L535" title="All 2 branches missed.">            if (filenameIndex &gt; 0) {</span>
-<span class="nc" id="L536">                modelName = systemId.substring(filenameIndex + 1, systemId</span>
-<span class="nc" id="L537">                        .length());</span>
+<span class="nc" id="L541">            int filenameIndex = systemId.lastIndexOf(&quot;/&quot;);</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">            if (filenameIndex &gt; 0) {</span>
+<span class="nc" id="L543">                modelName = systemId.substring(filenameIndex + 1, systemId</span>
+<span class="nc" id="L544">                        .length());</span>
             } else {
-<span class="nc" id="L539">                LOG.log(Level.WARNING, &quot;Received systemId with no '/'&quot; + systemId);</span>
+<span class="nc" id="L546">                LOG.log(Level.WARNING, &quot;Received systemId with no '/'&quot; + systemId);</span>
             }
 
 
             // remove the first prefix because it may be an archive
             // (like magicdraw)
-<span class="nc bnc" id="L545" title="All 2 branches missed.">            if (modelName.lastIndexOf(dot) &gt; 0) {</span>
-<span class="nc" id="L546">                modelName = modelName.substring(0, modelName.lastIndexOf(dot));</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">            if (modelName.lastIndexOf(dot) &gt; 0) {</span>
+<span class="nc" id="L553">                modelName = modelName.substring(0, modelName.lastIndexOf(dot));</span>
             }
         }
 
-<span class="nc" id="L550">        URL modelUrl = Thread.currentThread().getContextClassLoader()</span>
-<span class="nc" id="L551">                .getResource(modelName);</span>
+<span class="nc" id="L557">        URL modelUrl = Thread.currentThread().getContextClassLoader()</span>
+<span class="nc" id="L558">                .getResource(modelName);</span>
         // TODO: Not sure whether the above is better in some cases, but
         // the code below is better for both Java Web Start and Eclipse.
-<span class="nc bnc" id="L554" title="All 2 branches missed.">        if (modelUrl == null) {</span>
-<span class="nc" id="L555">            modelUrl = this.getClass().getResource(modelName);</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">        if (modelUrl == null) {</span>
+<span class="nc" id="L562">            modelUrl = this.getClass().getResource(modelName);</span>
         }
         // TODO: Is this adequate for finding profiles in Java WebStart jars?
         //       - tfm
-<span class="nc bnc" id="L559" title="All 2 branches missed.">        if (modelUrl == null) {</span>
-<span class="nc bnc" id="L560" title="All 4 branches missed.">            if (CLASSPATH_MODEL_SUFFIXES != null</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">        if (modelUrl == null) {</span>
+<span class="nc bnc" id="L567" title="All 4 branches missed.">            if (CLASSPATH_MODEL_SUFFIXES != null</span>
                     &amp;&amp; CLASSPATH_MODEL_SUFFIXES.length &gt; 0) {
-<span class="nc bnc" id="L562" title="All 2 branches missed.">                for (String suffix : CLASSPATH_MODEL_SUFFIXES) {</span>
+<span class="nc bnc" id="L569" title="All 2 branches missed.">                for (String suffix : CLASSPATH_MODEL_SUFFIXES) {</span>
 
-<span class="nc" id="L564">                    LOG.log(Level.FINE,</span>
+<span class="nc" id="L571">                    LOG.log(Level.FINE,</span>
                             &quot;searching for model reference --&gt; {0}&quot;, modelUrl);
 
-<span class="nc" id="L567">                    modelUrl = Thread.currentThread().getContextClassLoader()</span>
-<span class="nc" id="L568">                            .getResource(modelName + dot + suffix);</span>
-<span class="nc bnc" id="L569" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
-<span class="nc" id="L570">                        break;</span>
+<span class="nc" id="L574">                    modelUrl = Thread.currentThread().getContextClassLoader()</span>
+<span class="nc" id="L575">                            .getResource(modelName + dot + suffix);</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
+<span class="nc" id="L577">                        break;</span>
                     }
-<span class="nc" id="L572">                    modelUrl = this.getClass().getResource(modelName);</span>
-<span class="nc bnc" id="L573" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
-<span class="nc" id="L574">                        break;</span>
+<span class="nc" id="L579">                    modelUrl = this.getClass().getResource(modelName);</span>
+<span class="nc bnc" id="L580" title="All 2 branches missed.">                    if (modelUrl != null) {</span>
+<span class="nc" id="L581">                        break;</span>
                     }
                 }
             }
         }
-<span class="nc" id="L579">        return modelUrl;</span>
+<span class="nc" id="L586">        return modelUrl;</span>
     }
 
     /**
@@ -591,12 +598,12 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return the URL (if valid) or null
      */
     private URL getValidURL(String systemId) {
-<span class="fc" id="L594">        InputStream stream = null;</span>
-<span class="fc" id="L595">        URL url = null;</span>
+<span class="fc" id="L601">        InputStream stream = null;</span>
+<span class="fc" id="L602">        URL url = null;</span>
         try {
-<span class="fc" id="L597">            url = new URL(systemId);</span>
-<span class="fc" id="L598">            URLConnection connection = url.openConnection();</span>
-<span class="fc" id="L599">            stream = connection.getInputStream();</span>
+<span class="fc" id="L604">            url = new URL(systemId);</span>
+<span class="fc" id="L605">            URLConnection connection = url.openConnection();</span>
+<span class="fc" id="L606">            stream = connection.getInputStream();</span>
             // There is a design decision in java not to redirect
             // automatically between http and https connections.
             // This appeared as a problem when moving to github
@@ -604,32 +611,32 @@ class XmiReferenceResolverImpl extends XmiContext {
             // went to https://argouml*.github.io and suddenly
             // the getInputStream succeeded for non-existing files
             // since the redirect response doesn't throw an IOException.
-<span class="pc bpc" id="L607" title="1 of 2 branches missed.">            if (connection instanceof HttpURLConnection) {</span>
-<span class="nc" id="L608">                HttpURLConnection huc = (HttpURLConnection) connection;</span>
-<span class="nc bnc" id="L609" title="All 2 branches missed.">                if (huc.getResponseCode() / 100 == 3) {</span>
-<span class="nc" id="L610">                    String whereto = huc.getHeaderField(&quot;Location&quot;);</span>
-<span class="nc" id="L611">                    url = new URL(whereto);</span>
-<span class="nc" id="L612">                    connection = url.openConnection();</span>
-<span class="nc" id="L613">                    stream = connection.getInputStream();</span>
+<span class="pc bpc" id="L614" title="1 of 2 branches missed.">            if (connection instanceof HttpURLConnection) {</span>
+<span class="nc" id="L615">                HttpURLConnection huc = (HttpURLConnection) connection;</span>
+<span class="nc bnc" id="L616" title="All 2 branches missed.">                if (huc.getResponseCode() / 100 == 3) {</span>
+<span class="nc" id="L617">                    String whereto = huc.getHeaderField(&quot;Location&quot;);</span>
+<span class="nc" id="L618">                    url = new URL(whereto);</span>
+<span class="nc" id="L619">                    connection = url.openConnection();</span>
+<span class="nc" id="L620">                    stream = connection.getInputStream();</span>
                 }
-<span class="pc bpc" id="L615" title="1 of 2 branches missed.">            } else if (connection instanceof HttpsURLConnection) {</span>
-<span class="nc" id="L616">                HttpsURLConnection hsuc = (HttpsURLConnection) connection;</span>
-<span class="nc bnc" id="L617" title="All 2 branches missed.">                if (hsuc.getResponseCode() / 100 == 3) {</span>
-<span class="nc" id="L618">                    String whereto = hsuc.getHeaderField(&quot;Location&quot;);</span>
-<span class="nc" id="L619">                    url = new URL(whereto);</span>
-<span class="nc" id="L620">                    connection = url.openConnection();</span>
-<span class="nc" id="L621">                    stream = connection.getInputStream();</span>
+<span class="pc bpc" id="L622" title="1 of 2 branches missed.">            } else if (connection instanceof HttpsURLConnection) {</span>
+<span class="nc" id="L623">                HttpsURLConnection hsuc = (HttpsURLConnection) connection;</span>
+<span class="nc bnc" id="L624" title="All 2 branches missed.">                if (hsuc.getResponseCode() / 100 == 3) {</span>
+<span class="nc" id="L625">                    String whereto = hsuc.getHeaderField(&quot;Location&quot;);</span>
+<span class="nc" id="L626">                    url = new URL(whereto);</span>
+<span class="nc" id="L627">                    connection = url.openConnection();</span>
+<span class="nc" id="L628">                    stream = connection.getInputStream();</span>
                 }
             }
-<span class="fc" id="L624">            stream.close();</span>
-<span class="fc" id="L625">        } catch (MalformedURLException e) {</span>
-<span class="fc" id="L626">            url = null;</span>
-<span class="fc" id="L627">        } catch (IOException e) {</span>
-<span class="fc" id="L628">            url = null;</span>
+<span class="fc" id="L631">            stream.close();</span>
+<span class="fc" id="L632">        } catch (MalformedURLException e) {</span>
+<span class="fc" id="L633">            url = null;</span>
+<span class="fc" id="L634">        } catch (IOException e) {</span>
+<span class="fc" id="L635">            url = null;</span>
         } finally {
-<span class="fc" id="L630">            stream = null;</span>
+<span class="fc" id="L637">            stream = null;</span>
         }
-<span class="fc" id="L632">        return url;</span>
+<span class="fc" id="L639">        return url;</span>
     }
 
     /////////////////////////////////////////////////////
@@ -641,45 +648,45 @@ class XmiReferenceResolverImpl extends XmiContext {
      * file archive with the entry name the same as the base name.
      */
     private String fixupURL(String url) {
-<span class="fc" id="L644">        final String suffix = getSuffix(url);</span>
-<span class="pc bpc" id="L645" title="1 of 2 branches missed.">        if (suffix.endsWith(&quot;.zargo&quot;)) {</span>
-<span class="nc" id="L646">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
-<span class="nc" id="L647">                    + suffix.substring(0, suffix.length() - 6) + &quot;.xmi&quot;;</span>
-<span class="pc bpc" id="L648" title="1 of 4 branches missed.">        } else if (suffix.endsWith(&quot;.zip&quot;) || suffix.endsWith(&quot;.jar&quot;)) {</span>
-<span class="fc" id="L649">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
-<span class="fc" id="L650">                    + suffix.substring(0, suffix.length() - 4);</span>
+<span class="fc" id="L651">        final String suffix = getSuffix(url);</span>
+<span class="pc bpc" id="L652" title="1 of 2 branches missed.">        if (suffix.endsWith(&quot;.zargo&quot;)) {</span>
+<span class="nc" id="L653">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
+<span class="nc" id="L654">                    + suffix.substring(0, suffix.length() - 6) + &quot;.xmi&quot;;</span>
+<span class="pc bpc" id="L655" title="1 of 4 branches missed.">        } else if (suffix.endsWith(&quot;.zip&quot;) || suffix.endsWith(&quot;.jar&quot;)) {</span>
+<span class="fc" id="L656">            url = &quot;jar:&quot; + url + &quot;!/&quot;</span>
+<span class="fc" id="L657">                    + suffix.substring(0, suffix.length() - 4);</span>
         }
-<span class="fc" id="L652">        return url;</span>
+<span class="fc" id="L659">        return url;</span>
     }
 
     @Override
     public void readExternalDocument(String arg0) {
         // We've got a profile read pending - handle it ourselves now
-<span class="fc" id="L658">        URL url = pendingProfiles.remove(arg0);</span>
-<span class="pc bpc" id="L659" title="1 of 2 branches missed.">        if (url != null) {</span>
-<span class="fc" id="L660">            InputSource is = new InputSource(url.toExternalForm());</span>
-<span class="fc" id="L661">            is.setPublicId(arg0);</span>
-<span class="fc" id="L662">            XmiReaderImpl reader = new XmiReaderImpl(modelImpl);</span>
+<span class="fc" id="L665">        URL url = pendingProfiles.remove(arg0);</span>
+<span class="pc bpc" id="L666" title="1 of 2 branches missed.">        if (url != null) {</span>
+<span class="fc" id="L667">            InputSource is = modelImpl.getInputSource(url);</span>
+<span class="fc" id="L668">            is.setPublicId(arg0);</span>
+<span class="fc" id="L669">            XmiReaderImpl reader = new XmiReaderImpl(modelImpl);</span>
             try {
-<span class="fc" id="L664">                reader.parse(is, true);</span>
-<span class="nc" id="L665">            } catch (UmlException e) {</span>
-<span class="nc" id="L666">                LOG.log(Level.SEVERE, &quot;Error reading referenced profile &quot; + arg0);</span>
-<span class="nc" id="L667">                throw new XmiReferenceRuntimeException(arg0, e);</span>
-<span class="fc" id="L668">            }</span>
-<span class="pc bnc" id="L669" title="All 2 branches missed.">        } else if (!(public2SystemIds.containsKey(arg0))) {</span>
+<span class="fc" id="L671">                reader.parse(is, true);</span>
+<span class="nc" id="L672">            } catch (UmlException e) {</span>
+<span class="nc" id="L673">                LOG.log(Level.SEVERE, &quot;Error reading referenced profile &quot; + arg0);</span>
+<span class="nc" id="L674">                throw new XmiReferenceRuntimeException(arg0, e);</span>
+<span class="fc" id="L675">            }</span>
+<span class="pc bnc" id="L676" title="All 2 branches missed.">        } else if (!(public2SystemIds.containsKey(arg0))) {</span>
             // Otherwise if it's not something we've already read, just
             // punt to the super class.
             try {
-<span class="nc" id="L673">                super.readExternalDocument(arg0);</span>
-<span class="nc" id="L674">            } catch (DebugException e) {</span>
+<span class="nc" id="L680">                super.readExternalDocument(arg0);</span>
+<span class="nc" id="L681">            } catch (DebugException e) {</span>
                 // Unfortunately the MDR super implementation throws
                 // DebugException with just the message from the causing
                 // exception rather than nesting the exception itself, so
                 // we don't have all the information we'd like
-<span class="nc" id="L679">                LOG.log(Level.SEVERE, &quot;Error reading external document &quot; + arg0);</span>
-<span class="nc" id="L680">                throw new XmiReferenceRuntimeException(arg0, e);</span>
-<span class="nc" id="L681">            }</span>
+<span class="nc" id="L686">                LOG.log(Level.SEVERE, &quot;Error reading external document &quot; + arg0);</span>
+<span class="nc" id="L687">                throw new XmiReferenceRuntimeException(arg0, e);</span>
+<span class="nc" id="L688">            }</span>
         }
-<span class="fc" id="L683">    }</span>
+<span class="fc" id="L690">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

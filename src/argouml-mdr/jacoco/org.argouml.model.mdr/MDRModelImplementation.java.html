@@ -39,6 +39,7 @@
 package org.argouml.model.mdr;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -102,6 +103,7 @@ import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.omg.uml.UmlPackage;
+import org.xml.sax.InputSource;
 
 /**
  * The handle to find all helper and factories.
@@ -111,8 +113,8 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * Logger.
      */
-<span class="fc" id="L114">    private static final Logger LOG =</span>
-<span class="fc" id="L115">        Logger.getLogger(MDRModelImplementation.class.getName());</span>
+<span class="fc" id="L116">    private static final Logger LOG =</span>
+<span class="fc" id="L117">        Logger.getLogger(MDRModelImplementation.class.getName());</span>
 
     private Facade theFacade;
 
@@ -126,7 +128,7 @@ public class MDRModelImplementation implements ModelImplementation {
 
     private MessageSort theMessageSort;
 
-<span class="fc" id="L129">    private MetaTypes theMetaTypes = new MetaTypesMDRImpl();</span>
+<span class="fc" id="L131">    private MetaTypes theMetaTypes = new MetaTypesMDRImpl();</span>
 
     private ModelManagementFactory theModelManagementFactory;
 
@@ -187,51 +189,51 @@ public class MDRModelImplementation implements ModelImplementation {
      * Map of model elements to xmi.ids used to keep xmi.ids stable
      * across read/write cycles.
      */
-<span class="fc" id="L190">    private Map&lt;String, XmiReference&gt; objectToId =</span>
-<span class="fc" id="L191">        Collections.synchronizedMap(new HashMap&lt;String, XmiReference&gt;());</span>
+<span class="fc" id="L192">    private Map&lt;String, XmiReference&gt; objectToId =</span>
+<span class="fc" id="L193">        Collections.synchronizedMap(new HashMap&lt;String, XmiReference&gt;());</span>
 
     /**
      * Set of known public IDs of models that could be used to resolve URLs
      * from model element IDs.
      */
-<span class="fc" id="L197">    private Map&lt;String, String&gt; public2SystemIds =</span>
-<span class="fc" id="L198">        Collections.synchronizedMap(new HashMap&lt;String, String&gt;());</span>
+<span class="fc" id="L199">    private Map&lt;String, String&gt; public2SystemIds =</span>
+<span class="fc" id="L200">        Collections.synchronizedMap(new HashMap&lt;String, String&gt;());</span>
 
     /**
      * Index of objects keyed by system ID, then xmi.id within that file
      */
-<span class="fc" id="L203">    private Map&lt;String, Map&lt;String, Object&gt;&gt; idToObject =</span>
-<span class="fc" id="L204">        Collections.synchronizedMap(new HashMap&lt;String, Map&lt;String, Object&gt;&gt;());</span>
+<span class="fc" id="L205">    private Map&lt;String, Map&lt;String, Object&gt;&gt; idToObject =</span>
+<span class="fc" id="L206">        Collections.synchronizedMap(new HashMap&lt;String, Map&lt;String, Object&gt;&gt;());</span>
 
-<span class="fc" id="L206">    private List&lt;String&gt; searchDirs = new ArrayList&lt;String&gt;();</span>
+<span class="fc" id="L208">    private List&lt;String&gt; searchDirs = new ArrayList&lt;String&gt;();</span>
 
 
     /**
      * Set of extents and their read-only status.
      */
-<span class="fc" id="L212">    private Map&lt;UmlPackage, Extent&gt; extents =</span>
+<span class="fc" id="L214">    private Map&lt;UmlPackage, Extent&gt; extents =</span>
         new HashMap&lt;UmlPackage, Extent&gt;(10, (float) .5);
 
     private class Extent {
-<span class="fc" id="L216">        int refCount = 0;</span>
-<span class="fc" id="L217">        boolean readOnly = false;</span>
+<span class="fc" id="L218">        int refCount = 0;</span>
+<span class="fc" id="L219">        boolean readOnly = false;</span>
         String name;
 
-<span class="fc" id="L220">        Extent(String name, boolean readOnly) {</span>
-<span class="fc" id="L221">            this.name = name;</span>
-<span class="fc" id="L222">            this.readOnly = readOnly;</span>
-<span class="fc" id="L223">        }</span>
+<span class="fc" id="L222">        Extent(String name, boolean readOnly) {</span>
+<span class="fc" id="L223">            this.name = name;</span>
+<span class="fc" id="L224">            this.readOnly = readOnly;</span>
+<span class="fc" id="L225">        }</span>
 
         int getRefCount() {
-<span class="nc" id="L226">            return refCount;</span>
+<span class="nc" id="L228">            return refCount;</span>
         }
 
         synchronized int decrementCount() {
-<span class="fc" id="L230">            return refCount--;</span>
+<span class="fc" id="L232">            return refCount--;</span>
         }
 
         synchronized int incrementCount() {
-<span class="nc" id="L234">            return refCount++;</span>
+<span class="nc" id="L236">            return refCount++;</span>
         }
     }
 
@@ -243,42 +245,42 @@ public class MDRModelImplementation implements ModelImplementation {
      *             before this will be possible.
      */
     public UmlPackage getUmlPackage() {
-<span class="fc" id="L246">        synchronized (extents) {</span>
-<span class="pc bpc" id="L247" title="1 of 2 branches missed.">            if (umlPackage == null) {</span>
-<span class="nc" id="L248">                LOG.log(Level.FINE, &quot;umlPackage is null - no current extent&quot;);</span>
+<span class="fc" id="L248">        synchronized (extents) {</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">            if (umlPackage == null) {</span>
+<span class="nc" id="L250">                LOG.log(Level.FINE, &quot;umlPackage is null - no current extent&quot;);</span>
             }
-<span class="fc" id="L250">            return umlPackage;</span>
+<span class="fc" id="L252">            return umlPackage;</span>
         }
     }
 
     RefPackage createExtent(String name, boolean readOnly) {
         try {
-<span class="fc" id="L256">            synchronized (extents) {</span>
-<span class="fc" id="L257">                UmlPackage extent = (UmlPackage) getRepository().createExtent(</span>
-<span class="fc" id="L258">                        name, getMofPackage());</span>
-<span class="fc" id="L259">                extents.put(extent, new Extent(name,readOnly));</span>
+<span class="fc" id="L258">            synchronized (extents) {</span>
+<span class="fc" id="L259">                UmlPackage extent = (UmlPackage) getRepository().createExtent(</span>
+<span class="fc" id="L260">                        name, getMofPackage());</span>
+<span class="fc" id="L261">                extents.put(extent, new Extent(name,readOnly));</span>
 
-<span class="fc bfc" id="L261" title="All 2 branches covered.">                if (!readOnly) {</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">                if (!readOnly) {</span>
                     // TODO: This will need to change when we support multiple
                     // user models.
 
                     // Delete the old extent first
-<span class="fc bfc" id="L266" title="All 2 branches covered.">                    if (umlPackage != null) {</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">                    if (umlPackage != null) {</span>
                         try {
-<span class="fc" id="L268">                            deleteExtentUnchecked(umlPackage);</span>
-<span class="nc" id="L269">                        } catch (InvalidObjectException e) {</span>
-<span class="nc" id="L270">                            LOG.log(Level.FINE, &quot;User model extent already deleted&quot;);</span>
-<span class="fc" id="L271">                        }</span>
+<span class="fc" id="L270">                            deleteExtentUnchecked(umlPackage);</span>
+<span class="nc" id="L271">                        } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L272">                            LOG.log(Level.FINE, &quot;User model extent already deleted&quot;);</span>
+<span class="fc" id="L273">                        }</span>
                     }
-<span class="fc" id="L273">                    umlPackage = extent;</span>
+<span class="fc" id="L275">                    umlPackage = extent;</span>
                 }
-<span class="fc bfc" id="L275" title="All 2 branches covered.">                LOG.log(Level.FINE, &quot;Created new {0} extent {1}&quot;, new Object[]{(readOnly ? &quot;readonly &quot; : &quot;&quot;),umlPackage});</span>
-<span class="fc" id="L276">                LOG.log(Level.FINE, &quot;All registered extents = &quot;+ Arrays.toString(repository.getExtentNames()));</span>
-<span class="fc" id="L277">                return extent;</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">                LOG.log(Level.FINE, &quot;Created new {0} extent {1}&quot;, new Object[]{(readOnly ? &quot;readonly &quot; : &quot;&quot;),umlPackage});</span>
+<span class="fc" id="L278">                LOG.log(Level.FINE, &quot;All registered extents = &quot;+ Arrays.toString(repository.getExtentNames()));</span>
+<span class="fc" id="L279">                return extent;</span>
             }
-<span class="nc" id="L279">        } catch (CreationFailedException e) {</span>
-<span class="nc" id="L280">            LOG.log(Level.SEVERE, &quot;Extent creation failed for &quot; + name);</span>
-<span class="nc" id="L281">            return null;</span>
+<span class="nc" id="L281">        } catch (CreationFailedException e) {</span>
+<span class="nc" id="L282">            LOG.log(Level.SEVERE, &quot;Extent creation failed for &quot; + name);</span>
+<span class="nc" id="L283">            return null;</span>
         }
     }
 
@@ -288,49 +290,49 @@ public class MDRModelImplementation implements ModelImplementation {
      * meta-meta model (ie MOF).
      */
     private void cleanExtents() {
-<span class="fc" id="L291">        String[] names = repository.getExtentNames();</span>
-<span class="fc bfc" id="L292" title="All 2 branches covered.">        for (String n : names) {</span>
-<span class="fc bfc" id="L293" title="All 4 branches covered.">            if (!MOF_EXTENT_NAME.equals(n) &amp;&amp; !&quot;MOF&quot;.equals(n)) {</span>
-<span class="fc" id="L294">                RefPackage extent = repository.getExtent(n);</span>
-<span class="fc" id="L295">                extent.refDelete();</span>
-<span class="fc" id="L296">                LOG.log(Level.FINE, &quot;Deleting extent {0}&quot;, n);</span>
+<span class="fc" id="L293">        String[] names = repository.getExtentNames();</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">        for (String n : names) {</span>
+<span class="fc bfc" id="L295" title="All 4 branches covered.">            if (!MOF_EXTENT_NAME.equals(n) &amp;&amp; !&quot;MOF&quot;.equals(n)) {</span>
+<span class="fc" id="L296">                RefPackage extent = repository.getExtent(n);</span>
+<span class="fc" id="L297">                extent.refDelete();</span>
+<span class="fc" id="L298">                LOG.log(Level.FINE, &quot;Deleting extent {0}&quot;, n);</span>
             }
         }
-<span class="fc" id="L299">    }</span>
+<span class="fc" id="L301">    }</span>
 
     void deleteExtent(UmlPackage extent) {
-<span class="nc" id="L302">        synchronized (extents) {</span>
-<span class="nc bnc" id="L303" title="All 2 branches missed.">            if (umlPackage.equals(extent)) {</span>
+<span class="nc" id="L304">        synchronized (extents) {</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">            if (umlPackage.equals(extent)) {</span>
                 // Make sure we always have a default extent.
                 // The old extent will get deleted as part of creating the
                 // new extent.
-<span class="nc" id="L307">                createDefaultExtent();</span>
+<span class="nc" id="L309">                createDefaultExtent();</span>
             } else {
-<span class="nc" id="L309">                deleteExtentUnchecked(extent);</span>
+<span class="nc" id="L311">                deleteExtentUnchecked(extent);</span>
             }
-<span class="nc" id="L311">        }</span>
-<span class="nc" id="L312">    }</span>
+<span class="nc" id="L313">        }</span>
+<span class="nc" id="L314">    }</span>
 
     private void deleteExtentUnchecked(UmlPackage extent) {
-<span class="fc" id="L315">        synchronized (extents) {</span>
-<span class="fc" id="L316">            Extent e = extents.get(extent);</span>
-<span class="pc bpc" id="L317" title="1 of 2 branches missed.">            if (e == null) {</span>
-<span class="nc" id="L318">                LOG.log(Level.WARNING, &quot;No listing for extent &quot; + extent);</span>
-<span class="nc" id="L319">                extent.refDelete();</span>
+<span class="fc" id="L317">        synchronized (extents) {</span>
+<span class="fc" id="L318">            Extent e = extents.get(extent);</span>
+<span class="pc bpc" id="L319" title="1 of 2 branches missed.">            if (e == null) {</span>
+<span class="nc" id="L320">                LOG.log(Level.WARNING, &quot;No listing for extent &quot; + extent);</span>
+<span class="nc" id="L321">                extent.refDelete();</span>
             } else {
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">                if (e.decrementCount() == 0) {</span>
+<span class="pc bpc" id="L323" title="1 of 2 branches missed.">                if (e.decrementCount() == 0) {</span>
 
-<span class="fc" id="L323">                    String name = extents.remove(extent).name;</span>
-<span class="pc bpc" id="L324" title="1 of 2 branches missed.">                    if (public2SystemIds.remove(name) == null) {</span>
-<span class="pc bpc" id="L325" title="1 of 2 branches missed.">                        if (!&quot;model extent&quot;.equals(name)) {</span>
-<span class="nc bnc" id="L326" title="All 2 branches missed.">                            LOG.log(Level.WARNING, &quot;No system id found for extent &quot;</span>
+<span class="fc" id="L325">                    String name = extents.remove(extent).name;</span>
+<span class="pc bpc" id="L326" title="1 of 2 branches missed.">                    if (public2SystemIds.remove(name) == null) {</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">                        if (!&quot;model extent&quot;.equals(name)) {</span>
+<span class="nc bnc" id="L328" title="All 2 branches missed.">                            LOG.log(Level.WARNING, &quot;No system id found for extent &quot;</span>
                                     + (name == null ? &quot;&quot; : name) + &quot; : &quot;
                                     + extent);
                         }
                     }
-<span class="pc bpc" id="L331" title="1 of 2 branches missed.">                    if (idToObject.remove(name) == null) {</span>
-<span class="pc bpc" id="L332" title="1 of 2 branches missed.">                        if (!&quot;model extent&quot;.equals(name)) {</span>
-<span class="nc bnc" id="L333" title="All 2 branches missed.">                            LOG.log(Level.WARNING, &quot;No ID map found for extent &quot;</span>
+<span class="pc bpc" id="L333" title="1 of 2 branches missed.">                    if (idToObject.remove(name) == null) {</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">                        if (!&quot;model extent&quot;.equals(name)) {</span>
+<span class="nc bnc" id="L335" title="All 2 branches missed.">                            LOG.log(Level.WARNING, &quot;No ID map found for extent &quot;</span>
                                     + (name == null ? &quot;&quot; : name) + &quot; : &quot;
                                     + extent);
                         }
@@ -338,28 +340,28 @@ public class MDRModelImplementation implements ModelImplementation {
                     // TODO: Need to clean up objectToId
                     // (can we do it based on modelelement delete
                     // notifications?)
-<span class="fc" id="L341">                    extent.refDelete();</span>
+<span class="fc" id="L343">                    extent.refDelete();</span>
                 }
             }
-<span class="fc" id="L344">        }</span>
-<span class="fc" id="L345">    }</span>
+<span class="fc" id="L346">        }</span>
+<span class="fc" id="L347">    }</span>
 
     Collection&lt;UmlPackage&gt; getExtents() {
-<span class="nc" id="L348">        return Collections.unmodifiableSet(extents.keySet());</span>
+<span class="nc" id="L350">        return Collections.unmodifiableSet(extents.keySet());</span>
     }
 
     public UmlPackage getExtent(String name) {
-<span class="nc" id="L352">        return (UmlPackage) repository.getExtent(name);</span>
+<span class="nc" id="L354">        return (UmlPackage) repository.getExtent(name);</span>
     }
 
     boolean isReadOnly(Object extent) {
-<span class="fc" id="L356">        synchronized (extents) {</span>
-<span class="fc" id="L357">            Extent result = extents.get(extent);</span>
-<span class="fc bfc" id="L358" title="All 2 branches covered.">            if (result == null) {</span>
+<span class="fc" id="L358">        synchronized (extents) {</span>
+<span class="fc" id="L359">            Extent result = extents.get(extent);</span>
+<span class="fc bfc" id="L360" title="All 2 branches covered.">            if (result == null) {</span>
 //                LOG.log(Level.WARNING, &quot;Unable to find extent &quot; + extent);
-<span class="fc" id="L360">                return false;</span>
+<span class="fc" id="L362">                return false;</span>
             }
-<span class="fc" id="L362">            return result.readOnly;</span>
+<span class="fc" id="L364">            return result.readOnly;</span>
         }
     }
 
@@ -367,21 +369,21 @@ public class MDRModelImplementation implements ModelImplementation {
      * @return MOF Package containing UML metamodel (M2).
      */
     public MofPackage getMofPackage() {
-<span class="fc" id="L370">        return mofPackage;</span>
+<span class="fc" id="L372">        return mofPackage;</span>
     }
 
     /**
      * @return Top level MOF extent.
      */
     ModelPackage getModelPackage() {
-<span class="fc" id="L377">        return mofExtent;</span>
+<span class="fc" id="L379">        return mofExtent;</span>
     }
 
     /**
      * @return The MDRepository.
      */
     MDRepository getRepository() {
-<span class="fc" id="L384">        return repository;</span>
+<span class="fc" id="L386">        return repository;</span>
     }
 
     static final String MOF_EXTENT_NAME = &quot;MOF Extent&quot;;
@@ -404,10 +406,10 @@ public class MDRModelImplementation implements ModelImplementation {
      * @throws UmlException on any fatal error. Actual cause will be inclused as
      *             a nested exception
      */
-<span class="fc" id="L407">    public MDRModelImplementation(MDRepository r) throws UmlException {</span>
-<span class="fc" id="L408">        repository = r;</span>
-<span class="fc" id="L409">        initializeM2();</span>
-<span class="fc" id="L410">    }</span>
+<span class="fc" id="L409">    public MDRModelImplementation(MDRepository r) throws UmlException {</span>
+<span class="fc" id="L410">        repository = r;</span>
+<span class="fc" id="L411">        initializeM2();</span>
+<span class="fc" id="L412">    }</span>
 
     /**
      * Constructor.
@@ -421,26 +423,26 @@ public class MDRModelImplementation implements ModelImplementation {
      * &lt;/ul&gt;
      */
     public MDRModelImplementation() throws UmlException {
-<span class="fc" id="L424">        this(getDefaultRepository());</span>
+<span class="fc" id="L426">        this(getDefaultRepository());</span>
 
-<span class="fc" id="L426">        cleanExtents();</span>
-<span class="fc" id="L427">        createDefaultExtent();</span>
-<span class="pc bpc" id="L428" title="1 of 2 branches missed.">        if (umlPackage == null) {</span>
-<span class="nc" id="L429">            throw new UmlException(&quot;Could not create UML extent&quot;);</span>
+<span class="fc" id="L428">        cleanExtents();</span>
+<span class="fc" id="L429">        createDefaultExtent();</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">        if (umlPackage == null) {</span>
+<span class="nc" id="L431">            throw new UmlException(&quot;Could not create UML extent&quot;);</span>
         }
-<span class="fc" id="L431">        LOG.log(Level.FINE, &quot;MDR Init - created UML extent&quot;);</span>
+<span class="fc" id="L433">        LOG.log(Level.FINE, &quot;MDR Init - created UML extent&quot;);</span>
 
-<span class="fc" id="L433">        initializeFactories(umlPackage);</span>
-<span class="fc" id="L434">    }</span>
+<span class="fc" id="L435">        initializeFactories(umlPackage);</span>
+<span class="fc" id="L436">    }</span>
 
     private static MDRepository getDefaultRepository() {
-<span class="fc" id="L437">        LOG.log(Level.FINE, &quot;Starting MDR system initialization&quot;);</span>
+<span class="fc" id="L439">        LOG.log(Level.FINE, &quot;Starting MDR system initialization&quot;);</span>
 
-<span class="fc" id="L439">        String storageImplementation =</span>
-<span class="fc" id="L440">            System.getProperty(</span>
+<span class="fc" id="L441">        String storageImplementation =</span>
+<span class="fc" id="L442">            System.getProperty(</span>
                 &quot;org.netbeans.mdr.storagemodel.StorageFactoryClassName&quot;,
                 &quot;org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl&quot;);
-<span class="fc" id="L443">        System.setProperty(</span>
+<span class="fc" id="L445">        System.setProperty(</span>
                 &quot;org.netbeans.mdr.storagemodel.StorageFactoryClassName&quot;,
                 storageImplementation);
 
@@ -453,56 +455,86 @@ public class MDRModelImplementation implements ModelImplementation {
          * before it and its associated value are copied to an *internal*
          * property table separate from the system property table.
          */
-<span class="fc" id="L456">        System.setProperty(</span>
+<span class="fc" id="L458">        System.setProperty(</span>
                 &quot;MDRStorageProperty.org.netbeans.mdr.persistence.memoryimpl.id&quot;,
-<span class="fc" id="L458">                UUIDManager.getInstance().getNewUUID());</span>
+<span class="fc" id="L460">                UUIDManager.getInstance().getNewUUID());</span>
 
         // Connect to the repository
         MDRepository defaultRepository =
-<span class="fc" id="L462">            MDRManager.getDefault().getDefaultRepository();</span>
-<span class="fc" id="L463">        LOG.log(Level.FINE, &quot;MDR Init - got default repository&quot;);</span>
-<span class="fc" id="L464">        return defaultRepository;</span>
+<span class="fc" id="L464">            MDRManager.getDefault().getDefaultRepository();</span>
+<span class="fc" id="L465">        LOG.log(Level.FINE, &quot;MDR Init - got default repository&quot;);</span>
+<span class="fc" id="L466">        return defaultRepository;</span>
     }
 
 
     private void initializeM2() throws UmlException {
-<span class="fc" id="L469">        mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);</span>
-<span class="fc" id="L470">        LOG.log(Level.FINE, &quot;MDR Init - tried to get MOF extent&quot;);</span>
+<span class="fc" id="L471">        mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);</span>
+<span class="fc" id="L472">        LOG.log(Level.FINE, &quot;MDR Init - tried to get MOF extent&quot;);</span>
 
         // Create an extent and read in our metamodel (M2 model)
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (mofExtent == null) {</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        if (mofExtent == null) {</span>
 
             try {
-<span class="fc" id="L476">                mofExtent =</span>
-<span class="fc" id="L477">                    (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);</span>
-<span class="nc" id="L478">            } catch (CreationFailedException e) {</span>
-<span class="nc" id="L479">                throw new UmlException(e);</span>
-<span class="fc" id="L480">            }</span>
-<span class="fc" id="L481">            LOG.log(Level.FINE, &quot;MDR Init - created MOF extent&quot;);</span>
-<span class="fc" id="L482">            XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();</span>
-<span class="fc" id="L483">            LOG.log(Level.FINE, &quot;MDR Init - created XMI reader&quot;);</span>
-<span class="fc" id="L484">            String metafacade =</span>
-<span class="fc" id="L485">                System.getProperty(&quot;argouml.model.mdr.facade&quot;, METAMODEL_URL);</span>
-<span class="fc" id="L486">            URL resource = getClass().getResource(metafacade);</span>
+<span class="fc" id="L478">                mofExtent =</span>
+<span class="fc" id="L479">                    (ModelPackage) repository.createExtent(MOF_EXTENT_NAME);</span>
+<span class="nc" id="L480">            } catch (CreationFailedException e) {</span>
+<span class="nc" id="L481">                throw new UmlException(e);</span>
+<span class="fc" id="L482">            }</span>
+<span class="fc" id="L483">            LOG.log(Level.FINE, &quot;MDR Init - created MOF extent&quot;);</span>
+<span class="fc" id="L484">            XMIReader reader = XMIReaderFactory.getDefault().createXMIReader();</span>
+<span class="fc" id="L485">            LOG.log(Level.FINE, &quot;MDR Init - created XMI reader&quot;);</span>
+<span class="fc" id="L486">            String metafacade =</span>
+<span class="fc" id="L487">                System.getProperty(&quot;argouml.model.mdr.facade&quot;, METAMODEL_URL);</span>
+<span class="fc" id="L488">            URL resource = getClass().getResource(metafacade);</span>
             try {
-<span class="fc" id="L488">                reader.read(resource.toString(), mofExtent);</span>
-<span class="nc" id="L489">            } catch (IOException e) {</span>
-<span class="nc" id="L490">                throw new UmlException(e);</span>
-<span class="nc" id="L491">            } catch (MalformedXMIException e) {</span>
+<span class="fc" id="L490">                reader.read(resource.toString(), mofExtent);</span>
+<span class="nc" id="L491">            } catch (IOException e) {</span>
 <span class="nc" id="L492">                throw new UmlException(e);</span>
-<span class="fc" id="L493">            }</span>
-<span class="fc" id="L494">            LOG.log(Level.FINE, &quot;MDR Init - read UML metamodel&quot;);</span>
+<span class="nc" id="L493">            } catch (MalformedXMIException e) {</span>
+<span class="nc" id="L494">                throw new UmlException(e);</span>
+<span class="fc" id="L495">            }</span>
+<span class="fc" id="L496">            LOG.log(Level.FINE, &quot;MDR Init - read UML metamodel&quot;);</span>
         }
 
-<span class="fc" id="L497">        mofPackage = null;</span>
-<span class="pc bpc" id="L498" title="1 of 2 branches missed.">        for (MofPackage pkg : (Collection&lt;MofPackage&gt;) mofExtent</span>
-<span class="fc" id="L499">                .getMofPackage().refAllOfClass()) {</span>
-<span class="pc bpc" id="L500" title="1 of 2 branches missed.">            if (&quot;UML&quot;.equals(pkg.getName())) {</span>
-<span class="fc" id="L501">                mofPackage = pkg;</span>
-<span class="fc" id="L502">                break;</span>
+<span class="fc" id="L499">        mofPackage = null;</span>
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">        for (MofPackage pkg : (Collection&lt;MofPackage&gt;) mofExtent</span>
+<span class="fc" id="L501">                .getMofPackage().refAllOfClass()) {</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">            if (&quot;UML&quot;.equals(pkg.getName())) {</span>
+<span class="fc" id="L503">                mofPackage = pkg;</span>
+<span class="fc" id="L504">                break;</span>
             }
-<span class="nc" id="L504">        }</span>
-<span class="fc" id="L505">    }</span>
+<span class="nc" id="L506">        }</span>
+<span class="fc" id="L507">    }</span>
+
+<span class="fc" id="L509">    static String PROFILES_RESOURCE_PATH =</span>
+        &quot;/org/argouml/profile/profiles/uml14/&quot;;
+
+<span class="fc" id="L512">    static String PROFILES_BASE_URL =</span>
+        &quot;http://argouml.org/profiles/uml14/&quot;;
+
+    /**
+     * Open the URL to read the model file.  We try to avoid connecting
+     * to the remote peer by looking at the model file locally.
+     * In most cases, the model file is located at PROFILES_BASE_URL
+     * (http://argouml.org) which might be defunct at some point in the future.
+     *
+     * @param url the URL to open.
+     * @return the input stream.
+     */
+    InputSource getInputSource(URL url) {
+<span class="fc" id="L525">        String uri = url.toExternalForm();</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">        if (uri.startsWith(PROFILES_BASE_URL)) {</span>
+<span class="nc" id="L527">            String name = uri.substring(PROFILES_BASE_URL.length());</span>
+<span class="nc" id="L528">            InputStream inputStream = getClass().getResourceAsStream(PROFILES_RESOURCE_PATH + name);</span>
+<span class="nc" id="L529">            return new InputSource(inputStream);</span>
+        }
+
+        // Note: we could have more rules here such as to look at
+        // some specific local places.  If the uri is a file localtion,
+        // everthing is ok.  There is still the issue with user profiles
+        // that will be downloaded from http://argouml.org...
+<span class="fc" id="L536">        return new InputSource(uri);</span>
+    }
 
     /**
      * Initialize factories and other sub-objects.  The default constructor
@@ -513,74 +545,74 @@ public class MDRModelImplementation implements ModelImplementation {
      * @param up default UmlPackage instance which has been created or loaded
      */
     public void initializeFactories(UmlPackage up) {
-<span class="fc" id="L516">        umlPackage = up;</span>
+<span class="fc" id="L548">        umlPackage = up;</span>
 
         // Create and start event pump first so it's available for all others
-<span class="fc" id="L519">        theModelEventPump = new ModelEventPumpMDRImpl(this, repository);</span>
-<span class="fc" id="L520">        theModelEventPump.startPumpingEvents();</span>
-<span class="fc" id="L521">        LOG.log(Level.FINE, &quot;MDR Init - event pump started&quot;);</span>
+<span class="fc" id="L551">        theModelEventPump = new ModelEventPumpMDRImpl(this, repository);</span>
+<span class="fc" id="L552">        theModelEventPump.startPumpingEvents();</span>
+<span class="fc" id="L553">        LOG.log(Level.FINE, &quot;MDR Init - event pump started&quot;);</span>
 
         // DataTypes is next so it's available for Kinds, ModelManagement,
         // &amp; Extensions
-<span class="fc" id="L525">        theDataTypesFactory = new DataTypesFactoryMDRImpl(this);</span>
-<span class="fc" id="L526">        theDataTypesHelper = new DataTypesHelperMDRImpl(this);</span>
+<span class="fc" id="L557">        theDataTypesFactory = new DataTypesFactoryMDRImpl(this);</span>
+<span class="fc" id="L558">        theDataTypesHelper = new DataTypesHelperMDRImpl(this);</span>
 
-<span class="fc" id="L528">        theKindsObject = new KindsMDRImpl(this);</span>
-<span class="fc" id="L529">        theMessageSort = new MessageSortMDRImpl();</span>
-<span class="fc" id="L530">        theModelManagementFactory = new ModelManagementFactoryMDRImpl(this);</span>
-<span class="fc" id="L531">        theExtensionMechanismsHelper =</span>
+<span class="fc" id="L560">        theKindsObject = new KindsMDRImpl(this);</span>
+<span class="fc" id="L561">        theMessageSort = new MessageSortMDRImpl();</span>
+<span class="fc" id="L562">        theModelManagementFactory = new ModelManagementFactoryMDRImpl(this);</span>
+<span class="fc" id="L563">        theExtensionMechanismsHelper =</span>
             new ExtensionMechanismsHelperMDRImpl(this);
-<span class="fc" id="L533">        theExtensionMechanismsFactory =</span>
+<span class="fc" id="L565">        theExtensionMechanismsFactory =</span>
             new ExtensionMechanismsFactoryMDRImpl(this);
-<span class="fc" id="L535">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Extension mechanism&quot;);</span>
+<span class="fc" id="L567">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Extension mechanism&quot;);</span>
 
         // Initialize remaining factories and helpers
         // (but defer heavyweight ones until needed)
-<span class="fc" id="L539">        theCopyHelper = new CopyHelper(this);</span>
-<span class="fc" id="L540">        theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();</span>
-<span class="fc" id="L541">        theCoreHelper =</span>
+<span class="fc" id="L571">        theCopyHelper = new CopyHelper(this);</span>
+<span class="fc" id="L572">        theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();</span>
+<span class="fc" id="L573">        theCoreHelper =</span>
             new UndoCoreHelperDecorator(new CoreHelperMDRImpl(this));
-<span class="fc" id="L543">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Core helper&quot;);</span>
-<span class="fc" id="L544">        theModelManagementHelper = new ModelManagementHelperMDRImpl(this);</span>
-<span class="fc" id="L545">        theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);</span>
-<span class="fc" id="L546">        LOG.log(Level.FINE, &quot;MDR Init - initialized package StateMachines&quot;);</span>
-<span class="fc" id="L547">        theUseCasesFactory = new UseCasesFactoryMDRImpl(this);</span>
-<span class="fc" id="L548">        theUseCasesHelper = new UseCasesHelperMDRImpl(this);</span>
-<span class="fc" id="L549">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Use Cases&quot;);</span>
-<span class="fc" id="L550">        theActivityGraphsFactory = new ActivityGraphsFactoryMDRImpl(this);</span>
-<span class="fc" id="L551">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Collaborations&quot;);</span>
-<span class="fc" id="L552">        theCommonBehaviorFactory = new CommonBehaviorFactoryMDRImpl(this);</span>
-<span class="fc" id="L553">        theCommonBehaviorHelper = new CommonBehaviorHelperMDRImpl(this);</span>
-<span class="fc" id="L554">        LOG.log(Level.FINE, &quot;MDR Init - initialized package CommonBehavior&quot;);</span>
-<span class="fc" id="L555">        theStateMachinesFactory = new StateMachinesFactoryMDRImpl(this);</span>
-<span class="fc" id="L556">        theCoreFactory = new CoreFactoryMDRImpl(this);</span>
-<span class="fc" id="L557">        LOG.log(Level.FINE, &quot;MDR Init - all packages initialized&quot;);</span>
+<span class="fc" id="L575">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Core helper&quot;);</span>
+<span class="fc" id="L576">        theModelManagementHelper = new ModelManagementHelperMDRImpl(this);</span>
+<span class="fc" id="L577">        theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);</span>
+<span class="fc" id="L578">        LOG.log(Level.FINE, &quot;MDR Init - initialized package StateMachines&quot;);</span>
+<span class="fc" id="L579">        theUseCasesFactory = new UseCasesFactoryMDRImpl(this);</span>
+<span class="fc" id="L580">        theUseCasesHelper = new UseCasesHelperMDRImpl(this);</span>
+<span class="fc" id="L581">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Use Cases&quot;);</span>
+<span class="fc" id="L582">        theActivityGraphsFactory = new ActivityGraphsFactoryMDRImpl(this);</span>
+<span class="fc" id="L583">        LOG.log(Level.FINE, &quot;MDR Init - initialized package Collaborations&quot;);</span>
+<span class="fc" id="L584">        theCommonBehaviorFactory = new CommonBehaviorFactoryMDRImpl(this);</span>
+<span class="fc" id="L585">        theCommonBehaviorHelper = new CommonBehaviorHelperMDRImpl(this);</span>
+<span class="fc" id="L586">        LOG.log(Level.FINE, &quot;MDR Init - initialized package CommonBehavior&quot;);</span>
+<span class="fc" id="L587">        theStateMachinesFactory = new StateMachinesFactoryMDRImpl(this);</span>
+<span class="fc" id="L588">        theCoreFactory = new CoreFactoryMDRImpl(this);</span>
+<span class="fc" id="L589">        LOG.log(Level.FINE, &quot;MDR Init - all packages initialized&quot;);</span>
 
-<span class="fc" id="L559">    }</span>
+<span class="fc" id="L591">    }</span>
 
 
     RefPackage createDefaultExtent() {
         // Create a default extent for the user UML model. This will get
         // replaced if a new model is read in from an XMI file.
-<span class="fc" id="L565">        synchronized (extents) {</span>
-<span class="fc" id="L566">            umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);</span>
-<span class="pc bpc" id="L567" title="1 of 2 branches missed.">            if (umlPackage != null) {</span>
+<span class="fc" id="L597">        synchronized (extents) {</span>
+<span class="fc" id="L598">            umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);</span>
+<span class="pc bpc" id="L599" title="1 of 2 branches missed.">            if (umlPackage != null) {</span>
                 // NOTE: If we switch to a persistent repository like the b-tree
                 // repository we'll want to keep the old extent(s) around
                 try {
-<span class="nc" id="L571">                    UmlPackage oldPackage = umlPackage;</span>
-<span class="nc" id="L572">                    umlPackage = null;</span>
-<span class="nc" id="L573">                    deleteExtentUnchecked(oldPackage);</span>
+<span class="nc" id="L603">                    UmlPackage oldPackage = umlPackage;</span>
+<span class="nc" id="L604">                    umlPackage = null;</span>
+<span class="nc" id="L605">                    deleteExtentUnchecked(oldPackage);</span>
 
-<span class="nc" id="L575">                    LOG.log(Level.FINE, &quot;MDR Init - UML extent existed - deleted it and all UML data&quot;);</span>
+<span class="nc" id="L607">                    LOG.log(Level.FINE, &quot;MDR Init - UML extent existed - deleted it and all UML data&quot;);</span>
 
-<span class="nc" id="L577">                } catch (InvalidObjectException e) {</span>
-<span class="nc" id="L578">                    LOG.log(Level.FINE, &quot;Got error deleting old default user extent&quot;);</span>
-<span class="nc" id="L579">                }</span>
+<span class="nc" id="L609">                } catch (InvalidObjectException e) {</span>
+<span class="nc" id="L610">                    LOG.log(Level.FINE, &quot;Got error deleting old default user extent&quot;);</span>
+<span class="nc" id="L611">                }</span>
             }
-<span class="fc" id="L581">            umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);</span>
-<span class="fc" id="L582">            LOG.log(Level.FINE, &quot;Created default extent&quot;);</span>
-<span class="fc" id="L583">            return umlPackage;</span>
+<span class="fc" id="L613">            umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);</span>
+<span class="fc" id="L614">            LOG.log(Level.FINE, &quot;Created default extent&quot;);</span>
+<span class="fc" id="L615">            return umlPackage;</span>
         }
     }
 
@@ -589,278 +621,278 @@ public class MDRModelImplementation implements ModelImplementation {
      * (currently unused).
      */
     public void shutdown() {
-<span class="nc" id="L592">        theModelEventPump.flushModelEvents();</span>
-<span class="nc" id="L593">        theModelEventPump.stopPumpingEvents();</span>
-<span class="nc" id="L594">        MDRManager.getDefault().shutdownAll();</span>
-<span class="nc" id="L595">    }</span>
+<span class="nc" id="L624">        theModelEventPump.flushModelEvents();</span>
+<span class="nc" id="L625">        theModelEventPump.stopPumpingEvents();</span>
+<span class="nc" id="L626">        MDRManager.getDefault().shutdownAll();</span>
+<span class="nc" id="L627">    }</span>
 
     /*
      * @see org.argouml.model.ModelImplementation#getDiagramInterchangeModel()
      */
     public DiagramInterchangeModel getDiagramInterchangeModel() {
-<span class="nc" id="L601">        return null;</span>
+<span class="nc" id="L633">        return null;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getFacade()
      */
     public Facade getFacade() {
-<span class="fc bfc" id="L608" title="All 2 branches covered.">        if (theFacade == null) {</span>
-<span class="fc" id="L609">            theFacade = new FacadeMDRImpl(this);</span>
+<span class="fc bfc" id="L640" title="All 2 branches covered.">        if (theFacade == null) {</span>
+<span class="fc" id="L641">            theFacade = new FacadeMDRImpl(this);</span>
         }
-<span class="fc" id="L611">        return theFacade;</span>
+<span class="fc" id="L643">        return theFacade;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getModelEventPump()
      */
     public ModelEventPump getModelEventPump() {
-<span class="fc" id="L618">        return theModelEventPump;</span>
+<span class="fc" id="L650">        return theModelEventPump;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsFactory()
      */
     public ActivityGraphsFactory getActivityGraphsFactory() {
-<span class="fc" id="L625">        return theActivityGraphsFactory;</span>
+<span class="fc" id="L657">        return theActivityGraphsFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsHelper()
      */
     public ActivityGraphsHelper getActivityGraphsHelper() {
-<span class="fc" id="L632">        return theActivityGraphsHelper;</span>
+<span class="fc" id="L664">        return theActivityGraphsHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsFactory()
      */
     public CollaborationsFactory getCollaborationsFactory() {
-<span class="pc bpc" id="L639" title="1 of 2 branches missed.">        if (theCollaborationsFactory == null) {</span>
-<span class="fc" id="L640">            theCollaborationsFactory =</span>
+<span class="pc bpc" id="L671" title="1 of 2 branches missed.">        if (theCollaborationsFactory == null) {</span>
+<span class="fc" id="L672">            theCollaborationsFactory =</span>
                 new CollaborationsFactoryMDRImpl(this);
         }
-<span class="fc" id="L643">        return theCollaborationsFactory;</span>
+<span class="fc" id="L675">        return theCollaborationsFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsHelper()
      */
     public CollaborationsHelper getCollaborationsHelper() {
-<span class="pc bpc" id="L650" title="1 of 2 branches missed.">        if (theCollaborationsHelper == null) {</span>
-<span class="fc" id="L651">            theCollaborationsHelper =</span>
+<span class="pc bpc" id="L682" title="1 of 2 branches missed.">        if (theCollaborationsHelper == null) {</span>
+<span class="fc" id="L683">            theCollaborationsHelper =</span>
                 new CollaborationsHelperMDRImpl(this);
         }
-<span class="fc" id="L654">        return theCollaborationsHelper;</span>
+<span class="fc" id="L686">        return theCollaborationsHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorFactory()
      */
     public CommonBehaviorFactory getCommonBehaviorFactory() {
-<span class="fc" id="L661">        return theCommonBehaviorFactory;</span>
+<span class="fc" id="L693">        return theCommonBehaviorFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorHelper()
      */
     public CommonBehaviorHelper getCommonBehaviorHelper() {
-<span class="fc" id="L668">        return theCommonBehaviorHelper;</span>
+<span class="fc" id="L700">        return theCommonBehaviorHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCopyHelper()
      */
     public org.argouml.model.CopyHelper getCopyHelper() {
-<span class="nc" id="L675">        return theCopyHelper;</span>
+<span class="nc" id="L707">        return theCopyHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCoreFactory()
      */
     public CoreFactory getCoreFactory() {
-<span class="fc" id="L682">        return theCoreFactory;</span>
+<span class="fc" id="L714">        return theCoreFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getCoreHelper()
      */
     public CoreHelper getCoreHelper() {
-<span class="fc" id="L689">        return theCoreHelper;</span>
+<span class="fc" id="L721">        return theCoreHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getDataTypesFactory()
      */
     public DataTypesFactory getDataTypesFactory() {
-<span class="fc" id="L696">        return theDataTypesFactory;</span>
+<span class="fc" id="L728">        return theDataTypesFactory;</span>
     }
 
     DataTypesFactoryMDRImpl getDataTypesFactoryInternal() {
-<span class="nc" id="L700">        return theDataTypesFactory;</span>
+<span class="nc" id="L732">        return theDataTypesFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
      */
     public DataTypesHelper getDataTypesHelper() {
-<span class="fc" id="L707">        return theDataTypesHelper;</span>
+<span class="fc" id="L739">        return theDataTypesHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsFactory()
      */
     public ExtensionMechanismsFactory getExtensionMechanismsFactory() {
-<span class="fc" id="L714">        return theExtensionMechanismsFactory;</span>
+<span class="fc" id="L746">        return theExtensionMechanismsFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsHelper()
      */
     public ExtensionMechanismsHelper getExtensionMechanismsHelper() {
-<span class="fc" id="L721">        return theExtensionMechanismsHelper;</span>
+<span class="fc" id="L753">        return theExtensionMechanismsHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getModelManagementFactory()
      */
     public ModelManagementFactory getModelManagementFactory() {
-<span class="fc" id="L728">        return theModelManagementFactory;</span>
+<span class="fc" id="L760">        return theModelManagementFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getModelManagementHelper()
      */
     public ModelManagementHelper getModelManagementHelper() {
-<span class="fc" id="L735">        return theModelManagementHelper;</span>
+<span class="fc" id="L767">        return theModelManagementHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesFactory()
      */
     public StateMachinesFactory getStateMachinesFactory() {
-<span class="fc" id="L742">        return theStateMachinesFactory;</span>
+<span class="fc" id="L774">        return theStateMachinesFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesHelper()
      */
     public StateMachinesHelper getStateMachinesHelper() {
-<span class="fc" id="L749">        return theStateMachinesHelper;</span>
+<span class="fc" id="L781">        return theStateMachinesHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getUmlFactory()
      */
     public UmlFactory getUmlFactory() {
-<span class="pc bpc" id="L756" title="1 of 2 branches missed.">        if (theUmlFactory == null) {</span>
-<span class="fc" id="L757">            theUmlFactory = new UmlFactoryMDRImpl(this);</span>
+<span class="pc bpc" id="L788" title="1 of 2 branches missed.">        if (theUmlFactory == null) {</span>
+<span class="fc" id="L789">            theUmlFactory = new UmlFactoryMDRImpl(this);</span>
         }
-<span class="fc" id="L759">        return theUmlFactory;</span>
+<span class="fc" id="L791">        return theUmlFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getUmlHelper()
      */
     public UmlHelper getUmlHelper() {
-<span class="pc bpc" id="L766" title="1 of 2 branches missed.">        if (theUmlHelper == null) {</span>
-<span class="fc" id="L767">            theUmlHelper = new UmlHelperMDRImpl(this);</span>
+<span class="pc bpc" id="L798" title="1 of 2 branches missed.">        if (theUmlHelper == null) {</span>
+<span class="fc" id="L799">            theUmlHelper = new UmlHelperMDRImpl(this);</span>
         }
-<span class="fc" id="L769">        return theUmlHelper;</span>
+<span class="fc" id="L801">        return theUmlHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getUseCasesFactory()
      */
     public UseCasesFactory getUseCasesFactory() {
-<span class="fc" id="L776">        return theUseCasesFactory;</span>
+<span class="fc" id="L808">        return theUseCasesFactory;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getUseCasesHelper()
      */
     public UseCasesHelper getUseCasesHelper() {
-<span class="fc" id="L783">        return theUseCasesHelper;</span>
+<span class="fc" id="L815">        return theUseCasesHelper;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getMetaTypes()
      */
     public MetaTypes getMetaTypes() {
-<span class="fc" id="L790">        return theMetaTypes;</span>
+<span class="fc" id="L822">        return theMetaTypes;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getChangeableKind()
      */
     public ChangeableKind getChangeableKind() {
-<span class="fc" id="L797">        return theKindsObject;</span>
+<span class="fc" id="L829">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getAggregationKind()
      */
     public AggregationKind getAggregationKind() {
-<span class="fc" id="L804">        return theKindsObject;</span>
+<span class="fc" id="L836">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getPseudostateKind()
      */
     public PseudostateKind getPseudostateKind() {
-<span class="fc" id="L811">        return theKindsObject;</span>
+<span class="fc" id="L843">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getScopeKind()
      */
     public ScopeKind getScopeKind() {
-<span class="fc" id="L818">        return theKindsObject;</span>
+<span class="fc" id="L850">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getConcurrencyKind()
      */
     public ConcurrencyKind getConcurrencyKind() {
-<span class="fc" id="L825">        return theKindsObject;</span>
+<span class="fc" id="L857">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getDirectionKind()
      */
     public DirectionKind getDirectionKind() {
-<span class="fc" id="L832">        return theKindsObject;</span>
+<span class="fc" id="L864">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getOrderingKind()
      */
     public OrderingKind getOrderingKind() {
-<span class="fc" id="L839">        return theKindsObject;</span>
+<span class="fc" id="L871">        return theKindsObject;</span>
     }
 
     /*
      * @see org.argouml.model.ModelImplementation#getMessageSort()
      */
     public MessageSort getMessageSort() {
-<span class="nc" id="L846">        return theMessageSort;</span>
+<span class="nc" id="L878">        return theMessageSort;</span>
     }
 
 
     public VisibilityKind getVisibilityKind() {
-<span class="fc" id="L851">        return theKindsObject;</span>
+<span class="fc" id="L883">        return theKindsObject;</span>
     }
 
 
     public XmiReader getXmiReader() throws UmlException {
-<span class="fc" id="L856">        XmiReader reader = new XmiReaderImpl(this);</span>
-<span class="fc" id="L857">        return reader;</span>
+<span class="fc" id="L888">        XmiReader reader = new XmiReaderImpl(this);</span>
+<span class="fc" id="L889">        return reader;</span>
     }
 
 
     public XmiWriter getXmiWriter(Object model, OutputStream stream,
             String version) throws UmlException {
-<span class="fc" id="L863">        return new XmiWriterMDRImpl(this, model, stream, version);</span>
+<span class="fc" id="L895">        return new XmiWriterMDRImpl(this, model, stream, version);</span>
     }
 
     /**
@@ -869,7 +901,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * @return the map
      */
     Map&lt;String, XmiReference&gt; getObjectToId() {
-<span class="fc" id="L872">        return objectToId;</span>
+<span class="fc" id="L904">        return objectToId;</span>
     }
 
     /**
@@ -879,7 +911,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * @return the map
      */
     Map&lt;String, Map&lt;String, Object&gt;&gt; getIdToObject() {
-<span class="fc" id="L882">        return idToObject;</span>
+<span class="fc" id="L914">        return idToObject;</span>
     }
 
     /**
@@ -889,23 +921,23 @@ public class MDRModelImplementation implements ModelImplementation {
      * @return false if no index entries were removed
      */
     boolean removeElement(String mofId) {
-<span class="nc" id="L892">        XmiReference xref = objectToId.remove(mofId);</span>
-<span class="nc bnc" id="L893" title="All 2 branches missed.">        if (xref != null) {</span>
-<span class="nc" id="L894">            Map&lt;String,Object&gt; m = idToObject.get(xref.getSystemId());</span>
-<span class="nc bnc" id="L895" title="All 2 branches missed.">            if (m != null) {</span>
-<span class="nc" id="L896">                Object o = m.remove(xref.getXmiId());</span>
-<span class="nc bnc" id="L897" title="All 2 branches missed.">                if (o != null) {</span>
-<span class="nc bnc" id="L898" title="All 2 branches missed.">                    if (!mofId.equals(((RefObject) o).refMofId())) {</span>
-<span class="nc" id="L899">                        LOG.log(Level.SEVERE, &quot;Internal index inconsistency for mof ID &quot;</span>
-<span class="nc" id="L900">                                + mofId + &quot; (got &quot; + ((RefObject) o).refMofId());</span>
+<span class="nc" id="L924">        XmiReference xref = objectToId.remove(mofId);</span>
+<span class="nc bnc" id="L925" title="All 2 branches missed.">        if (xref != null) {</span>
+<span class="nc" id="L926">            Map&lt;String,Object&gt; m = idToObject.get(xref.getSystemId());</span>
+<span class="nc bnc" id="L927" title="All 2 branches missed.">            if (m != null) {</span>
+<span class="nc" id="L928">                Object o = m.remove(xref.getXmiId());</span>
+<span class="nc bnc" id="L929" title="All 2 branches missed.">                if (o != null) {</span>
+<span class="nc bnc" id="L930" title="All 2 branches missed.">                    if (!mofId.equals(((RefObject) o).refMofId())) {</span>
+<span class="nc" id="L931">                        LOG.log(Level.SEVERE, &quot;Internal index inconsistency for mof ID &quot;</span>
+<span class="nc" id="L932">                                + mofId + &quot; (got &quot; + ((RefObject) o).refMofId());</span>
                     }
-<span class="nc" id="L902">                    return true;</span>
+<span class="nc" id="L934">                    return true;</span>
                 }
             }
         }
         // Elements created after file load won't have index entries
-<span class="nc" id="L907">        LOG.log(Level.FINE, &quot;Failed to remove index entries for mof ID {0}&quot;, mofId);</span>
-<span class="nc" id="L908">        return false;</span>
+<span class="nc" id="L939">        LOG.log(Level.FINE, &quot;Failed to remove index entries for mof ID {0}&quot;, mofId);</span>
+<span class="nc" id="L940">        return false;</span>
     }
 
     /**
@@ -914,19 +946,19 @@ public class MDRModelImplementation implements ModelImplementation {
      * @return the map
      */
     Map&lt;String, String&gt; getPublic2SystemIds() {
-<span class="fc" id="L917">        return public2SystemIds;</span>
+<span class="fc" id="L949">        return public2SystemIds;</span>
     }
 
     void addSearchPath(String path) {
-<span class="fc" id="L921">        searchDirs.add(path);</span>
-<span class="fc" id="L922">    }</span>
+<span class="fc" id="L953">        searchDirs.add(path);</span>
+<span class="fc" id="L954">    }</span>
 
     void removeSearchPath(String path) {
-<span class="nc" id="L925">        searchDirs.remove(path);</span>
-<span class="nc" id="L926">    }</span>
+<span class="nc" id="L957">        searchDirs.remove(path);</span>
+<span class="nc" id="L958">    }</span>
 
     List&lt;String&gt; getSearchPath() {
-<span class="fc" id="L929">        return searchDirs;</span>
+<span class="fc" id="L961">        return searchDirs;</span>
     }
 
 }
