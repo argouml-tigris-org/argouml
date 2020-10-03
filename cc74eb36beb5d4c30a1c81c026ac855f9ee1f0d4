@@ -16,6 +16,24 @@
       "revId": "cc74eb36beb5d4c30a1c81c026ac855f9ee1f0d4",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62996167_dc73b138",
+        "filename": "src/argouml-core-model-mdr/src/org/argouml/model/mdr/MDRModelImplementation.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2020-10-03T16:29:16Z",
+      "side": 1,
+      "message": "OK. This was just an idea.",
+      "parentUuid": "006c06b1_b37ba9a6",
+      "revId": "cc74eb36beb5d4c30a1c81c026ac855f9ee1f0d4",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
