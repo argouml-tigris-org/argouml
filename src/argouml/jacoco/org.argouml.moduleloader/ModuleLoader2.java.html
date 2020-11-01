@@ -492,67 +492,72 @@ public final class ModuleLoader2 {
     private void computeExtensionLocations() {
         // Use a little trick to find out where Argo is being loaded from.
         // TODO: Use a different resource here. ARGOINI is unused and deprecated
-<span class="fc" id="L495">        String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();</span>
-<span class="fc" id="L496">        String argoRoot =</span>
-<span class="fc" id="L497">            extForm.substring(0,</span>
-<span class="fc" id="L498">                              extForm.length() - Argo.ARGOINI.length());</span>
+<span class="fc" id="L495">        URL extURL = getClass().getResource(Argo.ARGOINI);</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">        if (extURL == null) {</span>
+<span class="nc" id="L497">            LOG.log(Level.SEVERE, &quot;cannot find {0}&quot;, Argo.ARGOINI);</span>
+<span class="nc" id="L498">            return;</span>
+        }
+<span class="fc" id="L500">        String extForm = extURL.toExternalForm();</span>
+<span class="fc" id="L501">        String argoRoot =</span>
+<span class="fc" id="L502">            extForm.substring(0,</span>
+<span class="fc" id="L503">                              extForm.length() - Argo.ARGOINI.length());</span>
 
         // If it's a jar, clean it up and make it look like a file url
-<span class="pc bpc" id="L501" title="1 of 2 branches missed.">        if (argoRoot.startsWith(JAR_PREFIX)) {</span>
-<span class="nc" id="L502">            argoRoot = argoRoot.substring(JAR_PREFIX.length());</span>
-<span class="nc bnc" id="L503" title="All 2 branches missed.">            if (argoRoot.endsWith(&quot;!&quot;)) {</span>
-<span class="nc" id="L504">                argoRoot = argoRoot.substring(0, argoRoot.length() - 1);</span>
+<span class="pc bpc" id="L506" title="1 of 2 branches missed.">        if (argoRoot.startsWith(JAR_PREFIX)) {</span>
+<span class="nc" id="L507">            argoRoot = argoRoot.substring(JAR_PREFIX.length());</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">            if (argoRoot.endsWith(&quot;!&quot;)) {</span>
+<span class="nc" id="L509">                argoRoot = argoRoot.substring(0, argoRoot.length() - 1);</span>
             }
         }
 
-<span class="fc" id="L508">        String argoHome = null;</span>
+<span class="fc" id="L513">        String argoHome = null;</span>
 
-<span class="pc bpc" id="L510" title="1 of 2 branches missed.">        if (argoRoot != null) {</span>
-<span class="fc" id="L511">            LOG.log(Level.INFO, &quot;argoRoot is {0}&quot;, argoRoot);</span>
-<span class="pc bpc" id="L512" title="1 of 2 branches missed.">            if (argoRoot.startsWith(FILE_PREFIX)) {</span>
-<span class="fc" id="L513">                argoHome =</span>
-<span class="fc" id="L514">                    new File(argoRoot.substring(FILE_PREFIX.length()))</span>
-<span class="fc" id="L515">                        .getAbsoluteFile().getParent();</span>
+<span class="pc bpc" id="L515" title="1 of 2 branches missed.">        if (argoRoot != null) {</span>
+<span class="fc" id="L516">            LOG.log(Level.INFO, &quot;argoRoot is {0}&quot;, argoRoot);</span>
+<span class="pc bpc" id="L517" title="1 of 2 branches missed.">            if (argoRoot.startsWith(FILE_PREFIX)) {</span>
+<span class="fc" id="L518">                argoHome =</span>
+<span class="fc" id="L519">                    new File(argoRoot.substring(FILE_PREFIX.length()))</span>
+<span class="fc" id="L520">                        .getAbsoluteFile().getParent();</span>
             } else {
-<span class="nc" id="L517">                argoHome = new File(argoRoot).getAbsoluteFile().getParent();</span>
+<span class="nc" id="L522">                argoHome = new File(argoRoot).getAbsoluteFile().getParent();</span>
             }
 
             try {
-<span class="fc" id="L521">                argoHome = java.net.URLDecoder.decode(argoHome,</span>
-<span class="fc" id="L522">                        Argo.getEncoding());</span>
-<span class="nc" id="L523">            } catch (UnsupportedEncodingException e) {</span>
-<span class="nc" id="L524">                LOG.log(Level.WARNING,</span>
+<span class="fc" id="L526">                argoHome = java.net.URLDecoder.decode(argoHome,</span>
+<span class="fc" id="L527">                        Argo.getEncoding());</span>
+<span class="nc" id="L528">            } catch (UnsupportedEncodingException e) {</span>
+<span class="nc" id="L529">                LOG.log(Level.WARNING,</span>
                         &quot;Encoding &quot;
-<span class="nc" id="L526">                        + Argo.getEncoding()</span>
+<span class="nc" id="L531">                        + Argo.getEncoding()</span>
                         + &quot; is unknown.&quot;);
-<span class="fc" id="L528">            }</span>
+<span class="fc" id="L533">            }</span>
 
-<span class="fc" id="L530">            LOG.log(Level.INFO, &quot;argoHome is {0}&quot;, argoHome);</span>
+<span class="fc" id="L535">            LOG.log(Level.INFO, &quot;argoHome is {0}&quot;, argoHome);</span>
         }
 
-<span class="pc bpc" id="L533" title="1 of 2 branches missed.">        if (argoHome != null) {</span>
+<span class="pc bpc" id="L538" title="1 of 2 branches missed.">        if (argoHome != null) {</span>
             String extdir;
-<span class="pc bpc" id="L535" title="1 of 2 branches missed.">            if (argoHome.startsWith(FILE_PREFIX)) {</span>
-<span class="nc" id="L536">                extdir = argoHome.substring(FILE_PREFIX.length())</span>
+<span class="pc bpc" id="L540" title="1 of 2 branches missed.">            if (argoHome.startsWith(FILE_PREFIX)) {</span>
+<span class="nc" id="L541">                extdir = argoHome.substring(FILE_PREFIX.length())</span>
                         + File.separator + &quot;ext&quot;;
             } else {
-<span class="fc" id="L539">                extdir = argoHome + File.separator + &quot;ext&quot;;</span>
+<span class="fc" id="L544">                extdir = argoHome + File.separator + &quot;ext&quot;;</span>
             }
-<span class="fc" id="L541">            extensionLocations.add(extdir);</span>
+<span class="fc" id="L546">            extensionLocations.add(extdir);</span>
         }
 
-<span class="fc" id="L544">        String extdir = System.getProperty(&quot;argo.ext.dir&quot;);</span>
-<span class="pc bpc" id="L545" title="1 of 2 branches missed.">        if (extdir != null) {</span>
-<span class="nc" id="L546">            extensionLocations.add(extdir);</span>
+<span class="fc" id="L549">        String extdir = System.getProperty(&quot;argo.ext.dir&quot;);</span>
+<span class="pc bpc" id="L550" title="1 of 2 branches missed.">        if (extdir != null) {</span>
+<span class="nc" id="L551">            extensionLocations.add(extdir);</span>
         }
-<span class="fc" id="L548">    }</span>
+<span class="fc" id="L553">    }</span>
 
     /**
      * Get the list of locations that we've loaded extension modules from.
      * @return A list of the paths we've loaded from.
      */
     public List&lt;String&gt; getExtensionLocations() {
-<span class="fc" id="L555">        return Collections.unmodifiableList(extensionLocations);</span>
+<span class="fc" id="L560">        return Collections.unmodifiableList(extensionLocations);</span>
     }
 
     /**
@@ -561,34 +566,34 @@ public final class ModuleLoader2 {
      * @param dirname The name of the directory.
      */
     private void huntModulesFromNamedDirectory(String dirname) {
-<span class="nc" id="L564">	File extensionDir = new File(dirname);</span>
-<span class="nc bnc" id="L565" title="All 2 branches missed.">	if (extensionDir.isDirectory()) {</span>
-<span class="nc" id="L566">	    File[] files = extensionDir.listFiles(new JarFileFilter());</span>
-<span class="nc bnc" id="L567" title="All 2 branches missed.">	    for (File file : files) {</span>
-<span class="nc" id="L568">		JarFile jarfile = null;</span>
+<span class="nc" id="L569">	File extensionDir = new File(dirname);</span>
+<span class="nc bnc" id="L570" title="All 2 branches missed.">	if (extensionDir.isDirectory()) {</span>
+<span class="nc" id="L571">	    File[] files = extensionDir.listFiles(new JarFileFilter());</span>
+<span class="nc bnc" id="L572" title="All 2 branches missed.">	    for (File file : files) {</span>
+<span class="nc" id="L573">		JarFile jarfile = null;</span>
 		// Try-catch only the JarFile instantiation so we
 		// don't accidentally mask anything in ArgoJarClassLoader
 		// or processJarFile.
 		try {
-<span class="nc" id="L573">		    jarfile = new JarFile(file);</span>
-<span class="nc bnc" id="L574" title="All 2 branches missed.">		    if (jarfile != null) {</span>
-<span class="nc" id="L575">	                ClassLoader classloader =</span>
+<span class="nc" id="L578">		    jarfile = new JarFile(file);</span>
+<span class="nc bnc" id="L579" title="All 2 branches missed.">		    if (jarfile != null) {</span>
+<span class="nc" id="L580">	                ClassLoader classloader =</span>
 			    new URLClassLoader(new URL[] {
-<span class="nc" id="L577">				file.toURI().toURL(),</span>
-<span class="nc" id="L578">			    }, getClass().getClassLoader());</span>
+<span class="nc" id="L582">				file.toURI().toURL(),</span>
+<span class="nc" id="L583">			    }, getClass().getClassLoader());</span>
 	                try {
-<span class="nc" id="L580">	                    processJarFile(classloader, file);</span>
-<span class="nc" id="L581">	                } catch (ClassNotFoundException e) {</span>
-<span class="nc" id="L582">                            LOG.log(Level.SEVERE, &quot;The class is not found.&quot;, e);</span>
-<span class="nc" id="L583">	                    return;</span>
-<span class="nc" id="L584">	                }</span>
+<span class="nc" id="L585">	                    processJarFile(classloader, file);</span>
+<span class="nc" id="L586">	                } catch (ClassNotFoundException e) {</span>
+<span class="nc" id="L587">                            LOG.log(Level.SEVERE, &quot;The class is not found.&quot;, e);</span>
+<span class="nc" id="L588">	                    return;</span>
+<span class="nc" id="L589">	                }</span>
 		    }
-<span class="nc" id="L586">		} catch (IOException ioe) {</span>
-<span class="nc" id="L587">                    LOG.log(Level.SEVERE, &quot;Cannot open Jar file &quot; + file, ioe);</span>
-<span class="nc" id="L588">		}</span>
+<span class="nc" id="L591">		} catch (IOException ioe) {</span>
+<span class="nc" id="L592">                    LOG.log(Level.SEVERE, &quot;Cannot open Jar file &quot; + file, ioe);</span>
+<span class="nc" id="L593">		}</span>
 	    }
 	}
-<span class="nc" id="L591">    }</span>
+<span class="nc" id="L596">    }</span>
 
     /**
      * Check a jar file for an ArgoUML extension/module.&lt;p&gt;
@@ -604,27 +609,27 @@ public final class ModuleLoader2 {
     private void processJarFile(ClassLoader classloader, File file)
         throws ClassNotFoundException {
 
-<span class="nc" id="L607">        LOG.log(Level.INFO, &quot;Opening jar file {0}&quot;, file);</span>
+<span class="nc" id="L612">        LOG.log(Level.INFO, &quot;Opening jar file {0}&quot;, file);</span>
         JarFile jarfile;
 	try {
-<span class="nc" id="L610">	    jarfile = new JarFile(file);</span>
-<span class="nc" id="L611">	} catch (IOException e) {</span>
-<span class="nc" id="L612">            LOG.log(Level.SEVERE, &quot;Unable to open &quot; + file, e);</span>
-<span class="nc" id="L613">            return;</span>
-<span class="nc" id="L614">	}</span>
+<span class="nc" id="L615">	    jarfile = new JarFile(file);</span>
+<span class="nc" id="L616">	} catch (IOException e) {</span>
+<span class="nc" id="L617">            LOG.log(Level.SEVERE, &quot;Unable to open &quot; + file, e);</span>
+<span class="nc" id="L618">            return;</span>
+<span class="nc" id="L619">	}</span>
 
         Manifest manifest;
         try {
-<span class="nc" id="L618">            manifest = jarfile.getManifest();</span>
-<span class="nc bnc" id="L619" title="All 2 branches missed.">            if (manifest == null) {</span>
+<span class="nc" id="L623">            manifest = jarfile.getManifest();</span>
+<span class="nc bnc" id="L624" title="All 2 branches missed.">            if (manifest == null) {</span>
                 // We expect all extensions to have a manifest even though we
                 // can operate without one if necessary.
-<span class="nc" id="L622">                LOG.log(Level.WARNING,file + &quot; does not have a manifest&quot;);</span>
+<span class="nc" id="L627">                LOG.log(Level.WARNING,file + &quot; does not have a manifest&quot;);</span>
             }
-<span class="nc" id="L624">        } catch (IOException e) {</span>
-<span class="nc" id="L625">            LOG.log(Level.SEVERE, &quot;Unable to read manifest of &quot; + file, e);</span>
-<span class="nc" id="L626">            return;</span>
-<span class="nc" id="L627">        }</span>
+<span class="nc" id="L629">        } catch (IOException e) {</span>
+<span class="nc" id="L630">            LOG.log(Level.SEVERE, &quot;Unable to read manifest of &quot; + file, e);</span>
+<span class="nc" id="L631">            return;</span>
+<span class="nc" id="L632">        }</span>
 
         // TODO: It is a performance drain to load all classes at startup time.
         // They should be lazy loaded when needed.  Instead of scanning all
@@ -632,38 +637,38 @@ public final class ModuleLoader2 {
         // should use a manifest entry or a special name/name pattern that we
         // look for to find the single main module class to load here.  - tfm
 
-<span class="nc" id="L635">        boolean loadedClass = false;</span>
-<span class="nc bnc" id="L636" title="All 2 branches missed.">        if (manifest == null) {</span>
-<span class="nc" id="L637">            Enumeration&lt;JarEntry&gt; jarEntries = jarfile.entries();</span>
-<span class="nc bnc" id="L638" title="All 2 branches missed.">            while (jarEntries.hasMoreElements()) {</span>
-<span class="nc" id="L639">                JarEntry entry = jarEntries.nextElement();</span>
-<span class="nc" id="L640">                loadedClass =</span>
+<span class="nc" id="L640">        boolean loadedClass = false;</span>
+<span class="nc bnc" id="L641" title="All 2 branches missed.">        if (manifest == null) {</span>
+<span class="nc" id="L642">            Enumeration&lt;JarEntry&gt; jarEntries = jarfile.entries();</span>
+<span class="nc bnc" id="L643" title="All 2 branches missed.">            while (jarEntries.hasMoreElements()) {</span>
+<span class="nc" id="L644">                JarEntry entry = jarEntries.nextElement();</span>
+<span class="nc" id="L645">                loadedClass =</span>
                         loadedClass
-<span class="nc" id="L642">                                | processEntry(classloader, entry.getName());</span>
-<span class="nc" id="L643">            }</span>
-<span class="nc" id="L644">        } else {</span>
-<span class="nc" id="L645">            Map&lt;String, Attributes&gt; entries = manifest.getEntries();</span>
-<span class="nc bnc" id="L646" title="All 2 branches missed.">            for (String key : entries.keySet()) {</span>
+<span class="nc" id="L647">                                | processEntry(classloader, entry.getName());</span>
+<span class="nc" id="L648">            }</span>
+<span class="nc" id="L649">        } else {</span>
+<span class="nc" id="L650">            Map&lt;String, Attributes&gt; entries = manifest.getEntries();</span>
+<span class="nc bnc" id="L651" title="All 2 branches missed.">            for (String key : entries.keySet()) {</span>
                 // Look for our specification
-<span class="nc" id="L648">                loadedClass =</span>
+<span class="nc" id="L653">                loadedClass =</span>
                     loadedClass
-<span class="nc" id="L650">                            | processEntry(classloader, key);</span>
-<span class="nc" id="L651">            }</span>
+<span class="nc" id="L655">                            | processEntry(classloader, key);</span>
+<span class="nc" id="L656">            }</span>
         }
 
         // Add this to search list for I18N properties
         // (Done for both modules &amp; localized property file sets)
-<span class="nc" id="L656">        Translator.addClassLoader(classloader);</span>
+<span class="nc" id="L661">        Translator.addClassLoader(classloader);</span>
 
         // If it didn't have a loadable module class and it doesn't look like
         // a localized property set, warn the user that something funny is in
         // their extension directory
-<span class="nc bnc" id="L661" title="All 4 branches missed.">        if (!loadedClass &amp;&amp; !file.getName().contains(&quot;argouml-i18n-&quot;)) {</span>
-<span class="nc" id="L662">            LOG.log(Level.SEVERE,</span>
+<span class="nc bnc" id="L666" title="All 4 branches missed.">        if (!loadedClass &amp;&amp; !file.getName().contains(&quot;argouml-i18n-&quot;)) {</span>
+<span class="nc" id="L667">            LOG.log(Level.SEVERE,</span>
                     &quot;Failed to find any loadable ArgoUML modules in jar &quot;
                     + file);
         }
-<span class="nc" id="L666">    }</span>
+<span class="nc" id="L671">    }</span>
 
     /**
      * Process a JAR file entry, attempting to load anything that looks like a
@@ -678,13 +683,13 @@ public final class ModuleLoader2 {
      */
     private boolean processEntry(ClassLoader classloader, String cname)
         throws ClassNotFoundException {
-<span class="nc bnc" id="L681" title="All 2 branches missed.">        if (cname.endsWith(CLASS_SUFFIX)) {</span>
-<span class="nc" id="L682">            int classNamelen = cname.length() - CLASS_SUFFIX.length();</span>
-<span class="nc" id="L683">            String className = cname.substring(0, classNamelen);</span>
-<span class="nc" id="L684">            className = className.replace('/', '.');</span>
-<span class="nc" id="L685">            return addClass(classloader, className);</span>
+<span class="nc bnc" id="L686" title="All 2 branches missed.">        if (cname.endsWith(CLASS_SUFFIX)) {</span>
+<span class="nc" id="L687">            int classNamelen = cname.length() - CLASS_SUFFIX.length();</span>
+<span class="nc" id="L688">            String className = cname.substring(0, classNamelen);</span>
+<span class="nc" id="L689">            className = className.replace('/', '.');</span>
+<span class="nc" id="L690">            return addClass(classloader, className);</span>
         }
-<span class="nc" id="L687">        return false;</span>
+<span class="nc" id="L692">        return false;</span>
     }
 
     /**
@@ -696,9 +701,9 @@ public final class ModuleLoader2 {
     public static void addClass(String classname)
         throws ClassNotFoundException {
 
-<span class="nc" id="L699">        getInstance().addClass(ModuleLoader2.class.getClassLoader(),</span>
+<span class="nc" id="L704">        getInstance().addClass(ModuleLoader2.class.getClassLoader(),</span>
 			       classname);
-<span class="nc" id="L701">    }</span>
+<span class="nc" id="L706">    }</span>
 
     /**
      * Try to load a module from the given ClassLoader.&lt;p&gt;
@@ -713,125 +718,125 @@ public final class ModuleLoader2 {
     private boolean addClass(ClassLoader classLoader, String classname)
         throws ClassNotFoundException {
 
-<span class="nc" id="L716">        LOG.log(Level.INFO, &quot;Loading module &quot; + classname);</span>
+<span class="nc" id="L721">        LOG.log(Level.INFO, &quot;Loading module &quot; + classname);</span>
         Class moduleClass;
         try {
-<span class="nc" id="L719">            moduleClass = classLoader.loadClass(classname);</span>
-<span class="nc" id="L720">        } catch (UnsupportedClassVersionError e) {</span>
-<span class="nc" id="L721">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L724">            moduleClass = classLoader.loadClass(classname);</span>
+<span class="nc" id="L725">        } catch (UnsupportedClassVersionError e) {</span>
+<span class="nc" id="L726">            LOG.log(Level.SEVERE,</span>
                     &quot;Unsupported Java class version for &quot; + classname);
-<span class="nc" id="L723">            return false;</span>
-<span class="nc" id="L724">        } catch (NoClassDefFoundError e) {</span>
-<span class="nc" id="L725">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L728">            return false;</span>
+<span class="nc" id="L729">        } catch (NoClassDefFoundError e) {</span>
+<span class="nc" id="L730">            LOG.log(Level.SEVERE,</span>
                     &quot;Unable to find required class while loading &quot;
                     + classname + &quot; - may indicate an obsolete&quot;
                     + &quot; extension module or an unresolved dependency&quot;,
                     e);
-<span class="nc" id="L730">            return false;</span>
-<span class="nc" id="L731">        } catch (Throwable e) {</span>
-<span class="nc bnc" id="L732" title="All 2 branches missed.">            if (e instanceof ClassNotFoundException) {</span>
-<span class="nc" id="L733">                throw (ClassNotFoundException) e;</span>
+<span class="nc" id="L735">            return false;</span>
+<span class="nc" id="L736">        } catch (Throwable e) {</span>
+<span class="nc bnc" id="L737" title="All 2 branches missed.">            if (e instanceof ClassNotFoundException) {</span>
+<span class="nc" id="L738">                throw (ClassNotFoundException) e;</span>
             }
-<span class="nc" id="L735">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L740">            LOG.log(Level.SEVERE,</span>
                     &quot;Unexpected error while loading &quot; + classname,
                     e);
-<span class="nc" id="L738">            return false;</span>
-<span class="nc" id="L739">        }</span>
-
-<span class="nc bnc" id="L741" title="All 2 branches missed.">        if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {</span>
-<span class="nc" id="L742">            LOG.log(Level.FINE, &quot;The class {0} is not a module.&quot;, classname);</span>
 <span class="nc" id="L743">            return false;</span>
+<span class="nc" id="L744">        }</span>
+
+<span class="nc bnc" id="L746" title="All 2 branches missed.">        if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {</span>
+<span class="nc" id="L747">            LOG.log(Level.FINE, &quot;The class {0} is not a module.&quot;, classname);</span>
+<span class="nc" id="L748">            return false;</span>
         }
 
         Constructor defaultConstructor;
         try {
-<span class="nc" id="L748">            defaultConstructor =</span>
-<span class="nc" id="L749">                    moduleClass.getDeclaredConstructor(new Class[] {});</span>
-<span class="nc" id="L750">        } catch (SecurityException e) {</span>
-<span class="nc" id="L751">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L753">            defaultConstructor =</span>
+<span class="nc" id="L754">                    moduleClass.getDeclaredConstructor(new Class[] {});</span>
+<span class="nc" id="L755">        } catch (SecurityException e) {</span>
+<span class="nc" id="L756">            LOG.log(Level.SEVERE,</span>
                     &quot;The default constructor for class &quot; + classname
                     + &quot; is not accessable.&quot;,
                     e);
-<span class="nc" id="L755">            return false;</span>
-<span class="nc" id="L756">        } catch (NoSuchMethodException e) {</span>
-<span class="nc" id="L757">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L760">            return false;</span>
+<span class="nc" id="L761">        } catch (NoSuchMethodException e) {</span>
+<span class="nc" id="L762">            LOG.log(Level.SEVERE,</span>
                     &quot;The default constructor for class &quot; + classname
                     + &quot; is not found.&quot;,
                     e);
-<span class="nc" id="L761">            return false;</span>
-<span class="nc" id="L762">        } catch (NoClassDefFoundError e) {</span>
-<span class="nc" id="L763">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L766">            return false;</span>
+<span class="nc" id="L767">        } catch (NoClassDefFoundError e) {</span>
+<span class="nc" id="L768">            LOG.log(Level.SEVERE,</span>
                     &quot;Unable to find required class while loading &quot;
                     + classname + &quot; - may indicate an obsolete&quot;
                     + &quot; extension module or an unresolved dependency&quot;,
                     e);
-<span class="nc" id="L768">            return false;</span>
-<span class="nc" id="L769">        } catch (Throwable e) {</span>
-<span class="nc" id="L770">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L773">            return false;</span>
+<span class="nc" id="L774">        } catch (Throwable e) {</span>
+<span class="nc" id="L775">            LOG.log(Level.SEVERE,</span>
                     &quot;Unexpected error while loading &quot; + classname,
                     e);
-<span class="nc" id="L773">            return false;</span>
-<span class="nc" id="L774">        }</span>
+<span class="nc" id="L778">            return false;</span>
+<span class="nc" id="L779">        }</span>
 
-<span class="nc bnc" id="L776" title="All 2 branches missed.">        if (!Modifier.isPublic(defaultConstructor.getModifiers())) {</span>
-<span class="nc" id="L777">            LOG.log(Level.SEVERE,</span>
+<span class="nc bnc" id="L781" title="All 2 branches missed.">        if (!Modifier.isPublic(defaultConstructor.getModifiers())) {</span>
+<span class="nc" id="L782">            LOG.log(Level.SEVERE,</span>
                     &quot;The default constructor for class &quot; + classname
                     + &quot; is not public.  Not loaded.&quot;);
-<span class="nc" id="L780">            return false;</span>
+<span class="nc" id="L785">            return false;</span>
         }
         Object moduleInstance;
         try {
-<span class="nc" id="L784">            moduleInstance = defaultConstructor.newInstance(new Object[]{});</span>
-<span class="nc" id="L785">        } catch (IllegalArgumentException e) {</span>
-<span class="nc" id="L786">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L789">            moduleInstance = defaultConstructor.newInstance(new Object[]{});</span>
+<span class="nc" id="L790">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L791">            LOG.log(Level.SEVERE,</span>
                     &quot;The constructor for class &quot; + classname
                     + &quot; is called with incorrect argument.&quot;,
                     e);
-<span class="nc" id="L790">            return false;</span>
-<span class="nc" id="L791">        } catch (InstantiationException e) {</span>
-<span class="nc" id="L792">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L795">            return false;</span>
+<span class="nc" id="L796">        } catch (InstantiationException e) {</span>
+<span class="nc" id="L797">            LOG.log(Level.SEVERE,</span>
                     &quot;The constructor for class &quot; + classname
                     + &quot; threw an exception.&quot;,
                     e);
-<span class="nc" id="L796">            return false;</span>
-<span class="nc" id="L797">        } catch (IllegalAccessException e) {</span>
-<span class="nc" id="L798">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L801">            return false;</span>
+<span class="nc" id="L802">        } catch (IllegalAccessException e) {</span>
+<span class="nc" id="L803">            LOG.log(Level.SEVERE,</span>
                     &quot;The constructor for class &quot; + classname
                     + &quot; is not accessible.&quot;,
                     e);
-<span class="nc" id="L802">            return false;</span>
-<span class="nc" id="L803">        } catch (InvocationTargetException e) {</span>
-<span class="nc" id="L804">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L807">            return false;</span>
+<span class="nc" id="L808">        } catch (InvocationTargetException e) {</span>
+<span class="nc" id="L809">            LOG.log(Level.SEVERE,</span>
                     &quot;The constructor for class &quot; + classname
                     + &quot; cannot be called.&quot;,
                     e);
-<span class="nc" id="L808">            return false;</span>
-<span class="nc" id="L809">        } catch (NoClassDefFoundError e) {</span>
-<span class="nc" id="L810">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L813">            return false;</span>
+<span class="nc" id="L814">        } catch (NoClassDefFoundError e) {</span>
+<span class="nc" id="L815">            LOG.log(Level.SEVERE,</span>
                     &quot;Unable to find required class while instantiating &quot;
                     + classname + &quot; - may indicate an obsolete&quot;
                     + &quot; extension module or an unresolved dependency&quot;,
                     e);
-<span class="nc" id="L815">            return false;</span>
-<span class="nc" id="L816">        } catch (Throwable e) {</span>
-<span class="nc" id="L817">            LOG.log(Level.SEVERE,</span>
+<span class="nc" id="L820">            return false;</span>
+<span class="nc" id="L821">        } catch (Throwable e) {</span>
+<span class="nc" id="L822">            LOG.log(Level.SEVERE,</span>
                     &quot;Unexpected error while instantiating &quot; + classname,
                     e);
-<span class="nc" id="L820">            return false;</span>
-<span class="nc" id="L821">        }</span>
+<span class="nc" id="L825">            return false;</span>
+<span class="nc" id="L826">        }</span>
 
         // The following check should have been satisfied before we
         // instantiated the module, but double check again
-<span class="nc bnc" id="L825" title="All 2 branches missed.">        if (!(moduleInstance instanceof ModuleInterface)) {</span>
-<span class="nc" id="L826">            LOG.log(Level.SEVERE,</span>
+<span class="nc bnc" id="L830" title="All 2 branches missed.">        if (!(moduleInstance instanceof ModuleInterface)) {</span>
+<span class="nc" id="L831">            LOG.log(Level.SEVERE,</span>
                     &quot;The class &quot; + classname + &quot; is not a module.&quot;);
-<span class="nc" id="L828">            return false;</span>
+<span class="nc" id="L833">            return false;</span>
         }
-<span class="nc" id="L830">        ModuleInterface mf = (ModuleInterface) moduleInstance;</span>
+<span class="nc" id="L835">        ModuleInterface mf = (ModuleInterface) moduleInstance;</span>
 
-<span class="nc" id="L832">        addModule(mf);</span>
-<span class="nc" id="L833">        LOG.log(Level.INFO, &quot;Succesfully loaded module {0}&quot;, classname);</span>
-<span class="nc" id="L834">        return true;</span>
+<span class="nc" id="L837">        addModule(mf);</span>
+<span class="nc" id="L838">        LOG.log(Level.INFO, &quot;Succesfully loaded module {0}&quot;, classname);</span>
+<span class="nc" id="L839">        return true;</span>
     }
 
     /**
@@ -843,14 +848,14 @@ public final class ModuleLoader2 {
     private void addModule(ModuleInterface mf) {
 	// Since there is no way to compare the objects as equal,
 	// we have to search through the list at this point.
-<span class="nc bnc" id="L846" title="All 2 branches missed.">        for (ModuleInterface foundMf : moduleStatus.keySet()) {</span>
-<span class="nc bnc" id="L847" title="All 2 branches missed.">	    if (foundMf.getName().equals(mf.getName())) {</span>
-<span class="nc" id="L848">		return;</span>
+<span class="nc bnc" id="L851" title="All 2 branches missed.">        for (ModuleInterface foundMf : moduleStatus.keySet()) {</span>
+<span class="nc bnc" id="L852" title="All 2 branches missed.">	    if (foundMf.getName().equals(mf.getName())) {</span>
+<span class="nc" id="L853">		return;</span>
 	    }
-<span class="nc" id="L850">	}</span>
+<span class="nc" id="L855">	}</span>
 
 	// We havn't found it. Add it.
-<span class="nc" id="L853">	ModuleStatus ms = new ModuleStatus();</span>
+<span class="nc" id="L858">	ModuleStatus ms = new ModuleStatus();</span>
 
 	// Enable it.
 	// TODO: This by default selects all modules that are found.
@@ -858,23 +863,23 @@ public final class ModuleLoader2 {
 	//       modules themselves, from how they are found, and also
 	//       have information on what modules are selected from the
 	//       configuration.
-<span class="nc" id="L861">	ms.setSelected();</span>
+<span class="nc" id="L866">	ms.setSelected();</span>
 
-<span class="nc" id="L863">	moduleStatus.put(mf, ms);</span>
-<span class="nc" id="L864">    }</span>
+<span class="nc" id="L868">	moduleStatus.put(mf, ms);</span>
+<span class="nc" id="L869">    }</span>
 
 
     /**
      * The file filter that selects Jar files.
      */
-<span class="nc" id="L870">    static class JarFileFilter implements FileFilter {</span>
+<span class="nc" id="L875">    static class JarFileFilter implements FileFilter {</span>
 	/*
 	 * @see java.io.FileFilter#accept(java.io.File)
 	 */
 	public boolean accept(File pathname) {
-<span class="nc bnc" id="L875" title="All 2 branches missed.">	    return (pathname.canRead()</span>
-<span class="nc bnc" id="L876" title="All 2 branches missed.">		    &amp;&amp; pathname.isFile()</span>
-<span class="nc bnc" id="L877" title="All 2 branches missed.">		    &amp;&amp; pathname.getPath().toLowerCase().endsWith(&quot;.jar&quot;));</span>
+<span class="nc bnc" id="L880" title="All 2 branches missed.">	    return (pathname.canRead()</span>
+<span class="nc bnc" id="L881" title="All 2 branches missed.">		    &amp;&amp; pathname.isFile()</span>
+<span class="nc bnc" id="L882" title="All 2 branches missed.">		    &amp;&amp; pathname.getPath().toLowerCase().endsWith(&quot;.jar&quot;));</span>
 	}
     }
 }
@@ -884,7 +889,7 @@ public final class ModuleLoader2 {
  * Status for each of the available modules. This is created in one copy per
  * available module.
  */
-<span class="nc" id="L887">class ModuleStatus {</span>
+<span class="nc" id="L892">class ModuleStatus {</span>
     /**
      * If the module is enabled.
      */
@@ -901,22 +906,22 @@ public final class ModuleLoader2 {
      * @return true if the module is enabled.
      */
     public boolean isEnabled() {
-<span class="nc" id="L904">	return enabled;</span>
+<span class="nc" id="L909">	return enabled;</span>
     }
 
     /**
      * Setter for enabled.
      */
     public void setEnabled() {
-<span class="nc" id="L911">	enabled = true;</span>
-<span class="nc" id="L912">    }</span>
+<span class="nc" id="L916">	enabled = true;</span>
+<span class="nc" id="L917">    }</span>
 
     /**
      * Setter for enabled.
      */
     public void setDisabled() {
-<span class="nc" id="L918">	enabled = false;</span>
-<span class="nc" id="L919">    }</span>
+<span class="nc" id="L923">	enabled = false;</span>
+<span class="nc" id="L924">    }</span>
 
     /**
      * Tells if the module is selected by the user or not.
@@ -924,7 +929,7 @@ public final class ModuleLoader2 {
      * @return true if it is selected.
      */
     public boolean isSelected() {
-<span class="nc" id="L927">	return selected;</span>
+<span class="nc" id="L932">	return selected;</span>
     }
 
 
@@ -932,15 +937,15 @@ public final class ModuleLoader2 {
      * Setter for selected.
      */
     public void setSelected() {
-<span class="nc" id="L935">	selected = true;</span>
-<span class="nc" id="L936">    }</span>
+<span class="nc" id="L940">	selected = true;</span>
+<span class="nc" id="L941">    }</span>
 
     /**
      * Setter for selected.
      */
     public void setUnselect() {
-<span class="nc" id="L942">	selected = false;</span>
-<span class="nc" id="L943">    }</span>
+<span class="nc" id="L947">	selected = false;</span>
+<span class="nc" id="L948">    }</span>
 
     /**
      * Setter for selected.
@@ -948,11 +953,11 @@ public final class ModuleLoader2 {
      * @param value The value to set.
      */
     public void setSelected(boolean value) {
-<span class="nc bnc" id="L951" title="All 2 branches missed.">	if (value) {</span>
-<span class="nc" id="L952">	    setSelected();</span>
+<span class="nc bnc" id="L956" title="All 2 branches missed.">	if (value) {</span>
+<span class="nc" id="L957">	    setSelected();</span>
 	} else {
-<span class="nc" id="L954">	    setUnselect();</span>
+<span class="nc" id="L959">	    setUnselect();</span>
 	}
-<span class="nc" id="L956">    }</span>
+<span class="nc" id="L961">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

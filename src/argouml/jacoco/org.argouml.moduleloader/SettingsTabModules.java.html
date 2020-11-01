@@ -68,14 +68,14 @@ class SettingsTabModules extends JPanel
      * The table of modules.
      */
     private JTable table;
-    
+
     private JTextField fieldAllExtDirs;
 
     /**
      * The names of the columns in the table.
      */
 <span class="nc" id="L77">    private String[] columnNames = {</span>
-<span class="nc" id="L78">	Translator.localize(&quot;misc.column-name.module&quot;), </span>
+<span class="nc" id="L78">	Translator.localize(&quot;misc.column-name.module&quot;),</span>
 <span class="nc" id="L79">        Translator.localize(&quot;misc.column-name.enabled&quot;),</span>
     };
 
@@ -140,7 +140,7 @@ class SettingsTabModules extends JPanel
 <span class="nc bnc" id="L140" title="All 2 branches missed.">	    if (row &lt; elements.length) {</span>
 <span class="nc" id="L141">		return elements[row][col];</span>
 	    } else {
-<span class="nc" id="L143">	        return null;       </span>
+<span class="nc" id="L143">	        return null;</span>
             }
 	}
 
@@ -184,29 +184,31 @@ class SettingsTabModules extends JPanel
      */
     public void handleSettingsTabRefresh() {
 <span class="nc" id="L186">        table.setModel(new ModuleTableModel());</span>
-        
+
 <span class="nc" id="L188">        StringBuffer sb = new StringBuffer();</span>
 <span class="nc" id="L189">        List locations = ModuleLoader2.getInstance().getExtensionLocations();</span>
 <span class="nc bnc" id="L190" title="All 2 branches missed.">        for (Iterator it = locations.iterator(); it.hasNext();) {</span>
 <span class="nc" id="L191">            sb.append((String) it.next());</span>
 <span class="nc" id="L192">            sb.append(&quot;\n&quot;);</span>
         }
-<span class="nc" id="L194">        fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());</span>
-<span class="nc" id="L195">    }</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (sb.length() &gt; 0) {</span>
+<span class="nc" id="L195">            fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());</span>
+        }
+<span class="nc" id="L197">    }</span>
 
     /*
      * @see GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
-<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (elements != null) {</span>
-<span class="nc bnc" id="L202" title="All 2 branches missed.">            for (int i = 0; i &lt; elements.length; i++) {</span>
-<span class="nc" id="L203">                ModuleLoader2.setSelected(</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">        if (elements != null) {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            for (int i = 0; i &lt; elements.length; i++) {</span>
+<span class="nc" id="L205">                ModuleLoader2.setSelected(</span>
                         (String) elements[i][0],
-<span class="nc" id="L205">                        ((Boolean) elements[i][1]).booleanValue());</span>
+<span class="nc" id="L207">                        ((Boolean) elements[i][1]).booleanValue());</span>
             }
-<span class="nc" id="L207">            ModuleLoader2.doLoad(false);</span>
+<span class="nc" id="L209">            ModuleLoader2.doLoad(false);</span>
         }
-<span class="nc" id="L209">    }</span>
+<span class="nc" id="L211">    }</span>
 
     /*
      * @see GUISettingsTabInterface#handleSettingsTabCancel()
@@ -214,39 +216,39 @@ class SettingsTabModules extends JPanel
     public void handleSettingsTabCancel() {
         // Do nothing!
         // The next time we refresh, we will fetch the values again.
-<span class="nc" id="L217">    }</span>
+<span class="nc" id="L219">    }</span>
 
     /*
      * @see GUISettingsTabInterface#getTabKey()
      */
-<span class="nc" id="L222">    public String getTabKey() { return &quot;tab.modules&quot;; }</span>
+<span class="nc" id="L224">    public String getTabKey() { return &quot;tab.modules&quot;; }</span>
 
     /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
-<span class="nc bnc" id="L228" title="All 2 branches missed.">        if (table == null) {</span>
-<span class="nc" id="L229">            setLayout(new BorderLayout());</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">        if (table == null) {</span>
+<span class="nc" id="L231">            setLayout(new BorderLayout());</span>
 
-<span class="nc" id="L231">            table = new JTable(new ModuleTableModel());</span>
-<span class="nc" id="L232">            table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
-<span class="nc" id="L233">            table.setShowVerticalLines(true);</span>
-<span class="nc" id="L234">            add(new JScrollPane(table), BorderLayout.CENTER);</span>
-<span class="nc" id="L235">            int labelGap = 10;</span>
-<span class="nc" id="L236">            int componentGap = 5;</span>
-<span class="nc" id="L237">            JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));</span>
-<span class="nc" id="L238">            JLabel label = new JLabel(</span>
-<span class="nc" id="L239">                    Translator.localize(&quot;label.extension-directories&quot;));</span>
-<span class="nc" id="L240">            JTextField j = new JTextField();</span>
-<span class="nc" id="L241">            fieldAllExtDirs = j;</span>
-<span class="nc" id="L242">            fieldAllExtDirs.setEnabled(false);</span>
-<span class="nc" id="L243">            label.setLabelFor(fieldAllExtDirs);</span>
-<span class="nc" id="L244">            top.add(label);</span>
-<span class="nc" id="L245">            top.add(fieldAllExtDirs);</span>
-<span class="nc" id="L246">            add(top, BorderLayout.NORTH);</span>
+<span class="nc" id="L233">            table = new JTable(new ModuleTableModel());</span>
+<span class="nc" id="L234">            table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);</span>
+<span class="nc" id="L235">            table.setShowVerticalLines(true);</span>
+<span class="nc" id="L236">            add(new JScrollPane(table), BorderLayout.CENTER);</span>
+<span class="nc" id="L237">            int labelGap = 10;</span>
+<span class="nc" id="L238">            int componentGap = 5;</span>
+<span class="nc" id="L239">            JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));</span>
+<span class="nc" id="L240">            JLabel label = new JLabel(</span>
+<span class="nc" id="L241">                    Translator.localize(&quot;label.extension-directories&quot;));</span>
+<span class="nc" id="L242">            JTextField j = new JTextField();</span>
+<span class="nc" id="L243">            fieldAllExtDirs = j;</span>
+<span class="nc" id="L244">            fieldAllExtDirs.setEnabled(false);</span>
+<span class="nc" id="L245">            label.setLabelFor(fieldAllExtDirs);</span>
+<span class="nc" id="L246">            top.add(label);</span>
+<span class="nc" id="L247">            top.add(fieldAllExtDirs);</span>
+<span class="nc" id="L248">            add(top, BorderLayout.NORTH);</span>
         }
 
-<span class="nc" id="L249">        return this;</span>
+<span class="nc" id="L251">        return this;</span>
     }
 
     /**
@@ -259,7 +261,7 @@ class SettingsTabModules extends JPanel
      */
     public void handleResetToDefault() {
         // Do nothing - these buttons are not shown.
-<span class="nc" id="L262">    }</span>
+<span class="nc" id="L264">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

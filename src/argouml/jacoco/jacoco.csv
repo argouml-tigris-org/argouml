@@ -4,9 +4,9 @@ argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionSetSynch,44,0,4,0,
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,ActionAddEventAsTrigger,68,0,6,0,21,0,9,0,6,0
 argouml-app,org.argouml.uml.ui.behavior.activity_graphs,UMLActionSynchCheckBox,17,0,2,0,6,0,3,0,2,0
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclType,0,9,0,0,0,4,0,2,0,2
-argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,98,60,21,11,20,13,14,5,1,2
-argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,670,473,116,54,149,106,67,23,1,4
-argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1029,370,269,91,249,92,174,11,1,4
+argouml-app,org.argouml.profile.internal.ocl.uml14,OclAPIModelInterpreter,84,74,19,13,16,17,14,5,0,3
+argouml-app,org.argouml.profile.internal.ocl.uml14,CollectionsModelInterpreter,668,475,116,54,148,107,66,24,0,5
+argouml-app,org.argouml.profile.internal.ocl.uml14,ModelAccessModelInterpreter,1109,290,291,69,269,72,176,9,1,4
 argouml-app,org.argouml.profile.internal.ocl.uml14,HashBag,81,123,8,12,20,27,17,12,11,8
 argouml-app,org.argouml.profile.internal.ocl.uml14,Uml14ModelInterpreter,59,18,6,0,10,5,5,1,2,1
 argouml-app,org.argouml.profile.internal.ocl.uml14,OclEnumLiteral,33,0,4,0,9,0,5,0,3,0
@@ -195,7 +195,7 @@ argouml-app,org.argouml.ui.targetmanager,TargetManager,165,650,28,94,34,186,25,6
 argouml-app,org.argouml.ui.targetmanager,TargetManager.TargetRemover,0,12,0,0,0,3,0,2,0,2
 argouml-app,org.argouml.profile.internal.ocl,DefaultOclEvaluator,9,60,1,3,3,14,1,5,0,4
 argouml-app,org.argouml.profile.internal.ocl,ComputeDesignMaterials,13,64,1,3,2,13,1,5,0,4
-argouml-app,org.argouml.profile.internal.ocl,CompositeModelInterpreter,5,57,3,5,3,13,3,5,0,4
+argouml-app,org.argouml.profile.internal.ocl,CompositeModelInterpreter,4,58,2,6,2,14,2,6,0,4
 argouml-app,org.argouml.profile.internal.ocl,ContextApplicable,8,34,0,0,4,8,2,3,2,3
 argouml-app,org.argouml.profile.internal.ocl,EvaluateExpression,564,1072,135,103,109,285,109,46,9,27
 argouml-app,org.argouml.profile.internal.ocl,ComputeTriggers,0,29,0,0,0,6,0,3,0,3
@@ -1433,11 +1433,11 @@ argouml-app,org.argouml.cognitive.checklist.ui,TabChecklist,120,151,10,4,45,40,1
 argouml-app,org.argouml.cognitive.checklist.ui,TableModelChecklist.new Runnable() {...},14,0,0,0,4,0,2,0,2,0
 argouml-app,org.argouml.cognitive.checklist.ui,TableModelChecklist,174,28,32,4,50,12,24,6,7,5
 argouml-app,org.argouml.moduleloader,ModuleLoader2.JarFileFilter,19,0,6,0,4,0,5,0,2,0
-argouml-app,org.argouml.moduleloader,SettingsTabModules,177,0,8,0,41,0,11,0,7,0
+argouml-app,org.argouml.moduleloader,SettingsTabModules,180,0,10,0,42,0,12,0,7,0
 argouml-app,org.argouml.moduleloader,ModuleStatus,33,0,2,0,15,0,9,0,8,0
 argouml-app,org.argouml.moduleloader,InitModuleLoader,25,0,0,0,9,0,5,0,5,0
 argouml-app,org.argouml.moduleloader,SettingsTabModules.ModuleTableModel,108,0,11,0,21,0,14,0,8,0
-argouml-app,org.argouml.moduleloader,ModuleLoader2,1072,111,112,6,261,33,81,5,22,5
+argouml-app,org.argouml.moduleloader,ModuleLoader2,1078,115,113,7,263,35,82,5,22,5
 argouml-app,org.argouml.taskmgmt,ProgressEvent,16,0,0,0,6,0,3,0,3,0
 argouml-app,org.argouml.uml,GenCompositeClasses2,101,0,16,0,28,0,13,0,5,0
 argouml-app,org.argouml.uml,UUIDHelper,14,12,3,3,4,4,4,1,1,1
