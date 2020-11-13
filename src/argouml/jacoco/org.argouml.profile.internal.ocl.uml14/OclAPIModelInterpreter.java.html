@@ -57,7 +57,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
      */
     public Object invokeFeature(Map&lt;String, Object&gt; vt, Object subject,
             String feature, String type, Object[] parameters) {
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (type.equals(&quot;.&quot;)) {</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (type.equals(&quot;.&quot;)) {</span>
             // TODO implement the difference between oclIsKindOf and oclIsTypeOf
 <span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (feature.toString().trim().equals(&quot;oclIsKindOf&quot;)</span>
 <span class="fc bfc" id="L63" title="All 2 branches covered.">                    || feature.toString().trim().equals(&quot;oclIsTypeOf&quot;)) {</span>
@@ -113,16 +113,16 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {        
-<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (sym.equals(&quot;OclType&quot;)) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (sym.equals(&quot;OclType&quot;)) {</span>
 <span class="nc" id="L117">            return new OclType(&quot;OclType&quot;);</span>
         // TODO implement OCLExpression
-<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        } else if (sym.equals(&quot;OclExpression&quot;)) {</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        } else if (sym.equals(&quot;OclExpression&quot;)) {</span>
 <span class="nc" id="L120">            return new OclType(&quot;OclExpression&quot;);</span>
         }
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (sym.equals(&quot;OclAny&quot;)) {</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (sym.equals(&quot;OclAny&quot;)) {</span>
 <span class="nc" id="L123">            return new OclType(&quot;OclAny&quot;);</span>
         }
-<span class="fc" id="L125">        return null;</span>
+<span class="nc" id="L125">        return null;</span>
     }
 
 }
