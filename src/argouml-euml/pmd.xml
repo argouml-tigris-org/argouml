@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2020-11-13T04:00:27.962">
+<pmd version="4.3" timestamp="2020-11-25T17:25:58.525">
 <file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-model-euml/src/org/argouml/model/euml/ActivityGraphsHelperEUMLImpl.java">
 <violation beginline="26" endline="26" begincolumn="37" endcolumn="45" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.model.euml" class="ActivityGraphsHelperEUMLImpl" variable="modelImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'modelImpl'.

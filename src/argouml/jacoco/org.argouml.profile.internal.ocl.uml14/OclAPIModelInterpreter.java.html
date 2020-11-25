@@ -57,7 +57,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
      */
     public Object invokeFeature(Map&lt;String, Object&gt; vt, Object subject,
             String feature, String type, Object[] parameters) {
-<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (type.equals(&quot;.&quot;)) {</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if (type.equals(&quot;.&quot;)) {</span>
             // TODO implement the difference between oclIsKindOf and oclIsTypeOf
 <span class="pc bpc" id="L62" title="1 of 2 branches missed.">            if (feature.toString().trim().equals(&quot;oclIsKindOf&quot;)</span>
 <span class="fc bfc" id="L63" title="All 2 branches covered.">                    || feature.toString().trim().equals(&quot;oclIsTypeOf&quot;)) {</span>
@@ -81,7 +81,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
                 }
             }
 
-<span class="fc bfc" id="L84" title="All 2 branches covered.">            if (subject instanceof String) {</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">            if (subject instanceof String) {</span>
 <span class="pc bpc" id="L85" title="1 of 2 branches missed.">                if (feature.toString().trim().equals(&quot;size&quot;)) {</span>
 <span class="fc" id="L86">                    return ((String) subject).length();</span>
                 }

@@ -371,11 +371,11 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 <span class="fc bfc" id="L371" title="All 2 branches covered.">                &amp;&amp; &quot;namespace&quot;.equals(evt.getPropertyName())) {</span>
 <span class="fc" id="L372">            Object newNamespace = evt.getNewValue();</span>
 <span class="fc bfc" id="L373" title="All 2 branches covered.">            if (newNamespace != null // this in case we are being deleted</span>
-<span class="fc bfc" id="L374" title="All 2 branches covered.">                    &amp;&amp; getNamespace() != newNamespace) {</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">                    &amp;&amp; getNamespace() != newNamespace) {</span>
                 /* The namespace of the statemachine is changed! */
-<span class="fc" id="L376">                setNamespace(newNamespace);</span>
-<span class="fc" id="L377">                ((UMLMutableGraphSupport) getGraphModel())</span>
-<span class="fc" id="L378">                                .setHomeModel(newNamespace);</span>
+<span class="nc" id="L376">                setNamespace(newNamespace);</span>
+<span class="nc" id="L377">                ((UMLMutableGraphSupport) getGraphModel())</span>
+<span class="nc" id="L378">                                .setHomeModel(newNamespace);</span>
             }
         }
 <span class="fc" id="L381">    }</span>
