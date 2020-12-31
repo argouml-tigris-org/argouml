@@ -492,7 +492,12 @@ public final class ModuleLoader2 {
     private void computeExtensionLocations() {
         // Use a little trick to find out where Argo is being loaded from.
         // TODO: Use a different resource here. ARGOINI is unused and deprecated
-        String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
+        URL extURL = getClass().getResource(Argo.ARGOINI);
+        if (extURL == null) {
+            LOG.log(Level.SEVERE, "cannot find {0}", Argo.ARGOINI);
+            return;
+        }
+        String extForm = extURL.toExternalForm();
         String argoRoot =
             extForm.substring(0,
                               extForm.length() - Argo.ARGOINI.length());

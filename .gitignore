@@ -9,3 +9,9 @@
 /.classpath.full
 /.fbwarnings
 /.fbprefs
+/src/*/build-eclipse
+/src/*/.classpath
+/.project
+/src/*/.project
+/.settings
+/src/*/.settings

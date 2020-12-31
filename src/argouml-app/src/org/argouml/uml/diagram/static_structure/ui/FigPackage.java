@@ -637,6 +637,13 @@ public class FigPackage extends FigNodeModelElement
      */
     class FigPackageFigText extends ArgoFigText {
 
+    	// For some strange reason, it no longer works to use LOG from
+        // the outer class. It fails with the error:
+        // "The type org.apache.commons.logging.Log cannot be resolved.
+        // It is indirectly referenced from required .class files."
+        private final Logger LOG1 =
+                Logger.getLogger(FigPackage.class.getName());
+
         /**
          * Construct a text fig for a Package which will jump to diagram for
          * the named package when double clicked.
@@ -716,7 +723,7 @@ public class FigPackage extends FigNodeModelElement
 		    try {
 		        createClassDiagram(lNS, lsDefaultName, lP);
 		    } catch (Exception ex) {
-                        LOG.log(Level.SEVERE, "consume caused: ", ex);
+                        LOG1.log(Level.SEVERE, "consume caused: ", ex);
 		    }
 
 		    return;

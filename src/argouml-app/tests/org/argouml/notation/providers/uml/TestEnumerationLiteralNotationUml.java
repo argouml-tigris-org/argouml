@@ -91,7 +91,13 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
     protected void tearDown() throws Exception {
         ProjectManager.getManager().removeProject(
                 ProjectManager.getManager().getCurrentProject());
-        ProfileFacade.reset();
+        // There is a risk of deadlock within the MDR storage 
+        // on this operation. This thread holds PrimaryIndexImpl
+        // waiting for StorageImpl while the MDR event dispatcher
+        // thread holds StorageImpl waiting for PrimaryIndexImpl.
+        // I will remove it for now.
+        // Noted in https://github.com/argouml-tigris-org/argouml/issues/6
+        // ProfileFacade.reset();
         super.tearDown();
     }
     

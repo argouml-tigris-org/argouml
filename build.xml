@@ -18,7 +18,7 @@ Build file to proxy the argoumlstandard ant targets.
   </target>
 
   <!-- =================================================================== -->
-  <!-- Run from classes                                                    -->
+  <!-- Run from jars                                                       -->
   <!-- =================================================================== -->
   <target name="run" depends="install"
           description="Run with this module.">
@@ -31,6 +31,26 @@ Build file to proxy the argoumlstandard ant targets.
         <classpath>
 	  <path refid="run.classpath"/>
         </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run from jars                                                       -->
+  <!-- =================================================================== -->
+  <target name="debug" depends="install"
+          description="Run and attach using a debugger.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+     	  maxmemory="500M">
+      <jvmarg value="-Xdebug"/>
+      <jvmarg value="-Xnoagent"/>
+      <jvmarg value="-Xrunjdwp:transport=dt_socket,address=5555,server=y,suspend=y"/>
+      <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/error_console.lcf"/>
+      <classpath>
+	<path refid="run.classpath"/>
+      </classpath>
     </java>
   </target>
 

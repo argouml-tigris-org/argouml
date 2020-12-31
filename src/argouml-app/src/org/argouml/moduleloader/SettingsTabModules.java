@@ -68,14 +68,14 @@ class SettingsTabModules extends JPanel
      * The table of modules.
      */
     private JTable table;
-    
+
     private JTextField fieldAllExtDirs;
 
     /**
      * The names of the columns in the table.
      */
     private String[] columnNames = {
-	Translator.localize("misc.column-name.module"), 
+	Translator.localize("misc.column-name.module"),
         Translator.localize("misc.column-name.enabled"),
     };
 
@@ -140,7 +140,7 @@ class SettingsTabModules extends JPanel
 	    if (row < elements.length) {
 		return elements[row][col];
 	    } else {
-	        return null;       
+	        return null;
             }
 	}
 
@@ -184,14 +184,16 @@ class SettingsTabModules extends JPanel
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
-        
+
         StringBuffer sb = new StringBuffer();
         List locations = ModuleLoader2.getInstance().getExtensionLocations();
         for (Iterator it = locations.iterator(); it.hasNext();) {
             sb.append((String) it.next());
             sb.append("\n");
         }
-        fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());
+        if (sb.length() > 0) {
+            fieldAllExtDirs.setText(sb.substring(0, sb.length() - 1).toString());
+        }
     }
 
     /*
