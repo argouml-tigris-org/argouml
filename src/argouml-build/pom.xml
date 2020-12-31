@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>argouml-core</artifactId>
+    <version>0.35.2-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
+  </parent>
+
+  <artifactId>argouml-build</artifactId>
+  <name>argouml-build</name>
+  <description>
+    Include dependencies from the whole argouml repository to
+    represent the whole application.
+    
+    Admittedly the naming of the artifact is a little strange
+    but it was that way in the old build so I will do for now.
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+    <site.path>${project.artifactId}</site.path>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-activity</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-class</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-deployment</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-sequence</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-diagrams-state</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-notation</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-transformer</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-umlpropertypanels</artifactId>
+      <version>${project.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <scm>
+    <url>${github.site.org}/${github.site.repositoryName}/tree/master/src/argouml-build</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
+  </scm>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.10</version>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <overWriteReleases>false</overWriteReleases>
+              <overWriteSnapshots>false</overWriteSnapshots>
+              <overWriteIfNewer>true</overWriteIfNewer>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <!-- <artifactId>maven-jar-plugin</artifactId> -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+
+          <execution>
+            <id>argouml</id>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+              <finalName>argouml</finalName>
+              <includes>
+                <include>**/*</include>
+              </includes>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <archive>
+                <manifestEntries>
+                  <Built-By>${company.name}</Built-By>
+                </manifestEntries>
+                <manifest>
+                  <mainClass>org.argouml.application.Main</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>mdr</id>
+      <activation>
+      	<activeByDefault>true</activeByDefault>
+     </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.argouml</groupId>
+      	  <artifactId>argouml-mdr</artifactId>
+          <version>${project.version}</version>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>euml</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.argouml</groupId>
+          <artifactId>argouml-euml</artifactId>
+          <version>${project.version}</version>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+</project>

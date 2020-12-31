@@ -254,6 +254,12 @@ public class ProfileManagerImpl implements ProfileManager {
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
         }
+
+        // Add an optional default configured from system options.
+        String def = System.getProperty("argouml.profiles.directory");
+        if (def != null && def.length() > 0 && !searchDirectories.contains(def)) {
+            searchDirectories.add(def);
+        }
         disableConfigurationUpdate = false;
     }
 

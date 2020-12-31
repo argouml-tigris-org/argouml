@@ -4,15 +4,11 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- 
-    Experimenting with maven for the nightly build.
-  -->
-
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>parentpom</artifactId>
-    <version>0.35.4</version>
-    <relativePath>tools/maven/parentpom.xml</relativePath>
+    <version>0.35.5-SNAPSHOT</version>
+    <relativePath>../parentpom/pom.xml</relativePath>
   </parent>
 
   <artifactId>argouml-core</artifactId>
@@ -32,6 +28,7 @@
     <module>src/argouml-core-diagrams-state2</module>
     <module>src/argouml-core-diagrams-structure2</module>
     <module>src/argouml-app</module>
+    <module>src/argouml-build</module>
   </modules>
 
   <name>argouml-core</name>
@@ -40,9 +37,22 @@ The group of core argouml projects.
 This project is the virtual project that includes all core subprojects.
   </description>
 
+  <properties>
+    <!-- Used in parent to deploy site on github. -->
+    <github.site.repositoryName>argouml</github.site.repositoryName>
+  </properties>
+
   <scm>
-    <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</connection>
-    <developerConnection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</developerConnection>
-    <url>http://argouml.tigris.org/svn/argouml/trunk/</url>
+    <url>${github.site.org}/${github.site.repositoryName}</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
   </scm>
+
+  <distributionManagement>
+     <site>
+        <id>${project.artifactId}-site</id>
+        <url>${github.site.pages}/${github.site.repositoryName}</url>
+     </site>
+  </distributionManagement>
+
 </project>

@@ -1,23 +1,27 @@
 # argouml
 Main project of argouml.
 
-Started in January 1998. Converted to Subversion in 2006. Converted to git in 2019.
+Started in January 1998. Converted from CVS to Subversion in 2006. Converted to git in 2019.
 
 ## Resources
 
-* Homepage: <http://argouml.tigris.org>
-* Using ArgoUML: <http://argouml.tigris.org/documentation/>
-* Developer Wiki: <http://argouml.tigris.org/wiki>
-* Issues: <http://argouml.tigris.org/issues/query.cgi>
+* Github organisation: <https://github.com/argouml-tigris-org>
+* Web page with maven sites: <https://argouml-tigris-org.github.io/>
 
 ## Contributing
 
-Short summary on how to contribute to the project using github:
+Short summary on how to contribute to the project using github and gerrithub:
 
 * One pull request per issue or per change;
 * Pull requests towards the master branch;
 * No merge commits;
 * Clean up "fix" commits before creating the pull request;
+* Push changes towards master to gerrithub.
+* One change per issue.
+* Code clean-up in separate changes (gerrithub will make each commit into a change).
+* Use the repo tool.
+
+A longer explaination is in <https://github.com/argouml-tigris-org/argouml/wiki/Working-in-the-project>
 
 ### Setup ArgoUML
 

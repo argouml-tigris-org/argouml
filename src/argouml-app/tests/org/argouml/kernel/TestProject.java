@@ -39,10 +39,8 @@
 
 package org.argouml.kernel;
 
-import java.io.File;
-import java.net.URI;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -56,6 +54,7 @@ import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.ProjectFile;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
@@ -108,16 +107,17 @@ public class TestProject extends TestCase {
      * @throws InterruptedException if there the project load was interrupted
      * @throws OpenException if there was an error during project load
      * @throws URISyntaxException when the URI can not be formed
+     * @throws IOException when a temporary file cannot be created.
      */
     public void testRemove() throws OpenException, InterruptedException, 
-        URISyntaxException {
-        String name = "/testmodels/uml14/Alittlebitofeverything.zargo";
-        URL url = TestProject.class.getResource(name);
+        URISyntaxException, IOException {
+        ProjectFile file = new ProjectFile("zargo");
         AbstractFilePersister persister =
-            PersistenceManager.getInstance().getPersisterFromFileName(name);
-        
-        URI uri = url.toURI();
-        Project p = persister.doLoad(new File(uri));
+                PersistenceManager.getInstance().getPersisterFromFileName(file.getName());
+
+        Project p = persister.doLoad(file.getFile());
+        file.delete();
+        file = null;
         
         p.remove();
         

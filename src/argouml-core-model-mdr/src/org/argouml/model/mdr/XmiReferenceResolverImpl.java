@@ -42,10 +42,12 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,6 +58,7 @@ import java.util.logging.Logger;
 
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
+import javax.net.ssl.HttpsURLConnection;
 
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReferenceRuntimeException;
@@ -326,7 +329,11 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return map of xmi.id to RefObject correspondences
      */
     Map<String, Object> getIdToObjectMap() {
-        return getIdToObjectMaps().get(topSystemId);
+        if (idToObject != null) {
+            return idToObject.get(topSystemId);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -340,7 +347,10 @@ class XmiReferenceResolverImpl extends XmiContext {
      * Reinitialize the object id maps to the empty state.
      */
     void clearIdMaps() {
-        getIdToObjectMap().clear();
+        Map<String, Object> map = getIdToObjectMap();
+        if (map != null) {
+            map.clear();
+        }
         mofidToXmiref.clear();
         topSystemId = null;
     }
@@ -592,7 +602,32 @@ class XmiReferenceResolverImpl extends XmiContext {
         URL url = null;
         try {
             url = new URL(systemId);
-            stream = url.openStream();
+            URLConnection connection = url.openConnection();
+            stream = connection.getInputStream();
+            // There is a design decision in java not to redirect
+            // automatically between http and https connections.
+            // This appeared as a problem when moving to github
+            // because the redirect from http://argouml.org then
+            // went to https://argouml*.github.io and suddenly
+            // the getInputStream succeeded for non-existing files
+            // since the redirect response doesn't throw an IOException.
+            if (connection instanceof HttpURLConnection) {
+                HttpURLConnection huc = (HttpURLConnection) connection;
+                if (huc.getResponseCode() / 100 == 3) {
+                    String whereto = huc.getHeaderField("Location");
+                    url = new URL(whereto);
+                    connection = url.openConnection();
+                    stream = connection.getInputStream();
+                }
+            } else if (connection instanceof HttpsURLConnection) {
+                HttpsURLConnection hsuc = (HttpsURLConnection) connection;
+                if (hsuc.getResponseCode() / 100 == 3) {
+                    String whereto = hsuc.getHeaderField("Location");
+                    url = new URL(whereto);
+                    connection = url.openConnection();
+                    stream = connection.getInputStream();
+                }
+            }
             stream.close();
         } catch (MalformedURLException e) {
             url = null;
@@ -629,7 +664,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         // We've got a profile read pending - handle it ourselves now
         URL url = pendingProfiles.remove(arg0);
         if (url != null) {
-            InputSource is = new InputSource(url.toExternalForm());
+            InputSource is = modelImpl.getInputSource(url);
             is.setPublicId(arg0);
             XmiReaderImpl reader = new XmiReaderImpl(modelImpl);
             try {

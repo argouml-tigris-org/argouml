@@ -4,10 +4,6 @@
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <!-- 
-    Experimenting with maven for the nightly build.
-  -->
-
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>argouml-core</artifactId>
@@ -19,6 +15,7 @@
 
   <properties>
     <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+    <site.path>${project.artifactId}</site.path>
   </properties>
 
   <dependencies>
@@ -113,16 +110,15 @@
     <dependency>
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
-      <version>2.0</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>jdepend</groupId>
       <artifactId>jdepend</artifactId>
-      <version>2.9.1</version>
-      <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
 
   </dependencies>
 
@@ -130,5 +126,11 @@
   <description>
 Sequence diagrams.
   </description>
+
+  <scm>
+    <url>${github.site.org}/${github.site.repositoryName}/tree/master/src/argouml-core-diagrams-sequence2</url>
+    <connection>scm:git:${github.site.org}/${github.site.repositoryName}.git</connection>
+    <developerConnection>scm:git:${gerrithub.site.org.ssh}/${github.site.repositoryName}.git</developerConnection>
+  </scm>
 
 </project>
