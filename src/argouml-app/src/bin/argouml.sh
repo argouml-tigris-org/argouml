@@ -25,5 +25,4 @@ while [ -h "$PRG" ] ; do
   fi
 done
 
-java -Xms64m -Xmx512m -jar `dirname $PRG`/argouml.jar "$@"
-
+java -Xms64m -Xmx1024m -cp `dirname $PRG`/argouml.jar:`dirname $PRG`/ext/* org.argouml.application.Main "$@"
