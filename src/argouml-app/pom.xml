@@ -200,6 +200,7 @@ own projects.
   <build>
     <plugins>
       <plugin>
+        <!-- because of this plugin the application can start via this mvn command "mvn exec:java" -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.6.0</version>
@@ -212,8 +213,6 @@ own projects.
         </executions>
         <configuration>
           <mainClass>org.argouml.application.Main</mainClass>
-          <arguments></arguments>
-          <systemProperties></systemProperties>
         </configuration>
       </plugin>
     </plugins>
