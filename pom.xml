@@ -29,7 +29,6 @@
         <module>src/argouml-core-diagrams-structure2</module>
         <module>src/argouml-app</module>
         <module>src/argouml-build</module>
-
     </modules>
 
     <name>argouml-core</name>
@@ -37,20 +36,6 @@
         The group of core argouml projects.
         This project is the virtual project that includes all core subprojects.
     </description>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 
     <properties>
         <!-- Used in parent to deploy site on github. -->
@@ -69,5 +54,19 @@
             <url>${github.site.pages}/${github.site.repositoryName}</url>
         </site>
     </distributionManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
