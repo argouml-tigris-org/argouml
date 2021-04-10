@@ -290,7 +290,7 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      * Utility method to add a collection of elements to the model
      * @param col the given collection
      */
-    protected void addAll(Collection col) {
+    public void addAll(Collection col) {
         if (col.size() == 0) {
             return;
         }
