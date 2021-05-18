@@ -69,14 +69,14 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
         }
         
 <span class="fc bfc" id="L71" title="All 2 branches covered.">        if (!(subject instanceof Collection)) {</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 <span class="fc" id="L73">                Set ns = new HashSet();</span>
 <span class="fc" id="L74">                ns.add(subject);                    </span>
 <span class="fc" id="L75">                subject = ns;</span>
             }
         }
 
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        if (subject instanceof Collection) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (subject instanceof Collection) {</span>
 <span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 <span class="fc bfc" id="L81" title="All 2 branches covered.">                if (feature.toString().trim().equals(&quot;select&quot;)) {</span>
 <span class="fc" id="L82">                    List&lt;String&gt; vars = (List&lt;String&gt;) parameters[0];</span>
@@ -269,7 +269,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
         }
 
         // these operations are ok for lists too
-<span class="pc bpc" id="L272" title="1 of 2 branches missed.">        if (subject instanceof Collection) {</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">        if (subject instanceof Collection) {</span>
 <span class="pc bpc" id="L273" title="1 of 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 <span class="pc bpc" id="L274" title="1 of 2 branches missed.">                if (feature.equals(&quot;size&quot;)) {</span>
 <span class="fc" id="L275">                    return ((Collection) subject).size();</span>
@@ -365,7 +365,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
             }
         }
 
-<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (subject instanceof List) {</span>
+<span class="pc bpc" id="L368" title="1 of 2 branches missed.">        if (subject instanceof List) {</span>
 <span class="nc bnc" id="L369" title="All 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 <span class="nc bnc" id="L370" title="All 2 branches missed.">                if (feature.equals(&quot;at&quot;)) {</span>
 <span class="nc" id="L371">                    return ((List) subject).get((Integer) parameters[0]);</span>
@@ -381,7 +381,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
             }
         }
         // these operations are ok for bags too
-<span class="nc bnc" id="L384" title="All 2 branches missed.">        if (subject instanceof Set) {</span>
+<span class="pc bpc" id="L384" title="1 of 2 branches missed.">        if (subject instanceof Set) {</span>
 <span class="nc bnc" id="L385" title="All 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 
 <span class="nc bnc" id="L387" title="All 2 branches missed.">                if (feature.equals(&quot;intersection&quot;)) {</span>
@@ -438,7 +438,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
             }
         }
         
-<span class="nc bnc" id="L441" title="All 2 branches missed.">        if (subject instanceof Bag) {</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">        if (subject instanceof Bag) {</span>
 <span class="nc bnc" id="L442" title="All 2 branches missed.">            if (type.equals(&quot;-&gt;&quot;)) {</span>
 <span class="nc bnc" id="L443" title="All 2 branches missed.">                if (feature.equals(&quot;count&quot;)) {</span>
 <span class="nc" id="L444">                    return ((Bag) subject).count(parameters[0]);</span>
@@ -446,7 +446,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
             }
         }
 
-<span class="nc" id="L449">        return null;</span>
+<span class="fc" id="L449">        return null;</span>
     }
 
     private boolean doForAll(Map&lt;String, Object&gt; vt, Collection collection,
@@ -490,7 +490,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {
-<span class="nc" id="L493">        return null;</span>
+<span class="fc" id="L493">        return null;</span>
     }
 
 }
