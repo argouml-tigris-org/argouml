@@ -370,8 +370,8 @@ public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 <span class="fc bfc" id="L370" title="All 2 branches covered.">        if (evt.getSource() == theStateMachine</span>
 <span class="fc bfc" id="L371" title="All 2 branches covered.">                &amp;&amp; &quot;namespace&quot;.equals(evt.getPropertyName())) {</span>
 <span class="fc" id="L372">            Object newNamespace = evt.getNewValue();</span>
-<span class="fc bfc" id="L373" title="All 2 branches covered.">            if (newNamespace != null // this in case we are being deleted</span>
-<span class="pc bpc" id="L374" title="1 of 2 branches missed.">                    &amp;&amp; getNamespace() != newNamespace) {</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">            if (newNamespace != null // this in case we are being deleted</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">                    &amp;&amp; getNamespace() != newNamespace) {</span>
                 /* The namespace of the statemachine is changed! */
 <span class="nc" id="L376">                setNamespace(newNamespace);</span>
 <span class="nc" id="L377">                ((UMLMutableGraphSupport) getGraphModel())</span>
