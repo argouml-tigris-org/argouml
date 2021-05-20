@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c37824bd_78ec548d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2021-05-20T14:48:35Z",
+      "side": 1,
+      "message": "I have imported into gerrithub and I have added a question.",
+      "revId": "9b5ab09dfe310b73d523cbbbf807a7822dcd29a5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784daf5d_6f318477",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2021-05-20T14:48:35Z",
+      "side": 1,
+      "message": "The compiler plugin is specified in parentpom. What is the reason for updating the version in just part of the project?",
+      "revId": "9b5ab09dfe310b73d523cbbbf807a7822dcd29a5",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
