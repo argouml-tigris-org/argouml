@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed97ed1_20a3a042",
+        "filename": "pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2021-05-20T15:11:35Z",
+      "side": 1,
+      "message": "Since this was recently added, by the same PR, it could have been added to the right place directly. I think it is better to squash this change.",
+      "revId": "338c8ee9ecfaa0e0f03febf765cfa9dcf187ea98",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
