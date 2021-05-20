@@ -217,8 +217,8 @@ public final class Notation implements PropertyChangeListener {
 <span class="fc" id="L217">                    notationArgo.getConfigurationValue()));</span>
         // This is needed for the case when the default notation is
         // not loaded at this point.
-<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (n == null) {</span>
-<span class="fc" id="L221">            n = NotationNameImpl.findNotation(DEFAULT_NOTATION);</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">        if (n == null) {</span>
+<span class="nc" id="L221">            n = NotationNameImpl.findNotation(DEFAULT_NOTATION);</span>
 	}
 <span class="fc" id="L223">        LOG.log(Level.FINE, &quot;default notation is {0}&quot;, n.getConfigurationValue());</span>
 <span class="fc" id="L224">        return n;</span>

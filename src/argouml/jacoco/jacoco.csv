@@ -187,11 +187,11 @@ argouml-app,org.argouml.uml.diagram.activity.ui,FigCallState,11,8,0,0,3,3,2,2,2,
 argouml-app,org.argouml.uml.diagram.activity.ui,FigSubactivityState,458,0,18,0,93,0,27,0,18,0
 argouml-app,org.argouml.uml.diagram.activity.ui,SelectionActionState,169,0,12,0,44,0,20,0,14,0
 argouml-app,org.argouml.uml.diagram.use_case,UseCaseDiagramGraphModel,638,8,136,0,164,3,79,2,11,2
-argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryManager,34,388,14,46,3,86,14,28,0,12
+argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryManager,77,345,20,40,12,77,17,25,0,12
 argouml-app,org.argouml.ui.targetmanager,TargetManager.Remover,27,75,4,14,8,22,4,11,1,5
 argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryRemover,0,13,0,0,0,3,0,2,0,2
 argouml-app,org.argouml.ui.targetmanager,TargetEvent,51,70,8,8,11,16,9,8,4,5
-argouml-app,org.argouml.ui.targetmanager,TargetManager,165,650,28,94,34,186,25,69,3,30
+argouml-app,org.argouml.ui.targetmanager,TargetManager,115,700,28,94,28,192,25,69,3,30
 argouml-app,org.argouml.ui.targetmanager,TargetManager.TargetRemover,0,12,0,0,0,3,0,2,0,2
 argouml-app,org.argouml.profile.internal.ocl,DefaultOclEvaluator,9,60,1,3,3,14,1,5,0,4
 argouml-app,org.argouml.profile.internal.ocl,ComputeDesignMaterials,13,64,1,3,2,13,1,5,0,4
@@ -299,7 +299,7 @@ argouml-app,org.argouml.util.logging,SimpleTimer.SimpleTimerEnumeration,149,0,8,
 argouml-app,org.argouml.util.logging,SimpleTimer,72,0,2,0,17,0,6,0,5,0
 argouml-app,org.argouml.notation,SDNotationSettings,0,10,0,0,0,4,0,3,0,3
 argouml-app,org.argouml.notation,NotationProvider,137,243,15,21,21,60,17,18,2,15
-argouml-app,org.argouml.notation,Notation,2,159,0,2,1,58,1,10,1,9
+argouml-app,org.argouml.notation,Notation,5,156,1,1,2,57,2,9,1,9
 argouml-app,org.argouml.notation,InitNotation,6,6,0,0,3,3,3,2,3,2
 argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},17,24,2,0,3,4,2,2,1,2
 argouml-app,org.argouml.notation,NotationSettings.new Memento() {...},7,19,0,0,2,3,1,2,1,2
@@ -616,7 +616,7 @@ argouml-app,org.argouml.persistence,UmlFilePersister.XmlFilterOutputStream,274,0
 argouml-app,org.argouml.persistence,MultitypeFileFilter,93,0,8,0,18,0,9,0,5,0
 argouml-app,org.argouml.persistence,TodoListMemberFilePersister,59,50,2,0,18,19,3,4,2,4
 argouml-app,org.argouml.persistence,PGMLStackParser.EdgeData,22,46,4,4,1,13,4,6,0,6
-argouml-app,org.argouml.persistence,ModelMemberFilePersister,162,330,24,26,39,99,24,17,5,11
+argouml-app,org.argouml.persistence,ModelMemberFilePersister,162,330,25,25,39,99,25,16,5,11
 argouml-app,org.argouml.persistence,ArgoParser,75,414,6,33,23,157,9,61,4,34
 argouml-app,org.argouml.persistence,PersistenceException,12,4,0,0,6,2,3,1,3,1
 argouml-app,org.argouml.persistence,OldModelMemberFilePersister,0,3,0,0,0,1,0,1,0,1
@@ -742,7 +742,7 @@ argouml-app,org.argouml.ocl,CriticOclEvaluator,22,0,0,0,5,0,4,0,4,0
 argouml-app,org.argouml.ocl,OCLUtil,142,0,20,0,36,0,12,0,2,0
 argouml-app,org.argouml.ocl,OCLExpander,0,10,0,0,0,4,0,2,0,2
 argouml-app,org.argouml.ocl,OCLEvaluator,160,18,20,0,36,5,13,1,3,1
-argouml-app,org.argouml.i18n,Translator,154,231,18,18,39,53,15,17,3,11
+argouml-app,org.argouml.i18n,Translator,156,229,19,17,40,52,16,16,3,11
 argouml-app,org.argouml.uml.diagram.activity,ActivityDiagramGraphModel,16,3,4,0,5,1,3,1,1,1
 argouml-app,org.argouml.language.ui,LanguageComboBox,27,43,1,1,13,17,5,3,4,3
 argouml-app,org.argouml.ui.explorer,PerspectiveManager,1574,0,32,0,247,0,36,0,20,0
@@ -816,13 +816,13 @@ argouml-app,org.argouml.notation.providers,NodeInstanceNotation,5,52,1,3,1,9,1,3
 argouml-app,org.argouml.notation.providers,MultiplicityNotation,0,7,0,0,0,3,0,1,0,1
 argouml-app,org.argouml.notation.providers,EnumerationLiteralNotation,17,40,1,3,2,8,1,3,0,2
 argouml-app,org.argouml.profile.internal,ModelUtils,24,31,4,4,4,8,5,1,1,1
-argouml-app,org.argouml.profile.internal,ProfileMeta,33,125,1,7,12,35,1,11,0,8
+argouml-app,org.argouml.profile.internal,ProfileMeta,37,121,2,6,13,34,2,10,0,8
 argouml-app,org.argouml.profile.internal,DependencyResolver,8,154,2,16,3,41,2,13,0,6
 argouml-app,org.argouml.profile.internal,ProfileUML,85,602,4,10,40,138,4,13,0,10
 argouml-app,org.argouml.profile.internal,FormatingStrategyUML,194,170,34,20,52,41,26,13,5,7
 argouml-app,org.argouml.profile.internal,ProfileUML.new DefaultTypeStrategy() {...},5,29,1,1,2,7,2,4,1,4
 argouml-app,org.argouml.profile.internal,ProfileManagerImpl.new DependencyChecker() {...},18,43,2,2,3,11,2,2,0,2
-argouml-app,org.argouml.profile.internal,ProfileManagerImpl,165,643,34,78,36,170,32,48,1,23
+argouml-app,org.argouml.profile.internal,ProfileManagerImpl,151,657,32,80,32,174,30,50,1,23
 argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionNodeInstance,94,0,6,0,16,0,11,0,8,0
 argouml-app,org.argouml.uml.diagram.deployment.ui,DeploymentDiagramRenderer,334,13,21,1,81,3,13,2,2,2
 argouml-app,org.argouml.uml.diagram.deployment.ui,AbstractFigComponent,116,268,9,1,30,47,11,5,6,5
@@ -1046,7 +1046,7 @@ argouml-app,org.argouml.kernel,ProjectManager.new NonUndoableCommand() {...},57,
 argouml-app,org.argouml.kernel,ProfileConfiguration,86,468,14,54,20,114,18,39,5,18
 argouml-app,org.argouml.kernel,DefaultUndoManager,129,97,14,2,35,24,15,6,7,6
 argouml-app,org.argouml.kernel,MemberList,182,260,29,39,46,78,37,25,17,11
-argouml-app,org.argouml.kernel,ProjectImpl,549,1183,96,100,142,336,79,105,14,72
+argouml-app,org.argouml.kernel,ProjectImpl,549,1183,97,99,142,336,80,104,14,72
 argouml-app,org.argouml.kernel,NonUndoableCommand,5,3,0,0,3,1,3,1,3,1
 argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
 argouml-app,org.argouml.kernel,ProjectImpl.new AbstractCommand() {...},7,20,0,0,2,3,1,2,1,2
@@ -1386,7 +1386,7 @@ argouml-app,org.argouml.ui,ProjectBrowser.Position,0,94,0,0,0,3,0,1,0,1
 argouml-app,org.argouml.ui,MenuBarFactory,17,0,2,0,4,0,3,0,2,0
 argouml-app,org.argouml.profile,UserDefinedProfile.UserDefinedFigNodeStrategy,17,11,0,0,3,2,2,1,2,1
 argouml-app,org.argouml.profile,UserProfileReference,0,24,0,0,0,5,0,2,0,2
-argouml-app,org.argouml.profile,UserDefinedProfileHelper,140,0,22,0,35,0,15,0,4,0
+argouml-app,org.argouml.profile,UserDefinedProfileHelper,50,90,12,10,14,21,10,5,2,2
 argouml-app,org.argouml.profile,ZipModelLoader,138,0,10,0,33,0,9,0,4,0
 argouml-app,org.argouml.profile,UserDefinedProfile.NullProfileManager,26,0,0,0,14,0,14,0,14,0
 argouml-app,org.argouml.profile,UserDefinedProfileHelper.new FileFilter() {...},39,0,14,0,7,0,10,0,3,0

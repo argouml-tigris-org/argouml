@@ -414,15 +414,15 @@ import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
 <span class="fc" id="L414">        ArrayList&lt;File&gt; dirs = new ArrayList&lt;File&gt;();</span>
 <span class="fc bfc" id="L415" title="All 2 branches covered.">        for (String dirName : searchDirectories) {</span>
 <span class="fc" id="L416">            File dir = new File(dirName);</span>
-<span class="pc bpc" id="L417" title="1 of 2 branches missed.">            if (dir.exists()) {</span>
-<span class="nc" id="L418">                dirs.add(dir);</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">            if (dir.exists()) {</span>
+<span class="fc" id="L418">                dirs.add(dir);</span>
             }
 <span class="fc" id="L420">        }</span>
-<span class="pc bpc" id="L421" title="1 of 2 branches missed.">        if (!dirs.isEmpty()) {</span>
+<span class="fc bfc" id="L421" title="All 2 branches covered.">        if (!dirs.isEmpty()) {</span>
             // TODO: Allow .zargo as profile as well?
-<span class="nc" id="L423">            List&lt;File&gt; profileFiles = UserDefinedProfileHelper.getFileList(</span>
-<span class="nc" id="L424">                dirs.toArray(new File[0]));</span>
-<span class="nc" id="L425">            loadProfiles(profileFiles);</span>
+<span class="fc" id="L423">            List&lt;File&gt; profileFiles = UserDefinedProfileHelper.getFileList(</span>
+<span class="fc" id="L424">                dirs.toArray(new File[0]));</span>
+<span class="fc" id="L425">            loadProfiles(profileFiles);</span>
         }
 <span class="fc" id="L427">    }</span>
 

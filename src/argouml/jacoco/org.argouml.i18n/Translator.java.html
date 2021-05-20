@@ -208,8 +208,8 @@ import org.tigris.gef.util.Localizer;
     public static void setLocale(String name) {
         /* This is needed for the JUnit tests.
          * Otherwise a &quot;assert initialized&quot; would suffice. */
-<span class="fc bfc" id="L211" title="All 2 branches covered.">        if (!initialized) {</span>
-<span class="fc" id="L212">            init(&quot;en&quot;);</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        if (!initialized) {</span>
+<span class="nc" id="L212">            init(&quot;en&quot;);</span>
         }
 <span class="fc" id="L214">        String language = name;</span>
 <span class="fc" id="L215">        String country = &quot;&quot;;</span>

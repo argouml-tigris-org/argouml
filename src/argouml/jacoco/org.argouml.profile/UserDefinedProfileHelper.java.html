@@ -91,22 +91,22 @@ import javax.swing.filechooser.FileFilter;
      * @return list of files
      */
     public static List&lt;File&gt; getFileList(File[] fileArray) {
-<span class="nc" id="L94">        List&lt;File&gt; files = new ArrayList&lt;File&gt;();</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        for (int i = 0; i &lt; fileArray.length; i++) {</span>
-<span class="nc" id="L96">            File file = fileArray[i];</span>
-<span class="nc" id="L97">            files.addAll(getList(file));</span>
+<span class="fc" id="L94">        List&lt;File&gt; files = new ArrayList&lt;File&gt;();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (int i = 0; i &lt; fileArray.length; i++) {</span>
+<span class="fc" id="L96">            File file = fileArray[i];</span>
+<span class="fc" id="L97">            files.addAll(getList(file));</span>
         }
-<span class="nc" id="L99">        return files;</span>
+<span class="fc" id="L99">        return files;</span>
     }
 
     private static List&lt;File&gt; getList(File file) {
-<span class="nc" id="L103">        List&lt;File&gt; results = new ArrayList&lt;File&gt;();</span>
-<span class="nc" id="L104">        List&lt;File&gt; toDoDirectories = new LinkedList&lt;File&gt;();</span>
-<span class="nc" id="L105">        Set&lt;File&gt; seenDirectories = new HashSet&lt;File&gt;();</span>
-<span class="nc" id="L106">        toDoDirectories.add(file);</span>
-<span class="nc bnc" id="L107" title="All 2 branches missed.">        while (!toDoDirectories.isEmpty()) {</span>
-<span class="nc" id="L108">            File curDir = toDoDirectories.remove(0);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (!curDir.isDirectory()) {</span>
+<span class="fc" id="L103">        List&lt;File&gt; results = new ArrayList&lt;File&gt;();</span>
+<span class="fc" id="L104">        List&lt;File&gt; toDoDirectories = new LinkedList&lt;File&gt;();</span>
+<span class="fc" id="L105">        Set&lt;File&gt; seenDirectories = new HashSet&lt;File&gt;();</span>
+<span class="fc" id="L106">        toDoDirectories.add(file);</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        while (!toDoDirectories.isEmpty()) {</span>
+<span class="fc" id="L108">            File curDir = toDoDirectories.remove(0);</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">            if (!curDir.isDirectory()) {</span>
                 // For some reason, this alleged directory is a single file
                 // This could be that there is some confusion or just
                 // the normal, that a single file was selected and is
@@ -115,33 +115,33 @@ import javax.swing.filechooser.FileFilter;
 <span class="nc" id="L115">                continue;</span>
             }
             // Get the contents of the directory
-<span class="nc" id="L118">            File[] files = curDir.listFiles();</span>
-<span class="nc bnc" id="L119" title="All 2 branches missed.">            if (files != null) {</span>
-<span class="nc bnc" id="L120" title="All 2 branches missed.">                for (File curFile : curDir.listFiles()) {</span>
+<span class="fc" id="L118">            File[] files = curDir.listFiles();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">            if (files != null) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">                for (File curFile : curDir.listFiles()) {</span>
                     // The following test can cause trouble with
                     // links, because links are accepted as
                     // directories, even if they link files. Links
                     // could also result in infinite loops. For this
                     // reason we don't do this traversing recursively.
-<span class="nc bnc" id="L126" title="All 2 branches missed.">                    if (curFile.isDirectory()) {</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">                    if (curFile.isDirectory()) {</span>
                         // If this file is a directory
 <span class="nc bnc" id="L128" title="All 2 branches missed.">                        if (!seenDirectories.contains(curFile)) {</span>
 <span class="nc" id="L129">                            toDoDirectories.add(curFile);</span>
 <span class="nc" id="L130">                            seenDirectories.add(curFile);</span>
                         }
                     } else {
-<span class="nc" id="L133">                        String s = curFile.getName().toLowerCase();</span>
-<span class="nc bnc" id="L134" title="All 2 branches missed.">                        if (s.endsWith(&quot;.xmi&quot;)</span>
+<span class="fc" id="L133">                        String s = curFile.getName().toLowerCase();</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">                        if (s.endsWith(&quot;.xmi&quot;)</span>
 <span class="nc bnc" id="L135" title="All 2 branches missed.">                                || s.endsWith(&quot;.uml&quot;) // for AndroMDA profiles</span>
 <span class="nc bnc" id="L136" title="All 2 branches missed.">                                || s.endsWith(&quot;.xmi.zip&quot;)</span>
 <span class="nc bnc" id="L137" title="All 2 branches missed.">                                || s.endsWith(&quot;.xml.zip&quot;)) {</span>
-<span class="nc" id="L138">                            results.add(curFile);</span>
+<span class="fc" id="L138">                            results.add(curFile);</span>
                         }
                     }
                 }
             }
-<span class="nc" id="L143">        }</span>
-<span class="nc" id="L144">        return results;</span>
+<span class="fc" id="L143">        }</span>
+<span class="fc" id="L144">        return results;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

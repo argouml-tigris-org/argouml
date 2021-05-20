@@ -206,15 +206,15 @@ public final class TargetManager {
          */
         private void resize() {
 <span class="fc" id="L208">            int size = history.size();</span>
-<span class="fc bfc" id="L209" title="All 2 branches covered.">            if (size &gt; MAX_SIZE) {</span>
-<span class="fc" id="L210">                int oversize = size - MAX_SIZE;</span>
-<span class="fc" id="L211">                int halfsize = size / 2;</span>
-<span class="pc bpc" id="L212" title="2 of 4 branches missed.">                if (currentTarget &gt; halfsize &amp;&amp; oversize &lt; halfsize) {</span>
-<span class="fc bfc" id="L213" title="All 2 branches covered.">                    for (int i = 0; i &lt; oversize; i++) {</span>
-<span class="fc" id="L214">                        umlListener.removeListener(</span>
-<span class="fc" id="L215">                                history.remove(0));</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">            if (size &gt; MAX_SIZE) {</span>
+<span class="nc" id="L210">                int oversize = size - MAX_SIZE;</span>
+<span class="nc" id="L211">                int halfsize = size / 2;</span>
+<span class="nc bnc" id="L212" title="All 4 branches missed.">                if (currentTarget &gt; halfsize &amp;&amp; oversize &lt; halfsize) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">                    for (int i = 0; i &lt; oversize; i++) {</span>
+<span class="nc" id="L214">                        umlListener.removeListener(</span>
+<span class="nc" id="L215">                                history.remove(0));</span>
                     }
-<span class="fc" id="L217">                    currentTarget -= oversize;</span>
+<span class="nc" id="L217">                    currentTarget -= oversize;</span>
                 }
             }
 <span class="fc" id="L220">        }</span>
@@ -287,10 +287,10 @@ public final class TargetManager {
             // we put the targets 'backwards' in the history
             // since the first target in the addedTargets array is
             // the first one selected.
-<span class="fc bfc" id="L290" title="All 2 branches covered.">            for (int i = addedTargets.length - 1; i &gt;= 0; i--) {</span>
-<span class="fc" id="L291">                putInHistory(addedTargets[i]);</span>
+<span class="pc bpc" id="L290" title="1 of 2 branches missed.">            for (int i = addedTargets.length - 1; i &gt;= 0; i--) {</span>
+<span class="nc" id="L291">                putInHistory(addedTargets[i]);</span>
             }
-<span class="fc" id="L293">        }</span>
+<span class="nc" id="L293">        }</span>
 
         /**
          * Listener for the removal of targets from the selection.
@@ -774,14 +774,14 @@ public final class TargetManager {
 	            // Lazily create the event:
 <span class="fc" id="L775">	            ((TargetListener) listeners[i + 1]).targetSet(targetEvent);</span>
 	        }
-<span class="nc" id="L777">	    } catch (RuntimeException e) {</span>
-<span class="nc" id="L778">                LOG.log(Level.SEVERE, &quot;While calling targetSet for &quot;</span>
+<span class="fc" id="L777">	    } catch (RuntimeException e) {</span>
+<span class="fc" id="L778">                LOG.log(Level.SEVERE, &quot;While calling targetSet for &quot;</span>
 	                + targetEvent
 	                + &quot; in &quot;
 	                + listeners[i + 1]
 	                            + &quot; an error is thrown.&quot;,
 	                            e);
-<span class="nc" id="L784">                e.printStackTrace();</span>
+<span class="fc" id="L784">                e.printStackTrace();</span>
 <span class="fc" id="L785">            }</span>
         }
 <span class="fc" id="L787">    }</span>
@@ -796,13 +796,13 @@ public final class TargetManager {
 <span class="fc" id="L796">		    ((TargetListener) listeners[i + 1])</span>
 <span class="fc" id="L797">		        .targetAdded(targetEvent);</span>
 		}
-<span class="nc" id="L799">	    } catch (RuntimeException e) {</span>
-<span class="nc" id="L800">                LOG.log(Level.SEVERE,</span>
+<span class="fc" id="L799">	    } catch (RuntimeException e) {</span>
+<span class="fc" id="L800">                LOG.log(Level.SEVERE,</span>
                         &quot;While calling targetAdded for &quot;
                         + targetEvent + &quot; in &quot; + listeners[i + 1]
                         + &quot; an error is thrown.&quot;,
                         e);
-<span class="nc" id="L805">                e.printStackTrace();</span>
+<span class="fc" id="L805">                e.printStackTrace();</span>
 <span class="fc" id="L806">	    }</span>
         }
 <span class="fc" id="L808">    }</span>

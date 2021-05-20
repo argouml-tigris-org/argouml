@@ -182,10 +182,10 @@ public class ProfileMeta extends Profile {
 
     @Override
     public Collection&lt;Object&gt; getLoadedPackages() {
-<span class="fc bfc" id="L185" title="All 2 branches covered.">        if (model == null) {</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        if (model == null) {</span>
 <span class="fc" id="L186">            return Collections.emptyList();</span>
         } else {
-<span class="fc" id="L188">            return Collections.unmodifiableCollection(model);</span>
+<span class="nc" id="L188">            return Collections.unmodifiableCollection(model);</span>
         }
     }
 
