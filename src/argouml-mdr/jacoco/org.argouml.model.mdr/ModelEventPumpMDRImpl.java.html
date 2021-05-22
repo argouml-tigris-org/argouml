@@ -310,7 +310,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 <span class="nc" id="L310">            modelImpl.removeElement(mofid);</span>
 <span class="pc bfc" id="L311" title="All 2 branches covered.">        } else if (mdrEvent instanceof AssociationEvent) {</span>
 <span class="fc" id="L312">            AssociationEvent ae = (AssociationEvent) mdrEvent;</span>
-<span class="fc bfc" id="L313" title="All 2 branches covered.">            if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">            if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {</span>
 <span class="fc" id="L314">                events.add(new AddAssociationEvent(</span>
 <span class="fc" id="L315">                        ae.getNewElement(),</span>
 <span class="fc" id="L316">                        mapPropertyName(ae.getEndName()),</span>
@@ -340,24 +340,24 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 <span class="fc" id="L340">                        ae.getOldElement(), // will always be null</span>
 <span class="fc" id="L341">                        ae.getNewElement(),</span>
                         mdrEvent));
-<span class="pc bpc" id="L343" title="1 of 2 branches missed.">            } else if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</span>
-<span class="fc" id="L344">                events.add(new RemoveAssociationEvent(</span>
-<span class="fc" id="L345">                        ae.getOldElement(),</span>
-<span class="fc" id="L346">                        mapPropertyName(ae.getEndName()),</span>
-<span class="fc" id="L347">                        ae.getFixedElement(),</span>
-<span class="fc" id="L348">                        ae.getNewElement(), // will always be null</span>
-<span class="fc" id="L349">                        ae.getFixedElement(),</span>
+<span class="nc bnc" id="L343" title="All 2 branches missed.">            } else if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_REMOVE)) {</span>
+<span class="nc" id="L344">                events.add(new RemoveAssociationEvent(</span>
+<span class="nc" id="L345">                        ae.getOldElement(),</span>
+<span class="nc" id="L346">                        mapPropertyName(ae.getEndName()),</span>
+<span class="nc" id="L347">                        ae.getFixedElement(),</span>
+<span class="nc" id="L348">                        ae.getNewElement(), // will always be null</span>
+<span class="nc" id="L349">                        ae.getFixedElement(),</span>
                         mdrEvent));
                 // Create a change event for the associated property
-<span class="fc" id="L352">                events.add(new AttributeChangeEvent(</span>
-<span class="fc" id="L353">                        ae.getOldElement(),</span>
-<span class="fc" id="L354">                        mapPropertyName(ae.getEndName()),</span>
-<span class="fc" id="L355">                        ae.getFixedElement(),</span>
-<span class="fc" id="L356">                        ae.getNewElement(), // will always be null</span>
+<span class="nc" id="L352">                events.add(new AttributeChangeEvent(</span>
+<span class="nc" id="L353">                        ae.getOldElement(),</span>
+<span class="nc" id="L354">                        mapPropertyName(ae.getEndName()),</span>
+<span class="nc" id="L355">                        ae.getFixedElement(),</span>
+<span class="nc" id="L356">                        ae.getNewElement(), // will always be null</span>
                         mdrEvent));
                 // Create an event for the other end of the association
-<span class="pc" id="L359">                events.add(new RemoveAssociationEvent(</span>
-<span class="fc" id="L360">                        ae.getFixedElement(),</span>
+<span class="nc" id="L359">                events.add(new RemoveAssociationEvent(</span>
+<span class="nc" id="L360">                        ae.getFixedElement(),</span>
 <span class="nc" id="L361">                        otherAssocEnd(ae),</span>
 <span class="nc" id="L362">                        ae.getOldElement(),</span>
 <span class="nc" id="L363">                        ae.getNewElement(), // will always be null</span>

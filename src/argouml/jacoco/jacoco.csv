@@ -678,7 +678,7 @@ argouml-app,org.argouml.uml.diagram.state.ui,FigRegion,19,0,0,0,5,0,2,0,2,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigTransition,246,129,12,10,61,38,13,10,5,7
 argouml-app,org.argouml.uml.diagram.state.ui,StateDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
 argouml-app,org.argouml.uml.diagram.state.ui,ActionCreatePseudostate,35,0,2,0,10,0,3,0,2,0
-argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1250,237,171,25,297,63,130,20,39,13
+argouml-app,org.argouml.uml.diagram.state.ui,UMLStateDiagram,1246,241,169,27,296,64,129,21,39,13
 argouml-app,org.argouml.uml.diagram.state.ui,FigState,156,169,30,2,49,41,24,8,8,8
 argouml-app,org.argouml.uml.diagram.state.ui,ButtonActionNewChangeEvent,11,0,0,0,4,0,4,0,4,0
 argouml-app,org.argouml.uml.diagram.state.ui,FigHistoryState,18,164,1,1,7,41,7,10,6,10
