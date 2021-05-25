@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f0200ac_0e969dac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2021-05-25T19:41:56Z",
+      "side": 1,
+      "message": "I think a test of the new code would be good.",
+      "revId": "e85594501f362995cd888a486cc88b4750e17425",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "900014ab_8fb7bdf7",
+        "filename": "src/argouml-app/src/org/argouml/profile/UserDefinedProfileHelper.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2021-05-25T19:41:56Z",
+      "side": 1,
+      "message": "There are not tests reaching this new code.",
+      "revId": "e85594501f362995cd888a486cc88b4750e17425",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
