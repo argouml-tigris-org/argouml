@@ -48,123 +48,129 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 
 /**
  * An Ordered, non-duplicated collection of objects (not exactly a
  * mathematical set because it is ordered).
- * 
+ *
  * @param &lt;T&gt; The type of objects this ListSet is to contain.
  */
-public class ListSet&lt;T extends Object&gt; 
+public class ListSet&lt;T&gt;
     implements Serializable, Set&lt;T&gt;, List&lt;T&gt; {
 
     private static final int TC_LIMIT = 50;
 
     private List&lt;T&gt; list;
-    
+
     /**
      * A hash set containing the same items as the list so that we can
-     * use it for fast lookups.  
+     * use it for fast lookups.
      */
     private Set&lt;T&gt; set;
-    
+
     /**
      * The mutex/lock which is used for operations that need to check/modify
      * both the set and list.  Get operations which only access the list can
      * rely on the fact that it is a synchronized list.
      */
-<span class="pc" id="L76">    private final Object mutex = new Object(); </span>
+<span class="pc" id="L78">    private final Object mutex = new Object();</span>
 
     /**
      * The constructor.
      */
-<span class="fc" id="L81">    public ListSet() {</span>
-<span class="fc" id="L82">        list =  Collections.synchronizedList(new ArrayList&lt;T&gt;());</span>
-<span class="fc" id="L83">        set = new HashSet&lt;T&gt;();</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L83">    public ListSet() {</span>
+<span class="fc" id="L84">        list =  Collections.synchronizedList(new ArrayList&lt;T&gt;());</span>
+<span class="fc" id="L85">        set = new HashSet&lt;T&gt;();</span>
+<span class="fc" id="L86">    }</span>
 
     /**
      * The constructor.
      *
      * @param n the initial capacity of the ListSet
      */
-<span class="nc" id="L91">    public ListSet(int n) {</span>
-<span class="nc" id="L92">        list = Collections.synchronizedList(new ArrayList&lt;T&gt;(n));</span>
-<span class="nc" id="L93">        set = new HashSet&lt;T&gt;(n);</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L93">    public ListSet(int n) {</span>
+<span class="nc" id="L94">        list = Collections.synchronizedList(new ArrayList&lt;T&gt;(n));</span>
+<span class="nc" id="L95">        set = new HashSet&lt;T&gt;(n);</span>
+<span class="nc" id="L96">    }</span>
 
     /**
      * The constructor.
      *
      * @param o1 the first object to add
      */
-<span class="nc" id="L101">    public ListSet(T o1) {</span>
-<span class="nc" id="L102">        list = Collections.synchronizedList(new ArrayList&lt;T&gt;());</span>
-<span class="nc" id="L103">        set = new HashSet&lt;T&gt;();</span>
-<span class="nc" id="L104">        add(o1);</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L103">    public ListSet(T o1) {</span>
+<span class="nc" id="L104">        list = Collections.synchronizedList(new ArrayList&lt;T&gt;());</span>
+<span class="nc" id="L105">        set = new HashSet&lt;T&gt;();</span>
+<span class="nc" id="L106">        add(o1);</span>
+<span class="nc" id="L107">    }</span>
 
+    @Override
+    public Spliterator&lt;T&gt; spliterator() {
+<span class="nc" id="L111">        return Spliterators.spliterator(this, Spliterator.ORDERED);</span>
+    }
 
     /**
      * @param iter an enumeration of objects to be added
      */
     public void addAllElements(Enumeration&lt;T&gt; iter) {
-<span class="nc bnc" id="L112" title="All 2 branches missed.">        while (iter.hasMoreElements()) {</span>
-<span class="nc" id="L113">            add(iter.nextElement());</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        while (iter.hasMoreElements()) {</span>
+<span class="nc" id="L119">            add(iter.nextElement());</span>
         }
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L121">    }</span>
 
     /**
      * @param iter an iterator of objects to be added
      */
     public void addAllElements(Iterator&lt;T&gt; iter) {
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
-<span class="nc" id="L122">            add(iter.next());</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        while (iter.hasNext()) {</span>
+<span class="nc" id="L128">            add(iter.next());</span>
         }
-<span class="nc" id="L124">    }</span>
+<span class="nc" id="L130">    }</span>
 
 
     /**
      * @param iter an iterator of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(Iterator&lt;T&gt; iter, 
+    public void addAllElementsSuchThat(Iterator&lt;T&gt; iter,
     		org.argouml.util.Predicate p) {
-<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (p instanceof org.argouml.util.PredicateTrue) {</span>
-<span class="nc" id="L134">            addAllElements(iter);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        if (p instanceof org.argouml.util.PredicateTrue) {</span>
+<span class="nc" id="L140">            addAllElements(iter);</span>
         } else {
-<span class="nc bnc" id="L136" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
-<span class="nc" id="L137">                T e = iter.next();</span>
-<span class="nc bnc" id="L138" title="All 2 branches missed.">                if (p.evaluate(e)) {</span>
-<span class="nc" id="L139">                    add(e);</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            while (iter.hasNext()) {</span>
+<span class="nc" id="L143">                T e = iter.next();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">                if (p.evaluate(e)) {</span>
+<span class="nc" id="L145">                    add(e);</span>
                 }
-<span class="nc" id="L141">            }</span>
+<span class="nc" id="L147">            }</span>
         }
-<span class="nc" id="L143">    }</span>
+<span class="nc" id="L149">    }</span>
 
 
     /**
      * @param s a listset of objects to be added
      * @param p the predicate the objects have to fulfill to be added
      */
-    public void addAllElementsSuchThat(ListSet&lt;T&gt; s, 
+    public void addAllElementsSuchThat(ListSet&lt;T&gt; s,
     		org.argouml.util.Predicate p) {
-<span class="nc" id="L152">        synchronized (s.mutex()) {</span>
-<span class="nc" id="L153">            addAllElementsSuchThat(s.iterator(), p);</span>
-<span class="nc" id="L154">        }</span>
-<span class="nc" id="L155">    }</span>
-    
+<span class="nc" id="L158">        synchronized (s.mutex()) {</span>
+<span class="nc" id="L159">            addAllElementsSuchThat(s.iterator(), p);</span>
+<span class="nc" id="L160">        }</span>
+<span class="nc" id="L161">    }</span>
+
     /*
      * @see java.util.Collection#remove(java.lang.Object)
      */
     public boolean remove(Object o) {
-<span class="fc" id="L161">        synchronized (mutex) {</span>
-<span class="fc" id="L162">            boolean result = contains(o);</span>
-<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (o != null) {</span>
-<span class="fc" id="L164">                list.remove(o);</span>
-<span class="fc" id="L165">                set.remove(o);</span>
+<span class="fc" id="L167">        synchronized (mutex) {</span>
+<span class="fc" id="L168">            boolean result = contains(o);</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">            if (o != null) {</span>
+<span class="fc" id="L170">                list.remove(o);</span>
+<span class="fc" id="L171">                set.remove(o);</span>
             }
-<span class="fc" id="L167">            return result;</span>
+<span class="fc" id="L173">            return result;</span>
         }
     }
 
@@ -172,28 +178,28 @@ public class ListSet&lt;T extends Object&gt;
      * @param o the object to be removed
      */
     public void removeElement(Object o) {
-<span class="nc bnc" id="L175" title="All 2 branches missed.">        if (o != null) {</span>
-<span class="nc" id="L176">            list.remove(o);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (o != null) {</span>
+<span class="nc" id="L182">            list.remove(o);</span>
         }
-<span class="nc" id="L178">    }</span>
+<span class="nc" id="L184">    }</span>
 
     /**
      * Remove all objects.
      */
     public void removeAllElements() {
-<span class="nc" id="L184">        clear();</span>
-<span class="nc" id="L185">    }</span>
+<span class="nc" id="L190">        clear();</span>
+<span class="nc" id="L191">    }</span>
 
     /*
      * @see java.util.Collection#contains(java.lang.Object)
      */
     public boolean contains(Object o) {
-<span class="fc" id="L191">        synchronized (mutex) {</span>
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">            if (o != null) {</span>
-<span class="fc" id="L193">                return set.contains(o);</span>
+<span class="fc" id="L197">        synchronized (mutex) {</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">            if (o != null) {</span>
+<span class="fc" id="L199">                return set.contains(o);</span>
             }
-<span class="nc" id="L195">        }</span>
-<span class="nc" id="L196">        return false;</span>
+<span class="nc" id="L201">        }</span>
+<span class="nc" id="L202">        return false;</span>
     }
 
 
@@ -202,10 +208,10 @@ public class ListSet&lt;T extends Object&gt;
      * @return true if at least one object in the listset fulfills the predicate
      */
     public boolean containsSuchThat(org.argouml.util.Predicate p) {
-<span class="nc bnc" id="L205" title="All 2 branches missed.">        return findSuchThat(p) != null;</span>
-    }    
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        return findSuchThat(p) != null;</span>
+    }
 
-    
+
     /**
      * Return the first object that causes the given predicate to return
      * true.
@@ -214,14 +220,14 @@ public class ListSet&lt;T extends Object&gt;
      * @return the found object or null
      */
     public Object findSuchThat(org.argouml.util.Predicate p) {
-<span class="nc" id="L217">        synchronized (list) {</span>
-<span class="nc bnc" id="L218" title="All 2 branches missed.">            for (Object o : list) {</span>
-<span class="nc bnc" id="L219" title="All 2 branches missed.">                if (p.evaluate(o)) {</span>
-<span class="nc" id="L220">                    return o;</span>
+<span class="nc" id="L223">        synchronized (list) {</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">            for (Object o : list) {</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                if (p.evaluate(o)) {</span>
+<span class="nc" id="L226">                    return o;</span>
                 }
-<span class="nc" id="L222">            }</span>
-<span class="nc" id="L223">        }</span>
-<span class="nc" id="L224">        return null;</span>
+<span class="nc" id="L228">            }</span>
+<span class="nc" id="L229">        }</span>
+<span class="nc" id="L230">        return null;</span>
     }
 
 
@@ -233,27 +239,27 @@ public class ListSet&lt;T extends Object&gt;
      */
     @Override
     public int hashCode() {
-<span class="nc" id="L236">        return 0;</span>
+<span class="nc" id="L242">        return 0;</span>
     }
 
 
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">        if (!(o instanceof ListSet)) {</span>
-<span class="nc" id="L243">            return false;</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">        if (!(o instanceof ListSet)) {</span>
+<span class="nc" id="L249">            return false;</span>
         }
-<span class="fc" id="L245">        ListSet oSet = (ListSet) o;</span>
-<span class="pc bpc" id="L246" title="1 of 2 branches missed.">        if (oSet.size() != size()) {</span>
-<span class="nc" id="L247">            return false;</span>
+<span class="fc" id="L251">        ListSet oSet = (ListSet) o;</span>
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">        if (oSet.size() != size()) {</span>
+<span class="nc" id="L253">            return false;</span>
         }
-<span class="fc" id="L249">        synchronized (list) {</span>
-<span class="pc bpc" id="L250" title="1 of 2 branches missed.">            for (Object obj : list) {</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">                if (!(oSet.contains(obj))) {</span>
-<span class="nc" id="L252">                    return false;</span>
+<span class="fc" id="L255">        synchronized (list) {</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">            for (Object obj : list) {</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">                if (!(oSet.contains(obj))) {</span>
+<span class="nc" id="L258">                    return false;</span>
                 }
-<span class="nc" id="L254">            }</span>
-<span class="fc" id="L255">        }</span>
-<span class="fc" id="L256">        return true;</span>
+<span class="nc" id="L260">            }</span>
+<span class="fc" id="L261">        }</span>
+<span class="fc" id="L262">        return true;</span>
     }
 
 
@@ -261,23 +267,23 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.Collection#size()
      */
     public int size() {
-<span class="fc" id="L264">        return list.size();</span>
+<span class="fc" id="L270">        return list.size();</span>
     }
 
 
     @Override
     public String toString() {
-<span class="nc" id="L270">        StringBuilder sb = new StringBuilder(&quot;Set{&quot;);  </span>
-<span class="nc" id="L271">        synchronized (list) {</span>
-<span class="nc bnc" id="L272" title="All 2 branches missed.">            for (Iterator it = iterator(); it.hasNext();) {</span>
-<span class="nc" id="L273">                sb.append(it.next());</span>
-<span class="nc bnc" id="L274" title="All 2 branches missed.">                if (it.hasNext()) {</span>
-<span class="nc" id="L275">                    sb.append(&quot;, &quot;);</span>
+<span class="nc" id="L276">        StringBuilder sb = new StringBuilder(&quot;Set{&quot;);</span>
+<span class="nc" id="L277">        synchronized (list) {</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            for (Iterator it = iterator(); it.hasNext();) {</span>
+<span class="nc" id="L279">                sb.append(it.next());</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">                if (it.hasNext()) {</span>
+<span class="nc" id="L281">                    sb.append(&quot;, &quot;);</span>
                 }
             }
-<span class="nc" id="L278">        }</span>
-<span class="nc" id="L279">        sb.append(&quot;}&quot;);</span>
-<span class="nc" id="L280">        return sb.toString();</span>
+<span class="nc" id="L284">        }</span>
+<span class="nc" id="L285">        sb.append(&quot;}&quot;);</span>
+<span class="nc" id="L286">        return sb.toString();</span>
     }
 
 
@@ -287,13 +293,13 @@ public class ListSet&lt;T extends Object&gt;
      * the elements of the original Set. In order to avoid very deep searches
      * which are often programming mistakes, only paths of length TC_LIMIT or
      * less are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @return the resulting listset
      */
     public ListSet&lt;T&gt; transitiveClosure(org.argouml.util.ChildGenerator cg) {
-<span class="nc" id="L295">        return transitiveClosure(cg, TC_LIMIT, </span>
-<span class="nc" id="L296">        		org.argouml.util.PredicateTrue.getInstance());</span>
+<span class="nc" id="L301">        return transitiveClosure(cg, TC_LIMIT,</span>
+<span class="nc" id="L302">        		org.argouml.util.PredicateTrue.getInstance());</span>
     }
 
     /**
@@ -302,13 +308,13 @@ public class ListSet&lt;T extends Object&gt;
      * include the elements of the original Set. In order to avoid very deep
      * searches which are often programming mistakes, only paths of length
      * TC_LIMIT or less are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @return the resulting listset
      */
     public ListSet&lt;T&gt; reachable(org.argouml.util.ChildGenerator cg) {
-<span class="nc" id="L310">        return reachable(cg, TC_LIMIT, </span>
-<span class="nc" id="L311">        		org.argouml.util.PredicateTrue.getInstance());</span>
+<span class="nc" id="L316">        return reachable(cg, TC_LIMIT,</span>
+<span class="nc" id="L317">        		org.argouml.util.PredicateTrue.getInstance());</span>
     }
 
 
@@ -319,21 +325,21 @@ public class ListSet&lt;T extends Object&gt;
      * searches which are often programming mistakes, only paths of given max
      * length or less are considered. Only paths consisting of elements which
      * all cause predicate.evaluate() to return true are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @param max the maximum depth
      * @param predicate the predicate the objects have to fulfill
      * @return the resulting listset
      */
-    public ListSet&lt;T&gt; reachable(org.argouml.util.ChildGenerator cg, int max, 
+    public ListSet&lt;T&gt; reachable(org.argouml.util.ChildGenerator cg, int max,
     		org.argouml.util.Predicate predicate) {
-<span class="nc" id="L330">        ListSet&lt;T&gt; kids = new ListSet&lt;T&gt;();</span>
-<span class="nc" id="L331">        synchronized (list) {</span>
-<span class="nc bnc" id="L332" title="All 2 branches missed.">            for (Object r : list) {</span>
-<span class="nc" id="L333">                kids.addAllElementsSuchThat(cg.childIterator(r), predicate);</span>
-<span class="nc" id="L334">            }</span>
-<span class="nc" id="L335">        }</span>
-<span class="nc" id="L336">        return kids.transitiveClosure(cg, max, predicate);</span>
+<span class="nc" id="L336">        ListSet&lt;T&gt; kids = new ListSet&lt;T&gt;();</span>
+<span class="nc" id="L337">        synchronized (list) {</span>
+<span class="nc bnc" id="L338" title="All 2 branches missed.">            for (Object r : list) {</span>
+<span class="nc" id="L339">                kids.addAllElementsSuchThat(cg.childIterator(r), predicate);</span>
+<span class="nc" id="L340">            }</span>
+<span class="nc" id="L341">        }</span>
+<span class="nc" id="L342">        return kids.transitiveClosure(cg, max, predicate);</span>
     }
 
 
@@ -345,7 +351,7 @@ public class ListSet&lt;T extends Object&gt;
      * which are often programming mistakes, only paths of given max length or
      * less are considered. Only paths consisting of elements which all cause
      * predicate.evaluate() to return true are considered.
-     * 
+     *
      * @param cg the given childgenerator
      * @param max the maximum depth
      * @param predicate the predicate the objects have to fulfill
@@ -353,63 +359,63 @@ public class ListSet&lt;T extends Object&gt;
      */
     public ListSet&lt;T&gt; transitiveClosure(org.argouml.util.ChildGenerator cg,
             int max, org.argouml.util.Predicate predicate) {
-<span class="nc" id="L356">        int iterCount = 0;</span>
-<span class="nc" id="L357">        int lastSize = -1;</span>
-<span class="nc" id="L358">        ListSet&lt;T&gt; touched = new ListSet&lt;T&gt;();</span>
+<span class="nc" id="L362">        int iterCount = 0;</span>
+<span class="nc" id="L363">        int lastSize = -1;</span>
+<span class="nc" id="L364">        ListSet&lt;T&gt; touched = new ListSet&lt;T&gt;();</span>
         ListSet&lt;T&gt; frontier;
-<span class="nc" id="L360">        ListSet&lt;T&gt; recent = this;</span>
+<span class="nc" id="L366">        ListSet&lt;T&gt; recent = this;</span>
 
-<span class="nc" id="L362">        touched.addAll(this);</span>
-<span class="nc bnc" id="L363" title="All 4 branches missed.">        while ((iterCount &lt; max) &amp;&amp; (touched.size() &gt; lastSize)) {</span>
-<span class="nc" id="L364">            iterCount++;</span>
-<span class="nc" id="L365">            lastSize = touched.size();</span>
-<span class="nc" id="L366">            frontier = new ListSet&lt;T&gt;();</span>
-<span class="nc" id="L367">            synchronized (recent) {</span>
-<span class="nc bnc" id="L368" title="All 2 branches missed.">                for (T recentElement : recent) {</span>
-<span class="nc" id="L369">                    Iterator frontierChildren = cg.childIterator(recentElement);</span>
-<span class="nc" id="L370">                    frontier.addAllElementsSuchThat(frontierChildren, </span>
+<span class="nc" id="L368">        touched.addAll(this);</span>
+<span class="nc bnc" id="L369" title="All 4 branches missed.">        while ((iterCount &lt; max) &amp;&amp; (touched.size() &gt; lastSize)) {</span>
+<span class="nc" id="L370">            iterCount++;</span>
+<span class="nc" id="L371">            lastSize = touched.size();</span>
+<span class="nc" id="L372">            frontier = new ListSet&lt;T&gt;();</span>
+<span class="nc" id="L373">            synchronized (recent) {</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">                for (T recentElement : recent) {</span>
+<span class="nc" id="L375">                    Iterator frontierChildren = cg.childIterator(recentElement);</span>
+<span class="nc" id="L376">                    frontier.addAllElementsSuchThat(frontierChildren,</span>
                             predicate);
-<span class="nc" id="L372">                }</span>
-<span class="nc" id="L373">            }</span>
-<span class="nc" id="L374">            touched.addAll(frontier);</span>
-<span class="nc" id="L375">            recent = frontier;</span>
+<span class="nc" id="L378">                }</span>
+<span class="nc" id="L379">            }</span>
+<span class="nc" id="L380">            touched.addAll(frontier);</span>
+<span class="nc" id="L381">            recent = frontier;</span>
         }
-<span class="nc" id="L377">        return touched;</span>
+<span class="nc" id="L383">        return touched;</span>
     }
-    
+
     /*
      * @see java.util.Collection#isEmpty()
      */
     public boolean isEmpty() {
-<span class="nc" id="L384">        return list.isEmpty();</span>
+<span class="nc" id="L390">        return list.isEmpty();</span>
     }
 
     /*
      * @see java.util.Collection#iterator()
      */
     public Iterator&lt;T&gt; iterator() {
-<span class="fc" id="L391">        return list.iterator();</span>
+<span class="fc" id="L397">        return list.iterator();</span>
     }
-    
+
     /**
      * @return mutex object to synchronize on for iteration
      */
     public Object mutex() {
-<span class="nc" id="L398">        return list;</span>
+<span class="nc" id="L404">        return list;</span>
     }
 
     /*
      * @see java.util.Collection#toArray()
      */
     public Object[] toArray() {
-<span class="nc" id="L405">        return list.toArray();</span>
+<span class="nc" id="L411">        return list.toArray();</span>
     }
 
     /*
      * @see java.util.Collection#toArray(java.lang.Object[])
      */
     public &lt;A&gt; A[] toArray(A[] arg0) {
-<span class="nc" id="L412">        return list.toArray(arg0);</span>
+<span class="nc" id="L418">        return list.toArray(arg0);</span>
     }
 
 
@@ -417,13 +423,13 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.Collection#add(java.lang.Object)
      */
     public boolean add(T arg0) {
-<span class="fc" id="L420">        synchronized (mutex) {</span>
-<span class="fc" id="L421">            boolean result = set.contains(arg0);</span>
-<span class="fc bfc" id="L422" title="All 2 branches covered.">            if (!result) {</span>
-<span class="fc" id="L423">                set.add(arg0);</span>
-<span class="fc" id="L424">                list.add(arg0);</span>
+<span class="fc" id="L426">        synchronized (mutex) {</span>
+<span class="fc" id="L427">            boolean result = set.contains(arg0);</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">            if (!result) {</span>
+<span class="fc" id="L429">                set.add(arg0);</span>
+<span class="fc" id="L430">                list.add(arg0);</span>
             }
-<span class="fc bfc" id="L426" title="All 2 branches covered.">            return !result;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">            return !result;</span>
         }
     }
 
@@ -431,8 +437,8 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.Collection#containsAll(java.util.Collection)
      */
     public boolean containsAll(Collection arg0) {
-<span class="nc" id="L434">        synchronized (mutex) {</span>
-<span class="nc" id="L435">            return set.containsAll(arg0);</span>
+<span class="nc" id="L440">        synchronized (mutex) {</span>
+<span class="nc" id="L441">            return set.containsAll(arg0);</span>
         }
     }
 
@@ -441,25 +447,25 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.Collection#addAll(java.util.Collection)
      */
     public boolean addAll(Collection&lt; ? extends T&gt; arg0) {
-<span class="nc" id="L444">        return list.addAll(arg0);</span>
+<span class="nc" id="L450">        return list.addAll(arg0);</span>
     }
 
     /*
      * @see java.util.Collection#retainAll(java.util.Collection)
      */
     public boolean retainAll(Collection&lt; ? &gt; arg0) {
-<span class="nc" id="L451">        return list.retainAll(arg0);</span>
+<span class="nc" id="L457">        return list.retainAll(arg0);</span>
     }
 
     /*
      * @see java.util.Collection#removeAll(java.util.Collection)
      */
     public boolean removeAll(Collection arg0) {
-<span class="nc" id="L458">        boolean result = false;</span>
-<span class="nc bnc" id="L459" title="All 2 branches missed.">        for (Iterator iter = arg0.iterator(); iter.hasNext();) {</span>
-<span class="nc bnc" id="L460" title="All 4 branches missed.">            result = result || remove(iter.next());</span>
+<span class="nc" id="L464">        boolean result = false;</span>
+<span class="nc bnc" id="L465" title="All 2 branches missed.">        for (Iterator iter = arg0.iterator(); iter.hasNext();) {</span>
+<span class="nc bnc" id="L466" title="All 4 branches missed.">            result = result || remove(iter.next());</span>
         }
-<span class="nc" id="L462">        return result;</span>
+<span class="nc" id="L468">        return result;</span>
 
     }
 
@@ -467,52 +473,52 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.Collection#clear()
      */
     public void clear() {
-<span class="nc" id="L470">        synchronized (mutex) {</span>
-<span class="nc" id="L471">            list.clear();</span>
-<span class="nc" id="L472">            set.clear();</span>
-<span class="nc" id="L473">        }</span>
-<span class="nc" id="L474">    }</span>
+<span class="nc" id="L476">        synchronized (mutex) {</span>
+<span class="nc" id="L477">            list.clear();</span>
+<span class="nc" id="L478">            set.clear();</span>
+<span class="nc" id="L479">        }</span>
+<span class="nc" id="L480">    }</span>
 
     /*
      * @see java.util.List#addAll(int, java.util.Collection)
      */
     public boolean addAll(int arg0, Collection&lt; ? extends T&gt; arg1) {
-<span class="nc" id="L480">        return list.addAll(arg0, arg1);</span>
+<span class="nc" id="L486">        return list.addAll(arg0, arg1);</span>
     }
 
     /*
      * @see java.util.List#get(int)
      */
     public T get(int index) {
-<span class="nc" id="L487">        return list.get(index);</span>
+<span class="nc" id="L493">        return list.get(index);</span>
     }
 
     /*
      * @see java.util.List#set(int, java.lang.Object)
      */
     public T set(int arg0, T o) {
-<span class="nc" id="L494">        throw new UnsupportedOperationException(&quot;set() method not supported&quot;);</span>
+<span class="nc" id="L500">        throw new UnsupportedOperationException(&quot;set() method not supported&quot;);</span>
     }
 
     /*
      * @see java.util.List#add(int, java.lang.Object)
      */
     public void add(int arg0, T arg1) {
-<span class="nc" id="L501">        synchronized (mutex) {</span>
-<span class="nc bnc" id="L502" title="All 2 branches missed.">            if (!set.contains(arg1)) {</span>
-<span class="nc" id="L503">                list.add(arg0, arg1);</span>
+<span class="nc" id="L507">        synchronized (mutex) {</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">            if (!set.contains(arg1)) {</span>
+<span class="nc" id="L509">                list.add(arg0, arg1);</span>
             }
-<span class="nc" id="L505">        }</span>
-<span class="nc" id="L506">    }</span>
+<span class="nc" id="L511">        }</span>
+<span class="nc" id="L512">    }</span>
 
     /*
      * @see java.util.List#remove(int)
      */
     public T remove(int index) {
-<span class="nc" id="L512">        synchronized (mutex) {</span>
-<span class="nc" id="L513">            T removedElement = list.remove(index);</span>
-<span class="nc" id="L514">            set.remove(removedElement);</span>
-<span class="nc" id="L515">            return removedElement;</span>
+<span class="nc" id="L518">        synchronized (mutex) {</span>
+<span class="nc" id="L519">            T removedElement = list.remove(index);</span>
+<span class="nc" id="L520">            set.remove(removedElement);</span>
+<span class="nc" id="L521">            return removedElement;</span>
         }
     }
 
@@ -520,35 +526,35 @@ public class ListSet&lt;T extends Object&gt;
      * @see java.util.List#indexOf(java.lang.Object)
      */
     public int indexOf(Object o) {
-<span class="nc" id="L523">        return list.indexOf(o);</span>
+<span class="nc" id="L529">        return list.indexOf(o);</span>
     }
 
     /*
      * @see java.util.List#lastIndexOf(java.lang.Object)
      */
     public int lastIndexOf(Object o) {
-<span class="nc" id="L530">        return list.lastIndexOf(o);</span>
+<span class="nc" id="L536">        return list.lastIndexOf(o);</span>
     }
 
     /*
      * @see java.util.List#listIterator()
      */
     public ListIterator&lt;T&gt; listIterator() {
-<span class="nc" id="L537">        return list.listIterator();</span>
+<span class="nc" id="L543">        return list.listIterator();</span>
     }
 
     /*
      * @see java.util.List#listIterator(int)
      */
     public ListIterator&lt;T&gt; listIterator(int index) {
-<span class="nc" id="L544">        return list.listIterator(index);</span>
+<span class="nc" id="L550">        return list.listIterator(index);</span>
     }
 
     /*
      * @see java.util.List#subList(int, int)
      */
     public List&lt;T&gt; subList(int fromIndex, int toIndex) {
-<span class="nc" id="L551">        return subList(fromIndex, toIndex);</span>
+<span class="nc" id="L557">        return subList(fromIndex, toIndex);</span>
     }
 
 }
