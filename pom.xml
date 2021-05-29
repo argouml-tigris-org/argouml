@@ -27,6 +27,7 @@
     <module>src/argouml-core-diagrams-sequence2</module>
     <module>src/argouml-core-diagrams-state2</module>
     <module>src/argouml-core-diagrams-structure2</module>
+    <module>src/argouml-core-diagrams-deployment2</module>
     <module>src/argouml-app</module>
     <module>src/argouml-build</module>
   </modules>
