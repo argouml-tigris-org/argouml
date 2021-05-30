@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>argouml-core-diagrams-deployment2 - Checkstyle report</title>
+    <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment</link>
+    <description>argouml-core-diagrams-deployment2 - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2021</copyright>
+    <item>
+      <title>File: 7,
+             Errors: 0,
+             Warnings: 16,
+             Infos: 0
+      </title>
+            <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.diagram.DeploymentDiagramFactory.java">org/argouml/deployment2/diagram/DeploymentDiagramFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.diagram.DeploymentDiagramGraphModel.java">org/argouml/deployment2/diagram/DeploymentDiagramGraphModel.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.diagram.FigPort.java">org/argouml/deployment2/diagram/FigPort.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.DeploymentDiagramModule.java">org/argouml/deployment2/DeploymentDiagramModule.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.DeploymentDiagramPropPanelFactory.java">org/argouml/deployment2/DeploymentDiagramPropPanelFactory.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.diagram.FigNode.java">org/argouml/deployment2/diagram/FigNode.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-deployment/checkstyle.html#org.argouml.deployment2.diagram.UMLDeploymentDiagram.java">org/argouml/deployment2/diagram/UMLDeploymentDiagram.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
