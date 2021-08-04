@@ -3,6 +3,13 @@ Main project of argouml.
 
 Started in January 1998. Converted from CVS to Subversion in 2006. Converted to git in 2019.
 
+## How to build and run
+
+* mvn package
+* java -jar src/argouml-build/target/argouml-jar-with-dependencies.jar
+
+Tested with `openjdk version "11.0.11"`
+
 ## Resources
 
 * Github organisation: <https://github.com/argouml-tigris-org>
