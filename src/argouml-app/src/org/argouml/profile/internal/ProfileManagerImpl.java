@@ -257,8 +257,13 @@ public class ProfileManagerImpl implements ProfileManager {
 
         // Add an optional default configured from system options.
         String def = System.getProperty("argouml.profiles.directory");
-        if (def != null && def.length() > 0 && !searchDirectories.contains(def)) {
-            searchDirectories.add(def);
+        if (def != null && def.length() > 0) {
+            String[] paths = def.split(";");
+            for (String path : paths) {
+                if (!searchDirectories.contains(path)) {
+                    searchDirectories.add(path);
+                }
+            }
         }
         disableConfigurationUpdate = false;
     }
