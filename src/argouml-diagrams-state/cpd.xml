@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="35" tokens="129">
-<file line="28" path="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigEntryPoint.java"/>
-<file line="28" path="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigExitPoint.java"/>
+<file line="28" path="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigEntryPoint.java"/>
+<file line="28" path="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-state2/src/org/argouml/state2/diagram/FigExitPoint.java"/>
 <codefragment>
 <![CDATA[
     public FigEntryPoint(Object owner, Rectangle bounds, 

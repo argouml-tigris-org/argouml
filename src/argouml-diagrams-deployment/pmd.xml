@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2021-06-07T06:03:21.969">
-<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-deployment2/src/org/argouml/deployment2/DeploymentDiagramModule.java">
+<pmd version="4.3" timestamp="2022-08-09T16:35:54.069">
+<file name="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-deployment2/src/org/argouml/deployment2/DeploymentDiagramModule.java">
 <violation beginline="28" endline="28" begincolumn="33" endcolumn="35" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.argouml.deployment2" class="DeploymentDiagramModule" variable="LOG" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'LOG'.
 </violation>
 </file>
-<file name="/var/lib/jenkins/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-deployment2/src/org/argouml/deployment2/diagram/UMLDeploymentDiagram.java">
+<file name="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-diagrams-deployment2/src/org/argouml/deployment2/diagram/UMLDeploymentDiagram.java">
 <violation beginline="92" endline="94" begincolumn="15" endcolumn="13" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.deployment2.diagram" class="UMLDeploymentDiagram" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>

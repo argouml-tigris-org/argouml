@@ -152,10 +152,10 @@ class XmiFilePersister extends AbstractFilePersister
                 // if save did not raise an exception
                 // and name+&quot;#&quot; exists move name+&quot;#&quot; to name+&quot;~&quot;
                 // this is the correct backup file
-<span class="fc bfc" id="L155" title="All 2 branches covered.">                if (lastArchiveFile.exists()) {</span>
-<span class="fc" id="L156">                    lastArchiveFile.delete();</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">                if (lastArchiveFile.exists()) {</span>
+<span class="nc" id="L156">                    lastArchiveFile.delete();</span>
                 }
-<span class="pc bpc" id="L158" title="2 of 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
+<span class="pc bpc" id="L158" title="1 of 4 branches missed.">                if (tempFile.exists() &amp;&amp; !lastArchiveFile.exists()) {</span>
 <span class="fc" id="L159">                    tempFile.renameTo(lastArchiveFile);</span>
                 }
 <span class="pc bpc" id="L161" title="1 of 2 branches missed.">                if (tempFile.exists()) {</span>
