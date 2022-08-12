@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2022-08-12T20:42:30.846">
+<pmd version="4.3" timestamp="2022-08-12T23:03:30.780">
 <file name="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-umlpropertypanels/src/org/argouml/core/propertypanels/model/GetterSetterManagerImpl.java">
 <violation beginline="68" endline="129" begincolumn="13" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.argouml.core.propertypanels.model" class="GetterSetterManagerImpl" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
 Avoid unused method parameters such as 'type'.
