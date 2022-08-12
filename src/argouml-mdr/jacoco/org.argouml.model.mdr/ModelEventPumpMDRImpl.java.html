@@ -730,11 +730,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         // TODO: We don't want to do this once we have dropped UML1.3
         // Map UML 1.4 names to UML 1.3 equivalents
-<span class="fc bfc" id="L733" title="All 2 branches covered.">        if (&quot;typedParameter&quot;.equals(name)) {</span>
-<span class="fc" id="L734">            return &quot;parameter&quot;;</span>
+<span class="pc bpc" id="L733" title="1 of 2 branches missed.">        if (&quot;typedParameter&quot;.equals(name)) {</span>
+<span class="nc" id="L734">            return &quot;parameter&quot;;</span>
         }
-<span class="fc bfc" id="L736" title="All 2 branches covered.">        if (&quot;typedFeature&quot;.equals(name)) {</span>
-<span class="fc" id="L737">            return &quot;feature&quot;;</span>
+<span class="pc bpc" id="L736" title="1 of 2 branches missed.">        if (&quot;typedFeature&quot;.equals(name)) {</span>
+<span class="nc" id="L737">            return &quot;feature&quot;;</span>
         }
 <span class="fc" id="L739">        return name;</span>
     }
