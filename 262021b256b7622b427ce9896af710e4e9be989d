@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c826e3b_4f1a211a",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-12T21:38:33Z",
+      "side": 1,
+      "message": "The tool is called repo (or possibly git-repo). Since repo is a hopeless name to google, add a link to the homepage at https://gerrit.googlesource.com/git-repo/\n\nUsing the repo tool is not a requirement. parentpom and other necessary files should be available from sonatype-nexus-snapshots so it should be possible to checkout a single project and build it. Isn\u0027t this working? Well, if it isn\u0027t, it is not trivial to understand the order in which the different projects needs to be installed.",
+      "revId": "262021b256b7622b427ce9896af710e4e9be989d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c9c3678_76e4d602",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-12T21:38:33Z",
+      "side": 1,
+      "message": "I suggest that this directory is called something else in the example to distinguish between te directory that the argouml repo ends up in.",
+      "revId": "262021b256b7622b427ce9896af710e4e9be989d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0171f2_90c770ca",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-12T21:38:33Z",
+      "side": 1,
+      "message": "If the target is to build just the argouml project, there is no need to download all projects using the repo tool. If you will upload to gerrithub, the repo tool is convenient.",
+      "revId": "262021b256b7622b427ce9896af710e4e9be989d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "753d0511_513b29f2",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-12T21:38:33Z",
+      "side": 1,
+      "message": "This is only the parts from the argouml project. To build the other projects, you need to enter them each individually and do mvn package there. And then you need to copy the resulting files to the some special directory.\n\nWe really need to create some kind of better packaging of it all.",
+      "revId": "262021b256b7622b427ce9896af710e4e9be989d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
