@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77702856_3c53ada8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-14T14:11:23Z",
+      "side": 1,
+      "message": "This is not consistent with the change.",
+      "revId": "fc9a52461aa4e048909894b2328389c089ef6b98",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
