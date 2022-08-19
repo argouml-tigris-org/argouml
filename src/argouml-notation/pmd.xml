@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.3" timestamp="2022-08-19T13:26:10.805">
+<pmd version="4.3" timestamp="2022-08-19T14:12:05.796">
 <file name="/var/snap/jenkins/2767/workspace/thub-organization_argouml_master/src/argouml-core-notation/src/org/argouml/notation2/NameUmlNotation.java">
 <violation beginline="59" endline="60" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.argouml.notation2" class="NameUmlNotation" method="propertyChange" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
