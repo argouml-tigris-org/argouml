@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d091164_f16e4db5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1016795
+      },
+      "writtenOn": "2022-08-22T05:02:33Z",
+      "side": 1,
+      "message": "I have verified that it works to build this now without anything in the m2 repository.",
+      "revId": "be952fcfa77451e594a41779db83e1a0d7221002",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
