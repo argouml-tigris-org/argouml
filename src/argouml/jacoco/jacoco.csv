@@ -842,7 +842,7 @@ argouml-app,org.argouml.uml.diagram.deployment.ui,SelectionComponentInstance,117
 argouml-app,org.argouml.uml.diagram.deployment.ui,DeploymentDiagramPropPanelFactory,4,8,1,1,1,3,1,2,0,2
 argouml-app,org.argouml.uml.diagram.deployment.ui,FigMNode,23,6,2,0,8,2,3,1,2,1
 argouml-app,org.argouml.uml.diagram.collaboration,CollabDiagramGraphModel,618,19,124,2,169,8,77,3,14,3
-argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,UMLTagDefinitionComboBoxModel,83,147,14,12,19,42,12,13,4,8
+argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,UMLTagDefinitionComboBoxModel,67,163,13,13,14,47,10,15,2,10
 argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,ActionNewStereotype,77,0,10,0,23,0,8,0,3,0
 argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,UMLStereotypeTagDefinitionListModel,29,0,6,0,8,0,6,0,3,0
 argouml-app,org.argouml.uml.ui.foundation.extension_mechanisms,ActionNewTagDefinition,78,12,10,0,24,5,6,1,1,1
@@ -1149,7 +1149,7 @@ argouml-app,org.argouml.uml.ui,ActionSaveProject,95,0,12,0,30,0,12,0,6,0
 argouml-app,org.argouml.uml.ui,InitUmlUI,4,52,0,0,2,11,2,3,2,3
 argouml-app,org.argouml.uml.ui,TabSrc.DefaultPredicate,0,4,0,0,0,1,0,1,0,1
 argouml-app,org.argouml.uml.ui,UMLExpressionModel2,264,0,52,0,78,0,39,0,13,0
-argouml-app,org.argouml.uml.ui,UMLComboBoxModel2.new Runnable() {...},28,0,0,0,7,0,2,0,2,0
+argouml-app,org.argouml.uml.ui,UMLComboBoxModel2.new Runnable() {...},12,16,0,0,3,4,0,2,0,2
 argouml-app,org.argouml.uml.ui,UMLCheckBox2,26,53,3,3,7,16,6,4,3,4
 argouml-app,org.argouml.uml.ui,ActionGenerateAll,159,0,34,0,48,0,21,0,4,0
 argouml-app,org.argouml.uml.ui,SourcePathTableModel,81,119,11,7,14,30,10,6,3,4
@@ -1162,7 +1162,7 @@ argouml-app,org.argouml.uml.ui,UMLRecurrenceExpressionModel,47,0,2,0,14,0,6,0,5,
 argouml-app,org.argouml.uml.ui,UMLStimulusActionTextField,90,0,14,0,28,0,15,0,8,0
 argouml-app,org.argouml.uml.ui,TabConstraints,52,105,7,9,17,31,14,11,8,9
 argouml-app,org.argouml.uml.ui,UMLModelElementTaggedValueProxy,240,0,20,0,67,0,36,0,26,0
-argouml-app,org.argouml.uml.ui,UMLComboBoxModel2,664,405,152,50,165,113,109,34,21,21
+argouml-app,org.argouml.uml.ui,UMLComboBoxModel2,649,420,151,51,160,118,108,35,20,22
 argouml-app,org.argouml.uml.ui,ActionSaveGraphics,288,0,30,0,87,0,22,0,7,0
 argouml-app,org.argouml.uml.ui,ActionAddTopLevelPackage,51,0,0,0,14,0,2,0,2,0
 argouml-app,org.argouml.uml.ui,TabTaggedValuesModel,513,40,104,6,130,16,64,7,10,6
