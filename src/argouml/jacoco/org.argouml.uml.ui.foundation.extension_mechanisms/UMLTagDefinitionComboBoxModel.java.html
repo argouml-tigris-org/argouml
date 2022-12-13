@@ -94,11 +94,11 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         // but we're really interested in their owned tag definitions,
         // the default implementation won't work for us
 
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (Model.getFacade().isATagDefinition(evt.getSource())) {</span>
-<span class="fc" id="L98">            LOG.log(Level.FINE, &quot;Got TagDefinition event {0}&quot;, evt);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (Model.getFacade().isATagDefinition(evt.getSource())) {</span>
+<span class="nc" id="L98">            LOG.log(Level.FINE, &quot;Got TagDefinition event {0}&quot;, evt);</span>
 
             // Just mark for rebuild next time since we use lazy loading
-<span class="fc" id="L101">            setModelInvalid();</span>
+<span class="nc" id="L101">            setModelInvalid();</span>
 <span class="nc bnc" id="L102" title="All 2 branches missed.">        } else if (&quot;stereotype&quot;.equals(evt.getPropertyName())) {</span>
 <span class="nc" id="L103">            LOG.log(Level.FINE, &quot;Got stereotype event {0}&quot;, evt);</span>
             // A stereotype got applied or removed
@@ -107,12 +107,12 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         } else {
 <span class="nc" id="L108">            LOG.log(Level.FINE, &quot;Got other event {0}&quot;, evt);</span>
         }
-<span class="fc" id="L110">    }</span>
+<span class="nc" id="L110">    }</span>
 
 
     @Override
     public boolean isLazy() {
-<span class="fc" id="L115">        return true;</span>
+<span class="nc" id="L115">        return true;</span>
     }
 
 
