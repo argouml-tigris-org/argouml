@@ -501,7 +501,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
 <span class="fc bfc" id="L502" title="All 2 branches covered.">        if (Model.getFacade().isAModelElement(subject)) {</span>
 <span class="pc bpc" id="L503" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
-<span class="fc bfc" id="L504" title="All 2 branches covered.">                if (feature.equals(&quot;name&quot;)) {</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">                if (feature.equals(&quot;name&quot;)) {</span>
 <span class="fc" id="L505">                    String name = Model.getFacade().getName(subject);</span>
 <span class="pc bpc" id="L506" title="1 of 2 branches missed.">                    if (name == null) {</span>
                         // TODO check conformancy to specification
@@ -514,73 +514,73 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
                 // TODO asArgument??
 
-<span class="pc bpc" id="L517" title="1 of 2 branches missed.">                if (feature.equals(&quot;clientDependency&quot;)) {</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">                if (feature.equals(&quot;clientDependency&quot;)) {</span>
 <span class="nc" id="L518">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
 <span class="nc" id="L519">                            .getClientDependencies(subject));</span>
                 }
-<span class="pc bpc" id="L521" title="1 of 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
+<span class="nc bnc" id="L521" title="All 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
 <span class="nc" id="L522">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
 <span class="nc" id="L523">                            .getConstraints(subject));</span>
                 }
 
                 // TODO implementationLocation??
 
-<span class="pc bpc" id="L528" title="1 of 2 branches missed.">                if (feature.equals(&quot;namespace&quot;)) {</span>
+<span class="nc bnc" id="L528" title="All 2 branches missed.">                if (feature.equals(&quot;namespace&quot;)) {</span>
 <span class="nc" id="L529">                    return Model.getFacade().getNamespace(subject);</span>
                 }
 
                 // TODO presentation??
-<span class="pc bpc" id="L533" title="1 of 2 branches missed.">                if (feature.equals(&quot;supplierDependency&quot;)) {</span>
+<span class="nc bnc" id="L533" title="All 2 branches missed.">                if (feature.equals(&quot;supplierDependency&quot;)) {</span>
 <span class="nc" id="L534">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
 <span class="nc" id="L535">                            .getSupplierDependencies(subject));</span>
                 }
 
-<span class="pc bpc" id="L538" title="1 of 2 branches missed.">                if (feature.equals(&quot;templateParameter&quot;)) {</span>
+<span class="nc bnc" id="L538" title="All 2 branches missed.">                if (feature.equals(&quot;templateParameter&quot;)) {</span>
 <span class="nc" id="L539">                    return Model.getFacade().getTemplateParameters(subject);</span>
                 }
 
                 // As extended by 4.6.2.2
-<span class="pc bpc" id="L543" title="1 of 2 branches missed.">                if (feature.equals(&quot;stereotype&quot;)) {</span>
+<span class="nc bnc" id="L543" title="All 2 branches missed.">                if (feature.equals(&quot;stereotype&quot;)) {</span>
 <span class="nc" id="L544">                    return Model.getFacade().getStereotypes(subject);</span>
                 }
 
-<span class="pc bpc" id="L547" title="1 of 2 branches missed.">                if (feature.equals(&quot;taggedValue&quot;)) {</span>
+<span class="nc bnc" id="L547" title="All 2 branches missed.">                if (feature.equals(&quot;taggedValue&quot;)) {</span>
 <span class="nc" id="L548">                    return Model.getFacade().getTaggedValuesCollection(subject);</span>
                 }
 
-<span class="pc bpc" id="L551" title="1 of 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
+<span class="nc bnc" id="L551" title="All 2 branches missed.">                if (feature.equals(&quot;constraint&quot;)) {</span>
 <span class="nc" id="L552">                    return Model.getFacade().getConstraints(subject);</span>
                 }
 
                 // Additional Operations in 4.5.3.25
-<span class="pc bpc" id="L556" title="1 of 2 branches missed.">                if (feature.equals(&quot;supplier&quot;)) {</span>
+<span class="nc bnc" id="L556" title="All 2 branches missed.">                if (feature.equals(&quot;supplier&quot;)) {</span>
 <span class="nc" id="L557">                    return internalOcl(subject, vt,</span>
                             &quot;self.clientDependency.supplier&quot;);
                 }
 
-<span class="pc bpc" id="L561" title="1 of 2 branches missed.">                if (feature.equals(&quot;allSuppliers&quot;)) {</span>
+<span class="nc bnc" id="L561" title="All 2 branches missed.">                if (feature.equals(&quot;allSuppliers&quot;)) {</span>
 <span class="nc" id="L562">                    return internalOcl(subject, vt,</span>
                             &quot;self.supplier-&gt;union(self.supplier.allSuppliers)&quot;);
                 }
 
-<span class="pc bpc" id="L566" title="1 of 2 branches missed.">                if (feature.equals(&quot;model&quot;)) {</span>
+<span class="nc bnc" id="L566" title="All 2 branches missed.">                if (feature.equals(&quot;model&quot;)) {</span>
 <span class="nc" id="L567">                    return internalOcl(subject, vt,</span>
                             &quot;self.namespace-&gt;&quot;
                             + &quot;union(self.namespace.allSurroundingNamespaces)-&gt;&quot;
                             + &quot;select( ns| ns.oclIsKindOf (Model))&quot;);
                 }
 
-<span class="pc bpc" id="L573" title="1 of 2 branches missed.">                if (feature.equals(&quot;isTemplate&quot;)) {</span>
+<span class="nc bnc" id="L573" title="All 2 branches missed.">                if (feature.equals(&quot;isTemplate&quot;)) {</span>
 <span class="nc" id="L574">                    return !Model.getFacade().getTemplateParameters(subject)</span>
 <span class="nc bnc" id="L575" title="All 2 branches missed.">                            .isEmpty();</span>
                 }
 
-<span class="pc bpc" id="L578" title="1 of 2 branches missed.">                if (feature.equals(&quot;isInstantiated&quot;)) {</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">                if (feature.equals(&quot;isInstantiated&quot;)) {</span>
 <span class="nc" id="L579">                    return internalOcl(subject, vt, &quot;self.clientDependency-&gt;&quot;</span>
                             + &quot;select(oclIsKindOf(Binding))-&gt;notEmpty&quot;);
                 }
 
-<span class="pc bpc" id="L583" title="1 of 2 branches missed.">                if (feature.equals(&quot;templateArgument&quot;)) {</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">                if (feature.equals(&quot;templateArgument&quot;)) {</span>
 <span class="nc" id="L584">                    return internalOcl(subject, vt, &quot;self.clientDependency-&gt;&quot;</span>
                             + &quot;select(oclIsKindOf(Binding)).&quot;
                             + &quot;oclAsType(Binding).argument&quot;);
@@ -591,25 +591,25 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
 
         /* 4.5.2.28 Namespace */
 
-<span class="fc bfc" id="L594" title="All 2 branches covered.">        if (Model.getFacade().isANamespace(subject)) {</span>
-<span class="pc bpc" id="L595" title="1 of 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
-<span class="pc bpc" id="L596" title="1 of 2 branches missed.">                if (feature.equals(&quot;ownedElement&quot;)) {</span>
+<span class="pc bpc" id="L594" title="1 of 2 branches missed.">        if (Model.getFacade().isANamespace(subject)) {</span>
+<span class="nc bnc" id="L595" title="All 2 branches missed.">            if (type.equals(&quot;.&quot;)) {</span>
+<span class="nc bnc" id="L596" title="All 2 branches missed.">                if (feature.equals(&quot;ownedElement&quot;)) {</span>
 <span class="nc" id="L597">                    return new HashSet&lt;Object&gt;(Model.getFacade()</span>
 <span class="nc" id="L598">                            .getOwnedElements(subject));</span>
                 }
                 // Additional Operations in 4.5.3.26
-<span class="pc bpc" id="L601" title="1 of 2 branches missed.">                if (feature.equals(&quot;contents&quot;)) {</span>
+<span class="nc bnc" id="L601" title="All 2 branches missed.">                if (feature.equals(&quot;contents&quot;)) {</span>
                         // TODO investigate typo in spec!!
 <span class="nc" id="L603">                    return internalOcl(subject, vt, &quot;self.ownedElement-&gt;&quot;</span>
                             + &quot;union(self.ownedElement-&gt;&quot;
                             + &quot;select(x|x.oclIsKindOf(Namespace)).contents)&quot;);
                 }
 
-<span class="pc bpc" id="L608" title="1 of 2 branches missed.">                if (feature.equals(&quot;allContents&quot;)) {</span>
+<span class="nc bnc" id="L608" title="All 2 branches missed.">                if (feature.equals(&quot;allContents&quot;)) {</span>
 <span class="nc" id="L609">                    return internalOcl(subject, vt, &quot;self.contents&quot;);</span>
                 }
 
-<span class="pc bpc" id="L612" title="1 of 2 branches missed.">                if (feature.equals(&quot;allVisibleElements&quot;)) {</span>
+<span class="nc bnc" id="L612" title="All 2 branches missed.">                if (feature.equals(&quot;allVisibleElements&quot;)) {</span>
 <span class="nc" id="L613">                    return internalOcl(</span>
                             subject,
                             vt,
@@ -617,7 +617,7 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
                         + &quot;select(e |e.elementOwnership.visibility = #public)&quot;);
                 }
 
-<span class="pc bpc" id="L620" title="1 of 2 branches missed.">                if (feature.equals(&quot;allSurroundingNamespaces&quot;)) {</span>
+<span class="nc bnc" id="L620" title="All 2 branches missed.">                if (feature.equals(&quot;allSurroundingNamespaces&quot;)) {</span>
 <span class="nc" id="L621">                    return internalOcl(subject, vt, &quot;self.namespace-&gt;&quot;</span>
                             + &quot;union(self.namespace.allSurroundingNamespaces)&quot;);
                 }
