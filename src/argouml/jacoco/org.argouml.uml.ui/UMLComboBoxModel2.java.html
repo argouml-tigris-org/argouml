@@ -171,22 +171,22 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 <span class="fc" id="L171">    }</span>
 
     public final void propertyChange(final PropertyChangeEvent pve) {
-<span class="pc bpc" id="L174" title="1 of 2 branches missed.">        if (pve instanceof UmlChangeEvent) {</span>
-<span class="fc" id="L175">            final UmlChangeEvent event = (UmlChangeEvent) pve;</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        if (pve instanceof UmlChangeEvent) {</span>
+<span class="nc" id="L175">            final UmlChangeEvent event = (UmlChangeEvent) pve;</span>
 
-<span class="fc" id="L177">            Runnable doWorkRunnable = new Runnable() {</span>
+<span class="nc" id="L177">            Runnable doWorkRunnable = new Runnable() {</span>
                 public void run() {
                     try {
-<span class="fc" id="L180">                        modelChanged(event);</span>
+<span class="nc" id="L180">                        modelChanged(event);</span>
 <span class="nc" id="L181">                    } catch (InvalidElementException e) {</span>
 <span class="nc" id="L182">                        LOG.log(Level.FINE, &quot;event = {0} &quot;, event );</span>
 <span class="nc" id="L183">                        LOG.log(Level.FINE, &quot;updateLayout method accessed deleted element&quot;, e);</span>
-<span class="fc" id="L184">                    }</span>
-<span class="fc" id="L185">                }</span>
+<span class="nc" id="L184">                    }</span>
+<span class="nc" id="L185">                }</span>
             };
-<span class="fc" id="L187">            SwingUtilities.invokeLater(doWorkRunnable);</span>
+<span class="nc" id="L187">            SwingUtilities.invokeLater(doWorkRunnable);</span>
         }
-<span class="fc" id="L189">    }</span>
+<span class="nc" id="L189">    }</span>
 
 
 
