@@ -187,11 +187,11 @@ argouml-app,org.argouml.uml.diagram.activity.ui,FigCallState,11,8,0,0,3,3,2,2,2,
 argouml-app,org.argouml.uml.diagram.activity.ui,FigSubactivityState,458,0,18,0,93,0,27,0,18,0
 argouml-app,org.argouml.uml.diagram.activity.ui,SelectionActionState,169,0,12,0,44,0,20,0,14,0
 argouml-app,org.argouml.uml.diagram.use_case,UseCaseDiagramGraphModel,638,8,136,0,164,3,79,2,11,2
-argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryManager,34,388,14,46,5,86,14,28,0,12
+argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryManager,77,345,20,40,14,77,17,25,0,12
 argouml-app,org.argouml.ui.targetmanager,TargetManager.Remover,27,75,4,14,8,22,4,11,1,5
 argouml-app,org.argouml.ui.targetmanager,TargetManager.HistoryRemover,0,13,0,0,0,3,0,2,0,2
 argouml-app,org.argouml.ui.targetmanager,TargetEvent,51,70,8,8,11,17,9,8,4,5
-argouml-app,org.argouml.ui.targetmanager,TargetManager,165,650,28,94,34,186,25,69,3,30
+argouml-app,org.argouml.ui.targetmanager,TargetManager,115,700,28,94,28,192,25,69,3,30
 argouml-app,org.argouml.ui.targetmanager,TargetManager.TargetRemover,0,12,0,0,0,3,0,2,0,2
 argouml-app,org.argouml.profile.internal.ocl,DefaultOclEvaluator,9,60,1,3,3,14,1,5,0,4
 argouml-app,org.argouml.profile.internal.ocl,ComputeDesignMaterials,13,64,1,3,2,13,1,5,0,4

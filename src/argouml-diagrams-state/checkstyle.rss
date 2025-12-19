@@ -3,7 +3,7 @@
 <rss version="0.91">
   <channel>
     <title>argouml-core-diagrams-state2 - Checkstyle report</title>
-    <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state</link>
+    <link>${project.url}</link>
     <description>argouml-core-diagrams-state2 - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2025</copyright>
@@ -13,9 +13,9 @@
              Warnings: 26,
              Infos: 0
       </title>
-            <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html</link>
+            <link>${project.url}/checkstyle.html</link>
       <description>
-        <p>Click <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="${project.url}/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.StateDiagramPropPanelFactory.java">org/argouml/state2/StateDiagramPropPanelFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.StateDiagramPropPanelFactory.java">org/argouml/state2/StateDiagramPropPanelFactory.java</a>
                 </td>
                 <td>
                   0
@@ -43,7 +43,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigVertex.java">org/argouml/state2/diagram/FigVertex.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.FigVertex.java">org/argouml/state2/diagram/FigVertex.java</a>
                 </td>
                 <td>
                   0
@@ -57,7 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.UMLStateDiagram.java">org/argouml/state2/diagram/UMLStateDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.UMLStateDiagram.java">org/argouml/state2/diagram/UMLStateDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -71,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigEntryPoint.java">org/argouml/state2/diagram/FigEntryPoint.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.FigEntryPoint.java">org/argouml/state2/diagram/FigEntryPoint.java</a>
                 </td>
                 <td>
                   0
@@ -85,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigCircleState.java">org/argouml/state2/diagram/FigCircleState.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.FigCircleState.java">org/argouml/state2/diagram/FigCircleState.java</a>
                 </td>
                 <td>
                   0
@@ -99,7 +99,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.StateDiagramModule.java">org/argouml/state2/StateDiagramModule.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.StateDiagramModule.java">org/argouml/state2/StateDiagramModule.java</a>
                 </td>
                 <td>
                   0
@@ -113,7 +113,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramFactory.java">org/argouml/state2/diagram/StateDiagramFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.StateDiagramFactory.java">org/argouml/state2/diagram/StateDiagramFactory.java</a>
                 </td>
                 <td>
                   0
@@ -127,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.StateDiagramGraphModel.java">org/argouml/state2/diagram/StateDiagramGraphModel.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.StateDiagramGraphModel.java">org/argouml/state2/diagram/StateDiagramGraphModel.java</a>
                 </td>
                 <td>
                   0
@@ -141,7 +141,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigExitPoint.java">org/argouml/state2/diagram/FigExitPoint.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.FigExitPoint.java">org/argouml/state2/diagram/FigExitPoint.java</a>
                 </td>
                 <td>
                   0
@@ -155,7 +155,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-diagrams-state/checkstyle.html#org.argouml.state2.diagram.FigRegion.java">org/argouml/state2/diagram/FigRegion.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.state2.diagram.FigRegion.java">org/argouml/state2/diagram/FigRegion.java</a>
                 </td>
                 <td>
                   0

@@ -3,7 +3,7 @@
 <rss version="0.91">
   <channel>
     <title>argouml-core-model - Checkstyle report</title>
-    <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model</link>
+    <link>${project.url}</link>
     <description>argouml-core-model - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2025</copyright>
@@ -13,9 +13,9 @@
              Warnings: 66,
              Infos: 0
       </title>
-            <link>http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html</link>
+            <link>${project.url}/checkstyle.html</link>
       <description>
-        <p>Click <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html">here</a> for the full Checkstyle report.</p>
+        <p>Click <a href="${project.url}/checkstyle.html">here</a> for the full Checkstyle report.</p>
 
         <table summary="Files" boder="1">
           <thead>
@@ -29,7 +29,7 @@
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractCollaborationsHelperDecorator.java">org/argouml/model/AbstractCollaborationsHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractCollaborationsHelperDecorator.java">org/argouml/model/AbstractCollaborationsHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -43,7 +43,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ActivityGraphsFactory.java">org/argouml/model/ActivityGraphsFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ActivityGraphsFactory.java">org/argouml/model/ActivityGraphsFactory.java</a>
                 </td>
                 <td>
                   0
@@ -57,7 +57,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.PseudostateKind.java">org/argouml/model/PseudostateKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.PseudostateKind.java">org/argouml/model/PseudostateKind.java</a>
                 </td>
                 <td>
                   0
@@ -71,7 +71,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlFactoryDefaults.java">org/argouml/model/UmlFactoryDefaults.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlFactoryDefaults.java">org/argouml/model/UmlFactoryDefaults.java</a>
                 </td>
                 <td>
                   0
@@ -85,7 +85,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelManagementFactory.java">org/argouml/model/ModelManagementFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelManagementFactory.java">org/argouml/model/ModelManagementFactory.java</a>
                 </td>
                 <td>
                   0
@@ -99,7 +99,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.MetaTypes.java">org/argouml/model/MetaTypes.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.MetaTypes.java">org/argouml/model/MetaTypes.java</a>
                 </td>
                 <td>
                   0
@@ -113,7 +113,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiReader.java">org/argouml/model/XmiReader.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiReader.java">org/argouml/model/XmiReader.java</a>
                 </td>
                 <td>
                   0
@@ -127,7 +127,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DummyModelCommand.java">org/argouml/model/DummyModelCommand.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DummyModelCommand.java">org/argouml/model/DummyModelCommand.java</a>
                 </td>
                 <td>
                   0
@@ -141,7 +141,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelCommand.java">org/argouml/model/ModelCommand.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelCommand.java">org/argouml/model/ModelCommand.java</a>
                 </td>
                 <td>
                   0
@@ -155,7 +155,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ExtensionMechanismsFactory.java">org/argouml/model/ExtensionMechanismsFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ExtensionMechanismsFactory.java">org/argouml/model/ExtensionMechanismsFactory.java</a>
                 </td>
                 <td>
                   0
@@ -169,7 +169,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.StateMachinesFactory.java">org/argouml/model/StateMachinesFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.StateMachinesFactory.java">org/argouml/model/StateMachinesFactory.java</a>
                 </td>
                 <td>
                   0
@@ -183,7 +183,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractUmlHelperDecorator.java">org/argouml/model/AbstractUmlHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractUmlHelperDecorator.java">org/argouml/model/AbstractUmlHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -197,7 +197,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiException.java">org/argouml/model/XmiException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiException.java">org/argouml/model/XmiException.java</a>
                 </td>
                 <td>
                   0
@@ -211,7 +211,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiWriter.java">org/argouml/model/XmiWriter.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiWriter.java">org/argouml/model/XmiWriter.java</a>
                 </td>
                 <td>
                   0
@@ -225,7 +225,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CommonBehaviorHelper.java">org/argouml/model/CommonBehaviorHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CommonBehaviorHelper.java">org/argouml/model/CommonBehaviorHelper.java</a>
                 </td>
                 <td>
                   0
@@ -239,7 +239,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AggregationKind.java">org/argouml/model/AggregationKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AggregationKind.java">org/argouml/model/AggregationKind.java</a>
                 </td>
                 <td>
                   0
@@ -253,7 +253,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractCoreHelperDecorator.java">org/argouml/model/AbstractCoreHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractCoreHelperDecorator.java">org/argouml/model/AbstractCoreHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -267,7 +267,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractModelEventPump.java">org/argouml/model/AbstractModelEventPump.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractModelEventPump.java">org/argouml/model/AbstractModelEventPump.java</a>
                 </td>
                 <td>
                   0
@@ -281,7 +281,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractCommonBehaviorHelperDecorator.java">org/argouml/model/AbstractCommonBehaviorHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractCommonBehaviorHelperDecorator.java">org/argouml/model/AbstractCommonBehaviorHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -295,7 +295,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ScopeKind.java">org/argouml/model/ScopeKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ScopeKind.java">org/argouml/model/ScopeKind.java</a>
                 </td>
                 <td>
                   0
@@ -309,7 +309,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.Factory.java">org/argouml/model/Factory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.Factory.java">org/argouml/model/Factory.java</a>
                 </td>
                 <td>
                   0
@@ -323,7 +323,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelMemento.java">org/argouml/model/ModelMemento.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelMemento.java">org/argouml/model/ModelMemento.java</a>
                 </td>
                 <td>
                   0
@@ -337,7 +337,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.MessageSort.java">org/argouml/model/MessageSort.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.MessageSort.java">org/argouml/model/MessageSort.java</a>
                 </td>
                 <td>
                   0
@@ -351,7 +351,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.Model.java">org/argouml/model/Model.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.Model.java">org/argouml/model/Model.java</a>
                 </td>
                 <td>
                   0
@@ -365,7 +365,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CommonBehaviorFactory.java">org/argouml/model/CommonBehaviorFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CommonBehaviorFactory.java">org/argouml/model/CommonBehaviorFactory.java</a>
                 </td>
                 <td>
                   0
@@ -379,7 +379,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.Facade.java">org/argouml/model/Facade.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.Facade.java">org/argouml/model/Facade.java</a>
                 </td>
                 <td>
                   0
@@ -393,7 +393,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiExtensionWriter.java">org/argouml/model/XmiExtensionWriter.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiExtensionWriter.java">org/argouml/model/XmiExtensionWriter.java</a>
                 </td>
                 <td>
                   0
@@ -407,7 +407,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.NotImplementedException.java">org/argouml/model/NotImplementedException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.NotImplementedException.java">org/argouml/model/NotImplementedException.java</a>
                 </td>
                 <td>
                   0
@@ -421,7 +421,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractDataTypesHelperDecorator.java">org/argouml/model/AbstractDataTypesHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractDataTypesHelperDecorator.java">org/argouml/model/AbstractDataTypesHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -435,7 +435,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DiagramInterchangeModel.java">org/argouml/model/DiagramInterchangeModel.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DiagramInterchangeModel.java">org/argouml/model/DiagramInterchangeModel.java</a>
                 </td>
                 <td>
                   0
@@ -449,7 +449,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelEventPump.java">org/argouml/model/ModelEventPump.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelEventPump.java">org/argouml/model/ModelEventPump.java</a>
                 </td>
                 <td>
                   0
@@ -463,7 +463,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AddAssociationEvent.java">org/argouml/model/AddAssociationEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AddAssociationEvent.java">org/argouml/model/AddAssociationEvent.java</a>
                 </td>
                 <td>
                   0
@@ -477,7 +477,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DataTypesHelper.java">org/argouml/model/DataTypesHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DataTypesHelper.java">org/argouml/model/DataTypesHelper.java</a>
                 </td>
                 <td>
                   0
@@ -491,7 +491,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.SequenceDiagram.java">org/argouml/model/SequenceDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.SequenceDiagram.java">org/argouml/model/SequenceDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -505,7 +505,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelCommandCreationObserver.java">org/argouml/model/ModelCommandCreationObserver.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelCommandCreationObserver.java">org/argouml/model/ModelCommandCreationObserver.java</a>
                 </td>
                 <td>
                   0
@@ -519,7 +519,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CollaborationDiagram.java">org/argouml/model/CollaborationDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CollaborationDiagram.java">org/argouml/model/CollaborationDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -533,7 +533,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.RemoveAssociationEvent.java">org/argouml/model/RemoveAssociationEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.RemoveAssociationEvent.java">org/argouml/model/RemoveAssociationEvent.java</a>
                 </td>
                 <td>
                   0
@@ -547,7 +547,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractModelFactory.java">org/argouml/model/AbstractModelFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractModelFactory.java">org/argouml/model/AbstractModelFactory.java</a>
                 </td>
                 <td>
                   0
@@ -561,7 +561,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CopyHelper.java">org/argouml/model/CopyHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CopyHelper.java">org/argouml/model/CopyHelper.java</a>
                 </td>
                 <td>
                   0
@@ -575,7 +575,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UseCasesFactory.java">org/argouml/model/UseCasesFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UseCasesFactory.java">org/argouml/model/UseCasesFactory.java</a>
                 </td>
                 <td>
                   0
@@ -589,7 +589,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelImplementation.java">org/argouml/model/ModelImplementation.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelImplementation.java">org/argouml/model/ModelImplementation.java</a>
                 </td>
                 <td>
                   0
@@ -603,7 +603,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlException.java">org/argouml/model/UmlException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlException.java">org/argouml/model/UmlException.java</a>
                 </td>
                 <td>
                   0
@@ -617,7 +617,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractExtensionMechanismsHelperDecorator.java">org/argouml/model/AbstractExtensionMechanismsHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractExtensionMechanismsHelperDecorator.java">org/argouml/model/AbstractExtensionMechanismsHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -631,7 +631,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlHelper.java">org/argouml/model/UmlHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlHelper.java">org/argouml/model/UmlHelper.java</a>
                 </td>
                 <td>
                   0
@@ -645,7 +645,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DataTypesFactory.java">org/argouml/model/DataTypesFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DataTypesFactory.java">org/argouml/model/DataTypesFactory.java</a>
                 </td>
                 <td>
                   0
@@ -659,7 +659,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CoreFactory.java">org/argouml/model/CoreFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CoreFactory.java">org/argouml/model/CoreFactory.java</a>
                 </td>
                 <td>
                   0
@@ -673,7 +673,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DiDiagram.java">org/argouml/model/DiDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DiDiagram.java">org/argouml/model/DiDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -687,7 +687,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DeploymentDiagram.java">org/argouml/model/DeploymentDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DeploymentDiagram.java">org/argouml/model/DeploymentDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -701,7 +701,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DiElement.java">org/argouml/model/DiElement.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DiElement.java">org/argouml/model/DiElement.java</a>
                 </td>
                 <td>
                   0
@@ -715,7 +715,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AssociationChangeEvent.java">org/argouml/model/AssociationChangeEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AssociationChangeEvent.java">org/argouml/model/AssociationChangeEvent.java</a>
                 </td>
                 <td>
                   0
@@ -729,7 +729,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CollaborationsHelper.java">org/argouml/model/CollaborationsHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CollaborationsHelper.java">org/argouml/model/CollaborationsHelper.java</a>
                 </td>
                 <td>
                   0
@@ -743,7 +743,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ChangeableKind.java">org/argouml/model/ChangeableKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ChangeableKind.java">org/argouml/model/ChangeableKind.java</a>
                 </td>
                 <td>
                   0
@@ -757,7 +757,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DiagramInterchangeFactory.java">org/argouml/model/DiagramInterchangeFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DiagramInterchangeFactory.java">org/argouml/model/DiagramInterchangeFactory.java</a>
                 </td>
                 <td>
                   0
@@ -771,7 +771,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DummyModelMemento.java">org/argouml/model/DummyModelMemento.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DummyModelMemento.java">org/argouml/model/DummyModelMemento.java</a>
                 </td>
                 <td>
                   0
@@ -785,7 +785,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.StateMachinesHelper.java">org/argouml/model/StateMachinesHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.StateMachinesHelper.java">org/argouml/model/StateMachinesHelper.java</a>
                 </td>
                 <td>
                   0
@@ -799,7 +799,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UseCaseDiagram.java">org/argouml/model/UseCaseDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UseCaseDiagram.java">org/argouml/model/UseCaseDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -813,7 +813,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AttributeChangeEvent.java">org/argouml/model/AttributeChangeEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AttributeChangeEvent.java">org/argouml/model/AttributeChangeEvent.java</a>
                 </td>
                 <td>
                   0
@@ -827,7 +827,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractActivityGraphsHelperDecorator.java">org/argouml/model/AbstractActivityGraphsHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractActivityGraphsHelperDecorator.java">org/argouml/model/AbstractActivityGraphsHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -841,7 +841,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ModelManagementHelper.java">org/argouml/model/ModelManagementHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ModelManagementHelper.java">org/argouml/model/ModelManagementHelper.java</a>
                 </td>
                 <td>
                   0
@@ -855,7 +855,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractUseCasesHelperDecorator.java">org/argouml/model/AbstractUseCasesHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractUseCasesHelperDecorator.java">org/argouml/model/AbstractUseCasesHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -869,7 +869,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UseCasesHelper.java">org/argouml/model/UseCasesHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UseCasesHelper.java">org/argouml/model/UseCasesHelper.java</a>
                 </td>
                 <td>
                   0
@@ -883,7 +883,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.VisibilityKind.java">org/argouml/model/VisibilityKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.VisibilityKind.java">org/argouml/model/VisibilityKind.java</a>
                 </td>
                 <td>
                   0
@@ -897,7 +897,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.InvalidElementException.java">org/argouml/model/InvalidElementException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.InvalidElementException.java">org/argouml/model/InvalidElementException.java</a>
                 </td>
                 <td>
                   0
@@ -911,7 +911,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CoreHelper.java">org/argouml/model/CoreHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CoreHelper.java">org/argouml/model/CoreHelper.java</a>
                 </td>
                 <td>
                   0
@@ -925,7 +925,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ClassDiagram.java">org/argouml/model/ClassDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ClassDiagram.java">org/argouml/model/ClassDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -939,7 +939,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ConcurrencyKind.java">org/argouml/model/ConcurrencyKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ConcurrencyKind.java">org/argouml/model/ConcurrencyKind.java</a>
                 </td>
                 <td>
                   0
@@ -953,7 +953,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DirectionKind.java">org/argouml/model/DirectionKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DirectionKind.java">org/argouml/model/DirectionKind.java</a>
                 </td>
                 <td>
                   0
@@ -967,7 +967,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlFactory.java">org/argouml/model/UmlFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlFactory.java">org/argouml/model/UmlFactory.java</a>
                 </td>
                 <td>
                   0
@@ -981,7 +981,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AssociationChangeListener.java">org/argouml/model/AssociationChangeListener.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AssociationChangeListener.java">org/argouml/model/AssociationChangeListener.java</a>
                 </td>
                 <td>
                   0
@@ -995,7 +995,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.IllegalModelElementConnectionException.java">org/argouml/model/IllegalModelElementConnectionException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.IllegalModelElementConnectionException.java">org/argouml/model/IllegalModelElementConnectionException.java</a>
                 </td>
                 <td>
                   0
@@ -1009,7 +1009,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UUIDManager.java">org/argouml/model/UUIDManager.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UUIDManager.java">org/argouml/model/UUIDManager.java</a>
                 </td>
                 <td>
                   0
@@ -1023,7 +1023,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.InstanceChangeEvent.java">org/argouml/model/InstanceChangeEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.InstanceChangeEvent.java">org/argouml/model/InstanceChangeEvent.java</a>
                 </td>
                 <td>
                   0
@@ -1037,7 +1037,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.DeleteInstanceEvent.java">org/argouml/model/DeleteInstanceEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.DeleteInstanceEvent.java">org/argouml/model/DeleteInstanceEvent.java</a>
                 </td>
                 <td>
                   0
@@ -1051,7 +1051,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ActivityDiagram.java">org/argouml/model/ActivityDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ActivityDiagram.java">org/argouml/model/ActivityDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -1065,7 +1065,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.StateDiagram.java">org/argouml/model/StateDiagram.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.StateDiagram.java">org/argouml/model/StateDiagram.java</a>
                 </td>
                 <td>
                   0
@@ -1079,7 +1079,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiReferenceRuntimeException.java">org/argouml/model/XmiReferenceRuntimeException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiReferenceRuntimeException.java">org/argouml/model/XmiReferenceRuntimeException.java</a>
                 </td>
                 <td>
                   0
@@ -1093,7 +1093,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.CollaborationsFactory.java">org/argouml/model/CollaborationsFactory.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.CollaborationsFactory.java">org/argouml/model/CollaborationsFactory.java</a>
                 </td>
                 <td>
                   0
@@ -1107,7 +1107,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlChangeListener.java">org/argouml/model/UmlChangeListener.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlChangeListener.java">org/argouml/model/UmlChangeListener.java</a>
                 </td>
                 <td>
                   0
@@ -1121,7 +1121,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.OrderingKind.java">org/argouml/model/OrderingKind.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.OrderingKind.java">org/argouml/model/OrderingKind.java</a>
                 </td>
                 <td>
                   0
@@ -1135,7 +1135,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.Defaults.java">org/argouml/model/Defaults.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.Defaults.java">org/argouml/model/Defaults.java</a>
                 </td>
                 <td>
                   0
@@ -1149,7 +1149,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.UmlChangeEvent.java">org/argouml/model/UmlChangeEvent.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.UmlChangeEvent.java">org/argouml/model/UmlChangeEvent.java</a>
                 </td>
                 <td>
                   0
@@ -1163,7 +1163,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ActivityGraphsHelper.java">org/argouml/model/ActivityGraphsHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ActivityGraphsHelper.java">org/argouml/model/ActivityGraphsHelper.java</a>
                 </td>
                 <td>
                   0
@@ -1177,7 +1177,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.AbstractStateMachinesHelperDecorator.java">org/argouml/model/AbstractStateMachinesHelperDecorator.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.AbstractStateMachinesHelperDecorator.java">org/argouml/model/AbstractStateMachinesHelperDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -1191,7 +1191,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.XmiReferenceException.java">org/argouml/model/XmiReferenceException.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.XmiReferenceException.java">org/argouml/model/XmiReferenceException.java</a>
                 </td>
                 <td>
                   0
@@ -1205,7 +1205,7 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://nexus.sonatype.org/oss-repository-hosting.html/parentpom/argouml-core/src/argouml-model/checkstyle.html#org.argouml.model.ExtensionMechanismsHelper.java">org/argouml/model/ExtensionMechanismsHelper.java</a>
+                  <a href="${project.url}/checkstyle.html#org.argouml.model.ExtensionMechanismsHelper.java">org/argouml/model/ExtensionMechanismsHelper.java</a>
                 </td>
                 <td>
                   0
