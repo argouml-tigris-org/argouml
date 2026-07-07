@@ -60,7 +60,7 @@ argouml-core-model-mdr,org.argouml.model.mdr,DataTypesFactoryMDRImpl,367,11,22,0
 argouml-core-model-mdr,org.argouml.model.mdr,CoreFactoryMDRImpl,3685,69,461,1,917,23,373,6,142,6
 argouml-core-model-mdr,org.argouml.model.mdr,XmiWriterMDRImpl,53,57,3,3,14,18,5,3,2,3
 argouml-core-model-mdr,org.argouml.model.mdr,StateMachinesFactoryMDRImpl,967,16,115,1,290,6,112,2,54,2
-argouml-core-model-mdr,org.argouml.model.mdr,ModelEventPumpMDRImpl,1021,608,93,51,219,159,74,38,22,18
+argouml-core-model-mdr,org.argouml.model.mdr,ModelEventPumpMDRImpl,1004,625,91,53,213,165,73,39,22,18
 argouml-core-model-mdr,org.argouml.model.mdr,UndoUmlHelperDecorator,4,0,0,0,2,0,1,0,1,0
 argouml-core-model-mdr,org.argouml.model.mdr,CoreHelperMDRImpl,7404,38,1346,6,1651,11,849,3,173,3
 argouml-core-model-mdr,org.argouml.model.mdr,StateMachinesHelperMDRImpl,1587,6,284,0,346,3,186,1,44,1
